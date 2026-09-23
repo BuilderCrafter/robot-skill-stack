@@ -1,39 +1,18 @@
 from __future__ import annotations
 
 from core.manipulation import ManipulationBackend
-
 from core.skill import BaseSkill, FailureCode, SkillResult, SkillSpec, SkillStatus
-
 from manipulation.grasp_planner import TopDownGraspPlanner
-
 from world_model.world_model import WorldModel
 
 
 class PickSkill(BaseSkill):
-    """
-    Semantic object-picking capability.
-
-    This class contains no Isaac-specific code.
-
-    It composes generic manipulation primitives:
-
-        open gripper
-        move to pre-grasp
-        move to grasp
-        close gripper
-        lift
-        verify object actually moved
-    """
-
     SPEC = SkillSpec(
         name="pick",
-        description="Grasp an object and lift it from its supporting surface.",
-        inputs=("object_id", "optional grasp_hint", "lift_height"),
-
-        preconditions=("object exists", "object pose is known", "gripper is free", "valid grasp exists"),
-
-        effects=("object is held by the gripper", "object is lifted"),
-
+        description="Grasp an object and lift it.",
+        inputs=("object_id", "grasp_hint", "lift_height"),
+        preconditions=("object exists", "pose known", "gripper free"),
+        effects=("object is held", "object is lifted"),
         failures=(
             FailureCode.OBJECT_NOT_FOUND,
             FailureCode.OBJECT_POSE_UNKNOWN,
@@ -44,178 +23,138 @@ class PickSkill(BaseSkill):
         ),
     )
 
-
     def __init__(
         self,
         backend: ManipulationBackend,
         world_model: WorldModel,
         grasp_planner: TopDownGraspPlanner,
         *,
-        grasp_lift_threshold: float = 0.03,
-        approach_speed: float = 0.4,
-        grasp_speed: float = 0.15,
-        lift_speed: float = 0.2,
-    ) -> None:
-
+        grasp_lift_threshold=0.03,
+    ):
         self.backend = backend
         self.world_model = world_model
         self.grasp_planner = grasp_planner
         self.grasp_lift_threshold = grasp_lift_threshold
-        self.approach_speed = approach_speed
-        self.grasp_speed = grasp_speed
-        self.lift_speed = lift_speed
 
-    # Internal helper
-    def _motion_failure(self, backend_result, message: str) -> SkillResult:
-
-        if backend_result.timed_out:
-            return SkillResult(
-                status=SkillStatus.TIMEOUT,
-                failure_code=FailureCode.TIMEOUT,
-                message=message,
-                details=backend_result.details,
-            )
-
+    def _motion(self, pose, speed, tolerance, message):
+        result = self.backend.move_to_pose(
+            pose,
+            speed=speed,
+            position_tolerance=tolerance,
+            orientation_tolerance=0.10,
+        )
+        if result.ok:
+            return None
 
         return SkillResult(
-            status=SkillStatus.FAILED,
-            failure_code=FailureCode.GRASP_FAILED,
-            message=message,
-            details=backend_result.details,
+            SkillStatus.TIMEOUT if result.timed_out else SkillStatus.FAILED,
+            message,
+            FailureCode.TIMEOUT if result.timed_out else FailureCode.GRASP_FAILED,
+            result.details,
         )
 
-
-    # Execute
-    def execute(self, object_id: str, grasp_hint: str | None = None, lift_height: float = 0.12) -> SkillResult:
-        # Preconditions: object exists
+    def execute(self, object_id, grasp_hint=None, lift_height=0.12):
         obj = self.world_model.get(object_id)
-
         if obj is None:
-
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.OBJECT_NOT_FOUND,
-                message=f"Unknown object: '{object_id}'.",
+                SkillStatus.FAILED,
+                f"Unknown object '{object_id}'.",
+                FailureCode.OBJECT_NOT_FOUND,
             )
 
-        # Preconditions: gripper should be free
         if self.world_model.held_object_id is not None:
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.GRASP_FAILED,
-                message=f"Pick requested while another object is already held: '{self.world_model.held_object_id}'.",
+                SkillStatus.FAILED,
+                "Gripper is already holding an object.",
+                FailureCode.GRASP_FAILED,
             )
 
-
-        # Refresh actual object pose.
-        refreshed = self.world_model.refresh_object(object_id)
-
-        if not refreshed or obj.pose is None:
+        if not self.world_model.refresh_object(object_id) or obj.pose is None:
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.OBJECT_POSE_UNKNOWN,
-                message=f"Pose of '{object_id}' is unknown.",
+                SkillStatus.FAILED,
+                f"Pose of '{object_id}' is unknown.",
+                FailureCode.OBJECT_POSE_UNKNOWN,
             )
 
-        initial_position = obj.pose.position.copy()
-        initial_z = float(initial_position[2])
-
-        # Ask grasp planner for candidate.
-        plan = self.grasp_planner.plan(obj, lift_height=lift_height, grasp_hint=grasp_hint)
+        initial = obj.pose.position.copy()
+        plan = self.grasp_planner.plan(
+            obj,
+            lift_height=lift_height,
+            grasp_hint=grasp_hint,
+        )
 
         if plan is None:
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.NO_VALID_GRASP,
-                message=f"No valid grasp was found for '{object_id}'.",
+                SkillStatus.FAILED,
+                "No valid grasp.",
+                FailureCode.NO_VALID_GRASP,
             )
 
-
-        # Reachability pre-check.
-        for name, pose in (("pre_grasp", plan.pre_grasp), ("grasp", plan.grasp), ("lift", plan.lift)):
+        for name, pose in (
+            ("pre_grasp", plan.pre_grasp),
+            ("grasp", plan.grasp),
+            ("lift", plan.lift),
+        ):
             if not self.backend.check_reachability(pose):
                 return SkillResult(
-                    status=SkillStatus.FAILED,
-                    failure_code=FailureCode.UNREACHABLE,
-                    message=f"Required grasp pose '{name}' is unreachable.",
-                    details={
-                        "pose": pose.position.tolist(),
-                        "object_id": object_id,
-                    },
+                    SkillStatus.FAILED,
+                    f"{name} pose is unreachable.",
+                    FailureCode.UNREACHABLE,
                 )
 
-        # 1. Open gripper
         result = self.backend.open_gripper()
-
         if not result.ok:
-            return self._motion_failure(result, "Could not open gripper.")
+            return SkillResult(
+                SkillStatus.FAILED,
+                "Could not open gripper.",
+                FailureCode.GRASP_FAILED,
+            )
 
-        # 2. Move above object
-        result = self.backend.move_to_pose(plan.pre_grasp, speed=self.approach_speed)
+        failure = self._motion(plan.pre_grasp, 0.4, 0.020, "Pre-grasp failed.")
+        if failure:
+            return failure
 
-        if not result.ok:
-            return self._motion_failure(result, "Could not reach pre-grasp pose.")
+        failure = self._motion(plan.grasp, 0.15, 0.010, "Grasp approach failed.")
+        if failure:
+            return failure
 
-        # 3. Descend to grasp pose
-        result = self.backend.move_to_pose(plan.grasp, speed=(self.grasp_speed))
+        if not self.backend.close_gripper().ok:
+            return SkillResult(
+                SkillStatus.FAILED,
+                "Could not close gripper.",
+                FailureCode.GRASP_FAILED,
+            )
 
-        if not result.ok:
-            return self._motion_failure(result, "Could not reach grasp pose.")
+        failure = self._motion(plan.lift, 0.2, 0.020, "Lift failed.")
+        if failure:
+            return failure
 
-
-        # 4. Close gripper
-        result = self.backend.close_gripper()
-
-        if not result.ok:
-            return self._motion_failure(result, "Could not close gripper.")
-
-        # 5. Lift
-        result = self.backend.move_to_pose(plan.lift, speed=self.lift_speed)
-
-        if not result.ok:
-            return self._motion_failure(result, "Could not execute lift motion.")
-
-        # 6. Refresh real world state.
         if not self.world_model.refresh_object(object_id):
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.GRASP_FAILED,
-                message="Lift motion completed, but object state could not be verified.",
+                SkillStatus.FAILED,
+                "Could not verify object state.",
+                FailureCode.GRASP_FAILED,
             )
 
-        final_position = obj.pose.position.copy()
+        final = obj.pose.position.copy()
+        lift = float(final[2] - initial[2])
 
-        lift_distance = float(final_position[2] - initial_z)
-
-        # 7. Verify object physically moved upward.
-        if lift_distance < self.grasp_lift_threshold:
+        if lift < self.grasp_lift_threshold:
             return SkillResult(
-                status=SkillStatus.FAILED,
-                failure_code=FailureCode.GRASP_FAILED,
-                message="Gripper motion completed, but the object was not lifted.",
-                details={
-                    "object_id": object_id,
-                    "initial_position": initial_position.tolist(),
-                    "final_position": final_position.tolist(),
-                    "lift_distance_m": lift_distance,
-                    "required_lift_m": self.grasp_lift_threshold,
-                },
+                SkillStatus.FAILED,
+                "Object was not lifted.",
+                FailureCode.GRASP_FAILED,
+                {"lift_distance_m": lift},
             )
 
-        # Semantic world-model update.
         self.world_model.set_held(object_id)
 
-
-        # Success
         return SkillResult(
-            status=SkillStatus.SUCCESS,
-            message=f"Picked '{object_id}'.",
+            SkillStatus.SUCCESS,
+            f"Picked '{object_id}'.",
             details={
-                "object_id": object_id,
-                "initial_position": initial_position.tolist(),
-                "final_position": final_position.tolist(),
-                "lift_distance_m": lift_distance,
-                "grasp_hint": grasp_hint,
-                "lift_height_requested_m": lift_height,
+                "initial_position": initial.tolist(),
+                "final_position": final.tolist(),
+                "lift_distance_m": lift,
             },
         )

@@ -1,0 +1,9 @@
+[robot]
+id = "franka"
+type = "franka"
+prim_path = "/Franka"
+
+[objects.cube]
+prim_path = "/World/Cube"
+size = [0.05, 0.05, 0.05]
+graspable = true

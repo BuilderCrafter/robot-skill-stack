@@ -1,0 +1,19 @@
+[core]
+reloadable = true
+
+[package]
+version = "0.1.0"
+title = "Robot Skill Stack UI"
+description = "GUI for the robot skill runtime"
+category = "Robotics"
+authors = ["BuilderCrafter"]
+
+[dependencies]
+"omni.ui" = {}
+"isaacsim.core.api" = {}
+"isaacsim.core.prims" = {}
+"isaacsim.robot.manipulators.examples" = {}
+"isaacsim.robot_motion.motion_generation" = {}
+
+[[python.module]]
+name = "robot_skill_stack.ui"

@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Environment / local config
+.env
+.env.*
+!.env.example
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*~
+.cache/
+tmp/
+temp/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Isaac / Omniverse local generated data
+logs/
+cache/
+data/
+outputs/
+output/
+
+# Crash / dump files
+*.dmp
+*.core
+core.*
+
+# Swap files
+*.swp
+*.swo
