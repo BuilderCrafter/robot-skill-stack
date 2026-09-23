@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from backends.isaac.rgbd_camera import IsaacRgbdCamera
+from perception.rgbd_localizer import RgbdLocalizer
 
 SCENE = ROOT / "scenes" / "playground.usd"
 PROFILE = ROOT / "config" / "scenes" / "playground.toml"
@@ -79,7 +80,26 @@ try:
     depths = depth[ys, xs]
 
     print("[6] Back-projecting cube pixels...")
-    points = camera.image_points_to_world(pixels, depths)
+
+    isaac_points = camera.image_points_to_world(pixels, depths)
+
+    localizer = RgbdLocalizer(camera.get_intrinsics())
+    world_from_camera = camera.get_world_from_camera_transform()
+
+    points = localizer.pixels_to_world(
+        pixels,
+        depths,
+        world_from_camera,
+    )
+
+    difference = np.linalg.norm(points - isaac_points, axis=1)
+
+    print(
+        "Localizer vs Isaac:",
+        f"mean={difference.mean():.9f} m",
+        f"max={difference.max():.9f} m",
+    )
+
     points = points[np.isfinite(points).all(axis=1)]
 
     if not len(points):

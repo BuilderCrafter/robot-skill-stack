@@ -61,3 +61,6 @@ class IsaacRgbdCamera:
             np.asarray(depth, dtype=np.float32),
         )
         return np.asarray(points)
+
+    def get_world_from_camera_transform(self):
+        return np.linalg.inv(np.asarray(self.camera.get_view_matrix_ros()))
