@@ -19,6 +19,7 @@ htmlcov/
 *.egg-info/
 build/
 dist/
+.deps/
 
 # VS Code / IDE
 .vscode/

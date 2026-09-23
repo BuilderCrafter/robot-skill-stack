@@ -8,25 +8,29 @@ import numpy as np
 import omni.ext
 import omni.kit.app
 import omni.ui as ui
+import py_trees
 
-# Project packages live outside the extension directory.
 ROOT = Path(__file__).resolve().parents[4]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
 
-from runtime.runtime_builder import build_runtime
+for path in (ROOT, ROOT / ".deps"):
+    path = str(path)
+    if path not in sys.path:
+        sys.path.insert(0, path)
+
+from behavior_trees.executor import BTExecutor
+from behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
+from behavior_trees.tasks.pick_and_place_recovery import (
+    create_pick_and_place_recovery_tree,
+)
 from core.types import Pose
+from runtime.runtime_builder import build_runtime
 
 
 class RobotSkillStackExtension(omni.ext.IExt):
     def on_startup(self, ext_id):
         self.bundle = None
         self.busy = False
-        self.window = ui.Window(
-            "Robot Skill Runtime",
-            width=360,
-            height=420,
-        )
+        self.window = ui.Window("Robot Skill Runtime", width=380, height=560)
         self._build_ui()
 
     def on_shutdown(self):
@@ -36,25 +40,17 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _build_ui(self):
         with self.window.frame:
             with ui.VStack(spacing=8):
-                ui.Label(
-                    "Robot Skill Stack",
-                    height=28,
-                    style={"font_size": 20},
-                )
+                ui.Label("Robot Skill Stack", height=28, style={"font_size": 20})
 
                 self.status = ui.Label(
-                    "Open playground.usd, then initialize.",
+                    "Open a compatible scene, choose a profile, then initialize.",
                     word_wrap=True,
-                    height=45,
+                    height=50,
                 )
 
                 ui.Label("Scene profile")
-
                 self.profile = ui.StringField()
-
-                self.profile.model.set_value(
-                    "config/scenes/playground.toml"
-                )
+                self.profile.model.set_value("config/scenes/playground.toml")
 
                 self.init_btn = ui.Button(
                     "Initialize Runtime",
@@ -63,50 +59,46 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 )
 
                 ui.Separator()
-
                 ui.Label("Object")
+
                 self.object_field = ui.StringField()
                 self.object_field.model.set_value("cube")
 
-                ui.Button(
-                    "Pick",
-                    clicked_fn=self._pick_clicked,
-                    height=30,
-                )
-
-                ui.Separator()
                 ui.Label("Target position")
-
                 self.x = self._float_field("X", 0.45)
                 self.y = self._float_field("Y", 0.25)
                 self.z = self._float_field("Z", 0.025)
 
+                ui.Separator()
+                ui.Label("Skills", style={"font_size": 16})
+
                 with ui.HStack(spacing=5):
-                    ui.Button(
-                        "Place",
-                        clicked_fn=self._place_clicked,
-                        height=30,
-                    )
-                    ui.Button(
-                        "Move To",
-                        clicked_fn=self._move_clicked,
-                        height=30,
-                    )
+                    ui.Button("Pick", clicked_fn=self._pick_clicked, height=30)
+                    ui.Button("Place", clicked_fn=self._place_clicked, height=30)
+
+                with ui.HStack(spacing=5):
+                    ui.Button("Move To", clicked_fn=self._move_clicked, height=30)
+                    ui.Button("Home", clicked_fn=self._home_clicked, height=30)
+
+                ui.Separator()
+                ui.Label("Tasks", style={"font_size": 16})
 
                 ui.Button(
-                    "Home",
-                    clicked_fn=self._home_clicked,
-                    height=30,
+                    "Pick & Place",
+                    clicked_fn=lambda: self._run_task(recovery=False),
+                    height=32,
+                )
+
+                ui.Button(
+                    "Pick & Place + Recovery",
+                    clicked_fn=lambda: self._run_task(recovery=True),
+                    height=32,
                 )
 
                 ui.Separator()
 
                 self.held = ui.Label("Held: -")
-                self.ee = ui.Label(
-                    "EE: -",
-                    word_wrap=True,
-                    height=40,
-                )
+                self.ee = ui.Label("EE: -", word_wrap=True, height=40)
 
                 ui.Button(
                     "Refresh Status",
@@ -149,48 +141,33 @@ class RobotSkillStackExtension(omni.ext.IExt):
         await omni.kit.app.get_app().next_update_async()
 
         try:
-            profile = Path(
-                self.profile.model.get_value_as_string()
-            )
-
+            profile = Path(self.profile.model.get_value_as_string())
             if not profile.is_absolute():
                 profile = ROOT / profile
 
             self.bundle = await build_runtime(profile)
 
-            object_ids = list(
-                self.bundle.config.objects
-            )
+            objects = list(self.bundle.config.objects)
+            if objects:
+                self.object_field.model.set_value(objects[0])
 
-            if object_ids:
-                self.object_field.model.set_value(object_ids[0])
-
-            self._set_status(
-                f"READY\nObjects: {', '.join(object_ids)}"
-            )
-
+            self._set_status(f"READY\nObjects: {', '.join(objects)}")
             self._refresh()
 
         except Exception as exc:
             self._set_status(
-                f"Initialization failed:\n"
-                f"{type(exc).__name__}: {exc}"
+                f"Initialization failed:\n{type(exc).__name__}: {exc}"
             )
 
     def _run(self, name, **kwargs):
         asyncio.ensure_future(self._execute(name, kwargs))
 
     async def _execute(self, name, kwargs):
-        if self.bundle is None:
-            self._set_status("Initialize the runtime first.")
-            return
-
-        if self.busy:
-            self._set_status("Another skill is running.")
+        if not self._can_run():
             return
 
         self.busy = True
-        self._set_status(f"Running: {name}...")
+        self._set_status(f"Running skill: {name}...")
         await omni.kit.app.get_app().next_update_async()
 
         try:
@@ -203,22 +180,72 @@ class RobotSkillStackExtension(omni.ext.IExt):
         finally:
             self.busy = False
 
+    def _run_task(self, recovery: bool):
+        asyncio.ensure_future(self._execute_task(recovery))
+
+    async def _execute_task(self, recovery: bool):
+        if not self._can_run():
+            return
+
+        self.busy = True
+        task_name = "Pick & Place + Recovery" if recovery else "Pick & Place"
+        self._set_status(f"Running task: {task_name}...")
+        await omni.kit.app.get_app().next_update_async()
+
+        try:
+            object_id = self._object_id()
+            target = Pose(self._target())
+
+            factory = (
+                create_pick_and_place_recovery_tree
+                if recovery
+                else create_pick_and_place_tree
+            )
+
+            root = factory(
+                self.bundle.runtime,
+                object_id=object_id,
+                target=target,
+                return_home=True,
+            )
+
+            status = BTExecutor(root).run(verbose=False)
+
+            if status == py_trees.common.Status.SUCCESS:
+                self._set_status(f"SUCCESS: {task_name}")
+            else:
+                self._set_status(f"FAILED: {task_name}")
+
+            self._refresh()
+
+        except Exception as exc:
+            self._set_status(f"ERROR: {type(exc).__name__}: {exc}")
+        finally:
+            self.busy = False
+
+    def _can_run(self):
+        if self.bundle is None:
+            self._set_status("Initialize the runtime first.")
+            return False
+
+        if self.busy:
+            self._set_status("Another skill/task is running.")
+            return False
+
+        return True
+
     def _pick_clicked(self):
         self._run("pick", object_id=self._object_id())
 
     def _place_clicked(self):
-        self._run("place", target=Pose(self._target()))
+        self._run("place", target=Pose(self._target()), mode="stable")
 
     def _move_clicked(self):
         if self.bundle is None:
             self._set_status("Initialize the runtime first.")
             return
 
-        orientation = (
-            self.bundle.backend
-            .get_end_effector_pose()
-            .orientation
-        )
+        orientation = self.bundle.backend.get_end_effector_pose().orientation
         self._run(
             "move_to_pose",
             target=Pose(self._target(), orientation),
