@@ -23,15 +23,21 @@ class ObjectConfig:
 
 
 @dataclass(frozen=True)
+class PerceptionConfig:
+    provider: str = "ground_truth"
+    camera_prim_path: str | None = None
+    resolution: tuple[int, int] = (640, 480)
+
+
+@dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
     objects: dict[str, ObjectConfig]
+    perception: PerceptionConfig
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
-    path = Path(path)
-
-    with path.open("rb") as f:
+    with Path(path).open("rb") as f:
         data = tomllib.load(f)
 
     robot_data = data["robot"]
@@ -51,4 +57,16 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             graspable=cfg.get("graspable", True),
         )
 
-    return SceneConfig(robot=robot, objects=objects)
+    p = data.get("perception", {})
+    resolution = p.get("resolution", [640, 480])
+    perception = PerceptionConfig(
+        provider=p.get("provider", "ground_truth"),
+        camera_prim_path=p.get("camera_prim_path"),
+        resolution=(int(resolution[0]), int(resolution[1])),
+    )
+
+    return SceneConfig(
+        robot=robot,
+        objects=objects,
+        perception=perception,
+    )

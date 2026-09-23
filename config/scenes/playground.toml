@@ -7,3 +7,8 @@ prim_path = "/Franka"
 prim_path = "/World/Cube"
 size = [0.05, 0.05, 0.05]
 graspable = true
+
+[perception]
+provider = "rgbd"
+camera_prim_path = "/World/PerceptionCamera"
+resolution = [640, 480]

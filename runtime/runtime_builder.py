@@ -3,17 +3,18 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-import numpy as np
-import omni.kit.app
 import omni.usd
-
 from isaacsim.core.api import World
 from isaacsim.core.prims import SingleXFormPrim
 from isaacsim.robot.manipulators.examples.franka import Franka
 
 from backends.isaac.franka_backend import IsaacFrankaBackend
 from backends.isaac.ground_truth_provider import IsaacGroundTruthProvider
+from backends.isaac.rgbd_camera import IsaacRgbdCamera
+from backends.isaac.semantic_detector import IsaacSemanticDetector
 from manipulation.grasp_planner import TopDownGraspPlanner
+from perception.rgbd_localizer import RgbdLocalizer
+from perception.state_provider import PerceptionStateProvider
 from runtime.robot_runtime import RobotRuntime
 from runtime.scene_config import SceneConfig, load_scene_config
 from runtime.skill_registry import SkillRegistry
@@ -37,9 +38,13 @@ class IsaacRuntimeBundle:
 
 def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
-
     paths = [config.robot.prim_path]
     paths += [obj.prim_path for obj in config.objects.values()]
+
+    if config.perception.provider == "rgbd":
+        if not config.perception.camera_prim_path:
+            raise RuntimeError("RGB-D perception requires camera_prim_path")
+        paths.append(config.perception.camera_prim_path)
 
     missing = [p for p in paths if not stage.GetPrimAtPath(p).IsValid()]
     if missing:
@@ -48,29 +53,19 @@ def _validate_stage(config: SceneConfig):
 
 def _create_robot(world: World, config: SceneConfig):
     cfg = config.robot
-
     if cfg.type != "franka":
         raise RuntimeError(f"Unsupported robot type: {cfg.type}")
 
     robot = world.scene.get_object(cfg.id)
-
     if robot is None:
-        robot = world.scene.add(
-            Franka(
-                prim_path=cfg.prim_path,
-                name=cfg.id,
-            )
-        )
-
+        robot = world.scene.add(Franka(prim_path=cfg.prim_path, name=cfg.id))
     return robot
 
 
 def _create_objects(world: World, config: SceneConfig):
     objects = {}
-
     for object_id, cfg in config.objects.items():
         obj = world.scene.get_object(object_id)
-
         if obj is None:
             obj = world.scene.add(
                 SingleXFormPrim(
@@ -79,20 +74,58 @@ def _create_objects(world: World, config: SceneConfig):
                     reset_xform_properties=False,
                 )
             )
-
         objects[object_id] = obj
-
     return objects
 
 
-async def build_runtime(
-    profile_path: str | Path,
-) -> IsaacRuntimeBundle:
+def _create_state_provider(world, config, objects):
+    provider = config.perception.provider
+
+    if provider == "ground_truth":
+        return IsaacGroundTruthProvider(objects)
+
+    if provider != "rgbd":
+        raise RuntimeError(f"Unsupported perception provider: {provider}")
+
+    camera = IsaacRgbdCamera(
+        config.perception.camera_prim_path,
+        resolution=config.perception.resolution,
+    )
+
+    detector = IsaacSemanticDetector(
+        camera,
+        {
+            object_id: cfg.prim_path
+            for object_id, cfg in config.objects.items()
+        },
+    )
+
+    camera.initialize(semantic_segmentation=True)
+
+    for _ in range(60):
+        world.step(render=True)
+
+    localizer = RgbdLocalizer(camera.get_intrinsics())
+
+    sizes = {
+        object_id: cfg.size
+        for object_id, cfg in config.objects.items()
+        if cfg.size is not None
+    }
+
+    return PerceptionStateProvider(
+        camera,
+        detector,
+        localizer,
+        sizes,
+    )
+
+
+async def build_runtime(profile_path: str | Path) -> IsaacRuntimeBundle:
     config = load_scene_config(profile_path)
     _validate_stage(config)
 
     world = World.instance()
-
     if world is None:
         world = World(stage_units_in_meters=1.0)
         await world.initialize_simulation_context_async()
@@ -102,9 +135,6 @@ async def build_runtime(
 
     await world.reset_async()
     await world.play_async()
-
-    for _ in range(30):
-        await omni.kit.app.get_app().next_update_async()
 
     backend = IsaacFrankaBackend(
         world=world,
@@ -116,7 +146,7 @@ async def build_runtime(
         max_home_steps=1000,
     )
 
-    provider = IsaacGroundTruthProvider(objects)
+    provider = _create_state_provider(world, config, objects)
     model = WorldModel(state_provider=provider)
 
     for object_id, cfg in config.objects.items():
