@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Isaac Sim: Current Python File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "python": "/home/etfrobotics/isaacsim/python.sh",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.vscode/isaac.env",
+            "preLaunchTask": "setup_isaac_python_env",
+            "justMyCode": false
+        }
+    ]
+}

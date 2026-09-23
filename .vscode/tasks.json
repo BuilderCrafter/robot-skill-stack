@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "setup_isaac_python_env",
+            "type": "shell",
+            "command": "source /home/etfrobotics/isaacsim/setup_python_env.sh && export PYTHONPATH=\"${workspaceFolder}:$PYTHONPATH\" && printenv > ${workspaceFolder}/.vscode/isaac.env",
+            "problemMatcher": []
+        }
+    ]
+}
