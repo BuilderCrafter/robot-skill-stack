@@ -61,11 +61,11 @@ class PerceptionStateProvider:
 
     @staticmethod
     def _estimate_center(points, size):
-        top_cut = np.percentile(points[:, 2], 70)
-        top_band = points[points[:, 2] >= top_cut]
+        lo = np.min(points, axis=0)
+        hi = np.max(points, axis=0)
 
         return np.array([
-            np.median(top_band[:, 0]),
-            np.median(top_band[:, 1]),
+            (lo[0] + hi[0]) / 2.0,
+            (lo[1] + hi[1]) / 2.0,
             np.percentile(points[:, 2], 95) - size[2] / 2.0,
         ])
