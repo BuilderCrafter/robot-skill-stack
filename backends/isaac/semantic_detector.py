@@ -20,12 +20,12 @@ class IsaacSemanticDetector:
         self.objects_root = objects_root
         self._labelled_paths = set()
         self._classes: dict[str, str] = {}
-
         self._ensure_labels()
 
     @staticmethod
     def _identity(prim):
         custom = prim.GetCustomData()
+
         object_id = str(
             custom.get("object_id", prim.GetName())
         ).lower()
@@ -70,12 +70,23 @@ class IsaacSemanticDetector:
 
         self._labelled_paths.intersection_update(current_paths)
 
-    def detect_all(self) -> list[Detection]:
+    def detect(self, rgb: np.ndarray) -> list[Detection]:
+        rgb = np.asarray(rgb)
+
+        if rgb.ndim < 2:
+            raise ValueError("RGB image must have at least two dimensions")
+
         self._ensure_labels()
 
         seg, info = self.camera.get_semantic_segmentation()
         if seg is None:
             return []
+
+        if seg.shape != rgb.shape[:2]:
+            raise RuntimeError(
+                f"RGB/segmentation shape mismatch: "
+                f"{rgb.shape[:2]} vs {seg.shape}"
+            )
 
         detections = []
 
@@ -89,6 +100,7 @@ class IsaacSemanticDetector:
                 continue
 
             mask = seg == int(value)
+
             if not mask.any():
                 continue
 
@@ -108,13 +120,3 @@ class IsaacSemanticDetector:
             )
 
         return detections
-
-    def detect(self, object_id: str) -> Detection | None:
-        return next(
-            (
-                detection
-                for detection in self.detect_all()
-                if detection.object_id == object_id
-            ),
-            None,
-        )

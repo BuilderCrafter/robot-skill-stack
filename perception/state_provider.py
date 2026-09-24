@@ -31,22 +31,32 @@ class PerceptionStateProvider:
         self.object_graspable = object_graspable or {}
 
     def observe(self) -> list[ObjectObservation]:
+        rgb = self.camera.get_rgb()
         depth = self.camera.get_depth()
-        if depth is None:
+
+        if rgb is None or depth is None:
             return []
 
+        rgb = np.asarray(rgb)
         depth = np.squeeze(np.asarray(depth))
 
+        detections = self.detector.detect(rgb)
         transform = self.camera.get_world_from_camera_transform()
+
         observations = []
 
-        for detection in self.detector.detect_all():
+        for detection in detections:
             mask = detection.mask
 
             if mask.shape != depth.shape:
                 continue
 
-            valid = mask & np.isfinite(depth) & (depth > 0)
+            valid = (
+                mask
+                & np.isfinite(depth)
+                & (depth > 0)
+            )
+
             ys, xs = np.nonzero(valid)
 
             if not xs.size:
@@ -60,7 +70,10 @@ class PerceptionStateProvider:
                 depths,
                 transform,
             )
-            points = points[np.isfinite(points).all(axis=1)]
+
+            points = points[
+                np.isfinite(points).all(axis=1)
+            ]
 
             if not len(points):
                 continue
@@ -68,6 +81,7 @@ class PerceptionStateProvider:
             known_size = self.object_sizes.get(
                 detection.object_id
             )
+
             position, size = self._estimate_geometry(
                 points,
                 known_size,
@@ -104,17 +118,18 @@ class PerceptionStateProvider:
         hi = np.max(points, axis=0)
 
         if known_size is None:
-            size = hi - lo
-            center = (lo + hi) / 2.0
-            return center, size
+            return (
+                (lo + hi) / 2.0,
+                hi - lo,
+            )
 
         size = known_size.copy()
 
-        center = np.array([
+        position = np.array([
             (lo[0] + hi[0]) / 2.0,
             (lo[1] + hi[1]) / 2.0,
             np.percentile(points[:, 2], 95)
             - size[2] / 2.0,
         ])
 
-        return center, size
+        return position, size

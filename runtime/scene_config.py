@@ -18,6 +18,7 @@ class RobotConfig:
 class WorldConfig:
     objects_root: str = "/World/Objects"
     provider: str = "ground_truth"
+    update_hz: float | None = None
 
 
 @dataclass(frozen=True)
@@ -54,15 +55,17 @@ def load_scene_config(path: str | Path) -> SceneConfig:
     )
 
     w = data.get("world", {})
+    update_hz = w.get("update_hz")
+
     world = WorldConfig(
         objects_root=w.get("objects_root", "/World/Objects"),
         provider=w.get("provider", "ground_truth"),
+        update_hz=None if update_hz is None else float(update_hz),
     )
 
     objects = {}
     for object_id, cfg in data.get("objects", {}).items():
         size = cfg.get("size")
-
         objects[object_id] = ObjectConfig(
             id=object_id,
             prim_path=cfg["prim_path"],
@@ -75,10 +78,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
 
     perception = PerceptionConfig(
         camera_prim_path=p.get("camera_prim_path"),
-        resolution=(
-            int(resolution[0]),
-            int(resolution[1]),
-        ),
+        resolution=(int(resolution[0]), int(resolution[1])),
     )
 
     return SceneConfig(
