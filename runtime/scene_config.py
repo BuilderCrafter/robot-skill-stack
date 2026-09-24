@@ -15,6 +15,11 @@ class RobotConfig:
 
 
 @dataclass(frozen=True)
+class WorldConfig:
+    objects_root: str = "/World/Objects"
+
+
+@dataclass(frozen=True)
 class ObjectConfig:
     id: str
     prim_path: str
@@ -32,6 +37,7 @@ class PerceptionConfig:
 @dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
+    world: WorldConfig
     objects: dict[str, ObjectConfig]
     perception: PerceptionConfig
 
@@ -40,11 +46,12 @@ def load_scene_config(path: str | Path) -> SceneConfig:
     with Path(path).open("rb") as f:
         data = tomllib.load(f)
 
-    robot_data = data["robot"]
-    robot = RobotConfig(
-        id=robot_data["id"],
-        type=robot_data["type"],
-        prim_path=robot_data["prim_path"],
+    r = data["robot"]
+    robot = RobotConfig(r["id"], r["type"], r["prim_path"])
+
+    w = data.get("world", {})
+    world = WorldConfig(
+        objects_root=w.get("objects_root", "/World/Objects")
     )
 
     objects = {}
@@ -65,8 +72,4 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         resolution=(int(resolution[0]), int(resolution[1])),
     )
 
-    return SceneConfig(
-        robot=robot,
-        objects=objects,
-        perception=perception,
-    )
+    return SceneConfig(robot, world, objects, perception)

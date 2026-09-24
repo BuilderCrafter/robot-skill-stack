@@ -36,7 +36,7 @@ class IsaacRuntimeBundle:
 
 def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
-    paths = [config.robot.prim_path]
+    paths = [config.robot.prim_path, config.world.objects_root]
     paths += [obj.prim_path for obj in config.objects.values()]
 
     missing = [p for p in paths if not stage.GetPrimAtPath(p).IsValid()]
@@ -102,7 +102,10 @@ async def build_runtime(profile_path: str | Path) -> IsaacRuntimeBundle:
     for _ in range(30):
         await omni.kit.app.get_app().next_update_async()
 
-    provider = IsaacGroundTruthProvider(objects, config.objects)
+    provider = IsaacGroundTruthProvider(
+        config.world.objects_root,
+        config.objects,
+    )
     model = WorldModel()
     updater = WorldModelUpdater(model, provider)
 

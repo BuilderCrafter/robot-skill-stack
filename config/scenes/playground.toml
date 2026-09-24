@@ -3,8 +3,11 @@ id = "franka"
 type = "franka"
 prim_path = "/Franka"
 
+[world]
+objects_root = "/World/Objects"
+
 [objects.cube]
-prim_path = "/World/Cube"
+prim_path = "/World/Objects/Cube"
 size = [0.05, 0.05, 0.05]
 graspable = true
 
