@@ -125,7 +125,7 @@ class PlaceSkill(BaseSkill):
                 },
             )
 
-        if not self.world_model.refresh_object(object_id) or obj.pose is None:
+        if obj.pose is None:
             return SkillResult(
                 SkillStatus.FAILED,
                 "Could not verify final object position.",

@@ -2,7 +2,6 @@ from isaacsim import SimulationApp
 
 simulation_app = SimulationApp({"headless": False})
 
-import sys
 import traceback
 from pathlib import Path
 
@@ -12,15 +11,10 @@ from isaacsim.core.prims import SingleXFormPrim
 from isaacsim.core.utils.stage import is_stage_loading, open_stage
 from isaacsim.robot.manipulators.examples.franka import Franka
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-
 from backends.isaac.franka_backend import IsaacFrankaBackend
-from backends.isaac.rgbd_camera import IsaacRgbdCamera
-from backends.isaac.semantic_detector import IsaacSemanticDetector
+from backends.isaac.ground_truth_provider import IsaacGroundTruthProvider
+from core.types import Pose
 from manipulation.grasp_planner import TopDownGraspPlanner
-from perception.rgbd_localizer import RgbdLocalizer
-from perception.state_provider import PerceptionStateProvider
 from runtime.robot_runtime import RobotRuntime
 from runtime.scene_config import load_scene_config
 from runtime.skill_registry import SkillRegistry
@@ -29,10 +23,14 @@ from skills.move_to_pose import MoveToPoseSkill
 from skills.pick import PickSkill
 from skills.place import PlaceSkill
 from world_model.entities import WorldObject
+from world_model.updater import WorldModelUpdater
 from world_model.world_model import WorldModel
 
+ROOT = Path(__file__).resolve().parents[1]
 SCENE = ROOT / "scenes" / "playground.usd"
 PROFILE = ROOT / "config" / "scenes" / "playground.toml"
+TARGET = np.array([0.4465, 0.25, 0.025])
+
 
 try:
     print("[1] Opening scene...")
@@ -45,7 +43,7 @@ try:
     config = load_scene_config(PROFILE)
     world = World(stage_units_in_meters=1.0)
 
-    print("[2] Creating robot...")
+    print("[2] Creating robot + objects...")
     robot = world.scene.add(
         Franka(
             prim_path=config.robot.prim_path,
@@ -66,37 +64,33 @@ try:
     world.reset()
     world.play()
 
-    print("[3] Creating RGB-D perception...")
-    camera = IsaacRgbdCamera(
-        config.perception.camera_prim_path,
-        resolution=config.perception.resolution,
-    )
+    print("[3] Creating continuously updated WorldModel...")
+    provider = IsaacGroundTruthProvider(objects, config.objects)
+    model = WorldModel()
 
-    detector = IsaacSemanticDetector(
-        camera,
-        {
-            object_id: cfg.prim_path
-            for object_id, cfg in config.objects.items()
-        },
-    )
+    for object_id, cfg in config.objects.items():
+        model.register(
+            WorldObject(
+                object_id=object_id,
+                class_name=object_id,
+                size=cfg.size,
+                graspable=cfg.graspable,
+            )
+        )
 
-    camera.initialize(semantic_segmentation=True)
+    updater = WorldModelUpdater(model, provider)
+    updater.start(world)
 
     for _ in range(60):
         world.step(render=True)
 
-    provider = PerceptionStateProvider(
-        camera,
-        detector,
-        RgbdLocalizer(camera.get_intrinsics()),
-        {
-            object_id: cfg.size
-            for object_id, cfg in config.objects.items()
-            if cfg.size is not None
-        },
-    )
+    cube = model.require("cube")
 
-    print("[4] Creating manipulation stack...")
+    print("Cached pose:", cube.pose.position)
+    print("Source:", cube.source)
+    print("Visible:", cube.visible)
+
+    print("[4] Creating manipulation runtime...")
     backend = IsaacFrankaBackend(
         world=world,
         robot=robot,
@@ -104,17 +98,6 @@ try:
         orientation_tolerance=0.05,
         max_motion_steps=1000,
     )
-
-    model = WorldModel(state_provider=provider)
-
-    for object_id, cfg in config.objects.items():
-        model.register(
-            WorldObject(
-                object_id=object_id,
-                size=cfg.size,
-                graspable=cfg.graspable,
-            )
-        )
 
     planner = TopDownGraspPlanner(
         approach_height=0.10,
@@ -129,33 +112,48 @@ try:
     registry.register(PlaceSkill(backend, model))
     runtime = RobotRuntime(registry)
 
-    print("[5] Checking perceived cube pose...")
-    if not model.refresh_object("cube"):
-        raise RuntimeError("Perception could not locate cube")
+    initial = cube.pose.position.copy()
 
-    perceived = model.require("cube").pose.position.copy()
-    ground_truth, _ = objects["cube"].get_world_pose()
+    print("\n[5] PICK using cached WorldModel...")
+    pick = runtime.execute("pick", object_id="cube")
 
-    print("Perceived:", perceived)
-    print("Ground truth:", ground_truth)
-    print(
-        "Initial error:",
-        f"{np.linalg.norm(perceived - ground_truth) * 1000:.2f} mm",
+    print("Pick:", pick.status, "-", pick.message)
+    print("Held:", model.held_object_id)
+    print("Cached after pick:", cube.pose.position)
+
+    if not pick.ok:
+        raise RuntimeError(f"Pick failed: {pick.message}")
+
+    cached_lift = float(cube.pose.position[2] - initial[2])
+    print("Cached lift:", f"{cached_lift:.4f} m")
+
+    print("\n[6] PLACE using cached WorldModel...")
+    place = runtime.execute(
+        "place",
+        target=Pose(TARGET),
+        mode="stable",
     )
 
-    print("\n[6] PICKING CUBE FROM PERCEPTION...\n")
-    result = runtime.execute("pick", object_id="cube")
-
-    print("\n=== PERCEPTION PICK ===")
-    print("Status:", result.status)
-    print("Message:", result.message)
-    print("Failure:", result.failure_code)
-    print("Details:", result.details)
+    print("Place:", place.status, "-", place.message)
     print("Held:", model.held_object_id)
+    print("Cached final:", cube.pose.position)
 
-    final_gt, _ = objects["cube"].get_world_pose()
-    print("Final true cube position:", final_gt)
-    print("=======================")
+    if not place.ok:
+        raise RuntimeError(f"Place failed: {place.message}")
+
+    actual, _ = objects["cube"].get_world_pose()
+    cached_error = float(np.linalg.norm(cube.pose.position - actual))
+    target_error = float(np.linalg.norm(actual - TARGET))
+
+    print("\n=== CACHED WORLD MODEL PICK & PLACE ===")
+    print("WorldModel provider attached: NO")
+    print("Updater running: YES")
+    print("Pick: SUCCESS")
+    print("Place: SUCCESS")
+    print("Cached vs actual:", f"{cached_error * 1000:.4f} mm")
+    print("True target error:", f"{target_error * 1000:.2f} mm")
+    print("PASS")
+    print("=======================================")
 
 except Exception:
     print("\n!!! TEST FAILED !!!")

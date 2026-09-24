@@ -69,10 +69,10 @@ class PickSkill(BaseSkill):
                 FailureCode.GRASP_FAILED,
             )
 
-        if not self.world_model.refresh_object(object_id) or obj.pose is None:
+        if obj.pose is None or not obj.visible:
             return SkillResult(
                 SkillStatus.FAILED,
-                f"Pose of '{object_id}' is unknown.",
+                f"Pose of '{object_id}' is unavailable.",
                 FailureCode.OBJECT_POSE_UNKNOWN,
             )
 
@@ -129,7 +129,7 @@ class PickSkill(BaseSkill):
         if failure:
             return failure
 
-        if not self.world_model.refresh_object(object_id):
+        if obj.pose is None:
             return SkillResult(
                 SkillStatus.FAILED,
                 "Could not verify object state.",

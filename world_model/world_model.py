@@ -1,44 +1,22 @@
 from __future__ import annotations
 
-from typing import Protocol
+import time
+from typing import Iterable
 
-from core.types import Pose
 from world_model.entities import WorldObject
+from world_model.observations import ObjectObservation
 
-class WorldStateProvider(Protocol):
-    """
-    Source capable of providing object poses.
-
-    Current implementation:
-        Isaac ground truth
-
-    Future implementation:
-        perception system / world-state estimator
-    """
-
-    def get_object_pose(self, object_id: str) -> Pose | None:
-        ...
 
 class WorldModel:
-    """
-    Semantic state of the enviroment.
-
-    Skilss ask this object about the world rather than talking directly to Isaac prims.
-    """
-
-    def __init__(self, state_provider: WorldStateProvider | None = None):
+    def __init__(self):
         self._objects: dict[str, WorldObject] = {}
-        self.state_provider = state_provider
-
-        # None means the robot currently believes that its gripper is empty.
         self.held_object_id: str | None = None
 
-    # Object registration
     def register(self, obj: WorldObject) -> None:
         self._objects[obj.object_id] = obj
 
     def exists(self, object_id: str) -> bool:
-        return (object_id in self._objects)
+        return object_id in self._objects
 
     def get(self, object_id: str) -> WorldObject | None:
         return self._objects.get(object_id)
@@ -46,36 +24,80 @@ class WorldModel:
     def require(self, object_id: str) -> WorldObject:
         obj = self.get(object_id)
         if obj is None:
-            raise KeyError(f"Unknown object {object_id}")
+            raise KeyError(f"Unknown object '{object_id}'")
         return obj
 
-    def refresh_object(self, object_id: str) -> bool:
-        """
-        Refresh the object's pose from the currently configured world-state provider.
-        
-        Returns:
-            True if a new pose was obtained
-        """
+    def objects(self) -> tuple[WorldObject, ...]:
+        return tuple(self._objects.values())
 
-        if self.state_provider is None:
-            return False
+    def find(
+        self,
+        *,
+        class_name: str | None = None,
+        graspable: bool | None = None,
+        visible: bool | None = None,
+    ) -> list[WorldObject]:
+        result = list(self._objects.values())
 
-        obj = self.get(object_id)
-        pose = (self.state_provider.get_object_pose(object_id))
+        if class_name is not None:
+            result = [o for o in result if o.class_name == class_name]
+        if graspable is not None:
+            result = [o for o in result if o.graspable == graspable]
+        if visible is not None:
+            result = [o for o in result if o.visible == visible]
 
-        if pose is None:
-            return False
+        return result
 
-        obj.pose = pose
+    def visible_objects(self) -> list[WorldObject]:
+        return self.find(visible=True)
 
-        return True
+    def apply_observations(
+        self,
+        observations: Iterable[ObjectObservation],
+        *,
+        mark_missing_invisible: bool = False,
+    ) -> None:
+        observations = list(observations)
+        seen = set()
+        now = time.monotonic()
 
-    def refresh_all(self) -> None:
-        for object_id in self._objects:
-            self.refresh_object(object_id)
+        for obs in observations:
+            seen.add(obs.object_id)
+            obj = self.get(obs.object_id)
+
+            if obj is None:
+                obj = WorldObject(
+                    object_id=obs.object_id,
+                    class_name=obs.class_name,
+                    pose=obs.pose,
+                    size=obs.size,
+                    graspable=True if obs.graspable is None else obs.graspable,
+                )
+                self.register(obj)
+
+            if obs.class_name is not None:
+                obj.class_name = obs.class_name
+            if obs.pose is not None:
+                obj.pose = obs.pose
+            if obs.size is not None:
+                obj.size = obs.size.copy()
+            if obs.graspable is not None:
+                obj.graspable = obs.graspable
+
+            obj.visible = obs.visible
+            obj.confidence = obs.confidence
+            obj.source = obs.source
+            obj.metadata.update(obs.metadata)
+
+            if obs.visible:
+                obj.last_seen = obs.timestamp if obs.timestamp is not None else now
+
+        if mark_missing_invisible:
+            for object_id, obj in self._objects.items():
+                if object_id not in seen:
+                    obj.visible = False
 
     def set_held(self, object_id: str | None) -> None:
         if object_id is not None and not self.exists(object_id):
-            raise KeyError(f"Unknown object: {object_id}")
-
+            raise KeyError(f"Unknown object '{object_id}'")
         self.held_object_id = object_id
