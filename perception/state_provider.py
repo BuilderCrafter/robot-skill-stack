@@ -3,69 +3,118 @@ from __future__ import annotations
 import numpy as np
 
 from core.types import Pose
+from world_model.observations import ObjectObservation
 
 
 class PerceptionStateProvider:
-    def __init__(self, camera, detector, localizer, object_sizes: dict):
+    def __init__(
+        self,
+        camera,
+        detector,
+        localizer,
+        *,
+        object_sizes: dict | None = None,
+        object_graspable: dict | None = None,
+        source="isaac_semantic_perception",
+    ):
         self.camera = camera
         self.detector = detector
         self.localizer = localizer
+        self.source = source
+
         self.object_sizes = {
             key: np.asarray(value, dtype=float)
-            for key, value in object_sizes.items()
+            for key, value in (object_sizes or {}).items()
+            if value is not None
         }
 
-    def get_object_pose(self, object_id: str) -> Pose | None:
-        size = self.object_sizes.get(object_id)
-        if size is None:
-            return None
+        self.object_graspable = object_graspable or {}
 
-        detection = self.detector.detect(object_id)
-        if detection is None:
-            return None
-
+    def observe(self) -> list[ObjectObservation]:
         depth = self.camera.get_depth()
         if depth is None:
-            return None
+            return []
 
         depth = np.squeeze(np.asarray(depth))
-        mask = detection.mask
 
-        if mask.shape != depth.shape:
-            return None
+        transform = self.camera.get_world_from_camera_transform()
+        observations = []
 
-        valid = mask & np.isfinite(depth) & (depth > 0)
-        ys, xs = np.nonzero(valid)
+        for detection in self.detector.detect_all():
+            mask = detection.mask
 
-        if not xs.size:
-            return None
+            if mask.shape != depth.shape:
+                continue
 
-        pixels = np.column_stack((xs, ys))
-        depths = depth[ys, xs]
+            valid = mask & np.isfinite(depth) & (depth > 0)
+            ys, xs = np.nonzero(valid)
 
-        points = self.localizer.pixels_to_world(
-            pixels,
-            depths,
-            self.camera.get_world_from_camera_transform(),
-        )
-        points = points[np.isfinite(points).all(axis=1)]
+            if not xs.size:
+                continue
 
-        if not len(points):
-            return None
+            pixels = np.column_stack((xs, ys))
+            depths = depth[ys, xs]
 
-        return Pose(
-            position=self._estimate_center(points, size),
-            orientation=None,
-            frame="world",
-        )
+            points = self.localizer.pixels_to_world(
+                pixels,
+                depths,
+                transform,
+            )
+            points = points[np.isfinite(points).all(axis=1)]
+
+            if not len(points):
+                continue
+
+            known_size = self.object_sizes.get(
+                detection.object_id
+            )
+            position, size = self._estimate_geometry(
+                points,
+                known_size,
+            )
+
+            observations.append(
+                ObjectObservation(
+                    object_id=detection.object_id,
+                    class_name=detection.class_name,
+                    pose=Pose(
+                        position=position,
+                        orientation=None,
+                        frame="world",
+                    ),
+                    size=size,
+                    graspable=self.object_graspable.get(
+                        detection.object_id
+                    ),
+                    visible=True,
+                    confidence=detection.confidence,
+                    source=self.source,
+                    metadata={
+                        **detection.metadata,
+                        "mask_pixels": int(valid.sum()),
+                    },
+                )
+            )
+
+        return observations
 
     @staticmethod
-    def _estimate_center(points, size):
+    def _estimate_geometry(points, known_size):
         lo = np.min(points, axis=0)
         hi = np.max(points, axis=0)
 
-        return np.array([
+        if known_size is None:
+            size = hi - lo
+            center = (lo + hi) / 2.0
+            return center, size
+
+        size = known_size.copy()
+
+        center = np.array([
             (lo[0] + hi[0]) / 2.0,
             (lo[1] + hi[1]) / 2.0,
-            np.percentile(points[:, 2], 95) - size[2] / 2.0,
+            np.percentile(points[:, 2], 95)
+            - size[2] / 2.0,
         ])
+
+        return center, size

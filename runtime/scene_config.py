@@ -17,6 +17,7 @@ class RobotConfig:
 @dataclass(frozen=True)
 class WorldConfig:
     objects_root: str = "/World/Objects"
+    provider: str = "ground_truth"
 
 
 @dataclass(frozen=True)
@@ -29,7 +30,6 @@ class ObjectConfig:
 
 @dataclass(frozen=True)
 class PerceptionConfig:
-    provider: str = "ground_truth"
     camera_prim_path: str | None = None
     resolution: tuple[int, int] = (640, 480)
 
@@ -47,16 +47,22 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         data = tomllib.load(f)
 
     r = data["robot"]
-    robot = RobotConfig(r["id"], r["type"], r["prim_path"])
+    robot = RobotConfig(
+        id=r["id"],
+        type=r["type"],
+        prim_path=r["prim_path"],
+    )
 
     w = data.get("world", {})
     world = WorldConfig(
-        objects_root=w.get("objects_root", "/World/Objects")
+        objects_root=w.get("objects_root", "/World/Objects"),
+        provider=w.get("provider", "ground_truth"),
     )
 
     objects = {}
     for object_id, cfg in data.get("objects", {}).items():
         size = cfg.get("size")
+
         objects[object_id] = ObjectConfig(
             id=object_id,
             prim_path=cfg["prim_path"],
@@ -66,10 +72,18 @@ def load_scene_config(path: str | Path) -> SceneConfig:
 
     p = data.get("perception", {})
     resolution = p.get("resolution", [640, 480])
+
     perception = PerceptionConfig(
-        provider=p.get("provider", "ground_truth"),
         camera_prim_path=p.get("camera_prim_path"),
-        resolution=(int(resolution[0]), int(resolution[1])),
+        resolution=(
+            int(resolution[0]),
+            int(resolution[1]),
+        ),
     )
 
-    return SceneConfig(robot, world, objects, perception)
+    return SceneConfig(
+        robot=robot,
+        world=world,
+        objects=objects,
+        perception=perception,
+    )

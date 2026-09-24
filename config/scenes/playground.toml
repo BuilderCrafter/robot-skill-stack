@@ -5,6 +5,7 @@ prim_path = "/Franka"
 
 [world]
 objects_root = "/World/Objects"
+provider = "perception"
 
 [objects.cube]
 prim_path = "/World/Objects/Cube"
@@ -12,6 +13,5 @@ size = [0.05, 0.05, 0.05]
 graspable = true
 
 [perception]
-provider = "rgbd"
 camera_prim_path = "/World/PerceptionCamera"
 resolution = [640, 480]
