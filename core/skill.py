@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
+
 class SkillStatus(str, Enum):
-    """Enum representing the status of a skill."""
     SUCCESS = "success"
     FAILED = "failed"
     TIMEOUT = "timeout"
@@ -13,6 +13,7 @@ class SkillStatus(str, Enum):
 class FailureCode(str, Enum):
     OBJECT_NOT_FOUND = "object_not_found"
     OBJECT_POSE_UNKNOWN = "object_pose_unknown"
+    OBJECT_MOVED = "object_moved"
 
     UNREACHABLE = "unreachable"
     PATH_BLOCKED = "path_blocked"
@@ -26,9 +27,9 @@ class FailureCode(str, Enum):
     TIMEOUT = "timeout"
     INTERNAL_ERROR = "internal_error"
 
+
 @dataclass
 class SkillResult:
-    """Dataclass representing the result of a skill execution."""
     status: SkillStatus
     message: str = ""
     failure_code: FailureCode | None = None
@@ -36,7 +37,6 @@ class SkillResult:
 
     @property
     def ok(self) -> bool:
-        """Check if the skill execution was successful."""
         return self.status == SkillStatus.SUCCESS
 
 

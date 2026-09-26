@@ -1,19 +1,20 @@
-Perception V1 minor cleanup patch
-
-ADD:
-- world_model/provider.py
-- scripts/isaac_async.py
-- README_CLEANUP.md
+Phase A robust execution patch
 
 REPLACE:
-- world_model/updater.py
-- runtime/runtime_builder.py
-- scripts/test_perception_v1_manipulation.py
-- scripts/test_runtime_world_model.py
-- scripts/test_world_model_bt.py
-- scripts/test_perception_pick_diagnostic.py
-- exts/robot_skill_stack.ui/robot_skill_stack/ui/extension.py
-- README_PERCEPTION_V1.md
+- core/skill.py
+- skills/pick.py
 
-No perception/manipulation algorithm changes.
-No package or USD changes.
+ADD:
+- scripts/phase_a_common.py
+- scripts/test_phase_a_unit.py
+- scripts/test_phase_a_benchmark.py
+- scripts/test_phase_a_reactive_pick.py
+- scripts/test_phase_a_recovery.py
+- scripts/test_phase_a_multi_object.py
+- scripts/run_phase_a_suite.py
+- README_PHASE_A.md
+- PATCH_MANIFEST.txt
+
+No new packages.
+No USD changes.
+Perception V1 algorithms remain frozen.
