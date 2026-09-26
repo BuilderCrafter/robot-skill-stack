@@ -12,11 +12,11 @@ RUNNER = ROOT / "run_isaac_python.sh"
 OUT_ROOT = ROOT / "outputs"
 
 TESTS = [
-    ("unit", ROOT / "scripts" / "test_phase_a_unit.py", False),
-    ("benchmark", ROOT / "scripts" / "test_phase_a_benchmark.py", True),
-    ("reactive_pick", ROOT / "scripts" / "test_phase_a_reactive_pick.py", True),
-    ("recovery", ROOT / "scripts" / "test_phase_a_recovery.py", True),
-    ("multi_object", ROOT / "scripts" / "test_phase_a_multi_object.py", True),
+    ("unit", ROOT / "tests" / "unit" / "test_reactive_pick.py", False),
+    ("benchmark", ROOT / "tests" / "regression" / "test_benchmark.py", True),
+    ("reactive_pick", ROOT / "tests" / "regression" / "test_reactive_pick.py", True),
+    ("recovery", ROOT / "tests" / "regression" / "test_recovery.py", True),
+    ("multi_object", ROOT / "tests" / "regression" / "test_multi_object.py", True),
 ]
 
 

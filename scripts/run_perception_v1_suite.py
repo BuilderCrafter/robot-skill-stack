@@ -12,9 +12,9 @@ RUNNER = ROOT / "run_isaac_python.sh"
 OUT_ROOT = ROOT / "outputs"
 
 TESTS = [
-    ("unit", ROOT / "scripts" / "test_perception_v1_unit.py", False),
-    ("discovery", ROOT / "scripts" / "test_perception_v1_discovery.py", True),
-    ("manipulation", ROOT / "scripts" / "test_perception_v1_manipulation.py", True),
+    ("unit", ROOT / "tests" / "unit" / "test_perception.py", False),
+    ("discovery", ROOT / "tests" / "isaac" / "test_perception_discovery.py", True),
+    ("manipulation", ROOT / "tests" / "isaac" / "test_perception_manipulation.py", True),
 ]
 
 

@@ -12,8 +12,8 @@ RUNNER = ROOT / "run_isaac_python.sh"
 OUT_ROOT = ROOT / "outputs"
 
 TESTS = [
-    ("unit", ROOT / "scripts" / "test_phase_b_unit.py", False),
-    ("isaac", ROOT / "scripts" / "test_phase_b_isaac.py", True),
+    ("unit", ROOT / "tests" / "unit" / "test_grasp_planning.py", False),
+    ("isaac", ROOT / "tests" / "regression" / "test_grasp_planning.py", True),
 ]
 
 

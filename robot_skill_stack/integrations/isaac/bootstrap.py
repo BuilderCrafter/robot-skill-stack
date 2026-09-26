@@ -1,0 +1,199 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+
+import omni.kit.app
+import omni.usd
+from isaacsim.core.api import World
+from isaacsim.core.prims import SingleXFormPrim
+from isaacsim.robot.manipulators.examples.franka import Franka
+
+from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
+from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
+from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
+from robot_skill_stack.manipulation.grasping import (
+    ParallelJawGripperSpec,
+    TopDownGraspPlanner,
+)
+from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.runtime.runtime import RobotRuntime
+from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
+from robot_skill_stack.runtime.registry import SkillRegistry
+from robot_skill_stack.manipulation.skills.home import HomeSkill
+from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
+from robot_skill_stack.manipulation.skills.pick import PickSkill
+from robot_skill_stack.manipulation.skills.place import PlaceSkill
+from robot_skill_stack.world.model.provider import WorldObservationProvider
+from robot_skill_stack.world.model.updater import WorldModelUpdater
+from robot_skill_stack.world.model.world_model import WorldModel
+
+
+@dataclass
+class IsaacRuntimeBundle:
+    world: World
+    backend: IsaacFrankaBackend
+    world_model: WorldModel
+    world_updater: WorldModelUpdater
+    runtime: RobotRuntime
+    objects: dict
+    config: SceneConfig
+    state_provider: WorldObservationProvider
+
+
+def _validate_stage(config: SceneConfig):
+    stage = omni.usd.get_context().get_stage()
+    paths = [
+        config.robot.prim_path,
+        config.world.objects_root,
+        *[obj.prim_path for obj in config.objects.values()],
+    ]
+
+    if config.world.provider == "perception":
+        if not config.perception.camera_prim_path:
+            raise RuntimeError("Perception provider requires camera_prim_path")
+        paths.append(config.perception.camera_prim_path)
+
+    missing = [
+        path
+        for path in paths
+        if not stage.GetPrimAtPath(path).IsValid()
+    ]
+    if missing:
+        raise RuntimeError(f"Missing prims in current stage: {missing}")
+
+
+def _create_robot(world: World, config: SceneConfig):
+    cfg = config.robot
+    if cfg.type != "franka":
+        raise RuntimeError(f"Unsupported robot type: {cfg.type}")
+
+    robot = world.scene.get_object(cfg.id)
+    if robot is None:
+        robot = world.scene.add(
+            Franka(
+                prim_path=cfg.prim_path,
+                name=cfg.id,
+            )
+        )
+    return robot
+
+
+def _create_objects(world: World, config: SceneConfig):
+    objects = {}
+    for object_id, cfg in config.objects.items():
+        obj = world.scene.get_object(object_id)
+        if obj is None:
+            obj = world.scene.add(
+                SingleXFormPrim(
+                    prim_path=cfg.prim_path,
+                    name=object_id,
+                    reset_xform_properties=False,
+                )
+            )
+        objects[object_id] = obj
+    return objects
+
+
+async def _create_state_provider(
+    world: World,
+    config: SceneConfig,
+) -> WorldObservationProvider:
+    if config.world.provider == "ground_truth":
+        return IsaacGroundTruthProvider(
+            config.world.objects_root,
+            config.objects,
+        )
+
+    if config.world.provider != "perception":
+        raise RuntimeError(
+            f"Unsupported world provider: {config.world.provider}"
+        )
+    if not config.perception.camera_prim_path:
+        raise RuntimeError("Perception provider requires camera_prim_path")
+
+    camera = IsaacRgbdCamera(
+        config.perception.camera_prim_path,
+        resolution=config.perception.resolution,
+    )
+    camera.initialize(semantic_segmentation=False)
+
+    app = omni.kit.app.get_app()
+    for _ in range(60):
+        await app.next_update_async()
+
+    return build_perception_provider(camera, config)
+
+
+def _update_hz(config: SceneConfig):
+    if config.world.update_hz is not None:
+        return config.world.update_hz
+    return 5.0 if config.world.provider == "perception" else None
+
+
+async def build_runtime(
+    profile_path: str | Path,
+) -> IsaacRuntimeBundle:
+    config = load_scene_config(profile_path)
+    _validate_stage(config)
+
+    world = World.instance()
+    if world is None:
+        world = World(stage_units_in_meters=1.0)
+        await world.initialize_simulation_context_async()
+
+    robot = _create_robot(world, config)
+    objects = _create_objects(world, config)
+
+    await world.reset_async()
+    await world.play_async()
+
+    app = omni.kit.app.get_app()
+    for _ in range(30):
+        await app.next_update_async()
+
+    provider = await _create_state_provider(world, config)
+    model = WorldModel()
+    updater = WorldModelUpdater(
+        model,
+        provider,
+        update_hz=_update_hz(config),
+    )
+    updater.update()
+    updater.start(world)
+
+    backend = IsaacFrankaBackend(
+        world=world,
+        robot=robot,
+        position_tolerance=0.01,
+        orientation_tolerance=0.05,
+        joint_tolerance=0.02,
+        max_motion_steps=1000,
+        max_home_steps=1000,
+    )
+
+    planner = TopDownGraspPlanner(
+        approach_height=0.10,
+        default_lift_height=0.12,
+        grasp_z_offset=0.0,
+        gripper=ParallelJawGripperSpec(
+            max_width=backend.grasp_max_width,
+        ),
+    )
+
+    registry = SkillRegistry()
+    registry.register(MoveToPoseSkill(backend))
+    registry.register(HomeSkill(backend))
+    registry.register(PickSkill(backend, model, planner))
+    registry.register(PlaceSkill(backend, model))
+
+    return IsaacRuntimeBundle(
+        world=world,
+        backend=backend,
+        world_model=model,
+        world_updater=updater,
+        runtime=RobotRuntime(registry),
+        objects=objects,
+        config=config,
+        state_provider=provider,
+    )

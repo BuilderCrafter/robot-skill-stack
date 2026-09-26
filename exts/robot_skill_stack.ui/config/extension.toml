@@ -2,7 +2,7 @@
 reloadable = true
 
 [package]
-version = "0.1.0"
+version = "0.2.0"
 title = "Robot Skill Stack UI"
 description = "GUI for the robot skill runtime"
 category = "Robotics"
@@ -16,4 +16,4 @@ authors = ["BuilderCrafter"]
 "isaacsim.robot_motion.motion_generation" = {}
 
 [[python.module]]
-name = "robot_skill_stack.ui"
+name = "robot_skill_stack_ui.ui"
