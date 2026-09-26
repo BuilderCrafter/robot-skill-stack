@@ -1,13 +1,19 @@
-Gripper-feedback grasp verification patch
-
-REPLACE:
-- core/manipulation.py
-- backends/isaac/franka_backend.py
-- skills/pick.py
-- scripts/test_perception_v1_manipulation.py
+Action-aware tracking / placement reacquisition patch
 
 ADD:
-- README_GRASP_VERIFICATION.md
+- world_model/context.py
+- README_ACTION_AWARE_TRACKING.md
 - PATCH_MANIFEST.txt
+
+REPLACE:
+- world_model/world_model.py
+- world_model/updater.py
+- backends/isaac/ground_truth_provider.py
+- perception/tracker.py
+- perception/state_provider.py
+- skills/place.py
+- scripts/test_world_model_update_rate.py
+- scripts/test_perception_v1_unit.py
+- scripts/test_perception_v1_manipulation.py
 
 No new packages or USD changes are required.

@@ -31,12 +31,16 @@ class PlaceSkill(BaseSkill):
         approach_height=0.10,
         retreat_height=0.12,
         placement_tolerance=0.05,
+        reacquire_radius=0.08,
+        reacquire_ttl=3.0,
     ):
         self.backend = backend
         self.world_model = world_model
         self.approach_height = approach_height
         self.retreat_height = retreat_height
         self.placement_tolerance = placement_tolerance
+        self.reacquire_radius = reacquire_radius
+        self.reacquire_ttl = reacquire_ttl
 
     def _move(self, pose, speed, tolerance, message):
         result = self.backend.move_to_pose(
@@ -75,7 +79,10 @@ class PlaceSkill(BaseSkill):
             )
 
         obj = self.world_model.require(object_id)
-        orientation = target.orientation or self.backend.get_end_effector_pose().orientation
+        orientation = (
+            target.orientation
+            or self.backend.get_end_effector_pose().orientation
+        )
 
         release = Pose(target.position.copy(), orientation, target.frame)
         pre = release.translated([0, 0, self.approach_height])
@@ -89,16 +96,38 @@ class PlaceSkill(BaseSkill):
                     FailureCode.UNREACHABLE,
                 )
 
-        failure = self._move(pre, 0.4, 0.020, "Pre-place motion failed.")
+        failure = self._move(
+            pre,
+            0.4,
+            0.020,
+            "Pre-place motion failed.",
+        )
         if failure:
             return failure
 
-        failure = self._move(release, 0.15, 0.015, "Release approach failed.")
+        failure = self._move(
+            release,
+            0.15,
+            0.015,
+            "Release approach failed.",
+        )
         if failure:
             return failure
+
+        # Register the expected release location before opening because the
+        # backend advances simulation while the gripper opens. Perception may
+        # therefore see the released object during open_gripper().
+        self.world_model.expect_object_at(
+            object_id,
+            target.position,
+            radius=self.reacquire_radius,
+            ttl=self.reacquire_ttl,
+            reason="place",
+        )
 
         result = self.backend.open_gripper()
         if not result.ok:
+            self.world_model.clear_association_hint(object_id)
             return SkillResult(
                 SkillStatus.FAILED,
                 "Could not release object.",
@@ -125,14 +154,22 @@ class PlaceSkill(BaseSkill):
                 },
             )
 
-        if obj.pose is None:
+        if obj.pose is None or not obj.visible:
             return SkillResult(
                 SkillStatus.FAILED,
-                "Could not verify final object position.",
+                "Could not reacquire object after placement.",
                 FailureCode.PLACE_FAILED,
+                {
+                    "object_id": object_id,
+                    "target_position": target.position.tolist(),
+                    "visible": obj.visible,
+                    "retreat_ok": retreat_result.ok,
+                },
             )
 
-        error = float(np.linalg.norm(obj.pose.position - target.position))
+        error = float(
+            np.linalg.norm(obj.pose.position - target.position)
+        )
 
         if error > self.placement_tolerance:
             return SkillResult(
@@ -143,6 +180,7 @@ class PlaceSkill(BaseSkill):
                     "target_position": target.position.tolist(),
                     "final_position": obj.pose.position.tolist(),
                     "placement_error_m": error,
+                    "retreat_ok": retreat_result.ok,
                 },
             )
 

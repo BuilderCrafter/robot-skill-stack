@@ -80,10 +80,9 @@ class IsaacGroundTruthProvider:
     def _graspable(prim, cfg):
         if cfg is not None:
             return cfg.graspable
-
         return bool(prim.GetCustomData().get("graspable", True))
 
-    def observe(self) -> list[ObjectObservation]:
+    def observe(self, context=None) -> list[ObjectObservation]:
         observations = []
 
         for prim in self._objects():

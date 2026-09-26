@@ -36,7 +36,11 @@ class PerceptionStateProvider:
                 ObjectObservation(
                     object_id=track.object_id,
                     class_name=track.class_name,
-                    pose=Pose(track.position.copy(), orientation=None, frame="world"),
+                    pose=Pose(
+                        track.position.copy(),
+                        orientation=None,
+                        frame="world",
+                    ),
                     size=track.size.copy(),
                     graspable=None,
                     visible=track.visible,
@@ -49,13 +53,21 @@ class PerceptionStateProvider:
                         "semantic_samples": track.belief.samples,
                         "track_hits": track.hits,
                         "track_misses": track.misses,
-                        "mask_pixels": 0 if track.mask is None else int(track.mask.sum()),
+                        "mask_pixels": (
+                            0
+                            if track.mask is None
+                            else int(track.mask.sum())
+                        ),
+                        "association_hint_match": track.matched_by_hint,
+                        "association_hint_reason": (
+                            track.association_hint_reason
+                        ),
                     },
                 )
             )
         return observations
 
-    def observe(self) -> list[ObjectObservation]:
+    def observe(self, context=None) -> list[ObjectObservation]:
         rgb = self.camera.get_rgb()
         depth = self.camera.get_depth()
         if rgb is None or depth is None:
@@ -84,6 +96,7 @@ class PerceptionStateProvider:
             predictions,
             frame_id=frame.frame_id,
             timestamp=timestamp,
+            context=context,
         )
         self.geometry.update_frame(frame)
         return self._current_observations()
