@@ -12,23 +12,20 @@ class RgbdLocalizer:
     def pixels_to_camera(self, pixels, depth):
         pixels = np.asarray(pixels, dtype=float)
         depth = np.asarray(depth, dtype=float)
-
-        u = pixels[:, 0]
-        v = pixels[:, 1]
+        u, v = pixels[:, 0], pixels[:, 1]
         z = depth
-
         x = (u - self.cx) * z / self.fx
         y = (v - self.cy) * z / self.fy
-
         return np.column_stack((x, y, z))
 
     def camera_to_world(self, points, world_from_camera):
         points = np.asarray(points, dtype=float)
         T = np.asarray(world_from_camera, dtype=float)
-
         homogeneous = np.column_stack((points, np.ones(len(points))))
         return (homogeneous @ T.T)[:, :3]
 
     def pixels_to_world(self, pixels, depth, world_from_camera):
-        camera_points = self.pixels_to_camera(pixels, depth)
-        return self.camera_to_world(camera_points, world_from_camera)
+        return self.camera_to_world(
+            self.pixels_to_camera(pixels, depth),
+            world_from_camera,
+        )

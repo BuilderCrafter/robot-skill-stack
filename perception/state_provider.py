@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import time
 import numpy as np
 
 from core.types import Pose
+from perception.frame import PerceptionFrame
+from perception.geometry_service import ObjectGeometryService
 from world_model.observations import ObjectObservation
 
 
@@ -10,126 +13,83 @@ class PerceptionStateProvider:
     def __init__(
         self,
         camera,
-        detector,
         localizer,
+        discoverer,
+        tracker,
+        semantic_classifier,
         *,
-        object_sizes: dict | None = None,
-        object_graspable: dict | None = None,
-        source="isaac_semantic_perception",
+        source="rgbd_geometry_perception",
     ):
         self.camera = camera
-        self.detector = detector
         self.localizer = localizer
+        self.discoverer = discoverer
+        self.tracker = tracker
+        self.semantic_classifier = semantic_classifier
         self.source = source
+        self._frame_id = 0
+        self.geometry = ObjectGeometryService(localizer, tracker)
 
-        self.object_sizes = {
-            key: np.asarray(value, dtype=float)
-            for key, value in (object_sizes or {}).items()
-            if value is not None
-        }
-
-        self.object_graspable = object_graspable or {}
+    def _current_observations(self):
+        observations = []
+        for track in self.tracker.tracks():
+            observations.append(
+                ObjectObservation(
+                    object_id=track.object_id,
+                    class_name=track.class_name,
+                    pose=Pose(track.position.copy(), orientation=None, frame="world"),
+                    size=track.size.copy(),
+                    graspable=None,
+                    visible=track.visible,
+                    confidence=track.confidence,
+                    source=self.source,
+                    timestamp=track.last_seen,
+                    metadata={
+                        "class_confidence": track.class_confidence,
+                        "class_belief_authoritative": True,
+                        "semantic_samples": track.belief.samples,
+                        "track_hits": track.hits,
+                        "track_misses": track.misses,
+                        "mask_pixels": 0 if track.mask is None else int(track.mask.sum()),
+                    },
+                )
+            )
+        return observations
 
     def observe(self) -> list[ObjectObservation]:
         rgb = self.camera.get_rgb()
         depth = self.camera.get_depth()
-
         if rgb is None or depth is None:
-            return []
+            return self._current_observations()
 
-        rgb = np.asarray(rgb)
-        depth = np.squeeze(np.asarray(depth))
+        self._frame_id += 1
+        timestamp = time.monotonic()
+        frame = PerceptionFrame(
+            frame_id=self._frame_id,
+            rgb=np.asarray(rgb),
+            depth=np.squeeze(np.asarray(depth)),
+            intrinsics=self.localizer.K,
+            world_from_camera=self.camera.get_world_from_camera_transform(),
+            timestamp=timestamp,
+        )
 
-        detections = self.detector.detect(rgb)
-        transform = self.camera.get_world_from_camera_transform()
+        candidates = self.discoverer.discover(frame)
+        predictions = [
+            self.semantic_classifier.classify(candidate, frame.rgb)
+            if self.semantic_classifier is not None
+            else None
+            for candidate in candidates
+        ]
+        self.tracker.update(
+            candidates,
+            predictions,
+            frame_id=frame.frame_id,
+            timestamp=timestamp,
+        )
+        self.geometry.update_frame(frame)
+        return self._current_observations()
 
-        observations = []
+    def get_mask(self, object_id: str):
+        return self.geometry.get_mask(object_id)
 
-        for detection in detections:
-            mask = detection.mask
-
-            if mask.shape != depth.shape:
-                continue
-
-            valid = (
-                mask
-                & np.isfinite(depth)
-                & (depth > 0)
-            )
-
-            ys, xs = np.nonzero(valid)
-
-            if not xs.size:
-                continue
-
-            pixels = np.column_stack((xs, ys))
-            depths = depth[ys, xs]
-
-            points = self.localizer.pixels_to_world(
-                pixels,
-                depths,
-                transform,
-            )
-
-            points = points[
-                np.isfinite(points).all(axis=1)
-            ]
-
-            if not len(points):
-                continue
-
-            known_size = self.object_sizes.get(
-                detection.object_id
-            )
-
-            position, size = self._estimate_geometry(
-                points,
-                known_size,
-            )
-
-            observations.append(
-                ObjectObservation(
-                    object_id=detection.object_id,
-                    class_name=detection.class_name,
-                    pose=Pose(
-                        position=position,
-                        orientation=None,
-                        frame="world",
-                    ),
-                    size=size,
-                    graspable=self.object_graspable.get(
-                        detection.object_id
-                    ),
-                    visible=True,
-                    confidence=detection.confidence,
-                    source=self.source,
-                    metadata={
-                        **detection.metadata,
-                        "mask_pixels": int(valid.sum()),
-                    },
-                )
-            )
-
-        return observations
-
-    @staticmethod
-    def _estimate_geometry(points, known_size):
-        lo = np.min(points, axis=0)
-        hi = np.max(points, axis=0)
-
-        if known_size is None:
-            return (
-                (lo + hi) / 2.0,
-                hi - lo,
-            )
-
-        size = known_size.copy()
-
-        position = np.array([
-            (lo[0] + hi[0]) / 2.0,
-            (lo[1] + hi[1]) / 2.0,
-            np.percentile(points[:, 2], 95)
-            - size[2] / 2.0,
-        ])
-
-        return position, size
+    def get_point_cloud(self, object_id: str):
+        return self.geometry.get_point_cloud(object_id)

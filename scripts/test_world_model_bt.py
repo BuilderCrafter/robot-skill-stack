@@ -20,11 +20,26 @@ SCENE = ROOT / "scenes" / "playground.usd"
 PROFILE = ROOT / "config" / "scenes" / "playground.toml"
 TARGET = np.array([0.4465, 0.25, 0.025])
 
+
+def choose_object(model):
+    if model.exists("cube") and model.require("cube").visible:
+        return model.require("cube")
+    visible = model.visible_objects()
+    cubes = [o for o in visible if o.class_name == "cube"]
+    if len(cubes) == 1:
+        return cubes[0]
+    if len(visible) == 1:
+        return visible[0]
+    raise RuntimeError(
+        f"Could not select one object from "
+        f"{[(o.object_id, o.class_name) for o in visible]}"
+    )
+
+
 try:
     print("[1] Opening scene...")
     if not open_stage(str(SCENE)):
         raise RuntimeError(f"Failed to open {SCENE}")
-
     while is_stage_loading():
         simulation_app.update()
 
@@ -32,30 +47,34 @@ try:
     task = asyncio.ensure_future(build_runtime(PROFILE))
     while not task.done():
         simulation_app.update()
-
     bundle = task.result()
-    cube = bundle.world_model.require("cube")
 
+    for _ in range(180):
+        bundle.world.step(render=True)
+
+    obj = choose_object(bundle.world_model)
     print("[3] WorldModel:")
-    print("Pose:", cube.pose.position)
-    print("Visible:", cube.visible)
-    print("Source:", cube.source)
+    print("Object ID:", obj.object_id)
+    print("Class:", obj.class_name)
+    print("Pose:", obj.pose.position)
+    print("Visible:", obj.visible)
+    print("Source:", obj.source)
 
     print("\n[4] Running Pick & Place BT...")
     root = create_pick_and_place_tree(
         bundle.runtime,
-        object_id="cube",
+        object_id=obj.object_id,
         target=Pose(TARGET),
         return_home=True,
     )
-
     status = BTExecutor(root).run(verbose=True)
 
     actual, _ = bundle.objects["cube"].get_world_pose()
-    cached = cube.pose.position.copy()
+    cached = obj.pose.position.copy()
 
     print("\n=== WORLD MODEL BT ===")
     print("BT status:", status)
+    print("Object ID:", obj.object_id)
     print("Held:", bundle.world_model.held_object_id)
     print("Cached final:", np.round(cached, 6))
     print("Actual final:", np.round(actual, 6))

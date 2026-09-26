@@ -38,14 +38,12 @@ class WorldModel:
         visible: bool | None = None,
     ) -> list[WorldObject]:
         result = list(self._objects.values())
-
         if class_name is not None:
             result = [o for o in result if o.class_name == class_name]
         if graspable is not None:
             result = [o for o in result if o.graspable == graspable]
         if visible is not None:
             result = [o for o in result if o.visible == visible]
-
         return result
 
     def visible_objects(self) -> list[WorldObject]:
@@ -75,7 +73,10 @@ class WorldModel:
                 )
                 self.register(obj)
 
-            if obs.class_name is not None:
+            if (
+                obs.class_name is not None
+                or obs.metadata.get("class_belief_authoritative", False)
+            ):
                 obj.class_name = obs.class_name
             if obs.pose is not None:
                 obj.pose = obs.pose

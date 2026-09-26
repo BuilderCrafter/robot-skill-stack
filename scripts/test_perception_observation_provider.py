@@ -12,9 +12,7 @@ from isaacsim.core.utils.stage import is_stage_loading, open_stage
 from pxr import Usd, UsdGeom
 
 from backends.isaac.rgbd_camera import IsaacRgbdCamera
-from backends.isaac.semantic_detector import IsaacSemanticDetector
-from perception.rgbd_localizer import RgbdLocalizer
-from perception.state_provider import PerceptionStateProvider
+from perception.factory import build_perception_provider
 from runtime.scene_config import load_scene_config
 from world_model.updater import WorldModelUpdater
 from world_model.world_model import WorldModel
@@ -27,7 +25,6 @@ try:
     print("[1] Opening scene...")
     if not open_stage(str(SCENE)):
         raise RuntimeError(f"Failed to open {SCENE}")
-
     while is_stage_loading():
         simulation_app.update()
 
@@ -36,96 +33,56 @@ try:
     world.reset()
     world.play()
 
-    print("[2] Creating RGB-D perception...")
+    print("[2] Creating geometry perception...")
     camera = IsaacRgbdCamera(
         config.perception.camera_prim_path,
         resolution=config.perception.resolution,
     )
-
-    detector = IsaacSemanticDetector(
-        camera,
-        objects_root=config.world.objects_root,
-    )
-
-    camera.initialize(semantic_segmentation=True)
-
+    camera.initialize(semantic_segmentation=False)
     for _ in range(60):
         world.step(render=True)
 
-    provider = PerceptionStateProvider(
-        camera,
-        detector,
-        RgbdLocalizer(camera.get_intrinsics()),
-        object_sizes={
-            object_id: cfg.size
-            for object_id, cfg in config.objects.items()
-        },
-        object_graspable={
-            object_id: cfg.graspable
-            for object_id, cfg in config.objects.items()
-        },
-    )
-
-    print("[3] Updating blank WorldModel...")
+    provider = build_perception_provider(camera, config)
     model = WorldModel()
     updater = WorldModelUpdater(model, provider)
 
-    observations = updater.update()
+    print("[3] Updating blank WorldModel...")
+    for _ in range(5):
+        for _ in range(6):
+            world.step(render=True)
+        observations = updater.update()
 
-    print("Observations:", len(observations))
-    print("World objects:", [o.object_id for o in model.objects()])
+    visible = model.visible_objects()
+    if len(visible) != 1:
+        raise RuntimeError(f"Expected one visible object, got {len(visible)}")
+    obj = visible[0]
 
-    cube = model.require("cube")
+    print("Object ID:", obj.object_id)
+    print("Class:", obj.class_name)
+    print("Pose:", obj.pose.position)
+    print("Orientation:", obj.pose.orientation)
+    print("Size:", obj.size)
+    print("Visible:", obj.visible)
+    print("Source:", obj.source)
 
-    print("\n[4] Cube observation:")
-    print("class:", cube.class_name)
-    print("pose:", cube.pose.position)
-    print("orientation:", cube.pose.orientation)
-    print("size:", cube.size)
-    print("graspable:", cube.graspable)
-    print("visible:", cube.visible)
-    print("confidence:", cube.confidence)
-    print("source:", cube.source)
-    print("metadata:", cube.metadata)
-
-    assert cube.class_name == "cube"
-    assert cube.pose is not None
-    assert cube.pose.orientation is None
-    assert cube.size is not None
-    assert cube.visible
-    assert cube.source == "isaac_semantic_perception"
-
-    print("\n[5] Comparing against ground truth...")
     stage = omni.usd.get_context().get_stage()
-    prim = stage.GetPrimAtPath(
-        config.objects["cube"].prim_path
-    )
-
-    transform = UsdGeom.Xformable(
-        prim
-    ).ComputeLocalToWorldTransform(
+    prim = stage.GetPrimAtPath(config.objects["cube"].prim_path)
+    transform = UsdGeom.Xformable(prim).ComputeLocalToWorldTransform(
         Usd.TimeCode.Default()
     )
+    truth = np.asarray(transform.ExtractTranslation(), dtype=float)
+    error = float(np.linalg.norm(obj.pose.position - truth))
 
-    truth = np.asarray(
-        transform.ExtractTranslation(),
-        dtype=float,
-    )
-
-    error = float(
-        np.linalg.norm(cube.pose.position - truth)
-    )
-
-    print("Perceived:", np.round(cube.pose.position, 6))
-    print("Ground truth:", np.round(truth, 6))
-    print("Error:", f"{error * 1000:.2f} mm")
+    print("Ground truth:", truth)
+    print("Position error:", f"{error * 1000:.2f} mm")
+    assert error < 0.010
+    assert obj.pose.orientation is None
+    assert obj.source == "rgbd_geometry_perception"
 
     print("\n=== PERCEPTION OBSERVATION PROVIDER ===")
     print("Blank WorldModel populated: YES")
-    print("Object discovered through detector: YES")
-    print("Pose from RGB-D geometry: YES")
-    print("Orientation fabricated: NO")
-    print("Source:", cube.source)
+    print("Simulator semantic labels used: NO")
+    print("Persistent object ID:", obj.object_id)
     print("PASS")
     print("=======================================")
 

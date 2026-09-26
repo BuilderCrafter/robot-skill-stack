@@ -11,9 +11,7 @@ from isaacsim.core.utils.stage import is_stage_loading, open_stage
 
 from backends.isaac.ground_truth_provider import IsaacGroundTruthProvider
 from backends.isaac.rgbd_camera import IsaacRgbdCamera
-from backends.isaac.semantic_detector import IsaacSemanticDetector
-from perception.rgbd_localizer import RgbdLocalizer
-from perception.state_provider import PerceptionStateProvider
+from perception.factory import build_perception_provider
 from runtime.scene_config import load_scene_config
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +22,6 @@ try:
     print("[1] Opening scene...")
     if not open_stage(str(SCENE)):
         raise RuntimeError(f"Failed to open {SCENE}")
-
     while is_stage_loading():
         simulation_app.update()
 
@@ -33,103 +30,58 @@ try:
     world.reset()
     world.play()
 
-    print("[2] Creating ground-truth provider...")
     ground_truth = IsaacGroundTruthProvider(
         config.world.objects_root,
         config.objects,
     )
 
-    print("[3] Creating perception provider...")
     camera = IsaacRgbdCamera(
         config.perception.camera_prim_path,
         resolution=config.perception.resolution,
     )
-
-    detector = IsaacSemanticDetector(
-        camera,
-        objects_root=config.world.objects_root,
-    )
-
-    camera.initialize(semantic_segmentation=True)
-
+    camera.initialize(semantic_segmentation=False)
     for _ in range(60):
         world.step(render=True)
+    perception = build_perception_provider(camera, config)
 
-    perception = PerceptionStateProvider(
-        camera,
-        detector,
-        RgbdLocalizer(camera.get_intrinsics()),
-        object_sizes={
-            object_id: cfg.size
-            for object_id, cfg in config.objects.items()
-        },
-        object_graspable={
-            object_id: cfg.graspable
-            for object_id, cfg in config.objects.items()
-        },
-    )
+    for _ in range(5):
+        for _ in range(6):
+            world.step(render=True)
+        perceived = [o for o in perception.observe() if o.visible]
 
-    print("[4] Observing world from both sources...")
-    gt = {o.object_id: o for o in ground_truth.observe()}
-    perceived = {o.object_id: o for o in perception.observe()}
+    gt = ground_truth.observe()
+    print("Ground truth objects:", [o.object_id for o in gt])
+    print("Perceived objects:", [o.object_id for o in perceived])
+    if len(gt) != len(perceived):
+        raise RuntimeError(
+            f"Object count mismatch: ground_truth={len(gt)} perception={len(perceived)}"
+        )
 
-    print("\nGround truth objects:", sorted(gt))
-    print("Perceived objects:   ", sorted(perceived))
-
-    assert set(gt) == set(perceived)
-
+    unmatched = perceived.copy()
     print("\n=== PROVIDER COMPARISON ===")
-
-    for object_id in sorted(gt):
-        a = gt[object_id]
-        b = perceived[object_id]
-
-        print(f"\n{object_id}")
-        print("  class:")
-        print("    ground truth:", a.class_name)
-        print("    perception:  ", b.class_name)
-
-        print("  position:")
-        print("    ground truth:", np.round(a.pose.position, 6))
-        print("    perception:  ", np.round(b.pose.position, 6))
-
+    for expected in gt:
+        actual = min(
+            unmatched,
+            key=lambda o: np.linalg.norm(o.pose.position - expected.pose.position),
+        )
+        unmatched.remove(actual)
         position_error = float(
-            np.linalg.norm(a.pose.position - b.pose.position)
+            np.linalg.norm(expected.pose.position - actual.pose.position)
         )
+        size_error = np.abs(expected.size - actual.size)
+        print(f"\nGT {expected.object_id} -> perceived {actual.object_id}")
+        print("  semantic class:", actual.class_name)
+        print("  position error:", f"{position_error * 1000:.2f} mm")
+        print("  size error [mm]:", np.round(size_error * 1000, 2))
+        print("  perception orientation:", actual.pose.orientation)
+        assert position_error < 0.010
+        assert float(np.max(size_error)) < 0.012
+        assert actual.pose.orientation is None
 
-        print(
-            "    error:       ",
-            f"{position_error * 1000:.2f} mm",
-        )
-
-        print("  orientation:")
-        print("    ground truth:", a.pose.orientation)
-        print("    perception:  ", b.pose.orientation)
-
-        print("  size:")
-        print("    ground truth:", a.size)
-        print("    perception:  ", b.size)
-
-        print("  graspable:")
-        print("    ground truth:", a.graspable)
-        print("    perception:  ", b.graspable)
-
-        print("  sources:")
-        print("    ground truth:", a.source)
-        print("    perception:  ", b.source)
-
-        assert a.class_name == b.class_name
-        assert a.visible and b.visible
-        assert np.allclose(a.size, b.size)
-        assert a.graspable == b.graspable
-        assert position_error < 0.01
-
-    print("\nObject sets match: YES")
-    print("Semantic classes match: YES")
-    print("Sizes match: YES")
-    print("Graspability matches: YES")
+    print("\nObject counts match: YES")
     print("Positions within 10 mm: YES")
-    print("Orientation difference expected: perception=None")
+    print("Sizes within 12 mm/dimension: YES")
+    print("Ground truth IDs need not equal perception track IDs: EXPECTED")
     print("PASS")
     print("===========================")
 

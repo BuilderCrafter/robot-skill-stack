@@ -6,6 +6,8 @@ prim_path = "/Franka"
 [world]
 objects_root = "/World/Objects"
 provider = "perception"
+# Ground truth may run every physics step; perception defaults to 5 Hz.
+# update_hz = 5.0
 
 [objects.cube]
 prim_path = "/World/Objects/Cube"
@@ -15,3 +17,31 @@ graspable = true
 [perception]
 camera_prim_path = "/World/PerceptionCamera"
 resolution = [640, 480]
+
+[perception.discovery]
+support_plane_z = 0.0
+workspace_min = [0.20, -0.40, 0.0]
+workspace_max = [0.70, 0.40, 0.22]
+min_object_height = 0.008
+max_object_height = 0.22
+min_component_pixels = 30
+max_component_pixels = 30000
+candidate_max_extent = 0.18
+spawn_min_extent = 0.02
+spawn_max_extent = 0.10
+spawn_compactness_ratio = 1.60
+support_contact_tolerance = 0.015
+
+[perception.tracking]
+max_distance = 0.18
+max_size_ratio = 1.50
+max_misses = 30
+occlusion_distance = 0.12
+
+[perception.semantics]
+window_size = 7
+min_samples = 3
+assignment_threshold = 0.70
+cube_ratio_max = 1.35
+cube_min_size = 0.025
+cube_max_size = 0.10
