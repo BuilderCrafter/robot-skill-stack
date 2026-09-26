@@ -4,7 +4,7 @@ import numpy as np
 
 from core.manipulation import ManipulationBackend
 from core.skill import BaseSkill, FailureCode, SkillResult, SkillSpec, SkillStatus
-from manipulation.grasp_planner import TopDownGraspPlanner
+from manipulation.grasping.planner import GraspPlanner
 from world_model.world_model import WorldModel
 
 
@@ -30,7 +30,7 @@ class PickSkill(BaseSkill):
         self,
         backend: ManipulationBackend,
         world_model: WorldModel,
-        grasp_planner: TopDownGraspPlanner,
+        grasp_planner: GraspPlanner,
         *,
         grasp_lift_threshold=0.03,
         movement_threshold=0.02,
@@ -63,10 +63,9 @@ class PickSkill(BaseSkill):
     def _movement(self, obj, planned_position):
         if obj.pose is None or not obj.visible:
             return None
-        displacement = float(
+        return float(
             np.linalg.norm(obj.pose.position - planned_position)
         )
-        return displacement
 
     def _moved_result(
         self,
@@ -116,6 +115,7 @@ class PickSkill(BaseSkill):
         initial = obj.pose.position.copy()
         local_replans = 0
         gripper_open = False
+        last_grasp_details = {}
 
         while True:
             if obj.pose is None:
@@ -127,19 +127,30 @@ class PickSkill(BaseSkill):
                 )
 
             planned_position = obj.pose.position.copy()
-            plan = self.grasp_planner.plan(
+            grasp_result = self.grasp_planner.plan(
                 obj,
                 lift_height=lift_height,
                 grasp_hint=grasp_hint,
             )
 
-            if plan is None:
+            if not grasp_result.ok:
                 return SkillResult(
                     SkillStatus.FAILED,
-                    "No valid grasp.",
+                    grasp_result.message or "No valid grasp.",
                     FailureCode.NO_VALID_GRASP,
-                    {"local_replans": local_replans},
+                    {
+                        "grasp_failure_reason": (
+                            None
+                            if grasp_result.failure_reason is None
+                            else grasp_result.failure_reason.value
+                        ),
+                        "grasp_planner_details": grasp_result.details,
+                        "local_replans": local_replans,
+                    },
                 )
+
+            plan = grasp_result.plan
+            last_grasp_details = grasp_result.details
 
             for name, pose in (
                 ("pre_grasp", plan.pre_grasp),
@@ -151,7 +162,10 @@ class PickSkill(BaseSkill):
                         SkillStatus.FAILED,
                         f"{name} pose is unreachable.",
                         FailureCode.UNREACHABLE,
-                        {"local_replans": local_replans},
+                        {
+                            "local_replans": local_replans,
+                            "grasp_planner_details": last_grasp_details,
+                        },
                     )
 
             if not gripper_open:
@@ -173,6 +187,7 @@ class PickSkill(BaseSkill):
             )
             if failure:
                 failure.details["local_replans"] = local_replans
+                failure.details["grasp_planner_details"] = last_grasp_details
                 return failure
 
             displacement = self._movement(obj, planned_position)
@@ -199,6 +214,7 @@ class PickSkill(BaseSkill):
             )
             if failure:
                 failure.details["local_replans"] = local_replans
+                failure.details["grasp_planner_details"] = last_grasp_details
                 return failure
 
             displacement = self._movement(obj, planned_position)
@@ -249,6 +265,7 @@ class PickSkill(BaseSkill):
             )
             if failure:
                 failure.details["local_replans"] = local_replans
+                failure.details["grasp_planner_details"] = last_grasp_details
                 return failure
 
             grasp_after_lift = self.backend.verify_grasp()
@@ -288,6 +305,7 @@ class PickSkill(BaseSkill):
                     "object_visible_after_lift": obj.visible,
                     "local_replans": local_replans,
                     "movement_threshold_m": self.movement_threshold,
+                    "grasp_planner_details": last_grasp_details,
                     "grasp_at_contact": grasp_at_contact.details,
                     "grasp_after_lift": grasp_after_lift.details,
                 },

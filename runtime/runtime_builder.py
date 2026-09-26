@@ -12,7 +12,10 @@ from isaacsim.robot.manipulators.examples.franka import Franka
 from backends.isaac.franka_backend import IsaacFrankaBackend
 from backends.isaac.ground_truth_provider import IsaacGroundTruthProvider
 from backends.isaac.rgbd_camera import IsaacRgbdCamera
-from manipulation.grasp_planner import TopDownGraspPlanner
+from manipulation.grasping import (
+    ParallelJawGripperSpec,
+    TopDownGraspPlanner,
+)
 from perception.factory import build_perception_provider
 from runtime.robot_runtime import RobotRuntime
 from runtime.scene_config import SceneConfig, load_scene_config
@@ -173,6 +176,9 @@ async def build_runtime(
         approach_height=0.10,
         default_lift_height=0.12,
         grasp_z_offset=0.0,
+        gripper=ParallelJawGripperSpec(
+            max_width=backend.grasp_max_width,
+        ),
     )
 
     registry = SkillRegistry()

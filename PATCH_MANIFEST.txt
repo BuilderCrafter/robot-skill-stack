@@ -1,20 +1,22 @@
-Phase A robust execution patch
-
-REPLACE:
-- core/skill.py
-- skills/pick.py
+Phase B grasp-planning patch
 
 ADD:
-- scripts/phase_a_common.py
-- scripts/test_phase_a_unit.py
-- scripts/test_phase_a_benchmark.py
-- scripts/test_phase_a_reactive_pick.py
-- scripts/test_phase_a_recovery.py
-- scripts/test_phase_a_multi_object.py
-- scripts/run_phase_a_suite.py
-- README_PHASE_A.md
+- manipulation/grasping/__init__.py
+- manipulation/grasping/types.py
+- manipulation/grasping/planner.py
+- manipulation/grasping/geometry.py
+- manipulation/grasping/top_down.py
+- scripts/test_phase_b_unit.py
+- scripts/test_phase_b_isaac.py
+- scripts/run_phase_b_suite.py
+- README_PHASE_B.md
+
+REPLACE:
+- manipulation/grasp_planner.py
+- skills/pick.py
+- runtime/runtime_builder.py
 - PATCH_MANIFEST.txt
 
 No new packages.
 No USD changes.
-Perception V1 algorithms remain frozen.
+Apply after Phase A.
