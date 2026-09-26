@@ -1,13 +1,15 @@
-# Perception V1 — cube-focused RGB-D discovery
+# Perception V1 — frozen cube-focused RGB-D milestone
 
-This overlay replaces the simulator-semantic-label perception path with a geometry-first RGB-D pipeline. No additional Python packages are required beyond the repo's existing `.deps` setup.
+Perception V1 is the current stable lower-level perception/world-state milestone.
+It uses geometry-first RGB-D discovery and does not depend on Isaac semantic
+labels for normal perception.
 
-## Architecture
+## Runtime architecture
 
 ```text
-RGB + depth
+RGB-D camera
    ↓
-PerceptionFrame (latest frame only)
+PerceptionFrame
    ↓
 DepthObjectDiscoverer
    - workspace filter
@@ -16,13 +18,14 @@ DepthObjectDiscoverer
    - position + size estimate
    ↓
 ObjectTracker
-   - stable object_N IDs
-   - nearest-neighbour association
-   - short occlusion tolerance
+   - persistent object_N identity
+   - position/size association
+   - held-object retention
+   - action-derived association hints
    ↓
-Semantic belief
-   - repeated cube/unknown geometric evidence
-   - sliding window, never trusts one pass forever
+SemanticBelief
+   - repeated cube/unknown evidence
+   - class may remain unknown
    ↓
 ObjectObservation[]
    ↓
@@ -31,58 +34,70 @@ WorldModelUpdater
 WorldModel
 ```
 
-The WorldModel never stores masks or point clouds. Masks remain in short-lived tracker state. `PerceptionStateProvider.get_point_cloud(object_id)` reconstructs an object-only cloud lazily from the latest mask + depth frame and does not persist it.
+Ground truth implements the same `WorldObservationProvider` contract and remains
+an oracle/reference provider. `[world].provider` swaps between `ground_truth`
+and `perception` without changing skills, behavior trees, or the runtime API.
 
-`IsaacGroundTruthProvider` is unchanged and remains the oracle/reference provider. `[world].provider` still swaps between `ground_truth` and `perception`.
+## Manipulation boundary
+
+Perception answers where an object is and what geometry is currently observed.
+
+The existing top-down grasp planner remains the V1 cube grasp planner.
+
+Physical grasp success is verified by the manipulation backend from Franka
+gripper feedback rather than requiring the object to remain visually observable
+inside the gripper.
+
+While a held object is occluded, its persistent track is retained. During Place,
+the WorldModel publishes a short-lived expected-position association hint. The
+tracker can use that prior to reacquire the same object ID after robot-mediated
+transport instead of incorrectly spawning a new ID.
+
+The expected pose is never written into the measured object pose; it is only an
+association prior.
+
+## Geometry storage
+
+The WorldModel does not store masks or point clouds.
+
+The tracker owns the latest short-lived mask. The perception provider keeps the
+latest RGB-D frame and exposes lazy geometry access:
+
+```python
+provider.get_mask(object_id)
+provider.get_point_cloud(object_id)
+```
+
+The point cloud is generated only when requested and is not persisted.
 
 ## V1 assumptions
 
 - fixed external RGB-D camera
-- flat support plane at configured Z
+- flat configured support plane
 - small number of separated cube-like objects
-- cube dimensions roughly 2–10 cm
+- cubes roughly 2–10 cm
 - no stacked/touching objects
-- orientation is intentionally left unknown
-- existing `TopDownGraspPlanner` remains unchanged
+- object orientation may remain unknown
+- simple top-down parallel-gripper grasping
 
-The semantic pass is deliberately weak in V1: it classifies cube-like geometry as `cube` and otherwise leaves the class unknown. Identity (`object_1`) is independent from semantic class and persists through repeated observations.
+Deferred work includes arbitrary-object 6D geometry, learned/general grasp
+planning, difficult occlusion, touching/stacked segmentation, and robust
+large-scale multi-object re-identification.
 
-## Apply
+## Acceptance suite
 
-Overlay the contents of this archive onto the repository root. No USD changes and no new package installation are required.
-
-## Run the complete suite
-
-From the repo root:
+Run:
 
 ```bash
 python3 scripts/run_perception_v1_suite.py
 ```
 
-It runs:
+The suite validates software behavior, Isaac discovery/tracking, multi-cube
+discovery, lazy point-cloud access, perception-driven Pick + Place, gripper
+verification, and same-ID reacquisition after placement.
 
-1. pure software/unit tests
-2. Isaac discovery/geometry/tracking/multi-cube tests
-3. perception-driven Pick + stable Place integration
-
-The suite writes logs, JSON metrics and visual artifacts, then creates one archive:
+Expected output archive:
 
 ```text
 outputs/perception_v1_suite_<timestamp>.tar.gz
 ```
-
-Upload that archive for analysis if anything fails.
-
-## Main acceptance targets
-
-- single cube discovered without semantic labels
-- position error < 10 mm
-- size error < 12 mm per dimension
-- stable ID while static
-- stable ID after cube motion
-- second unconfigured cube receives a new ID
-- removed cube is retained as invisible
-- point cloud generated only on request
-- perception-discovered ID can complete Pick + stable Place
-
-Semantic classification may remain `unknown` without failing discovery. A confidently wrong class should be treated as a semantic-layer issue rather than an object-discovery failure.

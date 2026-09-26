@@ -1,8 +1,16 @@
 from __future__ import annotations
 
+from world_model.provider import WorldObservationProvider
+from world_model.world_model import WorldModel
+
 
 class WorldModelUpdater:
-    def __init__(self, world_model, provider, update_hz: float | None = None):
+    def __init__(
+        self,
+        world_model: WorldModel,
+        provider: WorldObservationProvider,
+        update_hz: float | None = None,
+    ):
         if update_hz is not None and update_hz <= 0:
             raise ValueError("update_hz must be > 0 or None")
 

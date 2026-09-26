@@ -2,7 +2,6 @@ from isaacsim import SimulationApp
 
 simulation_app = SimulationApp({"headless": False})
 
-import asyncio
 import traceback
 from pathlib import Path
 
@@ -14,6 +13,7 @@ from behavior_trees.executor import BTExecutor
 from behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
 from core.types import Pose
 from runtime.runtime_builder import build_runtime
+from scripts.isaac_async import run_kit_coroutine
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENE = ROOT / "scenes" / "playground.usd"
@@ -44,10 +44,7 @@ try:
         simulation_app.update()
 
     print("[2] Building runtime...")
-    task = asyncio.ensure_future(build_runtime(PROFILE))
-    while not task.done():
-        simulation_app.update()
-    bundle = task.result()
+    bundle = run_kit_coroutine(build_runtime(PROFILE), simulation_app)
 
     for _ in range(180):
         bundle.world.step(render=True)

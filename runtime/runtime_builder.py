@@ -21,6 +21,7 @@ from skills.home import HomeSkill
 from skills.move_to_pose import MoveToPoseSkill
 from skills.pick import PickSkill
 from skills.place import PlaceSkill
+from world_model.provider import WorldObservationProvider
 from world_model.updater import WorldModelUpdater
 from world_model.world_model import WorldModel
 
@@ -34,7 +35,7 @@ class IsaacRuntimeBundle:
     runtime: RobotRuntime
     objects: dict
     config: SceneConfig
-    state_provider: object
+    state_provider: WorldObservationProvider
 
 
 def _validate_stage(config: SceneConfig):
@@ -91,7 +92,10 @@ def _create_objects(world: World, config: SceneConfig):
     return objects
 
 
-async def _create_state_provider(world: World, config: SceneConfig):
+async def _create_state_provider(
+    world: World,
+    config: SceneConfig,
+) -> WorldObservationProvider:
     if config.world.provider == "ground_truth":
         return IsaacGroundTruthProvider(
             config.world.objects_root,
@@ -124,7 +128,9 @@ def _update_hz(config: SceneConfig):
     return 5.0 if config.world.provider == "perception" else None
 
 
-async def build_runtime(profile_path: str | Path) -> IsaacRuntimeBundle:
+async def build_runtime(
+    profile_path: str | Path,
+) -> IsaacRuntimeBundle:
     config = load_scene_config(profile_path)
     _validate_stage(config)
 

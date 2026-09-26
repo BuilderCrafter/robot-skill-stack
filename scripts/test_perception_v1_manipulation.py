@@ -3,7 +3,6 @@ from isaacsim import SimulationApp
 simulation_app = SimulationApp({"headless": False})
 
 import argparse
-import asyncio
 import re
 import sys
 import traceback
@@ -14,6 +13,7 @@ from isaacsim.core.utils.stage import is_stage_loading, open_stage
 
 from core.types import Pose
 from runtime.runtime_builder import build_runtime
+from scripts.isaac_async import run_kit_coroutine
 from scripts.perception_v1_common import write_result
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,10 +89,7 @@ def main(result_path=None, artifacts_dir=None):
 
     print("[2] Building runtime with real geometry perception...")
     profile = perception_profile(output_dir)
-    task = asyncio.ensure_future(build_runtime(profile))
-    while not task.done():
-        simulation_app.update()
-    bundle = task.result()
+    bundle = run_kit_coroutine(build_runtime(profile), simulation_app)
 
     print("[3] Allowing tracker / semantic belief to settle...")
     for _ in range(180):

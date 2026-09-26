@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import sys
 from pathlib import Path
 
@@ -16,6 +15,7 @@ import omni.ext
 import omni.kit.app
 import omni.ui as ui
 import py_trees
+from omni.kit.async_engine import run_coroutine
 
 from behavior_trees.executor import BTExecutor
 from behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
@@ -62,7 +62,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 ui.Label("Object")
 
                 self.object_field = ui.StringField()
-                self.object_field.model.set_value("cube")
+                self.object_field.model.set_value("object_1")
 
                 ui.Label("Target position")
                 self.x = self._float_field("X", 0.45)
@@ -130,7 +130,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self.status.text = text
 
     def _initialize_clicked(self):
-        asyncio.ensure_future(self._initialize())
+        run_coroutine(self._initialize())
 
     async def _initialize(self):
         if self.bundle is not None:
@@ -147,7 +147,13 @@ class RobotSkillStackExtension(omni.ext.IExt):
 
             self.bundle = await build_runtime(profile)
 
-            objects = list(self.bundle.config.objects)
+            objects = [
+                obj.object_id
+                for obj in self.bundle.world_model.visible_objects()
+            ]
+            if not objects:
+                objects = list(self.bundle.config.objects)
+
             if objects:
                 self.object_field.model.set_value(objects[0])
 
@@ -160,7 +166,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             )
 
     def _run(self, name, **kwargs):
-        asyncio.ensure_future(self._execute(name, kwargs))
+        run_coroutine(self._execute(name, kwargs))
 
     async def _execute(self, name, kwargs):
         if not self._can_run():
@@ -181,7 +187,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.busy = False
 
     def _run_task(self, recovery: bool):
-        asyncio.ensure_future(self._execute_task(recovery))
+        run_coroutine(self._execute_task(recovery))
 
     async def _execute_task(self, recovery: bool):
         if not self._can_run():
@@ -261,8 +267,6 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._refresh()
 
     def _refresh(self):
-        self.bundle.world_model.refresh_all()
-
         held = self.bundle.world_model.held_object_id
         pose = self.bundle.backend.get_end_effector_pose()
 
