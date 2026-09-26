@@ -25,9 +25,11 @@ class IsaacFrankaBackend(ManipulationBackend):
         end_effector_frame="right_gripper",
         position_tolerance=0.025,
         orientation_tolerance=0.10,
-        joint_tolerance=0.02,     # kept for compatibility
+        joint_tolerance=0.02,
         max_motion_steps=1000,
-        max_home_steps=1000,      # kept for compatibility
+        max_home_steps=1000,
+        grasp_min_width=0.005,
+        grasp_max_width=0.075,
     ):
         self.world = world
         self.robot = robot
@@ -35,6 +37,8 @@ class IsaacFrankaBackend(ManipulationBackend):
         self.position_tolerance = position_tolerance
         self.orientation_tolerance = orientation_tolerance
         self.max_motion_steps = max_motion_steps
+        self.grasp_min_width = float(grasp_min_width)
+        self.grasp_max_width = float(grasp_max_width)
 
         self.motion_controller = RMPFlowController(
             name="franka_backend_rmpflow",
@@ -52,7 +56,6 @@ class IsaacFrankaBackend(ManipulationBackend):
             end_effector_frame,
         )
 
-        # V1 home = safe Cartesian pose at runtime initialization.
         home = self.get_end_effector_pose()
         self.named_poses = {
             "home": Pose(
@@ -71,6 +74,19 @@ class IsaacFrankaBackend(ManipulationBackend):
         q1 = np.asarray(q1) / np.linalg.norm(q1)
         q2 = np.asarray(q2) / np.linalg.norm(q2)
         return float(2 * np.arccos(np.clip(abs(np.dot(q1, q2)), -1, 1)))
+
+    def _gripper_feedback(self):
+        joints = np.asarray(
+            self.robot.gripper.get_joint_positions(),
+            dtype=float,
+        ).reshape(-1)
+        finite = bool(joints.size >= 2 and np.isfinite(joints).all())
+        width = (
+            float(np.sum(np.clip(joints, 0.0, None)))
+            if finite
+            else None
+        )
+        return joints, width
 
     def get_end_effector_pose(self) -> Pose:
         self._update_base()
@@ -173,13 +189,13 @@ class IsaacFrankaBackend(ManipulationBackend):
             self.robot.apply_action(action)
             self.world.step(render=True)
 
+        joints, width = self._gripper_feedback()
         return BackendResult(
             True,
             "Gripper opened.",
             details={
-                "joint_positions": np.asarray(
-                    self.robot.gripper.get_joint_positions()
-                ).tolist()
+                "joint_positions": joints.tolist(),
+                "estimated_width_m": width,
             },
         )
 
@@ -195,14 +211,38 @@ class IsaacFrankaBackend(ManipulationBackend):
             self.robot.apply_action(action)
             self.world.step(render=True)
 
+        joints, measured_width = self._gripper_feedback()
         return BackendResult(
             True,
             "Gripper close command completed.",
             details={
-                "joint_positions": np.asarray(
-                    self.robot.gripper.get_joint_positions()
-                ).tolist()
+                "joint_positions": joints.tolist(),
+                "estimated_width_m": measured_width,
             },
+        )
+
+    def verify_grasp(self) -> BackendResult:
+        joints, width = self._gripper_feedback()
+        ok = (
+            width is not None
+            and self.grasp_min_width <= width <= self.grasp_max_width
+        )
+        details = {
+            "joint_positions": joints.tolist(),
+            "estimated_width_m": width,
+            "minimum_grasp_width_m": self.grasp_min_width,
+            "maximum_grasp_width_m": self.grasp_max_width,
+        }
+        if ok:
+            return BackendResult(
+                True,
+                "Gripper feedback indicates an object is held.",
+                details=details,
+            )
+        return BackendResult(
+            False,
+            "Gripper feedback does not indicate a secure grasp.",
+            details=details,
         )
 
     def home(self, name="home") -> BackendResult:

@@ -118,34 +118,43 @@ class PickSkill(BaseSkill):
         if failure:
             return failure
 
-        if not self.backend.close_gripper().ok:
+        close = self.backend.close_gripper()
+        if not close.ok:
             return SkillResult(
                 SkillStatus.FAILED,
                 "Could not close gripper.",
                 FailureCode.GRASP_FAILED,
+                close.details,
+            )
+
+        grasp_at_contact = self.backend.verify_grasp()
+        if not grasp_at_contact.ok:
+            return SkillResult(
+                SkillStatus.FAILED,
+                "Gripper closed without detecting an object.",
+                FailureCode.GRASP_FAILED,
+                grasp_at_contact.details,
             )
 
         failure = self._motion(plan.lift, 0.2, 0.020, "Lift failed.")
         if failure:
             return failure
 
-        if obj.pose is None:
+        grasp_after_lift = self.backend.verify_grasp()
+        if not grasp_after_lift.ok:
             return SkillResult(
                 SkillStatus.FAILED,
-                "Could not verify object state.",
+                "Object was lost during lift.",
                 FailureCode.GRASP_FAILED,
+                grasp_after_lift.details,
             )
 
-        final = obj.pose.position.copy()
-        lift = float(final[2] - initial[2])
-
-        if lift < self.grasp_lift_threshold:
-            return SkillResult(
-                SkillStatus.FAILED,
-                "Object was not lifted.",
-                FailureCode.GRASP_FAILED,
-                {"lift_distance_m": lift},
-            )
+        visual_lift = None
+        final_position = None
+        if obj.pose is not None:
+            final_position = obj.pose.position.copy()
+            if obj.visible:
+                visual_lift = float(final_position[2] - initial[2])
 
         self.world_model.set_held(object_id)
 
@@ -154,7 +163,12 @@ class PickSkill(BaseSkill):
             f"Picked '{object_id}'.",
             details={
                 "initial_position": initial.tolist(),
-                "final_position": final.tolist(),
-                "lift_distance_m": lift,
+                "final_cached_position": (
+                    None if final_position is None else final_position.tolist()
+                ),
+                "visual_lift_distance_m": visual_lift,
+                "object_visible_after_lift": obj.visible,
+                "grasp_at_contact": grasp_at_contact.details,
+                "grasp_after_lift": grasp_after_lift.details,
             },
         )

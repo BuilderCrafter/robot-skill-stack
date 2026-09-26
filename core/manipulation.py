@@ -35,6 +35,11 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
+    def verify_grasp(self) -> BackendResult:
+        """Return whether gripper feedback indicates an object is currently held."""
+        ...
+
+    @abstractmethod
     def get_end_effector_pose(self) -> Pose:
         ...
 

@@ -1,34 +1,13 @@
-Perception V1 overlay
+Gripper-feedback grasp verification patch
 
-NEW files:
-  perception/frame.py
-  perception/discovery.py
-  perception/tracker.py
-  perception/semantics.py
-  perception/geometry_service.py
-  perception/factory.py
-  scripts/perception_v1_common.py
-  scripts/test_perception_v1_unit.py
-  scripts/test_perception_v1_discovery.py
-  scripts/test_perception_v1_manipulation.py
-  scripts/run_perception_v1_suite.py
-  README_PERCEPTION_V1.md
+REPLACE:
+- core/manipulation.py
+- backends/isaac/franka_backend.py
+- skills/pick.py
+- scripts/test_perception_v1_manipulation.py
 
-REPLACE files:
-  perception/state_provider.py
-  runtime/scene_config.py
-  runtime/runtime_builder.py
-  config/scenes/playground.toml
-  world_model/world_model.py
-  scripts/test_perception_observation_provider.py
-  scripts/test_provider_comparison.py
-  scripts/test_runtime_world_model.py
-  scripts/test_world_model_bt.py
+ADD:
+- README_GRASP_VERIFICATION.md
+- PATCH_MANIFEST.txt
 
-UNCHANGED intentionally:
-  backends/isaac/ground_truth_provider.py
-  backends/isaac/rgbd_camera.py
-  backends/isaac/semantic_detector.py (kept as legacy/debug oracle, not used by V1 real perception)
-  manipulation/grasp_planner.py
-  skills/pick.py
-  skills/place.py
+No new packages or USD changes are required.

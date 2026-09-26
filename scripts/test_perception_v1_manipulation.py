@@ -50,6 +50,17 @@ def choose_object(world_model):
     )
 
 
+def object_snapshot(obj):
+    return {
+        "object_id": obj.object_id,
+        "class_name": obj.class_name,
+        "visible": obj.visible,
+        "position": None if obj.pose is None else obj.pose.position.tolist(),
+        "size": None if obj.size is None else obj.size.tolist(),
+        "metadata": dict(obj.metadata),
+    }
+
+
 def main(result_path=None, artifacts_dir=None):
     metrics = {}
     output_dir = Path(artifacts_dir or (ROOT / "outputs" / "perception_v1_tmp"))
@@ -74,12 +85,14 @@ def main(result_path=None, artifacts_dir=None):
 
     obj = choose_object(bundle.world_model)
     actual, _ = bundle.objects["cube"].get_world_pose()
+    initial_true = np.asarray(actual, dtype=float).copy()
     initial_error = float(np.linalg.norm(obj.pose.position - actual))
     metrics.update(
         object_id=obj.object_id,
         semantic_class=obj.class_name,
         initial_position_error_mm=initial_error * 1000,
         initial_size=obj.size.tolist() if obj.size is not None else None,
+        initial_object=object_snapshot(obj),
     )
     print("Object ID:", obj.object_id)
     print("Class:", obj.class_name)
@@ -90,10 +103,31 @@ def main(result_path=None, artifacts_dir=None):
 
     print("\n[4] PICK using discovered persistent ID...")
     pick = bundle.runtime.execute("pick", object_id=obj.object_id)
-    metrics["pick_status"] = pick.status.value
-    metrics["pick_message"] = pick.message
+    true_after_pick, _ = bundle.objects["cube"].get_world_pose()
+    true_after_pick = np.asarray(true_after_pick, dtype=float)
+    metrics.update(
+        pick_status=pick.status.value,
+        pick_message=pick.message,
+        pick_details=pick.details,
+        true_lift_after_pick_mm=float(
+            (true_after_pick[2] - initial_true[2]) * 1000
+        ),
+        true_cube_after_pick=true_after_pick.tolist(),
+        object_after_pick=object_snapshot(obj),
+        held_after_pick=bundle.world_model.held_object_id,
+    )
     print(pick.status, "-", pick.message)
+    print("True lift:", f"{metrics['true_lift_after_pick_mm']:.2f} mm")
+    print("Visible after pick:", obj.visible)
+    print("Held:", bundle.world_model.held_object_id)
+
     if not pick.ok:
+        write_result(
+            result_path,
+            status="FAIL",
+            metrics=metrics,
+            error=f"Pick failed: {pick.message}",
+        )
         raise RuntimeError(f"Pick failed: {pick.message}")
 
     print("\n[5] STABLE PLACE...")
@@ -102,24 +136,33 @@ def main(result_path=None, artifacts_dir=None):
         target=Pose(TARGET),
         mode="stable",
     )
-    metrics["place_status"] = place.status.value
-    metrics["place_message"] = place.message
-    print(place.status, "-", place.message)
-    if not place.ok:
-        raise RuntimeError(f"Place failed: {place.message}")
-
     final_true, _ = bundle.objects["cube"].get_world_pose()
+    final_true = np.asarray(final_true, dtype=float)
     target_error = float(np.linalg.norm(final_true - TARGET))
-    metrics["true_target_error_mm"] = target_error * 1000
-    metrics["held_after_place"] = bundle.world_model.held_object_id
-    metrics["visible_objects_after_place"] = [
-        {
-            "object_id": o.object_id,
-            "class_name": o.class_name,
-            "visible": o.visible,
-        }
-        for o in bundle.world_model.objects()
-    ]
+    metrics.update(
+        place_status=place.status.value,
+        place_message=place.message,
+        place_details=place.details,
+        true_target_error_mm=target_error * 1000,
+        true_cube_after_place=final_true.tolist(),
+        held_after_place=bundle.world_model.held_object_id,
+        object_after_place=object_snapshot(obj),
+        visible_objects_after_place=[
+            object_snapshot(o)
+            for o in bundle.world_model.objects()
+        ],
+    )
+    print(place.status, "-", place.message)
+    print("True target error:", f"{target_error * 1000:.2f} mm")
+
+    if not place.ok:
+        write_result(
+            result_path,
+            status="FAIL",
+            metrics=metrics,
+            error=f"Place failed: {place.message}",
+        )
+        raise RuntimeError(f"Place failed: {place.message}")
 
     print("\n=== PERCEPTION V1 MANIPULATION ===")
     print("Persistent ID:", obj.object_id)
@@ -141,11 +184,12 @@ if __name__ == "__main__":
         main(args.result, args.artifacts_dir)
     except Exception as exc:
         traceback.print_exc()
-        write_result(
-            args.result,
-            status="FAIL",
-            error=f"{type(exc).__name__}: {exc}",
-        )
+        if not args.result or not Path(args.result).exists():
+            write_result(
+                args.result,
+                status="FAIL",
+                error=f"{type(exc).__name__}: {exc}",
+            )
         sys.exit(1)
     finally:
         simulation_app.close()
