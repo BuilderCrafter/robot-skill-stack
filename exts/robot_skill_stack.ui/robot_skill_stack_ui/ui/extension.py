@@ -9,16 +9,15 @@ for path in (ROOT, ROOT / ".deps"):
     if path not in sys.path:
         sys.path.insert(0, path)
 
-import numpy as np
 import carb
+import numpy as np
 import omni.ext
 import omni.kit.app
 import omni.ui as ui
 import py_trees
-from omni.kit.async_engine import run_coroutine
 
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
+from robot_skill_stack.integrations.isaac.bootstrap import build_runtime_sync
 from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place import (
     create_pick_and_place_tree,
@@ -36,9 +35,9 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self.bundle = None
         self.view_model = None
         self.busy = False
-        self._tasks = set()
         self._elapsed = 0.0
         self._object_signature = None
+
         self._update_sub = (
             omni.kit.app.get_app()
             .get_update_event_stream()
@@ -47,11 +46,14 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 name="Robot Skill Stack UI refresh",
             )
         )
-        self.window = ui.Window("Robot Skill Runtime", width=470, height=760)
-        self._build_ui()
-        self.runtime_info.text = (
-            f"Runtime: not initialized | NumPy: {np.__version__}"
+
+        self.window = ui.Window(
+            "Robot Skill Runtime",
+            width=430,
+            height=600,
         )
+        self._build_ui()
+        self.runtime_info.text = f"Not initialized | NumPy {np.__version__}"
         carb.log_info(
             "[robot_skill_stack.ui] started; "
             f"NumPy {np.__version__} from {np.__file__}"
@@ -59,12 +61,6 @@ class RobotSkillStackExtension(omni.ext.IExt):
 
     def on_shutdown(self):
         self._update_sub = None
-        for task in tuple(getattr(self, "_tasks", ())):
-            try:
-                task.cancel()
-            except Exception:
-                pass
-        self._tasks = set()
         if self.bundle is not None:
             try:
                 self.bundle.world_updater.stop(self.bundle.world)
@@ -76,101 +72,137 @@ class RobotSkillStackExtension(omni.ext.IExt):
 
     def _build_ui(self):
         with self.window.frame:
-            with ui.VStack(spacing=8):
-                ui.Label("Robot Skill Stack", height=28, style={"font_size": 20})
-                self.status = ui.Label(
-                    "Open a compatible scene, choose a profile, then initialize.",
-                    word_wrap=True,
-                    height=52,
-                )
+            with ui.ScrollingFrame():
+                with ui.VStack(spacing=5):
+                    with ui.HStack(height=24):
+                        ui.Label(
+                            "Robot Skill Stack",
+                            style={"font_size": 18},
+                        )
+                        self.runtime_info = ui.Label(
+                            "Not initialized",
+                            alignment=ui.Alignment.RIGHT_CENTER,
+                            width=210,
+                        )
 
-                ui.Label("Scene profile")
-                self.profile = ui.StringField()
-                self.profile.model.set_value("config/scenes/playground.toml")
-                ui.Button(
-                    "Initialize Runtime",
-                    clicked_fn=self._initialize_clicked,
-                    height=32,
-                )
+                    self.status = ui.Label(
+                        "Open the scene and initialize.",
+                        word_wrap=True,
+                        height=34,
+                    )
 
-                self.runtime_info = ui.Label("Runtime: not initialized", height=22)
+                    with ui.HStack(height=28, spacing=5):
+                        self.profile = ui.StringField()
+                        self.profile.model.set_value(
+                            "config/scenes/playground.toml"
+                        )
+                        ui.Button(
+                            "Initialize",
+                            clicked_fn=self._initialize_clicked,
+                            width=95,
+                        )
 
-                ui.Separator()
-                ui.Label("World Model", style={"font_size": 16})
-                self.selected_label = ui.Label("Selected: -", height=22)
-                self.object_frame = ui.ScrollingFrame(
-                    height=250,
-                    build_fn=self._build_object_rows,
-                )
+                    ui.Separator()
+                    with ui.HStack(height=22):
+                        ui.Label(
+                            "World Model",
+                            style={"font_size": 15},
+                        )
+                        self.selected_label = ui.Label(
+                            "Selected: -",
+                            alignment=ui.Alignment.RIGHT_CENTER,
+                            width=180,
+                        )
 
-                ui.Separator()
-                ui.Label("Target position")
-                self.x = self._float_field("X", 0.45)
-                self.y = self._float_field("Y", 0.25)
-                self.z = self._float_field("Z", 0.025)
+                    self.object_frame = ui.ScrollingFrame(
+                        height=155,
+                        build_fn=self._build_object_rows,
+                    )
 
-                ui.Separator()
-                ui.Label("Skills", style={"font_size": 16})
-                with ui.HStack(spacing=5):
-                    ui.Button("Pick Selected", clicked_fn=self._pick_clicked, height=30)
-                    ui.Button("Place Held", clicked_fn=self._place_clicked, height=30)
-                with ui.HStack(spacing=5):
-                    ui.Button("Move To", clicked_fn=self._move_clicked, height=30)
-                    ui.Button("Home", clicked_fn=self._home_clicked, height=30)
+                    ui.Separator()
+                    with ui.HStack(height=26, spacing=5):
+                        ui.Label("Target", width=46)
+                        self.x = self._inline_float("X", 0.45)
+                        self.y = self._inline_float("Y", 0.25)
+                        self.z = self._inline_float("Z", 0.025)
 
-                ui.Separator()
-                ui.Label("Tasks", style={"font_size": 16})
-                ui.Button(
-                    "Pick & Place Selected",
-                    clicked_fn=lambda: self._run_task(recovery=False),
-                    height=32,
-                )
-                ui.Button(
-                    "Pick & Place + Recovery",
-                    clicked_fn=lambda: self._run_task(recovery=True),
-                    height=32,
-                )
+                    with ui.HStack(height=28, spacing=5):
+                        ui.Button(
+                            "Pick",
+                            clicked_fn=self._pick_clicked,
+                        )
+                        ui.Button(
+                            "Place",
+                            clicked_fn=self._place_clicked,
+                        )
+                        ui.Button(
+                            "Move",
+                            clicked_fn=self._move_clicked,
+                        )
+                        ui.Button(
+                            "Home",
+                            clicked_fn=self._home_clicked,
+                        )
 
-                ui.Separator()
-                self.held = ui.Label("Held: -")
-                self.ee = ui.Label("EE: -", word_wrap=True, height=36)
-                ui.Button("Refresh Now", clicked_fn=lambda: self._refresh(force=True), height=28)
+                    with ui.HStack(height=28, spacing=5):
+                        ui.Button(
+                            "Pick & Place",
+                            clicked_fn=lambda: self._run_task(False),
+                        )
+                        ui.Button(
+                            "+ Recovery",
+                            clicked_fn=lambda: self._run_task(True),
+                        )
+
+                    ui.Separator()
+                    with ui.HStack(height=22):
+                        self.held = ui.Label("Held: -")
+                        self.ee = ui.Label(
+                            "EE: -",
+                            alignment=ui.Alignment.RIGHT_CENTER,
+                            width=230,
+                        )
 
     def _build_object_rows(self):
-        with ui.VStack(spacing=5):
+        with ui.VStack(spacing=3):
             if self.view_model is None:
-                ui.Label("Initialize the runtime to populate the WorldModel.")
+                ui.Label("Initialize to populate the WorldModel.")
                 return
 
             rows = self.view_model.rows()
             if not rows:
-                ui.Label("WorldModel currently contains no objects.")
+                ui.Label("No objects.")
                 return
 
             selected = self.view_model.selected_id
             for row in rows:
-                marker = ">" if row.object_id == selected else " "
                 state = "VISIBLE" if row.visible else "LOST"
                 held = " | HELD" if row.held else ""
+                prefix = ">" if row.object_id == selected else " "
                 ui.Button(
-                    f"{marker} {row.object_id}",
-                    clicked_fn=lambda object_id=row.object_id: self._select_object(object_id),
-                    height=26,
+                    f"{prefix} {row.object_id}  |  "
+                    f"{row.class_name or 'unknown'}  |  {state}{held}",
+                    clicked_fn=lambda object_id=row.object_id: (
+                        self._select_object(object_id)
+                    ),
+                    height=23,
                 )
-                ui.Label(f"class: {row.class_name or 'unknown'} | {state}{held}", height=18)
-                ui.Label(f"pos:  {self._fmt_vec(row.position)}", height=18)
-                ui.Label(f"size: {self._fmt_vec(row.size)}", height=18)
-                ui.Separator()
+                ui.Label(
+                    f"p {self._fmt_vec(row.position)}   "
+                    f"s {self._fmt_vec(row.size)}",
+                    height=17,
+                )
 
     @staticmethod
     def _fmt_vec(values):
         if values is None:
-            return "[unknown]"
-        return "[" + ", ".join(f"{value:.3f}" for value in values) + "]"
+            return "[?]"
+        return "[" + " ".join(f"{value:.3f}" for value in values) + "]"
 
-    def _float_field(self, label, value):
-        with ui.HStack(height=24):
-            ui.Label(label, width=20)
+    @staticmethod
+    def _inline_float(label, value):
+        with ui.HStack(spacing=2):
+            ui.Label(label, width=13)
             field = ui.FloatField()
             field.model.set_value(value)
         return field
@@ -188,6 +220,16 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _set_status(self, text):
         self.status.text = text
 
+    def _robot_ready(self):
+        return bool(
+            self.bundle is not None
+            and getattr(
+                self.bundle.backend.robot,
+                "handles_initialized",
+                False,
+            )
+        )
+
     def _on_update(self, event):
         if self.bundle is None or self.busy:
             return
@@ -199,55 +241,48 @@ class RobotSkillStackExtension(omni.ext.IExt):
         except Exception:
             self._elapsed = 0.0
 
-    def _submit(self, coroutine, label):
-        task = run_coroutine(coroutine)
-        self._tasks.add(task)
-
-        def done(completed):
-            self._tasks.discard(completed)
-            try:
-                exc = completed.exception()
-            except BaseException:
-                return
-            if exc is not None:
-                carb.log_error(
-                    f"[robot_skill_stack.ui] {label} failed: "
-                    f"{type(exc).__name__}: {exc}"
-                )
-
-        task.add_done_callback(done)
-        return task
-
     def _initialize_clicked(self):
-        carb.log_info("[robot_skill_stack.ui] Initialize Runtime clicked")
-        self._submit(self._initialize(), "runtime initialization")
+        if self.busy:
+            return
 
-    async def _initialize(self):
-        carb.log_info("[robot_skill_stack.ui] initialization started")
-        if self.bundle is not None:
+        if self.bundle is not None and self._robot_ready():
             self._set_status("Runtime already initialized.")
             return
 
-        self._set_status("Initializing...")
-        await omni.kit.app.get_app().next_update_async()
+        self.busy = True
+        self._set_status("Initializing runtime...")
+        carb.log_info("[robot_skill_stack.ui] initialization started")
 
         try:
             profile = Path(self.profile.model.get_value_as_string())
             if not profile.is_absolute():
                 profile = ROOT / profile
-            self.bundle = await build_runtime(profile)
-            self.view_model = WorldModelViewModel(self.bundle.world_model)
+
+            if self.bundle is not None:
+                try:
+                    self.bundle.world_updater.stop(self.bundle.world)
+                except Exception:
+                    pass
+                self.bundle = None
+                self.view_model = None
+
+            self.bundle = build_runtime_sync(profile)
+            self.view_model = WorldModelViewModel(
+                self.bundle.world_model
+            )
             self.view_model.ensure_selection()
             self._object_signature = None
             self._set_status("READY")
-            self._refresh(force=True)
             carb.log_info("[robot_skill_stack.ui] runtime READY")
         except Exception as exc:
-            message = f"Initialization failed\n{type(exc).__name__}: {exc}"
+            self.bundle = None
+            self.view_model = None
+            message = f"Initialization failed: {type(exc).__name__}: {exc}"
             self._set_status(message)
-            carb.log_error(
-                "[robot_skill_stack.ui] " + message.replace("\n", " | ")
-            )
+            carb.log_error("[robot_skill_stack.ui] " + message)
+        finally:
+            self.busy = False
+            self._refresh(force=True)
 
     def _select_object(self, object_id):
         if self.view_model is None:
@@ -263,53 +298,67 @@ class RobotSkillStackExtension(omni.ext.IExt):
         if self.view_model is None:
             self._set_status("Initialize the runtime first.")
             return None
+
         obj = self.view_model.selected_object()
         if obj is None:
             self._set_status("No WorldModel object is available.")
             return None
+
         if require_visible and not obj.visible:
             self._set_status(
-                f"Cannot use '{obj.object_id}': it is not currently visible."
+                f"Cannot use '{obj.object_id}': object is not visible."
             )
             return None
         return obj
 
-    def _run(self, name, **kwargs):
-        self._submit(self._execute(name, kwargs), f"skill {name}")
+    def _can_run(self):
+        if self.bundle is None:
+            self._set_status("Initialize the runtime first.")
+            return False
+        if self.busy:
+            self._set_status("Another operation is running.")
+            return False
+        if not self._robot_ready():
+            self._set_status(
+                "Robot articulation is not initialized. "
+                "Press Initialize again after Play/Reset."
+            )
+            return False
+        return True
 
-    async def _execute(self, name, kwargs):
+    def _run(self, name, **kwargs):
         if not self._can_run():
             return
+
         self.busy = True
-        self._set_status(f"Running skill: {name}...")
-        await omni.kit.app.get_app().next_update_async()
+        self._set_status(f"Running {name}...")
         try:
             result = self.bundle.runtime.execute(name, **kwargs)
             prefix = "SUCCESS" if result.ok else "FAILED"
-            code = "" if result.failure_code is None else f" [{result.failure_code.value}]"
+            code = (
+                ""
+                if result.failure_code is None
+                else f" [{result.failure_code.value}]"
+            )
             self._set_status(f"{prefix}{code}: {result.message}")
         except Exception as exc:
-            self._set_status(f"ERROR: {type(exc).__name__}: {exc}")
+            self._set_status(
+                f"ERROR: {type(exc).__name__}: {exc}"
+            )
         finally:
             self.busy = False
             self._refresh(force=True)
 
-    def _run_task(self, recovery: bool):
-        obj = self._selected_object(require_visible=not recovery)
-        if obj is None:
-            return
-        self._submit(
-            self._execute_task(recovery, obj.object_id),
-            "behavior tree",
+    def _run_task(self, recovery):
+        obj = self._selected_object(
+            require_visible=not recovery
         )
-
-    async def _execute_task(self, recovery: bool, object_id: str):
-        if not self._can_run():
+        if obj is None or not self._can_run():
             return
+
         self.busy = True
-        task_name = "Pick & Place + Recovery" if recovery else "Pick & Place"
-        self._set_status(f"Running task: {task_name} ({object_id})...")
-        await omni.kit.app.get_app().next_update_async()
+        name = "Pick & Place + Recovery" if recovery else "Pick & Place"
+        self._set_status(f"Running {name}...")
         try:
             factory = (
                 create_pick_and_place_recovery_tree
@@ -318,27 +367,24 @@ class RobotSkillStackExtension(omni.ext.IExt):
             )
             root = factory(
                 self.bundle.runtime,
-                object_id=object_id,
+                object_id=obj.object_id,
                 target=Pose(self._target()),
                 return_home=True,
             )
             status = BTExecutor(root).run(verbose=False)
-            prefix = "SUCCESS" if status == py_trees.common.Status.SUCCESS else "FAILED"
-            self._set_status(f"{prefix}: {task_name}")
+            prefix = (
+                "SUCCESS"
+                if status == py_trees.common.Status.SUCCESS
+                else "FAILED"
+            )
+            self._set_status(f"{prefix}: {name}")
         except Exception as exc:
-            self._set_status(f"ERROR: {type(exc).__name__}: {exc}")
+            self._set_status(
+                f"ERROR: {type(exc).__name__}: {exc}"
+            )
         finally:
             self.busy = False
             self._refresh(force=True)
-
-    def _can_run(self):
-        if self.bundle is None:
-            self._set_status("Initialize the runtime first.")
-            return False
-        if self.busy:
-            self._set_status("Another skill/task is running.")
-            return False
-        return True
 
     def _pick_clicked(self):
         obj = self._selected_object(require_visible=True)
@@ -346,20 +392,30 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self._run("pick", object_id=obj.object_id)
 
     def _place_clicked(self):
-        self._run("place", target=Pose(self._target()), mode="stable")
+        self._run(
+            "place",
+            target=Pose(self._target()),
+            mode="stable",
+        )
 
     def _move_clicked(self):
-        if self.bundle is None:
-            self._set_status("Initialize the runtime first.")
+        if not self._can_run():
             return
         orientation = self.bundle.backend.get_end_effector_pose().orientation
-        self._run("move_to_pose", target=Pose(self._target(), orientation))
+        self._run(
+            "move_to_pose",
+            target=Pose(self._target(), orientation),
+        )
 
     def _home_clicked(self):
         self._run("home")
 
     def _refresh(self, force=False):
         if self.bundle is None or self.view_model is None:
+            self.runtime_info.text = f"Not initialized | NumPy {np.__version__}"
+            self.selected_label.text = "Selected: -"
+            self.held.text = "Held: -"
+            self.ee.text = "EE: -"
             return
 
         self.view_model.ensure_selection()
@@ -369,17 +425,26 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.object_frame.rebuild()
 
         provider = self.bundle.config.world.provider
-        source = "RGB-D perception" if provider == "perception" else "ground truth"
+        source = "Perception" if provider == "perception" else "Ground truth"
         rows = self.view_model.rows()
-        self.runtime_info.text = (
-            f"World source: {source} | Objects: {len(rows)} | NumPy: {np.__version__}"
+        self.runtime_info.text = f"{source} | {len(rows)} objects"
+        self.selected_label.text = (
+            f"Selected: {self.view_model.selected_id or '-'}"
         )
-        self.selected_label.text = f"Selected: {self.view_model.selected_id or '-'}"
-        self.held.text = f"Held: {self.bundle.world_model.held_object_id or '-'}"
+        self.held.text = (
+            f"Held: {self.bundle.world_model.held_object_id or '-'}"
+        )
 
-        pose = self.bundle.backend.get_end_effector_pose()
-        self.ee.text = (
-            f"EE: [{pose.position[0]:.3f}, "
-            f"{pose.position[1]:.3f}, "
-            f"{pose.position[2]:.3f}]"
-        )
+        if not self._robot_ready():
+            self.ee.text = "EE: unavailable"
+            return
+
+        try:
+            pose = self.bundle.backend.get_end_effector_pose()
+            self.ee.text = (
+                f"EE [{pose.position[0]:.3f} "
+                f"{pose.position[1]:.3f} "
+                f"{pose.position[2]:.3f}]"
+            )
+        except Exception:
+            self.ee.text = "EE: unavailable"

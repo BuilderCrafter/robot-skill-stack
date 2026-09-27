@@ -10,25 +10,27 @@ from isaacsim.core.api import World
 from isaacsim.core.prims import SingleXFormPrim
 from isaacsim.robot.manipulators.examples.franka import Franka
 
+from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
 from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
-from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
+from robot_skill_stack.integrations.isaac.world.ground_truth_provider import (
+    IsaacGroundTruthProvider,
+)
 from robot_skill_stack.manipulation.grasping import (
     ParallelJawGripperSpec,
     TopDownGraspPlanner,
 )
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
-from robot_skill_stack.world.perception.factory import build_perception_provider
-from robot_skill_stack.runtime.runtime import RobotRuntime
-from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
-from robot_skill_stack.runtime.registry import SkillRegistry
 from robot_skill_stack.manipulation.skills.home import HomeSkill
 from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
+from robot_skill_stack.runtime.registry import SkillRegistry
+from robot_skill_stack.runtime.runtime import RobotRuntime
 from robot_skill_stack.world.model.provider import WorldObservationProvider
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
+from robot_skill_stack.world.perception.factory import build_perception_provider
 
 
 @dataclass
@@ -61,17 +63,12 @@ def _validate_stage(config: SceneConfig):
         config.world.objects_root,
         *[obj.prim_path for obj in config.objects.values()],
     ]
-
     if config.world.provider == "perception":
         if not config.perception.camera_prim_path:
             raise RuntimeError("Perception provider requires camera_prim_path")
         paths.append(config.perception.camera_prim_path)
 
-    missing = [
-        path
-        for path in paths
-        if not stage.GetPrimAtPath(path).IsValid()
-    ]
+    missing = [path for path in paths if not stage.GetPrimAtPath(path).IsValid()]
     if missing:
         raise RuntimeError(f"Missing prims in current stage: {missing}")
 
@@ -83,12 +80,7 @@ def _create_robot(world: World, config: SceneConfig):
 
     robot = world.scene.get_object(cfg.id)
     if robot is None:
-        robot = world.scene.add(
-            Franka(
-                prim_path=cfg.prim_path,
-                name=cfg.id,
-            )
-        )
+        robot = world.scene.add(Franka(prim_path=cfg.prim_path, name=cfg.id))
     return robot
 
 
@@ -108,20 +100,24 @@ def _create_objects(world: World, config: SceneConfig):
     return objects
 
 
-async def _create_state_provider(
-    world: World,
+def _create_camera_provider(camera, config):
+    return build_perception_provider(camera, config)
+
+
+def _ground_truth_provider(config):
+    return IsaacGroundTruthProvider(
+        config.world.objects_root,
+        config.objects,
+    )
+
+
+async def _create_state_provider_async(
     config: SceneConfig,
 ) -> WorldObservationProvider:
     if config.world.provider == "ground_truth":
-        return IsaacGroundTruthProvider(
-            config.world.objects_root,
-            config.objects,
-        )
-
+        return _ground_truth_provider(config)
     if config.world.provider != "perception":
-        raise RuntimeError(
-            f"Unsupported world provider: {config.world.provider}"
-        )
+        raise RuntimeError(f"Unsupported world provider: {config.world.provider}")
     if not config.perception.camera_prim_path:
         raise RuntimeError("Perception provider requires camera_prim_path")
 
@@ -134,8 +130,28 @@ async def _create_state_provider(
     app = omni.kit.app.get_app()
     for _ in range(60):
         await app.next_update_async()
+    return _create_camera_provider(camera, config)
 
-    return build_perception_provider(camera, config)
+
+def _create_state_provider_sync(
+    world: World,
+    config: SceneConfig,
+) -> WorldObservationProvider:
+    if config.world.provider == "ground_truth":
+        return _ground_truth_provider(config)
+    if config.world.provider != "perception":
+        raise RuntimeError(f"Unsupported world provider: {config.world.provider}")
+    if not config.perception.camera_prim_path:
+        raise RuntimeError("Perception provider requires camera_prim_path")
+
+    camera = IsaacRgbdCamera(
+        config.perception.camera_prim_path,
+        resolution=config.perception.resolution,
+    )
+    camera.initialize(semantic_segmentation=False)
+    for _ in range(60):
+        world.step(render=True)
+    return _create_camera_provider(camera, config)
 
 
 def _update_hz(config: SceneConfig):
@@ -144,29 +160,13 @@ def _update_hz(config: SceneConfig):
     return 5.0 if config.world.provider == "perception" else None
 
 
-async def build_runtime(
-    profile_path: str | Path,
+def _assemble_runtime(
+    world,
+    robot,
+    objects,
+    provider,
+    config,
 ) -> IsaacRuntimeBundle:
-    config = load_scene_config(profile_path)
-    _validate_environment(config)
-    _validate_stage(config)
-
-    world = World.instance()
-    if world is None:
-        world = World(stage_units_in_meters=1.0)
-        await world.initialize_simulation_context_async()
-
-    robot = _create_robot(world, config)
-    objects = _create_objects(world, config)
-
-    await world.reset_async()
-    await world.play_async()
-
-    app = omni.kit.app.get_app()
-    for _ in range(30):
-        await app.next_update_async()
-
-    provider = await _create_state_provider(world, config)
     model = WorldModel()
     updater = WorldModelUpdater(
         model,
@@ -186,7 +186,7 @@ async def build_runtime(
         max_home_steps=1000,
     )
 
-    planner = TopDownGraspPlanner(
+    grasp_planner = TopDownGraspPlanner(
         approach_height=0.10,
         default_lift_height=0.12,
         grasp_z_offset=0.0,
@@ -194,13 +194,12 @@ async def build_runtime(
             max_width=backend.grasp_max_width,
         ),
     )
+    placement_planner = SimplePlacementPlanner(clearance=0.005)
 
     registry = SkillRegistry()
     registry.register(MoveToPoseSkill(backend))
     registry.register(HomeSkill(backend))
-    placement_planner = SimplePlacementPlanner(clearance=0.005)
-
-    registry.register(PickSkill(backend, model, planner))
+    registry.register(PickSkill(backend, model, grasp_planner))
     registry.register(PlaceSkill(backend, model, placement_planner))
 
     return IsaacRuntimeBundle(
@@ -213,3 +212,60 @@ async def build_runtime(
         config=config,
         state_provider=provider,
     )
+
+
+async def build_runtime(
+    profile_path: str | Path,
+) -> IsaacRuntimeBundle:
+    """Async builder used by standalone/regression workflows."""
+    config = load_scene_config(profile_path)
+    _validate_environment(config)
+    _validate_stage(config)
+
+    world = World.instance()
+    if world is None:
+        world = World(stage_units_in_meters=1.0)
+        await world.initialize_simulation_context_async()
+
+    robot = _create_robot(world, config)
+    objects = _create_objects(world, config)
+
+    await world.reset_async()
+    await world.play_async()
+
+    app = omni.kit.app.get_app()
+    for _ in range(30):
+        await app.next_update_async()
+
+    provider = await _create_state_provider_async(config)
+    return _assemble_runtime(world, robot, objects, provider, config)
+
+
+def build_runtime_sync(
+    profile_path: str | Path,
+) -> IsaacRuntimeBundle:
+    """
+    Synchronous builder for the in-app extension.
+
+    The extension deliberately stays out of Kit's asyncio task runner because
+    manipulation uses World.step() internally. Running World.step() from inside
+    an active asyncio task causes nested Kit event-loop re-entry.
+    """
+    config = load_scene_config(profile_path)
+    _validate_environment(config)
+    _validate_stage(config)
+
+    world = World.instance()
+    if world is None:
+        world = World(stage_units_in_meters=1.0)
+
+    robot = _create_robot(world, config)
+    objects = _create_objects(world, config)
+
+    world.reset()
+    world.play()
+    for _ in range(30):
+        world.step(render=True)
+
+    provider = _create_state_provider_sync(world, config)
+    return _assemble_runtime(world, robot, objects, provider, config)
