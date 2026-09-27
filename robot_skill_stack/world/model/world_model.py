@@ -208,3 +208,11 @@ class WorldModel:
             offset = offset.copy()
         self.held_object_id = object_id
         self.held_object_offset_in_ee = offset
+
+    def clear_held_state(self) -> str | None:
+        """Clear software attachment only; the caller must ensure the robot is idle."""
+        previous = self.held_object_id
+        self.set_held(None)
+        if previous is not None:
+            self.clear_association_hint(previous)
+        return previous

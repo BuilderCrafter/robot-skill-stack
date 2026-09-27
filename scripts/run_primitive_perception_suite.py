@@ -6,6 +6,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER = ROOT / "run_isaac_python.sh"
 TESTS = (
+    "test_manual_held_reset", "test_control_panel_ui",
     "test_project_runners", "test_grasp_clearance", "test_grasp_attachment",
     "test_primitive_depth_pipeline", "test_perception_lifecycle",
     "test_primitive_perception", "test_perception", "test_grasp_planning",
