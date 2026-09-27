@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
-from robot_skill_stack.world.perception.semantics import CubeGeometryClassifier
 from robot_skill_stack.world.perception.provider import PerceptionStateProvider
 from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
 from robot_skill_stack.world.perception.tracker import ObjectTracker
@@ -28,6 +27,7 @@ def build_perception_provider(camera, config):
         spawn_max_extent=d.spawn_max_extent,
         spawn_compactness_ratio=d.spawn_compactness_ratio,
         support_contact_tolerance=d.support_contact_tolerance,
+        component_neighbor_distance=d.component_neighbor_distance,
     )
     tracker = ObjectTracker(
         max_distance=t.max_distance,
@@ -38,17 +38,11 @@ def build_perception_provider(camera, config):
         semantic_min_samples=s.min_samples,
         semantic_threshold=s.assignment_threshold,
         min_confirm_hits=t.min_confirm_hits,
+        stale_track_ttl=config.world.stale_object_ttl,
     )
-    classifier = CubeGeometryClassifier(
-        ratio_max=s.cube_ratio_max,
-        min_size=s.cube_min_size,
-        max_size=s.cube_max_size,
-    )
+    pr = config.perception.primitives
     return PerceptionStateProvider(
-        camera,
-        localizer,
-        discoverer,
-        tracker,
-        classifier,
-        PrimitiveEstimator(config.perception.primitives.classification_threshold, config.perception.primitives.ambiguity_margin, config.perception.primitives.top_band),
+        camera, localizer, discoverer, tracker,
+        primitive_estimator=PrimitiveEstimator(pr.classification_threshold, pr.ambiguity_margin,
+                                              pr.top_band, fit_tolerance=pr.fit_tolerance),
     )

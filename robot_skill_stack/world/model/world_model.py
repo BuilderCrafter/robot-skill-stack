@@ -16,20 +16,38 @@ class WorldModel:
         self._association_hints: dict[str, AssociationHint] = {}
         self.held_object_id: str | None = None
         self.stale_object_ttl = float(stale_object_ttl)
+        if not np.isfinite(self.stale_object_ttl) or self.stale_object_ttl <= 0:
+            raise ValueError("stale_object_ttl must be finite and > 0")
+        self._registered_at: dict[str, float] = {}
 
     def register(self, obj: WorldObject) -> None:
         self._objects[obj.object_id] = obj
+        self._registered_at.setdefault(obj.object_id, time.monotonic())
+
+    def _protected(self, now=None):
+        return {self.held_object_id, *(hint.object_id for hint in self.association_hints(now))}
+
+    def _discard(self, object_id, forget=None):
+        if forget is not None:
+            forget(object_id)
+        self._objects.pop(object_id, None)
+        self._registered_at.pop(object_id, None)
+        self._association_hints.pop(object_id, None)
 
     def remove(self, object_id: str) -> bool:
-        if object_id == self.held_object_id or object_id in self._association_hints: return False
-        return self._objects.pop(object_id, None) is not None
+        if object_id in self._protected() or object_id not in self._objects:
+            return False
+        self._discard(object_id)
+        return True
 
     def clear_lost(self, forget=None) -> tuple[str, ...]:
-        removed=[]
+        protected = self._protected()
+        removed = []
         for obj in list(self._objects.values()):
-            if obj.visible or obj.object_id == self.held_object_id or obj.object_id in self._association_hints: continue
-            if forget is not None: forget(obj.object_id)
-            if self.remove(obj.object_id): removed.append(obj.object_id)
+            if obj.visible or obj.object_id in protected or obj.source == "ground_truth":
+                continue
+            self._discard(obj.object_id, forget)
+            removed.append(obj.object_id)
         return tuple(removed)
 
     def exists(self, object_id: str) -> bool:
@@ -91,8 +109,8 @@ class WorldModel:
     def clear_association_hint(self, object_id: str) -> None:
         self._association_hints.pop(object_id, None)
 
-    def association_hints(self) -> tuple[AssociationHint, ...]:
-        now = time.monotonic()
+    def association_hints(self, now=None) -> tuple[AssociationHint, ...]:
+        now = time.monotonic() if now is None else float(now)
         expired = [
             object_id
             for object_id, hint in self._association_hints.items()
@@ -163,12 +181,19 @@ class WorldModel:
                 if object_id not in seen:
                     obj.visible = False
 
-    def expire_stale(self, now=None) -> tuple[str, ...]:
-        now=time.monotonic() if now is None else float(now); protected={h.object_id for h in self.association_hints()}
-        removed=[]
+    def expire_stale(self, now=None, forget=None) -> tuple[str, ...]:
+        now = time.monotonic() if now is None else float(now)
+        protected = self._protected(now)
+        removed = []
         for obj in list(self._objects.values()):
-            if obj.visible or obj.object_id==self.held_object_id or obj.object_id in protected or obj.last_seen is None: continue
-            if now-obj.last_seen > self.stale_object_ttl and self.remove(obj.object_id): removed.append(obj.object_id)
+            if obj.visible or obj.object_id in protected or obj.source == "ground_truth":
+                continue
+            last_seen = obj.last_seen
+            if last_seen is None:
+                last_seen = self._registered_at[obj.object_id]
+            if now-last_seen >= self.stale_object_ttl:
+                self._discard(obj.object_id, forget)
+                removed.append(obj.object_id)
         return tuple(removed)
 
     def set_held(self, object_id: str | None) -> None:

@@ -46,6 +46,7 @@ class DepthObjectDiscoverer:
         spawn_max_extent=0.12,
         spawn_compactness_ratio=3.50,
         support_contact_tolerance=0.015,
+        component_neighbor_distance=0.02,
     ):
         self.localizer = localizer
         self.support_plane_z = float(support_plane_z)
@@ -60,9 +61,11 @@ class DepthObjectDiscoverer:
         self.spawn_max_extent = float(spawn_max_extent)
         self.spawn_compactness_ratio = float(spawn_compactness_ratio)
         self.support_contact_tolerance = float(support_contact_tolerance)
+        self.component_neighbor_distance = float(component_neighbor_distance)
+        self.diagnostics = []
 
     @staticmethod
-    def _components(mask):
+    def _components(mask, world=None, max_distance=None):
         mask = np.asarray(mask, dtype=bool)
         h, w = mask.shape
         visited = np.zeros_like(mask)
@@ -87,13 +90,21 @@ class DepthObjectDiscoverer:
                         and 0 <= nx < w
                         and mask[ny, nx]
                         and not visited[ny, nx]
+                        and (world is None or max_distance is None or
+                             np.linalg.norm(world[ny, nx]-world[cy, cx]) <= max_distance)
                     ):
                         visited[ny, nx] = True
                         stack.append((ny, nx))
             components.append((np.asarray(ys), np.asarray(xs)))
         return components
 
+    def is_spawnable(self, size):
+        size = np.asarray(size, float)
+        return bool(np.all(size >= self.spawn_min_extent) and np.all(size <= self.spawn_max_extent)
+                    and max(size)/max(min(size), 1e-6) <= self.spawn_compactness_ratio)
+
     def discover(self, frame: PerceptionFrame) -> list[ObjectCandidate]:
+        self.diagnostics = []
         depth = frame.depth
         valid = np.isfinite(depth) & (depth > 0)
         ys, xs = np.nonzero(valid)
@@ -133,26 +144,25 @@ class DepthObjectDiscoverer:
         )
 
         candidates = []
-        for cys, cxs in self._components(candidate_mask):
+        for cys, cxs in self._components(candidate_mask, world, self.component_neighbor_distance):
             n = len(cxs)
             if n < self.min_component_pixels or n > self.max_component_pixels:
+                self.diagnostics.append({"pixels": n, "rejected": "component_pixels"})
                 continue
 
             points = world[cys, cxs].astype(float)
-            lo = np.percentile(points, 2, axis=0)
-            hi = np.percentile(points, 98, axis=0)
-            top_z = float(np.percentile(points[:, 2], 98))
+            lo = np.percentile(points, .5, axis=0)
+            hi = np.percentile(points, 99.5, axis=0)
+            top_z = float(np.percentile(points[:, 2], 99.5))
             raw_z = max(float(hi[2] - lo[2]), 1e-6)
             supported = bool(
                 lo[2] <= self.support_plane_z + self.support_contact_tolerance
             )
 
-            if supported:
-                size_z = max(top_z - self.support_plane_z, raw_z)
-                center_z = self.support_plane_z + size_z / 2.0
-            else:
-                size_z = raw_z
-                center_z = (lo[2] + hi[2]) / 2.0
+            # Tabletop discovery uses the support prior even when the base is hidden.
+            # Visible z-span alone collapses to zero for a top-only cap/box view.
+            size_z = max(top_z - self.support_plane_z, raw_z)
+            center_z = self.support_plane_z + size_z / 2.0
 
             size = np.array([
                 max(float(hi[0] - lo[0]), 1e-6),
@@ -160,6 +170,7 @@ class DepthObjectDiscoverer:
                 size_z,
             ])
             if np.max(size) > self.candidate_max_extent:
+                self.diagnostics.append({"pixels": n, "size": size.tolist(), "rejected": "candidate_extent"})
                 continue
 
             position = np.array([
@@ -169,12 +180,10 @@ class DepthObjectDiscoverer:
             ])
             min_extent = max(float(np.min(size)), 1e-6)
             compactness = float(np.max(size) / min_extent)
-            spawnable = bool(
-                np.all(size >= self.spawn_min_extent)
-                and np.all(size <= self.spawn_max_extent)
-                and compactness <= self.spawn_compactness_ratio
-            )
+            spawnable = self.is_spawnable(size)
 
+            self.diagnostics.append({"pixels": n, "size": size.tolist(), "spawnable": spawnable,
+                                     "rejected": None if spawnable else "spawn_size_or_aspect"})
             mask = np.zeros((h, w), dtype=bool)
             mask[cys, cxs] = True
             confidence = min(1.0, n / max(self.min_component_pixels * 4, 1))
@@ -189,6 +198,8 @@ class DepthObjectDiscoverer:
                         "component_pixels": n,
                         "compactness": compactness,
                         "supported": supported,
+                        "support_assumed": not supported,
+                        "support_plane_z": self.support_plane_z,
                         "points": points,
                     },
                 )

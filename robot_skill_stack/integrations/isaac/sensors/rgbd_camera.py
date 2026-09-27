@@ -20,3 +20,9 @@ class IsaacRgbdCamera:
         p,q=self.camera.get_world_pose(camera_axes="world"); return np.asarray(p),np.asarray(q)
     def image_points_to_world(self,pixels,depth): return np.asarray(self.camera.get_world_points_from_image_coords(np.asarray(pixels,dtype=np.float32),np.asarray(depth,dtype=np.float32)))
     def get_world_from_camera_transform(self): return np.linalg.inv(np.asarray(self.camera.get_view_matrix_ros()))
+    def get_frame_token(self):
+        frame = self.camera.get_current_frame()
+        number = frame.get("rendering_frame")
+        if number is None:
+            return None
+        return (str(number), str(frame.get("rendering_time")))

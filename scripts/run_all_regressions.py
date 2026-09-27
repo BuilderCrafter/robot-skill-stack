@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
@@ -10,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT_ROOT = ROOT / "outputs"
 STEPS = [
     ("architecture", [sys.executable, str(ROOT / "scripts" / "check_architecture.py")]),
+    ("primitives", [sys.executable, str(ROOT / "scripts" / "run_primitive_perception_suite.py")]),
     ("perception_v1", [sys.executable, str(ROOT / "scripts" / "run_perception_v1_suite.py")]),
     ("phase_a", [sys.executable, str(ROOT / "scripts" / "run_phase_a_suite.py")]),
     ("phase_b", [sys.executable, str(ROOT / "scripts" / "run_phase_b_suite.py")]),
@@ -18,12 +20,17 @@ STEPS = [
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--unit-only", action="store_true", help="Skip Isaac-only integration/regression suites")
+    args = parser.parse_args()
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     run_dir = OUT_ROOT / "lower_level_regressions" / stamp
     run_dir.mkdir(parents=True, exist_ok=True)
     summary = {"status": "PASS", "steps": {}}
 
     for name, command in STEPS:
+        if args.unit_only and name not in {"architecture", "primitives"}:
+            continue
         print(f"\n===== {name} =====")
         result = subprocess.run(command, cwd=ROOT)
         summary["steps"][name] = {"return_code": result.returncode}

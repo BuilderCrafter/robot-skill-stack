@@ -32,6 +32,7 @@ spawn_min_extent = 0.02
 spawn_max_extent = 0.12
 spawn_compactness_ratio = 3.50
 support_contact_tolerance = 0.015
+component_neighbor_distance = 0.02
 
 [perception.tracking]
 max_distance = 0.18
@@ -52,3 +53,4 @@ cube_max_size = 0.10
 classification_threshold = 0.58
 ambiguity_margin = 0.07
 top_band = 0.15
+fit_tolerance = 0.0008

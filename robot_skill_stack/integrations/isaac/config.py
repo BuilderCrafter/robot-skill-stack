@@ -45,9 +45,10 @@ class DiscoveryConfig:
     max_component_pixels: int = 30000
     candidate_max_extent: float = 0.18
     spawn_min_extent: float = 0.02
-    spawn_max_extent: float = 0.10
-    spawn_compactness_ratio: float = 1.60
+    spawn_max_extent: float = 0.12
+    spawn_compactness_ratio: float = 3.50
     support_contact_tolerance: float = 0.015
+    component_neighbor_distance: float = 0.02
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,7 @@ class PrimitiveConfig:
     classification_threshold: float = 0.58
     ambiguity_margin: float = 0.07
     top_band: float = 0.15
+    fit_tolerance: float = 0.0008
 
 
 @dataclass(frozen=True)
@@ -152,9 +154,10 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             max_component_pixels=int(d.get("max_component_pixels", 30000)),
             candidate_max_extent=float(d.get("candidate_max_extent", 0.18)),
             spawn_min_extent=float(d.get("spawn_min_extent", 0.02)),
-            spawn_max_extent=float(d.get("spawn_max_extent", 0.10)),
-            spawn_compactness_ratio=float(d.get("spawn_compactness_ratio", 1.60)),
+            spawn_max_extent=float(d.get("spawn_max_extent", 0.12)),
+            spawn_compactness_ratio=float(d.get("spawn_compactness_ratio", 3.50)),
             support_contact_tolerance=float(d.get("support_contact_tolerance", 0.015)),
+            component_neighbor_distance=float(d.get("component_neighbor_distance", 0.02)),
         ),
         tracking=TrackingConfig(
             max_distance=float(t.get("max_distance", 0.18)),
@@ -167,6 +170,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             classification_threshold=float(pr.get("classification_threshold", .58)),
             ambiguity_margin=float(pr.get("ambiguity_margin", .07)),
             top_band=float(pr.get("top_band", .15)),
+            fit_tolerance=float(pr.get("fit_tolerance", .0008)),
         ),
         semantics=SemanticConfig(
             window_size=int(s.get("window_size", 7)),

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 
 from robot_skill_stack.world.model.world_model import WorldModel
 
@@ -16,6 +17,7 @@ class WorldObjectView:
     source: str | None
     held: bool
     primitive: str | None = None
+    primitive_detail: str | None = None
 
     def signature(self):
         def rounded(values):
@@ -30,7 +32,22 @@ class WorldObjectView:
             None if self.confidence is None else round(self.confidence, 3),
             self.held,
             self.primitive,
+            self.primitive_detail,
         )
+
+
+def primitive_detail(geometry):
+    if geometry is None:
+        return None
+    shape = geometry.shape.value
+    if shape == "cube" and geometry.yaw is not None:
+        return f"cube yaw {math.degrees(geometry.yaw):.1f}°"
+    if shape == "sphere" and geometry.radius is not None:
+        return f"sphere r {geometry.radius:.3f}"
+    if shape == "cylinder" and geometry.axis is not None and geometry.radius is not None and geometry.length is not None:
+        axis = " ".join(f"{v:.2f}" for v in geometry.axis)
+        return f"axis [{axis}] r {geometry.radius:.3f} L {geometry.length:.3f}"
+    return shape
 
 
 class WorldModelViewModel:
@@ -64,6 +81,7 @@ class WorldModelViewModel:
                     source=obj.source,
                     held=self.world_model.held_object_id == obj.object_id,
                     primitive=None if obj.geometry is None else obj.geometry.shape.value,
+                    primitive_detail=primitive_detail(obj.geometry),
                 )
             )
         return tuple(rows)

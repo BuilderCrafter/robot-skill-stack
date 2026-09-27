@@ -28,8 +28,24 @@ class WorldModelUpdater:
             observations,
             mark_missing_invisible=True,
         )
-        self.world_model.expire_stale()
+        self.cleanup()
         return observations
+
+    def cleanup(self, now=None):
+        age = getattr(self.provider, "age", None)
+        if age is not None:
+            for object_id in age(now=now, context=self.world_model.observation_context()):
+                obj = self.world_model.get(object_id)
+                if obj is not None:
+                    obj.visible = False
+        return self.world_model.expire_stale(now=now, forget=getattr(self.provider, "forget", None))
+
+    def clear_lost(self):
+        forget = getattr(self.provider, "forget", None)
+        if forget is None:
+            return ()
+        self.cleanup()
+        return self.world_model.clear_lost(forget)
 
     def tick(self, step_size: float):
         if self._period is None:
@@ -37,6 +53,7 @@ class WorldModelUpdater:
 
         self._elapsed += float(step_size)
         if self._elapsed < self._period - 1e-9:
+            self.cleanup()
             return None
 
         self._elapsed = max(0.0, self._elapsed - self._period)

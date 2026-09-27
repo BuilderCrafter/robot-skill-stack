@@ -23,6 +23,7 @@ class ObjectTrack:
     association_hint_reason: str | None = None
     geometry: object | None = None
     confirmed: bool = False
+    consecutive_hits: int = 1
 
     @property
     def visible(self):
@@ -49,6 +50,7 @@ class ObjectTracker:
         semantic_min_samples=3,
         semantic_threshold=0.70,
         min_confirm_hits=3,
+        stale_track_ttl=None,
     ):
         self.max_distance = float(max_distance)
         self.max_size_ratio = float(max_size_ratio)
@@ -58,6 +60,9 @@ class ObjectTracker:
         self.semantic_min_samples = int(semantic_min_samples)
         self.semantic_threshold = float(semantic_threshold)
         self.min_confirm_hits = int(min_confirm_hits)
+        self.stale_track_ttl = None if stale_track_ttl is None else float(stale_track_ttl)
+        if self.min_confirm_hits < 1 or (self.stale_track_ttl is not None and self.stale_track_ttl <= 0):
+            raise ValueError("invalid track confirmation/expiry settings")
         self._tracks: dict[str, ObjectTrack] = {}
         self._next_id = 1
 
@@ -114,8 +119,9 @@ class ObjectTracker:
         track.frame_id = frame_id
         track.mask = candidate.mask.copy()
         track.hits += 1
-        track.confirmed = track.hits >= self.min_confirm_hits
-        if candidate.metadata.get("geometry") is not None:
+        track.consecutive_hits = 1 if track.misses else track.consecutive_hits + 1
+        track.confirmed = track.confirmed or track.consecutive_hits >= self.min_confirm_hits
+        if candidate.spawnable and candidate.metadata.get("geometry") is not None:
             track.geometry = candidate.metadata["geometry"]
         track.misses = 0
         track.matched_by_hint = hint_reason is not None
@@ -138,7 +144,7 @@ class ObjectTracker:
         hints = ()
         held_object_id = None
         if context is not None:
-            hints = context.association_hints
+            hints = tuple(h for h in context.association_hints if h.expires_at > timestamp)
             held_object_id = context.held_object_id
 
         track_index = {
@@ -211,7 +217,7 @@ class ObjectTracker:
                 if candidate.spawnable:
                     if size_ratio > self.max_size_ratio:
                         continue
-                elif distance > self.occlusion_distance:
+                elif distance > self.occlusion_distance or size_ratio > .5:
                     continue
 
                 score = (
@@ -260,13 +266,34 @@ class ObjectTracker:
         expired = [
             object_id
             for object_id, track in self._tracks.items()
-            if track.misses > self.max_misses
-            and object_id not in protected
+            if self._expired(track, timestamp) and object_id not in protected
         ]
         for object_id in expired:
             del self._tracks[object_id]
 
         return self.tracks()
+
+    def _expired(self, track, now):
+        if track.confirmed and self.stale_track_ttl is not None:
+            return not track.visible and now-track.last_seen >= self.stale_track_ttl
+        return track.misses > self.max_misses
+
+    def age(self, now, stale_after, context=None):
+        protected = set()
+        if context is not None:
+            protected = {context.held_object_id, *(h.object_id for h in context.association_hints if h.expires_at > now)}
+        invisible = []
+        for track in self.tracks():
+            if now-track.last_seen >= stale_after:
+                track.misses = max(track.misses, 1)
+                track.frame_id = track.mask = None
+            if not track.visible:
+                invisible.append(track.object_id)
+            if track.object_id not in protected and (
+                self._expired(track, now) or (not track.confirmed and now-track.last_seen >= stale_after)
+            ):
+                self.forget(track.object_id)
+        return tuple(invisible)
 
     def tracks(self):
         return tuple(self._tracks.values())

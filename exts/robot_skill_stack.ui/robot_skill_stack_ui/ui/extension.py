@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime
 import sys
 from pathlib import Path
 
@@ -30,6 +31,7 @@ from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recover
     create_pick_and_place_recovery_tree,
 )
 from robot_skill_stack.presentation import WorldModelViewModel
+from robot_skill_stack.world.perception.diagnostics import save_capture
 
 
 class RobotSkillStackExtension(omni.ext.IExt):
@@ -151,7 +153,9 @@ class RobotSkillStackExtension(omni.ext.IExt):
                         height=155,
                         build_fn=self._build_object_rows,
                     )
-                    ui.Button("Clear Lost", clicked_fn=self._clear_lost_clicked, height=24)
+                    with ui.HStack(height=24, spacing=5):
+                        ui.Button("Clear Lost", clicked_fn=self._clear_lost_clicked)
+                        ui.Button("Capture", clicked_fn=self._capture_perception_clicked, width=88)
 
                     ui.Separator()
                     with ui.HStack(height=26, spacing=5):
@@ -223,13 +227,8 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 )
                 ui.Label(
                     f"p {self._fmt_vec(row.position)}   s {self._fmt_vec(row.size)}", height=17)
-                obj = self.bundle.world_model.get(row.object_id) if self.bundle else None
-                if obj is not None and obj.geometry is not None:
-                    g=obj.geometry; detail=g.shape.value
-                    if g.yaw is not None: detail += f" yaw {np.degrees(g.yaw):.0f}°"
-                    elif g.shape.value == "sphere" and g.radius is not None: detail += f" r {g.radius:.3f}"
-                    elif g.shape.value == "cylinder": detail += f" axis {self._fmt_vec(g.axis)} r {g.radius:.3f} L {g.length:.3f}"
-                    ui.Label(detail, height=17)
+                if row.primitive_detail is not None:
+                    ui.Label(row.primitive_detail, height=17)
 
     @staticmethod
     def _fmt_vec(values):
@@ -337,9 +336,24 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _clear_lost_clicked(self):
         if self.bundle is None or self.bundle.config.world.provider != "perception":
             self._set_status("Clear Lost is available for perception objects only."); return
-        removed=self.bundle.world_model.clear_lost(getattr(self.bundle.state_provider,"forget",None))
+        if self.busy:
+            self._set_status("Wait for the current operation to finish."); return
+        removed=self.bundle.world_updater.clear_lost()
         self._set_status(f"Cleared {len(removed)} lost object(s).")
         self._object_signature=None; self._refresh(force=True)
+
+    def _capture_perception_clicked(self):
+        if self.bundle is None or self.bundle.config.world.provider != "perception":
+            self._set_status("Capture is available for perception only.")
+            return
+        try:
+            stamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+            path = save_capture(self.bundle.state_provider, ROOT / "outputs" / "perception" / f"capture_{stamp}.npz")
+            self._set_status(f"Saved {path.name} in outputs/perception.")
+            carb.log_info(f"[robot_skill_stack.ui] perception capture: {path}")
+        except Exception as exc:
+            self._set_status(f"Capture failed: {exc}")
+            carb.log_error(f"[robot_skill_stack.ui] capture failed: {exc}")
 
     def _select_object(self, object_id):
         if self.view_model is None:
@@ -531,6 +545,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.ee.text = "EE: -"
             return
 
+        self.bundle.world_updater.cleanup()
         self.view_model.ensure_selection()
         signature = self.view_model.signature()
         if force or signature != self._object_signature:
