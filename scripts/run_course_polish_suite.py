@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNNER = ROOT / "run_isaac_python.sh"
 OUT_ROOT = ROOT / "outputs"
 TESTS = [
+    ("async_runtime", ROOT / "tests" / "unit" / "test_async_runtime.py", False),
     ("placement_unit", ROOT / "tests" / "unit" / "test_placement.py", False),
     ("world_model_view", ROOT / "tests" / "unit" / "test_world_model_view.py", False),
     (
