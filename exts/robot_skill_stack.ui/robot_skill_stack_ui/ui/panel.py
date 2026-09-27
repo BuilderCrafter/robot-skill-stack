@@ -187,7 +187,7 @@ class ControlPanel:
             self.selection_frame.rebuild()
         if rebuild:
             # Lazy Frames build only when visible: reserve content height BEFORE rebuilding.
-            self.object_frame.height = self._cards_height()
+            self.object_frame.height = ui.Pixel(self._cards_height())
             self.object_frame.rebuild()
             if not rows:
                 self.object_scroll.scroll_y = 0.0

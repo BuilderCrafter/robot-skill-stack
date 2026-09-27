@@ -18,7 +18,7 @@ from robot_skill_stack.runtime.skill import FailureCode, SkillResult, SkillStatu
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 from robot_skill_stack.world.model.world_model import WorldModel
-from tests.support.fake_omni_ui import EXT, ROOT, extension_environment
+from tests.support.fake_omni_ui import EXT, ROOT, RecordingUI, extension_environment
 
 
 def object_(object_id='object_1', shape=PrimitiveShape.CUBE, visible=True):
@@ -512,7 +512,7 @@ class WorldModelLayoutTests(unittest.TestCase):
         frame = self.ui.Frame(height=0, build_fn=callback)
         self.ui.draw_cycle()
         callback.assert_not_called()
-        frame.height = 94
+        frame.height = self.ui.Pixel(94)
         self.ui.draw_cycle()
         callback.assert_called_once_with()
 
@@ -541,6 +541,75 @@ class WorldModelLayoutTests(unittest.TestCase):
         self.assertEqual(self.panel.buttons['profile'].width, 30)
         for key in ('pick', 'place', 'home'):
             self.assertEqual(self.panel.buttons[key].style, {})
+
+
+    def test_world_model_height_stays_pixel_through_count_changes(self):
+        bundle = self.bind()
+        for count in (1, 4, 1, 0):
+            with self.subTest(count=count):
+                for i in range(1, 5):
+                    object_id = f'object_{i}'
+                    if i <= count and not bundle.world_model.exists(object_id):
+                        bundle.world_model.register(object_(object_id))
+                    elif i > count and bundle.world_model.exists(object_id):
+                        bundle.world_model.remove(object_id)
+                self.c._refresh(force=True)
+                self.assertIsInstance(self.panel.object_frame.height, self.ui.Pixel)
+                self.assertEqual(float(self.panel.object_frame.height), self.panel._cards_height())
+                self.ui.draw_cycle()
+                self.assertEqual(len(self.cards()), count)
+
+    def test_update_tick_builds_cards_without_interrupting_operation_status(self):
+        self.c.bundle = bundle_()
+        self.c.view_model = WorldModelViewModel(self.c.bundle.world_model)
+        self.c.busy = True
+        self.c._set_status('Running pick...')
+        event = SimpleNamespace(payload={'dt': .25})
+        self.c._on_update(event)
+        self.ui.draw_cycle()
+        self.assertEqual(len(self.cards()), 1)
+        self.assertEqual(self.panel.status.text, 'Running pick...')
+        self.assertEqual(self.panel.status_detail.text, 'Operation in progress')
+        self.assertFalse(self.panel.buttons['pick'].enabled)
+        self.c.busy = False
+        self.c._on_update(event)
+        self.assertEqual(self.panel.status_detail.text, 'No active operation')
+        self.assertTrue(self.panel.buttons['pick'].enabled)
+
+
+class LengthContractTests(unittest.TestCase):
+    def setUp(self):
+        self.ui = RecordingUI(defer_builds=True)
+
+    def test_numeric_constructor_sizes_are_converted_to_pixels(self):
+        frame = self.ui.Frame(width=200, height=94)
+        self.assertIsInstance(frame.width, self.ui.Pixel)
+        self.assertIsInstance(frame.height, self.ui.Pixel)
+        self.assertEqual((float(frame.width), float(frame.height)), (200, 94))
+
+    def test_widget_setters_reject_raw_scalars_and_preserve_previous_size(self):
+        frame = self.ui.Frame(width=200, height=94)
+        for name in ('height', 'width'):
+            before = getattr(frame, name)
+            for value in (0, 128, 128.0):
+                with self.subTest(property=name, value=value):
+                    with self.assertRaisesRegex(TypeError, 'expects omni.ui.Length'):
+                        setattr(frame, name, value)
+                    self.assertIs(getattr(frame, name), before)
+
+    def test_widget_setters_accept_explicit_lengths(self):
+        frame = self.ui.Frame(width=200, height=94)
+        for name in ('height', 'width'):
+            for value in (self.ui.Pixel(128), self.ui.Fraction(1)):
+                with self.subTest(property=name, length_type=type(value).__name__):
+                    setattr(frame, name, value)
+                    self.assertIsInstance(getattr(frame, name), self.ui.Length)
+                    self.assertIs(getattr(frame, name), value)
+
+    def test_window_dimensions_still_accept_scalars(self):
+        window = self.ui.Window('Window dimensions are not Widget lengths', width=400, height=300)
+        window.width, window.height = 500, 350
+        self.assertEqual((window.width, window.height), (500, 350))
 
 
 if __name__ == '__main__':

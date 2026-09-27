@@ -41,7 +41,15 @@ class ComboModel:
     def get_item_value_model(self): return self.value
 
 
-class Fraction(float):
+class Length(float):
+    """Test-only numeric storage; native widget setters require a Length object."""
+
+
+class Pixel(Length):
+    pass
+
+
+class Fraction(Length):
     pass
 
 
@@ -54,7 +62,7 @@ class RecordingUI(ModuleType):
         self.ScrollBarPolicy = SimpleNamespace(SCROLLBAR_ALWAYS_OFF=0, SCROLLBAR_AS_NEEDED=1)
         self.FillPolicy = SimpleNamespace(PRESERVE_ASPECT_FIT=0)
         self.Direction = SimpleNamespace(TOP_TO_BOTTOM=0, LEFT_TO_RIGHT=1)
-        self.Fraction = Fraction
+        self.Length, self.Pixel, self.Fraction = Length, Pixel, Fraction
         for kind in ('Window', 'Frame', 'HStack', 'VStack', 'ZStack', 'ScrollingFrame', 'Spacer',
                      'Label', 'Rectangle', 'Button', 'Circle', 'Image', 'Separator', 'FloatField',
                      'StringField', 'ComboBox'):
@@ -101,13 +109,23 @@ class Widget:
         if self.parent:
             self.parent.children.append(self)
         ui.nodes.append(self)
-        self.__dict__.update(kwargs)
+        # Constructor keywords accept scalars; later property assignments do not.
+        for name, value in kwargs.items():
+            if name in ('height', 'width') and kind != 'Window' and not isinstance(value, Length):
+                value = Pixel(value)
+            setattr(self, name, value)
         self.build_fn = kwargs.get('build_fn')
         if kind == 'Window':
             with self:
                 self.frame = ui.Frame()
         if self.build_fn:
             self.rebuild()
+
+    def __setattr__(self, name, value):
+        if (name in ('height', 'width') and getattr(self, 'kind', 'Window') != 'Window'
+                and not isinstance(value, Length)):
+            raise TypeError(f'{name} setter expects omni.ui.Length; got {type(value).__name__}: {value!r}')
+        object.__setattr__(self, name, value)
 
     def __enter__(self):
         self.ui.stack.append(self)
