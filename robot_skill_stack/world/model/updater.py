@@ -28,6 +28,7 @@ class WorldModelUpdater:
             observations,
             mark_missing_invisible=True,
         )
+        self.world_model.expire_stale()
         return observations
 
     def tick(self, step_size: float):

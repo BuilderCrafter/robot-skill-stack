@@ -43,8 +43,8 @@ class DepthObjectDiscoverer:
         max_component_pixels=30000,
         candidate_max_extent=0.18,
         spawn_min_extent=0.02,
-        spawn_max_extent=0.10,
-        spawn_compactness_ratio=1.60,
+        spawn_max_extent=0.12,
+        spawn_compactness_ratio=3.50,
         support_contact_tolerance=0.015,
     ):
         self.localizer = localizer
@@ -189,6 +189,7 @@ class DepthObjectDiscoverer:
                         "component_pixels": n,
                         "compactness": compactness,
                         "supported": supported,
+                        "points": points,
                     },
                 )
             )

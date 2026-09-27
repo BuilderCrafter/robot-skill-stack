@@ -8,6 +8,7 @@ from pxr import Usd, UsdGeom
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
+from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 
 
 class IsaacGroundTruthProvider:
@@ -77,6 +78,23 @@ class IsaacGroundTruthProvider:
         return size if np.all(np.isfinite(size)) else None
 
     @staticmethod
+    def _geometry(class_name, pose, size):
+        name=(class_name or "").lower()
+        if size is None: return None
+        if name in ("cube","box"):
+            q=pose.orientation; yaw=np.arctan2(2*(q[0]*q[3]+q[1]*q[2]),1-2*(q[2]**2+q[3]**2)) if q is not None else 0.
+            return PrimitiveGeometry(PrimitiveShape.CUBE,1.,box_size=size,yaw=float(yaw%(np.pi/2)))
+        if name=="sphere": return PrimitiveGeometry(PrimitiveShape.SPHERE,1.,radius=float(np.mean(size)/2))
+        if name=="cylinder":
+            q=pose.orientation
+            if q is None: axis=np.array([0.,0.,1.])
+            else:
+                w,x,y,z=q; axis=np.array([2*(x*z+w*y),2*(y*z-w*x),1-2*(x*x+y*y)])
+            axis=axis/max(np.linalg.norm(axis),1e-9); length=float(size[np.argmax(np.abs(axis))]); radius=float(np.median(np.delete(size,np.argmax(np.abs(axis))))/2)
+            return PrimitiveGeometry(PrimitiveShape.CYLINDER,1.,axis=axis,radius=radius,length=length)
+        return PrimitiveGeometry(PrimitiveShape.UNKNOWN,1.)
+
+    @staticmethod
     def _graspable(prim, cfg):
         if cfg is not None:
             return cfg.graspable
@@ -89,12 +107,14 @@ class IsaacGroundTruthProvider:
             object_id = self._object_id(prim)
             cfg = self.object_configs.get(object_id)
 
+            class_name=self._class_name(prim, object_id); pose=self._pose(prim); size=self._size(prim, cfg)
             observations.append(
                 ObjectObservation(
                     object_id=object_id,
-                    class_name=self._class_name(prim, object_id),
-                    pose=self._pose(prim),
-                    size=self._size(prim, cfg),
+                    class_name=class_name,
+                    pose=pose,
+                    size=size,
+                    geometry=self._geometry(class_name, pose, size),
                     graspable=self._graspable(prim, cfg),
                     visible=True,
                     confidence=1.0,

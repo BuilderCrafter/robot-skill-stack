@@ -15,6 +15,7 @@ class WorldObjectView:
     confidence: float | None
     source: str | None
     held: bool
+    primitive: str | None = None
 
     def signature(self):
         def rounded(values):
@@ -28,6 +29,7 @@ class WorldObjectView:
             rounded(self.size),
             None if self.confidence is None else round(self.confidence, 3),
             self.held,
+            self.primitive,
         )
 
 
@@ -61,6 +63,7 @@ class WorldModelViewModel:
                     confidence=obj.confidence,
                     source=obj.source,
                     held=self.world_model.held_object_id == obj.object_id,
+                    primitive=None if obj.geometry is None else obj.geometry.shape.value,
                 )
             )
         return tuple(rows)

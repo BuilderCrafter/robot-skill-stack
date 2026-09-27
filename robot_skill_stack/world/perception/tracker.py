@@ -21,6 +21,8 @@ class ObjectTrack:
     misses: int = 0
     matched_by_hint: bool = False
     association_hint_reason: str | None = None
+    geometry: object | None = None
+    confirmed: bool = False
 
     @property
     def visible(self):
@@ -46,6 +48,7 @@ class ObjectTracker:
         semantic_window=7,
         semantic_min_samples=3,
         semantic_threshold=0.70,
+        min_confirm_hits=3,
     ):
         self.max_distance = float(max_distance)
         self.max_size_ratio = float(max_size_ratio)
@@ -54,6 +57,7 @@ class ObjectTracker:
         self.semantic_window = int(semantic_window)
         self.semantic_min_samples = int(semantic_min_samples)
         self.semantic_threshold = float(semantic_threshold)
+        self.min_confirm_hits = int(min_confirm_hits)
         self._tracks: dict[str, ObjectTrack] = {}
         self._next_id = 1
 
@@ -78,6 +82,8 @@ class ObjectTracker:
             frame_id=frame_id,
             mask=candidate.mask.copy(),
             belief=belief,
+            geometry=candidate.metadata.get("geometry"),
+            confirmed=self.min_confirm_hits <= 1,
         )
         self._tracks[object_id] = track
         return track
@@ -108,6 +114,9 @@ class ObjectTracker:
         track.frame_id = frame_id
         track.mask = candidate.mask.copy()
         track.hits += 1
+        track.confirmed = track.hits >= self.min_confirm_hits
+        if candidate.metadata.get("geometry") is not None:
+            track.geometry = candidate.metadata["geometry"]
         track.misses = 0
         track.matched_by_hint = hint_reason is not None
         track.association_hint_reason = hint_reason
@@ -261,6 +270,9 @@ class ObjectTracker:
 
     def tracks(self):
         return tuple(self._tracks.values())
+
+    def forget(self, object_id):
+        return self._tracks.pop(object_id, None)
 
     def get(self, object_id):
         return self._tracks.get(object_id)

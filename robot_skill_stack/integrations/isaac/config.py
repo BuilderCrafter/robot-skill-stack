@@ -19,6 +19,7 @@ class WorldConfig:
     objects_root: str = "/World/Objects"
     provider: str = "ground_truth"
     update_hz: float | None = None
+    stale_object_ttl: float = 15.0
 
 
 @dataclass(frozen=True)
@@ -55,6 +56,15 @@ class TrackingConfig:
     max_size_ratio: float = 1.50
     max_misses: int = 30
     occlusion_distance: float = 0.12
+    min_confirm_hits: int = 3
+
+
+
+@dataclass(frozen=True)
+class PrimitiveConfig:
+    classification_threshold: float = 0.58
+    ambiguity_margin: float = 0.07
+    top_band: float = 0.15
 
 
 @dataclass(frozen=True)
@@ -74,6 +84,7 @@ class PerceptionConfig:
     discovery: DiscoveryConfig = field(default_factory=DiscoveryConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
     semantics: SemanticConfig = field(default_factory=SemanticConfig)
+    primitives: PrimitiveConfig = field(default_factory=PrimitiveConfig)
 
 
 @dataclass(frozen=True)
@@ -108,6 +119,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         objects_root=w.get("objects_root", "/World/Objects"),
         provider=w.get("provider", "ground_truth"),
         update_hz=None if update_hz is None else float(update_hz),
+        stale_object_ttl=float(w.get("stale_object_ttl", 15.0)),
     )
 
     objects = {}
@@ -125,6 +137,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
     d = p.get("discovery", {})
     t = p.get("tracking", {})
     s = p.get("semantics", {})
+    pr = p.get("primitives", {})
 
     perception = PerceptionConfig(
         camera_prim_path=p.get("camera_prim_path"),
@@ -148,6 +161,12 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             max_size_ratio=float(t.get("max_size_ratio", 1.50)),
             max_misses=int(t.get("max_misses", 30)),
             occlusion_distance=float(t.get("occlusion_distance", 0.12)),
+            min_confirm_hits=int(t.get("min_confirm_hits", 3)),
+        ),
+        primitives=PrimitiveConfig(
+            classification_threshold=float(pr.get("classification_threshold", .58)),
+            ambiguity_margin=float(pr.get("ambiguity_margin", .07)),
+            top_band=float(pr.get("top_band", .15)),
         ),
         semantics=SemanticConfig(
             window_size=int(s.get("window_size", 7)),

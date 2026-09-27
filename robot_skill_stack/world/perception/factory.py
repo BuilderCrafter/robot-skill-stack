@@ -4,6 +4,7 @@ from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
 from robot_skill_stack.world.perception.semantics import CubeGeometryClassifier
 from robot_skill_stack.world.perception.provider import PerceptionStateProvider
+from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
 from robot_skill_stack.world.perception.tracker import ObjectTracker
 
 
@@ -36,6 +37,7 @@ def build_perception_provider(camera, config):
         semantic_window=s.window_size,
         semantic_min_samples=s.min_samples,
         semantic_threshold=s.assignment_threshold,
+        min_confirm_hits=t.min_confirm_hits,
     )
     classifier = CubeGeometryClassifier(
         ratio_max=s.cube_ratio_max,
@@ -48,4 +50,5 @@ def build_perception_provider(camera, config):
         discoverer,
         tracker,
         classifier,
+        PrimitiveEstimator(config.perception.primitives.classification_threshold, config.perception.primitives.ambiguity_margin, config.perception.primitives.top_band),
     )

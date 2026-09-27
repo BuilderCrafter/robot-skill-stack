@@ -151,6 +151,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
                         height=155,
                         build_fn=self._build_object_rows,
                     )
+                    ui.Button("Clear Lost", clicked_fn=self._clear_lost_clicked, height=24)
 
                     ui.Separator()
                     with ui.HStack(height=26, spacing=5):
@@ -221,10 +222,14 @@ class RobotSkillStackExtension(omni.ext.IExt):
                     height=23,
                 )
                 ui.Label(
-                    f"p {self._fmt_vec(row.position)}   "
-                    f"s {self._fmt_vec(row.size)}",
-                    height=17,
-                )
+                    f"p {self._fmt_vec(row.position)}   s {self._fmt_vec(row.size)}", height=17)
+                obj = self.bundle.world_model.get(row.object_id) if self.bundle else None
+                if obj is not None and obj.geometry is not None:
+                    g=obj.geometry; detail=g.shape.value
+                    if g.yaw is not None: detail += f" yaw {np.degrees(g.yaw):.0f}°"
+                    elif g.shape.value == "sphere" and g.radius is not None: detail += f" r {g.radius:.3f}"
+                    elif g.shape.value == "cylinder": detail += f" axis {self._fmt_vec(g.axis)} r {g.radius:.3f} L {g.length:.3f}"
+                    ui.Label(detail, height=17)
 
     @staticmethod
     def _fmt_vec(values):
@@ -328,6 +333,13 @@ class RobotSkillStackExtension(omni.ext.IExt):
         finally:
             self.busy = False
             self._refresh(force=True)
+
+    def _clear_lost_clicked(self):
+        if self.bundle is None or self.bundle.config.world.provider != "perception":
+            self._set_status("Clear Lost is available for perception objects only."); return
+        removed=self.bundle.world_model.clear_lost(getattr(self.bundle.state_provider,"forget",None))
+        self._set_status(f"Cleared {len(removed)} lost object(s).")
+        self._object_signature=None; self._refresh(force=True)
 
     def _select_object(self, object_id):
         if self.view_model is None:

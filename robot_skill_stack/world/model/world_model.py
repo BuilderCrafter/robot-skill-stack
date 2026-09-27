@@ -11,13 +11,26 @@ from robot_skill_stack.world.model.observations import ObjectObservation
 
 
 class WorldModel:
-    def __init__(self):
+    def __init__(self, *, stale_object_ttl=15.0):
         self._objects: dict[str, WorldObject] = {}
         self._association_hints: dict[str, AssociationHint] = {}
         self.held_object_id: str | None = None
+        self.stale_object_ttl = float(stale_object_ttl)
 
     def register(self, obj: WorldObject) -> None:
         self._objects[obj.object_id] = obj
+
+    def remove(self, object_id: str) -> bool:
+        if object_id == self.held_object_id or object_id in self._association_hints: return False
+        return self._objects.pop(object_id, None) is not None
+
+    def clear_lost(self, forget=None) -> tuple[str, ...]:
+        removed=[]
+        for obj in list(self._objects.values()):
+            if obj.visible or obj.object_id == self.held_object_id or obj.object_id in self._association_hints: continue
+            if forget is not None: forget(obj.object_id)
+            if self.remove(obj.object_id): removed.append(obj.object_id)
+        return tuple(removed)
 
     def exists(self, object_id: str) -> bool:
         return object_id in self._objects
@@ -115,6 +128,7 @@ class WorldModel:
                     class_name=obs.class_name,
                     pose=obs.pose,
                     size=obs.size,
+                    geometry=obs.geometry,
                     graspable=True if obs.graspable is None else obs.graspable,
                 )
                 self.register(obj)
@@ -128,6 +142,8 @@ class WorldModel:
                 obj.pose = obs.pose
             if obs.size is not None:
                 obj.size = obs.size.copy()
+            if obs.geometry is not None:
+                obj.geometry = obs.geometry
             if obs.graspable is not None:
                 obj.graspable = obs.graspable
 
@@ -146,6 +162,14 @@ class WorldModel:
             for object_id, obj in self._objects.items():
                 if object_id not in seen:
                     obj.visible = False
+
+    def expire_stale(self, now=None) -> tuple[str, ...]:
+        now=time.monotonic() if now is None else float(now); protected={h.object_id for h in self.association_hints()}
+        removed=[]
+        for obj in list(self._objects.values()):
+            if obj.visible or obj.object_id==self.held_object_id or obj.object_id in protected or obj.last_seen is None: continue
+            if now-obj.last_seen > self.stale_object_ttl and self.remove(obj.object_id): removed.append(obj.object_id)
+        return tuple(removed)
 
     def set_held(self, object_id: str | None) -> None:
         if object_id is not None and not self.exists(object_id):

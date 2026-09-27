@@ -17,6 +17,7 @@ class PerceptionStateProvider:
         discoverer,
         tracker,
         semantic_classifier,
+        primitive_estimator=None,
         *,
         source="rgbd_geometry_perception",
     ):
@@ -25,6 +26,7 @@ class PerceptionStateProvider:
         self.discoverer = discoverer
         self.tracker = tracker
         self.semantic_classifier = semantic_classifier
+        self.primitive_estimator = primitive_estimator
         self.source = source
         self._frame_id = 0
         self.geometry = ObjectGeometryService(localizer, tracker)
@@ -32,16 +34,19 @@ class PerceptionStateProvider:
     def _current_observations(self):
         observations = []
         for track in self.tracker.tracks():
+            if not track.confirmed:
+                continue
             observations.append(
                 ObjectObservation(
                     object_id=track.object_id,
-                    class_name=track.class_name,
+                    class_name=(None if track.geometry is None or track.geometry.shape.value == "unknown" else track.geometry.shape.value),
                     pose=Pose(
                         track.position.copy(),
                         orientation=None,
                         frame="world",
                     ),
                     size=track.size.copy(),
+                    geometry=track.geometry,
                     graspable=None,
                     visible=track.visible,
                     confidence=track.confidence,
@@ -85,6 +90,9 @@ class PerceptionStateProvider:
         )
 
         candidates = self.discoverer.discover(frame)
+        if self.primitive_estimator is not None:
+            for candidate in candidates:
+                candidate.metadata["geometry"] = self.primitive_estimator.estimate(candidate)
         predictions = [
             self.semantic_classifier.classify(candidate, frame.rgb)
             if self.semantic_classifier is not None
@@ -100,6 +108,9 @@ class PerceptionStateProvider:
         )
         self.geometry.update_frame(frame)
         return self._current_observations()
+
+    def forget(self, object_id: str):
+        return self.tracker.forget(object_id)
 
     def get_mask(self, object_id: str):
         return self.geometry.get_mask(object_id)

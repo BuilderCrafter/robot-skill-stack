@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import Any
 import numpy as np
 from robot_skill_stack.common.types import Pose
+from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 
 @dataclass
 class WorldObject:
@@ -10,6 +11,7 @@ class WorldObject:
     class_name: str | None = None
     pose: Pose | None = None
     size: np.ndarray | None = None
+    geometry: PrimitiveGeometry | None = None
     graspable: bool = True
     visible: bool = False
     confidence: float | None = None

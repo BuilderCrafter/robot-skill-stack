@@ -15,7 +15,7 @@ from robot_skill_stack.integrations.isaac.world.ground_truth_provider import Isa
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
 from robot_skill_stack.manipulation.grasping import (
     ParallelJawGripperSpec,
-    TopDownGraspPlanner,
+    SimplePrimitiveGraspPlanner,
 )
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
 from robot_skill_stack.world.perception.factory import build_perception_provider
@@ -167,7 +167,7 @@ async def build_runtime(
         await app.next_update_async()
 
     provider = await _create_state_provider(world, config)
-    model = WorldModel()
+    model = WorldModel(stale_object_ttl=config.world.stale_object_ttl)
     updater = WorldModelUpdater(
         model,
         provider,
@@ -186,7 +186,7 @@ async def build_runtime(
         max_home_steps=1000,
     )
 
-    planner = TopDownGraspPlanner(
+    planner = SimplePrimitiveGraspPlanner(
         approach_height=0.10,
         default_lift_height=0.12,
         grasp_z_offset=0.0,
