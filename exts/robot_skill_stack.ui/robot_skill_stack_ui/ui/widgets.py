@@ -13,6 +13,12 @@ def image(name, size=20, **kwargs):
 def button(text, callback, *, icon=None, **kwargs):
     if icon:
         kwargs.update(image_url=str(ICONS / f'{icon}.png'), image_width=18, image_height=18, spacing=8)
+        style = dict(kwargs.get('style', {}))
+        style['Button'] = {**style.get('Button', {}), 'stack_direction': ui.Direction.LEFT_TO_RIGHT}
+        style['Button.Image'] = {**style.get('Button.Image', {}), 'alignment': ui.Alignment.CENTER}
+        if text:
+            style['Button.Label'] = {**style.get('Button.Label', {}), 'alignment': ui.Alignment.LEFT_CENTER}
+        kwargs['style'] = style
     kwargs.setdefault('height', 30)
     return ui.Button(text, clicked_fn=callback, **kwargs)
 

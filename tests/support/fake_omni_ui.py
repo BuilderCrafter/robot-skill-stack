@@ -46,12 +46,14 @@ class Fraction(float):
 
 
 class RecordingUI(ModuleType):
-    def __init__(self):
+    def __init__(self, *, defer_builds=False):
         super().__init__('omni.ui')
+        self.defer_builds = defer_builds
         self.nodes, self.stack = [], []
         self.Alignment = SimpleNamespace(LEFT_CENTER=0, RIGHT_CENTER=1, CENTER=2)
         self.ScrollBarPolicy = SimpleNamespace(SCROLLBAR_ALWAYS_OFF=0, SCROLLBAR_AS_NEEDED=1)
         self.FillPolicy = SimpleNamespace(PRESERVE_ASPECT_FIT=0)
+        self.Direction = SimpleNamespace(TOP_TO_BOTTOM=0, LEFT_TO_RIGHT=1)
         self.Fraction = Fraction
         for kind in ('Window', 'Frame', 'HStack', 'VStack', 'ZStack', 'ScrollingFrame', 'Spacer',
                      'Label', 'Rectangle', 'Button', 'Circle', 'Image', 'Separator', 'FloatField',
@@ -67,12 +69,29 @@ class RecordingUI(ModuleType):
         return [node for node in self.nodes if not node.destroyed and (kind is None or node.kind == kind)
                 and all(getattr(node, k, None) == v for k, v in properties.items())]
 
+    def draw_cycle(self):
+        """Model deferred builds and zero-height rejection, NOT pixel layout or rendering."""
+        built = 0
+        for node in tuple(self.nodes):
+            if node.destroyed or not node._pending_build:
+                continue
+            ancestor, visible = node, True
+            while ancestor is not None:
+                if not ancestor.visible or (ancestor.kind == 'Frame' and getattr(ancestor, 'height', None) == 0):
+                    visible = False
+                    break
+                ancestor = ancestor.parent
+            if visible:
+                node._build()
+                built += 1
+        return built
+
 
 class Widget:
     def __init__(self, ui, kind, args, kwargs):
         self.ui, self.kind, self.args = ui, kind, args
         self.children, self.rebuilds = [], 0
-        self.destroyed = False
+        self.destroyed = self._pending_build = False
         self._visible, self.visibility_callback = True, None
         self.enabled, self.style, self.tooltip, self.name = True, {}, '', ''
         self.scroll_y = 0.
@@ -99,6 +118,12 @@ class Widget:
 
     def rebuild(self):
         self.rebuilds += 1
+        self._pending_build = True
+        if not self.ui.defer_builds:
+            self._build()
+
+    def _build(self):
+        self._pending_build = False
         for child in self.children:
             child.destroy()
         self.children = []
@@ -128,8 +153,8 @@ class Widget:
 
 
 @contextmanager
-def extension_environment():
-    ui = RecordingUI()
+def extension_environment(*, defer_builds=False):
+    ui = RecordingUI(defer_builds=defer_builds)
     omni, ext, kit, app = (ModuleType(n) for n in ('omni', 'omni.ext', 'omni.kit', 'omni.kit.app'))
     omni.ext, omni.kit, omni.ui = ext, kit, ui
     kit.app, ext.IExt = app, object

@@ -378,6 +378,170 @@ class ControlPanelTests(unittest.TestCase):
             self.assertNotIn('--no-ros-env', path.read_text())
             self.assertNotIn('pip install', path.read_text())
 
+class WorldModelLayoutTests(unittest.TestCase):
+    def setUp(self):
+        self.env = extension_environment(defer_builds=True)
+        self.ui, self.c, self.module = self.env.__enter__()
+        self.addCleanup(self.env.__exit__, None, None, None)
+        self.panel = self.c.panel
+
+    def bind(self, count=1):
+        bundle = bundle_()
+        for i in range(2, count + 1):
+            bundle.world_model.register(object_(f'object_{i}'))
+        self.c.bundle = bundle
+        self.c.view_model = WorldModelViewModel(bundle.world_model)
+        self.c._refresh(force=True)
+        return bundle
+
+    def cards(self):
+        return [node for node in self.ui.find('ZStack') if node.name.startswith('object_card_')]
+
+    def test_empty_list_has_height_before_first_lazy_build(self):
+        self.assertEqual(self.panel.object_frame.height, 94)
+        self.assertEqual(self.panel.object_frame.children, [])
+        self.ui.draw_cycle()
+        self.assertTrue(any('No objects yet.' in w.text for w in self.ui.find('Label')))
+        self.assertEqual(self.panel.count.text, '0 objects')
+
+    def test_one_object_builds_on_draw_instead_of_staying_zero_height(self):
+        self.bind()
+        self.assertEqual(self.panel.count.text, '1 object')
+        self.assertEqual(self.cards(), [])
+        self.assertEqual(self.panel.object_frame.height, 128)
+        self.ui.draw_cycle()
+        self.assertEqual([w.name for w in self.cards()], ['object_card_object_1'])
+        self.assertTrue(self.ui.find('Button', text='object_1'))
+        self.assertTrue(self.ui.find('Label', text='VISIBLE'))
+        self.assertIs(self.panel.object_frame.parent, self.panel.object_scroll)
+
+    def test_many_cards_reserve_full_content_extent(self):
+        self.bind(20)
+        self.assertEqual(self.panel.object_frame.height, 20 * 128 + 19 * 10)
+        self.ui.draw_cycle()
+        self.assertEqual(len(self.cards()), 20)
+        stack = self.panel.object_frame.children[0]
+        self.assertEqual(stack.height, self.panel.object_frame.height)
+        self.assertEqual(stack.spacing, 10)
+        self.assertEqual(self.panel.object_scroll.vertical_scrollbar_policy,
+                         self.ui.ScrollBarPolicy.SCROLLBAR_AS_NEEDED)
+        self.assertEqual(self.panel.object_scroll.height, self.ui.Fraction(1))
+
+    def test_height_changes_before_queued_rebuild_and_empty_state_returns(self):
+        bundle = self.bind(5)
+        self.ui.draw_cycle()
+        frame, scroll = self.panel.object_frame, self.panel.object_scroll
+        scroll.scroll_y = 100.
+        for i in range(2, 6):
+            bundle.world_model.remove(f'object_{i}')
+        self.c._refresh()
+        self.assertEqual(frame.height, 128)
+        self.assertEqual(len(self.cards()), 5)  # Old children survive until the next draw.
+        self.ui.draw_cycle()
+        self.assertEqual(len(self.cards()), 1)
+        bundle.world_model.remove('object_1')
+        self.c._refresh()
+        self.assertEqual(frame.height, 94)
+        self.ui.draw_cycle()
+        self.assertEqual(self.cards(), [])
+        self.assertEqual(scroll.scroll_y, 0.)
+        self.assertIs(self.panel.object_frame, frame)
+        self.assertIs(self.panel.object_scroll, scroll)
+        self.assertTrue(any('No objects yet.' in w.text for w in self.ui.find('Label')))
+
+    def test_repeated_refreshes_before_draw_build_only_latest_rows(self):
+        bundle = self.bind()
+        for i in range(2, 6):
+            bundle.world_model.register(object_(f'object_{i}'))
+            self.c._refresh()
+        self.ui.draw_cycle()
+        self.assertEqual(len(self.cards()), 5)
+        self.assertEqual(self.panel.count.text, '5 objects')
+        self.assertFalse(self.panel.object_frame._pending_build)
+
+    def test_geometry_update_rebuild_keeps_scroll_and_target(self):
+        bundle = self.bind(12)
+        self.ui.draw_cycle()
+        self.panel.object_scroll.scroll_y = 150.
+        self.panel.target_fields[0].model.set_value(.63)
+        original = self.cards()[0]
+        obj = bundle.world_model.require('object_1')
+        obj.geometry = replace(obj.geometry, yaw=.9)
+        obj.pose = Pose([.56, 0, .025])
+        self.c._refresh()
+        self.ui.draw_cycle()
+        self.assertTrue(original.destroyed)
+        self.assertTrue(any('0.560' in w.text for w in self.ui.find('Label', name='detail')))
+        self.assertTrue(any('51.6' in w.text for w in self.ui.find('Label', name='detail')))
+        self.assertEqual(self.panel.object_scroll.scroll_y, 150.)
+        self.assertEqual(self.c._target()[0], .63)
+
+    def test_selection_still_synchronizes_after_deferred_build(self):
+        self.bind(2)
+        self.ui.draw_cycle()
+        self.ui.find('Button', text='object_2')[0].click()
+        self.ui.draw_cycle()
+        self.assertEqual(self.c.view_model.selected_id, 'object_2')
+        self.assertEqual(self.panel.combo.model.get_item_value_model().as_int, 1)
+        self.panel.combo.model.get_item_value_model().set_value(0)
+        self.ui.draw_cycle()
+        self.assertEqual(self.c.view_model.selected_id, 'object_1')
+        self.assertEqual(len(self.cards()), 2)
+
+    def test_held_lost_badges_survive_deferred_build(self):
+        bundle = self.bind()
+        bundle.world_model.set_held('object_1')
+        bundle.world_model.require('object_1').visible = False
+        self.c._refresh()
+        self.ui.draw_cycle()
+        for text in ('HELD', 'LOST'):
+            self.assertTrue(self.ui.find('Label', text=text))
+        self.assertTrue(self.panel.buttons['clear_held'].enabled)
+
+    def test_hidden_panel_builds_latest_data_when_shown(self):
+        self.c.window.visible = False
+        self.bind(3)
+        self.ui.draw_cycle()
+        self.assertEqual(self.cards(), [])
+        self.c.window.visible = True
+        self.ui.draw_cycle()
+        self.assertEqual(len(self.cards()), 3)
+
+    def test_simulated_zero_height_lazy_frame_does_not_build(self):
+        callback = Mock()
+        frame = self.ui.Frame(height=0, build_fn=callback)
+        self.ui.draw_cycle()
+        callback.assert_not_called()
+        frame.height = 94
+        self.ui.draw_cycle()
+        callback.assert_called_once_with()
+
+    def test_initialize_and_move_to_are_compact_inline_native_buttons(self):
+        for key, text, icon in (('initialize', 'Initialize Runtime', 'play'), ('move_to', 'Move To', 'move')):
+            with self.subTest(button=key):
+                widget = self.panel.buttons[key]
+                self.assertEqual(widget.kind, 'Button')
+                self.assertEqual(widget.text, text)
+                self.assertEqual(widget.height, 30)
+                self.assertEqual((widget.image_width, widget.image_height), (18, 18))
+                self.assertTrue(widget.image_url.endswith(f'/{icon}.png'))
+                self.assertEqual(widget.style['Button']['stack_direction'], self.ui.Direction.LEFT_TO_RIGHT)
+                self.assertEqual(widget.style['Button.Image']['alignment'], self.ui.Alignment.CENTER)
+                self.assertEqual(widget.style['Button.Label']['alignment'], self.ui.Alignment.LEFT_CENTER)
+                self.assertTrue(callable(widget.clicked_fn))
+
+    def test_button_layout_override_preserves_theme_and_icon_only_buttons(self):
+        from robot_skill_stack_ui.ui.style import STYLE
+        for key, name in (('initialize', 'primary'), ('move_to', 'move')):
+            widget = self.panel.buttons[key]
+            self.assertEqual(widget.name, name)
+            self.assertNotIn('background_color', widget.style['Button'])
+            self.assertIn('background_color', STYLE[f'Button::{name}'])
+        self.assertEqual(self.panel.buttons['profile'].text, '')
+        self.assertEqual(self.panel.buttons['profile'].width, 30)
+        for key in ('pick', 'place', 'home'):
+            self.assertEqual(self.panel.buttons[key].style, {})
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

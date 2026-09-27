@@ -12,6 +12,8 @@ from .widgets import badge, button, image, padded, section, vector
 class ControlPanel:
     """Native OmniUI view. All robot operations are delegated to the controller."""
 
+    CARD_HEIGHT, CARD_SPACING, EMPTY_HEIGHT = 128, 10, 94
+
     def __init__(self, controller):
         self.c = controller
         self.buttons = {}
@@ -39,9 +41,13 @@ class ControlPanel:
                                                              alignment=ui.Alignment.RIGHT_CENTER)
                                     ui.Separator(height=1)
                                     self.object_scroll = ui.ScrollingFrame(
-                                        horizontal_scrollbar_policy=ui.ScrollBarPolicy.SCROLLBAR_ALWAYS_OFF)
+                                        height=ui.Fraction(1), name='world_model_scroll',
+                                        horizontal_scrollbar_policy=ui.ScrollBarPolicy.SCROLLBAR_ALWAYS_OFF,
+                                        vertical_scrollbar_policy=ui.ScrollBarPolicy.SCROLLBAR_AS_NEEDED)
                                     with self.object_scroll:
-                                        self.object_frame = ui.Frame(height=0, build_fn=self._build_cards)
+                                        self.object_frame = ui.Frame(
+                                            height=self._cards_height(), name='world_model_cards',
+                                            build_fn=self._build_cards)
         self.set_status('Open the scene and initialize.', 'idle')
 
     def _action(self, key, text, callback, **kwargs):
@@ -131,8 +137,12 @@ class ControlPanel:
         if 0 <= index < len(self._ids) and self._ids[index] != self.selected_id:
             self.c._select_object(self._ids[index])
 
+    def _cards_height(self):
+        count = len(self.rows)
+        return self.EMPTY_HEIGHT if not count else count * self.CARD_HEIGHT + (count - 1) * self.CARD_SPACING
+
     def _build_cards(self):
-        with ui.VStack(height=0, spacing=10):
+        with ui.VStack(height=self._cards_height(), spacing=self.CARD_SPACING):
             if not self.rows:
                 with padded(18):
                     ui.Label('No objects yet. Initialize the runtime, then let perception observe the workspace.',
@@ -142,7 +152,7 @@ class ControlPanel:
 
     def _card(self, row):
         choose = partial(self.c._select_object, row.object_id)
-        with ui.ZStack(height=128, name=f'object_card_{row.object_id}'):
+        with ui.ZStack(height=self.CARD_HEIGHT, name=f'object_card_{row.object_id}'):
             ui.Rectangle(name='card', selected=row.object_id == self.selected_id)
             with padded(10):
                 with ui.HStack(spacing=14):
@@ -176,8 +186,11 @@ class ControlPanel:
             self._selection_signature = selection
             self.selection_frame.rebuild()
         if rebuild:
-            # Only rebuild the child: the ScrollingFrame and its scroll offset survive.
+            # Lazy Frames build only when visible: reserve content height BEFORE rebuilding.
+            self.object_frame.height = self._cards_height()
             self.object_frame.rebuild()
+            if not rows:
+                self.object_scroll.scroll_y = 0.0
         self.count.text = f'{len(rows)} object' + ('' if len(rows) == 1 else 's')
 
     def set_status(self, message, level='info'):
