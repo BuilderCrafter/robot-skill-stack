@@ -12,7 +12,7 @@ if [[ ! -d "$ROOT/.deps/numpy" ]]; then
   exit 1
 fi
 
-# Start the full GUI from Isaac's python.sh instead of isaac-sim.sh.
-# python.sh honors our repo-local PYTHONPATH, so NumPy 1.26.4 is imported
-# before Kit and its extensions initialize.
-exec "$ROOT/run_isaac_python.sh"   "$ROOT/scripts/launch_isaac_gui.py"   "$@"
+# We do not use ROS in the course runtime. --no-ros-env prevents python.sh
+# from injecting its bundled ROS environment; launch_isaac_gui.py also
+# overrides the full experience so the ROS 2 bridge itself is not started.
+exec "$ROOT/run_isaac_python.sh"   --no-ros-env   "$ROOT/scripts/launch_isaac_gui.py"   "$@"

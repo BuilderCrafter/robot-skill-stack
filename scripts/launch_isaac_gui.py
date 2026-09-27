@@ -9,8 +9,7 @@ ISAAC_SIM = Path(
     os.environ.get("ISAAC_SIM", "/home/etfrobotics/isaacsim")
 )
 
-# Import NumPy before Kit starts. run_isaac_python.sh prepends .deps to
-# PYTHONPATH, so this locks the tested NumPy into sys.modules for the entire app.
+# Lock the repo-tested NumPy into sys.modules before Kit starts.
 import numpy as np
 
 EXPECTED_NUMPY = "1.26.4"
@@ -28,16 +27,28 @@ if not experience.is_file():
 
 print(
     "[robot_skill_stack.launcher] "
-    f"NumPy {np.__version__} from {np.__file__}"
+    f"NumPy {np.__version__} from {np.__file__}",
+    flush=True,
+)
+print(
+    "[robot_skill_stack.launcher] ROS 2 bridge disabled for this course runtime",
+    flush=True,
 )
 print(
     "[robot_skill_stack.launcher] "
-    f"Starting full Isaac experience: {experience}"
+    f"Starting full Isaac experience: {experience}",
+    flush=True,
 )
 
 from isaacsim import SimulationApp
 
 extra_args = [
+    # The full Isaac experience normally enables the ROS 2 bridge on Linux.
+    # This project does not use ROS yet. Starting it from python.sh can pick up
+    # an incompatible system Jazzy/rclpy install, so explicitly override the
+    # full-app startup setting for this launcher.
+    "--/isaac/startup/ros_bridge_extension=",
+    "--/isaac/startup/ros_sim_control_extension=false",
     "--ext-folder",
     str(ROOT / "exts"),
     "--enable",
