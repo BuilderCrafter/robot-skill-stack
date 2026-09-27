@@ -10,6 +10,7 @@ for path in (ROOT, ROOT / ".deps"):
         sys.path.insert(0, path)
 
 import numpy as np
+import carb
 import omni.ext
 import omni.kit.app
 import omni.ui as ui
@@ -35,6 +36,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self.bundle = None
         self.view_model = None
         self.busy = False
+        self._tasks = set()
         self._elapsed = 0.0
         self._object_signature = None
         self._update_sub = (
@@ -47,9 +49,22 @@ class RobotSkillStackExtension(omni.ext.IExt):
         )
         self.window = ui.Window("Robot Skill Runtime", width=470, height=760)
         self._build_ui()
+        self.runtime_info.text = (
+            f"Runtime: not initialized | NumPy: {np.__version__}"
+        )
+        carb.log_info(
+            "[robot_skill_stack.ui] started; "
+            f"NumPy {np.__version__} from {np.__file__}"
+        )
 
     def on_shutdown(self):
         self._update_sub = None
+        for task in tuple(getattr(self, "_tasks", ())):
+            try:
+                task.cancel()
+            except Exception:
+                pass
+        self._tasks = set()
         if self.bundle is not None:
             try:
                 self.bundle.world_updater.stop(self.bundle.world)
@@ -184,10 +199,31 @@ class RobotSkillStackExtension(omni.ext.IExt):
         except Exception:
             self._elapsed = 0.0
 
+    def _submit(self, coroutine, label):
+        task = run_coroutine(coroutine)
+        self._tasks.add(task)
+
+        def done(completed):
+            self._tasks.discard(completed)
+            try:
+                exc = completed.exception()
+            except BaseException:
+                return
+            if exc is not None:
+                carb.log_error(
+                    f"[robot_skill_stack.ui] {label} failed: "
+                    f"{type(exc).__name__}: {exc}"
+                )
+
+        task.add_done_callback(done)
+        return task
+
     def _initialize_clicked(self):
-        run_coroutine(self._initialize())
+        carb.log_info("[robot_skill_stack.ui] Initialize Runtime clicked")
+        self._submit(self._initialize(), "runtime initialization")
 
     async def _initialize(self):
+        carb.log_info("[robot_skill_stack.ui] initialization started")
         if self.bundle is not None:
             self._set_status("Runtime already initialized.")
             return
@@ -205,8 +241,13 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self._object_signature = None
             self._set_status("READY")
             self._refresh(force=True)
+            carb.log_info("[robot_skill_stack.ui] runtime READY")
         except Exception as exc:
-            self._set_status(f"Initialization failed\n{type(exc).__name__}: {exc}")
+            message = f"Initialization failed\n{type(exc).__name__}: {exc}"
+            self._set_status(message)
+            carb.log_error(
+                "[robot_skill_stack.ui] " + message.replace("\n", " | ")
+            )
 
     def _select_object(self, object_id):
         if self.view_model is None:
@@ -234,7 +275,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         return obj
 
     def _run(self, name, **kwargs):
-        run_coroutine(self._execute(name, kwargs))
+        self._submit(self._execute(name, kwargs), f"skill {name}")
 
     async def _execute(self, name, kwargs):
         if not self._can_run():
@@ -257,7 +298,10 @@ class RobotSkillStackExtension(omni.ext.IExt):
         obj = self._selected_object(require_visible=not recovery)
         if obj is None:
             return
-        run_coroutine(self._execute_task(recovery, obj.object_id))
+        self._submit(
+            self._execute_task(recovery, obj.object_id),
+            "behavior tree",
+        )
 
     async def _execute_task(self, recovery: bool, object_id: str):
         if not self._can_run():

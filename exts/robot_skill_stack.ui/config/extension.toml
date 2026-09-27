@@ -2,7 +2,7 @@
 reloadable = true
 
 [package]
-version = "0.3.0"
+version = "0.3.1"
 title = "Robot Skill Stack UI"
 description = "GUI for the robot skill runtime"
 category = "Robotics"
@@ -10,6 +10,7 @@ authors = ["BuilderCrafter"]
 
 [dependencies]
 "omni.ui" = {}
+"omni.kit.async_engine" = {}
 "isaacsim.core.api" = {}
 "isaacsim.core.prims" = {}
 "isaacsim.robot.manipulators.examples" = {}

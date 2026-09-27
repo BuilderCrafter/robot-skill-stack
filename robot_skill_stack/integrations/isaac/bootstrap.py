@@ -48,8 +48,9 @@ def _validate_environment(config: SceneConfig):
         major = int(np.__version__.split(".", 1)[0])
         if major >= 2:
             raise RuntimeError(
-                "Perception requires repo-local numpy==1.26.4. "
-                "Launch Isaac with ./run_isaac_sim.sh after installing .deps."
+                "Perception requires repo-local numpy==1.26.4, but "
+                f"NumPy {np.__version__} was loaded from {np.__file__}. "
+                "Install .deps and launch Isaac through ./run_isaac_sim.sh."
             )
 
 
