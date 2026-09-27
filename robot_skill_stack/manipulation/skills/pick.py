@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from robot_skill_stack.common.rotations import quat_matrix
+
 from robot_skill_stack.manipulation.backend import ManipulationBackend
 from robot_skill_stack.manipulation.grasping.planner import GraspPlanner
 from robot_skill_stack.runtime.skill import (
@@ -180,7 +182,23 @@ class PickSkill(BaseSkill):
                         "grasp_planner_details": result.details,
                     },
                 )
+        orientation = result.plan.grasp.orientation
+        if orientation is None:
+            orientation = self.backend.get_end_effector_pose().orientation
+        result.details["object_offset_in_ee_m"] = (
+            quat_matrix(orientation).T @ (planned_position-result.plan.grasp.position)
+        ).tolist()
         return (planned_position, result), None
+
+    def _record_attachment(self, grasp_result, planned_position):
+        actual = self.backend.get_end_effector_pose()
+        orientation = actual.orientation
+        if orientation is None:
+            orientation = grasp_result.plan.grasp.orientation
+        grasp_result.details["object_offset_in_ee_m"] = (
+            quat_matrix(orientation).T @ (planned_position-actual.position)
+        ).tolist()
+        grasp_result.details["attachment_reference"] = "pre-close measured TCP / planned object center"
 
     def _check_replan(
         self,
@@ -227,7 +245,9 @@ class PickSkill(BaseSkill):
             if obj.visible:
                 visual_lift = float(final_position[2] - initial[2])
 
-        self.world_model.set_held(object_id)
+        self.world_model.set_held(
+            object_id, object_offset_in_ee=grasp_details.get("object_offset_in_ee_m"),
+        )
         return SkillResult(
             SkillStatus.SUCCESS,
             f"Picked '{object_id}'.",
@@ -322,6 +342,7 @@ class PickSkill(BaseSkill):
             if replan:
                 continue
 
+            self._record_attachment(grasp_result, planned_position)
             close = self.backend.close_gripper()
             if not close.ok:
                 return SkillResult(
@@ -457,6 +478,7 @@ class PickSkill(BaseSkill):
             if replan:
                 continue
 
+            self._record_attachment(grasp_result, planned_position)
             close = await self.backend.close_gripper_async()
             if not close.ok:
                 return SkillResult(

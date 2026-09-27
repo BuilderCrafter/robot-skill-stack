@@ -6,6 +6,9 @@ import tomllib
 
 import numpy as np
 
+from robot_skill_stack.manipulation.grasping.clearance import GraspSafetyConfig
+from robot_skill_stack.manipulation.grasping.types import ParallelJawGripperSpec
+
 
 @dataclass(frozen=True)
 class RobotConfig:
@@ -90,11 +93,23 @@ class PerceptionConfig:
 
 
 @dataclass(frozen=True)
+class GraspConfig:
+    approach_height: float = 0.10
+    default_lift_height: float = 0.12
+    grasp_z_offset: float = 0.0
+    safety: GraspSafetyConfig = field(default_factory=GraspSafetyConfig)
+    gripper: ParallelJawGripperSpec = field(default_factory=lambda: ParallelJawGripperSpec(
+        max_width=0.075, min_width=0.005, open_width=0.080,
+    ))
+
+
+@dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
     world: WorldConfig
     objects: dict[str, ObjectConfig]
     perception: PerceptionConfig
+    grasping: GraspConfig = field(default_factory=GraspConfig)
 
 
 def _vec3(data, key, default):
@@ -182,9 +197,18 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         ),
     )
 
+    grasp = dict(data.get("grasping", {}))
+    safety = GraspSafetyConfig(**grasp.pop("safety", {}))
+    gripper = ParallelJawGripperSpec(**{
+        "max_width": 0.075, "min_width": 0.005, "open_width": 0.080,
+        **grasp.pop("gripper", {}),
+    })
+    grasping = GraspConfig(**grasp, safety=safety, gripper=gripper)
+
     return SceneConfig(
         robot=robot,
         world=world,
         objects=objects,
         perception=perception,
+        grasping=grasping,
     )

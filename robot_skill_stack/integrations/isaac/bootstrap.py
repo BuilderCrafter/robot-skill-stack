@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import numpy as np
@@ -14,7 +14,6 @@ from robot_skill_stack.integrations.isaac.manipulation.franka_backend import Isa
 from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
 from robot_skill_stack.manipulation.grasping import (
-    ParallelJawGripperSpec,
     SimplePrimitiveGraspPlanner,
 )
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
@@ -186,13 +185,21 @@ async def build_runtime(
         max_home_steps=1000,
     )
 
+    grasp = config.grasping
     planner = SimplePrimitiveGraspPlanner(
-        approach_height=0.10,
-        default_lift_height=0.12,
-        grasp_z_offset=0.0,
-        gripper=ParallelJawGripperSpec(
-            max_width=backend.grasp_max_width,
+        approach_height=grasp.approach_height,
+        default_lift_height=grasp.default_lift_height,
+        grasp_z_offset=grasp.grasp_z_offset,
+        gripper=replace(
+            grasp.gripper,
+            max_width=min(grasp.gripper.max_width, backend.grasp_max_width),
+            min_width=max(grasp.gripper.min_width, backend.grasp_min_width),
         ),
+        safety=grasp.safety,
+        support_plane_z=config.perception.discovery.support_plane_z,
+        world_model=model,
+        current_pose=backend.get_end_effector_pose,
+        pose_reachable=backend.check_reachability,
     )
 
     registry = SkillRegistry()

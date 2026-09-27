@@ -15,6 +15,7 @@ class WorldModel:
         self._objects: dict[str, WorldObject] = {}
         self._association_hints: dict[str, AssociationHint] = {}
         self.held_object_id: str | None = None
+        self.held_object_offset_in_ee: np.ndarray | None = None
         self.stale_object_ttl = float(stale_object_ttl)
         if not np.isfinite(self.stale_object_ttl) or self.stale_object_ttl <= 0:
             raise ValueError("stale_object_ttl must be finite and > 0")
@@ -196,7 +197,14 @@ class WorldModel:
                 removed.append(obj.object_id)
         return tuple(removed)
 
-    def set_held(self, object_id: str | None) -> None:
+    def set_held(self, object_id: str | None, *, object_offset_in_ee=None) -> None:
         if object_id is not None and not self.exists(object_id):
             raise KeyError(f"Unknown object '{object_id}'")
+        offset = None
+        if object_id is not None and object_offset_in_ee is not None:
+            offset = np.asarray(object_offset_in_ee, dtype=float)
+            if offset.shape != (3,) or not np.isfinite(offset).all():
+                raise ValueError("object_offset_in_ee must be a finite XYZ vector")
+            offset = offset.copy()
         self.held_object_id = object_id
+        self.held_object_offset_in_ee = offset

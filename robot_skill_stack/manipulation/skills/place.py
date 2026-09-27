@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 from robot_skill_stack.common.types import Pose
+from robot_skill_stack.common.rotations import quat_matrix
 from robot_skill_stack.manipulation.backend import ManipulationBackend
 from robot_skill_stack.manipulation.placement import (
     PlacementFailureReason,
@@ -127,8 +128,12 @@ class PlaceSkill(BaseSkill):
             if target.orientation is not None
             else self.backend.get_end_effector_pose().orientation
         )
+        position = target.position.copy()
+        offset = self.world_model.held_object_offset_in_ee
+        if offset is not None:
+            position -= quat_matrix(orientation) @ offset
         release = Pose(
-            target.position.copy(),
+            position,
             orientation,
             target.frame,
         )
