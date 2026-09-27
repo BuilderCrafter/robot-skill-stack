@@ -2,9 +2,20 @@ from __future__ import annotations
 
 import numpy as np
 
-from robot_skill_stack.manipulation.backend import ManipulationBackend
-from robot_skill_stack.runtime.skill import BaseSkill, FailureCode, SkillResult, SkillSpec, SkillStatus
 from robot_skill_stack.common.types import Pose
+from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.manipulation.placement import (
+    PlacementFailureReason,
+    PlacementPlanner,
+    SimplePlacementPlanner,
+)
+from robot_skill_stack.runtime.skill import (
+    BaseSkill,
+    FailureCode,
+    SkillResult,
+    SkillSpec,
+    SkillStatus,
+)
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
@@ -13,10 +24,15 @@ class PlaceSkill(BaseSkill):
         name="place",
         description="Place or release the currently held object.",
         inputs=("target", "mode"),
-        preconditions=("an object is held", "target is reachable"),
+        preconditions=(
+            "an object is held",
+            "target is unoccupied",
+            "target is reachable",
+        ),
         effects=("object is released",),
         failures=(
             FailureCode.NOT_HOLDING_OBJECT,
+            FailureCode.TARGET_OCCUPIED,
             FailureCode.UNREACHABLE,
             FailureCode.PLACE_FAILED,
             FailureCode.TIMEOUT,
@@ -27,6 +43,7 @@ class PlaceSkill(BaseSkill):
         self,
         backend: ManipulationBackend,
         world_model: WorldModel,
+        placement_planner: PlacementPlanner | None = None,
         *,
         approach_height=0.10,
         retreat_height=0.12,
@@ -36,6 +53,7 @@ class PlaceSkill(BaseSkill):
     ):
         self.backend = backend
         self.world_model = world_model
+        self.placement_planner = placement_planner or SimplePlacementPlanner()
         self.approach_height = approach_height
         self.retreat_height = retreat_height
         self.placement_tolerance = placement_tolerance
@@ -51,7 +69,6 @@ class PlaceSkill(BaseSkill):
         )
         if result.ok:
             return None
-
         return SkillResult(
             SkillStatus.TIMEOUT if result.timed_out else SkillStatus.FAILED,
             message,
@@ -62,7 +79,6 @@ class PlaceSkill(BaseSkill):
     def execute(self, target: Pose, mode="stable"):
         if mode == "default":
             mode = "stable"
-
         if mode not in ("stable", "release"):
             return SkillResult(
                 SkillStatus.FAILED,
@@ -79,11 +95,32 @@ class PlaceSkill(BaseSkill):
             )
 
         obj = self.world_model.require(object_id)
+        placement = self.placement_planner.evaluate(
+            obj,
+            target,
+            self.world_model,
+        )
+        if not placement.ok:
+            code = (
+                FailureCode.TARGET_OCCUPIED
+                if placement.failure_reason == PlacementFailureReason.TARGET_OCCUPIED
+                else FailureCode.PLACE_FAILED
+            )
+            return SkillResult(
+                SkillStatus.FAILED,
+                placement.message or "Placement target is not feasible.",
+                code,
+                {
+                    "placement_failure_reason": placement.failure_reason.value,
+                    "placement_planner_details": placement.details,
+                },
+            )
+
         orientation = (
             target.orientation
-            or self.backend.get_end_effector_pose().orientation
+            if target.orientation is not None
+            else self.backend.get_end_effector_pose().orientation
         )
-
         release = Pose(target.position.copy(), orientation, target.frame)
         pre = release.translated([0, 0, self.approach_height])
         retreat = release.translated([0, 0, self.retreat_height])
@@ -94,29 +131,19 @@ class PlaceSkill(BaseSkill):
                     SkillStatus.FAILED,
                     "Required placement pose is unreachable.",
                     FailureCode.UNREACHABLE,
+                    {"placement_planner_details": placement.details},
                 )
 
-        failure = self._move(
-            pre,
-            0.4,
-            0.020,
-            "Pre-place motion failed.",
-        )
+        failure = self._move(pre, 0.4, 0.020, "Pre-place motion failed.")
         if failure:
+            failure.details["placement_planner_details"] = placement.details
             return failure
 
-        failure = self._move(
-            release,
-            0.15,
-            0.015,
-            "Release approach failed.",
-        )
+        failure = self._move(release, 0.15, 0.015, "Release approach failed.")
         if failure:
+            failure.details["placement_planner_details"] = placement.details
             return failure
 
-        # Register the expected release location before opening because the
-        # backend advances simulation while the gripper opens. Perception may
-        # therefore see the released object during open_gripper().
         self.world_model.expect_object_at(
             object_id,
             target.position,
@@ -132,10 +159,13 @@ class PlaceSkill(BaseSkill):
                 SkillStatus.FAILED,
                 "Could not release object.",
                 FailureCode.PLACE_FAILED,
+                {
+                    **result.details,
+                    "placement_planner_details": placement.details,
+                },
             )
 
         self.world_model.set_held(None)
-
         retreat_result = self.backend.move_to_pose(
             retreat,
             speed=0.3,
@@ -151,6 +181,7 @@ class PlaceSkill(BaseSkill):
                     "object_id": object_id,
                     "release_position": target.position.tolist(),
                     "retreat_ok": retreat_result.ok,
+                    "placement_planner_details": placement.details,
                 },
             )
 
@@ -164,13 +195,11 @@ class PlaceSkill(BaseSkill):
                     "target_position": target.position.tolist(),
                     "visible": obj.visible,
                     "retreat_ok": retreat_result.ok,
+                    "placement_planner_details": placement.details,
                 },
             )
 
-        error = float(
-            np.linalg.norm(obj.pose.position - target.position)
-        )
-
+        error = float(np.linalg.norm(obj.pose.position - target.position))
         if error > self.placement_tolerance:
             return SkillResult(
                 SkillStatus.FAILED,
@@ -181,6 +210,7 @@ class PlaceSkill(BaseSkill):
                     "final_position": obj.pose.position.tolist(),
                     "placement_error_m": error,
                     "retreat_ok": retreat_result.ok,
+                    "placement_planner_details": placement.details,
                 },
             )
 
@@ -192,5 +222,6 @@ class PlaceSkill(BaseSkill):
                 "final_position": obj.pose.position.tolist(),
                 "placement_error_m": error,
                 "retreat_ok": retreat_result.ok,
+                "placement_planner_details": placement.details,
             },
         )

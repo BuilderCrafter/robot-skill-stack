@@ -46,3 +46,12 @@ A future geometry or ML planner can implement the same protocol. The existing
 `ObjectGeometryProvider` protocol matches the perception provider's lazy
 `get_point_cloud(object_id)` boundary, so a point-cloud planner can request
 geometry only when needed without putting point clouds in the WorldModel.
+
+
+## Placement feasibility
+
+`SimplePlacementPlanner` performs a conservative AABB overlap check before any
+placement motion. It compares the held object's estimated size and requested
+target against other currently visible WorldModel objects. An occupied target
+returns `TARGET_OCCUPIED` before the end effector moves. Invisible/stale objects
+are not treated as hard obstacles in this V1 checker.

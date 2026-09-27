@@ -22,6 +22,7 @@ class FailureCode(str, Enum):
     GRASP_FAILED = "grasp_failed"
 
     NOT_HOLDING_OBJECT = "not_holding_object"
+    TARGET_OCCUPIED = "target_occupied"
     PLACE_FAILED = "place_failed"
 
     TIMEOUT = "timeout"

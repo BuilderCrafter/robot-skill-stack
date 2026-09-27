@@ -6,8 +6,11 @@ Orchestration (Behavior Trees / future external planner)
              RobotRuntime
                  │
        Manipulation skills
+          │            │
+   GraspPlanner  PlacementPlanner
+          └──────┬─────┘
                  │
-      GraspPlanner + Backend
+              Backend
                  │
           Isaac integration
 
@@ -21,3 +24,11 @@ RGB-D sensor → Perception → WorldModel
 `runtime`, `world`, `manipulation`, and `orchestration` are simulator-agnostic. `integrations/isaac` owns Omniverse/Isaac imports. Perception produces observations; the WorldModel is the cached state queried by skills and orchestration. Skills never query Isaac directly.
 
 A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`. ROS 2, if required, should be added as another adapter under `integrations/` rather than becoming the internal architecture.
+
+
+## Presentation boundary
+
+`robot_skill_stack.presentation` contains a simulator-independent read model for
+WorldModel state. The Isaac extension renders that read model and invokes
+`RobotRuntime`; it does not depend on perception internals. This keeps the GUI
+identical for ground-truth and RGB-D providers.

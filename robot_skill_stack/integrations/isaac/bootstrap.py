@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+import numpy as np
 import omni.kit.app
 import omni.usd
 from isaacsim.core.api import World
@@ -16,6 +17,7 @@ from robot_skill_stack.manipulation.grasping import (
     ParallelJawGripperSpec,
     TopDownGraspPlanner,
 )
+from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.runtime.runtime import RobotRuntime
 from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
@@ -39,6 +41,16 @@ class IsaacRuntimeBundle:
     objects: dict
     config: SceneConfig
     state_provider: WorldObservationProvider
+
+
+def _validate_environment(config: SceneConfig):
+    if config.world.provider == "perception":
+        major = int(np.__version__.split(".", 1)[0])
+        if major >= 2:
+            raise RuntimeError(
+                "Perception requires repo-local numpy==1.26.4. "
+                "Launch Isaac with ./run_isaac_sim.sh after installing .deps."
+            )
 
 
 def _validate_stage(config: SceneConfig):
@@ -135,6 +147,7 @@ async def build_runtime(
     profile_path: str | Path,
 ) -> IsaacRuntimeBundle:
     config = load_scene_config(profile_path)
+    _validate_environment(config)
     _validate_stage(config)
 
     world = World.instance()
@@ -184,8 +197,10 @@ async def build_runtime(
     registry = SkillRegistry()
     registry.register(MoveToPoseSkill(backend))
     registry.register(HomeSkill(backend))
+    placement_planner = SimplePlacementPlanner(clearance=0.005)
+
     registry.register(PickSkill(backend, model, planner))
-    registry.register(PlaceSkill(backend, model))
+    registry.register(PlaceSkill(backend, model, placement_planner))
 
     return IsaacRuntimeBundle(
         world=world,

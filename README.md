@@ -12,7 +12,7 @@ orchestration / Behavior Trees
             │
     manipulation skills
       │             │
- GraspPlanner   ManipulationBackend
+ GraspPlanner   PlacementPlanner   ManipulationBackend
                       │
                Isaac integration
 
@@ -37,6 +37,8 @@ robot_skill_stack/
     backend.py                simulator-agnostic manipulation contract
     skills/                   home, move, pick, place
     grasping/                 replaceable feasibility-aware grasp planners
+    placement/                target-occupancy feasibility
+  presentation/               simulator-independent WorldModel UI view
   orchestration/
     behavior_trees/           BT nodes, tasks, executor
   integrations/
@@ -59,10 +61,12 @@ exts/                         optional Isaac UI extension
 - action-aware reacquisition after robot-mediated transport
 - reactive Pick with bounded local replanning
 - gripper-feedback grasp verification
+- placement target occupancy rejection before motion
 - stable Place verification
 - Behavior Tree Pick+Place and recovery
 - multi-object manipulation
 - replaceable grasp-planner interface with feasibility rejection
+- Isaac GUI with selectable live WorldModel objects
 
 ## Dependencies
 
@@ -94,10 +98,11 @@ Or run them separately:
 python3 scripts/run_perception_v1_suite.py
 python3 scripts/run_phase_a_suite.py
 python3 scripts/run_phase_b_suite.py
+python3 scripts/run_course_polish_suite.py
 ```
 
 Each suite writes logs/JSON under ignored `outputs/` and packages its results as
 a `.tar.gz` archive.
 
 See `docs/architecture.md`, `docs/perception.md`, `docs/manipulation.md`,
-`docs/validation.md`, and `docs/ros2.md`.
+`docs/validation.md`, `docs/gui.md`, and `docs/ros2.md`.

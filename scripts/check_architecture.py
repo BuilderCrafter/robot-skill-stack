@@ -12,6 +12,7 @@ GENERIC = [
     PACKAGE / "world",
     PACKAGE / "manipulation",
     PACKAGE / "orchestration",
+    PACKAGE / "presentation",
 ]
 FORBIDDEN = ("isaacsim", "omni", "pxr")
 

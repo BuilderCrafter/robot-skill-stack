@@ -14,21 +14,27 @@ SCENE = ROOT / "scenes" / "playground.usd"
 PROFILE = ROOT / "config" / "scenes" / "playground.toml"
 
 
-def perception_profile(output_dir, name="phase_a_perception.toml"):
+def provider_profile(output_dir, provider, name=None):
+    if provider not in ("ground_truth", "perception"):
+        raise ValueError(f"Unsupported provider: {provider}")
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     text = PROFILE.read_text(encoding="utf-8")
     text, count = re.subn(
         r'provider\s*=\s*"(?:ground_truth|perception)"',
-        'provider = "perception"',
+        f'provider = "{provider}"',
         text,
         count=1,
     )
     if count != 1:
-        raise RuntimeError("Could not force [world] provider to perception")
-    path = output_dir / name
+        raise RuntimeError("Could not replace [world] provider")
+    path = output_dir / (name or f"{provider}_test.toml")
     path.write_text(text, encoding="utf-8")
     return path
+
+
+def perception_profile(output_dir, name="phase_a_perception.toml"):
+    return provider_profile(output_dir, "perception", name)
 
 
 def open_playground(simulation_app):
@@ -38,11 +44,24 @@ def open_playground(simulation_app):
         simulation_app.update()
 
 
+def build_runtime_with_provider(simulation_app, output_dir, provider):
+    profile = provider_profile(output_dir, provider)
+    return run_kit_coroutine(build_runtime(profile), simulation_app)
+
+
 def build_perception_runtime(simulation_app, output_dir):
-    profile = perception_profile(output_dir)
-    return run_kit_coroutine(
-        build_runtime(profile),
+    return build_runtime_with_provider(
         simulation_app,
+        output_dir,
+        "perception",
+    )
+
+
+def build_ground_truth_runtime(simulation_app, output_dir):
+    return build_runtime_with_provider(
+        simulation_app,
+        output_dir,
+        "ground_truth",
     )
 
 
