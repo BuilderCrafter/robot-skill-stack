@@ -1,0 +1,9 @@
+# PC virtual environment ONLY. Never install this into Isaac or repo .deps.
+# Install the CUDA PyTorch wheels first using setup_windows.ps1/setup_linux.sh.
+torch==2.7.1
+torchvision==0.22.1
+ultralytics==8.3.161
+numpy==1.26.4
+opencv-python==4.11.0.86
+pillow==11.2.1
+PyYAML==6.0.2

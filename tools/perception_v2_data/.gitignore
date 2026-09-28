@@ -1,0 +1,9 @@
+.venv/
+.yolo-config/
+__pycache__/
+*.pyc
+data/
+runs/
+weights/
+environment_check.json
+training-environment-lock.txt

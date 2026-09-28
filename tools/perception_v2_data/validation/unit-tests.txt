@@ -1,0 +1,127 @@
+test_checksum_tampering_detected (test_toolkit.DatasetTests.test_checksum_tampering_detected) ... ok
+test_end_to_end_export_and_movable_yaml (test_toolkit.DatasetTests.test_end_to_end_export_and_movable_yaml) ... ok
+test_existing_output_not_overwritten (test_toolkit.DatasetTests.test_existing_output_not_overwritten) ... ok
+test_incomplete_capture_refused (test_toolkit.DatasetTests.test_incomplete_capture_refused) ... ok
+test_reject_whole_bad_image_not_one_positive (test_toolkit.DatasetTests.test_reject_whole_bad_image_not_one_positive) ... ok
+test_true_negative_exports_empty_label (test_toolkit.DatasetTests.test_true_negative_exports_empty_label) ... ok
+test_class_labels_not_mistaken_for_paths (test_toolkit.ImageFormatTests.test_class_labels_not_mistaken_for_paths) ... ok
+test_descendant_prim_mapping (test_toolkit.ImageFormatTests.test_descendant_prim_mapping) ... ok
+test_instance_ids_resolved_per_frame (test_toolkit.ImageFormatTests.test_instance_ids_resolved_per_frame) ... ok
+test_invalid_png_rejected (test_toolkit.ImageFormatTests.test_invalid_png_rejected) ... ok
+test_missing_mapping_fails_closed (test_toolkit.ImageFormatTests.test_missing_mapping_fails_closed) ... ok
+test_rgb_png_roundtrip (test_toolkit.ImageFormatTests.test_rgb_png_roundtrip) ... ok
+test_uint16_png_roundtrip (test_toolkit.ImageFormatTests.test_uint16_png_roundtrip) ... ok
+test_fp32_low_memory_windows_defaults (test_toolkit.LaunchTests.test_fp32_low_memory_windows_defaults) ... ok
+test_help_requires_no_isaac_or_torch (test_toolkit.LaunchTests.test_help_requires_no_isaac_or_torch) ... ok
+test_no_rejected_ros_flag_or_core_imports (test_toolkit.LaunchTests.test_no_rejected_ros_flag_or_core_imports) ... ok
+test_numpy_import_precedes_simulation_app (test_toolkit.LaunchTests.test_numpy_import_precedes_simulation_app) ... ok
+test_box_polygon (test_toolkit.PolygonTests.test_box_polygon) ... ok
+test_hole_preserved (test_toolkit.PolygonTests.test_hole_preserved) ... ok
+test_occluded_disconnected_single_instance (test_toolkit.PolygonTests.test_occluded_disconnected_single_instance) ... ok
+test_small_visible_fragment_rejected (test_toolkit.PolygonTests.test_small_visible_fragment_rejected) ... ok
+test_sphere_contour (test_toolkit.PolygonTests.test_sphere_contour) ... ok
+test_camera_projection_center (test_toolkit.SamplingTests.test_camera_projection_center) ... ok
+test_lying_cylinder_height_equals_diameter (test_toolkit.SamplingTests.test_lying_cylinder_height_equals_diameter) ... ok
+test_noninterpenetrating_visible_balanced_samples (test_toolkit.SamplingTests.test_noninterpenetrating_visible_balanced_samples) ... ok
+test_rotation_lying_axis_and_orthogonality (test_toolkit.SamplingTests.test_rotation_lying_axis_and_orthogonality) ... ok
+test_split_sizes_and_reproducibility (test_toolkit.SamplingTests.test_split_sizes_and_reproducibility) ... ok
+test_too_few_samples_rejected (test_toolkit.SamplingTests.test_too_few_samples_rejected) ... ok
+test_upright_cylinder_extents_ignore_yaw (test_toolkit.SamplingTests.test_upright_cylinder_extents_ignore_yaw) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 6.634s
+
+OK
+{
+  "train": {
+    "images": 24,
+    "negative_images": 0,
+    "instances": [
+      24,
+      24,
+      24
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  }
+}
+READY: /tmp/tmp_f5b_kej/yolo/data.yaml
+Inspect /tmp/tmp_f5b_kej/yolo/review.jpg BEFORE training. Rejected frames: 0
+{
+  "train": {
+    "images": 23,
+    "negative_images": 0,
+    "instances": [
+      23,
+      23,
+      23
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  }
+}
+READY: /tmp/tmpesuc9i5h/out/data.yaml
+Inspect /tmp/tmpesuc9i5h/out/review.jpg BEFORE training. Rejected frames: 1
+{
+  "train": {
+    "images": 24,
+    "negative_images": 1,
+    "instances": [
+      23,
+      23,
+      23
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  }
+}
+READY: /tmp/tmpds44lgfi/out/data.yaml
+Inspect /tmp/tmpds44lgfi/out/review.jpg BEFORE training. Rejected frames: 0

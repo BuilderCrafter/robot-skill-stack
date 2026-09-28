@@ -1,0 +1,10 @@
+Python: 3.13.5
+NumPy: 2.3.5
+OpenCV: 4.13.0
+PyYAML: 6.0.3
+py_compile: PASS (7 Python files)
+Python 3.11 grammar: PASS (7 Python files; not execution under Python 3.11)
+Isaac/Replicator rendering: NOT RUN
+CUDA / GTX 1060 tests: NOT RUN
+Ultralytics model training: NOT RUN
+PowerShell installation: NOT RUN

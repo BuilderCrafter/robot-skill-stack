@@ -1,0 +1,17 @@
+{
+  "tools/perception_v2_data/train_model.py": "dfc8ca71e350e26d50ba302735fb591a92f1b95b0904f565b33eed281d50fc86",
+  "tools/perception_v2_data/setup_windows.ps1": "61306a6d979a9772c5f746933e9388d9a6847a8afa33c1c1c8bec83aae22398d",
+  "tools/perception_v2_data/prepare_dataset.py": "32709fa0d2d029e62c0a796d61727421d11acb0a457202dc08aca5d399e33669",
+  "tools/perception_v2_data/README.md": "3c94aa6a52814c171dca863f34f8c3ea7444862f501db3fc358b5d820e5fbbf0",
+  "tools/perception_v2_data/setup_linux.sh": "a8e6689efb75650fef7f7ea823e9f7787c3c68854699f65ed595775fa68fc8eb",
+  "tools/perception_v2_data/.gitignore": "71c6792adcfe5e8af78522547e5e5f0e5784e1a0d32a8edb5c44f1191a626b6d",
+  "tools/perception_v2_data/generate_dataset.py": "2b723a07a55105fddb9fc7f1d8992ae008fe65f1e11fdf8d60d67f0fd2f8b072",
+  "tools/perception_v2_data/check_environment.py": "054c9c08504ea4118fe592ea9eab136ef7173e92293270dbd89dfa0559daf8db",
+  "tools/perception_v2_data/isaac_scene.py": "aa306437d2fd5d9cd2e2ab1d0f497e968d04796bdc89b27b40c7fbcc0252e1f7",
+  "tools/perception_v2_data/requirements-training.txt": "e77d0d6f2b11ff1c333dd48c423621d239077e63e4b579da1870fd4b958692a1",
+  "tools/perception_v2_data/common.py": "0307c8be5425b82c4a421bab8df293fc5934774a94b6eacaaaaf2767be33645a",
+  "tools/perception_v2_data/tests/test_toolkit.py": "be6db2725f81c4f0b7edc4413335212eaa25e16a1edd987b21d404ec38480413",
+  "tools/perception_v2_data/validation/environment.txt": "a779e94ba1a1c2042c7cf57f5aae80615972576f4fb256f80c94125a596b8aae",
+  "tools/perception_v2_data/validation/architecture.txt": "28208a29464927ce03647be1cbec03fe7f94751874aa33425152ed25eccd958b",
+  "tools/perception_v2_data/validation/unit-tests.txt": "044fbde4820d4fa0f0a95f96ac5bda391796ac4ce9980bd711152555dd55b313"
+}
