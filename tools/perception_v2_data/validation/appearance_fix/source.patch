@@ -1,0 +1,1254 @@
+--- a/tools/perception_v2_data/generate_dataset.py
++++ b/tools/perception_v2_data/generate_dataset.py
+@@ -3,6 +3,7 @@
+ 
+ import argparse
+ import json
++import math
+ import shutil
+ import sys
+ import time
+@@ -24,6 +25,8 @@
+     p.add_argument("--bounds", type=float, nargs=4, default=[.30, -.18, .62, .18], metavar=("XMIN", "YMIN", "XMAX", "YMAX"))
+     p.add_argument("--max-objects", type=int, default=5)
+     p.add_argument("--subframes", type=int, default=4)
++    p.add_argument("--ground-root", help="Optional explicit USD support-surface path; default: auto-detect")
++    p.add_argument("--light-scale", type=float, default=1., help="Scale capture fill/key lights; start at 1.0")
+     p.add_argument("--save-depth", action="store_true", help="Optional float32 depth NPZ per frame; training itself uses RGB")
+     p.add_argument("--gui", action="store_true", help="Show this separate capture process; not the live project UI")
+     p.add_argument("--resume", action="store_true", help="Same settings and seed only; skip committed frames")
+@@ -33,6 +36,10 @@
+         p.error("frames >= 12, resolution >= 128, 1 <= max-objects <= 20, subframes >= 1 required")
+     if a.bounds[0] >= a.bounds[2] or a.bounds[1] >= a.bounds[3]:
+         p.error("Invalid XY bounds")
++    if not math.isfinite(a.light_scale) or not .1 <= a.light_scale <= 4.:
++        p.error("light-scale must be finite and between 0.1 and 4.0")
++    if a.ground_root and not a.ground_root.startswith("/"):
++        p.error("ground-root must be an absolute USD prim path")
+     a.scene, a.out = a.scene.resolve(), a.out.resolve()
+     if not a.blank_scene and not a.scene.is_file():
+         p.error(f"Scene missing: {a.scene}; run from the repo root or pass its path")
+@@ -45,11 +52,12 @@
+     import numpy as np
+     if sys.version_info[:2] != (3, 11) or np.__version__ != "1.26.4":
+         raise RuntimeError(f"Use the existing project wrapper: expected Python 3.11 + NumPy 1.26.4; got {sys.version.split()[0]} / {np.__version__} at {np.__file__}. Do not reinstall Isaac packages.")
+-    from common import CLASSES, FORMAT, SPLITS, decode_instances, dump_json, preview, sample_objects, sha256, split_schedule, write_png
++    from common import CLASSES, FORMAT, SPLITS, decode_instances, dump_json, sample_objects, sha256, split_schedule, write_png
++    from appearance import REVISION, colorize_instances, frame_quality, overlay
+     print(f"[SDG] Python {sys.version.split()[0]}; NumPy {np.__version__}: {np.__file__}", flush=True)
+     scene_hash = None if args.blank_scene else sha256(args.scene)
+     settings = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items() if k not in ("resume", "zip", "gui", "out")}
+-    config = {"format": FORMAT, "classes": list(CLASSES), "settings": settings, "scene_sha256": scene_hash}
++    config = {"format": FORMAT, "classes": list(CLASSES), "settings": settings, "scene_sha256": scene_hash, "generator_revision": REVISION}
+     manifest = args.out / "manifest.json"
+     if args.out.exists() and any(args.out.iterdir()):
+         if not args.resume or not manifest.exists() or json.loads(manifest.read_text()) != config:
+@@ -65,9 +73,13 @@
+         "--enable", "omni.replicator.core"]})
+     scene, started, completed, newly_written = None, time.perf_counter(), 0, 0
+     per_split, class_pixels = dict.fromkeys(SPLITS, 0), dict.fromkeys(CLASSES, 0)
++    quality_frames = []
+     try:
+         from isaac_scene import CaptureScene
+         scene = CaptureScene(app, args)
++        setup = scene.appearance.setup_info()
++        dump_json(args.out / "appearance_setup.json", setup)
++        print(f"[SDG] {REVISION}; ground: {setup['ground_prims']}; controlled lights; robot/camera unchanged", flush=True)
+         schedule = split_schedule(args.frames, args.seed)
+         ordinal = dict.fromkeys(SPLITS, 0)
+         for index, split in enumerate(schedule):
+@@ -118,16 +130,22 @@
+                 write_png(rgb_path, rgb)
+                 write_png(mask_path, mask)
+                 cv_T = T @ np.diag([1., -1., -1., 1.])
+-                meta = {"frame_id": index, "scene_seed": [args.seed, index, SPLITS.index(split)], "split": split,
++                quality = frame_quality(rgb, mask, entries)
++                meta = {"appearance": scene.appearance.current, "quality": quality, "frame_id": index, "scene_seed": [args.seed, index, SPLITS.index(split)], "split": split,
+                         "resolution": [args.width, args.height], "K": scene.K.tolist(),
+                         "T_world_camera_opencv": cv_T.tolist(), "camera_convention": "column vectors; X right, Y down, Z forward",
+                         "depth_type": "distance_to_image_plane_m" if args.save_depth else None,
+                         "support_z": args.support_z, "negative": negative, "objects": entries,
+                         "rgb_sha256": sha256(rgb_path), "mask_sha256": sha256(mask_path)}
+-                dump_json(meta_path, meta)  # Metadata commits a complete RGB + mask (+depth) frame.
++                mask_view = colorize_instances(mask)
++                write_png(args.out / "mask_preview" / f"{stem}.png", mask_view)
+                 if index < 24 or index % 100 == 0:
+-                    write_png(args.out / "preview" / f"{stem}.png", preview(rgb, mask, entries))
++                    annotated = overlay(rgb, mask, entries)
++                    write_png(args.out / "preview" / f"{stem}.png", annotated)
++                    write_png(args.out / "review" / f"{stem}.png", np.concatenate((rgb, annotated, mask_view), axis=1))
++                dump_json(meta_path, meta)  # Commit only after RGB, mask, depth and previews are complete.
+                 newly_written += 1
++            quality_frames.append({"frame_id": index, "split": split, "mode": meta["appearance"]["mode"], **meta["quality"]})
+             completed += 1
+             per_split[split] += 1
+             for obj in meta["objects"]:
+@@ -137,6 +155,10 @@
+                 eta = (args.frames-completed)*elapsed/max(newly_written, 1)
+                 dump_json(args.out / "progress.json", {"completed": completed, "requested": args.frames, "splits": per_split,
+                           "class_pixels": class_pixels, "elapsed_s": elapsed, "complete": completed == args.frames})
++                dump_json(args.out / "quality_report.json", {"revision": REVISION, "frames": quality_frames,
++                          "note": "Heuristic diagnostics only. Hard examples are retained; raw masks remain uint16 IDs."})
++                flagged = sum(o["flagged_instances"] for o in quality_frames)
++                print(f"[SDG] Review flags on {flagged} instances (small/low-contrast/clipped/invisible); see quality_report.json", flush=True)
+                 print(f"[SDG] {completed}/{args.frames}; {elapsed:.0f}s elapsed; approx {eta/60:.1f} min left; pixels {class_pixels}", flush=True)
+         if not all(class_pixels.values()):
+             raise RuntimeError("A category has no visible annotations. Inspect the pilot before training.")
+@@ -151,6 +173,7 @@
+     if args.zip:
+         archive = shutil.make_archive(str(args.out), "zip", args.out.parent, args.out.name)
+         print(f"[SDG] Transfer this archive to your PC: {archive}", flush=True)
++    print(f"[SDG] Review triptychs: {args.out / 'review'} (RGB | overlay | instance colors); raw masks intentionally look black.")
+     print(f"[SDG] Complete. Inspect previews in {args.out / 'preview'}. Red=cube, blue=sphere, green=cylinder.")
+ 
+ 
+--- a/tools/perception_v2_data/isaac_scene.py
++++ b/tools/perception_v2_data/isaac_scene.py
+@@ -11,7 +11,9 @@
+ from isaacsim.core.utils.stage import is_stage_loading
+ from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdShade
+ 
+-from common import CLASSES, camera_matrix, random_color, rotation
++from common import CLASSES, camera_matrix, rotation
++from appearance import sample_surface
++from usd_appearance import CaptureAppearance
+ 
+ ROOT = "/PrimitiveTrainingSDG"
+ 
+@@ -99,25 +101,17 @@
+             mat, inputs = material(self.stage, f"{ROOT}/Materials/clutter_{index}")
+             UsdShade.MaterialBindingAPI.Apply(prim.GetPrim()).Bind(mat)
+             self.clutter.append((UsdGeom.Xformable(prim).AddTransformOp(), prim.CreateVisibilityAttr(), inputs))
+-        self.lights = []
+-        for prim in self.stage.Traverse():
+-            attr = prim.GetAttribute("inputs:intensity")
+-            if attr and prim.GetTypeName().endswith("Light"):
+-                value = attr.Get()
+-                if value is not None and value > 0:
+-                    self.lights.append((attr, float(value)))
+-        if not self.lights:
+-            light = UsdLux.DomeLight.Define(self.stage, f"{ROOT}/Light")
+-            light.CreateIntensityAttr(600.)
+-            self.lights = [(light.GetIntensityAttr(), 600.)]
+         if args.blank_scene:
+             floor = UsdGeom.Cube.Define(self.stage, f"{ROOT}/Floor")
+             floor.CreateSizeAttr(1.)
+             UsdGeom.Xformable(floor).AddTransformOp().Set(pose_matrix([.45, 0., args.support_z-.025], [2., 2., .05], np.eye(3)))
+             self.floor_mat, self.floor_inputs = material(self.stage, f"{ROOT}/Materials/floor")
+             UsdShade.MaterialBindingAPI.Apply(floor.GetPrim()).Bind(self.floor_mat)
++        self.appearance = CaptureAppearance(self.stage, args, ROOT, material)
+         rep.orchestrator.set_capture_on_play(False)
+         carb.settings.get_settings().set("/rtx/post/dlss/execMode", 2)
++        # Prevent adaptive brightening from undoing the controlled capture lighting.
++        carb.settings.get_settings().set("/rtx/post/histogram/enabled", False)
+         self.product = rep.create.render_product(str(self.camera.GetPath()), (args.width, args.height))
+         self.annotators = {}
+         for key, name in (("rgb", "rgb"), ("instances", "instance_id_segmentation")):
+@@ -173,6 +167,7 @@
+         return T
+ 
+     def apply(self, objects, rng, camera):
++        self.appearance.apply(objects, rng)
+         for _, _, vis in self.pool.values():
+             vis.Set(UsdGeom.Tokens.invisible)
+         for obj in objects:
+@@ -203,11 +198,10 @@
+                 vis.Set(UsdGeom.Tokens.invisible)
+                 continue
+             op.Set(pose_matrix([*xy, self.args.support_z+h/2], [d, d, h], rotation(float(rng.uniform(-np.pi, np.pi)))))
+-            inputs[0].Set(Gf.Vec3f(*random_color(rng)))
+-        for attr, base in self.lights:
+-            attr.Set(float(base * rng.uniform(.65, 1.4)))
+-        if self.args.blank_scene:
+-            self.floor_inputs[0].Set(Gf.Vec3f(*random_color(rng)))
++            surface = sample_surface(rng, self.appearance.current)
++            inputs[0].Set(Gf.Vec3f(*surface["color"]))
++            inputs[1].Set(surface["roughness"])
++            inputs[2].Set(surface["metallic"])
+ 
+     def capture(self):
+         # This standalone process is not an OmniUI callback and never runs project skills.
+--- a/tools/perception_v2_data/prepare_dataset.py
++++ b/tools/perception_v2_data/prepare_dataset.py
+@@ -26,10 +26,17 @@
+ 
+ 
+ def resample(poly, n=1000):
+-    # Same linear index interpolation used by the pinned Ultralytics segment loader.
+-    s = np.concatenate((poly, poly[:1]), axis=0)
+-    x = np.linspace(0, len(s)-1, n)
+-    return np.stack([np.interp(x, np.arange(len(s)), s[:, i]) for i in range(2)], axis=1)
++    # Match the pinned Ultralytics 8.3.161 loader: retain every original vertex.
++    if len(poly) == n:
++        return np.asarray(poly, np.float32).copy()
++    closed = np.concatenate((poly, poly[:1]), axis=0)
++    knots = np.arange(len(closed))
++    if len(closed) < n:
++        grid = np.linspace(0., float(knots[-1]), n-len(closed))
++        grid = np.insert(grid, np.searchsorted(grid, knots), knots)
++    else:
++        grid = np.linspace(0., float(knots[-1]), n)
++    return np.column_stack([np.interp(grid, knots, closed[:, axis]) for axis in (0, 1)]).astype(np.float32)
+ 
+ 
+ def mask_polygon(mask, min_pixels=20):
+@@ -58,7 +65,8 @@
+     height, width = m.shape
+     normalized = poly / np.array([width, height], dtype=np.float32)
+     serialized = np.array([float(f"{v:.8f}") for v in normalized.ravel()], np.float32).reshape(-1, 2)
+-    training_score = iou(m, raster(resample(serialized * [width, height]), m.shape))
++    loaded = resample(serialized) * np.array([width, height], dtype=np.float32)
++    training_score = iou(m, raster(loaded, m.shape))
+     if score < .97 or training_score < .90:
+         raise ValueError(f"mask polygon fidelity too low: raw={score:.3f}, resampled={training_score:.3f}")
+     return normalized, score, training_score
+--- /dev/null
++++ b/tools/perception_v2_data/appearance.py
+@@ -0,0 +1,152 @@
++"""Offline SDG appearance policy and inspection images; NumPy + stdlib only."""
++from __future__ import annotations
++
++import colorsys
++import numpy as np
++
++REVISION = "contrast-v2.1"
++# Display-space colors. USD material inputs are converted to scene-linear RGB.
++GROUNDS = np.array([[.43, .47, .51], [.53, .51, .47], [.35, .39, .38],
++                    [.62, .64, .65], [.28, .31, .35], [.55, .57, .52]])
++
++
++def srgb_to_linear(rgb):
++    a = np.clip(np.asarray(rgb, dtype=float), 0., 1.)
++    return np.where(a <= .04045, a / 12.92, ((a + .055) / 1.055) ** 2.4)
++
++
++def luminance(rgb):
++    return float(np.asarray(rgb) @ [.2126, .7152, .0722])
++
++
++def color_gap(a, b):
++    """Display-space sampling heuristic, not a guarantee of rendered contrast."""
++    return float(np.sqrt(np.mean((np.asarray(a) - np.asarray(b)) ** 2)))
++
++
++def sample_look(rng, light_scale=1.):
++    if not np.isfinite(light_scale) or light_scale <= 0:
++        raise ValueError("light_scale must be positive and finite")
++    mode = str(rng.choice(["clear", "varied", "hard"], p=[.7, .2, .1]))
++    if mode == "hard":
++        floor = np.full(3, float(rng.uniform(.84, .94)))
++    else:
++        floor = np.clip(GROUNDS[int(rng.integers(len(GROUNDS)))] + rng.uniform(-.025, .025, 3), .15, .80)
++        if mode == "varied" and rng.random() < .5:
++            floor = np.full(3, float(rng.uniform(.70, .88)))
++    return {"mode": mode, "floor_srgb": floor.tolist(),
++            "floor_linear": srgb_to_linear(floor).tolist(),
++            "fill_intensity": float(rng.uniform(120., 230.) * light_scale),
++            "key_intensity": float(rng.uniform(700., 1250.) * light_scale),
++            "key_rotation_deg": [float(rng.uniform(-45., -25.)), float(rng.uniform(-25., 25.)),
++                                 float(rng.uniform(-180., 180.))],
++            "key_angle_deg": float(rng.uniform(4., 10.)),
++            "light_color": [1., float(rng.uniform(.94, 1.)), float(rng.uniform(.90, 1.))]}
++
++
++def sample_surface(rng, look):
++    """Same distribution for every target AND cone distractor; no class input."""
++    floor = np.asarray(look["floor_srgb"])
++    mode = look["mode"]
++    for _ in range(256):
++        hue = float(rng.random())
++        if mode == "hard":
++            color = np.asarray(colorsys.hsv_to_rgb(hue, float(rng.uniform(0., .25)), float(rng.uniform(.76, .96))))
++        else:
++            saturation = float(rng.uniform(.72, .98) if mode == "clear" else rng.uniform(.3, .92))
++            color = np.asarray(colorsys.hsv_to_rgb(hue, saturation, float(rng.uniform(.35, .86))))
++            if rng.random() < .15:
++                color[:] = float(rng.uniform(.08, .24))
++        gap = color_gap(color, floor)
++        if mode != "clear" or (gap >= .24 and (abs(luminance(color)-luminance(floor)) >= .15 or gap >= .34)):
++            break
++    else:
++        color = np.array([.10, .16, .26]) if luminance(floor) > .4 else np.array([.90, .65, .10])
++        gap = color_gap(color, floor)
++    return {"color_srgb": color.tolist(), "color": srgb_to_linear(color).tolist(),
++            "roughness": float(rng.uniform(.75, .95)), "metallic": 0.,
++            "sampled_color_gap": gap}
++
++
++def dilate(mask, radius):
++    """Square dilation used only for preview boundaries and local diagnostics."""
++    m = np.asarray(mask, bool)
++    if m.ndim != 2 or radius < 0:
++        raise ValueError("Expected a 2D mask and nonnegative radius")
++    h, w = m.shape
++    p = np.pad(m, radius)
++    result = np.zeros_like(m)
++    for y in range(2*radius + 1):
++        for x in range(2*radius + 1):
++            result |= p[y:y+h, x:x+w]
++    return result
++
++
++def colorize_instances(mask):
++    """VIEW ONLY. Never replace the uint16 training label map with these colors."""
++    m = np.asarray(mask)
++    if m.ndim != 2 or not np.issubdtype(m.dtype, np.integer) or np.any(m < 0):
++        raise ValueError("Expected a nonnegative 2D integer instance map")
++    image = np.zeros((*m.shape, 3), np.uint8)
++    for identity in np.unique(m):
++        if identity:
++            rgb = colorsys.hsv_to_rgb((int(identity) * .61803398875) % 1., .80, 1.)
++            image[m == identity] = np.rint(np.asarray(rgb)*255).astype(np.uint8)
++    return image
++
++
++def overlay(rgb, mask, entries):
++    image = np.asarray(rgb).copy()
++    colors = np.array([[255, 85, 65], [50, 170, 255], [60, 230, 110]], np.uint8)
++    for obj in entries:
++        hit = mask == obj["instance_id"]
++        if not hit.any():
++            continue
++        color = colors[obj["class_id"]]
++        image[hit] = (.7 * image[hit] + .3 * color).astype(np.uint8)
++        image[dilate(hit, 1) & ~hit] = color
++    return image
++
++
++def frame_quality(rgb, mask, entries):
++    """Diagnostics only: hard examples are not silently discarded or relabeled."""
++    a = np.asarray(rgb, float) / 255.
++    m = np.asarray(mask)
++    if a.shape != (*m.shape, 3):
++        raise ValueError("RGB/mask shape mismatch")
++    result = []
++    for obj in entries:
++        hit = m == obj["instance_id"]
++        pixels = int(hit.sum())
++        item = {"instance_id": obj["instance_id"], "shape": obj["shape"], "visible_pixels": pixels, "flags": []}
++        if not pixels:
++            item["flags"].append("not_visible")
++            result.append(item)
++            continue
++        yy, xx = np.nonzero(hit)
++        x0, x1, y0, y1 = max(0, xx.min()-6), min(m.shape[1], xx.max()+7), max(0, yy.min()-6), min(m.shape[0], yy.max()+7)
++        local_mask, local_rgb = m[y0:y1, x0:x1], a[y0:y1, x0:x1]
++        local_hit = local_mask == obj["instance_id"]
++        ring = dilate(local_hit, 5) & (local_mask == 0)
++        inside = np.median(local_rgb[local_hit], axis=0)
++        item["bbox_xyxy"] = [int(xx.min()), int(yy.min()), int(xx.max())+1, int(yy.max())+1]
++        item["median_rgb"] = np.round(inside*255, 1).tolist()
++        item["white_fraction"] = float(np.mean(np.all(local_rgb[local_hit] >= 245/255., axis=1)))
++        item["black_fraction"] = float(np.mean(np.all(local_rgb[local_hit] <= 5/255., axis=1)))
++        if pixels < 100 or min(xx.max()-xx.min()+1, yy.max()-yy.min()+1) < 8:
++            item["flags"].append("small_instance")
++        if item["white_fraction"] > .35:
++            item["flags"].append("near_white")
++        if item["black_fraction"] > .35:
++            item["flags"].append("near_black")
++        if ring.any():
++            outside = np.median(local_rgb[ring], axis=0)
++            item["local_rgb_gap"] = color_gap(inside, outside)
++            item["local_luma_gap"] = abs(luminance(inside)-luminance(outside))
++            if item["local_rgb_gap"] < .10:
++                item["flags"].append("low_local_contrast")
++        else:
++            item["flags"].append("no_background_ring")
++        result.append(item)
++    return {"visible_instances": sum(i["visible_pixels"] > 0 for i in result),
++            "objects": result, "flagged_instances": sum(bool(i["flags"]) for i in result)}
+--- /dev/null
++++ b/tools/perception_v2_data/usd_appearance.py
+@@ -0,0 +1,106 @@
++"""Session-only visual overrides for the standalone capture process."""
++from __future__ import annotations
++
++import numpy as np
++from pxr import Gf, Usd, UsdGeom, UsdLux, UsdShade
++
++from appearance import REVISION, sample_look, sample_surface
++
++
++def support_candidate(lo, hi, bounds, support_z):
++    """Large, thin, horizontal surface spanning the sampling area."""
++    lo, hi = np.asarray(lo, float), np.asarray(hi, float)
++    if lo.shape != (3,) or hi.shape != (3,) or not np.isfinite([lo, hi]).all():
++        return False
++    span = hi - lo
++    return bool(abs(hi[2] - support_z) <= .015 and 0 <= span[2] <= .15
++                and lo[0] <= bounds[0] and hi[0] >= bounds[2]
++                and lo[1] <= bounds[1] and hi[1] >= bounds[3]
++                and min(span[:2]) >= .25)
++
++
++class CaptureAppearance:
++    def __init__(self, stage, args, root, material_factory):
++        if stage.GetEditTarget().GetLayer() != stage.GetSessionLayer():
++            raise RuntimeError("SDG visual changes must target the unsaved session layer")
++        self.stage, self.args, self.root = stage, args, root
++        self.material, self.floor_inputs = material_factory(stage, f"{root}/Materials/support")
++        self.grounds = self._ground_prims()
++        for prim in self.grounds:
++            binding = UsdShade.MaterialBindingAPI.Apply(prim)
++            for purpose in (UsdShade.Tokens.allPurpose, UsdShade.Tokens.preview, UsdShade.Tokens.full):
++                binding.Bind(self.material, UsdShade.Tokens.strongerThanDescendants, purpose)
++                resolved, _ = binding.ComputeBoundMaterial(purpose)
++                if not resolved or resolved.GetPath() != self.material.GetPath():
++                    raise RuntimeError(f"Ground material override did not resolve at {prim.GetPath()}; pass --ground-root at its material-binding ancestor")
++        self.disabled_lights = []
++        for prim in stage.Traverse():
++            attr = prim.GetAttribute("inputs:intensity")
++            if prim.GetTypeName().endswith("Light") and attr:
++                self.disabled_lights.append(str(prim.GetPath()))
++                attr.Set(0.)
++        self.fill = UsdLux.DomeLight.Define(stage, f"{root}/CaptureFill")
++        self.fill.CreateIntensityAttr(180.)
++        self.fill.CreateExposureAttr(0.)
++        self.fill.CreateColorAttr(Gf.Vec3f(1., 1., 1.))
++        self.key = UsdLux.DistantLight.Define(stage, f"{root}/CaptureKey")
++        self.key.CreateIntensityAttr(950.)
++        self.key.CreateExposureAttr(0.)
++        self.key.CreateAngleAttr(6.)
++        self.key.CreateColorAttr(Gf.Vec3f(1., 1., 1.))
++        self.key_rotation = UsdGeom.Xformable(self.key.GetPrim()).AddRotateXYZOp()
++        self.current = None
++
++    def _ground_prims(self):
++        if self.args.blank_scene:
++            return [self.stage.GetPrimAtPath(f"{self.root}/Floor")]
++        explicit = getattr(self.args, "ground_root", None)
++        if explicit:
++            prim = self.stage.GetPrimAtPath(explicit)
++            if not prim or prim.IsInstanceProxy():
++                raise ValueError(f"Invalid/non-editable --ground-root: {explicit}")
++            # Do not accidentally bind a ground material over the complete scene/robot.
++            if str(prim.GetPath()) in ("/", "/World", "/Franka", "/World/Franka", self.root):
++                raise ValueError("--ground-root must identify the support surface, not the complete scene or robot")
++            return [prim]
++        cache = UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_, UsdGeom.Tokens.render], useExtentsHint=True)
++        result = []
++        for prim in self.stage.Traverse():
++            path = str(prim.GetPath())
++            if path.startswith(self.root + "/") or path.startswith(("/Franka/", "/World/Franka/")):
++                continue
++            if prim.IsInstanceProxy() or not prim.IsA(UsdGeom.Gprim):
++                continue
++            imageable = UsdGeom.Imageable(prim)
++            if imageable.ComputeVisibility() == UsdGeom.Tokens.invisible or imageable.ComputePurpose() in (UsdGeom.Tokens.guide, UsdGeom.Tokens.proxy):
++                continue
++            box = cache.ComputeWorldBound(prim).ComputeAlignedRange()
++            if not box.IsEmpty() and support_candidate(box.GetMin(), box.GetMax(), self.args.bounds, self.args.support_z):
++                result.append(prim)
++        if not result:
++            raise ValueError("Could not find a visible support surface near --support-z spanning --bounds. Pass --ground-root with its USD path (not /World). Stopping rather than silently leaving the white background unchanged.")
++        return result
++
++    def apply(self, objects, rng):
++        look = sample_look(rng, self.args.light_scale)
++        color, rough, metal = self.floor_inputs
++        color.Set(Gf.Vec3f(*look["floor_linear"]))
++        rough.Set(.95)
++        metal.Set(0.)
++        self.fill.GetIntensityAttr().Set(look["fill_intensity"])
++        self.key.GetIntensityAttr().Set(look["key_intensity"])
++        self.key.GetColorAttr().Set(Gf.Vec3f(*look["light_color"]))
++        self.key.GetAngleAttr().Set(look["key_angle_deg"])
++        self.key_rotation.Set(Gf.Vec3f(*look["key_rotation_deg"]))
++        for obj in objects:
++            obj.update(sample_surface(rng, look))
++        self.current = look
++        return look
++
++    def setup_info(self):
++        return {"revision": REVISION, "ground_prims": [str(p.GetPath()) for p in self.grounds],
++                "disabled_source_lights": self.disabled_lights,
++                "robot_materials": "unchanged", "camera": "unchanged",
++                "auto_exposure": False, "light_scale": self.args.light_scale,
++                "mode_probabilities": {"clear": .7, "varied": .2, "hard": .1},
++                "color_space": "sample sRGB, convert to linear for USD materials"}
+--- /dev/null
++++ b/tools/perception_v2_data/tests/test_appearance.py
+@@ -0,0 +1,252 @@
++from __future__ import annotations
++
++import ast
++from collections import Counter
++import contextlib
++import io
++import json
++from pathlib import Path
++import struct
++import subprocess
++import sys
++import tempfile
++import types
++import unittest
++from unittest.mock import patch
++import zlib
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++from appearance import REVISION, color_gap, colorize_instances, dilate, frame_quality, overlay, sample_look, sample_surface, srgb_to_linear
++from common import CLASSES, camera_matrix, sha256, write_png
++import generate_dataset
++
++
++def read_own_png(path):
++    data = Path(path).read_bytes()
++    width, height, bits, kind = struct.unpack('>IIBB', data[16:26])
++    offset, compressed = 8, b''
++    while offset < len(data):
++        length = struct.unpack('>I', data[offset:offset+4])[0]
++        if data[offset+4:offset+8] == b'IDAT':
++            compressed += data[offset+8:offset+8+length]
++        offset += 12 + length
++    channels = 3 if kind == 2 else 1
++    rows = np.frombuffer(zlib.decompress(compressed), np.uint8).reshape(height, width*channels*bits//8+1)
++    assert np.all(rows[:, 0] == 0)
++    pixels = rows[:, 1:].copy()
++    if bits == 16:
++        return pixels.view('>u2').reshape(height, width).astype(np.uint16)
++    return pixels.reshape(height, width, 3)
++
++
++class AppearanceTests(unittest.TestCase):
++    def test_srgb_reference_values(self):
++        np.testing.assert_allclose(srgb_to_linear([0., .5, 1.]), [0., .214041140482, 1.], atol=1e-10)
++
++    def test_srgb_clamps(self):
++        np.testing.assert_equal(srgb_to_linear([-1., 2.]), [0., 1.])
++
++    def test_reproducible_independent_sampling(self):
++        a, b = np.random.default_rng(73), np.random.default_rng(73)
++        for _ in range(30):
++            la, lb = sample_look(a), sample_look(b)
++            self.assertEqual(la, lb)
++            self.assertEqual(sample_surface(a, la), sample_surface(b, lb))
++
++    def test_modes_distribution(self):
++        rng = np.random.default_rng(81)
++        counts = Counter(sample_look(rng)['mode'] for _ in range(2000))
++        for mode, target in [('clear', .7), ('varied', .2), ('hard', .1)]:
++            self.assertLess(abs(counts[mode]/2000-target), .035)
++
++    def test_clear_object_floor_color_separation_and_matte(self):
++        rng = np.random.default_rng(94)
++        for _ in range(500):
++            look = sample_look(rng); look['mode'] = 'clear'
++            surface = sample_surface(rng, look)
++            self.assertGreaterEqual(color_gap(surface['color_srgb'], look['floor_srgb']), .24)
++            self.assertEqual(surface['metallic'], 0.)
++            self.assertGreaterEqual(surface['roughness'], .75)
++            np.testing.assert_allclose(surface['color'], srgb_to_linear(surface['color_srgb']))
++
++    def test_hard_examples_include_pale_objects(self):
++        rng = np.random.default_rng(28)
++        look = {'mode': 'hard', 'floor_srgb': [.9, .9, .9]}
++        for _ in range(20):
++            surface = sample_surface(rng, look)
++            self.assertGreater(max(surface['color_srgb']), .75)
++
++    def test_palette_is_not_class_conditioned(self):
++        import inspect
++        self.assertEqual(list(inspect.signature(sample_surface).parameters), ['rng', 'look'])
++        text = inspect.getsource(sample_surface)
++        self.assertNotIn('class_id', text)
++        self.assertNotIn('shape', text)
++
++    def test_light_scale_only_changes_intensities(self):
++        a, b = sample_look(np.random.default_rng(9)), sample_look(np.random.default_rng(9), .5)
++        for k in a:
++            self.assertEqual(b[k], a[k]*.5 if k.endswith('_intensity') else a[k])
++
++    def test_invalid_light_scale(self):
++        for scale in [-1., 0., float('nan'), float('inf')]:
++            with self.assertRaises(ValueError):
++                sample_look(np.random.default_rng(1), scale)
++
++    def test_colorization_does_not_change_label_ids(self):
++        mask = np.array([[0, 1, 2], [3, 4, 65535]], np.uint16); saved = mask.copy()
++        view = colorize_instances(mask)
++        np.testing.assert_array_equal(mask, saved)
++        self.assertEqual(view.dtype, np.uint8)
++        self.assertTrue((view[0, 0] == 0).all())
++        self.assertTrue((view[mask > 0].max(axis=1) == 255).all())
++        self.assertEqual(len(np.unique(view.reshape(-1, 3), axis=0)), 6)
++
++    def test_negative_mask_preview_is_black(self):
++        self.assertFalse(colorize_instances(np.zeros((8, 8), np.uint16)).any())
++
++    def test_invalid_colorization_input(self):
++        for invalid in [np.zeros((2, 2, 3), np.uint8), np.zeros((2, 2), float), np.full((2, 2), -1)]:
++            with self.assertRaises(ValueError):
++                colorize_instances(invalid)
++
++    def test_png_preview_and_raw_roundtrip(self):
++        mask = np.array([[0, 1], [400, 65535]], np.uint16)
++        with tempfile.TemporaryDirectory() as d:
++            raw, view = Path(d)/'raw.png', Path(d)/'view.png'
++            write_png(raw, mask); write_png(view, colorize_instances(mask))
++            np.testing.assert_equal(read_own_png(raw), mask)
++            np.testing.assert_equal(read_own_png(view), colorize_instances(mask))
++
++    def test_overlay_preserves_inputs_and_outline(self):
++        rgb = np.full((24, 24, 3), 150, np.uint8); mask = np.zeros((24, 24), np.uint16)
++        mask[8:16, 8:16] = 1; before = mask.copy()
++        out = overlay(rgb, mask, [{'instance_id': 1, 'class_id': 0}])
++        np.testing.assert_equal(mask, before)
++        self.assertTrue((rgb == 150).all())
++        np.testing.assert_equal(out[7, 8], [255, 85, 65])
++
++    def test_dilation_does_not_wrap_edges(self):
++        m = np.zeros((8, 9), bool); m[0, 0] = True
++        result = dilate(m, 1)
++        self.assertEqual(result.sum(), 4)
++        self.assertFalse(result[-1].any())
++        np.testing.assert_equal(dilate(m, 0), m)
++
++    def test_low_contrast_diagnostic(self):
++        rgb = np.full((40, 40, 3), 225, np.uint8); mask = np.zeros((40, 40), np.uint16)
++        mask[10:30, 10:30] = 1; rgb[mask > 0] = 221
++        q = frame_quality(rgb, mask, [{'instance_id': 1, 'shape': 'cube'}])
++        self.assertIn('low_local_contrast', q['objects'][0]['flags'])
++        self.assertEqual(q['visible_instances'], 1)
++
++    def test_high_contrast_diagnostic(self):
++        rgb = np.full((40, 40, 3), 140, np.uint8); mask = np.zeros((40, 40), np.uint16)
++        mask[10:30, 10:30] = 1; rgb[mask > 0] = [30, 55, 120]
++        q = frame_quality(rgb, mask, [{'instance_id': 1, 'shape': 'cube'}])
++        self.assertEqual(q['objects'][0]['flags'], [])
++
++    def test_small_and_invisible_diagnostics(self):
++        rgb = np.full((20, 20, 3), 100, np.uint8); mask = np.zeros((20, 20), np.uint16); mask[4:7, 4:7] = 1
++        q = frame_quality(rgb, mask, [{'instance_id': i, 'shape': 'sphere'} for i in [1, 2]])
++        self.assertIn('small_instance', q['objects'][0]['flags'])
++        self.assertEqual(q['objects'][1]['flags'], ['not_visible'])
++
++    def test_negative_diagnostic_not_failure(self):
++        q = frame_quality(np.full((20, 20, 3), 220, np.uint8), np.zeros((20, 20), np.uint16), [])
++        self.assertEqual(q['flagged_instances'], 0)
++
++    def test_json_contains_no_nan(self):
++        q = frame_quality(np.zeros((10, 10, 3), np.uint8), np.ones((10, 10), np.uint16), [{'instance_id': 1, 'shape': 'cube'}])
++        json.dumps(q, allow_nan=False)
++        self.assertIn('no_background_ring', q['objects'][0]['flags'])
++
++
++class FakeApp:
++    def __init__(self, *args, **kwargs): pass
++    def is_running(self): return True
++    def close(self): pass
++
++
++class FakeScene:
++    calls = 0
++    def __init__(self, app, args):
++        self.args = args
++        self.K = np.array([[100., 0., 64.], [0., 100., 64.], [0., 0., 1.]])
++        self.appearance = types.SimpleNamespace(current={'mode': 'clear'}, setup_info=lambda: {'ground_prims': ['/Ground']})
++    def choose_camera(self, rng): return camera_matrix([.9, -.7, .8], [.45, 0., .04])
++    def apply(self, objects, rng, T):
++        self.objects = objects
++        for obj in objects: obj['prim_path'] = f"/Targets/{obj['slot']}"
++    def capture(self):
++        type(self).calls += 1
++        mask = np.zeros((128, 128), np.uint32); rgb = np.full((128, 128, 4), 150, np.uint8)
++        labels = {'0': 'BACKGROUND'}
++        for i, obj in enumerate(self.objects):
++            mask[25:50, 4+i*24:20+i*24] = i+1
++            labels[str(i+1)] = obj['prim_path']
++        return {'rgb': rgb, 'instances': {'data': mask, 'info': {'idToLabels': labels}}, 'depth': np.ones((128, 128), np.float32)}
++    def close(self): pass
++
++
++class PipelineTests(unittest.TestCase):
++    def run_capture(self, out, extra=()):
++        argv = ['generate_dataset.py', '--blank-scene', '--frames', '24', '--width', '128', '--height', '128', '--out', str(out), '--save-depth', *extra]
++        fake = {'isaacsim': types.SimpleNamespace(SimulationApp=FakeApp), 'isaac_scene': types.SimpleNamespace(CaptureScene=FakeScene)}
++        with patch.dict(sys.modules, fake), patch.object(sys, 'argv', argv), patch.object(sys, 'version_info', (3, 11)), patch.object(np, '__version__', '1.26.4'), contextlib.redirect_stdout(io.StringIO()):
++            generate_dataset.main()
++
++    def test_capture_outputs_raw_masks_reviews_metadata_and_resume(self):
++        FakeScene.calls = 0
++        with tempfile.TemporaryDirectory() as d:
++            out = Path(d)/'pilot'; self.run_capture(out)
++            self.assertEqual(len(list(out.glob('mask_preview/*.png'))), 24)
++            self.assertEqual(len(list(out.glob('review/*.png'))), 24)
++            manifest = json.loads((out/'manifest.json').read_text())
++            self.assertEqual(manifest['generator_revision'], REVISION)
++            self.assertEqual(len(json.loads((out/'quality_report.json').read_text())['frames']), 24)
++            for path in out.glob('meta/*/*.json'):
++                meta = json.loads(path.read_text())
++                raw = out/'masks'/path.parent.name/f'{path.stem}.png'
++                self.assertEqual(sha256(raw), meta['mask_sha256'])
++                mask = read_own_png(raw)
++                view = read_own_png(out/'mask_preview'/f'{path.stem}.png')
++                np.testing.assert_equal(view, colorize_instances(mask))
++                self.assertEqual(read_own_png(out/'review'/f'{path.stem}.png').shape, (128, 384, 3))
++            calls = FakeScene.calls; self.run_capture(out, ['--resume'])
++            self.assertEqual(FakeScene.calls, calls)
++            with self.assertRaises(RuntimeError): self.run_capture(out)
++            with self.assertRaises(RuntimeError): self.run_capture(out, ['--resume', '--light-scale', '0.8'])
++
++    def test_old_revision_refused(self):
++        with tempfile.TemporaryDirectory() as d:
++            out = Path(d)/'pilot'; self.run_capture(out)
++            p = out/'manifest.json'; config = json.loads(p.read_text()); config.pop('generator_revision'); p.write_text(json.dumps(config))
++            with self.assertRaises(RuntimeError): self.run_capture(out, ['--resume'])
++
++    def test_cli_help_no_simulator_import(self):
++        result = subprocess.run([sys.executable, str(ROOT/'generate_dataset.py'), '--help'], capture_output=True, text=True)
++        self.assertEqual(result.returncode, 0, result.stderr)
++        self.assertIn('--ground-root', result.stdout)
++        self.assertIn('--light-scale', result.stdout)
++
++    def test_cli_bad_scale_rejected(self):
++        for value in ['nan', '0', '-1', '5']:
++            with patch.object(sys, 'argv', ['x', '--blank-scene', '--out', '/tmp/unused', '--light-scale', value]), contextlib.redirect_stderr(io.StringIO()):
++                with self.assertRaises(SystemExit): generate_dataset.arguments()
++
++    def test_numpy_before_isaac_and_no_new_runtime_dependencies(self):
++        text = (ROOT/'generate_dataset.py').read_text()
++        self.assertLess(text.index('import numpy as np'), text.index('from isaacsim import SimulationApp'))
++        for name in ['generate_dataset.py', 'isaac_scene.py', 'appearance.py', 'usd_appearance.py']:
++            code = (ROOT/name).read_text()
++            ast.parse(code, feature_version=(3, 11))
++            for forbidden in ['--no-ros-env', 'import cv2', 'import torch', 'from PIL', '.Save(']:
++                self.assertNotIn(forbidden, code)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- /dev/null
++++ b/tools/perception_v2_data/tests/test_usd_appearance.py
+@@ -0,0 +1,186 @@
++"""Recorded USD calls, NOT native USD material resolution or rendering tests."""
++from __future__ import annotations
++
++import importlib.util
++import json
++from pathlib import Path
++import sys
++from types import SimpleNamespace as NS
++import unittest
++from unittest.mock import patch
++
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++
++class Attr:
++    def __init__(self, value=None): self.value = value
++    def Set(self, value): self.value = value
++    def Get(self): return self.value
++
++
++class Prim:
++    def __init__(self, path, kind='Mesh', lo=(-2, -2, -.02), hi=(2, 2, 0), visible='inherited', purpose='default', proxy=False):
++        self.path, self.kind, self.lo, self.hi = path, kind, lo, hi
++        self.visible, self.purpose, self.proxy = visible, purpose, proxy
++        self.attrs, self.bindings = {}, {}
++    def GetPath(self): return self.path
++    def GetTypeName(self): return self.kind
++    def GetAttribute(self, name): return self.attrs.get(name)
++    def IsInstanceProxy(self): return self.proxy
++    def IsA(self, cls): return cls == 'Gprim' and self.kind in ('Mesh', 'Cube')
++
++
++class Material:
++    def __init__(self, path): self.path = path
++    def GetPath(self): return self.path
++
++
++class Binding:
++    force_failure = False
++    def __init__(self, prim): self.prim = prim
++    @classmethod
++    def Apply(cls, prim): return cls(prim)
++    def Bind(self, mat, strength, purpose):
++        assert strength == 'strongerThanDescendants'
++        self.prim.bindings[purpose] = (mat, strength)
++    def ComputeBoundMaterial(self, purpose):
++        return (None if self.force_failure else self.prim.bindings[purpose][0]), None
++
++
++class Light:
++    @classmethod
++    def Define(cls, stage, path):
++        light = cls(); light.prim = Prim(path, 'CaptureLight'); stage.prims[path] = light.prim
++        return light
++    def GetPrim(self): return self.prim
++    def __getattr__(self, name):
++        if name.startswith('Create') and name.endswith('Attr'):
++            def create(value):
++                attr = self.prim.attrs.setdefault(name[6:-4], Attr()); attr.Set(value); return attr
++            return create
++        if name.startswith('Get') and name.endswith('Attr'):
++            return lambda: self.prim.attrs[name[3:-4]]
++        raise AttributeError(name)
++
++
++class Imageable:
++    def __init__(self, prim): self.prim = prim
++    def ComputeVisibility(self): return self.prim.visible
++    def ComputePurpose(self): return self.prim.purpose
++
++
++class BBoxCache:
++    def __init__(self, *args, **kwargs): pass
++    def ComputeWorldBound(self, prim):
++        return NS(ComputeAlignedRange=lambda: NS(IsEmpty=lambda: False, GetMin=lambda: prim.lo, GetMax=lambda: prim.hi))
++
++
++class Stage:
++    def __init__(self, prims):
++        self.session = object(); self.edit_layer = self.session
++        self.prims = {p.path: p for p in prims}
++    def GetEditTarget(self): return NS(GetLayer=lambda: self.edit_layer)
++    def GetSessionLayer(self): return self.session
++    def GetPrimAtPath(self, path): return self.prims.get(path)
++    def Traverse(self): return list(self.prims.values())
++
++
++def factory(stage, path): return Material(path), (Attr(), Attr(), Attr())
++
++
++def load_module():
++    pxr = NS(Gf=NS(Vec3f=lambda *v: tuple(v)), Usd=NS(TimeCode=NS(Default=lambda: 0)),
++             UsdGeom=NS(Gprim='Gprim', Tokens=NS(default_='default', render='render', guide='guide', proxy='proxy', invisible='invisible'),
++                        Imageable=Imageable, BBoxCache=BBoxCache, Xformable=lambda prim: NS(AddRotateXYZOp=lambda: Attr())),
++             UsdShade=NS(MaterialBindingAPI=Binding, Tokens=NS(allPurpose='', preview='preview', full='full', strongerThanDescendants='strongerThanDescendants')),
++             UsdLux=NS(DomeLight=Light, DistantLight=Light))
++    spec = importlib.util.spec_from_file_location('usd_appearance_recording_test', ROOT/'usd_appearance.py')
++    mod = importlib.util.module_from_spec(spec)
++    with patch.dict(sys.modules, {'pxr': pxr}): spec.loader.exec_module(mod)
++    return mod
++
++
++M = load_module()
++
++
++def args(**overrides):
++    return NS(**dict({'blank_scene': False, 'ground_root': None, 'bounds': [.3, -.18, .62, .18],
++                      'support_z': 0., 'light_scale': 1.}, **overrides))
++
++
++class UsdAppearanceTests(unittest.TestCase):
++    def test_only_session_layer_allowed(self):
++        stage = Stage([Prim('/Ground')]); stage.edit_layer = object()
++        with self.assertRaisesRegex(RuntimeError, 'session'):
++            M.CaptureAppearance(stage, args(), '/SDG', factory)
++
++    def test_auto_ground_excludes_robot_targets_and_hidden(self):
++        ground, robot, target = Prim('/Ground'), Prim('/Franka/mesh'), Prim('/SDG/Targets/cube')
++        hidden, guide = Prim('/Hidden', visible='invisible'), Prim('/Guide', purpose='guide')
++        app = M.CaptureAppearance(Stage([ground, robot, target, hidden, guide]), args(), '/SDG', factory)
++        self.assertEqual(app.grounds, [ground])
++        for p in [robot, target, hidden, guide]: self.assertEqual(p.bindings, {})
++
++    def test_missing_support_is_explicit_failure(self):
++        with self.assertRaisesRegex(ValueError, '--ground-root'):
++            M.CaptureAppearance(Stage([]), args(), '/SDG', factory)
++
++    def test_support_geometry_rule(self):
++        rule = M.support_candidate; b = [.3, -.18, .62, .18]
++        self.assertTrue(rule([-1, -1, -.02], [1, 1, 0], b, 0.))
++        for lo, hi in [([.4, 0, 0], [.5, .1, .1]), ([-1, -1, -.4], [1, 1, 0]), ([-1, -1, 1], [1, 1, 1.1]), ([float('nan'), 0, 0], [1, 1, 0])]:
++            self.assertFalse(rule(lo, hi, b, 0.))
++
++    def test_blank_scene_floor(self):
++        floor = Prim('/SDG/Floor')
++        app = M.CaptureAppearance(Stage([floor]), args(blank_scene=True), '/SDG', factory)
++        self.assertEqual(app.grounds, [floor])
++
++    def test_explicit_ground_path(self):
++        ground = Prim('/Table', 'Xform')
++        app = M.CaptureAppearance(Stage([ground]), args(ground_root='/Table'), '/SDG', factory)
++        self.assertEqual(app.grounds, [ground])
++
++    def test_invalid_or_overbroad_path_rejected(self):
++        for path in ['/World', '/Franka', '/World/Franka', '/SDG', '/']:
++            with self.assertRaises(ValueError):
++                M.CaptureAppearance(Stage([Prim(path)]), args(ground_root=path), '/SDG', factory)
++        with self.assertRaises(ValueError):
++            M.CaptureAppearance(Stage([]), args(ground_root='/Missing'), '/SDG', factory)
++
++    def test_full_preview_and_all_purpose_bindings(self):
++        floor = Prim('/Ground')
++        app = M.CaptureAppearance(Stage([floor]), args(), '/SDG', factory)
++        self.assertEqual(set(floor.bindings), {'', 'preview', 'full'})
++        self.assertTrue(all(mat is app.material and strength == 'strongerThanDescendants' for mat, strength in floor.bindings.values()))
++
++    def test_material_resolution_failure_stops(self):
++        with patch.object(Binding, 'force_failure', True), self.assertRaisesRegex(RuntimeError, 'did not resolve'):
++            M.CaptureAppearance(Stage([Prim('/Ground')]), args(), '/SDG', factory)
++
++    def test_old_lights_disabled_not_other_prims(self):
++        old, other = Prim('/OldSun', 'DistantLight'), Prim('/Other')
++        old.attrs['inputs:intensity'] = Attr(10000.); other.attrs['inputs:intensity'] = Attr(42.)
++        app = M.CaptureAppearance(Stage([Prim('/Ground'), old, other]), args(), '/SDG', factory)
++        self.assertEqual(old.attrs['inputs:intensity'].Get(), 0.)
++        self.assertEqual(other.attrs['inputs:intensity'].Get(), 42.)
++        self.assertEqual(app.disabled_lights, ['/OldSun'])
++
++    def test_apply_records_linear_colors_matte_and_no_pose_changes(self):
++        app = M.CaptureAppearance(Stage([Prim('/Ground')]), args(), '/SDG', factory)
++        objects = [{'shape': s, 'position': [1, 2, 3], 'slot': i} for i, s in enumerate(CLASSES)]
++        look = app.apply(objects, np.random.default_rng(77))
++        self.assertEqual(app.floor_inputs[0].Get(), tuple(look['floor_linear']))
++        self.assertEqual(app.floor_inputs[1].Get(), .95)
++        for o in objects:
++            self.assertEqual(o['position'], [1, 2, 3])
++            self.assertEqual(o['metallic'], 0.)
++        json.dumps(app.setup_info(), allow_nan=False)
++
++
++from common import CLASSES
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- /dev/null
++++ b/tools/perception_v2_data/tests/test_small_masks.py
+@@ -0,0 +1,53 @@
++"""Regression tests for the converter's pinned-loader fidelity check."""
++from pathlib import Path
++import sys
++import unittest
++
++import cv2
++import numpy as np
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++from prepare_dataset import mask_polygon, resample
++
++
++class SmallMaskTests(unittest.TestCase):
++    def test_resample_keeps_original_vertices(self):
++        poly = np.array([[1., 3.], [2., 9.], [8., 10.], [12., 4.], [7., 1.]], np.float32)
++        dense = resample(poly)
++        self.assertEqual(dense.shape, (1000, 2))
++        for vertex in poly:
++            self.assertTrue(np.any(np.all(dense == vertex, axis=1)))
++
++    def test_float32_like_pinned_loader(self):
++        self.assertEqual(resample(np.array([[0., 0.], [4., 0.], [3., 4.]])).dtype, np.float32)
++
++    def test_already_dense_polygon_unchanged(self):
++        poly = np.random.default_rng(6).random((1000, 2)).astype(np.float32)
++        np.testing.assert_array_equal(resample(poly), poly)
++
++    def test_small_circles_at_camera_resolution(self):
++        for radius in [5, 6, 8, 12]:
++            for center in [(300, 275), (98, 177), (540, 352)]:
++                with self.subTest(radius=radius, center=center):
++                    mask = np.zeros((480, 640), np.uint8)
++                    cv2.circle(mask, center, radius, 1, -1)
++                    _, score, training_score = mask_polygon(mask)
++                    self.assertEqual(score, 1.)
++                    self.assertGreaterEqual(training_score, .90)
++
++    def test_small_rotated_box(self):
++        mask = np.zeros((480, 640), np.uint8)
++        cv2.fillPoly(mask, [np.array([[300, 265], [312, 270], [308, 285], [296, 279]])], 1)
++        _, raw, loaded = mask_polygon(mask)
++        self.assertEqual(raw, 1.)
++        self.assertGreaterEqual(loaded, .9)
++
++    def test_quality_threshold_not_relaxed(self):
++        mask = np.zeros((480, 640), np.uint8); mask[10:12, 11:13] = 1
++        with self.assertRaises(ValueError):
++            mask_polygon(mask)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- a/tools/perception_v2_data/README.md
++++ b/tools/perception_v2_data/README.md
+@@ -1,4 +1,12 @@
+ # Primitive synthetic data + GTX 1060 training starter
++
++**Appearance correction applied (`contrast-v2.1`).** Start with a new output folder,
++not `--resume` of the old pilot. Read [APPEARANCE_PATCH.md](APPEARANCE_PATCH.md)
++for changes, tests and the current pilot command. The raw 16-bit masks remain
++label maps; use `mask_preview/` for bright instance colors and `review/` for
++RGB | class overlay | instance-color comparisons. Apply the updated
++`prepare_dataset.py` on the PC too: its small-mask resampling check now matches
++the pinned YOLO loader. Training dependencies and commands are unchanged.
+ 
+ An **additive offline toolkit**, not a V2 runtime replacement. Extract the archive
+ at your repository root: it adds only `tools/perception_v2_data/`. It does not
+@@ -14,10 +22,10 @@
+ cd /home/etfrobotics/Projects/ga253315m/robot-skill-stack
+ bash ./run_isaac_python.sh tools/perception_v2_data/generate_dataset.py \
+   --scene scenes/playground.usd --frames 24 \
+-  --out outputs/primitive_pilot --save-depth
+-```
+-
+-Inspect `outputs/primitive_pilot/preview/` (PNG overlays). Overlay colors:
++  --out outputs/primitive_pilot_v2 --save-depth
++```
++
++Inspect `outputs/primitive_pilot_v2/preview/` (PNG overlays). Overlay colors:
+ **red=cube, blue=sphere, green=cylinder**. The object materials themselves are
+ random, not color-coded. Check that EVERY visible target has a correct outline,
+ that there are two outlines for two same-class objects, and that the overlays
+@@ -42,10 +50,10 @@
+ ```bash
+ bash ./run_isaac_python.sh tools/perception_v2_data/generate_dataset.py \
+   --scene scenes/playground.usd --frames 1200 \
+-  --out outputs/primitive_1200 --save-depth --zip
+-```
+-
+-Transfer `outputs/primitive_1200.zip` to the home PC. Generation prints measured
++  --out outputs/primitive_1200_v2 --save-depth --zip
++```
++
++Transfer `outputs/primitive_1200_v2.zip` to the home PC. Generation prints measured
+ progress and an approximate remaining time. Do not assume 1200 images finish in
+ any fixed number of minutes: renderer startup, scene assets, disk, and GPU matter.
+ Use `--frames 600` with a *new output name* for a shorter first job. Changing the
+@@ -64,6 +72,10 @@
+ - `--blank-scene`: explicit fallback with a generated floor/camera and **no real
+   robot background**. Never silently substituted for the saved scene.
+ - Omit `--save-depth` to reduce transfer size; RGB training does not need depth.
++- `--ground-root /path/to/support`: only when automatic support-surface detection
++  fails; pass the ground/table prim or its material-binding root, not `/World`.
++- `--light-scale 0.7`: optional lower lighting for a separate new pilot if the
++  default still renders too bright. Keep the default `1.0` for the first retry.
+ 
+ ### What the initial dataset covers (and does not)
+ 
+@@ -72,8 +84,14 @@
+ 1–5 targets, except about 10% intentionally empty/negative frames. Multiple
+ objects of the same class are independent instances. Cone distractors appear in
+ about 40% of scenes. Target placement avoids interpenetration via conservative
+-footprint separation. Colors, roughness, light intensity, and small camera
+-translations vary; the actual saved camera pose is retained in 75% of scenes.
++footprint separation. Colors and ground appearance now use a 70% clear / 20% varied / 10% hard
++sampling policy (probabilities, not fixed batch counts). Clear examples use matte,
++more saturated/darker objects on neutral gray/blue-gray/taupe surfaces. Hard
++examples retain pale targets and pale backgrounds. There is no class-specific
++color palette. The scene's original light intensities are overridden by a
++controlled fill and directional key; see `appearance_setup.json`. Robot materials
++are retained. Small camera translations still vary; the saved camera pose is
++retained in 75% of scenes, and resolution, field of view and object sizes are unchanged.
+ 
+ Approximately 20% of target placements are elevated. **These are analytically
+ placed static renderings, not physically simulated grasps or manipulation
+@@ -92,7 +110,7 @@
+ ### Raw output layout
+ 
+ ```
+-primitive_1200/
++primitive_1200_v2/
+   manifest.json          # generation settings, source scene hash, class order
+   progress.json          # must say complete before conversion/training
+   images/{train,val,test}/*.png
+@@ -144,9 +162,9 @@
+ Copy the generated ZIP to Downloads, then from the toolkit directory:
+ 
+ ```powershell
+-Expand-Archive "$HOME\Downloads\primitive_1200.zip" -DestinationPath .\data
+-.\.venv\Scripts\python.exe prepare_dataset.py --raw .\data\primitive_1200 --out .\data\primitive_1200_yolo
+-Invoke-Item .\data\primitive_1200_yolo\review.jpg
++Expand-Archive "$HOME\Downloads\primitive_1200_v2.zip" -DestinationPath .\data
++.\.venv\Scripts\python.exe prepare_dataset.py --raw .\data\primitive_1200_v2 --out .\data\primitive_1200_v2_yolo
++Invoke-Item .\data\primitive_1200_v2_yolo\review.jpg
+ ```
+ 
+ The converter verifies hashes, instance identities, image/mask alignment, labels,
+@@ -166,8 +184,8 @@
+ ## 5. Run a short smoke test, then real training
+ 
+ ```powershell
+-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --smoke
+-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --epochs 60 --batch 2 --name primitives_nano
++.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --smoke
++.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --epochs 60 --batch 2 --name primitives_nano
+ ```
+ 
+ Smoke uses 2 epochs with at most 128 training / 32 validation images. It validates
+@@ -189,7 +207,7 @@
+ model on validation:
+ 
+ ```powershell
+-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --evaluate .\runs\primitives_nano\weights\best.pt
++.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --evaluate .\runs\primitives_nano\weights\best.pt
+ ```
+ 
+ Resume an *interrupted* full run (not a completed smoke run):
+@@ -203,7 +221,7 @@
+ of their publishers. No model weights or third-party packages are redistributed
+ in this ZIP.
+ 
+-## Verification and boundaries
++## Original starter verification (before the appearance correction) and boundaries
+ 
+ See `validation/`. Local tests cover PNG round-trips, annotation mapping,
+ class/split checks, seeded sampling, contour fidelity including occlusion,
+--- /dev/null
++++ b/tools/perception_v2_data/APPEARANCE_PATCH.md
+@@ -0,0 +1,159 @@
++# Synthetic-data appearance and mask-preview correction
++
++Apply over `robot-skill-stack-sdg-training-starter.zip` at the repository root.
++Only `tools/perception_v2_data/` is affected. The patch replaces the generator,
++its scene adapter, the PC converter and toolkit README, and adds small appearance
++helpers, tests and this report. No Python launcher, `.deps`, dependency pin,
++saved USD/TOML, V1/V2 runtime, GUI, robot controller or training recipe is changed.
++
++## Run the new pilot
++
++Close the normal Isaac GUI to free GPU memory. From the project root:
++
++```bash
++bash ./run_isaac_python.sh tools/perception_v2_data/generate_dataset.py \
++  --scene scenes/playground.usd \
++  --frames 24 \
++  --out outputs/primitive_pilot_v2 \
++  --save-depth \
++  --zip
++```
++
++Use a new output directory. Old captures cannot be resumed with this revision;
++this prevents mixing appearance policies into an existing dataset by accident.
++A new-revision interrupted capture can be resumed with exactly the same arguments
++plus `--resume`. The source scene is never saved. All material/light bindings are
++authored in its unsaved USD session layer and its root file hash is checked.
++
++Inspect these outputs:
++
++| Folder / file | Meaning |
++|---|---|
++| `images/<split>/` | Actual rendered RGB used for training; no overlays |
++| `preview/` | RGB with class-colored outlines: red cube, blue sphere, green cylinder |
++| `mask_preview/` | Bright, unique colors for instance IDs; black means background |
++| `review/` | Left: RGB. Center: class overlay. Right: instance-color label map |
++| `masks/<split>/` | Original lossless uint16 IDs, intentionally near-black in normal viewers |
++| `quality_report.json` | Per-object visible area and measured local-contrast/clipping warnings |
++| `appearance_setup.json` | Actual support prims selected, source lights disabled, policy settings |
++| `meta/<split>/` | Existing labels/calibration plus sampled appearance and per-frame diagnostics |
++
++The complete pilot archive will be `outputs/primitive_pilot_v2.zip`.
++Do not feed the colorful preview images into training or overwrite the raw masks.
++The same-class objects intentionally receive different instance-preview colors.
++An intentionally empty/negative scene still has an all-black mask preview.
++
++## Changes
++
++### Appearance
++
++- Neutral gray, blue-gray, slate and muted taupe support colors replace the
++  uniformly pale background in most frames. The source support geometry is
++  **not** moved, resized or replaced. Automatic discovery looks for a large thin
++  visible surface at `--support-z` that spans the target sampling bounds.
++- Object and cone-distractor colors come from the **same class-independent**
++  distribution. Clear examples prefer saturated/darker colors separated from the
++  sampled support color. This is a material-color sampling heuristic, not a
++  guarantee that the rendered pixels will have a particular contrast.
++- Display-space sRGB colors are converted to scene-linear values for the USD
++  material. Roughness is 0.75–0.95 and metallic is zero; the ground is matte too.
++- Scene lights no longer receive an arbitrary multiplier of their inherited
++  intensity. The standalone capture uses a controlled dome fill plus directional
++  key with varied direction, intensity and slight color tint. Auto exposure is
++  disabled in that standalone process so it does not compensate for the lighting.
++- Sampling probabilities are 70% clear, 20% varied and 10% deliberately hard,
++  including pale-on-pale scenes. A 24-image pilot will not have exact percentages.
++  We retain difficult examples instead of training only on colorful dark blobs.
++- **Robot materials remain authored**, including the black joints and fingers.
++  The new background/lighting provides separation without repainting the robot.
++- Camera calibration, FOV, resolution, actual camera-pose distribution and target
++  size ranges stay unchanged. This patch is not a hidden zoom/camera relocation.
++  The quality report flags small instances for subsequent review.
++
++The auto-detected ground paths are printed at startup. If no suitable surface
++can be found, generation stops rather than silently leaving it white. Use
++`--ground-root` with the actual support prim path to override detection. A
++material-binding ancestor can be supplied when a stronger ancestor binding
++prevents the leaf override; do not pass the complete scene or robot root.
++
++### Annotation display
++
++The raw masks were valid. Your uploaded pilot has **24 frames: 23 positive and
++one intentional negative**, with **69 visible annotated instances** (22 cubes,
++22 spheres, 25 cylinders). Mask IDs, metadata pixel counts and recorded RGB/mask
++hashes agree. Instance pixel counts range from 75 to 763 (median 337).
++
++The new colored views make those low-valued IDs visible without changing any
++training data. Quality diagnostics use the rendered RGB, not the requested
++material colors. Their local-background ring can include a neighboring surface,
++shadow or robot: these are review hints, **not certified visibility measurements**.
++Hard examples are not silently dropped. Review flags do not mean labels are missing.
++
++`validation/appearance_fix/original_pilot_review.png` is an inspection of your
++**original uploaded pilot**, not a rendered prediction of the new appearance.
++The original pilot audit measured low local color contrast on 45 of 69 instances
++using the new heuristic; that is baseline evidence, not a model-accuracy result.
++
++### Small-mask converter correction
++
++During checks, the previous converter rejected 12/24 of the uploaded pilot frames
++at its resampled-polygon fidelity gate, despite raw polygon IoU = 1.0. Its
++resampling simulation omitted original vertices and did not follow the float32
++processing order used by the pinned Ultralytics 8.3.161 loader.
++
++The corrected `prepare_dataset.py` retains those vertices, resamples normalized
++coordinates, and denormalizes in float32. The thresholds are **not reduced**.
++All **24/24** original pilot frames now convert with zero rejections. The minimum
++resampled IoU is **0.943942**, and minimum raw IoU is **1.0**, at native resolution.
++This checks the exporter/loader geometry, not trained mask quality or augmentation.
++
++Apply the patch to your Windows toolkit too, or replace its
++`tools/perception_v2_data/prepare_dataset.py` with this version before converting.
++No PC reinstall or training-parameter change is required. Use a fresh conversion
++output directory to avoid mixing labels. A typical PC command is:
++
++```powershell
++.\.venv\Scripts\python.exe prepare_dataset.py `
++  --raw .\data\primitive_pilot_v2 `
++  --out .\data\primitive_pilot_v2_yolo
++```
++
++## Tests and limits
++
++Verified locally:
++
++- 29 existing toolkit tests.
++- 25 new appearance/output/resume tests, including a synthetic capture adapter.
++- 11 recorded-USD-call tests for support selection, material/light setup, and
++  session-layer guards. These are **not native USD or renderer tests**.
++- 6 converter regressions, including small masks and retained contour vertices.
++- Total: **71 unittest methods passed**.
++- Compilation and Python 3.11 grammar parsing for all changed/new Python files.
++- Existing repository architecture/syntax checker after reconstructing the current
++  repository + previous overlays + the corrected toolkit.
++- Original uploaded pilot: all 24 RGB/mask bundles audited; converter succeeds on
++  all 24 without editing the input; files and counts recorded in validation logs.
++- Fresh overlay extraction and repeat of the tests / converter check.
++
++Host execution: Python 3.13.5, NumPy 2.3.5, OpenCV 4.13.0. **No Isaac rendering,
++physical simulation, native USD binding execution, GPU training or Windows run
++was available here.** The generator still enforces your established Python 3.11 /
++NumPy 1.26.4 startup and uses the existing wrapper without the rejected ROS flag.
++Keep that environment unchanged; do not install test-host packages in Isaac.
++
++Start with the pilot at `--light-scale 1.0`. Only if the real render is still too
++bright, repeat in a different directory with `--light-scale 0.7`. Do not start the
++large batch until the RGB and mask previews align and look useful. A successful
++export does not demonstrate that this training distribution beats V1 perception.
++
++## API references used
++
++- NVIDIA Isaac Sim 5.1 scripted scene/light randomization:
++  https://docs.isaacsim.omniverse.nvidia.com/5.1.0/replicator_tutorials/tutorial_replicator_object_based_sdg.html
++- USD binding strengths and material purposes:
++  https://openusd.org/dev/api/class_usd_shade_material_binding_a_p_i.html
++- Documented RTX histogram/auto-exposure setting:
++  https://docs.omniverse.nvidia.com/avp/latest/performance.html
++- Pinned Ultralytics 8.3.161 `resample_segments`, source blob
++  `3ca26a8ff213a24a78a08cd04a3cae3c6bda84e9`:
++  https://github.com/ultralytics/ultralytics/blob/v8.3.161/ultralytics/utils/ops.py

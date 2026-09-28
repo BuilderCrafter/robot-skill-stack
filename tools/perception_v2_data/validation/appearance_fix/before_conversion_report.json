@@ -1,0 +1,84 @@
+{
+  "splits": {
+    "train": {
+      "images": 10,
+      "negative_images": 1,
+      "instances": [
+        4,
+        5,
+        10
+      ]
+    },
+    "val": {
+      "images": 1,
+      "negative_images": 0,
+      "instances": [
+        2,
+        0,
+        0
+      ]
+    },
+    "test": {
+      "images": 1,
+      "negative_images": 0,
+      "instances": [
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "rejected": [
+    {
+      "frame": "meta/test/000002.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.852"
+    },
+    {
+      "frame": "meta/test/000013.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.820"
+    },
+    {
+      "frame": "meta/train/000001.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.873"
+    },
+    {
+      "frame": "meta/train/000004.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.872"
+    },
+    {
+      "frame": "meta/train/000005.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.842"
+    },
+    {
+      "frame": "meta/train/000008.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.897"
+    },
+    {
+      "frame": "meta/train/000011.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.894"
+    },
+    {
+      "frame": "meta/train/000016.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.885"
+    },
+    {
+      "frame": "meta/train/000017.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.870"
+    },
+    {
+      "frame": "meta/train/000020.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.864"
+    },
+    {
+      "frame": "meta/val/000006.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.718"
+    },
+    {
+      "frame": "meta/val/000010.json",
+      "reason": "mask polygon fidelity too low: raw=1.000, resampled=0.852"
+    }
+  ],
+  "polygon_iou_min": 1.0,
+  "resampled_iou_min": 0.900398406374502,
+  "raw_manifest_sha256": "118f2c24dda1fd47019881caf8965c7bea64816bca2281fa14e786324d5ce7af"
+}

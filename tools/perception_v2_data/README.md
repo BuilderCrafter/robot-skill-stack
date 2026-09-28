@@ -1,5 +1,13 @@
 # Primitive synthetic data + GTX 1060 training starter
 
+**Appearance correction applied (`contrast-v2.1`).** Start with a new output folder,
+not `--resume` of the old pilot. Read [APPEARANCE_PATCH.md](APPEARANCE_PATCH.md)
+for changes, tests and the current pilot command. The raw 16-bit masks remain
+label maps; use `mask_preview/` for bright instance colors and `review/` for
+RGB | class overlay | instance-color comparisons. Apply the updated
+`prepare_dataset.py` on the PC too: its small-mask resampling check now matches
+the pinned YOLO loader. Training dependencies and commands are unchanged.
+
 An **additive offline toolkit**, not a V2 runtime replacement. Extract the archive
 at your repository root: it adds only `tools/perception_v2_data/`. It does not
 modify launchers, `.deps`, NumPy, V1, UI, skills, or gripper state. No rejected ROS
@@ -14,10 +22,10 @@ wrapper, from the repository root:
 cd /home/etfrobotics/Projects/ga253315m/robot-skill-stack
 bash ./run_isaac_python.sh tools/perception_v2_data/generate_dataset.py \
   --scene scenes/playground.usd --frames 24 \
-  --out outputs/primitive_pilot --save-depth
+  --out outputs/primitive_pilot_v2 --save-depth
 ```
 
-Inspect `outputs/primitive_pilot/preview/` (PNG overlays). Overlay colors:
+Inspect `outputs/primitive_pilot_v2/preview/` (PNG overlays). Overlay colors:
 **red=cube, blue=sphere, green=cylinder**. The object materials themselves are
 random, not color-coded. Check that EVERY visible target has a correct outline,
 that there are two outlines for two same-class objects, and that the overlays
@@ -42,10 +50,10 @@ separate standalone capture process, not a GUI callback or live-runtime command.
 ```bash
 bash ./run_isaac_python.sh tools/perception_v2_data/generate_dataset.py \
   --scene scenes/playground.usd --frames 1200 \
-  --out outputs/primitive_1200 --save-depth --zip
+  --out outputs/primitive_1200_v2 --save-depth --zip
 ```
 
-Transfer `outputs/primitive_1200.zip` to the home PC. Generation prints measured
+Transfer `outputs/primitive_1200_v2.zip` to the home PC. Generation prints measured
 progress and an approximate remaining time. Do not assume 1200 images finish in
 any fixed number of minutes: renderer startup, scene assets, disk, and GPU matter.
 Use `--frames 600` with a *new output name* for a shorter first job. Changing the
@@ -64,6 +72,10 @@ Optional switches:
 - `--blank-scene`: explicit fallback with a generated floor/camera and **no real
   robot background**. Never silently substituted for the saved scene.
 - Omit `--save-depth` to reduce transfer size; RGB training does not need depth.
+- `--ground-root /path/to/support`: only when automatic support-surface detection
+  fails; pass the ground/table prim or its material-binding root, not `/World`.
+- `--light-scale 0.7`: optional lower lighting for a separate new pilot if the
+  default still renders too bright. Keep the default `1.0` for the first retry.
 
 ### What the initial dataset covers (and does not)
 
@@ -72,8 +84,14 @@ Cubes: 28–66 mm sides, yaw randomized. Spheres: 28–66 mm diameter. Cylinders
 1–5 targets, except about 10% intentionally empty/negative frames. Multiple
 objects of the same class are independent instances. Cone distractors appear in
 about 40% of scenes. Target placement avoids interpenetration via conservative
-footprint separation. Colors, roughness, light intensity, and small camera
-translations vary; the actual saved camera pose is retained in 75% of scenes.
+footprint separation. Colors and ground appearance now use a 70% clear / 20% varied / 10% hard
+sampling policy (probabilities, not fixed batch counts). Clear examples use matte,
+more saturated/darker objects on neutral gray/blue-gray/taupe surfaces. Hard
+examples retain pale targets and pale backgrounds. There is no class-specific
+color palette. The scene's original light intensities are overridden by a
+controlled fill and directional key; see `appearance_setup.json`. Robot materials
+are retained. Small camera translations still vary; the saved camera pose is
+retained in 75% of scenes, and resolution, field of view and object sizes are unchanged.
 
 Approximately 20% of target placements are elevated. **These are analytically
 placed static renderings, not physically simulated grasps or manipulation
@@ -92,7 +110,7 @@ Keep separate actual manipulation episodes for a stronger final evaluation.
 ### Raw output layout
 
 ```
-primitive_1200/
+primitive_1200_v2/
   manifest.json          # generation settings, source scene hash, class order
   progress.json          # must say complete before conversion/training
   images/{train,val,test}/*.png
@@ -144,9 +162,9 @@ Do not run this installer in the university Isaac environment.
 Copy the generated ZIP to Downloads, then from the toolkit directory:
 
 ```powershell
-Expand-Archive "$HOME\Downloads\primitive_1200.zip" -DestinationPath .\data
-.\.venv\Scripts\python.exe prepare_dataset.py --raw .\data\primitive_1200 --out .\data\primitive_1200_yolo
-Invoke-Item .\data\primitive_1200_yolo\review.jpg
+Expand-Archive "$HOME\Downloads\primitive_1200_v2.zip" -DestinationPath .\data
+.\.venv\Scripts\python.exe prepare_dataset.py --raw .\data\primitive_1200_v2 --out .\data\primitive_1200_v2_yolo
+Invoke-Item .\data\primitive_1200_v2_yolo\review.jpg
 ```
 
 The converter verifies hashes, instance identities, image/mask alignment, labels,
@@ -166,8 +184,8 @@ fixing bad inputs; the converter will not delete previous results automatically.
 ## 5. Run a short smoke test, then real training
 
 ```powershell
-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --smoke
-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --epochs 60 --batch 2 --name primitives_nano
+.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --smoke
+.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --epochs 60 --batch 2 --name primitives_nano
 ```
 
 Smoke uses 2 epochs with at most 128 training / 32 validation images. It validates
@@ -189,7 +207,7 @@ may increment it. Preserve `best.pt`, `last.pt`, `args.yaml`, `results.csv`, and
 model on validation:
 
 ```powershell
-.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_yolo\data.yaml --evaluate .\runs\primitives_nano\weights\best.pt
+.\.venv\Scripts\python.exe train_model.py --data .\data\primitive_1200_v2_yolo\data.yaml --evaluate .\runs\primitives_nano\weights\best.pt
 ```
 
 Resume an *interrupted* full run (not a completed smoke run):
@@ -203,7 +221,7 @@ contains its dataset configuration. Model package/weight licenses remain those
 of their publishers. No model weights or third-party packages are redistributed
 in this ZIP.
 
-## Verification and boundaries
+## Original starter verification (before the appearance correction) and boundaries
 
 See `validation/`. Local tests cover PNG round-trips, annotation mapping,
 class/split checks, seeded sampling, contour fidelity including occlusion,

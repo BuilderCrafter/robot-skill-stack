@@ -1,0 +1,213 @@
+Packaged overlay extracted over a clean starter ZIP.
+Unified diff git apply --check: PASS
+All implementation/doc hashes match: PASS
+
+COMMAND: /opt/pyvenv/bin/python -m unittest discover -s tools/perception_v2_data/tests -p test_*.py -v
+
+test_clear_object_floor_color_separation_and_matte (test_appearance.AppearanceTests.test_clear_object_floor_color_separation_and_matte) ... ok
+test_colorization_does_not_change_label_ids (test_appearance.AppearanceTests.test_colorization_does_not_change_label_ids) ... ok
+test_dilation_does_not_wrap_edges (test_appearance.AppearanceTests.test_dilation_does_not_wrap_edges) ... ok
+test_hard_examples_include_pale_objects (test_appearance.AppearanceTests.test_hard_examples_include_pale_objects) ... ok
+test_high_contrast_diagnostic (test_appearance.AppearanceTests.test_high_contrast_diagnostic) ... ok
+test_invalid_colorization_input (test_appearance.AppearanceTests.test_invalid_colorization_input) ... ok
+test_invalid_light_scale (test_appearance.AppearanceTests.test_invalid_light_scale) ... ok
+test_json_contains_no_nan (test_appearance.AppearanceTests.test_json_contains_no_nan) ... ok
+test_light_scale_only_changes_intensities (test_appearance.AppearanceTests.test_light_scale_only_changes_intensities) ... ok
+test_low_contrast_diagnostic (test_appearance.AppearanceTests.test_low_contrast_diagnostic) ... ok
+test_modes_distribution (test_appearance.AppearanceTests.test_modes_distribution) ... ok
+test_negative_diagnostic_not_failure (test_appearance.AppearanceTests.test_negative_diagnostic_not_failure) ... ok
+test_negative_mask_preview_is_black (test_appearance.AppearanceTests.test_negative_mask_preview_is_black) ... ok
+test_overlay_preserves_inputs_and_outline (test_appearance.AppearanceTests.test_overlay_preserves_inputs_and_outline) ... ok
+test_palette_is_not_class_conditioned (test_appearance.AppearanceTests.test_palette_is_not_class_conditioned) ... ok
+test_png_preview_and_raw_roundtrip (test_appearance.AppearanceTests.test_png_preview_and_raw_roundtrip) ... ok
+test_reproducible_independent_sampling (test_appearance.AppearanceTests.test_reproducible_independent_sampling) ... ok
+test_small_and_invisible_diagnostics (test_appearance.AppearanceTests.test_small_and_invisible_diagnostics) ... ok
+test_srgb_clamps (test_appearance.AppearanceTests.test_srgb_clamps) ... ok
+test_srgb_reference_values (test_appearance.AppearanceTests.test_srgb_reference_values) ... ok
+test_capture_outputs_raw_masks_reviews_metadata_and_resume (test_appearance.PipelineTests.test_capture_outputs_raw_masks_reviews_metadata_and_resume) ... ok
+test_cli_bad_scale_rejected (test_appearance.PipelineTests.test_cli_bad_scale_rejected) ... ok
+test_cli_help_no_simulator_import (test_appearance.PipelineTests.test_cli_help_no_simulator_import) ... ok
+test_numpy_before_isaac_and_no_new_runtime_dependencies (test_appearance.PipelineTests.test_numpy_before_isaac_and_no_new_runtime_dependencies) ... ok
+test_old_revision_refused (test_appearance.PipelineTests.test_old_revision_refused) ... ok
+test_already_dense_polygon_unchanged (test_small_masks.SmallMaskTests.test_already_dense_polygon_unchanged) ... ok
+test_float32_like_pinned_loader (test_small_masks.SmallMaskTests.test_float32_like_pinned_loader) ... ok
+test_quality_threshold_not_relaxed (test_small_masks.SmallMaskTests.test_quality_threshold_not_relaxed) ... ok
+test_resample_keeps_original_vertices (test_small_masks.SmallMaskTests.test_resample_keeps_original_vertices) ... ok
+test_small_circles_at_camera_resolution (test_small_masks.SmallMaskTests.test_small_circles_at_camera_resolution) ... ok
+test_small_rotated_box (test_small_masks.SmallMaskTests.test_small_rotated_box) ... ok
+test_checksum_tampering_detected (test_toolkit.DatasetTests.test_checksum_tampering_detected) ... ok
+test_end_to_end_export_and_movable_yaml (test_toolkit.DatasetTests.test_end_to_end_export_and_movable_yaml) ... ok
+test_existing_output_not_overwritten (test_toolkit.DatasetTests.test_existing_output_not_overwritten) ... ok
+test_incomplete_capture_refused (test_toolkit.DatasetTests.test_incomplete_capture_refused) ... ok
+test_reject_whole_bad_image_not_one_positive (test_toolkit.DatasetTests.test_reject_whole_bad_image_not_one_positive) ... ok
+test_true_negative_exports_empty_label (test_toolkit.DatasetTests.test_true_negative_exports_empty_label) ... ok
+test_class_labels_not_mistaken_for_paths (test_toolkit.ImageFormatTests.test_class_labels_not_mistaken_for_paths) ... ok
+test_descendant_prim_mapping (test_toolkit.ImageFormatTests.test_descendant_prim_mapping) ... ok
+test_instance_ids_resolved_per_frame (test_toolkit.ImageFormatTests.test_instance_ids_resolved_per_frame) ... ok
+test_invalid_png_rejected (test_toolkit.ImageFormatTests.test_invalid_png_rejected) ... ok
+test_missing_mapping_fails_closed (test_toolkit.ImageFormatTests.test_missing_mapping_fails_closed) ... ok
+test_rgb_png_roundtrip (test_toolkit.ImageFormatTests.test_rgb_png_roundtrip) ... ok
+test_uint16_png_roundtrip (test_toolkit.ImageFormatTests.test_uint16_png_roundtrip) ... ok
+test_fp32_low_memory_windows_defaults (test_toolkit.LaunchTests.test_fp32_low_memory_windows_defaults) ... ok
+test_help_requires_no_isaac_or_torch (test_toolkit.LaunchTests.test_help_requires_no_isaac_or_torch) ... ok
+test_no_rejected_ros_flag_or_core_imports (test_toolkit.LaunchTests.test_no_rejected_ros_flag_or_core_imports) ... ok
+test_numpy_import_precedes_simulation_app (test_toolkit.LaunchTests.test_numpy_import_precedes_simulation_app) ... ok
+test_box_polygon (test_toolkit.PolygonTests.test_box_polygon) ... ok
+test_hole_preserved (test_toolkit.PolygonTests.test_hole_preserved) ... ok
+test_occluded_disconnected_single_instance (test_toolkit.PolygonTests.test_occluded_disconnected_single_instance) ... ok
+test_small_visible_fragment_rejected (test_toolkit.PolygonTests.test_small_visible_fragment_rejected) ... ok
+test_sphere_contour (test_toolkit.PolygonTests.test_sphere_contour) ... ok
+test_camera_projection_center (test_toolkit.SamplingTests.test_camera_projection_center) ... ok
+test_lying_cylinder_height_equals_diameter (test_toolkit.SamplingTests.test_lying_cylinder_height_equals_diameter) ... ok
+test_noninterpenetrating_visible_balanced_samples (test_toolkit.SamplingTests.test_noninterpenetrating_visible_balanced_samples) ... ok
+test_rotation_lying_axis_and_orthogonality (test_toolkit.SamplingTests.test_rotation_lying_axis_and_orthogonality) ... ok
+test_split_sizes_and_reproducibility (test_toolkit.SamplingTests.test_split_sizes_and_reproducibility) ... ok
+test_too_few_samples_rejected (test_toolkit.SamplingTests.test_too_few_samples_rejected) ... ok
+test_upright_cylinder_extents_ignore_yaw (test_toolkit.SamplingTests.test_upright_cylinder_extents_ignore_yaw) ... ok
+test_apply_records_linear_colors_matte_and_no_pose_changes (test_usd_appearance.UsdAppearanceTests.test_apply_records_linear_colors_matte_and_no_pose_changes) ... ok
+test_auto_ground_excludes_robot_targets_and_hidden (test_usd_appearance.UsdAppearanceTests.test_auto_ground_excludes_robot_targets_and_hidden) ... ok
+test_blank_scene_floor (test_usd_appearance.UsdAppearanceTests.test_blank_scene_floor) ... ok
+test_explicit_ground_path (test_usd_appearance.UsdAppearanceTests.test_explicit_ground_path) ... ok
+test_full_preview_and_all_purpose_bindings (test_usd_appearance.UsdAppearanceTests.test_full_preview_and_all_purpose_bindings) ... ok
+test_invalid_or_overbroad_path_rejected (test_usd_appearance.UsdAppearanceTests.test_invalid_or_overbroad_path_rejected) ... ok
+test_material_resolution_failure_stops (test_usd_appearance.UsdAppearanceTests.test_material_resolution_failure_stops) ... ok
+test_missing_support_is_explicit_failure (test_usd_appearance.UsdAppearanceTests.test_missing_support_is_explicit_failure) ... ok
+test_old_lights_disabled_not_other_prims (test_usd_appearance.UsdAppearanceTests.test_old_lights_disabled_not_other_prims) ... ok
+test_only_session_layer_allowed (test_usd_appearance.UsdAppearanceTests.test_only_session_layer_allowed) ... ok
+test_support_geometry_rule (test_usd_appearance.UsdAppearanceTests.test_support_geometry_rule) ... ok
+
+----------------------------------------------------------------------
+Ran 71 tests in 7.604s
+
+OK
+{
+  "train": {
+    "images": 24,
+    "negative_images": 0,
+    "instances": [
+      24,
+      24,
+      24
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  }
+}
+READY: /tmp/tmpsfax0vb8/yolo/data.yaml
+Inspect /tmp/tmpsfax0vb8/yolo/review.jpg BEFORE training. Rejected frames: 0
+{
+  "train": {
+    "images": 24,
+    "negative_images": 0,
+    "instances": [
+      24,
+      24,
+      24
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 2,
+    "negative_images": 0,
+    "instances": [
+      2,
+      2,
+      2
+    ]
+  }
+}
+READY: /tmp/tmpijwr1nit/out/data.yaml
+Inspect /tmp/tmpijwr1nit/out/review.jpg BEFORE training. Rejected frames: 1
+{
+  "train": {
+    "images": 24,
+    "negative_images": 0,
+    "instances": [
+      24,
+      24,
+      24
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      3,
+      3
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 1,
+    "instances": [
+      2,
+      2,
+      2
+    ]
+  }
+}
+READY: /tmp/tmp250cqck7/out/data.yaml
+Inspect /tmp/tmp250cqck7/out/review.jpg BEFORE training. Rejected frames: 0
+
+EXIT: 0
+
+COMMAND: /opt/pyvenv/bin/python tools/perception_v2_data/prepare_dataset.py --raw /mnt/data/pilot_review/primitive_pilot --out /mnt/data/packaged_pilot_yolo_check
+
+{
+  "train": {
+    "images": 18,
+    "negative_images": 1,
+    "instances": [
+      14,
+      17,
+      21
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      2,
+      1
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      5,
+      3,
+      3
+    ]
+  }
+}
+READY: /mnt/data/packaged_pilot_yolo_check/data.yaml
+Inspect /mnt/data/packaged_pilot_yolo_check/review.jpg BEFORE training. Rejected frames: 0
+
+EXIT: 0

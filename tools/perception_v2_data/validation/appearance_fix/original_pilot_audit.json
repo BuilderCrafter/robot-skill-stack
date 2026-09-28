@@ -1,0 +1,1766 @@
+{
+  "source": "Uploaded primitive_pilot.zip; these are baseline measurements, NOT a rerender of the patch.",
+  "archive_sha256": "0c6eb5667e994e96f3bc65cb113aa16c3839840fc374cc1c4747d3ec0d78a027",
+  "frames": 24,
+  "visible_instances_by_class": {
+    "cube": 22,
+    "sphere": 22,
+    "cylinder": 25
+  },
+  "total_visible_instances": 69,
+  "empty_masks": [
+    {
+      "frame": "000015",
+      "marked_negative": true,
+      "object_count": 0
+    }
+  ],
+  "visible_pixels_min_median_max": [
+    75,
+    337.0,
+    763
+  ],
+  "validation_errors": [],
+  "heuristic_flag_counts": {
+    "low_local_contrast": 45,
+    "small_instance": 5
+  },
+  "frame_diagnostics": [
+    {
+      "frame": "000000",
+      "split": "test",
+      "visible_instances": 2,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 501,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            271,
+            251,
+            295,
+            280
+          ],
+          "median_rgb": [
+            211.0,
+            203.0,
+            233.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.08742547768473709,
+          "local_luma_gap": 0.10640470588235285
+        },
+        {
+          "instance_id": 2,
+          "shape": "sphere",
+          "visible_pixels": 338,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            288,
+            273,
+            308,
+            294
+          ],
+          "median_rgb": [
+            239.0,
+            229.0,
+            232.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.016637806616154042,
+          "local_luma_gap": 0.010421176470588045
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000002",
+      "split": "test",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 75,
+          "flags": [
+            "small_instance",
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            297,
+            265,
+            306,
+            275
+          ],
+          "median_rgb": [
+            232.0,
+            217.0,
+            202.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.07901741835141131,
+          "local_luma_gap": 0.05448627450980392
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 596,
+          "flags": [],
+          "bbox_xyxy": [
+            269,
+            276,
+            288,
+            313
+          ],
+          "median_rgb": [
+            216.0,
+            184.0,
+            228.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.11797340358032408,
+          "local_luma_gap": 0.15301960784313728
+        },
+        {
+          "instance_id": 3,
+          "shape": "cube",
+          "visible_pixels": 325,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            359,
+            264,
+            378,
+            287
+          ],
+          "median_rgb": [
+            240.0,
+            207.0,
+            240.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.06298971923219218,
+          "local_luma_gap": 0.06510431372549019
+        },
+        {
+          "instance_id": 4,
+          "shape": "cube",
+          "visible_pixels": 442,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            325,
+            303,
+            346,
+            330
+          ],
+          "median_rgb": [
+            238.0,
+            241.0,
+            208.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.059473532894521966,
+          "local_luma_gap": 0.01588941176470593
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000013",
+      "split": "test",
+      "visible_instances": 5,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 556,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            386,
+            269,
+            406,
+            303
+          ],
+          "median_rgb": [
+            201.0,
+            230.0,
+            223.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.08241516479031691,
+          "local_luma_gap": 0.045767843137254904
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 199,
+          "flags": [],
+          "bbox_xyxy": [
+            281,
+            269,
+            294,
+            287
+          ],
+          "median_rgb": [
+            187.0,
+            179.0,
+            241.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.17056193922483523,
+          "local_luma_gap": 0.1993050980392158
+        },
+        {
+          "instance_id": 3,
+          "shape": "cube",
+          "visible_pixels": 432,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            300,
+            275,
+            322,
+            301
+          ],
+          "median_rgb": [
+            242.0,
+            243.0,
+            228.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.026980088157582037,
+          "local_luma_gap": 0.018448627450980415
+        },
+        {
+          "instance_id": 4,
+          "shape": "cylinder",
+          "visible_pixels": 500,
+          "flags": [],
+          "bbox_xyxy": [
+            341,
+            299,
+            363,
+            326
+          ],
+          "median_rgb": [
+            245.0,
+            243.0,
+            173.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.14442521978947884,
+          "local_luma_gap": 0.005660392156862759
+        },
+        {
+          "instance_id": 5,
+          "shape": "sphere",
+          "visible_pixels": 111,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            278,
+            308,
+            290,
+            320
+          ],
+          "median_rgb": [
+            215.0,
+            233.0,
+            199.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.09656406545078479,
+          "local_luma_gap": 0.03639843137254917
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000001",
+      "split": "train",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 245,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            277,
+            303,
+            293,
+            322
+          ],
+          "median_rgb": [
+            218.0,
+            225.0,
+            230.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.017827688492791992,
+          "local_luma_gap": 0.0007819607843136955
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 316,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            274,
+            242,
+            290,
+            263
+          ],
+          "median_rgb": [
+            232.0,
+            213.0,
+            233.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.035727190506448216,
+          "local_luma_gap": 0.021916862745097965
+        },
+        {
+          "instance_id": 3,
+          "shape": "sphere",
+          "visible_pixels": 234,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            381,
+            246,
+            399,
+            264
+          ],
+          "median_rgb": [
+            220.0,
+            231.0,
+            209.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.03855655216667354,
+          "local_luma_gap": 0.012050980392156796
+        },
+        {
+          "instance_id": 4,
+          "shape": "sphere",
+          "visible_pixels": 213,
+          "flags": [],
+          "bbox_xyxy": [
+            327,
+            256,
+            344,
+            273
+          ],
+          "median_rgb": [
+            192.0,
+            193.0,
+            223.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10749200113894784,
+          "local_luma_gap": 0.12175137254901958
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000004",
+      "split": "train",
+      "visible_instances": 5,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 379,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            264,
+            278,
+            286,
+            301
+          ],
+          "median_rgb": [
+            222.0,
+            226.0,
+            231.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.038222722920819484,
+          "local_luma_gap": 0.035062745098039194
+        },
+        {
+          "instance_id": 2,
+          "shape": "sphere",
+          "visible_pixels": 243,
+          "flags": [],
+          "bbox_xyxy": [
+            298,
+            276,
+            315,
+            294
+          ],
+          "median_rgb": [
+            223.0,
+            139.0,
+            132.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.2631155324503565,
+          "local_luma_gap": 0.23894823529411768
+        },
+        {
+          "instance_id": 3,
+          "shape": "cube",
+          "visible_pixels": 144,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            289,
+            261,
+            301,
+            276
+          ],
+          "median_rgb": [
+            228.0,
+            207.0,
+            227.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.03629658399193412,
+          "local_luma_gap": 0.02500470588235293
+        },
+        {
+          "instance_id": 4,
+          "shape": "sphere",
+          "visible_pixels": 295,
+          "flags": [],
+          "bbox_xyxy": [
+            368,
+            270,
+            388,
+            289
+          ],
+          "median_rgb": [
+            221.0,
+            162.0,
+            226.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.12785757166196945,
+          "local_luma_gap": 0.15341411764705892
+        },
+        {
+          "instance_id": 5,
+          "shape": "cylinder",
+          "visible_pixels": 181,
+          "flags": [],
+          "bbox_xyxy": [
+            278,
+            240,
+            288,
+            261
+          ],
+          "median_rgb": [
+            140.0,
+            174.0,
+            211.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.2068542265073767,
+          "local_luma_gap": 0.19462431372549016
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000005",
+      "split": "train",
+      "visible_instances": 2,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 246,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            277,
+            253,
+            305,
+            272
+          ],
+          "median_rgb": [
+            232.0,
+            232.0,
+            232.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.015686274509803977,
+          "local_luma_gap": 0.015686274509803977
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 183,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            369,
+            268,
+            383,
+            284
+          ],
+          "median_rgb": [
+            201.0,
+            220.0,
+            243.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.08765970577411236,
+          "local_luma_gap": 0.06926901960784315
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000007",
+      "split": "train",
+      "visible_instances": 3,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 187,
+          "flags": [],
+          "bbox_xyxy": [
+            364,
+            315,
+            379,
+            332
+          ],
+          "median_rgb": [
+            224.0,
+            225.0,
+            159.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.13887004870294725,
+          "local_luma_gap": 8.705882352944005e-05
+        },
+        {
+          "instance_id": 2,
+          "shape": "sphere",
+          "visible_pixels": 239,
+          "flags": [],
+          "bbox_xyxy": [
+            367,
+            268,
+            384,
+            286
+          ],
+          "median_rgb": [
+            214.0,
+            232.0,
+            164.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.13037864198474963,
+          "local_luma_gap": 0.012798431372549102
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 425,
+          "flags": [],
+          "bbox_xyxy": [
+            316,
+            272,
+            336,
+            297
+          ],
+          "median_rgb": [
+            142.0,
+            223.0,
+            194.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.1919166165214456,
+          "local_luma_gap": 0.07182117647058828
+        }
+      ],
+      "flagged_instances": 0
+    },
+    {
+      "frame": "000008",
+      "split": "train",
+      "visible_instances": 5,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 398,
+          "flags": [],
+          "bbox_xyxy": [
+            309,
+            284,
+            331,
+            307
+          ],
+          "median_rgb": [
+            185.0,
+            232.0,
+            220.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10191049539115284,
+          "local_luma_gap": 0.030818039215686377
+        },
+        {
+          "instance_id": 2,
+          "shape": "sphere",
+          "visible_pixels": 204,
+          "flags": [],
+          "bbox_xyxy": [
+            339,
+            254,
+            355,
+            270
+          ],
+          "median_rgb": [
+            236.0,
+            216.0,
+            158.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.16197550139657557,
+          "local_luma_gap": 0.050444705882352836
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 670,
+          "flags": [],
+          "bbox_xyxy": [
+            377,
+            261,
+            400,
+            294
+          ],
+          "median_rgb": [
+            230.0,
+            172.0,
+            219.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.128497463411904,
+          "local_luma_gap": 0.15794431372549012
+        },
+        {
+          "instance_id": 4,
+          "shape": "cube",
+          "visible_pixels": 461,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            292,
+            263,
+            315,
+            290
+          ],
+          "median_rgb": [
+            239.0,
+            214.0,
+            197.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.07810389148386741,
+          "local_luma_gap": 0.03578431372549018
+        },
+        {
+          "instance_id": 5,
+          "shape": "sphere",
+          "visible_pixels": 183,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            291,
+            314,
+            306,
+            330
+          ],
+          "median_rgb": [
+            233.0,
+            189.0,
+            241.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.09269070798031806,
+          "local_luma_gap": 0.09761254901960781
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000009",
+      "split": "train",
+      "visible_instances": 1,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 374,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            308,
+            298,
+            338,
+            322
+          ],
+          "median_rgb": [
+            210.0,
+            210.0,
+            210.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.037953545466556854,
+          "local_luma_gap": 0.03838196078431377
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000011",
+      "split": "train",
+      "visible_instances": 5,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 220,
+          "flags": [],
+          "bbox_xyxy": [
+            318,
+            247,
+            333,
+            266
+          ],
+          "median_rgb": [
+            216.0,
+            225.0,
+            176.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.12053109863773089,
+          "local_luma_gap": 0.03230823529411775
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 625,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            284,
+            289,
+            324,
+            316
+          ],
+          "median_rgb": [
+            228.0,
+            195.0,
+            229.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.07066081961693899,
+          "local_luma_gap": 0.08442901960784299
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 293,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            363,
+            273,
+            376,
+            299
+          ],
+          "median_rgb": [
+            211.0,
+            232.0,
+            214.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.04331514124387161,
+          "local_luma_gap": 0.004846274509804016
+        },
+        {
+          "instance_id": 4,
+          "shape": "cube",
+          "visible_pixels": 545,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            311,
+            236,
+            341,
+            271
+          ],
+          "median_rgb": [
+            214.0,
+            228.0,
+            227.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.027263599496227697,
+          "local_luma_gap": 0.007199999999999873
+        },
+        {
+          "instance_id": 5,
+          "shape": "sphere",
+          "visible_pixels": 258,
+          "flags": [],
+          "bbox_xyxy": [
+            282,
+            261,
+            300,
+            279
+          ],
+          "median_rgb": [
+            199.0,
+            199.0,
+            199.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10588235294117643,
+          "local_luma_gap": 0.10588235294117632
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000012",
+      "split": "train",
+      "visible_instances": 1,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 346,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            298,
+            257,
+            319,
+            278
+          ],
+          "median_rgb": [
+            230.0,
+            230.0,
+            230.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.03073285737387908,
+          "local_luma_gap": 0.03095568627450984
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000014",
+      "split": "train",
+      "visible_instances": 2,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 564,
+          "flags": [],
+          "bbox_xyxy": [
+            356,
+            260,
+            377,
+            292
+          ],
+          "median_rgb": [
+            189.0,
+            207.0,
+            176.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.16583800145671143,
+          "local_luma_gap": 0.11790196078431359
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 358,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            300,
+            284,
+            313,
+            315
+          ],
+          "median_rgb": [
+            200.0,
+            220.0,
+            232.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.07447539625225681,
+          "local_luma_gap": 0.05669725490196065
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000015",
+      "split": "train",
+      "visible_instances": 0,
+      "objects": [],
+      "flagged_instances": 0
+    },
+    {
+      "frame": "000016",
+      "split": "train",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 93,
+          "flags": [
+            "small_instance",
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            367,
+            300,
+            378,
+            311
+          ],
+          "median_rgb": [
+            209.0,
+            210.0,
+            209.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.04187089510600522,
+          "local_luma_gap": 0.04033254901960792
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 536,
+          "flags": [],
+          "bbox_xyxy": [
+            285,
+            240,
+            314,
+            271
+          ],
+          "median_rgb": [
+            226.0,
+            229.0,
+            147.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.172742019216886,
+          "local_luma_gap": 0.0021890196078430124
+        },
+        {
+          "instance_id": 3,
+          "shape": "cube",
+          "visible_pixels": 315,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            371,
+            309,
+            386,
+            331
+          ],
+          "median_rgb": [
+            193.0,
+            221.0,
+            213.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.06878599799698235,
+          "local_luma_gap": 0.029530980392156847
+        },
+        {
+          "instance_id": 4,
+          "shape": "cube",
+          "visible_pixels": 383,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            318,
+            278,
+            335,
+            301
+          ],
+          "median_rgb": [
+            221.0,
+            221.0,
+            220.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.017093721347218267,
+          "local_luma_gap": 0.015969411764705788
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000017",
+      "split": "train",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 444,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            334,
+            257,
+            355,
+            281
+          ],
+          "median_rgb": [
+            218.0,
+            226.0,
+            190.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.06900920896112687,
+          "local_luma_gap": 0.003861960784313778
+        },
+        {
+          "instance_id": 2,
+          "shape": "sphere",
+          "visible_pixels": 270,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            335,
+            285,
+            353,
+            304
+          ],
+          "median_rgb": [
+            195.0,
+            232.0,
+            232.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.06841236134969687,
+          "local_luma_gap": 0.01621098039215696
+        },
+        {
+          "instance_id": 3,
+          "shape": "cube",
+          "visible_pixels": 198,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            307,
+            280,
+            322,
+            298
+          ],
+          "median_rgb": [
+            229.0,
+            222.0,
+            203.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.042599139181177366,
+          "local_luma_gap": 0.00466117647058828
+        },
+        {
+          "instance_id": 4,
+          "shape": "cylinder",
+          "visible_pixels": 337,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            295,
+            264,
+            313,
+            288
+          ],
+          "median_rgb": [
+            188.0,
+            214.0,
+            208.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.0714902426869297,
+          "local_luma_gap": 0.03877882352941164
+        }
+      ],
+      "flagged_instances": 4
+    },
+    {
+      "frame": "000018",
+      "split": "train",
+      "visible_instances": 1,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 440,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            267,
+            246,
+            289,
+            271
+          ],
+          "median_rgb": [
+            237.0,
+            209.0,
+            239.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.051926860303375726,
+          "local_luma_gap": 0.05191450980392154
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000019",
+      "split": "train",
+      "visible_instances": 1,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 256,
+          "flags": [],
+          "bbox_xyxy": [
+            321,
+            230,
+            340,
+            248
+          ],
+          "median_rgb": [
+            213.0,
+            231.5,
+            187.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10474455235589994,
+          "local_luma_gap": 0.02214117647058822
+        }
+      ],
+      "flagged_instances": 0
+    },
+    {
+      "frame": "000020",
+      "split": "train",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 357,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            343,
+            222,
+            357,
+            249
+          ],
+          "median_rgb": [
+            236.0,
+            237.0,
+            237.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.030122140187720036,
+          "local_luma_gap": 0.03053882352941173
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 428,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            328,
+            304,
+            360,
+            331
+          ],
+          "median_rgb": [
+            223.0,
+            210.0,
+            220.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.053049997092034076,
+          "local_luma_gap": 0.06476156862745108
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 313,
+          "flags": [],
+          "bbox_xyxy": [
+            371,
+            251,
+            385,
+            277
+          ],
+          "median_rgb": [
+            235.0,
+            210.0,
+            185.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10935951149923136,
+          "local_luma_gap": 0.060745098039215795
+        },
+        {
+          "instance_id": 4,
+          "shape": "sphere",
+          "visible_pixels": 345,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            309,
+            274,
+            330,
+            295
+          ],
+          "median_rgb": [
+            234.0,
+            239.0,
+            239.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.02650082997740299,
+          "local_luma_gap": 0.027203921568627498
+        }
+      ],
+      "flagged_instances": 3
+    },
+    {
+      "frame": "000021",
+      "split": "train",
+      "visible_instances": 4,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 468,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            373,
+            294,
+            397,
+            322
+          ],
+          "median_rgb": [
+            221.0,
+            221.0,
+            221.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.03529411764705881,
+          "local_luma_gap": 0.03529411764705881
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 568,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            346,
+            268,
+            370,
+            297
+          ],
+          "median_rgb": [
+            232.0,
+            223.0,
+            238.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.024174172560662656,
+          "local_luma_gap": 0.019621960784313552
+        },
+        {
+          "instance_id": 3,
+          "shape": "sphere",
+          "visible_pixels": 82,
+          "flags": [
+            "small_instance",
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            276,
+            262,
+            286,
+            272
+          ],
+          "median_rgb": [
+            230.5,
+            238.0,
+            225.5
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.022810363877928303,
+          "local_luma_gap": 0.024385098039215625
+        },
+        {
+          "instance_id": 4,
+          "shape": "cylinder",
+          "visible_pixels": 523,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            355,
+            242,
+            376,
+            271
+          ],
+          "median_rgb": [
+            238.0,
+            228.0,
+            236.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.023089570892360387,
+          "local_luma_gap": 0.0027592156862744632
+        }
+      ],
+      "flagged_instances": 4
+    },
+    {
+      "frame": "000022",
+      "split": "train",
+      "visible_instances": 3,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 298,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            341,
+            290,
+            360,
+            310
+          ],
+          "median_rgb": [
+            232.0,
+            225.0,
+            237.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.026500829977403044,
+          "local_luma_gap": 0.005029019607843077
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 616,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            287,
+            242,
+            317,
+            272
+          ],
+          "median_rgb": [
+            227.0,
+            221.0,
+            226.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.01037549533750816,
+          "local_luma_gap": 0.009268235294117577
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 401,
+          "flags": [],
+          "bbox_xyxy": [
+            363,
+            218,
+            379,
+            248
+          ],
+          "median_rgb": [
+            161.0,
+            205.0,
+            188.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.17092221832206256,
+          "local_luma_gap": 0.11629019607843138
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000023",
+      "split": "train",
+      "visible_instances": 3,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 575,
+          "flags": [],
+          "bbox_xyxy": [
+            360,
+            253,
+            378,
+            292
+          ],
+          "median_rgb": [
+            225.0,
+            171.0,
+            214.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.10593075630504928,
+          "local_luma_gap": 0.12319607843137248
+        },
+        {
+          "instance_id": 2,
+          "shape": "cylinder",
+          "visible_pixels": 456,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            284,
+            306,
+            302,
+            335
+          ],
+          "median_rgb": [
+            207.0,
+            207.0,
+            207.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.039215686274509776,
+          "local_luma_gap": 0.039215686274509665
+        },
+        {
+          "instance_id": 3,
+          "shape": "cylinder",
+          "visible_pixels": 498,
+          "flags": [],
+          "bbox_xyxy": [
+            261,
+            276,
+            293,
+            303
+          ],
+          "median_rgb": [
+            177.0,
+            175.0,
+            174.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.15955210923294555,
+          "local_luma_gap": 0.1594
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000003",
+      "split": "val",
+      "visible_instances": 2,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cube",
+          "visible_pixels": 184,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            271,
+            269,
+            283,
+            286
+          ],
+          "median_rgb": [
+            236.0,
+            224.0,
+            236.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.029607193863806933,
+          "local_luma_gap": 0.0016376470588235215
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 763,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            267,
+            286,
+            297,
+            321
+          ],
+          "median_rgb": [
+            233.0,
+            196.0,
+            224.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.07141850133149136,
+          "local_luma_gap": 0.08362666666666663
+        }
+      ],
+      "flagged_instances": 2
+    },
+    {
+      "frame": "000006",
+      "split": "val",
+      "visible_instances": 1,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "sphere",
+          "visible_pixels": 75,
+          "flags": [
+            "small_instance"
+          ],
+          "bbox_xyxy": [
+            345,
+            288,
+            357,
+            298
+          ],
+          "median_rgb": [
+            216.0,
+            239.0,
+            182.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.13419559711583273,
+          "local_luma_gap": 0.02830509803921566
+        }
+      ],
+      "flagged_instances": 1
+    },
+    {
+      "frame": "000010",
+      "split": "val",
+      "visible_instances": 3,
+      "objects": [
+        {
+          "instance_id": 1,
+          "shape": "cylinder",
+          "visible_pixels": 324,
+          "flags": [],
+          "bbox_xyxy": [
+            384,
+            249,
+            400,
+            274
+          ],
+          "median_rgb": [
+            187.0,
+            185.0,
+            230.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.11080311021061885,
+          "local_luma_gap": 0.12312941176470593
+        },
+        {
+          "instance_id": 2,
+          "shape": "cube",
+          "visible_pixels": 160,
+          "flags": [
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            362,
+            249,
+            375,
+            265
+          ],
+          "median_rgb": [
+            220.0,
+            232.0,
+            222.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.025110291127187614,
+          "local_luma_gap": 0.030301176470588165
+        },
+        {
+          "instance_id": 3,
+          "shape": "sphere",
+          "visible_pixels": 76,
+          "flags": [
+            "small_instance",
+            "low_local_contrast"
+          ],
+          "bbox_xyxy": [
+            346,
+            248,
+            356,
+            258
+          ],
+          "median_rgb": [
+            228.0,
+            234.0,
+            222.0
+          ],
+          "white_fraction": 0.0,
+          "black_fraction": 0.0,
+          "local_rgb_gap": 0.03350589704046088,
+          "local_luma_gap": 0.0425803921568626
+        }
+      ],
+      "flagged_instances": 2
+    }
+  ]
+}

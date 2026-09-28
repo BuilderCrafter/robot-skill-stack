@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import shutil
 import sys
 import time
@@ -24,6 +25,8 @@ def arguments():
     p.add_argument("--bounds", type=float, nargs=4, default=[.30, -.18, .62, .18], metavar=("XMIN", "YMIN", "XMAX", "YMAX"))
     p.add_argument("--max-objects", type=int, default=5)
     p.add_argument("--subframes", type=int, default=4)
+    p.add_argument("--ground-root", help="Optional explicit USD support-surface path; default: auto-detect")
+    p.add_argument("--light-scale", type=float, default=1., help="Scale capture fill/key lights; start at 1.0")
     p.add_argument("--save-depth", action="store_true", help="Optional float32 depth NPZ per frame; training itself uses RGB")
     p.add_argument("--gui", action="store_true", help="Show this separate capture process; not the live project UI")
     p.add_argument("--resume", action="store_true", help="Same settings and seed only; skip committed frames")
@@ -33,6 +36,10 @@ def arguments():
         p.error("frames >= 12, resolution >= 128, 1 <= max-objects <= 20, subframes >= 1 required")
     if a.bounds[0] >= a.bounds[2] or a.bounds[1] >= a.bounds[3]:
         p.error("Invalid XY bounds")
+    if not math.isfinite(a.light_scale) or not .1 <= a.light_scale <= 4.:
+        p.error("light-scale must be finite and between 0.1 and 4.0")
+    if a.ground_root and not a.ground_root.startswith("/"):
+        p.error("ground-root must be an absolute USD prim path")
     a.scene, a.out = a.scene.resolve(), a.out.resolve()
     if not a.blank_scene and not a.scene.is_file():
         p.error(f"Scene missing: {a.scene}; run from the repo root or pass its path")
@@ -45,11 +52,12 @@ def main():
     import numpy as np
     if sys.version_info[:2] != (3, 11) or np.__version__ != "1.26.4":
         raise RuntimeError(f"Use the existing project wrapper: expected Python 3.11 + NumPy 1.26.4; got {sys.version.split()[0]} / {np.__version__} at {np.__file__}. Do not reinstall Isaac packages.")
-    from common import CLASSES, FORMAT, SPLITS, decode_instances, dump_json, preview, sample_objects, sha256, split_schedule, write_png
+    from common import CLASSES, FORMAT, SPLITS, decode_instances, dump_json, sample_objects, sha256, split_schedule, write_png
+    from appearance import REVISION, colorize_instances, frame_quality, overlay
     print(f"[SDG] Python {sys.version.split()[0]}; NumPy {np.__version__}: {np.__file__}", flush=True)
     scene_hash = None if args.blank_scene else sha256(args.scene)
     settings = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items() if k not in ("resume", "zip", "gui", "out")}
-    config = {"format": FORMAT, "classes": list(CLASSES), "settings": settings, "scene_sha256": scene_hash}
+    config = {"format": FORMAT, "classes": list(CLASSES), "settings": settings, "scene_sha256": scene_hash, "generator_revision": REVISION}
     manifest = args.out / "manifest.json"
     if args.out.exists() and any(args.out.iterdir()):
         if not args.resume or not manifest.exists() or json.loads(manifest.read_text()) != config:
@@ -65,9 +73,13 @@ def main():
         "--enable", "omni.replicator.core"]})
     scene, started, completed, newly_written = None, time.perf_counter(), 0, 0
     per_split, class_pixels = dict.fromkeys(SPLITS, 0), dict.fromkeys(CLASSES, 0)
+    quality_frames = []
     try:
         from isaac_scene import CaptureScene
         scene = CaptureScene(app, args)
+        setup = scene.appearance.setup_info()
+        dump_json(args.out / "appearance_setup.json", setup)
+        print(f"[SDG] {REVISION}; ground: {setup['ground_prims']}; controlled lights; robot/camera unchanged", flush=True)
         schedule = split_schedule(args.frames, args.seed)
         ordinal = dict.fromkeys(SPLITS, 0)
         for index, split in enumerate(schedule):
@@ -118,16 +130,22 @@ def main():
                 write_png(rgb_path, rgb)
                 write_png(mask_path, mask)
                 cv_T = T @ np.diag([1., -1., -1., 1.])
-                meta = {"frame_id": index, "scene_seed": [args.seed, index, SPLITS.index(split)], "split": split,
+                quality = frame_quality(rgb, mask, entries)
+                meta = {"appearance": scene.appearance.current, "quality": quality, "frame_id": index, "scene_seed": [args.seed, index, SPLITS.index(split)], "split": split,
                         "resolution": [args.width, args.height], "K": scene.K.tolist(),
                         "T_world_camera_opencv": cv_T.tolist(), "camera_convention": "column vectors; X right, Y down, Z forward",
                         "depth_type": "distance_to_image_plane_m" if args.save_depth else None,
                         "support_z": args.support_z, "negative": negative, "objects": entries,
                         "rgb_sha256": sha256(rgb_path), "mask_sha256": sha256(mask_path)}
-                dump_json(meta_path, meta)  # Metadata commits a complete RGB + mask (+depth) frame.
+                mask_view = colorize_instances(mask)
+                write_png(args.out / "mask_preview" / f"{stem}.png", mask_view)
                 if index < 24 or index % 100 == 0:
-                    write_png(args.out / "preview" / f"{stem}.png", preview(rgb, mask, entries))
+                    annotated = overlay(rgb, mask, entries)
+                    write_png(args.out / "preview" / f"{stem}.png", annotated)
+                    write_png(args.out / "review" / f"{stem}.png", np.concatenate((rgb, annotated, mask_view), axis=1))
+                dump_json(meta_path, meta)  # Commit only after RGB, mask, depth and previews are complete.
                 newly_written += 1
+            quality_frames.append({"frame_id": index, "split": split, "mode": meta["appearance"]["mode"], **meta["quality"]})
             completed += 1
             per_split[split] += 1
             for obj in meta["objects"]:
@@ -137,6 +155,10 @@ def main():
                 eta = (args.frames-completed)*elapsed/max(newly_written, 1)
                 dump_json(args.out / "progress.json", {"completed": completed, "requested": args.frames, "splits": per_split,
                           "class_pixels": class_pixels, "elapsed_s": elapsed, "complete": completed == args.frames})
+                dump_json(args.out / "quality_report.json", {"revision": REVISION, "frames": quality_frames,
+                          "note": "Heuristic diagnostics only. Hard examples are retained; raw masks remain uint16 IDs."})
+                flagged = sum(o["flagged_instances"] for o in quality_frames)
+                print(f"[SDG] Review flags on {flagged} instances (small/low-contrast/clipped/invisible); see quality_report.json", flush=True)
                 print(f"[SDG] {completed}/{args.frames}; {elapsed:.0f}s elapsed; approx {eta/60:.1f} min left; pixels {class_pixels}", flush=True)
         if not all(class_pixels.values()):
             raise RuntimeError("A category has no visible annotations. Inspect the pilot before training.")
@@ -151,6 +173,7 @@ def main():
     if args.zip:
         archive = shutil.make_archive(str(args.out), "zip", args.out.parent, args.out.name)
         print(f"[SDG] Transfer this archive to your PC: {archive}", flush=True)
+    print(f"[SDG] Review triptychs: {args.out / 'review'} (RGB | overlay | instance colors); raw masks intentionally look black.")
     print(f"[SDG] Complete. Inspect previews in {args.out / 'preview'}. Red=cube, blue=sphere, green=cylinder.")
 
 

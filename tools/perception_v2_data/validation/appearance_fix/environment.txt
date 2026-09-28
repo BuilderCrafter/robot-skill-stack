@@ -1,0 +1,7 @@
+Actual host: 3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]
+NumPy: 2.3.5
+OpenCV: 4.13.0
+py_compile and Python 3.11 grammar: PASS (8 files)
+Isaac/RTX rendering: NOT RUN
+Native USD execution: NOT RUN; schema-call tests use recording doubles
+Windows/GPU training: NOT RUN

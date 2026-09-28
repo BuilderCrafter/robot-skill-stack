@@ -1,0 +1,31 @@
+{
+  "train": {
+    "images": 18,
+    "negative_images": 1,
+    "instances": [
+      14,
+      17,
+      21
+    ]
+  },
+  "val": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      3,
+      2,
+      1
+    ]
+  },
+  "test": {
+    "images": 3,
+    "negative_images": 0,
+    "instances": [
+      5,
+      3,
+      3
+    ]
+  }
+}
+READY: /mnt/data/original_pilot_yolo_check_v2/data.yaml
+Inspect /mnt/data/original_pilot_yolo_check_v2/review.jpg BEFORE training. Rejected frames: 0

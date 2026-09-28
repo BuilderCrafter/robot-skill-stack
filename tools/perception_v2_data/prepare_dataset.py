@@ -26,10 +26,17 @@ def raster(poly, shape):
 
 
 def resample(poly, n=1000):
-    # Same linear index interpolation used by the pinned Ultralytics segment loader.
-    s = np.concatenate((poly, poly[:1]), axis=0)
-    x = np.linspace(0, len(s)-1, n)
-    return np.stack([np.interp(x, np.arange(len(s)), s[:, i]) for i in range(2)], axis=1)
+    # Match the pinned Ultralytics 8.3.161 loader: retain every original vertex.
+    if len(poly) == n:
+        return np.asarray(poly, np.float32).copy()
+    closed = np.concatenate((poly, poly[:1]), axis=0)
+    knots = np.arange(len(closed))
+    if len(closed) < n:
+        grid = np.linspace(0., float(knots[-1]), n-len(closed))
+        grid = np.insert(grid, np.searchsorted(grid, knots), knots)
+    else:
+        grid = np.linspace(0., float(knots[-1]), n)
+    return np.column_stack([np.interp(grid, knots, closed[:, axis]) for axis in (0, 1)]).astype(np.float32)
 
 
 def mask_polygon(mask, min_pixels=20):
@@ -58,7 +65,8 @@ def mask_polygon(mask, min_pixels=20):
     height, width = m.shape
     normalized = poly / np.array([width, height], dtype=np.float32)
     serialized = np.array([float(f"{v:.8f}") for v in normalized.ravel()], np.float32).reshape(-1, 2)
-    training_score = iou(m, raster(resample(serialized * [width, height]), m.shape))
+    loaded = resample(serialized) * np.array([width, height], dtype=np.float32)
+    training_score = iou(m, raster(loaded, m.shape))
     if score < .97 or training_score < .90:
         raise ValueError(f"mask polygon fidelity too low: raw={score:.3f}, resampled={training_score:.3f}")
     return normalized, score, training_score

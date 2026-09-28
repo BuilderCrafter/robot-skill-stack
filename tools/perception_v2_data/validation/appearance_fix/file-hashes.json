@@ -1,0 +1,56 @@
+{
+  "base_archive": "robot-skill-stack-sdg-training-starter.zip",
+  "base_sha256": "33030cf85369bb46b423f70fc82d18a43856c329e9d96e0ffc7f67f7d805e8aa",
+  "files": [
+    {
+      "path": "tools/perception_v2_data/generate_dataset.py",
+      "before_sha256": "2b723a07a55105fddb9fc7f1d8992ae008fe65f1e11fdf8d60d67f0fd2f8b072",
+      "after_sha256": "ccd0fb67bb79ce797e51e7d382a0849860cfc10d23aac3c9600889723306e1db"
+    },
+    {
+      "path": "tools/perception_v2_data/isaac_scene.py",
+      "before_sha256": "aa306437d2fd5d9cd2e2ab1d0f497e968d04796bdc89b27b40c7fbcc0252e1f7",
+      "after_sha256": "9d3612f83e0b849b43805bcaa52ca06ac1fd02c79da8272eb881bbf84efbfa15"
+    },
+    {
+      "path": "tools/perception_v2_data/prepare_dataset.py",
+      "before_sha256": "32709fa0d2d029e62c0a796d61727421d11acb0a457202dc08aca5d399e33669",
+      "after_sha256": "84bdee0deff29b1fdc5a4a8a170ab06fa542f0b7a2b749ae03a5f2e93132e31a"
+    },
+    {
+      "path": "tools/perception_v2_data/appearance.py",
+      "before_sha256": null,
+      "after_sha256": "3c924ec0108fed3e3f11beaad23a572e91667b92621273e2f299b5e6ed792a38"
+    },
+    {
+      "path": "tools/perception_v2_data/usd_appearance.py",
+      "before_sha256": null,
+      "after_sha256": "d160dddf3bbdf1b857aeb9d89803d07f66f873140e9f24c856cca29b14d02820"
+    },
+    {
+      "path": "tools/perception_v2_data/tests/test_appearance.py",
+      "before_sha256": null,
+      "after_sha256": "947522124026f624bc82779ed1db5f0786e9d7cb51cffc2542fe2c90d9c57d4e"
+    },
+    {
+      "path": "tools/perception_v2_data/tests/test_usd_appearance.py",
+      "before_sha256": null,
+      "after_sha256": "95a3e1781365cd26d3e8ee80a034cee819ac7cd0bde63c11b76f06e38865f049"
+    },
+    {
+      "path": "tools/perception_v2_data/tests/test_small_masks.py",
+      "before_sha256": null,
+      "after_sha256": "af537cd63f4934b8f3968aa6237bc5c99456cff9c0e60564f14cb63131d97c10"
+    },
+    {
+      "path": "tools/perception_v2_data/README.md",
+      "before_sha256": "3c94aa6a52814c171dca863f34f8c3ea7444862f501db3fc358b5d820e5fbbf0",
+      "after_sha256": "1d46515e33866e8c47fc8a9e9d3bc0e7bb4c0389a06ba7bc492b4cdbaf7ad299"
+    },
+    {
+      "path": "tools/perception_v2_data/APPEARANCE_PATCH.md",
+      "before_sha256": null,
+      "after_sha256": "81167617904db78731a786b1897a346bc664a49faa58741afdff5e90fdbf0710"
+    }
+  ]
+}

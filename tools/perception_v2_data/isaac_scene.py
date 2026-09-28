@@ -11,7 +11,9 @@ from isaacsim.core.utils.semantics import add_labels
 from isaacsim.core.utils.stage import is_stage_loading
 from pxr import Gf, Sdf, Usd, UsdGeom, UsdLux, UsdShade
 
-from common import CLASSES, camera_matrix, random_color, rotation
+from common import CLASSES, camera_matrix, rotation
+from appearance import sample_surface
+from usd_appearance import CaptureAppearance
 
 ROOT = "/PrimitiveTrainingSDG"
 
@@ -99,25 +101,17 @@ class CaptureScene:
             mat, inputs = material(self.stage, f"{ROOT}/Materials/clutter_{index}")
             UsdShade.MaterialBindingAPI.Apply(prim.GetPrim()).Bind(mat)
             self.clutter.append((UsdGeom.Xformable(prim).AddTransformOp(), prim.CreateVisibilityAttr(), inputs))
-        self.lights = []
-        for prim in self.stage.Traverse():
-            attr = prim.GetAttribute("inputs:intensity")
-            if attr and prim.GetTypeName().endswith("Light"):
-                value = attr.Get()
-                if value is not None and value > 0:
-                    self.lights.append((attr, float(value)))
-        if not self.lights:
-            light = UsdLux.DomeLight.Define(self.stage, f"{ROOT}/Light")
-            light.CreateIntensityAttr(600.)
-            self.lights = [(light.GetIntensityAttr(), 600.)]
         if args.blank_scene:
             floor = UsdGeom.Cube.Define(self.stage, f"{ROOT}/Floor")
             floor.CreateSizeAttr(1.)
             UsdGeom.Xformable(floor).AddTransformOp().Set(pose_matrix([.45, 0., args.support_z-.025], [2., 2., .05], np.eye(3)))
             self.floor_mat, self.floor_inputs = material(self.stage, f"{ROOT}/Materials/floor")
             UsdShade.MaterialBindingAPI.Apply(floor.GetPrim()).Bind(self.floor_mat)
+        self.appearance = CaptureAppearance(self.stage, args, ROOT, material)
         rep.orchestrator.set_capture_on_play(False)
         carb.settings.get_settings().set("/rtx/post/dlss/execMode", 2)
+        # Prevent adaptive brightening from undoing the controlled capture lighting.
+        carb.settings.get_settings().set("/rtx/post/histogram/enabled", False)
         self.product = rep.create.render_product(str(self.camera.GetPath()), (args.width, args.height))
         self.annotators = {}
         for key, name in (("rgb", "rgb"), ("instances", "instance_id_segmentation")):
@@ -173,6 +167,7 @@ class CaptureScene:
         return T
 
     def apply(self, objects, rng, camera):
+        self.appearance.apply(objects, rng)
         for _, _, vis in self.pool.values():
             vis.Set(UsdGeom.Tokens.invisible)
         for obj in objects:
@@ -203,11 +198,10 @@ class CaptureScene:
                 vis.Set(UsdGeom.Tokens.invisible)
                 continue
             op.Set(pose_matrix([*xy, self.args.support_z+h/2], [d, d, h], rotation(float(rng.uniform(-np.pi, np.pi)))))
-            inputs[0].Set(Gf.Vec3f(*random_color(rng)))
-        for attr, base in self.lights:
-            attr.Set(float(base * rng.uniform(.65, 1.4)))
-        if self.args.blank_scene:
-            self.floor_inputs[0].Set(Gf.Vec3f(*random_color(rng)))
+            surface = sample_surface(rng, self.appearance.current)
+            inputs[0].Set(Gf.Vec3f(*surface["color"]))
+            inputs[1].Set(surface["roughness"])
+            inputs[2].Set(surface["metallic"])
 
     def capture(self):
         # This standalone process is not an OmniUI callback and never runs project skills.

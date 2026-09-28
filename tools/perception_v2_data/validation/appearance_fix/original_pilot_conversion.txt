@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/mnt/data/sdg_fix_work/tools/perception_v2_data/prepare_dataset.py", line 187, in <module>
+    prepare(args.raw, args.out)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/sdg_fix_work/tools/perception_v2_data/prepare_dataset.py", line 174, in prepare
+    raise ValueError("Dataset quality gate failed: excessive rejected frames or a missing class in a split. Inspect conversion_report.json; no training YAML was created.")
+ValueError: Dataset quality gate failed: excessive rejected frames or a missing class in a split. Inspect conversion_report.json; no training YAML was created.
