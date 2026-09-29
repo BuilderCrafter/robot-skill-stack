@@ -18,7 +18,7 @@ def replay_saved(data, settings, path):
         d[key] = np.array(d[key])
     config = V2Config(**settings['v2'])
     robot = None
-    if settings.get('filter_revision') == 1:
+    if settings.get('filter_revision') in (1, 2):
         robot = SelfFilterResult(data['robot_mask'], data['robot_model_depth'], settings['robot_self_filter'])
     else:
         config = replace(config, robot_self_filter=False)
@@ -26,4 +26,6 @@ def replay_saved(data, settings, path):
     result = processor.process(frame, segmentation, robot)
     return dict(capture=str(path), source='rgbd_yolo_v2', mode='saved masks; no model inference rerun',
                 model=segmentation.model, candidates=result.diagnostics, robot_self_filter=result.self_filter.metadata,
+                observation_accepted=settings.get('observation_accepted', True),
+                provider_status=settings.get('provider_status'),
                 note='Legacy captures cannot replay robot removal' if robot is None else 'Saved robot mask; mesh rendering not rerun')

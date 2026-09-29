@@ -56,6 +56,7 @@ class Fraction(Length):
 class RecordingUI(ModuleType):
     def __init__(self, *, defer_builds=False):
         super().__init__('omni.ui')
+        self.in_event = False
         self.defer_builds = defer_builds
         self.nodes, self.stack = [], []
         self.Alignment = SimpleNamespace(LEFT_CENTER=0, RIGHT_CENTER=1, CENTER=2)
@@ -161,17 +162,29 @@ class Widget:
             self.visibility_callback(value)
 
     def destroy(self):
+        if self.kind == 'Window' and self.ui.in_event:
+            raise RuntimeError('Container::destroy during a UI event')
         self.destroyed = True
         for child in self.children:
             child.destroy()
 
     def click(self):
         if self.enabled:
-            self.clicked_fn()
+            self.ui.in_event = True
+            try:
+                self.clicked_fn()
+            finally:
+                self.ui.in_event = False
 
 
 @contextmanager
 def extension_environment(*, defer_builds=False):
+    owned_loop = None
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        owned_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(owned_loop)
     ui = RecordingUI(defer_builds=defer_builds)
     omni, ext, kit, app = (ModuleType(n) for n in ('omni', 'omni.ext', 'omni.kit', 'omni.kit.app'))
     omni.ext, omni.kit, omni.ui = ext, kit, ui
@@ -199,6 +212,14 @@ def extension_environment(*, defer_builds=False):
             controller.on_startup('test.extension')
             yield ui, controller, module
         finally:
+            if owned_loop is not None:
+                asyncio.set_event_loop(owned_loop)
             if 'controller' in locals() and not controller._shutting_down:
                 controller.on_shutdown()
+            if owned_loop is not None:
+                owned_loop.run_until_complete(asyncio.sleep(0))
+                owned_loop.run_until_complete(asyncio.sleep(0))
+                owned_loop.run_until_complete(asyncio.sleep(0))
+                owned_loop.close()
+                asyncio.set_event_loop(None)
             sys.path[:] = saved_path

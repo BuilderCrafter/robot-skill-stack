@@ -7,6 +7,7 @@ class IsaacRgbdCamera:
         prim=omni.usd.get_context().get_stage().GetPrimAtPath(prim_path)
         if not prim.IsValid(): raise ValueError(f"Camera prim not found: {prim_path}")
         if prim.GetTypeName()!="Camera": raise ValueError(f"Prim is not a Camera: {prim_path}")
+        self._closed = False
         self.camera=Camera(prim_path=prim_path,name=name,resolution=resolution)
     def initialize(self,semantic_segmentation=False):
         self.camera.initialize(attach_rgb_annotator=False); self.camera.add_rgb_to_frame(); self.camera.add_distance_to_image_plane_to_frame()
@@ -26,3 +27,25 @@ class IsaacRgbdCamera:
         if number is None:
             return None
         return (str(number), str(frame.get("rendering_time")))
+
+    def close(self):
+        if self._closed:
+            return
+        self._closed = True
+        # Camera.destroy() in 5.1 leaves separate event/ReferenceTime handles.
+        errors = []
+        def attempt(operation):
+            try:
+                operation()
+            except Exception as exc:
+                errors.append(exc)
+        attempt(self.camera.pause)
+        self.camera._stage_open_callback = None
+        self.camera._timer_reset_callback = None
+        reference = getattr(self.camera, '_fabric_time_annotator', None)
+        if reference is not None:
+            attempt(lambda: reference.detach([self.camera.get_render_product_path()]))
+            self.camera._fabric_time_annotator = None
+        attempt(self.camera.destroy)
+        if errors:
+            raise RuntimeError('Camera cleanup failed: '+ '; '.join(str(e) for e in errors)) from errors[0]

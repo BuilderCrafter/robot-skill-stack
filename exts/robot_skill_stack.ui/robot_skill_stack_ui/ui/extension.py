@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import asyncio
+import json
+import time
+import traceback
 from datetime import datetime
 from pathlib import Path
 import sys
@@ -27,6 +30,7 @@ from robot_skill_stack.presentation import WorldModelViewModel
 from robot_skill_stack.world.perception.diagnostics import save_capture
 
 from .panel import ControlPanel
+from .window_lifecycle import retire_window
 
 
 class RobotSkillStackExtension(omni.ext.IExt):
@@ -37,6 +41,8 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self.bundle = self.view_model = None
         self.busy = self._shutting_down = False
         self._tasks = set()
+        self._diagnostic_at = 0.0
+        self._active_profile = None
         self._elapsed = 0.0
         self._object_signature = self._pending_clear = None
         self.window = ui.Window('Robot Skill Stack', width=1180, height=920)
@@ -55,11 +61,11 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._tasks.clear()
         if self.bundle is not None:
             try:
-                self.bundle.world_updater.stop(self.bundle.world)
+                self._close_bundle(self.bundle)
             except Exception:
                 pass
         self.panel.destroy()
-        self.window.destroy()
+        retire_window(self.window)
         self.view_model = self.bundle = self.panel = self.window = None
 
     def _spawn(self, coroutine, label):
@@ -101,11 +107,19 @@ class RobotSkillStackExtension(omni.ext.IExt):
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
             selected=selected, perception=self.bundle is not None and self.bundle.config.world.provider == 'perception')
 
+    @staticmethod
+    def _close_bundle(bundle):
+        close = getattr(type(bundle), 'close', None)
+        if close is not None:
+            bundle.close()
+        else:
+            bundle.world_updater.stop(bundle.world)
+
     def _initialize_clicked(self):
         if self.busy or self._pending_clear is not None:
             return
         if self.bundle is not None and self._robot_ready():
-            self._set_status('Runtime already initialized.', 'success')
+            self._set_status('Runtime already initialized. Restart Isaac to change profiles.', 'success')
             return
         self.busy = True
         self._update_controls()
@@ -117,9 +131,16 @@ class RobotSkillStackExtension(omni.ext.IExt):
             profile = Path(self.panel.profile.model.get_value_as_string()).expanduser()
             if not profile.is_absolute():
                 profile = ROOT / profile
-            if self.bundle is not None:
-                self.bundle.world_updater.stop(self.bundle.world)
-            self.bundle = await build_runtime(profile)
+            previous, self.bundle, self.view_model = self.bundle, None, None
+            if previous is not None:
+                self._close_bundle(previous)
+            self._refresh(force=True)
+            bundle = await build_runtime(profile)
+            if self._shutting_down:
+                self._close_bundle(bundle)
+                return
+            self.bundle = bundle
+            self._active_profile = str(profile.resolve())
             self.view_model = WorldModelViewModel(self.bundle.world_model)
             self.view_model.ensure_selection()
             self._object_signature = None
@@ -127,7 +148,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         except Exception as exc:
             self.bundle = self.view_model = None
             self._set_status(f'Initialization failed: {type(exc).__name__}: {exc}', 'error')
-            carb.log_error(f'[robot_skill_stack.ui] initialization: {exc}')
+            carb.log_error(f'[robot_skill_stack.ui] initialization: {exc}\n{traceback.format_exc()}')
         finally:
             self.busy = False
             self._refresh(force=True)
@@ -192,6 +213,16 @@ class RobotSkillStackExtension(omni.ext.IExt):
             carb.log_info(f'[robot_skill_stack.ui] perception capture: {path}')
         except Exception as exc:
             self._set_status(f'Capture failed: {exc}', 'error')
+            snapshot = getattr(self.bundle.state_provider, 'diagnostics_snapshot', None)
+            if snapshot is not None:
+                path = ROOT / 'outputs' / 'perception' / f'status_{stamp}.json'
+                path.parent.mkdir(parents=True, exist_ok=True)
+                report = snapshot()
+                report['profile'] = self._active_profile
+                report['updater_error'] = getattr(self.bundle.world_updater, 'last_error', None)
+                path.write_text(json.dumps(report, indent=2), encoding='utf-8')
+                carb.log_warn(f'[robot_skill_stack.ui] No completed image; saved diagnostic {path}: {exc}')
+                self._set_status(f'No completed image. Saved {path.name}; see terminal for the error.', 'warning')
 
     def _select_object(self, object_id):
         if self.view_model is not None:
@@ -309,6 +340,8 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.panel.ee.text = 'EE position:   unavailable'
             self._update_controls()
             return
+        if self.busy and self.view_model is None:
+            return
         self.bundle.world_updater.cleanup()
         self.view_model.ensure_selection()
         signature = self.view_model.signature()
@@ -320,8 +353,19 @@ class RobotSkillStackExtension(omni.ext.IExt):
         if getattr(self.bundle.state_provider, 'source', '') == 'rgbd_yolo_v2':
             provider = self.bundle.state_provider
             self.panel.runtime_info.text = f'Perception V2: {provider.status}'
-            if provider.last_error:
-                self.panel.runtime_info.tooltip = provider.last_error
+            report = provider.diagnostics_snapshot()
+            count = report['accepted_frames']
+            self.panel.runtime_info.text = f'V2: {provider.status} | frames {count} | stale {report["stale_results"]}'
+            self.panel.runtime_info.tooltip = json.dumps(report, indent=2)
+            if (provider.last_error or not self.view_model.rows()) and time.monotonic() >= self._diagnostic_at:
+                self._diagnostic_at = time.monotonic()+5.
+                carb.log_warn('[robot_skill_stack.perception] '+json.dumps(report))
+        error = getattr(self.bundle.world_updater, 'last_error', None)
+        if isinstance(error, str) and error:
+            self._set_status('WorldModel update failed: '+error, 'error')
+            if time.monotonic() >= self._diagnostic_at:
+                self._diagnostic_at = time.monotonic()+5.
+                carb.log_error('[robot_skill_stack.updater] '+error)
         self.panel.held.text = f'Held object:   {self.bundle.world_model.held_object_id or "None"}'
         self.panel.ee.text = 'EE position:   unavailable'
         if self._robot_ready():

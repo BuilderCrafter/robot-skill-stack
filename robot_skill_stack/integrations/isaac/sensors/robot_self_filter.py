@@ -39,6 +39,8 @@ class IsaacRobotSnapshotSource:
             raise ValueError('Scaled robot link roots are unsupported by the self-filter')
         self.latest, self.last_error, self.closed = None, 'waiting for matched camera/robot state', False
         self.history = deque(maxlen=256)
+        self.render_time = self.nearest_pose_time = None
+        self.match_count = 0
         self._subscription = omni.usd.get_context().get_rendering_event_stream().create_subscription_to_pop_by_type(
             int(omni.usd.StageRenderingEventType.NEW_FRAME), self._on_frame,
             name='robot_skill_stack.self_filter_snapshot', order=1100)
@@ -78,13 +80,16 @@ class IsaacRobotSnapshotSource:
             capture_time = float(self.camera.camera.get_current_frame()['rendering_time'])
             if not np.isfinite(capture_time):
                 raise RuntimeError('Non-finite camera rendering time')
+            self.render_time = capture_time
             when, poses = min(self.history, key=lambda item: abs(item[0]-capture_time))
+            self.nearest_pose_time = when
             if abs(when-capture_time) > self.tolerance:
                 raise RuntimeError(f'No matching robot pose: render={capture_time:.6f}s nearest={when:.6f}s')
             if token != self.camera.get_frame_token():
                 raise RuntimeError('Camera changed during robot snapshot')
             self.latest = RobotSnapshot(self.model, poses, capture_time, when, token)
             self.last_error = None
+            self.match_count += 1
         except Exception as exc:
             self.last_error = f'{type(exc).__name__}: {exc}'
 
@@ -92,8 +97,22 @@ class IsaacRobotSnapshotSource:
         if self.closed or omni.usd.get_context().get_stage() != self.stage:
             raise RuntimeError('Robot self-filter stage changed; reinitialize runtime')
         if self.latest is None or self.latest.token != token:
+            # Snapshot is called on the simulator thread. Retry after camera callbacks,
+            # but still require the original timestamp to match a frozen history entry.
+            self._on_frame(None)
+        if self.latest is None or self.latest.token != token:
             raise RuntimeError('No same-frame robot pose: '+str(self.last_error or 'waiting for render callback'))
         return self.latest
+
+    def diagnostics_snapshot(self):
+        history = self.history
+        return dict(error=self.last_error, closed=self.closed, matched_frames=self.match_count,
+                    rendering_time=self.render_time, nearest_pose_time=self.nearest_pose_time,
+                    history_samples=len(history), history_start=None if not history else history[0][0],
+                    history_end=None if not history else history[-1][0], tolerance_s=self.tolerance,
+                    clock='World.current_time', model_hash=self.model.sha256,
+                    link_count=len(self.model.names), triangle_count=self.model.triangle_count,
+                    renderer='batched_triangle_raster')
 
     def close(self):
         self.closed = True

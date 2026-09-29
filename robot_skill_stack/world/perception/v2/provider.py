@@ -29,6 +29,9 @@ class YoloPerceptionProvider:
         self.last_error, self.status, self.diagnostics = None, 'waiting for RGB-D', []
         self.model_info, self._last_result = {}, None
         self.processed_frames = self.stale_results = 0
+        self._last_completed = None
+        self._request_started = None
+        self.submitted_frames = 0
 
     def _work(self, frame, robot_snapshot):
         segmentation = self.client.predict(frame.frame_id, frame.rgb)
@@ -68,6 +71,7 @@ class YoloPerceptionProvider:
         try:
             result = future.result()
             frame = result.frame
+            self._last_completed = result  # Diagnostic only until it passes the freshness gate.
             if self.model_info and result.segmentation.model.get('sha256') != self.model_info.get('sha256'):
                 raise RuntimeError('Worker weights changed. Restart/reinitialize the V2 runtime before continuing.')
             if now-frame.timestamp > self.config.max_result_age_s:
@@ -99,7 +103,11 @@ class YoloPerceptionProvider:
                 frame = self._snapshot(now)
                 if frame is not None:
                     self._future = self.executor.submit(self._work, *frame)
+                    self._request_started = now
+                    self.submitted_frames += 1
                     self._next_request = now+1/self.config.request_hz
+                    if self._last_completed is None and self.last_error is None:
+                        self.status = 'processing first frame'
             except Exception as exc:
                 self.last_error, self.status = str(exc), 'camera error'
                 self._next_request = now+1/self.config.request_hz
@@ -154,19 +162,38 @@ class YoloPerceptionProvider:
             if self.robot_source is not None:
                 self.robot_source.close()
 
+    def diagnostics_snapshot(self):
+        result = self._last_completed
+        robot = getattr(self.robot_source, 'diagnostics_snapshot', None)
+        return dict(status=self.status, error=self.last_error,
+                    accepted_frames=self.processed_frames, submitted_frames=self.submitted_frames,
+                    stale_results=self.stale_results,
+                    in_flight=self._future is not None and not self._future.done(),
+                    request_age_s=None if self._future is None or self._request_started is None else
+                                  max(0., self.clock()-self._request_started),
+                    candidate_count=None if result is None else len(result.candidates),
+                    tracks=len(self.tracker.tracks()),
+                    confirmed_tracks=sum(t.confirmed for t in self.tracker.tracks()),
+                    robot_filter_s=None if result is None or result.self_filter is None else
+                                   result.self_filter.metadata.get('render_s'),
+                    geometry_s=None if result is None else result.geometry_s,
+                    last_frame_token=str(self._last_token),
+                    robot_snapshot=None if robot is None else robot())
+
     def save_capture(self, path):
-        result = self._last_result
+        result = self._last_completed if self._last_completed is not None else self._last_result
         if result is None:
-            raise ValueError('No completed V2 observation yet')
+            raise ValueError('No completed V2 observation: '+str(self.last_error or self.status))
         frame = result.frame
         payload = wire.encode_response(result.segmentation, frame.depth.shape)
-        settings = dict(version=2, filter_revision=1, source=self.source, v2=asdict(self.config),
+        settings = dict(version=2, filter_revision=2, source=self.source, v2=asdict(self.config),
+                        observation_accepted=result is self._last_result, provider_status=self.diagnostics_snapshot(),
                         robot_self_filter=result.self_filter.metadata,
                         tracks_at_save=[dict(object_id=t.object_id, class_name=t.class_name, confirmed=t.confirmed,
                                              visible=t.visible, last_seen=t.last_seen, position=t.position.tolist(),
                                              size=t.size.tolist()) for t in self.tracker.tracks()],
                         discovery={k: v.tolist() if isinstance(v, np.ndarray) else v
-                                   for k, v in vars(self.processor.discovery).items()}, candidates=self.diagnostics,
+                                   for k, v in vars(self.processor.discovery).items()}, candidates=result.diagnostics,
                         primitives=dict(classification_threshold=self.processor.estimator.threshold,
                                         ambiguity_margin=self.processor.estimator.margin,
                                         top_band=self.processor.estimator.top_band,

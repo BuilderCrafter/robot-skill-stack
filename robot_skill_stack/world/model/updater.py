@@ -20,8 +20,14 @@ class WorldModelUpdater:
         self._period = None if update_hz is None else 1.0 / update_hz
         self._elapsed = 0.0
         self._callback_name = None
+        self._scheduler = None
+        self._closed = False
+        self.update_count = 0
+        self.last_error = None
 
     def update(self):
+        if self._closed:
+            return []
         context = self.world_model.observation_context()
         observations = self.provider.observe(context=context)
         self.world_model.apply_observations(
@@ -29,9 +35,13 @@ class WorldModelUpdater:
             mark_missing_invisible=True,
         )
         self.cleanup()
+        self.update_count += 1
+        self.last_error = None
         return observations
 
     def cleanup(self, now=None):
+        if self._closed:
+            return ()
         age = getattr(self.provider, "age", None)
         if age is not None:
             for object_id in age(now=now, context=self.world_model.observation_context()):
@@ -48,6 +58,8 @@ class WorldModelUpdater:
         return self.world_model.clear_lost(forget)
 
     def tick(self, step_size: float):
+        if self._closed:
+            return None
         if self._period is None:
             return self.update()
 
@@ -59,21 +71,37 @@ class WorldModelUpdater:
         self._elapsed = max(0.0, self._elapsed - self._period)
         return self.update()
 
+    def _on_physics(self, step_size):
+        if self._closed or self._callback_name is None:
+            return
+        try:
+            self.tick(step_size)
+        except Exception as exc:
+            self.last_error = f'{type(exc).__name__}: {exc}'
+
     def start(self, world, callback_name="world_model_updater"):
+        if self._closed:
+            raise RuntimeError('A closed updater cannot be restarted; construct a new runtime')
         if self._callback_name is not None:
             return
+        exists = getattr(world, 'physics_callback_exists', None)
+        if exists is not None and exists(callback_name):
+            raise RuntimeError(f'Physics callback {callback_name!r} already exists')
+        world.add_physics_callback(callback_name, callback_fn=self._on_physics)
+        self._scheduler, self._callback_name = world, callback_name
 
-        self._callback_name = callback_name
-        world.add_physics_callback(
-            callback_name,
-            callback_fn=self.tick,
-        )
-
-    def stop(self, world):
-        if self._callback_name is not None:
-            world.remove_physics_callback(self._callback_name)
-            self._callback_name = None
-            self._elapsed = 0.0
-        close = getattr(self.provider, "close", None)
-        if close is not None:
-            close()
+    def stop(self, world=None):
+        if self._closed:
+            return
+        scheduler = self._scheduler if self._scheduler is not None else world
+        name, self._callback_name = self._callback_name, None
+        self._scheduler, self._closed, self._elapsed = None, True, 0.0
+        try:
+            if name is not None and scheduler is not None:
+                exists = getattr(scheduler, 'physics_callback_exists', None)
+                if exists is None or exists(name):
+                    scheduler.remove_physics_callback(name)
+        finally:
+            close = getattr(self.provider, "close", None)
+            if close is not None:
+                close()

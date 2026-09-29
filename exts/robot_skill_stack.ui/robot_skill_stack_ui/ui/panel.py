@@ -5,6 +5,7 @@ from functools import partial
 
 import omni.ui as ui
 
+from .window_lifecycle import retire_window
 from .style import AMBER, DIM, GREEN, RED, STYLE
 from .widgets import badge, button, image, padded, section, vector
 
@@ -278,9 +279,7 @@ class ControlPanel:
     def hide_dialog(self, name):
         window = getattr(self, name)
         setattr(self, name, None)
-        if window is not None:
-            window.set_visibility_changed_fn(lambda visible: None)
-            window.destroy()
+        retire_window(window)
 
     def destroy(self):
         for name in ('dialog', 'profile_dialog', 'detail_dialog'):

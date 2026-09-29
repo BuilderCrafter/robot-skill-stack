@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import numpy as np
@@ -28,6 +28,7 @@ from robot_skill_stack.manipulation.skills.place import PlaceSkill
 from robot_skill_stack.world.model.provider import WorldObservationProvider
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
+from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
 
 @dataclass
@@ -40,6 +41,25 @@ class IsaacRuntimeBundle:
     objects: dict
     config: SceneConfig
     state_provider: WorldObservationProvider
+    _closed: bool = field(default=False, init=False, repr=False)
+
+    def close(self):
+        if self._closed:
+            return
+        self._closed = True
+        try:
+            self.world_updater.stop(self.world)
+        finally:
+            close = getattr(getattr(self.state_provider, 'camera', None), 'close', None)
+            try:
+                if close is not None:
+                    close()
+            finally:
+                if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
+                    self.world._robot_skill_stack_bundle = None
+
+
+_BUILDING = False
 
 
 def _validate_environment(config: SceneConfig):
@@ -128,22 +148,23 @@ async def _create_state_provider(
         config.perception.camera_prim_path,
         resolution=config.perception.resolution,
     )
-    camera.initialize(semantic_segmentation=False)
-
     robot_source = None
-    if config.perception.type == "yolo_v2" and config.perception.v2.robot_self_filter:
-        from robot_skill_stack.integrations.isaac.sensors.robot_self_filter import IsaacRobotSnapshotSource
-        robot_source = IsaacRobotSnapshotSource(world, camera, config.robot.prim_path,
-                                               [config.world.objects_root, *(o.prim_path for o in config.objects.values())],
-                                               config.perception.v2.robot_time_tolerance_s)
     try:
+        camera.initialize(semantic_segmentation=False)
+        if config.perception.type == "yolo_v2" and config.perception.v2.robot_self_filter:
+            from robot_skill_stack.integrations.isaac.sensors.robot_self_filter import IsaacRobotSnapshotSource
+            robot_source = IsaacRobotSnapshotSource(world, camera, config.robot.prim_path,
+                                                   [config.world.objects_root, *(o.prim_path for o in config.objects.values())],
+                                                   config.perception.v2.robot_time_tolerance_s)
         app = omni.kit.app.get_app()
         for _ in range(60):
             await app.next_update_async()
-        return build_perception_provider(camera, config, robot_source=robot_source)
+        provider = build_perception_provider(camera, config, robot_source=robot_source)
+        return provider
     except BaseException:
         if robot_source is not None:
             robot_source.close()
+        camera.close()
         raise
 
 
@@ -153,7 +174,7 @@ def _update_hz(config: SceneConfig):
     return 5.0 if config.world.provider == "perception" else None
 
 
-async def build_runtime(
+async def _build_runtime(
     profile_path: str | Path,
 ) -> IsaacRuntimeBundle:
     config = load_scene_config(profile_path)
@@ -162,14 +183,22 @@ async def build_runtime(
 
     world = World.instance()
     if world is None:
-        world = World(stage_units_in_meters=1.0)
+        world = construct_world_deferred(World, stage_units_in_meters=1.0)
+    if world.get_physics_context() is None:
         await world.initialize_simulation_context_async()
 
+    previous = getattr(world, '_robot_skill_stack_bundle', None)
+    if previous is not None:
+        previous.close()
+    print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
+          f'provider={config.world.provider} perception={config.perception.type} '
+          f'configured_objects={list(config.objects)}', flush=True)
     robot = _create_robot(world, config)
     objects = _create_objects(world, config)
 
     await world.reset_async()
-    await world.play_async()
+    if not world.is_playing():
+        await world.play_async()
 
     app = omni.kit.app.get_app()
     for _ in range(30):
@@ -182,51 +211,74 @@ async def build_runtime(
         provider,
         update_hz=_update_hz(config),
     )
-    updater.update()
-    updater.start(world)
+    try:
+        backend = IsaacFrankaBackend(
+            world=world,
+            robot=robot,
+            position_tolerance=0.01,
+            orientation_tolerance=0.05,
+            joint_tolerance=0.02,
+            max_motion_steps=1000,
+            max_home_steps=1000,
+        )
 
-    backend = IsaacFrankaBackend(
-        world=world,
-        robot=robot,
-        position_tolerance=0.01,
-        orientation_tolerance=0.05,
-        joint_tolerance=0.02,
-        max_motion_steps=1000,
-        max_home_steps=1000,
-    )
+        grasp = config.grasping
+        planner = SimplePrimitiveGraspPlanner(
+            approach_height=grasp.approach_height,
+            default_lift_height=grasp.default_lift_height,
+            grasp_z_offset=grasp.grasp_z_offset,
+            gripper=replace(
+                grasp.gripper,
+                max_width=min(grasp.gripper.max_width, backend.grasp_max_width),
+                min_width=max(grasp.gripper.min_width, backend.grasp_min_width),
+            ),
+            safety=grasp.safety,
+            support_plane_z=config.perception.discovery.support_plane_z,
+            world_model=model,
+            current_pose=backend.get_end_effector_pose,
+            pose_reachable=backend.check_reachability,
+        )
 
-    grasp = config.grasping
-    planner = SimplePrimitiveGraspPlanner(
-        approach_height=grasp.approach_height,
-        default_lift_height=grasp.default_lift_height,
-        grasp_z_offset=grasp.grasp_z_offset,
-        gripper=replace(
-            grasp.gripper,
-            max_width=min(grasp.gripper.max_width, backend.grasp_max_width),
-            min_width=max(grasp.gripper.min_width, backend.grasp_min_width),
-        ),
-        safety=grasp.safety,
-        support_plane_z=config.perception.discovery.support_plane_z,
-        world_model=model,
-        current_pose=backend.get_end_effector_pose,
-        pose_reachable=backend.check_reachability,
-    )
+        registry = SkillRegistry()
+        registry.register(MoveToPoseSkill(backend))
+        registry.register(HomeSkill(backend))
+        placement_planner = SimplePlacementPlanner(clearance=0.005)
 
-    registry = SkillRegistry()
-    registry.register(MoveToPoseSkill(backend))
-    registry.register(HomeSkill(backend))
-    placement_planner = SimplePlacementPlanner(clearance=0.005)
+        registry.register(PickSkill(backend, model, planner))
+        registry.register(PlaceSkill(backend, model, placement_planner))
 
-    registry.register(PickSkill(backend, model, planner))
-    registry.register(PlaceSkill(backend, model, placement_planner))
+        bundle = IsaacRuntimeBundle(
+            world=world,
+            backend=backend,
+            world_model=model,
+            world_updater=updater,
+            runtime=RobotRuntime(registry),
+            objects=objects,
+            config=config,
+            state_provider=provider,
+        )
+        # Register only after every construction step succeeds.
+        updater.update()
+        updater.start(PhysicsCallbackScope(world))
+        world._robot_skill_stack_bundle = bundle
+        print(f'[robot_skill_stack.runtime] ready: objects={len(model.objects())}', flush=True)
+        return bundle
+    except BaseException:
+        updater.stop(world)
+        close = getattr(getattr(provider, 'camera', None), 'close', None)
+        if close is not None:
+            close()
+        raise
 
-    return IsaacRuntimeBundle(
-        world=world,
-        backend=backend,
-        world_model=model,
-        world_updater=updater,
-        runtime=RobotRuntime(registry),
-        objects=objects,
-        config=config,
-        state_provider=provider,
-    )
+
+async def build_runtime(profile_path: str | Path) -> IsaacRuntimeBundle:
+    global _BUILDING
+    if _BUILDING:
+        raise RuntimeError('Runtime initialization is already in progress')
+    _BUILDING = True
+    try:
+        # Leave the button/draw callback before initializing simulator resources.
+        await omni.kit.app.get_app().next_update_async()
+        return await _build_runtime(profile_path)
+    finally:
+        _BUILDING = False

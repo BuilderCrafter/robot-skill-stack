@@ -5,6 +5,7 @@ import hashlib
 import time
 import numpy as np
 from robot_skill_stack.world.perception.v2.mesh_rays import TriangleBVH
+from robot_skill_stack.world.perception.v2.mesh_raster import raster_depth
 
 
 def rigid_matrices(matrices):
@@ -58,7 +59,7 @@ class RobotSurfaceModel:
         self.sha256 = digest.hexdigest()
         self.triangle_count = sum(len(b.triangles) for b in self.bvhs)
 
-    def depth(self, frame, poses):
+    def depth_reference(self, frame, poses):
         poses = rigid_matrices(poses)
         if len(poses) != len(self.names):
             raise ValueError('Robot pose/model mismatch')
@@ -89,6 +90,30 @@ class RobotSurfaceModel:
         return nearest.reshape(frame.depth.shape).astype(np.float32)
 
 
+    def depth(self, frame, poses):
+        poses = rigid_matrices(poses)
+        if len(poses) != len(self.names):
+            raise ValueError('Robot pose/model mismatch')
+        camera = frame.world_from_camera
+        nearest = np.full(frame.depth.shape, np.inf)
+        crossing = []
+        for bvh, pose in zip(self.bvhs, poses):
+            t = ((bvh.triangles @ pose[:3, :3].T + pose[:3, 3]) - camera[:3, 3]) @ camera[:3, :3]
+            front = (t[..., 2] > 1e-7).all(1)
+            nearest = np.minimum(nearest, raster_depth(t[front], frame.intrinsics, frame.depth.shape))
+            cross = ~front & (t[..., 2] > 1e-7).any(1)
+            if cross.any():
+                crossing.append(t[cross])
+        if crossing:
+            # Rare near-plane intersections keep exact ray semantics, not dropped faces.
+            y, x = np.indices(frame.depth.shape)
+            k = frame.intrinsics
+            rays = np.column_stack(((x.ravel()-k[0, 2])/k[0, 0], (y.ravel()-k[1, 2])/k[1, 1], np.ones(x.size)))
+            depth = TriangleBVH(np.concatenate(crossing)).intersect(np.zeros(3), rays)
+            nearest = np.minimum(nearest, depth.reshape(frame.depth.shape))
+        return nearest.astype(np.float32)
+
+
 def filter_robot(frame, snapshot, tolerance, time_tolerance):
     if abs(snapshot.camera_time-snapshot.pose_time) > time_tolerance:
         raise ValueError('Robot pose does not match the camera acquisition time')
@@ -99,7 +124,7 @@ def filter_robot(frame, snapshot, tolerance, time_tolerance):
     np.subtract(frame.depth, model_depth, out=difference, where=valid)
     mask = valid & (np.abs(difference) <= tolerance)
     return SelfFilterResult(mask, model_depth, dict(
-        enabled=True, frame_id=frame.frame_id, source='known_robot_meshes_and_measured_link_poses', model_sha256=snapshot.model.sha256,
+        enabled=True, renderer='batched_triangle_raster', frame_id=frame.frame_id, source='known_robot_meshes_and_measured_link_poses', model_sha256=snapshot.model.sha256,
         link_names=list(snapshot.model.names), triangles=snapshot.model.triangle_count,
         world_from_links=snapshot.world_from_links.tolist(), camera_time=snapshot.camera_time,
         pose_time=snapshot.pose_time, time_error_s=abs(snapshot.camera_time-snapshot.pose_time),

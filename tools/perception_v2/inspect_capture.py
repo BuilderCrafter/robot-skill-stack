@@ -24,7 +24,7 @@ def inspect(path, out):
         raise ValueError('Use a new/empty inspection output directory')
     with np.load(path, allow_pickle=False) as data:
         settings = json.loads(str(data['settings']))
-        if settings.get('source') != 'rgbd_yolo_v2' or settings.get('filter_revision') != 1:
+        if settings.get('source') != 'rgbd_yolo_v2' or settings.get('filter_revision') not in (1, 2):
             raise ValueError('Use a V2 Capture saved after applying the robot-filter patch')
         frame = PerceptionFrame(int(data['frame_id']), data['rgb'], data['depth'], data['intrinsics'],
                                 data['world_from_camera'], float(data['timestamp']))
@@ -47,15 +47,19 @@ def inspect(path, out):
         write_png(out/f'{name}.png', image)
     report = dict(capture=str(path.resolve()), robot_self_filter=robot.metadata, candidates=result.diagnostics,
                   tracks_at_save=settings.get('tracks_at_save', []),
+                  observation_accepted=settings.get('observation_accepted', True),
+                  provider_status=settings.get('provider_status'),
                   note='Saved robot mask + saved neural results. No new model inference or robot rendering.')
     (out/'report.json').write_text(json.dumps(report, indent=2, allow_nan=False))
     titles = [('rgb', 'Original RGB'), ('robot_removed_red', 'Removed robot surface pixels (red)'),
               ('raw_yolo', 'Raw YOLO masks'), ('accepted', 'Accepted object masks')]
+    warning = ('<p>This completed image was rejected as stale; its candidates were NOT published.</p>'
+               if not report['observation_accepted'] else '')
     cards = ''.join(f'<div><h2>{title}</h2><img src="{name}.png"></div>' for name, title in titles)
     (out/'review.html').write_text('<!doctype html><meta charset="utf-8"><title>V2 filter review</title>'
                                   '<style>body{background:#18212b;color:#eee;font:16px sans-serif}'
                                   'main{display:grid;grid-template-columns:1fr 1fr;gap:16px}img{max-width:100%}</style>'
-                                  '<h1>V2 same-frame filter review</h1><p>Blackened RGB is debug only; YOLO receives original RGB. '
+                                  '<h1>V2 same-frame filter review</h1>'+warning+'<p>Blackened RGB is debug only; YOLO receives original RGB. '
                                   'See report.json for rejection reasons and timing.</p><main>'+cards+'</main>')
     print('Review:', out/'review.html')
     print('Self-filter:', robot.metadata)
