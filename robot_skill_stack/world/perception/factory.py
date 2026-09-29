@@ -8,6 +8,13 @@ from robot_skill_stack.world.perception.tracker import ObjectTracker
 
 
 def build_perception_provider(camera, config):
+    if config.perception.type == "yolo_v2":
+        from robot_skill_stack.world.perception.v2.client import VisionClient
+        from robot_skill_stack.world.perception.v2.pipeline import FrameProcessor
+        from robot_skill_stack.world.perception.v2.provider import YoloPerceptionProvider
+        p = config.perception
+        return YoloPerceptionProvider(camera, FrameProcessor(p.discovery, p.primitives, p.v2),
+                                      build_tracker(config), VisionClient(p.v2))
     localizer = RgbdLocalizer(camera.get_intrinsics())
     d = config.perception.discovery
     t = config.perception.tracking
@@ -29,7 +36,18 @@ def build_perception_provider(camera, config):
         support_contact_tolerance=d.support_contact_tolerance,
         component_neighbor_distance=d.component_neighbor_distance,
     )
-    tracker = ObjectTracker(
+    tracker = build_tracker(config)
+    pr = config.perception.primitives
+    return PerceptionStateProvider(
+        camera, localizer, discoverer, tracker,
+        primitive_estimator=PrimitiveEstimator(pr.classification_threshold, pr.ambiguity_margin,
+                                              pr.top_band, fit_tolerance=pr.fit_tolerance),
+    )
+
+
+def build_tracker(config):
+    t, s = config.perception.tracking, config.perception.semantics
+    return ObjectTracker(
         max_distance=t.max_distance,
         max_size_ratio=t.max_size_ratio,
         max_misses=t.max_misses,
@@ -39,10 +57,4 @@ def build_perception_provider(camera, config):
         semantic_threshold=s.assignment_threshold,
         min_confirm_hits=t.min_confirm_hits,
         stale_track_ttl=config.world.stale_object_ttl,
-    )
-    pr = config.perception.primitives
-    return PerceptionStateProvider(
-        camera, localizer, discoverer, tracker,
-        primitive_estimator=PrimitiveEstimator(pr.classification_threshold, pr.ambiguity_margin,
-                                              pr.top_band, fit_tolerance=pr.fit_tolerance),
     )

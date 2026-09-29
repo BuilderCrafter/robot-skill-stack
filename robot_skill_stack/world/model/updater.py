@@ -70,9 +70,10 @@ class WorldModelUpdater:
         )
 
     def stop(self, world):
-        if self._callback_name is None:
-            return
-
-        world.remove_physics_callback(self._callback_name)
-        self._callback_name = None
-        self._elapsed = 0.0
+        if self._callback_name is not None:
+            world.remove_physics_callback(self._callback_name)
+            self._callback_name = None
+            self._elapsed = 0.0
+        close = getattr(self.provider, "close", None)
+        if close is not None:
+            close()

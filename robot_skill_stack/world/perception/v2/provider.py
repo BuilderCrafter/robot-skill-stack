@@ -1,0 +1,167 @@
+"""Nonblocking, one-in-flight inference. Only the simulation thread touches the tracker."""
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import asdict
+import json
+from pathlib import Path
+import time
+import numpy as np
+from robot_skill_stack.common.types import Pose
+from robot_skill_stack.world.model.observations import ObjectObservation
+from robot_skill_stack.world.model.primitives import PrimitiveShape
+from robot_skill_stack.world.perception.frame import PerceptionFrame
+from robot_skill_stack.world.perception.geometry import ObjectGeometryService
+from robot_skill_stack.world.perception.localizer import RgbdLocalizer
+from robot_skill_stack.world.perception.v2.types import validate_frame
+from robot_skill_stack.world.perception.v2 import wire
+
+
+class YoloPerceptionProvider:
+    source = 'rgbd_yolo_v2'
+
+    def __init__(self, camera, processor, tracker, client, *, clock=time.monotonic, executor=None):
+        self.camera, self.processor, self.tracker, self.client = camera, processor, tracker, client
+        self.config, self.clock = processor.config, clock
+        self.executor = executor or ThreadPoolExecutor(max_workers=1, thread_name_prefix='rgbd-v2')
+        self.geometry = ObjectGeometryService(RgbdLocalizer(camera.get_intrinsics()), tracker)
+        self._future, self._frame_id, self._last_token = None, 0, None
+        self._next_request, self._closed = 0., False
+        self.last_error, self.status, self.diagnostics = None, 'waiting for RGB-D', []
+        self.model_info, self._last_result = {}, None
+        self.processed_frames = self.stale_results = 0
+
+    def _work(self, frame):
+        segmentation = self.client.predict(frame.frame_id, frame.rgb)
+        return self.processor.process(frame, segmentation)
+
+    def _snapshot(self, now):
+        token_fn = getattr(self.camera, 'get_frame_token', None)
+        token = None if token_fn is None else token_fn()
+        if token is None:
+            self.status = 'waiting for a timestamped camera frame'
+            return None
+        if token == self._last_token:
+            return None
+        rgb, depth = self.camera.get_rgb(), self.camera.get_depth()
+        if rgb is None or depth is None:
+            return None
+        T, K = self.camera.get_world_from_camera_transform(), self.camera.get_intrinsics()
+        if token_fn() != token:
+            return None
+        self._frame_id += 1
+        frame = PerceptionFrame(self._frame_id, np.asarray(rgb)[..., :3].copy(), np.asarray(depth).copy(),
+                                np.asarray(K).copy(), np.asarray(T).copy(), now)
+        validate_frame(frame)
+        self._last_token = token
+        return frame
+
+    def _collect(self, now, context):
+        future = self._future
+        if future is None or not future.done():
+            return
+        self._future = None
+        try:
+            result = future.result()
+            frame = result.frame
+            if self.model_info and result.segmentation.model.get('sha256') != self.model_info.get('sha256'):
+                raise RuntimeError('Worker weights changed. Restart/reinitialize the V2 runtime before continuing.')
+            if now-frame.timestamp > self.config.max_result_age_s:
+                self.stale_results += 1
+                self.last_error = 'Vision result too old; discarded (reduce load or measure/tune age limit)'
+                self.status = 'stale'
+                return
+            self.tracker.update(result.candidates, result.predictions, frame_id=frame.frame_id,
+                                timestamp=frame.timestamp, context=context)
+            self.geometry.localizer = RgbdLocalizer(frame.intrinsics)
+            self.geometry.update_frame(frame)
+            self._last_result, self.diagnostics, self.model_info = result, result.diagnostics, result.segmentation.model
+            self.processed_frames += 1
+            self.last_error, self.status = None, 'ready'
+        except Exception as exc:
+            self.last_error = f'{type(exc).__name__}: {exc}'
+            self.status = 'worker error'
+
+    def observe(self, context=None):
+        if self._closed:
+            return []
+        now = self.clock()
+        self._collect(now, context)
+        self.age(now, context)
+        if self._future is None and now >= self._next_request:
+            try:
+                frame = self._snapshot(now)
+                if frame is not None:
+                    self._future = self.executor.submit(self._work, frame)
+                    self._next_request = now+1/self.config.request_hz
+            except Exception as exc:
+                self.last_error, self.status = str(exc), 'camera error'
+                self._next_request = now+1/self.config.request_hz
+        return self._observations()
+
+    def _observations(self):
+        result = []
+        for track in self.tracker.tracks():
+            if not track.confirmed:
+                continue
+            g = track.geometry
+            known = g is not None and g.shape != PrimitiveShape.UNKNOWN
+            yaw = None if g is None else g.yaw
+            orientation = None if yaw is None else np.array([np.cos(yaw/2), 0., 0., np.sin(yaw/2)])
+            result.append(ObjectObservation(
+                track.object_id, pose=Pose(track.position.copy(), orientation), class_name=track.class_name,
+                size=track.size.copy(), geometry=g, graspable=known, visible=track.visible,
+                confidence=track.confidence, source=self.source, timestamp=track.last_seen,
+                metadata=dict(class_belief_authoritative=True, class_confidence=track.class_confidence,
+                              geometry_confidence=0. if g is None else g.confidence,
+                              position_source='primitive_fit' if known else 'visible_surface_bounds',
+                              track_hits=track.hits, track_misses=track.misses,
+                              association_hint_match=track.matched_by_hint,
+                              association_hint_reason=track.association_hint_reason,
+                              observed_at=track.last_seen, pose_predicted=False),
+            ))
+        return result
+
+    def age(self, now=None, context=None):
+        now = self.clock() if now is None else now
+        if (self.status == 'ready' and self._last_result is not None
+                and now-self._last_result.frame.timestamp >= self.config.stale_frame_s):
+            self.status, self.last_error = 'stale', 'No fresh accepted RGB-D observation; tracks are aging'
+        return self.tracker.age(now, self.config.stale_frame_s, context)
+
+    def forget(self, object_id):
+        return self.tracker.forget(object_id)
+
+    def get_mask(self, object_id):
+        return self.geometry.get_mask(object_id)
+
+    def get_point_cloud(self, object_id):
+        return self.geometry.get_point_cloud(object_id)
+
+    def close(self):
+        if not self._closed:
+            self._closed = True
+            if self._future is not None:
+                self._future.cancel()
+            self.executor.shutdown(wait=False, cancel_futures=True)
+
+    def save_capture(self, path):
+        result = self._last_result
+        if result is None:
+            raise ValueError('No completed V2 observation yet')
+        frame = result.frame
+        payload = wire.encode_response(result.segmentation, frame.depth.shape)
+        settings = dict(version=2, source=self.source, v2=asdict(self.config),
+                        discovery={k: v.tolist() if isinstance(v, np.ndarray) else v
+                                   for k, v in vars(self.processor.discovery).items()}, candidates=self.diagnostics,
+                        primitives=dict(classification_threshold=self.processor.estimator.threshold,
+                                        ambiguity_margin=self.processor.estimator.margin,
+                                        top_band=self.processor.estimator.top_band,
+                                        fit_tolerance=self.processor.estimator.tolerance))
+        path = Path(path)
+        if path.suffix != '.npz':
+            raise ValueError('Capture filename must end in .npz')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(path, rgb=frame.rgb, depth=frame.depth, intrinsics=frame.intrinsics,
+                            world_from_camera=frame.world_from_camera, timestamp=frame.timestamp,
+                            frame_id=frame.frame_id, segmentation=np.frombuffer(payload, np.uint8),
+                            settings=json.dumps(settings, allow_nan=False))
+        return path

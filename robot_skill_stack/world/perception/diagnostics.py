@@ -34,6 +34,8 @@ def describe(candidate, geometry):
 
 
 def save_capture(provider, path):
+    if hasattr(provider, "save_capture"):
+        return provider.save_capture(path)
     frame = provider.geometry.latest_frame
     if frame is None:
         raise ValueError('No camera frame has been received yet.')
@@ -64,6 +66,9 @@ def save_capture(provider, path):
 def replay_capture(path):
     with np.load(path, allow_pickle=False) as data:
         settings = json.loads(str(data['settings']))
+        if settings.get('version') == 2:
+            from robot_skill_stack.world.perception.v2.replay import replay_saved
+            return replay_saved(data, settings, path)
         if settings.get('version') != 1:
             raise ValueError('Unsupported capture version')
         frame = PerceptionFrame(int(data['frame_id']), data['rgb'], data['depth'], data['intrinsics'],

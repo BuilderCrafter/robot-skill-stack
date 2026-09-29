@@ -317,6 +317,11 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._object_signature = signature
         self.panel.runtime_info.text = 'Perception' if self.bundle.config.world.provider == 'perception' else 'Ground truth'
         self.panel.runtime_info.tooltip = f'NumPy {np.__version__} from {np.__file__}'
+        if getattr(self.bundle.state_provider, 'source', '') == 'rgbd_yolo_v2':
+            provider = self.bundle.state_provider
+            self.panel.runtime_info.text = f'Perception V2: {provider.status}'
+            if provider.last_error:
+                self.panel.runtime_info.tooltip = provider.last_error
         self.panel.held.text = f'Held object:   {self.bundle.world_model.held_object_id or "None"}'
         self.panel.ee.text = 'EE position:   unavailable'
         if self._robot_ready():

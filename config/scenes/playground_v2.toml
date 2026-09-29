@@ -1,0 +1,68 @@
+[robot]
+id = "franka"
+type = "franka"
+prim_path = "/Franka"
+
+[world]
+objects_root = "/World/Objects"
+provider = "perception"
+# Ground truth may run every physics step; perception defaults to 5 Hz.
+# update_hz = 5.0
+stale_object_ttl = 15.0
+
+[objects.cube]
+prim_path = "/World/Objects/Cube"
+size = [0.05, 0.05, 0.05]
+graspable = true
+
+[perception]
+type = "yolo_v2" # Switch back to "geometry_v1"; omitted means V1.
+camera_prim_path = "/World/PerceptionCamera"
+resolution = [640, 480]
+
+[perception.discovery]
+support_plane_z = 0.0
+workspace_min = [0.20, -0.40, 0.0]
+workspace_max = [0.70, 0.40, 0.22]
+min_object_height = 0.008
+max_object_height = 0.22
+min_component_pixels = 30
+max_component_pixels = 30000
+candidate_max_extent = 0.18
+spawn_min_extent = 0.02
+spawn_max_extent = 0.12
+spawn_compactness_ratio = 3.50
+support_contact_tolerance = 0.015
+component_neighbor_distance = 0.02
+
+[perception.tracking]
+max_distance = 0.18
+max_size_ratio = 1.50
+max_misses = 30
+occlusion_distance = 0.12
+min_confirm_hits = 3
+
+[perception.semantics]
+window_size = 7
+min_samples = 3
+assignment_threshold = 0.70
+cube_ratio_max = 1.35
+cube_min_size = 0.025
+cube_max_size = 0.10
+
+[perception.primitives]
+classification_threshold = 0.58
+ambiguity_margin = 0.07
+top_band = 0.15
+fit_tolerance = 0.0008
+
+# Separate worker: tools/perception_v2/serve.py in the ML venv, not Isaac Python.
+[perception.v2]
+endpoint = "http://127.0.0.1:8765"
+confidence = 0.35
+nms_iou = 0.50
+request_hz = 5.0
+max_result_age_s = 2.0
+stale_frame_s = 2.5
+max_observation_z = 0.55
+unknown_depth_fallback = true
