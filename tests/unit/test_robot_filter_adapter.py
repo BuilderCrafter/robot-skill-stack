@@ -41,7 +41,8 @@ class Prim:
     def GetTypeName(self): return self.kind
     def IsValid(self): return True
     def IsA(self, schema):
-        return (schema == Schema and self.kind != 'Material') or (schema == 'Gprim' and self.kind not in {'Xform', 'Material'})
+        return (schema == Schema and self.kind not in {'Material', 'Scope', 'PhysicsRevoluteJoint'}) or (
+            schema == 'Gprim' and self.kind not in {'Xform', 'Scope', 'Material', 'PhysicsRevoluteJoint'})
     def HasAPI(self, api): return api == 'RigidBodyAPI' and self.body
 
 
@@ -59,7 +60,9 @@ class Schema:
             p = p.parent
         return 'inherited'
     def ComputePurpose(self): return self.p.purpose
-    def TransformMightBeTimeVarying(self): return self.p.animated
+    def TransformMightBeTimeVarying(self):
+        if not self.p.IsA(Schema): raise RuntimeError('Accessed non-Xformable prim')
+        return self.p.animated
     def __getattr__(self, name):
         if name.startswith('Get') and name.endswith('Attr'):
             return lambda: self.p.attrs[name[3:-4]]
@@ -130,7 +133,8 @@ class MeshAdapterTests(unittest.TestCase):
         with fake_usd(self.root) as (adapter, stage, calls):
             with self.assertRaisesRegex(ValueError, 'exactly one'):
                 adapter.load_robot_meshes(stage, '/Robot', (), ('missing',))
-        Prim('hand', self.root)
+        other = Prim('other_robot', self.root)
+        Prim('hand', other, body=True)
         with self.assertRaisesRegex(ValueError, 'exactly one'): self.read()
 
     def test_material_with_link_name_is_not_a_second_body(self):
@@ -182,6 +186,169 @@ class MeshAdapterTests(unittest.TestCase):
     def test_unknown_gprim_rejected(self):
         self.visual.kind = 'FancyUnknownSurface'
         with self.assertRaisesRegex(ValueError, 'Unsupported'): self.read()
+
+
+class LinkResolutionTests(unittest.TestCase):
+    def setUp(self):
+        self.root = Prim('Franka')
+        self.link = Prim('panda_link0', self.root, body=True)
+        self.visuals = Prim('visuals', self.link)
+        self.surface = Prim('panda_link0', self.visuals, kind='Cube')
+
+    def read(self, excluded=(), names=('panda_link0',)):
+        with fake_usd(self.root) as (a, s, _):
+            return a.load_robot_meshes(s, '/Franka', excluded, names)
+
+    def test_body_selected_instead_of_same_name_child_mesh(self):
+        model, inventory = self.read()
+        self.assertEqual(model.names, ('/Franka/panda_link0',))
+        self.assertEqual(model.triangle_count, 12)
+        self.assertEqual(inventory[0]['geometry_paths'], [self.surface.GetPath()])
+
+    def test_same_name_visual_xform_retains_its_geometry(self):
+        self.surface.kind = 'Xform'
+        mesh = Prim('mesh', self.surface, kind='Cube')
+        self.assertEqual(self.read()[1][0]['geometry_paths'], [mesh.GetPath()])
+
+    def test_same_name_visual_scope_retains_its_geometry(self):
+        self.surface.kind = 'Scope'
+        mesh = Prim('mesh', self.surface, kind='Cube')
+        self.assertEqual(self.read()[1][0]['geometry_paths'], [mesh.GetPath()])
+
+    def test_scope_parent_does_not_require_transform_api(self):
+        self.visuals.kind = 'Scope'
+        self.assertEqual(self.read()[0].triangle_count, 12)
+
+    def test_unrelated_same_name_mesh_is_not_selected_or_collected(self):
+        look = Prim('LookGeometry', self.root)
+        Prim('panda_link0', look, kind='Cube')
+        model, inventory = self.read()
+        self.assertEqual(model.triangle_count, 12)
+        self.assertEqual(inventory[0]['geometry_paths'], [self.surface.GetPath()])
+
+    def test_two_physical_links_remain_an_error_with_both_paths(self):
+        other = Prim('other', self.root)
+        duplicate = Prim('panda_link0', other, body=True)
+        Prim('mesh', duplicate, kind='Cube')
+        with self.assertRaisesRegex(ValueError, '2 rigid bodies') as error:
+            self.read()
+        for path in [self.link.GetPath(), duplicate.GetPath()]:
+            self.assertIn(path, str(error.exception))
+        self.assertIn('RigidBodyAPI=True', str(error.exception))
+
+    def test_no_body_uses_unique_enclosing_structural_link(self):
+        self.link.body = False
+        self.assertEqual(self.read()[0].names, ('/Franka/panda_link0',))
+
+    def test_no_body_nested_same_name_xform_uses_outer_link(self):
+        self.link.body = False
+        self.surface.kind = 'Xform'
+        Prim('mesh', self.surface, kind='Cube')
+        self.assertEqual(self.read()[0].names, ('/Franka/panda_link0',))
+
+    def test_two_unrelated_structural_links_do_not_pick_first(self):
+        self.link.body = False
+        other = Prim('other', self.root)
+        duplicate = Prim('panda_link0', other)
+        Prim('mesh', duplicate, kind='Cube')
+        with self.assertRaisesRegex(ValueError, '0 rigid bodies') as error:
+            self.read()
+        self.assertIn(duplicate.GetPath(), str(error.exception))
+
+    def test_mesh_without_body_or_named_structural_root_is_not_a_link(self):
+        self.link.name = 'not_a_link'
+        self.link.body = False
+        with self.assertRaisesRegex(ValueError, '0 rigid bodies'):
+            self.read()
+
+    def test_a_body_can_be_applied_directly_to_mesh_geometry(self):
+        self.root.children.clear()
+        Prim('panda_link0', self.root, kind='Cube', body=True)
+        self.assertEqual(self.read()[0].triangle_count, 12)
+
+    def test_body_inside_same_name_wrapper_is_selected(self):
+        wrapper = self.link
+        wrapper.body = False
+        self.surface.kind, self.surface.body = 'Xform', True
+        Prim('surface', self.surface, kind='Cube')
+        model, _ = self.read()
+        self.assertEqual(model.names, (self.surface.GetPath(),))
+
+    def test_geometry_named_after_another_link_is_not_a_link_boundary(self):
+        self.surface.name = 'panda_hand'
+        hand = Prim('panda_hand', self.root, body=True)
+        Prim('hand_surface', hand, kind='Cube')
+        model, inventory = self.read(names=('panda_link0', 'panda_hand'))
+        self.assertEqual([len(b.triangles) for b in model.bvhs], [12, 12])
+        self.assertEqual(inventory[0]['geometry_paths'], [self.surface.GetPath()])
+
+    def test_nested_actual_link_is_excluded_using_resolved_path(self):
+        hand = Prim('panda_hand', self.link, body=True)
+        Prim('panda_hand', hand, kind='Cube')
+        model, _ = self.read(names=('panda_link0', 'panda_hand'))
+        self.assertEqual([len(b.triangles) for b in model.bvhs], [12, 12])
+
+    def test_nested_carried_body_is_still_excluded(self):
+        cargo = Prim('carried', self.link, body=True)
+        Prim('panda_link0', cargo, kind='Cube')
+        self.assertEqual(self.read()[0].triangle_count, 12)
+
+    def test_configured_exclusion_ignores_other_same_name_body(self):
+        cargo = Prim('carried', self.root)
+        body = Prim('panda_link0', cargo, body=True)
+        Prim('mesh', body, kind='Cube')
+        self.assertEqual(self.read((cargo.GetPath(),))[0].triangle_count, 12)
+
+    def test_excluding_real_link_never_promotes_its_geometry(self):
+        with self.assertRaisesRegex(ValueError, 'Candidates: none'):
+            self.read((self.link.GetPath(),))
+
+    def test_exclusion_prefix_does_not_hide_similarly_named_path(self):
+        self.assertEqual(self.read(('/Franka/panda_link',))[0].triangle_count, 12)
+
+    def test_duplicate_names_in_requested_allow_list_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'duplicate names'):
+            self.read(names=('panda_link0', 'panda_link0'))
+
+    def test_all_franka_links_with_repeated_visual_names(self):
+        names = tuple(f'panda_link{i}' for i in range(8)) + (
+            'panda_hand', 'panda_leftfinger', 'panda_rightfinger')
+        self.root.children.clear()
+        for name in names:
+            link = Prim(name, self.root, body=True)
+            visuals = Prim('visuals', link, kind='Scope')
+            Prim(name, visuals, kind='Cube')
+        model, inventory = self.read(names=names)
+        self.assertEqual(model.names, tuple('/Franka/'+n for n in names))
+        self.assertEqual(model.triangle_count, 11*12)
+        self.assertEqual(len({p for item in inventory for p in item['geometry_paths']}), 11)
+
+    def test_renamed_visual_does_not_change_model_surface(self):
+        before, _ = self.read()
+        self.surface.name = 'mesh'
+        after, _ = self.read()
+        self.assertEqual(before.sha256, after.sha256)
+
+    def test_lookup_never_renames_or_reparents_prims(self):
+        before = [(p.GetPath(), p.kind, p.body, len(p.children)) for p in walk(self.root)]
+        self.read()
+        after = [(p.GetPath(), p.kind, p.body, len(p.children)) for p in walk(self.root)]
+        self.assertEqual(before, after)
+
+    def test_animated_geometry_is_not_hidden_by_name_collision(self):
+        self.surface.animated = True
+        with self.assertRaisesRegex(ValueError, 'Animated'):
+            self.read()
+
+    def test_reset_transform_is_not_hidden_by_name_collision(self):
+        self.surface.resets = True
+        with self.assertRaisesRegex(ValueError, 'Reset transform'):
+            self.read()
+
+    def test_invisible_same_name_surface_still_causes_no_geometry_error(self):
+        self.surface.visible = False
+        with self.assertRaisesRegex(ValueError, 'No visible'):
+            self.read()
 
 
 class Stream:

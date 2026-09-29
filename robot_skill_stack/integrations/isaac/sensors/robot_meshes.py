@@ -27,6 +27,28 @@ def _geometry(prim):
     raise ValueError(f'Unsupported visible robot geometry {kind}: {prim.GetPath()}')
 
 
+def _resolve_link(prims, name, robot_root, excluded):
+    matches = [p for p in prims if p.GetName() == name and p.IsA(UsdGeom.Xformable)
+               and not excluded(str(p.GetPath()))]
+    bodies = [p for p in matches if p.HasAPI(UsdPhysics.RigidBodyAPI)]
+    choices, rule = bodies, 'RigidBodyAPI'
+    if not bodies:
+        # Fixed, non-physical link roots are allowed only with an unambiguous subtree.
+        choices = [p for p in matches if not p.IsA(UsdGeom.Gprim) and all(
+            q == p or str(q.GetPath()).startswith(str(p.GetPath())+'/') for q in matches)]
+        rule = 'unique link ancestor'
+    if len(choices) != 1:
+        details = '; '.join(f'{p.GetPath()} [type={p.GetTypeName()}, '
+                            f'RigidBodyAPI={p.HasAPI(UsdPhysics.RigidBodyAPI)}]' for p in matches)
+        raise ValueError(f'Expected exactly one physical or unambiguous structural robot link {name} '
+                         f'below {robot_root}; {len(bodies)} rigid bodies, {len(matches)} name matches. '
+                         f'Candidates: {details or "none"}. No arbitrary first match selected.')
+    link = choices[0]
+    if len(matches) > 1:
+        print(f'[V2 self-filter] {name} -> {link.GetPath()} ({rule}; {len(matches)} name matches)', flush=True)
+    return link
+
+
 def load_robot_meshes(stage, robot_root, excluded_roots=(), link_names=FRANKA_LINKS):
     if (UsdGeom.GetStageUpAxis(stage) != UsdGeom.Tokens.z or
             not np.isclose(UsdGeom.GetStageMetersPerUnit(stage), 1.)):
@@ -37,12 +59,10 @@ def load_robot_meshes(stage, robot_root, excluded_roots=(), link_names=FRANKA_LI
     def excluded(path):
         return any(path == p.rstrip('/') or path.startswith(p.rstrip('/')+'/') for p in excluded_roots)
     prims = list(Usd.PrimRange(root, Usd.TraverseInstanceProxies()))
-    links = {}
-    for name in link_names:
-        matches = [p for p in prims if p.GetName() == name and p.IsA(UsdGeom.Xformable) and not excluded(str(p.GetPath()))]
-        if len(matches) != 1:
-            raise ValueError(f'Expected exactly one robot link {name} below {robot_root}; found {len(matches)}')
-        links[name] = matches[0]
+    if len(set(link_names)) != len(link_names):
+        raise ValueError('Robot link allow-list contains duplicate names')
+    links = {name: _resolve_link(prims, name, robot_root, excluded) for name in link_names}
+    link_paths = {str(link.GetPath()) for link in links.values()}
     cache = UsdGeom.XformCache(Usd.TimeCode.Default())
     meshes, inventory = [], []
     for name, link in links.items():
@@ -54,9 +74,9 @@ def load_robot_meshes(stage, robot_root, excluded_roots=(), link_names=FRANKA_LI
             # Never absorb a nested body/another link (e.g. a reparented carried object).
             parent, allowed = prim, True
             while parent and parent != link:
-                if parent.HasAPI(UsdPhysics.RigidBodyAPI) or parent.GetName() in links:
+                if parent.HasAPI(UsdPhysics.RigidBodyAPI) or str(parent.GetPath()) in link_paths:
                     allowed = False; break
-                if UsdGeom.Xformable(parent).TransformMightBeTimeVarying():
+                if parent.IsA(UsdGeom.Xformable) and UsdGeom.Xformable(parent).TransformMightBeTimeVarying():
                     raise ValueError(f'Animated local robot geometry unsupported: {parent.GetPath()}')
                 parent = parent.GetParent()
             imageable = UsdGeom.Imageable(prim)
