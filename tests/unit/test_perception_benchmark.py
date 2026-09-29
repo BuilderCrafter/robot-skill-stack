@@ -253,6 +253,10 @@ class DatasetAndBenchmarkTests(unittest.TestCase):
             self.assertTrue((self.root/'comparison'/name).is_file())
         self.assertEqual(r['metrics']['v2_rgb']['counts']['gt'], 3)
         self.assertTrue(r['worker']['test_double'])
+        self.assertFalse(r['robot_filter_applied'])
+        self.assertFalse(r['v2_settings']['robot_self_filter'])
+        self.assertTrue(r['v2_settings_requested']['robot_self_filter'])
+        self.assertTrue(any('NOT applied' in n for n in r['notes']))
 
     def test_worker_failure_does_not_turn_into_successful_partial_comparison(self):
         class Client:

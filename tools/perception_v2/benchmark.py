@@ -111,7 +111,12 @@ def evaluate(data, profile, split='test', out=None, limit=None, iou=.5, v1_only=
     # Health failure aborts the comparison, never silently substitutes GT or V1 for V2.
     client = None if v1_only else client or VisionClient(config.perception.v2)
     worker = None if client is None else client.health()
-    processor = FrameProcessor(config.perception.discovery, config.perception.primitives, config.perception.v2)
+    # Original SDG bundles do not contain acquisition-time robot poses/meshes.
+    # Explicitly report the ablation rather than inventing a robot mask from GT.
+    offline_v2 = replace(config.perception.v2, robot_self_filter=False)
+    if not v1_only and config.perception.v2.robot_self_filter:
+        print('NOTE: SDG benchmark has no robot snapshots. Robot self-filter NOT evaluated; geometry/duplicate gates ARE evaluated.', flush=True)
+    processor = FrameProcessor(config.perception.discovery, config.perception.primitives, offline_v2)
     metrics = {'v1': Metrics(iou)}
     if client is not None:
         metrics.update(v2_rgb=Metrics(iou), v2=Metrics(iou))
@@ -153,6 +158,7 @@ def evaluate(data, profile, split='test', out=None, limit=None, iou=.5, v1_only=
         if index % 10 == 0 or index == len(samples)-1:
             print(f'Compared {index+1}/{len(samples)}', flush=True)
     notes = [
+        'Robot self-filter is NOT applied: these original SDG bundles lack synchronized robot poses/meshes. Use live captures for self-filter validation.',
         'Named-target metrics require BOTH class and one-to-one mask IoU match. Unknown predictions cannot be a correct named target.',
         'Localization metrics ignore class, include unknown candidates, and count unmatched candidates as non-target predictions (even genuine unlabeled distractors).',
         'Class accuracy is conditional on a spatial match; unknown is incorrect. Always read it together with target recall.',
@@ -166,7 +172,7 @@ def evaluate(data, profile, split='test', out=None, limit=None, iou=.5, v1_only=
     ]
     report = dict(split=split, frames=len(samples), iou=iou, dataset=str(data), profile=str(profile),
                   profile_sha256=sha256(profile), manifest_sha256=sha256(data/'manifest.json'),
-                  v2_settings=asdict(config.perception.v2), worker=worker, python=sys.version, numpy=np.__version__,
+                  v2_settings=asdict(offline_v2), v2_settings_requested=asdict(config.perception.v2), robot_filter_applied=False, worker=worker, python=sys.version, numpy=np.__version__,
                   metrics={k: v.report() for k, v in metrics.items()}, notes=notes)
     write_reports(out, report, images)
     with (out/'frames.csv').open('w', newline='', encoding='utf-8') as f:

@@ -17,6 +17,13 @@ class V2Config:
     max_observation_z: float = .55
     mask_erode_pixels: int = 0
     unknown_depth_fallback: bool = True
+    robot_self_filter: bool = True
+    robot_depth_tolerance_m: float = .003
+    robot_time_tolerance_s: float = .002
+    min_foreground_fraction: float = .20
+    min_valid_depth_fraction: float = .20
+    min_component_fraction: float = .60
+    duplicate_surface_overlap: float = .70
 
     def __post_init__(self):
         url = urlsplit(self.endpoint)
@@ -25,7 +32,8 @@ class V2Config:
             raise ValueError('V2 endpoint must be a loopback HTTP URL, e.g. http://127.0.0.1:8765')
         if url.port is not None and not 1 <= url.port <= 65535:
             raise ValueError('Invalid V2 port')
-        for name in ('confidence', 'nms_iou'):
+        for name in ('confidence', 'nms_iou', 'min_foreground_fraction', 'min_valid_depth_fraction',
+                     'min_component_fraction', 'duplicate_surface_overlap'):
             value = getattr(self, name)
             if not math.isfinite(value) or not 0 < value <= 1:
                 raise ValueError(f'{name} must be in (0, 1]')
@@ -39,6 +47,9 @@ class V2Config:
             value = getattr(self, name)
             if isinstance(value, bool) or not isinstance(value, int) or not lo <= value <= hi:
                 raise ValueError(f'{name} must be an integer in [{lo}, {hi}]')
+        if (not isinstance(self.robot_self_filter, bool) or not 0 < self.robot_depth_tolerance_m <= .01
+                or not 0 <= self.robot_time_tolerance_s <= .05):
+            raise ValueError('Invalid robot self-filter settings')
         if not math.isfinite(self.max_observation_z) or not isinstance(self.unknown_depth_fallback, bool):
             raise ValueError('Invalid V2 height / fallback setting')
 

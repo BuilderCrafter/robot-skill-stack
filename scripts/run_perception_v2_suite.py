@@ -6,7 +6,8 @@ import sys
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    for name in ('test_perception_v2', 'test_perception_benchmark'):
+    for name in ('test_robot_filter_adapter', 'test_robot_surface_filter', 'test_v2_candidate_validation',
+                 'test_perception_v2', 'test_perception_benchmark'):
         result = subprocess.run(['bash', str(root/'run_isaac_python.sh'), '-m', f'tests.unit.{name}'], cwd=root)
         if result.returncode:
             return result.returncode

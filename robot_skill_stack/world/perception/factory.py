@@ -7,14 +7,14 @@ from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
 from robot_skill_stack.world.perception.tracker import ObjectTracker
 
 
-def build_perception_provider(camera, config):
+def build_perception_provider(camera, config, *, robot_source=None):
     if config.perception.type == "yolo_v2":
         from robot_skill_stack.world.perception.v2.client import VisionClient
         from robot_skill_stack.world.perception.v2.pipeline import FrameProcessor
         from robot_skill_stack.world.perception.v2.provider import YoloPerceptionProvider
         p = config.perception
         return YoloPerceptionProvider(camera, FrameProcessor(p.discovery, p.primitives, p.v2),
-                                      build_tracker(config), VisionClient(p.v2))
+                                      build_tracker(config), VisionClient(p.v2), robot_source=robot_source)
     localizer = RgbdLocalizer(camera.get_intrinsics())
     d = config.perception.discovery
     t = config.perception.tracking

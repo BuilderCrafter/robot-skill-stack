@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[2]
 class V2GeometryTests(unittest.TestCase):
     def setUp(self):
         cfg = load_scene_config(ROOT/'config/scenes/playground.toml')
-        self.cfg = replace(cfg, perception=replace(cfg.perception, type='yolo_v2', v2=V2Config(unknown_depth_fallback=False)))
+        self.cfg = replace(cfg, perception=replace(cfg.perception, type='yolo_v2', v2=V2Config(unknown_depth_fallback=False, robot_self_filter=False)))
         self.processor = FrameProcessor(self.cfg.perception.discovery, self.cfg.perception.primitives, self.cfg.perception.v2)
 
     def process(self, solids=(Solid('sphere'),), **kwargs):
@@ -89,7 +89,7 @@ class V2GeometryTests(unittest.TestCase):
         frame, instances = scene()
         wrong = Instance(instances[0].mask, 'cube', .95)
         result = self.processor.process(frame, Segmentation(frame.frame_id, [wrong]))
-        self.assertEqual(result.predictions[0].label, 'cube')
+        self.assertIsNone(result.predictions[0].label)
         self.assertEqual(result.candidates[0].metadata['geometry'].shape.value, 'unknown')
 
     def test_lifted_cube_not_stretched_to_table(self):
@@ -168,7 +168,7 @@ class V2ProviderTests(unittest.TestCase):
         self.executor = ManualExecutor()
         self.now = 100.
         self.cfg = load_scene_config(ROOT/'config/scenes/playground_v2.toml')
-        settings = replace(self.cfg.perception.v2, unknown_depth_fallback=False)
+        settings = replace(self.cfg.perception.v2, unknown_depth_fallback=False, robot_self_filter=False)
         self.p = YoloPerceptionProvider(self.camera, FrameProcessor(self.cfg.perception.discovery, self.cfg.perception.primitives, settings),
                                         build_tracker(self.cfg), self.client, clock=lambda: self.now, executor=self.executor)
         self.addCleanup(self.p.close)

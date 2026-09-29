@@ -130,11 +130,21 @@ async def _create_state_provider(
     )
     camera.initialize(semantic_segmentation=False)
 
-    app = omni.kit.app.get_app()
-    for _ in range(60):
-        await app.next_update_async()
-
-    return build_perception_provider(camera, config)
+    robot_source = None
+    if config.perception.type == "yolo_v2" and config.perception.v2.robot_self_filter:
+        from robot_skill_stack.integrations.isaac.sensors.robot_self_filter import IsaacRobotSnapshotSource
+        robot_source = IsaacRobotSnapshotSource(world, camera, config.robot.prim_path,
+                                               [config.world.objects_root, *(o.prim_path for o in config.objects.values())],
+                                               config.perception.v2.robot_time_tolerance_s)
+    try:
+        app = omni.kit.app.get_app()
+        for _ in range(60):
+            await app.next_update_async()
+        return build_perception_provider(camera, config, robot_source=robot_source)
+    except BaseException:
+        if robot_source is not None:
+            robot_source.close()
+        raise
 
 
 def _update_hz(config: SceneConfig):

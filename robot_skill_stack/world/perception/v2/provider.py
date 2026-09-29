@@ -18,9 +18,10 @@ from robot_skill_stack.world.perception.v2 import wire
 class YoloPerceptionProvider:
     source = 'rgbd_yolo_v2'
 
-    def __init__(self, camera, processor, tracker, client, *, clock=time.monotonic, executor=None):
+    def __init__(self, camera, processor, tracker, client, *, clock=time.monotonic, executor=None, robot_source=None):
         self.camera, self.processor, self.tracker, self.client = camera, processor, tracker, client
         self.config, self.clock = processor.config, clock
+        self.robot_source = robot_source
         self.executor = executor or ThreadPoolExecutor(max_workers=1, thread_name_prefix='rgbd-v2')
         self.geometry = ObjectGeometryService(RgbdLocalizer(camera.get_intrinsics()), tracker)
         self._future, self._frame_id, self._last_token = None, 0, None
@@ -29,9 +30,9 @@ class YoloPerceptionProvider:
         self.model_info, self._last_result = {}, None
         self.processed_frames = self.stale_results = 0
 
-    def _work(self, frame):
+    def _work(self, frame, robot_snapshot):
         segmentation = self.client.predict(frame.frame_id, frame.rgb)
-        return self.processor.process(frame, segmentation)
+        return self.processor.process(frame, segmentation, robot_snapshot)
 
     def _snapshot(self, now):
         token_fn = getattr(self.camera, 'get_frame_token', None)
@@ -47,12 +48,17 @@ class YoloPerceptionProvider:
         T, K = self.camera.get_world_from_camera_transform(), self.camera.get_intrinsics()
         if token_fn() != token:
             return None
+        robot_snapshot = None
+        if self.config.robot_self_filter:
+            if self.robot_source is None:
+                raise RuntimeError('Robot self-filter is enabled but its capture adapter is missing')
+            robot_snapshot = self.robot_source.snapshot(token)
         self._frame_id += 1
         frame = PerceptionFrame(self._frame_id, np.asarray(rgb)[..., :3].copy(), np.asarray(depth).copy(),
                                 np.asarray(K).copy(), np.asarray(T).copy(), now)
         validate_frame(frame)
         self._last_token = token
-        return frame
+        return frame, robot_snapshot
 
     def _collect(self, now, context):
         future = self._future
@@ -66,7 +72,9 @@ class YoloPerceptionProvider:
                 raise RuntimeError('Worker weights changed. Restart/reinitialize the V2 runtime before continuing.')
             if now-frame.timestamp > self.config.max_result_age_s:
                 self.stale_results += 1
-                self.last_error = 'Vision result too old; discarded (reduce load or measure/tune age limit)'
+                self.last_error = (f'Vision result too old ({now-frame.timestamp:.2f}s); discarded. '
+                                   f'Robot filter: {result.self_filter.metadata.get("render_s", 0.):.2f}s; '
+                                   f'all geometry: {result.geometry_s:.2f}s. Check load before changing age limits.')
                 self.status = 'stale'
                 return
             self.tracker.update(result.candidates, result.predictions, frame_id=frame.frame_id,
@@ -90,7 +98,7 @@ class YoloPerceptionProvider:
             try:
                 frame = self._snapshot(now)
                 if frame is not None:
-                    self._future = self.executor.submit(self._work, frame)
+                    self._future = self.executor.submit(self._work, *frame)
                     self._next_request = now+1/self.config.request_hz
             except Exception as exc:
                 self.last_error, self.status = str(exc), 'camera error'
@@ -116,7 +124,8 @@ class YoloPerceptionProvider:
                               track_hits=track.hits, track_misses=track.misses,
                               association_hint_match=track.matched_by_hint,
                               association_hint_reason=track.association_hint_reason,
-                              observed_at=track.last_seen, pose_predicted=False),
+                              observed_at=track.last_seen, pose_predicted=False,
+                              class_validation=None if g is None else g.metadata.get('class_validation')),
             ))
         return result
 
@@ -142,6 +151,8 @@ class YoloPerceptionProvider:
             if self._future is not None:
                 self._future.cancel()
             self.executor.shutdown(wait=False, cancel_futures=True)
+            if self.robot_source is not None:
+                self.robot_source.close()
 
     def save_capture(self, path):
         result = self._last_result
@@ -149,7 +160,11 @@ class YoloPerceptionProvider:
             raise ValueError('No completed V2 observation yet')
         frame = result.frame
         payload = wire.encode_response(result.segmentation, frame.depth.shape)
-        settings = dict(version=2, source=self.source, v2=asdict(self.config),
+        settings = dict(version=2, filter_revision=1, source=self.source, v2=asdict(self.config),
+                        robot_self_filter=result.self_filter.metadata,
+                        tracks_at_save=[dict(object_id=t.object_id, class_name=t.class_name, confirmed=t.confirmed,
+                                             visible=t.visible, last_seen=t.last_seen, position=t.position.tolist(),
+                                             size=t.size.tolist()) for t in self.tracker.tracks()],
                         discovery={k: v.tolist() if isinstance(v, np.ndarray) else v
                                    for k, v in vars(self.processor.discovery).items()}, candidates=self.diagnostics,
                         primitives=dict(classification_threshold=self.processor.estimator.threshold,
@@ -163,5 +178,6 @@ class YoloPerceptionProvider:
         np.savez_compressed(path, rgb=frame.rgb, depth=frame.depth, intrinsics=frame.intrinsics,
                             world_from_camera=frame.world_from_camera, timestamp=frame.timestamp,
                             frame_id=frame.frame_id, segmentation=np.frombuffer(payload, np.uint8),
+                            robot_mask=result.self_filter.mask, robot_model_depth=result.self_filter.model_depth,
                             settings=json.dumps(settings, allow_nan=False))
         return path
