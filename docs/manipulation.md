@@ -29,23 +29,29 @@ requiring camera visibility while the object is occluded by the hand.
 `GraspPlanner.plan(...)` returns a `GraspResult` containing either a valid
 `GraspPlan` or a structured `GraspFailureReason`.
 
-The current `TopDownGraspPlanner` is intentionally cube-focused. It checks that:
+Isaac bootstrap constructs `SimplePrimitiveGraspPlanner` for cubes/boxes,
+spheres, and upright or lying cylinders. It checks that:
 
 - the object pose is known,
 - the object is marked graspable,
-- object size is known,
+- supported primitive geometry and dimensions are known,
 - the requested strategy is top-down,
-- the horizontal object extent fits the configured parallel-jaw gripper.
+- a candidate fits the configured parallel-jaw gripper,
+- contact height clears the support plane and palm,
+- known-object swept envelopes and IK allow the approach and lift.
+
+Unknown primitives and unsupported tilted orientations are rejected. The older
+cube-focused `TopDownGraspPlanner` remains available and is used by legacy unit
+tests; it is not selected by production bootstrap.
 
 The Franka integration configures a 75 mm usable maximum width. A 50 mm cube is
 accepted; a 90 mm cube is rejected before robot motion.
 
 ## Future grasp planners
 
-A future geometry or ML planner can implement the same protocol. The existing
-`ObjectGeometryProvider` protocol matches the perception provider's lazy
-`get_point_cloud(object_id)` boundary, so a point-cloud planner can request
-geometry only when needed without putting point clouds in the WorldModel.
+A future planner can implement `GraspPlanner`. The perception provider already
+offers lazy `get_point_cloud(object_id)` access, but current planners do not use
+it. General learned or arbitrary-object grasp planning is not implemented.
 
 
 ## Placement feasibility
@@ -55,3 +61,12 @@ placement motion. It compares the held object's estimated size and requested
 target against other currently visible WorldModel objects. An occupied target
 returns `TARGET_OCCUPIED` before the end effector moves. Invisible/stale objects
 are not treated as hard obstacles in this V1 checker.
+
+## Current execution limitations
+
+The GUI uses cooperative async skills; synchronous variants remain for existing
+callers. Franka's `speed` argument is diagnostic and does not scale motion.
+Its `home` is the TCP pose captured during backend construction, not a separately
+configured safe joint pose. Gripper width feedback verifies grasping; it is not
+a force/contact sensor. Place reports `retreat_ok` separately and can currently
+report success despite a failed retreat. These behaviors are unchanged in Phase 1.

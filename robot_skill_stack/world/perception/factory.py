@@ -17,9 +17,6 @@ def build_perception_provider(camera, config, *, robot_source=None):
                                       build_tracker(config), VisionClient(p.v2), robot_source=robot_source)
     localizer = RgbdLocalizer(camera.get_intrinsics())
     d = config.perception.discovery
-    t = config.perception.tracking
-    s = config.perception.semantics
-
     discoverer = DepthObjectDiscoverer(
         localizer,
         support_plane_z=d.support_plane_z,

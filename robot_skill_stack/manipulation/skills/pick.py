@@ -40,14 +40,12 @@ class PickSkill(BaseSkill):
         world_model: WorldModel,
         grasp_planner: GraspPlanner,
         *,
-        grasp_lift_threshold=0.03,
         movement_threshold=0.02,
         max_local_replans=2,
     ):
         self.backend = backend
         self.world_model = world_model
         self.grasp_planner = grasp_planner
-        self.grasp_lift_threshold = grasp_lift_threshold
         self.movement_threshold = float(movement_threshold)
         self.max_local_replans = int(max_local_replans)
 

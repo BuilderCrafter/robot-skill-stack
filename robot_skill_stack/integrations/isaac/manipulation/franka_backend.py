@@ -25,9 +25,7 @@ class IsaacFrankaBackend(ManipulationBackend):
         end_effector_frame="right_gripper",
         position_tolerance=0.025,
         orientation_tolerance=0.10,
-        joint_tolerance=0.02,
         max_motion_steps=1000,
-        max_home_steps=1000,
         grasp_min_width=0.005,
         grasp_max_width=0.075,
     ):

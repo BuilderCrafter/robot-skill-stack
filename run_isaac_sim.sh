@@ -12,7 +12,6 @@ if [[ ! -d "$ROOT/.deps/numpy" ]]; then
   exit 1
 fi
 
-# We do not use ROS in the course runtime. --no-ros-env prevents python.sh
-# from injecting its bundled ROS environment; launch_isaac_gui.py also
-# overrides the full experience so the ROS 2 bridge itself is not started.
-exec "$ROOT/run_isaac_python.sh"   --no-ros-env   "$ROOT/scripts/launch_isaac_gui.py"   "$@"
+# Isaac Sim 5.1.0-rc.19's python.sh does not support --no-ros-env.
+# launch_isaac_gui.py disables ROS bridge startup in the full experience.
+exec "$ROOT/run_isaac_python.sh" "$ROOT/scripts/launch_isaac_gui.py" "$@"

@@ -1,8 +1,9 @@
-# Perception V1 — frozen cube-focused RGB-D milestone
+# Perception V1 — geometry-based RGB-D primitives
 
-Perception V1 is the current stable lower-level perception/world-state milestone.
-It uses geometry-first RGB-D discovery and does not depend on Isaac semantic
-labels for normal perception.
+Perception V1 is the default geometry-based world-state source. It discovers
+separated tabletop objects and fits cubes/boxes, spheres, and upright or lying
+cylinders without Isaac semantic labels. V2 YOLO remains an experimental,
+separately configured source with an external worker; it is not required by V1.
 
 ## Runtime architecture
 
@@ -17,15 +18,15 @@ DepthObjectDiscoverer
    - connected components
    - position + size estimate
    ↓
+PrimitiveEstimator
+   - box, sphere, upright/lying cylinder fits
+   - unsupported or ambiguous geometry remains unknown
+   ↓
 ObjectTracker
    - persistent object_N identity
    - position/size association
    - held-object retention
    - action-derived association hints
-   ↓
-SemanticBelief
-   - repeated cube/unknown evidence
-   - class may remain unknown
    ↓
 ObjectObservation[]
    ↓
@@ -38,11 +39,17 @@ Ground truth implements the same `WorldObservationProvider` contract and remains
 an oracle/reference provider. `[world].provider` swaps between `ground_truth`
 and `perception` without changing skills, behavior trees, or the runtime API.
 
+The tracker maintains `SemanticBelief`, but the default V1 provider emits its
+geometry shape as the class label rather than the resolved semantic history.
+The optional classifier path and legacy `CubeGeometryClassifier` remain for
+existing callers/tests; production V1 uses `PrimitiveEstimator`.
+
 ## Manipulation boundary
 
 Perception answers where an object is and what geometry is currently observed.
 
-The existing top-down grasp planner remains the V1 cube grasp planner.
+Isaac bootstrap selects `SimplePrimitiveGraspPlanner`, which handles supported
+primitives with conservative top-down grasps. Unknown geometry is not guessed.
 
 Physical grasp success is verified by the manipulation backend from Franka
 gripper feedback rather than requiring the object to remain visually observable
@@ -74,10 +81,9 @@ The point cloud is generated only when requested and is not persisted.
 
 - fixed external RGB-D camera
 - flat configured support plane
-- small number of separated cube-like objects
-- cubes roughly 2–10 cm
+- small number of separated supported primitives within configured size bounds
 - no stacked/touching objects
-- object orientation may remain unknown
+- box yaw and cylinder axis are fitted; arbitrary 6D geometry is not supported
 - simple top-down parallel-gripper grasping
 
 Deferred work includes arbitrary-object 6D geometry, learned/general grasp
@@ -92,9 +98,15 @@ Run:
 python3 scripts/run_perception_v1_suite.py
 ```
 
-The suite validates software behavior, Isaac discovery/tracking, multi-cube
-discovery, lazy point-cloud access, perception-driven Pick + Place, gripper
+This historical, cube-focused acceptance suite validates software behavior,
+Isaac discovery/tracking, multi-cube discovery, lazy point-cloud access,
+perception-driven Pick + Place, gripper
 verification, and same-ID reacquisition after placement.
+
+It requires Isaac Python and a simulator-capable workstation. Broader primitive
+and V2 unit modules are included in `scripts/run_primitive_perception_suite.py`,
+which also dispatches through the Isaac Python wrapper; see `validation.md` for
+plain-Python checks. Passing offline fits is not physical manipulation evidence.
 
 Expected output archive:
 

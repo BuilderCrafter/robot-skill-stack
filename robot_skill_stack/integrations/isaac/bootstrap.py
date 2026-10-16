@@ -217,9 +217,7 @@ async def _build_runtime(
             robot=robot,
             position_tolerance=0.01,
             orientation_tolerance=0.05,
-            joint_tolerance=0.02,
             max_motion_steps=1000,
-            max_home_steps=1000,
         )
 
         grasp = config.grasping
