@@ -1,6 +1,5 @@
 from robot_skill_stack.manipulation.grasping.clearance import GraspSafetyConfig
 from robot_skill_stack.manipulation.grasping.planner import GraspPlanner
-from robot_skill_stack.manipulation.grasping.top_down import TopDownGraspPlanner
 from robot_skill_stack.manipulation.grasping.primitive import SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.grasping.types import (
     GraspFailureReason,
@@ -16,6 +15,5 @@ __all__ = [
     "GraspPlanner",
     "GraspResult",
     "ParallelJawGripperSpec",
-    "TopDownGraspPlanner",
     "SimplePrimitiveGraspPlanner",
 ]

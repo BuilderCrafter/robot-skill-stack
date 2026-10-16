@@ -34,8 +34,7 @@ cached WorldModel state and call a manipulation backend, without querying Isaac.
 The composition root is `integrations/isaac/bootstrap.py`. It loads a TOML
 profile, validates stage prims, constructs Franka and the selected source, and
 registers Home, MoveToPose, Pick and Place. Production uses
-`SimplePrimitiveGraspPlanner`; the older cube-focused `TopDownGraspPlanner`
-remains in the package and tests. Simple placement feasibility checks target
+`SimplePrimitiveGraspPlanner`. Simple placement feasibility checks target
 occupancy, not the entire transport path.
 
 Both synchronous and cooperative asynchronous execution exist. The GUI uses

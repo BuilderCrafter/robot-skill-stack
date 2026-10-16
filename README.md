@@ -69,8 +69,7 @@ exts/                         optional Isaac UI extension
 - replaceable grasp-planner interface with feasibility rejection
 - Isaac GUI with selectable live WorldModel objects
 
-Isaac startup selects `SimplePrimitiveGraspPlanner`. The older
-`TopDownGraspPlanner` and cube classifier remain available for existing tests.
+Isaac startup selects the production `SimplePrimitiveGraspPlanner`.
 V1 is the supported perception source. ROS 2 and external robot/source adapters are
 future work, not implemented integrations.
 

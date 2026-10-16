@@ -13,7 +13,7 @@ from robot_skill_stack.manipulation.grasping import (
     GraspPlan,
     GraspResult,
     ParallelJawGripperSpec,
-    TopDownGraspPlanner,
+    SimplePrimitiveGraspPlanner,
 )
 from tests.support.results import fail_result, write_result
 from robot_skill_stack.manipulation.skills.pick import PickSkill
@@ -109,7 +109,7 @@ class AlternatePlanner:
 
 def main(result_path=None):
     metrics = {}
-    planner = TopDownGraspPlanner(
+    planner = SimplePrimitiveGraspPlanner(
         gripper=ParallelJawGripperSpec(max_width=0.075),
     )
 
@@ -130,7 +130,7 @@ def main(result_path=None):
 
     result = planner.plan(world_object(size=None))
     assert not result.ok
-    assert result.failure_reason == GraspFailureReason.SIZE_UNKNOWN
+    assert result.failure_reason == GraspFailureReason.NO_FEASIBLE_GRASP
     metrics["unknown_size_rejected"] = True
 
     result = planner.plan(world_object(pose=False))

@@ -15,7 +15,6 @@ from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
 from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
-from robot_skill_stack.world.perception.semantics import SemanticPrediction
 from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
@@ -137,15 +136,14 @@ load_scene_config('config/scenes/playground.toml')
         self.assertEqual(observations[0].class_name, 'sphere')
         self.assertIsNone(observations[0].pose.orientation)
 
-    def test_semantic_identity_is_separate_from_primitive(self):
+    def test_depth_provider_label_matches_fitted_primitive(self):
         camera = FrameCamera(render([Solid('cylinder', center=(.45, 0, .05), radius=.02)]))
         provider = build_perception_provider(camera, load_scene_config('config/scenes/playground.toml'))
-        provider.semantic_classifier = SimpleNamespace(classify=lambda *args: SemanticPrediction('bottle', 1.))
         with patch('time.monotonic', return_value=100.):
             for _ in range(3):
                 camera.token += 1
                 observations = provider.observe()
-        self.assertEqual(observations[0].class_name, 'bottle')
+        self.assertEqual(observations[0].class_name, 'cylinder')
         self.assertEqual(observations[0].geometry.shape.value, 'cylinder')
 
     def test_capture_replay_round_trip(self):

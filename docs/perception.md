@@ -38,10 +38,9 @@ Ground truth implements the same `WorldObservationProvider` contract and remains
 an oracle/reference provider. `[world].provider` swaps between `ground_truth`
 and `perception` without changing skills, behavior trees, or the runtime API.
 
-The tracker maintains `SemanticBelief`, but the default V1 provider emits its
-geometry shape as the class label rather than the resolved semantic history.
-The optional classifier path and legacy `CubeGeometryClassifier` remain for
-existing callers/tests; production V1 uses `PrimitiveEstimator`.
+The tracker maintains `SemanticBelief`, but the V1 provider emits its geometry
+shape as the class label rather than the resolved semantic history. Production
+V1 uses `PrimitiveEstimator`; there is no separate classifier selection path.
 
 ## Manipulation boundary
 
