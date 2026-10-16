@@ -209,6 +209,22 @@ class ProjectRunnerTests(unittest.TestCase):
         self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
         self.assertEqual(json.loads(process.stdout), {'capture': str(self.capture), 'numpy': 'test-only'})
 
+    def test_gui_shell_dispatch_preserves_arguments_dependencies_and_exit_status(self):
+        repo, env = self.sandbox()
+        (repo / 'run_isaac_sim.sh').write_text((ROOT / 'run_isaac_sim.sh').read_text())
+        (repo / 'run_isaac_python.sh').chmod(0o755)
+        # The fake Isaac launcher executes this sentinel, not SimulationApp.
+        # An unsupported option before the script makes Python reject dispatch.
+        (repo / 'scripts/launch_isaac_gui.py').write_text(
+            "import json, sys\nimport numpy as np\n"
+            "print(json.dumps({'args': sys.argv[1:], 'numpy': np.__version__}))\n"
+            "raise SystemExit(17)\n")
+        args = ['--/test/value=two words', '--test-flag']
+        process = subprocess.run(['bash', str(repo / 'run_isaac_sim.sh'), *args],
+                                 cwd=self.path, env=env, capture_output=True, text=True, timeout=15)
+        self.assertEqual(process.returncode, 17, process.stdout + process.stderr)
+        self.assertEqual(json.loads(process.stdout), {'args': args, 'numpy': 'test-only'})
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
