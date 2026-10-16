@@ -78,9 +78,6 @@ class SemanticConfig:
     window_size: int = 7
     min_samples: int = 3
     assignment_threshold: float = 0.70
-    cube_ratio_max: float = 1.35
-    cube_min_size: float = 0.025
-    cube_max_size: float = 0.10
 
 
 @dataclass(frozen=True)
@@ -200,9 +197,6 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             window_size=int(s.get("window_size", 7)),
             min_samples=int(s.get("min_samples", 3)),
             assignment_threshold=float(s.get("assignment_threshold", 0.70)),
-            cube_ratio_max=float(s.get("cube_ratio_max", 1.35)),
-            cube_min_size=float(s.get("cube_min_size", 0.025)),
-            cube_max_size=float(s.get("cube_max_size", 0.10)),
         ),
     )
 
