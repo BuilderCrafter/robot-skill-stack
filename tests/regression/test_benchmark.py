@@ -11,6 +11,7 @@ simulation_app = SimulationApp({"headless": False})
 
 import argparse
 import sys
+import time
 import traceback
 from pathlib import Path
 
@@ -60,11 +61,22 @@ def stats(values):
     }
 
 
-def main(result_path=None, artifacts_dir=None):
-    metrics = {
-        "perception_trials": [],
-        "manipulation_trials": [],
+def trial_snapshot(bundle, object_id):
+    now = time.monotonic()
+    obj = bundle.world_model.get(object_id)
+    return {
+        "monotonic_s": now,
+        "simulation_time_s": float(bundle.world.current_time),
+        "world_updates": bundle.world_updater.update_count,
+        "updater_error": bundle.world_updater.last_error,
+        "last_seen_s": None if obj is None else obj.last_seen,
+        "observation_age_s": None if obj is None or obj.last_seen is None else now-obj.last_seen,
+        "object": None if obj is None else object_snapshot(obj),
+        "held_object_id": bundle.world_model.held_object_id,
     }
+
+
+def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
     out = Path(
         artifacts_dir
         or Path("outputs") / "phase_a_benchmark_tmp"
@@ -181,10 +193,12 @@ def main(result_path=None, artifacts_dir=None):
                 f"Object not visible before manipulation trial {index}"
             )
 
+        before_pick = trial_snapshot(bundle, object_id)
         pick = run_kit_coroutine(bundle.runtime.execute_async(
             "pick",
             object_id=object_id,
         ), simulation_app)
+        after_pick = trial_snapshot(bundle, object_id)
         place = None
         if pick.ok:
             place = run_kit_coroutine(bundle.runtime.execute_async(
@@ -193,6 +207,7 @@ def main(result_path=None, artifacts_dir=None):
                 mode="stable",
             ), simulation_app)
 
+        after_place = trial_snapshot(bundle, object_id) if place is not None else None
         final_true = np.asarray(
             cube.get_world_pose()[0],
             dtype=float,
@@ -209,6 +224,7 @@ def main(result_path=None, artifacts_dir=None):
             "start": list(start),
             "true_start": truth_start.tolist(),
             "target": list(target),
+            "pick_status": pick.status.value,
             "pick_ok": bool(pick.ok),
             "pick_message": pick.message,
             "pick_failure_code": (
@@ -217,6 +233,7 @@ def main(result_path=None, artifacts_dir=None):
                 else pick.failure_code.value
             ),
             "pick_details": pick.details,
+            "place_status": None if place is None else place.status.value,
             "place_ok": bool(place is not None and place.ok),
             "place_message": None if place is None else place.message,
             "place_failure_code": (
@@ -227,9 +244,10 @@ def main(result_path=None, artifacts_dir=None):
             "place_details": None if place is None else place.details,
             "true_final": final_true.tolist(),
             "target_error_mm": target_error * 1000,
-            "object_after": object_snapshot(
-                bundle.world_model.require(object_id)
-            ),
+            "object_after": (after_place or after_pick)["object"],
+            "before_pick": before_pick,
+            "after_pick": after_pick,
+            "after_place": after_place,
         }
         metrics["manipulation_trials"].append(row)
         print(
@@ -240,8 +258,22 @@ def main(result_path=None, artifacts_dir=None):
         )
 
         if not ok:
+            original_failure = (
+                f"Trial {index}: Pick {row['pick_status']} [{row['pick_failure_code']}] {pick.message}; "
+                f"Place {row['place_status']} [{row['place_failure_code']}] {row['place_message']}"
+            )
+            # Persist the primary failure even if cleanup subsequently raises or crashes.
+            print(original_failure, flush=True)
+            write_result(result_path, status="FAIL", metrics=metrics, error=original_failure)
             if bundle.world_model.held_object_id is not None:
-                bundle.backend.open_gripper()
+                try:
+                    cleanup = run_kit_coroutine(bundle.backend.open_gripper_async(), simulation_app)
+                    row["cleanup"] = {"ok": cleanup.ok, "message": cleanup.message, "details": cleanup.details}
+                except Exception as exc:
+                    row["cleanup"] = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
+                if not row["cleanup"]["ok"]:
+                    # Do not continue another trial while release is unconfirmed.
+                    raise AssertionError(f"{original_failure}; cleanup also failed: {row['cleanup']}")
                 bundle.world_model.set_held(None)
 
     metrics["manipulation_successes"] = successes
@@ -283,6 +315,16 @@ def main(result_path=None, artifacts_dir=None):
     write_result(result_path, status="PASS", metrics=metrics)
 
 
+def main(result_path=None, artifacts_dir=None):
+    metrics = {"perception_trials": [], "manipulation_trials": []}
+    try:
+        _run_benchmark(metrics, result_path, artifacts_dir)
+    except Exception as exc:
+        write_result(result_path, status="FAIL", metrics=metrics,
+                     error=f"{type(exc).__name__}: {exc}")
+        raise
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--result")
@@ -292,11 +334,6 @@ if __name__ == "__main__":
         main(args.result, args.artifacts_dir)
     except Exception as exc:
         traceback.print_exc()
-        write_result(
-            args.result,
-            status="FAIL",
-            error=f"{type(exc).__name__}: {exc}",
-        )
         sys.exit(1)
     finally:
         simulation_app.close()
