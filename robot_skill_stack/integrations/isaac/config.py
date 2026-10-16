@@ -6,7 +6,6 @@ import tomllib
 
 import numpy as np
 
-from robot_skill_stack.world.perception.v2.settings import V2Config
 from robot_skill_stack.manipulation.grasping.clearance import GraspSafetyConfig
 from robot_skill_stack.manipulation.grasping.types import ParallelJawGripperSpec
 
@@ -88,12 +87,6 @@ class PerceptionConfig:
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
     semantics: SemanticConfig = field(default_factory=SemanticConfig)
     primitives: PrimitiveConfig = field(default_factory=PrimitiveConfig)
-    type: str = "geometry_v1"
-    v2: V2Config = field(default_factory=V2Config)
-
-    def __post_init__(self):
-        if self.type not in {"geometry_v1", "yolo_v2"}:
-            raise ValueError("perception.type must be geometry_v1 or yolo_v2")
 
 
 @dataclass(frozen=True)
@@ -154,6 +147,8 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         )
 
     p = data.get("perception", {})
+    if p.get("type", "geometry_v1") != "geometry_v1":
+        raise ValueError("Only geometry-based perception is supported")
     resolution = p.get("resolution", [640, 480])
     d = p.get("discovery", {})
     t = p.get("tracking", {})
@@ -161,8 +156,6 @@ def load_scene_config(path: str | Path) -> SceneConfig:
     pr = p.get("primitives", {})
 
     perception = PerceptionConfig(
-        type=p.get("type", "geometry_v1"),
-        v2=V2Config(**p.get("v2", {})),
         camera_prim_path=p.get("camera_prim_path"),
         resolution=(int(resolution[0]), int(resolution[1])),
         discovery=DiscoveryConfig(

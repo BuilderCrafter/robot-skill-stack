@@ -71,8 +71,7 @@ exts/                         optional Isaac UI extension
 
 Isaac startup selects `SimplePrimitiveGraspPlanner`. The older
 `TopDownGraspPlanner` and cube classifier remain available for existing tests.
-V2 YOLO and its separate worker/training tools are experimental and remain in
-the repository; V1 is the default. ROS 2 and external robot/source adapters are
+V1 is the supported perception source. ROS 2 and external robot/source adapters are
 future work, not implemented integrations.
 
 ## Dependencies
@@ -120,9 +119,9 @@ python3 scripts/run_course_polish_suite.py
 
 The milestone suites write logs/JSON under ignored `outputs/` and package their
 results as `.tar.gz` archives. The aggregate also runs the primitive suite,
-which includes V2 unit modules. Even `--unit-only` invokes the Isaac Python
+which runs simulator-independent unit modules. Even `--unit-only` invokes the Isaac Python
 wrapper. For direct plain-Python checks, baseline results, and the manual Isaac
-smoke checklist, see `docs/validation.md` and `docs/phase_1_baseline.md`.
+smoke checklist, see `docs/validation.md`.
 
 See `docs/architecture.md`, `docs/perception.md`, `docs/manipulation.md`,
 `docs/validation.md`, `docs/gui.md`, and `docs/ros2.md`.

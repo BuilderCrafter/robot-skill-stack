@@ -3,23 +3,16 @@ import asyncio
 from contextlib import contextmanager
 from dataclasses import replace
 import importlib.util
-import json
 from pathlib import Path
 import sys
-import tempfile
 from types import ModuleType, SimpleNamespace as NS
 import unittest
 from unittest.mock import AsyncMock, Mock, patch
-import numpy as np
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.model.observations import ObjectObservation
 from tests.unit.test_runtime_lifecycle import StopPlayWorld
-from tests.unit.test_robot_filter_adapter import fake_runtime
-from tests.unit import test_perception_v2 as v2_tests
-from tests.support.fake_omni_ui import extension_environment
-from tests.unit.test_control_panel_ui import bundle_
 
 ROOT=Path(__file__).resolve().parents[2]
 ISAAC=ROOT/'robot_skill_stack/integrations/isaac'
@@ -170,74 +163,6 @@ class CameraCleanupTests(unittest.TestCase):
         obj=self.adapter(); obj.camera._fabric_time_annotator.detach.side_effect=ValueError('detaching')
         with self.assertRaisesRegex(RuntimeError,'detaching'): obj.close()
         obj.camera.destroy.assert_called_once()
-
-
-class SnapshotDiagnosticsTests(unittest.TestCase):
-    def test_capture_call_can_follow_camera_callback_without_latest_event(self):
-        with fake_runtime() as (m,e):
-            s=m.IsaacRobotSnapshotSource(e.world,e.camera,'/Robot',(),.002)
-            self.assertEqual(s.snapshot('A').token,'A'); self.assertEqual(s.diagnostics_snapshot()['matched_frames'],1)
-            s.close()
-
-    def test_timing_diagnostics_show_unmatched_frame(self):
-        with fake_runtime() as (m,e):
-            s=m.IsaacRobotSnapshotSource(e.world,e.camera,'/Robot',(),.002)
-            e.image_time=.2
-            with self.assertRaisesRegex(RuntimeError,'No same-frame'): s.snapshot('A')
-            d=s.diagnostics_snapshot(); self.assertEqual(d['rendering_time'],.2); self.assertEqual(d['nearest_pose_time'],1.)
-            self.assertEqual(d['matched_frames'],0); s.close()
-
-    def test_no_use_of_new_pose_when_old_frame_time_does_not_match(self):
-        with fake_runtime() as (m,e):
-            s=m.IsaacRobotSnapshotSource(e.world,e.camera,'/Robot',(),.002); s.snapshot('A')
-            e.world.current_time=2.; e.image_time=1.5; e.token='B'
-            with self.assertRaises(RuntimeError): s.snapshot('B')
-            self.assertEqual(s.latest.token,'A'); s.close()
-
-
-class V2DiagnosticsTests(unittest.TestCase):
-    def setUp(self):
-        # Reuse fixture construction, not the inherited existing test methods.
-        self.fx=v2_tests.V2ProviderTests(); self.fx.setUp(); self.addCleanup(self.fx.doCleanups)
-
-    def test_stale_capture_is_saved_but_never_published(self):
-        f=self.fx; f.p.observe(); f.now+=3.; f.executor.finish(); self.assertFalse(f.p.observe())
-        with tempfile.TemporaryDirectory() as d:
-            path=f.p.save_capture(Path(d)/'stale.npz')
-            with np.load(path,allow_pickle=False) as z: data=json.loads(str(z['settings']))
-            self.assertFalse(data['observation_accepted']); self.assertEqual(data['provider_status']['stale_results'],1)
-        self.assertFalse(f.p.tracker.tracks()); self.assertIn('Robot filter',f.p.last_error)
-
-    def test_empty_initialization_has_json_serializable_diagnostics(self):
-        d=self.fx.p.diagnostics_snapshot(); json.dumps(d,allow_nan=False)
-        self.assertEqual(d['accepted_frames'],0); self.assertIsNone(d['candidate_count'])
-
-    def test_in_flight_age_and_submissions(self):
-        f=self.fx; f.p.observe(); f.now+=.6; d=f.p.diagnostics_snapshot()
-        self.assertTrue(d['in_flight']); self.assertAlmostEqual(d['request_age_s'],.6)
-        self.assertEqual(d['submitted_frames'],1)
-
-    def test_accepted_capture_flag_and_counts(self):
-        f=self.fx; f.confirm()
-        with tempfile.TemporaryDirectory() as d:
-            path=f.p.save_capture(Path(d)/'fresh.npz')
-            with np.load(path,allow_pickle=False) as z: meta=json.loads(str(z['settings']))
-            self.assertTrue(meta['observation_accepted']); self.assertEqual(meta['provider_status']['accepted_frames'],3)
-            self.assertEqual(meta['provider_status']['confirmed_tracks'],1)
-
-    def test_capture_failure_contains_actual_reason(self):
-        self.fx.p.last_error='No matching robot pose'
-        with self.assertRaisesRegex(ValueError,'No matching robot pose'):
-            self.fx.p.save_capture('does_not_exist.npz')
-
-    def test_ui_capture_can_save_status_when_no_image_completed(self):
-        with extension_environment() as (_,c,module),tempfile.TemporaryDirectory() as d:
-            c.bundle=bundle_(); c.bundle.state_provider=self.fx.p; c.bundle.world_updater.last_error=None
-            with patch.object(module,'ROOT',Path(d)):
-                c._capture_perception_clicked()
-            files=list(Path(d).glob('outputs/perception/status_*.json'))
-            self.assertEqual(len(files),1); meta=json.loads(files[0].read_text())
-            self.assertEqual(meta['accepted_frames'],0)
 
 
 if __name__=='__main__': unittest.main(verbosity=2)

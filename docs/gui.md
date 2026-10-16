@@ -2,7 +2,7 @@
 
 The Isaac extension reads cached state from `WorldModel` and sends manipulation
 commands through `RobotRuntime`. It also checks Franka readiness, invokes updater
-cleanup, and offers source-specific capture and V2 diagnostics.
+cleanup, and offers perception frame capture.
 
 ## Launch
 

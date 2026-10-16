@@ -1,6 +1,8 @@
 from __future__ import annotations
 import unittest
 import tempfile
+import subprocess
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -18,6 +20,31 @@ from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
 class PrimitiveDepthTests(unittest.TestCase):
+    def test_factory_imports_without_simulator_or_ml_dependencies(self):
+        # Preserve the V1 import-boundary check from the archived experiment.
+        script = """
+import builtins
+original = builtins.__import__
+def guarded(name, *args, **kwargs):
+    if name.split('.')[0] in {'torch', 'torchvision', 'ultralytics', 'cv2', 'isaacsim', 'omni', 'pxr'}:
+        raise AssertionError('Unexpected dependency: '+name)
+    return original(name, *args, **kwargs)
+builtins.__import__ = guarded
+from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.integrations.isaac.config import load_scene_config
+load_scene_config('config/scenes/playground.toml')
+"""
+        result = subprocess.run([sys.executable, '-c', script], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_removed_perception_type_is_rejected(self):
+        text = Path('config/scenes/playground.toml').read_text()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'unsupported.toml'
+            path.write_text(text.replace('[perception]', '[perception]\ntype = "unsupported"'))
+            with self.assertRaisesRegex(ValueError, 'Only geometry-based'):
+                load_scene_config(path)
+
     def test_single_view_matrix(self):
         eyes = [(1.05, .55, .9), (.45, 0., .9), (1.05, .10, .40), (-.2, -.5, .7)]
         solids = [Solid('cube', yaw=np.deg2rad(y)) for y in (-30, 0, 15, 30, 45, 60, 89)]

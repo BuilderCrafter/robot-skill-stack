@@ -141,7 +141,7 @@ class DeferredWindowTests(unittest.TestCase):
             with extension_environment() as (ui,c,module):
                 c.panel._show_profiles(); win=c.panel.profile_dialog
                 ui.in_event=True
-                c.panel._choose_profile('config/scenes/playground_v2.toml')
+                c.panel._choose_profile('outputs/another_profile.toml')
                 ui.in_event=False
                 self.assertFalse(win.visible); self.assertFalse(win.destroyed)
                 self.assertIsNone(c.panel.profile_dialog)

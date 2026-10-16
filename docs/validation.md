@@ -8,7 +8,8 @@ Historical results recorded on the Isaac Sim workstation on 2026-09-26
 - Grasp planning (Phase B): unit and Isaac stages PASS; 90 mm cube rejected before motion with `NO_VALID_GRASP`; normal 50 mm perception-driven cube still Pick+Place successful with about 6 mm physical target error.
 
 The regression suites are retained under `tests/` and runners under `scripts/`.
-The Phase 1 before/after record is in [phase_1_baseline.md](phase_1_baseline.md).
+Historical experiments and Phase 1 records are recoverable as described in
+[history.md](history.md).
 
 ## Plain-Python checks
 
@@ -27,26 +28,16 @@ python scripts/check_architecture.py
 ```
 
 The eight standalone modules are not executed by unittest discovery. Main unit
-tests include V2 and fake Isaac/UI adapters; they do not start the simulator or
+tests include fake Isaac/UI adapters; they do not start the simulator or
 prove real camera, controller, or GUI behavior. The static checker compiles Python
 and checks generic-package imports; it does not verify all architectural coupling.
-
-Offline dataset-tool tests additionally require the pinned OpenCV, Pillow and
-PyYAML packages from `tools/perception_v2_data/requirements-training.txt`:
-
-```bash
-python -m unittest discover -s tools/perception_v2_data/tests -v
-```
-
-These tests do not require installing PyTorch/Ultralytics or running training.
-Do not install the training requirements into Isaac or `.deps`.
 
 ## Isaac-dependent checks
 
 `tests/isaac/` and `tests/regression/` start `SimulationApp`; they require the
 workstation. Suite parent scripts may run under ordinary Python, but invoke
 `run_isaac_python.sh` for children. `run_all_regressions.py --unit-only` still
-uses that wrapper, and its primitive suite includes V2 tests. It is not a
+uses that wrapper. It is not a
 standalone plain-Python test command.
 
 
@@ -66,7 +57,7 @@ The canonical full regression command remains:
 python3 scripts/run_all_regressions.py
 ```
 
-This includes architecture checks, the primitive unit suite (including V2),
+This includes architecture checks, the primitive unit suite,
 Perception V1, Phase A, Phase B, and the course-polish suite. Historical suites
 overlap; no runners or execution paths were consolidated in Phase 1.
 

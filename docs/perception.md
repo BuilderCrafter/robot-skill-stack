@@ -2,8 +2,7 @@
 
 Perception V1 is the default geometry-based world-state source. It discovers
 separated tabletop objects and fits cubes/boxes, spheres, and upright or lying
-cylinders without Isaac semantic labels. V2 YOLO remains an experimental,
-separately configured source with an external worker; it is not required by V1.
+cylinders without Isaac semantic labels.
 
 ## Runtime architecture
 
@@ -104,7 +103,7 @@ perception-driven Pick + Place, gripper
 verification, and same-ID reacquisition after placement.
 
 It requires Isaac Python and a simulator-capable workstation. Broader primitive
-and V2 unit modules are included in `scripts/run_primitive_perception_suite.py`,
+unit modules are included in `scripts/run_primitive_perception_suite.py`,
 which also dispatches through the Isaac Python wrapper; see `validation.md` for
 plain-Python checks. Passing offline fits is not physical manipulation evidence.
 

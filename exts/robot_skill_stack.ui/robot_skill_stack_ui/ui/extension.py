@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import time
 import traceback
 from datetime import datetime
@@ -213,16 +212,6 @@ class RobotSkillStackExtension(omni.ext.IExt):
             carb.log_info(f'[robot_skill_stack.ui] perception capture: {path}')
         except Exception as exc:
             self._set_status(f'Capture failed: {exc}', 'error')
-            snapshot = getattr(self.bundle.state_provider, 'diagnostics_snapshot', None)
-            if snapshot is not None:
-                path = ROOT / 'outputs' / 'perception' / f'status_{stamp}.json'
-                path.parent.mkdir(parents=True, exist_ok=True)
-                report = snapshot()
-                report['profile'] = self._active_profile
-                report['updater_error'] = getattr(self.bundle.world_updater, 'last_error', None)
-                path.write_text(json.dumps(report, indent=2), encoding='utf-8')
-                carb.log_warn(f'[robot_skill_stack.ui] No completed image; saved diagnostic {path}: {exc}')
-                self._set_status(f'No completed image. Saved {path.name}; see terminal for the error.', 'warning')
 
     def _select_object(self, object_id):
         if self.view_model is not None:
@@ -350,16 +339,6 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._object_signature = signature
         self.panel.runtime_info.text = 'Perception' if self.bundle.config.world.provider == 'perception' else 'Ground truth'
         self.panel.runtime_info.tooltip = f'NumPy {np.__version__} from {np.__file__}'
-        if getattr(self.bundle.state_provider, 'source', '') == 'rgbd_yolo_v2':
-            provider = self.bundle.state_provider
-            self.panel.runtime_info.text = f'Perception V2: {provider.status}'
-            report = provider.diagnostics_snapshot()
-            count = report['accepted_frames']
-            self.panel.runtime_info.text = f'V2: {provider.status} | frames {count} | stale {report["stale_results"]}'
-            self.panel.runtime_info.tooltip = json.dumps(report, indent=2)
-            if (provider.last_error or not self.view_model.rows()) and time.monotonic() >= self._diagnostic_at:
-                self._diagnostic_at = time.monotonic()+5.
-                carb.log_warn('[robot_skill_stack.perception] '+json.dumps(report))
         error = getattr(self.bundle.world_updater, 'last_error', None)
         if isinstance(error, str) and error:
             self._set_status('WorldModel update failed: '+error, 'error')
