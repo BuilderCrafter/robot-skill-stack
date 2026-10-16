@@ -11,55 +11,42 @@ The regression suites are retained under `tests/` and runners under `scripts/`.
 Historical experiments and Phase 1 records are recoverable as described in
 [history.md](history.md).
 
-## Plain-Python checks
+## Single regression entry point
 
-From the repository root, use a Python 3.11/3.12 environment with
-`requirements.txt` installed. The cloud run used the existing `.venv`; this is
-an offline test environment, not a substitute for Isaac's `.deps` launch path.
+From the repository root, use Python 3.11/3.12 with `requirements.txt` installed:
 
 ```bash
-python -m unittest discover -s tests/unit -t .
-for module in test_async_runtime test_grasp_planning test_perception test_placement \
-              test_primitive_perception test_reactive_pick test_world_model_update_rate \
-              test_world_model_view; do
-    python -m "tests.unit.$module" || exit
-done
-python scripts/check_architecture.py
+python scripts/run_all_regressions.py --unit-only
+python scripts/run_all_regressions.py --group isaac
+python scripts/run_all_regressions.py --group regression
+# All groups, retaining optional logs, JSON and scenario artifacts:
+python scripts/run_all_regressions.py --artifacts-dir outputs/regressions
 ```
 
-The eight standalone modules are not executed by unittest discovery. Main unit
-tests include fake Isaac/UI adapters; they do not start the simulator or
-prove real camera, controller, or GUI behavior. The static checker compiles Python
-and checks generic-package imports; it does not verify all architectural coupling.
+- `unit` / `--unit-only`: architecture and syntax checks, unittest discovery under
+  `tests/unit`, and all eight retained standalone unit scripts. Uses the invoking
+  Python without the Isaac wrapper. Fake SDK/UI tests do not validate real Isaac.
+- `isaac`: both scenarios under `tests/isaac` (discovery and manipulation).
+- `regression`: all six scenarios under `tests/regression` (benchmark, grasp
+  planning, reactive pick, recovery, multi-object manipulation and placement).
 
-## Isaac-dependent checks
+The last two groups require the Isaac workstation. The wrapper still prepends
+`.deps`; the runner verifies/imports NumPy 1.26.4 before loading any scenario
+module and therefore before its `SimulationApp`. The working GUI launch is
+unchanged. Directly invoking an Isaac test script bypasses the runner's pre-import.
 
-`tests/isaac/` and `tests/regression/` start `SimulationApp`; they require the
-workstation. Suite parent scripts may run under ordinary Python, but invoke
-`run_isaac_python.sh` for children. `run_all_regressions.py --unit-only` still
-uses that wrapper. It is not a
-standalone plain-Python test command.
+Each selected scenario runs once. A failed command or missing/non-PASS Isaac
+result fails the run, while the remaining selected checks still execute. Reports
+are written in fresh directories so prior successes cannot be reused. Without
+`--artifacts-dir`, scenario JSON is temporary and terminal diagnostics remain
+visible. With it, each command has a log and `summary.json` records its status
+and actual exit code. No tar packaging or milestone wrapper scripts are needed.
 
-
-## Course-polish suite
-
-```bash
-python3 scripts/run_course_polish_suite.py
-```
-
-It validates placement occupancy logic, the simulator-independent WorldModel GUI
-view model, and an Isaac regression proving an occupied placement is rejected
-before robot motion while a free target still succeeds.
-
-The canonical full regression command remains:
-
-```bash
-python3 scripts/run_all_regressions.py
-```
-
-This includes architecture checks, the primitive unit suite,
-Perception V1, Phase A, Phase B, and the course-polish suite. Historical suites
-overlap; no runners or execution paths were consolidated in Phase 1.
+The cloud `.venv` is an offline test environment, not a replacement for Isaac's
+`.deps` launch path. Unit tests can also be run directly, but discovery alone
+omits the eight standalone scripts; the consolidated runner includes them.
+The static check excludes local virtual environments and validates generic-package
+imports/syntax, not every semantic architectural dependency.
 
 ## Manual GUI smoke test
 

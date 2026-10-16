@@ -101,26 +101,24 @@ See `docs/gui.md` for switching to ground truth.
 
 ## Validation
 
-On an Isaac workstation, run every retained lower-level regression suite:
+Use one runner from the repository root with Python dependencies installed:
 
 ```bash
-python3 scripts/run_all_regressions.py
+python3 scripts/run_all_regressions.py --unit-only
+python3 scripts/run_all_regressions.py --group isaac
+python3 scripts/run_all_regressions.py --group regression
 ```
 
-Or run them separately:
+`--unit-only` runs static checks, unittest discovery, and the eight standalone
+unit modules with the invoking Python; it does not require Isaac. The `isaac`
+and `regression` groups require the workstation and dispatch through the existing
+Isaac wrapper with pinned NumPy pre-import. Omit the group to run everything.
+Add `--artifacts-dir outputs/regressions` to retain logs, scenario results and
+artifacts in a fresh run directory; otherwise output goes to the terminal.
 
-```bash
-python3 scripts/run_perception_v1_suite.py
-python3 scripts/run_phase_a_suite.py
-python3 scripts/run_phase_b_suite.py
-python3 scripts/run_course_polish_suite.py
-```
-
-The milestone suites write logs/JSON under ignored `outputs/` and package their
-results as `.tar.gz` archives. The aggregate also runs the primitive suite,
-which runs simulator-independent unit modules. Even `--unit-only` invokes the Isaac Python
-wrapper. For direct plain-Python checks, baseline results, and the manual Isaac
-smoke checklist, see `docs/validation.md`.
+See `docs/validation.md` for the manual Isaac smoke checklist,
+`docs/phase_2_pruning.md` for before/after results, and `docs/history.md` for
+recovering removed experiments from the preservation tag.
 
 See `docs/architecture.md`, `docs/perception.md`, `docs/manipulation.md`,
 `docs/validation.md`, `docs/gui.md`, and `docs/ros2.md`.
