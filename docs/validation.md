@@ -53,6 +53,13 @@ imports/syntax, not every semantic architectural dependency.
 
 ## Manual GUI smoke test
 
+Phase 3A migrates standalone commands and the recovery BT to the same async
+runtime used by the GUI. The existing Kit bridge pumps application updates;
+do not use `asyncio.run()` to control live Isaac. Direct-script dispatch and
+pre-SimulationApp NumPy verification are unchanged. Re-run both workstation
+groups after this execution migration; cloud doubles cannot validate rendering,
+controller timing, physics callbacks or camera updates during commands.
+
 Run on the university Isaac Sim 5.1.0-rc.19 workstation; these checks are pending
 until performed there:
 
@@ -78,3 +85,8 @@ until performed there:
    initialization and basic manipulation; no core or GUI edits should be needed.
 7. Exercise Stop/Play, reset/reinitialize, and shutdown. Check for duplicate
    callbacks, stale controls, camera cleanup errors, and residual tasks.
+8. Repeat sequential commands and both BT tasks. Confirm rendering/perception
+   continue during motion and GUI actions stay disabled while a command is busy.
+   Recovery must run the existing Home-and-retry sequence without restarting
+   Pick while Home is running. Coroutine cancellation is not an emergency stop;
+   uncertain physical/held state remains outside this phase.

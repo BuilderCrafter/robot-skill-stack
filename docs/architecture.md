@@ -37,11 +37,24 @@ registers Home, MoveToPose, Pick and Place. Production uses
 `SimplePrimitiveGraspPlanner`. Simple placement feasibility checks target
 occupancy, not the entire transport path.
 
-Both synchronous and cooperative asynchronous execution exist. The GUI uses
-async skills and BT nodes; standalone tests also use synchronous execution.
-The abstract backend currently declares only the synchronous methods, although
-the GUI path requires async backend methods as well. Only the Isaac Franka
-backend is implemented; replacing it requires composition-root changes.
+There is one cooperative asynchronous command path:
+`RobotRuntime.execute_async` → skill `execute_async` → backend async command.
+The runtime rejects overlapping commands with `BUSY` and releases command
+ownership after results, exceptions or cancellation. `BaseSkill` and
+`ManipulationBackend` declare this API explicitly. Backend readiness, pose,
+reachability and grasp feedback are synchronous queries; gripper min/max width
+are simple capability values. Only the Isaac Franka backend is implemented.
+
+`SkillNode` schedules that same runtime coroutine; `BTExecutor.run_async` ticks
+without blocking Kit. The recovery selector remembers a running recovery branch
+instead of re-entering Pick during Home. Tick-budget exhaustion/cancellation
+cancels and drains pending node tasks before returning. This is coroutine
+cleanup, not a physical robot stop or held-state recovery policy.
+
+Standalone Isaac tests use the existing `tests/support/isaac_async.py` Kit bridge,
+which pumps `SimulationApp.update()` until the coroutine finishes. The backend
+yields on Kit updates and never advances simulation through blocking `world.step`
+loops or worker threads. No synchronous robot-command implementation remains.
 
 V1 is the geometry-based source for boxes, spheres and cylinders.
 
@@ -53,7 +66,7 @@ A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`
 `robot_skill_stack.presentation` contains a simulator-independent read model for
 WorldModel state. The Isaac extension renders that read model and invokes
 `RobotRuntime`. Object display and manipulation work with either source, but
-the extension also checks Franka articulation readiness, invokes updater cleanup,
+the extension also reads backend `is_ready` and runtime `busy`, invokes updater cleanup,
 and accesses perception capture. These are existing
 integration couplings, not capabilities of the generic presentation model.
 

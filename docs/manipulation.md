@@ -62,9 +62,13 @@ are not treated as hard obstacles in this V1 checker.
 
 ## Current execution limitations
 
-The GUI uses cooperative async skills; synchronous variants remain for existing
-callers. Franka's `speed` argument is diagnostic and does not scale motion.
+All command callers use `await runtime.execute_async(...)`. Synchronous skill and
+backend commands have been removed; standalone Isaac scripts drive the same
+coroutine through the external Kit bridge. Read-only queries stay synchronous.
+The existing async command tolerances, update budgets and sequence are unchanged.
+Franka's `speed` argument is diagnostic and does not scale motion.
 Its `home` is the TCP pose captured during backend construction, not a separately
 configured safe joint pose. Gripper width feedback verifies grasping; it is not
 a force/contact sensor. Place reports `retreat_ok` separately and can currently
-report success despite a failed retreat. These behaviors are unchanged in Phase 1.
+report success despite a failed retreat. Uncertain held state, recovery motion,
+retreat reporting, speed and Home semantics remain reserved for Phase 3B.
