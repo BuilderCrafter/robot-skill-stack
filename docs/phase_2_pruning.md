@@ -1,5 +1,9 @@
 # Phase 2 pruning report
 
+This report records pruning checkpoint `0c374da`; its line counts and test results
+describe that checkpoint. The subsequent direct-script startup correction and
+its validation are documented in [isaac_runner_startup.md](isaac_runner_startup.md).
+
 Branch: `refactor/phase-2-pruning`, based on latest `main` at `a3dcb95`.
 Phase 1 was merged and its basic live smoke test was reported successful by the
 user. Phase 2 simulator validation has not been performed in this cloud machine.

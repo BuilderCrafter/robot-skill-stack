@@ -16,18 +16,6 @@ UNIT_SCRIPTS = (
     'test_primitive_perception', 'test_reactive_pick', 'test_world_model_update_rate',
     'test_world_model_view',
 )
-# The wrapper supplies .deps; preload the pinned NumPy before test modules import
-# SimulationApp, matching the GUI launch contract without changing those scripts.
-ISAAC_ENTRY = """import sys
-import numpy as np
-if np.__version__ != '1.26.4':
-    raise RuntimeError(f'Expected NumPy 1.26.4, got {np.__version__} from {np.__file__}')
-print(f'Test NumPy: {np.__version__} from {np.__file__}', flush=True)
-import runpy
-module = sys.argv.pop(1)
-sys.argv[0] = module
-runpy.run_module(module, run_name='__main__')
-"""
 
 
 def cases(group, run_dir, artifacts):
@@ -42,8 +30,7 @@ def cases(group, run_dir, artifacts):
         for path in sorted((ROOT/'tests'/folder).glob('test_*.py')):
             name = f'{selected}_{path.stem}'
             result = run_dir/f'{name}.json'
-            command = ['bash', str(RUNNER), '-c', ISAAC_ENTRY,
-                       f'tests.{folder}.{path.stem}', '--result', str(result)]
+            command = ['bash', str(RUNNER), str(path), '--result', str(result)]
             if artifacts:
                 command += ['--artifacts-dir', str(run_dir/name)]
             yield name, command, result

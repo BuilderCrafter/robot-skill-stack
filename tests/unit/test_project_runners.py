@@ -75,7 +75,8 @@ class ProjectRunnerTests(unittest.TestCase):
             selected = [(name, cmd, path) for name, cmd, path in cases if name.startswith(group+'_')]
             self.assertEqual(len(selected), len(list((ROOT/'tests'/group).glob('test_*.py'))))
             for name, cmd, path in selected:
-                self.assertEqual(cmd[:4], ['bash', str(self.all.RUNNER), '-c', self.all.ISAAC_ENTRY])
+                self.assertEqual(cmd[:3], ['bash', str(self.all.RUNNER), str(ROOT/'tests'/group/(name[len(group)+1:]+'.py'))])
+                self.assertNotIn('-c', cmd)
                 self.assertIn('--result', cmd)
                 self.assertIn('--artifacts-dir', cmd)
                 self.assertNotIn('--no-ros-env', cmd)
@@ -94,6 +95,23 @@ class ProjectRunnerTests(unittest.TestCase):
         with patch.object(self.all.subprocess, 'run', side_effect=OSError('cannot execute')):
             self.assertEqual(self.all.main(['--group', 'regression']), 1)
         self.assertIn('cannot execute', self.stdout.getvalue())
+
+    def test_native_crash_is_not_hidden_by_pass_json_and_remaining_scenarios_run(self):
+        for crash in (-11, 139):  # Native signal vs a shell's encoded exit status.
+            with self.subTest(crash=crash):
+                codes = iter((crash, 0))
+                def child(command, **kwargs):
+                    Path(command[command.index('--result')+1]).write_text('{"status":"PASS"}')
+                    return result(next(codes))
+                logs = self.path/f'crash {crash}'
+                with patch.object(self.all.subprocess, 'run', side_effect=child) as run:
+                    self.assertEqual(self.all.main(['--group', 'isaac', '--artifacts-dir', str(logs)]), 1)
+                self.assertEqual(run.call_count, 2)
+                summary = json.loads(next(logs.rglob('summary.json')).read_text())
+                first, second = summary.values()
+                self.assertEqual(first['status'], 'FAIL')
+                self.assertEqual(first['return_code'], crash)
+                self.assertEqual(second['status'], 'PASS')
 
     def test_scripts_import_without_numpy_or_isaac(self):
         import builtins
@@ -179,18 +197,24 @@ class ProjectRunnerTests(unittest.TestCase):
         self.assertIn('Ran 1 test', process.stderr)
         self.assertIn('Overall: PASS', process.stdout)
 
-    def test_real_isaac_dispatch_preimports_pinned_numpy_and_checks_fresh_results(self):
+    def test_real_isaac_script_dispatch_preserves_main_arguments_and_fresh_results(self):
         repo, env = self.sandbox()
         numpy = repo/'.deps/numpy/__init__.py'
         numpy.write_text(numpy.read_text().replace('test-only', '1.26.4'))
         (repo/'tests/isaac').mkdir(parents=True)
         for path in ('tests/__init__.py', 'tests/isaac/__init__.py'):
             (repo/path).touch()
+        prelude = (ROOT/'tests/isaac/test_perception_discovery.py').read_text().split('from isaacsim import SimulationApp')[0]
         (repo/'tests/isaac/test_sentinel.py').write_text(
-            "import sys, json, argparse\nfrom pathlib import Path\n"
+            prelude + "import sys, json, argparse\nfrom pathlib import Path\n"
+            "assert vars(sys.modules['__main__']) is globals()\n"
+            "assert __spec__ is None\n"
+            "assert Path(sys.argv[0]) == Path(__file__)\n"
             "assert 'numpy' in sys.modules\n"
             "p=argparse.ArgumentParser(); p.add_argument('--result'); p.add_argument('--artifacts-dir')\n"
-            "args=p.parse_args(); Path(args.result).write_text(json.dumps({'status':'PASS'}))\n")
+            "args=p.parse_args(); assert 'retained logs' in args.result\n"
+            "assert Path(args.artifacts_dir).name == 'isaac_test_sentinel'\n"
+            "Path(args.result).write_text(json.dumps({'status':'PASS'}))\n")
         args = [sys.executable, str(repo/'scripts/run_all_regressions.py'), '--group', 'isaac',
                 '--artifacts-dir', str(self.path/'retained logs')]
         for _ in range(2):
@@ -201,6 +225,51 @@ class ProjectRunnerTests(unittest.TestCase):
         for directory in runs:
             self.assertIn('Test NumPy: 1.26.4', (directory/'isaac_test_sentinel.log').read_text())
             self.assertEqual(json.loads((directory/'summary.json').read_text())['isaac_test_sentinel']['status'], 'PASS')
+
+    def test_all_eight_scripts_preload_numpy_before_simulation_app(self):
+        repo, env = self.sandbox()
+        numpy = repo/'.deps/numpy/__init__.py'
+        numpy.write_text(numpy.read_text().replace('test-only', '1.26.4'))
+        # Stop at construction; this verifies the real scripts' startup context,
+        # not native SDK loading, simulation, or scenario behavior.
+        (repo/'.deps/isaacsim.py').write_text(
+            "import sys, json\nfrom pathlib import Path\n"
+            "assert 'numpy' in sys.modules\n"
+            "assert sys.modules['numpy'].__version__ == '1.26.4'\n"
+            "class SimulationApp:\n"
+            "    def __init__(self, config):\n"
+            "        main = sys.modules['__main__']\n"
+            "        assert main.__spec__ is None\n"
+            "        assert Path(main.__file__) == Path(sys.argv[0])\n"
+            "        assert config == {'headless': False}\n"
+            "        print(json.dumps(sys.argv))\n"
+            "        raise SystemExit(23)\n")
+        scripts = [p for folder in ('isaac', 'regression') for p in sorted((ROOT/'tests'/folder).glob('test_*.py'))]
+        self.assertEqual(len(scripts), 8)
+        for source in scripts:
+            with self.subTest(script=source.name):
+                target = repo/source.relative_to(ROOT)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(source.read_text())
+                args = ['--result', str(self.path/'result with spaces.json'),
+                        '--artifacts-dir', str(self.path/'scenario artifacts')]
+                process = subprocess.run(['bash', str(repo/'run_isaac_python.sh'), str(target), *args],
+                                         cwd=self.path, env=env, capture_output=True, text=True, timeout=15)
+                self.assertEqual(process.returncode, 23, process.stdout+process.stderr)
+                self.assertIn('Test NumPy: 1.26.4', process.stdout)
+                self.assertEqual(json.loads(process.stdout.splitlines()[-1]), [str(target), *args])
+
+    def test_wrong_numpy_is_rejected_before_importing_sdk(self):
+        repo, env = self.sandbox()
+        target = repo/'tests/isaac/test_startup.py'
+        target.parent.mkdir(parents=True)
+        target.write_text((ROOT/'tests/isaac/test_perception_discovery.py').read_text())
+        (repo/'.deps/isaacsim.py').write_text("raise AssertionError('SDK imported too early')\n")
+        process = subprocess.run(['bash', str(repo/'run_isaac_python.sh'), str(target)],
+                                 cwd=self.path, env=env, capture_output=True, text=True, timeout=15)
+        self.assertNotEqual(process.returncode, 0)
+        self.assertIn('Expected NumPy 1.26.4, got test-only', process.stderr)
+        self.assertNotIn('SDK imported too early', process.stderr)
 
     def test_real_shell_replay_preserves_relative_path_from_other_cwd(self):
         repo, env = self.sandbox()

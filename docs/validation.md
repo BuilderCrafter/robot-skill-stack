@@ -31,9 +31,12 @@ python scripts/run_all_regressions.py --artifacts-dir outputs/regressions
   planning, reactive pick, recovery, multi-object manipulation and placement).
 
 The last two groups require the Isaac workstation. The wrapper still prepends
-`.deps`; the runner verifies/imports NumPy 1.26.4 before loading any scenario
-module and therefore before its `SimulationApp`. The working GUI launch is
-unchanged. Directly invoking an Isaac test script bypasses the runner's pre-import.
+`.deps`; each scenario script imports/verifies NumPy 1.26.4 before importing
+`SimulationApp`. The runner invokes those files directly, without `-c` or
+`runpy`, preserving the normal script `__main__` and argument context. Direct
+script invocation has the same NumPy guard. The working GUI launch is unchanged.
+See [isaac_runner_startup.md](isaac_runner_startup.md) for the startup assessment
+and the workstation procedure if a native crash persists.
 
 Each selected scenario runs once. A failed command or missing/non-PASS Isaac
 result fails the run, while the remaining selected checks still execute. Reports
