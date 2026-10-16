@@ -1,8 +1,8 @@
 # Isaac GUI
 
-The Isaac extension is a thin client of the generic lower-level stack. It reads
-cached state from `WorldModel` and sends commands through `RobotRuntime`; it does
-not query USD, the camera, or perception directly.
+The Isaac extension reads cached state from `WorldModel` and sends manipulation
+commands through `RobotRuntime`. It also checks Franka readiness, invokes updater
+cleanup, and offers source-specific capture and V2 diagnostics.
 
 ## Launch
 
@@ -12,12 +12,14 @@ Use the repository wrapper so `.deps` is ahead of Isaac's bundled Python paths:
 ./run_isaac_sim.sh
 ```
 
-The project pins `numpy==1.26.4`. When the world provider is `perception`, the
-Isaac bootstrap rejects NumPy 2.x with a clear error instead of allowing the
-camera/SyntheticData stack to fail later.
+Set `ISAAC_SIM` if the installation differs from `/home/etfrobotics/isaacsim`.
+The GUI launcher imports and requires `numpy==1.26.4` before `SimulationApp`.
+The bootstrap additionally rejects NumPy 2.x for perception. The full Isaac
+experience and ROS bridge startup overrides are retained. Do not pass
+`--no-ros-env`: Isaac Sim 5.1.0-rc.19's Python launcher does not support it.
 
 Open `scenes/playground.usd` if it is not already open, then use the **Robot
-Skill Runtime** window and press **Initialize Runtime**.
+Skill Stack** window and press **Initialize Runtime**.
 
 ## WorldModel panel
 
@@ -34,10 +36,14 @@ objects:
 Click an object row to select it. `Pick Selected` and the Pick+Place Behavior
 Trees use that selected persistent ID. Place acts on the currently held object.
 
-The same UI works with `[world].provider = "perception"` and
-`[world].provider = "ground_truth"` because it only consumes `WorldModel`.
+The same object display and manipulation controls work with
+`[world].provider = "perception"` and `[world].provider = "ground_truth"`.
 
-The panel refreshes from cached WorldModel state at roughly 5 Hz when no skill
-is executing. It never starts a second perception loop.
+The panel refreshes from cached WorldModel state at roughly 5 Hz, including
+during async execution. It never starts a second perception loop.
 
-A ready-made ground-truth profile is available at `config/scenes/playground_ground_truth.toml`.
+There is no checked-in ground-truth profile. From the repository root, copy
+`config/scenes/playground.toml` to `outputs/playground_ground_truth.toml` (create
+`outputs/` first), and change only `[world].provider` to `"ground_truth"` in the
+copy. Restart Isaac and select this profile before initialization; the current
+GUI does not switch profiles on an initialized robot. The USD scene is unchanged.

@@ -1,12 +1,53 @@
 # Lower-level validation
 
-Validated on the Isaac Sim workstation on 2026-09-26.
+Historical results recorded on the Isaac Sim workstation on 2026-09-26
+(not revalidated by the Phase 1 cloud run):
 
 - Perception V1: complete suite PASS; single-cube localization approximately 2 mm and same-ID reacquisition after Pick/Place.
 - Robust execution (Phase A): all five stages PASS; deterministic workspace benchmark mean localization error about 1.85 mm, worst observed about 2.41 mm; 4/4 Pick+Place benchmark trials; mean physical placement error about 4.93 mm; reactive Pick, BT recovery and multi-object manipulation PASS.
 - Grasp planning (Phase B): unit and Isaac stages PASS; 90 mm cube rejected before motion with `NO_VALID_GRASP`; normal 50 mm perception-driven cube still Pick+Place successful with about 6 mm physical target error.
 
 The regression suites are retained under `tests/` and runners under `scripts/`.
+The Phase 1 before/after record is in [phase_1_baseline.md](phase_1_baseline.md).
+
+## Plain-Python checks
+
+From the repository root, use a Python 3.11/3.12 environment with
+`requirements.txt` installed. The cloud run used the existing `.venv`; this is
+an offline test environment, not a substitute for Isaac's `.deps` launch path.
+
+```bash
+python -m unittest discover -s tests/unit -t .
+for module in test_async_runtime test_grasp_planning test_perception test_placement \
+              test_primitive_perception test_reactive_pick test_world_model_update_rate \
+              test_world_model_view; do
+    python -m "tests.unit.$module" || exit
+done
+python scripts/check_architecture.py
+```
+
+The eight standalone modules are not executed by unittest discovery. Main unit
+tests include V2 and fake Isaac/UI adapters; they do not start the simulator or
+prove real camera, controller, or GUI behavior. The static checker compiles Python
+and checks generic-package imports; it does not verify all architectural coupling.
+
+Offline dataset-tool tests additionally require the pinned OpenCV, Pillow and
+PyYAML packages from `tools/perception_v2_data/requirements-training.txt`:
+
+```bash
+python -m unittest discover -s tools/perception_v2_data/tests -v
+```
+
+These tests do not require installing PyTorch/Ultralytics or running training.
+Do not install the training requirements into Isaac or `.deps`.
+
+## Isaac-dependent checks
+
+`tests/isaac/` and `tests/regression/` start `SimulationApp`; they require the
+workstation. Suite parent scripts may run under ordinary Python, but invoke
+`run_isaac_python.sh` for children. `run_all_regressions.py --unit-only` still
+uses that wrapper, and its primitive suite includes V2 tests. It is not a
+standalone plain-Python test command.
 
 
 ## Course-polish suite
@@ -25,12 +66,34 @@ The canonical full regression command remains:
 python3 scripts/run_all_regressions.py
 ```
 
-This now includes architecture checks, Perception V1, Phase A, Phase B, and the
-course-polish suite.
+This includes architecture checks, the primitive unit suite (including V2),
+Perception V1, Phase A, Phase B, and the course-polish suite. Historical suites
+overlap; no runners or execution paths were consolidated in Phase 1.
 
 ## Manual GUI smoke test
 
-Launch with `./run_isaac_sim.sh`, initialize `config/scenes/playground.toml`, and
-verify that the WorldModel panel populates automatically. Select a visible
-object, run Pick, then Place. Repeat with `config/scenes/playground_ground_truth.toml`; no GUI code should
-change between providers.
+Run on the university Isaac Sim 5.1.0-rc.19 workstation; these checks are pending
+until performed there:
+
+1. Confirm `ISAAC_SIM` points to the installation and `.deps` has the pinned
+   NumPy 1.26.4 and py_trees 2.6.0. Launch `./run_isaac_sim.sh`. Check the logged
+   NumPy version/path, full experience startup, ROS bridge startup overrides,
+   absence of an unsupported-option error, and the **Robot Skill Stack** window.
+2. Open `scenes/playground.usd`, select `config/scenes/playground.toml`, and press
+   **Initialize Runtime**. Confirm readiness, object rows, selectable IDs and live
+   cached poses. Check logs for camera or updater failures.
+3. With separated supported objects in the configured workspace, confirm V1
+   geometry observations for cubes, spheres and cylinders. Check lost/visible
+   state after a controlled occlusion; do not treat an offline fixture as this test.
+4. Select a graspable object, run Pick, confirm physical attachment and held state,
+   then Place at a known free tabletop target. Confirm physical release, pose,
+   same-ID reacquisition, and held-state clearing. Exercise Move and Home in a
+   clear workspace. Check GUI responsiveness during motion.
+5. Check an occupied placement target and an oversized/unreachable grasp are
+   rejected before the corresponding unsafe motion. Review both the result and
+   `retreat_ok`; Place can currently report success despite failed retreat.
+6. Create the local ground-truth profile described in [gui.md](gui.md), restart
+   Isaac, open the same scene and initialize that profile. Repeat WorldModel
+   initialization and basic manipulation; no core or GUI edits should be needed.
+7. Exercise Stop/Play, reset/reinitialize, and shutdown. Check for duplicate
+   callbacks, stale controls, camera cleanup errors, and residual tasks.
