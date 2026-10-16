@@ -38,8 +38,5 @@ class HomeSkill(BaseSkill):
             result.details,
         )
 
-    def execute(self, name="home"):
-        return self._result(self.backend.home(name))
-
     async def execute_async(self, name="home"):
         return self._result(await self.backend.home_async(name))

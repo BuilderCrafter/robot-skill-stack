@@ -23,6 +23,9 @@ from tests.support.results import write_result
 
 
 class FakeAsyncBackend(ManipulationBackend):
+    is_ready = True
+    grasp_min_width, grasp_max_width = .005, .075
+
     def __init__(self):
         self.ee = Pose(
             [0.45, 0.0, 0.2],
@@ -36,17 +39,6 @@ class FakeAsyncBackend(ManipulationBackend):
     def get_end_effector_pose(self):
         return self.ee
 
-    def move_to_pose(self, *args, **kwargs):
-        raise AssertionError("sync move path was used")
-
-    def open_gripper(self):
-        raise AssertionError("sync gripper path was used")
-
-    def close_gripper(self, width=None):
-        raise AssertionError("sync gripper path was used")
-
-    def home(self, name="home"):
-        raise AssertionError("sync home path was used")
 
     def verify_grasp(self):
         return BackendResult(

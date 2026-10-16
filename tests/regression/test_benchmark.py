@@ -16,6 +16,7 @@ from pathlib import Path
 
 
 from robot_skill_stack.common.types import Pose
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -162,7 +163,7 @@ def main(result_path=None, artifacts_dir=None):
         MANIPULATION_TRIALS,
         1,
     ):
-        home = bundle.runtime.execute("home")
+        home = run_kit_coroutine(bundle.runtime.execute_async("home"), simulation_app)
         if not home.ok:
             raise RuntimeError(
                 f"Home failed before trial {index}: {home.message}"
@@ -180,17 +181,17 @@ def main(result_path=None, artifacts_dir=None):
                 f"Object not visible before manipulation trial {index}"
             )
 
-        pick = bundle.runtime.execute(
+        pick = run_kit_coroutine(bundle.runtime.execute_async(
             "pick",
             object_id=object_id,
-        )
+        ), simulation_app)
         place = None
         if pick.ok:
-            place = bundle.runtime.execute(
+            place = run_kit_coroutine(bundle.runtime.execute_async(
                 "place",
                 target=Pose(target),
                 mode="stable",
-            )
+            ), simulation_app)
 
         final_true = np.asarray(
             cube.get_world_pose()[0],

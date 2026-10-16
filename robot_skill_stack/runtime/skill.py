@@ -11,6 +11,7 @@ class SkillStatus(str, Enum):
 
 
 class FailureCode(str, Enum):
+    BUSY = "busy"
     OBJECT_NOT_FOUND = "object_not_found"
     OBJECT_POSE_UNKNOWN = "object_pose_unknown"
     OBJECT_MOVED = "object_moved"
@@ -56,5 +57,5 @@ class BaseSkill(ABC):
     SPEC: SkillSpec
 
     @abstractmethod
-    def execute(self, *args, **kwargs) -> SkillResult:
+    async def execute_async(self, *args, **kwargs) -> SkillResult:
         ...

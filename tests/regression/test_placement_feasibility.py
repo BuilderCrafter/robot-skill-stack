@@ -25,6 +25,7 @@ from tests.support.isaac_helpers import (
     open_playground,
     settle,
 )
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 
 OBSTACLE_PATH = "/World/Objects/PlacementObstacle"
@@ -66,18 +67,18 @@ def main(result_path=None, artifacts_dir=None):
     print("Obstacle WorldModel ID:", obstacle.object_id)
 
     print("[3] Pick configured cube...")
-    pick = bundle.runtime.execute("pick", object_id=held_id)
+    pick = run_kit_coroutine(bundle.runtime.execute_async("pick", object_id=held_id), simulation_app)
     if not pick.ok:
         raise RuntimeError(f"Pick failed: {pick.message}")
 
     ee_before = bundle.backend.get_end_effector_pose().position.copy()
 
     print("[4] Attempt occupied placement; robot must not move...")
-    occupied = bundle.runtime.execute(
+    occupied = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(obstacle.pose.position.copy()),
         mode="stable",
-    )
+    ), simulation_app)
     ee_after = bundle.backend.get_end_effector_pose().position.copy()
     ee_motion = float(np.linalg.norm(ee_after - ee_before))
 
@@ -104,11 +105,11 @@ def main(result_path=None, artifacts_dir=None):
         raise AssertionError("Held-object state changed after rejected placement")
 
     print("[5] Place at a free target...")
-    place = bundle.runtime.execute(
+    place = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(SAFE_TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     if not place.ok:
         raise RuntimeError(f"Safe placement failed: {place.message}")
 

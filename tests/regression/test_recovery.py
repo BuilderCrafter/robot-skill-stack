@@ -15,6 +15,7 @@ import traceback
 from pathlib import Path
 
 import py_trees
+import omni.kit.app
 
 from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import (
@@ -22,6 +23,7 @@ from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recover
 )
 from robot_skill_stack.runtime.skill import FailureCode
 from robot_skill_stack.common.types import Pose
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -76,11 +78,11 @@ def main(result_path=None, artifacts_dir=None):
     print("[3] Move robot away from Home to make recovery observable...")
     ee = bundle.backend.get_end_effector_pose()
     away = ee.translated([0.0, 0.0, 0.15])
-    moved = bundle.runtime.execute(
+    moved = run_kit_coroutine(bundle.runtime.execute_async(
         "move_to_pose",
         target=away,
         speed=0.3,
-    )
+    ), simulation_app)
     if not moved.ok:
         raise RuntimeError(
             f"Could not prepare recovery pose: {moved.message}"
@@ -123,7 +125,10 @@ def main(result_path=None, artifacts_dir=None):
         target=Pose(PLACE_TARGET),
         return_home=True,
     )
-    status = BTExecutor(root).run(verbose=True)
+    status = run_kit_coroutine(
+        BTExecutor(root).run_async(omni.kit.app.get_app().next_update_async, verbose=True),
+        simulation_app,
+    )
 
     bundle.world.remove_physics_callback(callback)
 

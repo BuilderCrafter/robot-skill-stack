@@ -16,8 +16,19 @@ class BackendResult:
 
 
 class ManipulationBackend(ABC):
+    """Commands yield on the simulator thread; queries do not advance simulation."""
+
+    # Parallel-jaw grasp capabilities consumed by the composition root.
+    grasp_min_width: float
+    grasp_max_width: float
+
+    @property
     @abstractmethod
-    def move_to_pose(
+    def is_ready(self) -> bool:
+        ...
+
+    @abstractmethod
+    async def move_to_pose_async(
         self,
         target: Pose,
         speed: float = 0.5,
@@ -27,11 +38,11 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
-    def open_gripper(self) -> BackendResult:
+    async def open_gripper_async(self) -> BackendResult:
         ...
 
     @abstractmethod
-    def close_gripper(self, width: float | None = None) -> BackendResult:
+    async def close_gripper_async(self, width: float | None = None) -> BackendResult:
         ...
 
     @abstractmethod
@@ -48,5 +59,5 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
-    def home(self, name: str = "home") -> BackendResult:
+    async def home_async(self, name: str = "home") -> BackendResult:
         ...

@@ -32,10 +32,11 @@ def object_(object_id='object_1', shape=PrimitiveShape.CUBE, visible=True):
 def bundle_(provider='perception'):
     wm = WorldModel()
     wm.register(object_())
-    backend = Mock()
-    backend.robot.handles_initialized = True
+    backend = Mock(spec=['is_ready', 'get_end_effector_pose'])
+    backend.is_ready = True
     backend.get_end_effector_pose.return_value = Pose([.431, .128, .392], [0, 0, 1, 0])
     runtime = Mock()
+    runtime.busy = False
     runtime.execute_async = AsyncMock(return_value=SkillResult(SkillStatus.SUCCESS, 'Done'))
     updater = Mock()
     updater.cleanup.return_value = ()
@@ -46,6 +47,15 @@ def bundle_(provider='perception'):
 
 
 class ControlPanelTests(unittest.TestCase):
+    def test_external_runtime_command_blocks_gui_actions(self):
+        bundle = self.bind()
+        bundle.runtime.busy = True
+        self.c._refresh(force=True)
+        self.assertFalse(self.panel.buttons['home'].enabled)
+        self.c._home_clicked()
+        bundle.runtime.execute_async.assert_not_awaited()
+        self.assertIn('Another operation', self.panel.status.text)
+
     def setUp(self):
         self.env = extension_environment()
         self.ui, self.c, self.module = self.env.__enter__()
@@ -198,7 +208,7 @@ class ControlPanelTests(unittest.TestCase):
 
     def test_debug_reset_is_available_with_paused_uninitialized_articulation(self):
         bundle = self.hold()
-        bundle.backend.robot.handles_initialized = False
+        bundle.backend.is_ready = False
         self.c._refresh()
         self.assertTrue(self.panel.buttons['clear_held'].enabled)
         self.c._clear_held_clicked(); self.c._confirm_clear_held()

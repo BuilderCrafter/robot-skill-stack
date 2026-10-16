@@ -52,31 +52,6 @@ class MoveToPoseSkill(BaseSkill):
             result.details,
         )
 
-    def execute(
-        self,
-        target: Pose,
-        speed=0.5,
-        position_tolerance=None,
-        orientation_tolerance=None,
-    ):
-        if not self.backend.check_reachability(target):
-            return SkillResult(
-                SkillStatus.FAILED,
-                "Requested pose is unreachable.",
-                FailureCode.UNREACHABLE,
-            )
-        result = self.backend.move_to_pose(
-            target,
-            speed=speed,
-            position_tolerance=(
-                position_tolerance or self.position_tolerance
-            ),
-            orientation_tolerance=(
-                orientation_tolerance or self.orientation_tolerance
-            ),
-        )
-        return self._result(result)
-
     async def execute_async(
         self,
         target: Pose,

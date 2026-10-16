@@ -128,10 +128,10 @@ def main(result_path=None, artifacts_dir=None):
     assert initial_error < 0.015
 
     print("\n[4] PICK using discovered persistent ID...")
-    pick = bundle.runtime.execute(
+    pick = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=original_id,
-    )
+    ), simulation_app)
     true_after_pick, _ = bundle.objects["cube"].get_world_pose()
     true_after_pick = np.asarray(true_after_pick, dtype=float)
     metrics.update(
@@ -165,11 +165,11 @@ def main(result_path=None, artifacts_dir=None):
         raise RuntimeError(f"Pick failed: {pick.message}")
 
     print("\n[5] STABLE PLACE with action-aware reacquisition...")
-    place = bundle.runtime.execute(
+    place = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     final_true, _ = bundle.objects["cube"].get_world_pose()
     final_true = np.asarray(final_true, dtype=float)
     target_error = float(

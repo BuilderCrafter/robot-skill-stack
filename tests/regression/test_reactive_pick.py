@@ -16,6 +16,7 @@ from pathlib import Path
 
 
 from robot_skill_stack.common.types import Pose
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -85,10 +86,10 @@ def main(result_path=None, artifacts_dir=None):
     )
 
     print("[3] PICK while cube is moved during approach...")
-    pick = bundle.runtime.execute(
+    pick = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=object_id,
-    )
+    ), simulation_app)
 
     bundle.world.remove_physics_callback(callback)
 
@@ -136,11 +137,11 @@ def main(result_path=None, artifacts_dir=None):
         raise AssertionError("Cube was not physically lifted")
 
     print("[4] Place after reactive Pick...")
-    place = bundle.runtime.execute(
+    place = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(PLACE_TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     final_true = np.asarray(
         cube.get_world_pose()[0],
         dtype=float,
