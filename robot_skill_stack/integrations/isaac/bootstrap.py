@@ -148,22 +148,14 @@ async def _create_state_provider(
         config.perception.camera_prim_path,
         resolution=config.perception.resolution,
     )
-    robot_source = None
     try:
         camera.initialize(semantic_segmentation=False)
-        if config.perception.type == "yolo_v2" and config.perception.v2.robot_self_filter:
-            from robot_skill_stack.integrations.isaac.sensors.robot_self_filter import IsaacRobotSnapshotSource
-            robot_source = IsaacRobotSnapshotSource(world, camera, config.robot.prim_path,
-                                                   [config.world.objects_root, *(o.prim_path for o in config.objects.values())],
-                                                   config.perception.v2.robot_time_tolerance_s)
         app = omni.kit.app.get_app()
         for _ in range(60):
             await app.next_update_async()
-        provider = build_perception_provider(camera, config, robot_source=robot_source)
+        provider = build_perception_provider(camera, config)
         return provider
     except BaseException:
-        if robot_source is not None:
-            robot_source.close()
         camera.close()
         raise
 
@@ -191,7 +183,7 @@ async def _build_runtime(
     if previous is not None:
         previous.close()
     print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
-          f'provider={config.world.provider} perception={config.perception.type} '
+          f'provider={config.world.provider} perception=geometry_v1 '
           f'configured_objects={list(config.objects)}', flush=True)
     robot = _create_robot(world, config)
     objects = _create_objects(world, config)

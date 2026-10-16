@@ -35,7 +35,7 @@ def main():
                     violations.append((path.relative_to(ROOT), name))
 
     for path in ROOT.rglob("*.py"):
-        if any(part in {".deps", "__pycache__"} for part in path.parts):
+        if any(part in {".deps", ".venv", "venv", "env", "__pycache__"} for part in path.parts):
             continue
         py_compile.compile(str(path), doraise=True)
 

@@ -40,9 +40,7 @@ spheres, and upright or lying cylinders. It checks that:
 - contact height clears the support plane and palm,
 - known-object swept envelopes and IK allow the approach and lift.
 
-Unknown primitives and unsupported tilted orientations are rejected. The older
-cube-focused `TopDownGraspPlanner` remains available and is used by legacy unit
-tests; it is not selected by production bootstrap.
+Unknown primitives and unsupported tilted orientations are rejected.
 
 The Franka integration configures a 75 mm usable maximum width. A 50 mm cube is
 accepted; a 90 mm cube is rejected before robot motion.

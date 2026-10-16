@@ -8,7 +8,7 @@ import numpy as np
 from robot_skill_stack.manipulation.backend import BackendResult, ManipulationBackend
 from robot_skill_stack.runtime.skill import FailureCode
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.manipulation.grasping import TopDownGraspPlanner
+from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
 from tests.support.results import fail_result, write_result
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.world.model.entities import WorldObject
@@ -85,7 +85,7 @@ def main(result_path=None):
     skill = PickSkill(
         backend,
         model,
-        TopDownGraspPlanner(
+        SimplePrimitiveGraspPlanner(
             approach_height=0.10,
             default_lift_height=0.12,
             grasp_z_offset=0.0,
@@ -104,7 +104,7 @@ def main(result_path=None):
     skill = PickSkill(
         backend,
         model,
-        TopDownGraspPlanner(
+        SimplePrimitiveGraspPlanner(
             approach_height=0.10,
             default_lift_height=0.12,
             grasp_z_offset=0.0,

@@ -12,7 +12,6 @@ from robot_skill_stack.world.perception.frame import PerceptionFrame
 from robot_skill_stack.world.perception.geometry import ObjectGeometryService
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
 from robot_skill_stack.world.perception.semantics import (
-    CubeGeometryClassifier,
     SemanticBelief,
     SemanticPrediction,
 )
@@ -72,21 +71,6 @@ def main(result_path=None):
     belief.add(SemanticPrediction("box", 1.0))
     assert belief.resolve()[0] == "box"
     metrics["semantic_reclassification"] = True
-
-    classifier = CubeGeometryClassifier(
-        ratio_max=1.35,
-        min_size=0.025,
-        max_size=0.10,
-    )
-    assert classifier.classify(candidate(), None).label == "cube"
-    assert (
-        classifier.classify(
-            candidate(size=(0.05, 0.05, 0.09)),
-            None,
-        ).label
-        is None
-    )
-    metrics["cube_geometry_classifier"] = True
 
     tracker = ObjectTracker(
         max_distance=0.15,

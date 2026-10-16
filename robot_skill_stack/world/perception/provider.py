@@ -12,13 +12,12 @@ from robot_skill_stack.world.perception.semantics import SemanticPrediction
 
 
 class PerceptionStateProvider:
-    def __init__(self, camera, localizer, discoverer, tracker, semantic_classifier=None,
+    def __init__(self, camera, localizer, discoverer, tracker,
                  primitive_estimator=None, *, source='rgbd_geometry_perception', stale_frame_timeout=1.0):
         self.camera = camera
         self.localizer = localizer
         self.discoverer = discoverer
         self.tracker = tracker
-        self.semantic_classifier = semantic_classifier
         self.primitive_estimator = primitive_estimator
         self.source = source
         self.stale_frame_timeout = float(stale_frame_timeout)
@@ -34,17 +33,15 @@ class PerceptionStateProvider:
                 continue
             geometry = track.geometry
             shape = None if geometry is None or geometry.shape.value == 'unknown' else geometry.shape.value
-            label = track.class_name if self.semantic_classifier is not None else shape
             yaw = None if geometry is None else geometry.yaw
             orientation = None if yaw is None else np.array([np.cos(yaw/2), 0., 0., np.sin(yaw/2)])
             observations.append(ObjectObservation(
-                object_id=track.object_id, class_name=label,
+                object_id=track.object_id, class_name=shape,
                 pose=Pose(track.position.copy(), orientation, frame='world'),
                 size=track.size.copy(), geometry=geometry, graspable=None,
                 visible=track.visible, confidence=track.confidence, source=self.source, timestamp=track.last_seen,
                 metadata={
-                    'class_confidence': track.class_confidence if self.semantic_classifier is not None else
-                                        (0. if geometry is None else geometry.confidence),
+                    'class_confidence': 0. if geometry is None else geometry.confidence,
                     'class_belief_authoritative': True, 'semantic_samples': track.belief.samples,
                     'track_hits': track.hits, 'track_misses': track.misses,
                     'mask_pixels': 0 if track.mask is None else int(track.mask.sum()),
@@ -88,11 +85,8 @@ class PerceptionStateProvider:
                     candidate.position = np.asarray(geometry.metadata['center'], float)
                     candidate.size = np.asarray(geometry.metadata['size_world'], float)
                     candidate.spawnable = self.discoverer.is_spawnable(candidate.size)
-            if self.semantic_classifier is not None:
-                prediction = self.semantic_classifier.classify(candidate, frame.rgb)
-            else:
-                label = None if geometry is None or geometry.shape.value == 'unknown' else geometry.shape.value
-                prediction = SemanticPrediction(label, 1. if label is None else geometry.confidence)
+            label = None if geometry is None or geometry.shape.value == 'unknown' else geometry.shape.value
+            prediction = SemanticPrediction(label, 1. if label is None else geometry.confidence)
             predictions.append(prediction)
             self.diagnostics.append(describe(candidate, geometry))
         self.tracker.update(candidates, predictions, frame_id=frame.frame_id, timestamp=timestamp, context=context)

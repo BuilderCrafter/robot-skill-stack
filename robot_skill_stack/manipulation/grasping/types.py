@@ -10,7 +10,6 @@ from robot_skill_stack.common.types import Pose
 
 class GraspFailureReason(str, Enum):
     OBJECT_POSE_UNKNOWN = "object_pose_unknown"
-    SIZE_UNKNOWN = "size_unknown"
     OBJECT_NOT_GRASPABLE = "object_not_graspable"
     OBJECT_TOO_LARGE = "object_too_large"
     UNSUPPORTED_HINT = "unsupported_hint"

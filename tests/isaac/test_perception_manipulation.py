@@ -1,3 +1,10 @@
+# Match the GUI launch contract before Isaac/Kit loads native extensions.
+import numpy as np
+
+if np.__version__ != '1.26.4':
+    raise RuntimeError(f'Expected NumPy 1.26.4, got {np.__version__} from {np.__file__}')
+print(f'Test NumPy: {np.__version__} from {np.__file__}', flush=True)
+
 from isaacsim import SimulationApp
 
 simulation_app = SimulationApp({"headless": False})
@@ -8,7 +15,6 @@ import sys
 import traceback
 from pathlib import Path
 
-import numpy as np
 from isaacsim.core.utils.stage import is_stage_loading, open_stage
 
 from robot_skill_stack.common.types import Pose

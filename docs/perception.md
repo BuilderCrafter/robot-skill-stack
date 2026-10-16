@@ -2,8 +2,7 @@
 
 Perception V1 is the default geometry-based world-state source. It discovers
 separated tabletop objects and fits cubes/boxes, spheres, and upright or lying
-cylinders without Isaac semantic labels. V2 YOLO remains an experimental,
-separately configured source with an external worker; it is not required by V1.
+cylinders without Isaac semantic labels.
 
 ## Runtime architecture
 
@@ -39,10 +38,9 @@ Ground truth implements the same `WorldObservationProvider` contract and remains
 an oracle/reference provider. `[world].provider` swaps between `ground_truth`
 and `perception` without changing skills, behavior trees, or the runtime API.
 
-The tracker maintains `SemanticBelief`, but the default V1 provider emits its
-geometry shape as the class label rather than the resolved semantic history.
-The optional classifier path and legacy `CubeGeometryClassifier` remain for
-existing callers/tests; production V1 uses `PrimitiveEstimator`.
+The tracker maintains `SemanticBelief`, but the V1 provider emits its geometry
+shape as the class label rather than the resolved semantic history. Production
+V1 uses `PrimitiveEstimator`; there is no separate classifier selection path.
 
 ## Manipulation boundary
 
@@ -90,26 +88,16 @@ Deferred work includes arbitrary-object 6D geometry, learned/general grasp
 planning, difficult occlusion, touching/stacked segmentation, and robust
 large-scale multi-object re-identification.
 
-## Acceptance suite
-
-Run:
+## Validation
 
 ```bash
-python3 scripts/run_perception_v1_suite.py
+python3 scripts/run_all_regressions.py --unit-only
+python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/regressions
 ```
 
-This historical, cube-focused acceptance suite validates software behavior,
-Isaac discovery/tracking, multi-cube discovery, lazy point-cloud access,
-perception-driven Pick + Place, gripper
-verification, and same-ID reacquisition after placement.
-
-It requires Isaac Python and a simulator-capable workstation. Broader primitive
-and V2 unit modules are included in `scripts/run_primitive_perception_suite.py`,
-which also dispatches through the Isaac Python wrapper; see `validation.md` for
-plain-Python checks. Passing offline fits is not physical manipulation evidence.
-
-Expected output archive:
-
-```text
-outputs/perception_v1_suite_<timestamp>.tar.gz
-```
+Offline tests cover primitive fits, uncertainty rejection, tracking, lazy geometry,
+frame capture/replay and manipulation logic. The Isaac group retains the original
+cube discovery and manipulation acceptance scenarios, including multiple objects,
+gripper verification and same-ID reacquisition after placement. Physical sphere
+and cylinder manipulation still requires the workstation smoke checks.
+See `validation.md` for group requirements and failure/result handling.

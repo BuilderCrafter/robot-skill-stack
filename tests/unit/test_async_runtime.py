@@ -11,7 +11,7 @@ from robot_skill_stack.manipulation.backend import (
     BackendResult,
     ManipulationBackend,
 )
-from robot_skill_stack.manipulation.grasping import TopDownGraspPlanner
+from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.skills.home import HomeSkill
 from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
@@ -99,7 +99,7 @@ async def run():
         PickSkill(
             backend,
             model,
-            TopDownGraspPlanner(),
+            SimplePrimitiveGraspPlanner(),
         )
     )
     runtime = RobotRuntime(registry)

@@ -34,8 +34,7 @@ cached WorldModel state and call a manipulation backend, without querying Isaac.
 The composition root is `integrations/isaac/bootstrap.py`. It loads a TOML
 profile, validates stage prims, constructs Franka and the selected source, and
 registers Home, MoveToPose, Pick and Place. Production uses
-`SimplePrimitiveGraspPlanner`; the older cube-focused `TopDownGraspPlanner`
-remains in the package and tests. Simple placement feasibility checks target
+`SimplePrimitiveGraspPlanner`. Simple placement feasibility checks target
 occupancy, not the entire transport path.
 
 Both synchronous and cooperative asynchronous execution exist. The GUI uses
@@ -44,11 +43,7 @@ The abstract backend currently declares only the synchronous methods, although
 the GUI path requires async backend methods as well. Only the Isaac Franka
 backend is implemented; replacing it requires composition-root changes.
 
-V1 is the default geometry-based source for boxes, spheres and cylinders. V2
-YOLO is experimental: a separate ML worker supplies masks over loopback HTTP,
-with geometry validation and robot self-filtering in the runtime. It remains
-selectable through `config/scenes/playground_v2.toml`; baseline configuration
-still imports V2 settings.
+V1 is the geometry-based source for boxes, spheres and cylinders.
 
 A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`. ROS 2, if required, should be added as another adapter under `integrations/` rather than becoming the internal architecture.
 
@@ -59,7 +54,7 @@ A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`
 WorldModel state. The Isaac extension renders that read model and invokes
 `RobotRuntime`. Object display and manipulation work with either source, but
 the extension also checks Franka articulation readiness, invokes updater cleanup,
-and accesses perception capture and V2 diagnostics. These are existing
+and accesses perception capture. These are existing
 integration couplings, not capabilities of the generic presentation model.
 
 ## Launch and lifecycle

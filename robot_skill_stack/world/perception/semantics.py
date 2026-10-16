@@ -44,23 +44,3 @@ class SemanticBelief:
     @property
     def samples(self):
         return len(self.history)
-
-
-class CubeGeometryClassifier:
-    def __init__(self, *, ratio_max=1.35, min_size=0.025, max_size=0.10):
-        self.ratio_max = float(ratio_max)
-        self.min_size = float(min_size)
-        self.max_size = float(max_size)
-
-    def classify(self, candidate, rgb=None):
-        size = np.asarray(candidate.size, dtype=float)
-        if np.any(size < self.min_size) or np.any(size > self.max_size):
-            return SemanticPrediction(None, 1.0)
-
-        ratio = float(np.max(size) / max(np.min(size), 1e-6))
-        if ratio > self.ratio_max:
-            return SemanticPrediction(None, min(1.0, ratio / self.ratio_max - 1.0 + 0.5))
-
-        span = max(self.ratio_max - 1.0, 1e-6)
-        confidence = float(np.clip(1.0 - (ratio - 1.0) / span, 0.5, 1.0))
-        return SemanticPrediction("cube", confidence)
