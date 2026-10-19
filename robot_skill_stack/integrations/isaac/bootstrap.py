@@ -8,12 +8,12 @@ import omni.kit.app
 import omni.usd
 from isaacsim.core.api import World
 from isaacsim.core.prims import SingleXFormPrim
-from isaacsim.robot.manipulators.examples.franka import Franka
 
-from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
+from robot_skill_stack.integrations.isaac.manipulation.factory import create_robot, create_backend
+from robot_skill_stack.manipulation.backend import ManipulationBackend
 from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
-from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner, ParallelJawGripperSpec
+from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.runtime.runtime import RobotRuntime
@@ -32,7 +32,7 @@ from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallba
 @dataclass
 class IsaacRuntimeBundle:
     world: World
-    backend: IsaacFrankaBackend
+    backend: ManipulationBackend
     world_model: WorldModel
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
@@ -86,22 +86,6 @@ def _validate_stage(config: SceneConfig):
     ]
     if missing:
         raise RuntimeError(f"Missing prims in current stage: {missing}")
-
-
-def _create_robot(world: World, config: SceneConfig):
-    cfg = config.robot
-    if cfg.backend != "franka":
-        raise RuntimeError(f"Unsupported robot type: {cfg.backend}")
-
-    robot = world.scene.get_object('franka')
-    if robot is None:
-        robot = world.scene.add(
-            Franka(
-                prim_path=cfg.prim_path,
-                name='franka',
-            )
-        )
-    return robot
 
 
 def _create_objects(world: World, config: SceneConfig):
@@ -178,7 +162,7 @@ async def _build_runtime(
     print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
           f'provider={config.world.provider} perception=geometry_v1 '
           f'configured_objects={list(config.ground_truth.objects)}', flush=True)
-    robot = _create_robot(world, config)
+    robot = create_robot(world, config.robot)
     objects = _create_objects(world, config)
 
     await world.reset_async()
@@ -202,17 +186,9 @@ async def _build_runtime(
         provider.close()
         raise
     try:
-        backend = IsaacFrankaBackend(
-            world=world,
-            robot=robot,
-            position_tolerance=0.01,
-            orientation_tolerance=0.05,
-            max_motion_steps=1000,
-        )
-
+        backend, gripper = create_backend(world, robot, config.robot)
         planner = SimplePrimitiveGraspPlanner(
-            gripper=ParallelJawGripperSpec(max_width=backend.grasp_max_width,
-                                          min_width=backend.grasp_min_width, open_width=.080),
+            gripper=gripper,
             support_plane_z=config.scene.support_plane_z,
             world_model=model,
             current_pose=backend.get_end_effector_pose,

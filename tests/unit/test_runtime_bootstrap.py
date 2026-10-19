@@ -22,7 +22,7 @@ ISAAC=ROOT/'robot_skill_stack/integrations/isaac'
 
 @contextmanager
 def bootstrap_fixture():
-    env=NS(world=None, providers=[], fail_backend=False, init_calls=0)
+    env=NS(world=None, providers=[], fail_backend=False, init_calls=0, backend_calls=[])
     async def next_update(): await asyncio.sleep(0)
     app=ModuleType('omni.kit.app'); app.get_app=lambda: NS(next_update_async=next_update)
     kit,omni,usd=ModuleType('omni.kit'),ModuleType('omni'),ModuleType('omni.usd')
@@ -43,6 +43,7 @@ def bootstrap_fixture():
         async def play_async(self):
             self.play(); self.playing=True; await next_update()
     def backend(**kw):
+        env.backend_calls.append(kw)
         if env.fail_backend: raise ValueError('injected backend failure')
         return NS(grasp_min_width=.005,grasp_max_width=.075,
                   get_end_effector_pose=lambda:Pose([0,0,.2],[0,0,1,0]),check_reachability=lambda p:True)
@@ -63,6 +64,11 @@ def bootstrap_fixture():
     spec=importlib.util.spec_from_file_location(name,ISAAC/'bootstrap.py')
     m=importlib.util.module_from_spec(spec); modules[name]=m
     with patch.dict(sys.modules,modules):
+        factory_name='robot_skill_stack.integrations.isaac.manipulation.factory'
+        factory_spec=importlib.util.spec_from_file_location(factory_name,ISAAC/'manipulation/factory.py')
+        factory=importlib.util.module_from_spec(factory_spec)
+        sys.modules[factory_name]=factory
+        factory_spec.loader.exec_module(factory)
         spec.loader.exec_module(m)
         cfg=load_scene_config(ROOT/'config/scenes/playground.toml')
         cfg=replace(cfg,world=replace(cfg.world,provider='ground_truth'))
@@ -81,6 +87,35 @@ class BootstrapTests(unittest.TestCase):
         async def run():
             with bootstrap_fixture() as (m,e): await fn(m,e)
         asyncio.run(run())
+
+    def test_explicit_franka_selection_preserves_backend_and_gripper_values(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.manipulation.factory']
+            robot=object()
+            world=NS(scene=NS(get_object=Mock(return_value=None),add=Mock(return_value=robot)))
+            self.assertIs(m.create_robot(world,cfg.robot),robot)
+            factory.Franka.assert_called_once_with(prim_path='/Franka',name='franka')
+            backend,gripper=m.create_backend(world,robot,cfg.robot)
+            self.assertEqual(e.backend_calls[-1],dict(world=world,robot=robot,
+                             position_tolerance=.01,orientation_tolerance=.05,max_motion_steps=1000))
+            self.assertEqual((gripper.min_width,gripper.max_width,gripper.aperture),(.005,.075,.08))
+            self.assertEqual((gripper.tcp_to_palm,gripper.fingertip_offset,gripper.pad_above_tcp,
+                              gripper.pad_below_tcp,gripper.finger_depth,gripper.finger_thickness,
+                              gripper.palm_depth,gripper.palm_width,gripper.palm_height),
+                             (.03,.012,.01,.01,.024,.025,.07,.17,.075))
+        self.run_case(fn)
+
+    def test_unknown_robot_backend_is_rejected_by_construction(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            unknown=replace(cfg.robot,backend='unsupported')
+            for operation,args in ((m.create_robot,(None,unknown)),
+                                   (m.create_backend,(None,None,unknown))):
+                with self.assertRaisesRegex(ValueError,'Unsupported robot backend'):
+                    operation(*args)
+            self.assertEqual(e.backend_calls,[])
+        self.run_case(fn)
 
     def test_ground_truth_populates_and_ticks(self):
         async def fn(m,e):
