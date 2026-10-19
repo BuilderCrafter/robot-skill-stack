@@ -19,9 +19,11 @@ run does not establish general collision avoidance or stability in every scene.
 No further control tuning or architecture changes are proposed before merging.
 Keep the opt-in trace for diagnosis; normal regression execution leaves it off.
 The latest cloud run passes 221 discovered unit tests, all eight standalone
-offline checks and the architecture check. Before merging, run **both** Isaac
-groups on the final code, without `--control-trace`, then perform the GUI smoke
-test in [validation.md](validation.md#manual-gui-smoke-test):
+offline checks and the architecture check. The operator subsequently confirmed
+that both final Isaac groups and manual GUI testing passed, and approved
+merging Phase 3A. These final checks are operator-reported; the detailed
+benchmark measurements above come from the reviewed upload. The commands used
+for the final validation were:
 
 ```bash
 git switch refactor/phase-3a-execution
@@ -31,13 +33,14 @@ git pull --ff-only
 ./run_isaac_sim.sh
 ```
 
-Both integration scenarios and all six regressions must pass. The regression
-group repeats benchmark with tracing disabled and rechecks occupied-target
-rejection after the controller change. In the GUI, exercise Home, Move, Pick,
-Place and both BT tasks; observe motion and continued rendering/perception.
-These final checks are pending. The existing `release` skill mode is preserved;
-its GUI selector remains a separate follow-up after this validation. No Phase
-3B work or automatic merge is included.
+The groups cover both integration scenarios and all six regressions, including
+benchmark with tracing disabled and occupied-target rejection after the
+controller change. GUI checks cover Home, Move, Pick, Place, both BT tasks,
+motion and continued rendering/perception; see the
+[smoke checklist](validation.md#manual-gui-smoke-test). The operator chose to
+keep the UI simple: the Place button stays in `stable` mode and no release/drop
+toggle is planned. The existing `release` skill API remains available for
+intentional drops. No Phase 3B work is included.
 
 The sections below retain the diagnostic history; earlier failed runs and
 initially pending hypotheses do not describe the latest result above.
@@ -69,8 +72,8 @@ The existing Place modes have separate unit-tested contracts:
 
 Both modes retain occupancy and reachability checks. A failed pre-approach,
 descent or open command remains a failure. A motion timeout never authorizes a
-drop. Existing `retreat_ok` reporting is unchanged. The GUI still selects
-`stable`; exposing release mode follows native controller validation, as agreed.
+drop. Existing `retreat_ok` reporting is unchanged. The GUI selects `stable`;
+the operator chose to keep release mode available through the skill API only.
 
 ## Run the focused diagnostic first
 
@@ -139,7 +142,7 @@ python3 scripts/run_all_regressions.py --group regression --artifacts-dir output
 Then check intentional release at a reachable midair object-center target:
 motion must succeed before opening; landing elsewhere does not make release
 fail. This is distinct from the stable benchmark, whose accuracy gates remain.
-The GUI selector remains a subsequent change after native validation.
+The later UI decision is recorded in the current status above.
 
 ## Offline validation
 
@@ -207,8 +210,7 @@ velocity targets should now be zero through gripper and idle phases; compare
 TCP drift and observed motion rather than requiring instantaneous zero motion.
 Then run the benchmark and placement commands above if motion is stable. All
 four stable trials and the existing accuracy gates must pass before the full
-regression group and intentional-release check. The GUI selector still follows
-native validation.
+regression group and intentional-release check.
 
 ## Native arm-hold comparison
 
@@ -237,7 +239,7 @@ must remain visible; native manipulation must still meet its existing grasp,
 success and 25 mm true placement-accuracy requirements. No thresholds are
 relaxed to compensate. The next required measurement is the stable benchmark,
 followed by placement feasibility and the full regression group if successful.
-Intentional-release validation and GUI selection remain pending.
+Intentional-release validation was still pending at this diagnostic stage.
 
 ## Loaded benchmark still fails: trace the active lift
 
@@ -290,8 +292,8 @@ this diagnostic. The project does not register the support plane/scene
 obstacles with RMPflow, which remains a concrete collision-avoidance limitation;
 the available boundary snapshots do not establish the exact collision source.
 Do not equate endpoint reachability or successful endpoint tolerance with safe
-intermediate motion. Controller diagnosis and loaded validation remain open;
-GUI release selection remains gated on those results.
+intermediate motion. Controller diagnosis and loaded validation remained open
+at this diagnostic stage.
 
 ## Interrupted capture: write the trace while running
 

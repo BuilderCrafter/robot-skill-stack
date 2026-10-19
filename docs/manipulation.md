@@ -67,10 +67,10 @@ Place supports `mode="stable"` (default) and `mode="release"`. Stable mode check
 the observed final object position; release mode allows an intentional midair
 drop after reaching the requested object-center release pose and opening the
 gripper. Failed approach/descent/open commands remain failures in either mode.
-The current GUI Place button uses stable mode. See the
+The GUI Place button uses stable mode. No release/drop toggle is planned;
+intentional release remains available through the skill API. See the
 [controller diagnostic](control_diagnostic.md#latest-workstation-result-and-merge-checks)
-for the passing native benchmark and final validation required before exposing
-release mode in the GUI.
+for the passing native benchmark and operator-confirmed final validation.
 
 All command callers use `await runtime.execute_async(...)`. Synchronous skill and
 backend commands have been removed; standalone Isaac scripts drive the same

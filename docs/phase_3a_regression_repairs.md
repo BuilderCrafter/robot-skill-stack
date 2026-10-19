@@ -2,9 +2,11 @@
 
 Current status: [workstation result and merge checks](control_diagnostic.md#latest-workstation-result-and-merge-checks).
 The latest native benchmark passes all four trials with no operator-observed
-contortions; final integration/regression groups and GUI checks remain pending.
+contortions. The operator confirmed the final integration/regression groups
+and manual GUI testing passed and approved merging Phase 3A.
 The fail-fast benchmark policy supersedes the historical cleanup steps below.
-The release-mode GUI selector remains a separate follow-up.
+The UI keeps stable placement without a release/drop selector, by operator
+choice. Intentional release remains available through the skill API.
 
 ## Evidence and limits
 
