@@ -24,12 +24,12 @@ from tests.unit.test_placement import FakeBackend
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def scenario(name):
+def scenario(name, folder='tests/regression'):
     # Load the actual scenario functions/constants without its native entry-point
     # imports or SimulationApp construction. Dependencies below are explicit doubles.
-    path = ROOT/'tests/regression'/f'{name}.py'
+    path = ROOT/folder/f'{name}.py'
     tree = ast.parse(path.read_text())
-    nodes = [node for node in tree.body if isinstance(node, ast.FunctionDef) or
+    nodes = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) or
              (isinstance(node, ast.Assign) and all(isinstance(t, ast.Name) and t.id.isupper() for t in node.targets))]
     module = ModuleType(name)
     module.__dict__.update(np=np, Path=Path, Pose=Pose, FailureCode=FailureCode, time=time,
@@ -46,7 +46,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         self.out = Path(temporary.name)
         self.result = self.out/'result.json'
 
-    def benchmark(self, failed='place', cleanup='ok', placement_offset=0.):
+    def benchmark(self, failed='place', placement_offset=0.):
         module = scenario('test_benchmark')
         model = WorldModel()
         obj = WorldObject('cube', 'cube', Pose([.45, 0, .025]), [.05]*3, visible=True)
@@ -75,17 +75,8 @@ class RegressionDiagnosticsTests(unittest.TestCase):
             obj.pose = kwargs['target'].translated([placement_offset, 0, 0])
             model.set_held(None)
             return SkillResult(SkillStatus.SUCCESS)
-        async def release():
-            checkpoint = json.loads(self.result.read_text())
-            row = checkpoint['metrics']['manipulation_trials'][0]
-            self.assertEqual(checkpoint['status'], 'FAIL')
-            self.assertEqual(row['place_failure_code'], 'place_failed')
-            self.assertEqual(row['place_details'], {'visible': False, 'retreat_ok': True})
-            if cleanup == 'exception':
-                raise ValueError('release controller error')
-            return BackendResult(cleanup == 'ok', 'release result', details={'feedback': cleanup})
         bundle.runtime = NS(execute_async=AsyncMock(side_effect=execute))
-        bundle.backend = NS(open_gripper_async=AsyncMock(side_effect=release),
+        bundle.backend = NS(open_gripper_async=AsyncMock(side_effect=AssertionError('unexpected cleanup release')),
                             move_to_pose_async=AsyncMock(), close_gripper_async=AsyncMock(),
                             home_async=AsyncMock(), get_end_effector_pose=Mock(return_value=Pose([.45, 0, .1])))
         def bridge(coroutine, app):
@@ -177,7 +168,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                 self.assertIn('query failed', records[0]['after']['diagnostic_error'])
                 self.assertIn(type(failure).__name__, records[0]['exception'])
 
-    def test_failed_trial_persists_command_trace_and_restores_backend_before_cleanup(self):
+    def test_failed_trial_persists_command_trace_and_restores_backend(self):
         module, bundle = self.benchmark()
         execute = bundle.runtime.execute_async.side_effect
         bundle.backend.close_gripper_async.return_value = BackendResult(True, 'closed')
@@ -186,13 +177,13 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                 await bundle.backend.close_gripper_async()
             return await execute(name, **kwargs)
         bundle.runtime.execute_async.side_effect = execute_with_command
-        with self.assertRaisesRegex(AssertionError, 'Only 3/4'):
+        with self.assertRaisesRegex(AssertionError, 'benchmark stopped without cleanup commands'):
             module.main(self.result, self.out)
         rows = json.loads(self.result.read_text())['metrics']['manipulation_trials']
         for row in rows:
             self.assertEqual([r['command'] for r in row['backend_commands']], ['close_gripper_async'])
             self.assertTrue(row['backend_commands'][0]['result']['ok'])
-        self.assertTrue(rows[0]['cleanup']['ok'])
+        bundle.backend.open_gripper_async.assert_not_awaited()
         bundle.backend.close_gripper_async.assert_awaited()
 
     def test_setup_failure_preserves_prior_trials_and_current_physical_state(self):
@@ -215,9 +206,9 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         self.assertFalse(metrics['failed_setup']['world_state']['object']['visible'])
         self.assertEqual(metrics['failed_setup']['physical_state']['cube_position'], [.46, .02, .025])
 
-    def test_failed_trial_is_saved_before_async_cleanup_and_retained_in_final_failure(self):
+    def test_failed_trial_stops_without_release_or_next_trial_and_retains_primary_failure(self):
         module, bundle = self.benchmark()
-        with self.assertRaisesRegex(AssertionError, 'Only 3/4'):
+        with self.assertRaisesRegex(AssertionError, 'benchmark stopped without cleanup commands'):
             module.main(self.result, self.out)
         report = json.loads(self.result.read_text())
         row = report['metrics']['manipulation_trials'][0]
@@ -225,28 +216,40 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         self.assertEqual(row['pick_status'], 'success')
         self.assertEqual(row['place_status'], 'failed')
         self.assertEqual(row['place_failure_code'], 'place_failed')
-        self.assertTrue(row['cleanup']['ok'])
+        self.assertEqual(row['failure_handling'], 'stopped_without_cleanup_commands')
         self.assertGreater(row['after_place']['world_updates'], row['before_pick']['world_updates'])
         self.assertIn('observation_age_s', row['after_pick'])
-        bundle.backend.open_gripper_async.assert_awaited_once()
+        bundle.backend.open_gripper_async.assert_not_awaited()
+        self.assertEqual(bundle.world_model.held_object_id, 'cube')
+        self.assertEqual([call.args[0] for call in bundle.runtime.execute_async.await_args_list],
+                         ['home', 'pick', 'place'])
+        self.assertEqual(report['metrics']['manipulation_completed'], 1)
+        self.assertEqual(report['metrics']['manipulation_total'], 4)
+        self.assertIn('primary place failure', report['error'])
 
-    def test_cleanup_failure_never_replaces_primary_trial_failure(self):
-        for cleanup in ('failure', 'exception'):
-            with self.subTest(cleanup=cleanup):
-                module, bundle = self.benchmark(cleanup=cleanup)
-                with self.assertRaisesRegex(AssertionError, 'primary place failure.*cleanup also failed'):
-                    module.main(self.result, self.out)
-                report = json.loads(self.result.read_text())
-                self.assertIn('primary place failure', report['error'])
-                rows = report['metrics']['manipulation_trials']
-                self.assertEqual(len(rows), 1)
-                self.assertFalse(rows[0]['cleanup']['ok'])
-                self.assertEqual(rows[0]['place_details'], {'visible': False, 'retreat_ok': True})
-                self.assertEqual(bundle.world_model.held_object_id, 'cube')
+    def test_timeout_with_held_object_stops_without_changing_failure_or_held_state(self):
+        module, bundle = self.benchmark(failed=None)
+        execute = bundle.runtime.execute_async.side_effect
+        async def timeout(name, **kwargs):
+            if name == 'place':
+                return SkillResult(SkillStatus.TIMEOUT, 'Pre-place motion failed.', FailureCode.TIMEOUT,
+                                   {'orientation_error_rad': .1137, 'max_steps': 1000})
+            return await execute(name, **kwargs)
+        bundle.runtime.execute_async.side_effect = timeout
+        with self.assertRaisesRegex(AssertionError, 'timeout.*Pre-place motion failed'):
+            module.main(self.result, self.out)
+        report = json.loads(self.result.read_text())
+        row = report['metrics']['manipulation_trials'][0]
+        self.assertEqual(row['place_status'], 'timeout')
+        self.assertEqual(row['place_details']['max_steps'], 1000)
+        self.assertEqual(row['after_place']['held_object_id'], 'cube')
+        self.assertEqual(bundle.world_model.held_object_id, 'cube')
+        bundle.backend.open_gripper_async.assert_not_called()
+        self.assertEqual(bundle.runtime.execute_async.await_count, 3)
 
     def test_failed_pick_records_unrun_place_without_cleanup(self):
         module, bundle = self.benchmark(failed='pick')
-        with self.assertRaisesRegex(AssertionError, 'Only 3/4'):
+        with self.assertRaisesRegex(AssertionError, 'benchmark stopped without cleanup commands'):
             module.main(self.result, self.out)
         row = json.loads(self.result.read_text())['metrics']['manipulation_trials'][0]
         self.assertEqual(row['pick_status'], 'failed')

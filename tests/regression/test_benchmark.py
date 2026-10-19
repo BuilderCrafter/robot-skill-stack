@@ -223,6 +223,8 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
     print("[4] Four full perception-driven Pick + Place trials...")
     successes = 0
     target_errors = []
+    metrics.update(manipulation_total=len(MANIPULATION_TRIALS), manipulation_completed=0,
+                   manipulation_successes=0, manipulation_success_rate=0.0)
 
     for index, (start, target) in enumerate(
         MANIPULATION_TRIALS,
@@ -318,6 +320,10 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
             "backend_commands": command_trace,
         }
         metrics["manipulation_trials"].append(row)
+        metrics.update(manipulation_completed=len(metrics["manipulation_trials"]),
+                       manipulation_successes=successes,
+                       manipulation_success_rate=successes/len(MANIPULATION_TRIALS),
+                       target_error_mm=stats(target_errors))
         print(
             f"  trial {index}: "
             f"pick={'PASS' if pick.ok else 'FAIL'} "
@@ -330,19 +336,12 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
                 f"Trial {index}: Pick {row['pick_status']} [{row['pick_failure_code']}] {pick.message}; "
                 f"Place {row['place_status']} [{row['place_failure_code']}] {row['place_message']}"
             )
-            # Persist the primary failure even if cleanup subsequently raises or crashes.
+            # Stop at the original failure. Opening here can drop a held object
+            # from the pre-place height; Home/another trial is not recovery.
+            row["failure_handling"] = "stopped_without_cleanup_commands"
             print(original_failure, flush=True)
             write_result(result_path, status="FAIL", metrics=metrics, error=original_failure)
-            if bundle.world_model.held_object_id is not None:
-                try:
-                    cleanup = run_kit_coroutine(bundle.backend.open_gripper_async(), simulation_app)
-                    row["cleanup"] = {"ok": cleanup.ok, "message": cleanup.message, "details": cleanup.details}
-                except Exception as exc:
-                    row["cleanup"] = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
-                if not row["cleanup"]["ok"]:
-                    # Do not continue another trial while release is unconfirmed.
-                    raise AssertionError(f"{original_failure}; cleanup also failed: {row['cleanup']}")
-                bundle.world_model.set_held(None)
+            raise AssertionError(f"{original_failure}; benchmark stopped without cleanup commands")
 
     metrics["manipulation_successes"] = successes
     metrics["manipulation_total"] = len(MANIPULATION_TRIALS)

@@ -1,5 +1,10 @@
 # Phase 3A regression repairs
 
+Current follow-up: [failure handling, placement modes and controller diagnosis](control_diagnostic.md).
+The fail-fast benchmark policy there supersedes the historical cleanup steps
+below. Controller convergence and GUI release-mode selection await native
+validation; the latest benchmark run still failed.
+
 ## Evidence and limits
 
 The workstation archive `run-t1v_uflo.zip` reports four passing scenarios
