@@ -1,150 +1,92 @@
 # Phase 3A execution simplification
 
-Base: merged Phase 2 commit `904c5b7` on `main` (including the direct-script
-startup correction). Phase 2 ancestry was verified before creating
-`refactor/phase-3a-execution`; the starting checkout was clean.
+Phase 3A merged into `main` at `6f696d0`, after workstation regression and
+manual GUI validation. The base was Phase 2 commit `904c5b7`.
 
-This document records the initial execution refactor, including its original
-size counts and validation. Subsequent regression repairs add benchmark failure
-reporting, diagnostics and two Franka backend corrections: zero-velocity arm
-hold on motion exit and frame-based velocity feedback for RMPflow. See the
-[current workstation result and merge checks](control_diagnostic.md#latest-workstation-result-and-merge-checks)
-for final branch status. Statements below about unchanged async backend bodies
-refer to the initial refactor, before those evidence-backed corrections.
+## Execution path
 
-## Before and after
-
-Before, runtime, skills, Franka commands and BT nodes each had sync and async
-paths. GUI commands used async methods not declared by the backend interface;
-standalone scenarios used blocking robot commands with `world.step()` loops.
-
-Now all clients follow:
+All command callers use one cooperative implementation:
 
 ```text
-GUI / SkillNode / standalone Kit bridge
+GUI / Behavior Tree / standalone Kit bridge
   → await RobotRuntime.execute_async(...)
   → await skill.execute_async(...)
   → await backend command
-  → cooperative Kit update (Franka adapter only)
+  → cooperative Kit update (Isaac adapter)
 ```
 
-There is one implementation of each skill and robot command. Queries and
-geometric planners remain synchronous. The runtime reserves one command before
-its first await, rejects overlap with `FailureCode.BUSY`, and releases ownership
-on completion, failure, exception or cancellation. Rejected commands are not
-queued. Commands must run on the same cooperative event loop, not worker threads.
+Synchronous skill/backend commands, the synchronous BT executor and the
+separate `AsyncSkillNode` were removed. Read-only queries and geometric
+planners stay synchronous. Live Isaac callers use the existing
+`run_kit_coroutine(..., simulation_app)` bridge; `asyncio.run()` is for offline
+tests only. Backend command loops no longer use blocking `world.step()`.
 
-## Public interfaces and modified components
+## Interfaces and ownership
 
-| Component/files | Changes |
-|---|---|
-| `runtime/runtime.py`, `runtime/skill.py` | Remove `execute`; `BaseSkill` declares `execute_async`. Runtime calls it directly, exposes read-only `busy`, and reports `BUSY` for overlap. Existing exception-to-INTERNAL_ERROR mapping remains; cancellation propagates. |
-| `manipulation/skills/{home,move_to_pose,pick,place}.py` | Remove synchronous implementations and Pick's synchronous motion helper; retain the original async sequencing/helpers. |
-| `manipulation/backend.py` | Declare `move_to_pose_async`, `open_gripper_async`, `close_gripper_async`, `home_async`, read-only pose/reachability/verification queries, `is_ready`, and simple min/max grasp-width capability fields. No capability framework. |
-| `integrations/isaac/manipulation/franka_backend.py` | Delete synchronous commands; keep the existing cooperative loops unchanged. Expose readiness through `is_ready` instead of requiring callers to access the articulation. |
-| `orchestration/behavior_trees/` | One async `SkillNode`, one `BTExecutor.run_async`. Remove `AsyncSkillNode`, synchronous `run`, and the sync/async node-class selector argument to task factories. |
-| GUI `ui/extension.py` | Continue using `execute_async`; use backend `is_ready` and runtime `busy`. Stop choosing an alternative BT node class. GUI-level busy state still protects an entire task/dialog. |
-| Standalone Isaac scenarios | Replace command calls with the existing external `run_kit_coroutine(..., simulation_app)` bridge. Recovery runs the same async BT executor with Kit updates. All eight scenario scripts remain. |
-| Unit tests and docs | Migrate fake backends and callers; remove duplicate two-mode coverage while retaining shape/attachment/rejection assertions. Add runtime, BT and SDK-boundary tests; update current architecture and validation guidance. |
+- `BaseSkill` declares `execute_async`. External callers migrate from
+  `runtime.execute(...)` to `await runtime.execute_async(...)`.
+- `ManipulationBackend` declares async move, open, close and Home commands,
+  synchronous pose/reachability/grasp queries, `is_ready`, and grasp-width
+  limits. Isaac-specific objects remain inside the adapter.
+- `RobotRuntime` reserves its command before the first await and rejects
+  overlap with `FailureCode.BUSY`. Ownership is released on completion,
+  failure, exception or cancellation. Commands share one cooperative event
+  loop; the runtime does not queue commands or support worker-thread control.
+- The GUI uses backend `is_ready` and runtime `busy`. Its own busy state also
+  protects an entire task/dialog.
+- One `SkillNode` submits async commands and one `BTExecutor.run_async` ticks
+  them. Cancellation or tick-budget exhaustion cancels and awaits outstanding
+  node tasks before returning. This is task cleanup, not an emergency stop.
+- The recovery selector remembers its running child, preserving the intended
+  Pick → Home on failure → retry Pick → Place → optional Home sequence.
 
-No source files were moved or removed. The small existing skill registry remains;
-this phase does not introduce plugin discovery or a synchronous compatibility API.
-External callers must replace `runtime.execute(...)` with an awaited
-`execute_async(...)`. Live Isaac must use Kit's bridge, not `asyncio.run()`.
+## Regression repairs and controller corrections
 
-## BT execution details
+Benchmark Pick and Place are awaited in one Kit task. Separate submissions
+had inserted an extra physics tick before Place captured its release
+orientation. Removing that difference alone did not resolve unstable motion.
 
-The recovery selector now remembers its running child. Otherwise every tick
-would re-enter the failed first Pick while recovery Home was still executing,
-which could overwrite the original failure or compete with recovery commands.
-The intended policy is unchanged: first Pick, Home on failure, retry Pick,
-Place, optional final Home. Tests hold Home across multiple yields to verify it.
+Benchmark stops on the first failed trial, preserving status, failure codes,
+details, held state and physical measurements. It issues no cleanup release,
+Home or next-trial command. Occupied placement asserts `TARGET_OCCUPIED`,
+unchanged held state and zero backend command calls; physical drift during
+Kit updates remains a diagnostic rather than a fixed movement threshold.
 
-On executor cancellation or tick-budget exhaustion, pending node tasks are
-cancelled and awaited before returning. This prevents an orphan command from
-leaving the runtime busy or executing after the caller considers the BT finished.
-Successful/failed completed node results are retained for diagnostics.
+Two evidence-backed Franka corrections remain:
 
-This is coroutine ownership cleanup, not an emergency-stop implementation or a
-claim that the physical robot has settled after cancellation.
+1. Motion exit retains the last arm position targets and sets desired arm
+   velocity to zero. This covers success, timeout and cancellation without
+   another simulation update or changes to finger targets.
+2. `FrankaFrameVelocityPolicy` supplies measured joint-position differences
+   over elapsed simulation time as RMPflow velocity feedback. It keeps
+   closed-loop position feedback and the standard Franka RMPflow configuration.
+   History survives Cartesian goal resets and uses the whole elapsed interval
+   across gripper-only phases. The first sample or non-advancing time uses
+   zero velocity. This frame average can miss within-frame motion.
 
-## Size and duplication
+No gains, Cartesian restrictions, pose tolerances, perception, tracking,
+planning mathematics, Isaac lifecycle, launchers, NumPy precedence or dependency
+pins changed. Production package Python decreased from 4,993 to 4,635 physical
+lines (358 lines, 7.2%), including the controller corrections.
 
-Physical Python lines, including comments and blank lines, counted from tracked
-files at `904c5b7` versus this change (including the two new unit-test files):
+## Validation and scope
 
-| Area | Before | After | Change |
-|---|---:|---:|---:|
-| Execution modules: runtime, skills, backend contract/Franka, BTs | 1,874 | 1,453 | −421 (22.5%) |
-| Entire production package | 4,993 | 4,572 | −421 |
-| GUI | 808 | 807 | −1 |
-| Tests/support | 5,771 | 6,043 | +272 |
-| Scripts | 241 | 241 | 0 |
-| **All Python** | **11,813** | **11,663** | **−150** |
+Cloud validation passes the architecture check, 221 discovered unit tests and
+all eight standalone offline checks. SDK doubles establish adapter logic,
+not native stability.
 
-Savings remove parallel implementations rather than relocate them. Test growth
-covers the previously unspecified busy/cancellation/backend contracts.
+The reviewed workstation benchmark passes all four Pick/Place trials and all
+retreats, with maximum true placement error 9.67 mm against the unchanged 25 mm
+limit. The operator reported no contortions, then confirmed both Isaac groups
+(two integration scenarios and six regressions) and manual GUI testing passed.
+See [control diagnostics](control_diagnostic.md) for evidence and commands and
+[validation](validation.md) for the repeatable suite and GUI checklist.
 
-## Validation evidence
+The GUI keeps stable placement with no release/drop selector planned.
+Intentional release remains available through the skill API. Remaining held
+state, retreat, recovery, speed and Home limitations are recorded in
+[manipulation](manipulation.md#current-execution-limitations); they are not
+part of this cleanup or an automatic start of Phase 3B.
 
-Baseline command:
-
-```bash
-.venv/bin/python scripts/run_all_regressions.py --unit-only \
-    --artifacts-dir outputs/phase_3a_before
-```
-
-Baseline: 173 discovery tests, all eight standalone scripts, architecture/syntax
-checks PASS. Final run with `--artifacts-dir outputs/phase_3a_after`: **186 discovery
-tests, all eight standalone scripts and static checks PASS**. `pip check`, shell
-syntax and `git diff --check` passed. Raw runs are under ignored
-`outputs/phase_3a_before/run-51fnvkp2/` and
-`outputs/phase_3a_after/run-y2xsdphu/`.
-
-One duplicate sync/async attachment test was removed; its all-shape assertions
-remain on the canonical path. Fourteen tests were added: nine runtime/BT cases,
-four Franka command-loop cases using SDK doubles, and one external-runtime-busy
-GUI case. Existing attachment, manual reset, reactive Pick, placement feasibility,
-grasp-planner, perceived-sphere and async command tests were migrated/retained.
-
-Tests cover sequential commands, no motion on busy rejection, exceptions,
-timeouts, unreachable targets, cancellation and next-command recovery, BT
-success/failure/recovery ordering, and cleanup on executor timeout/cancellation.
-Adapter doubles check cooperative waits, unchanged move budgets/tolerances,
-60/90 gripper updates, grasp feedback, readiness and Home results without
-blocking `world.step`. They are not native Isaac simulations.
-
-AST comparison against the base verified that all retained async skill and
-Franka command bodies are unchanged. Perception, primitive fitting, grasp and
-placement mathematics, tracking, WorldModel, Isaac lifecycle/camera code,
-bootstrap ownership, launch scripts, dependency pins and direct-script dispatch
-are unchanged.
-
-## Workstation validation and remaining concerns
-
-After checking out the branch on the existing configured workstation:
-
-```bash
-python3 scripts/run_all_regressions.py --group isaac \
-    --artifacts-dir outputs/phase_3a_isaac
-python3 scripts/run_all_regressions.py --group regression \
-    --artifacts-dir outputs/phase_3a_regression
-./run_isaac_sim.sh
-```
-
-Both integration scenarios and all six regressions must run and report PASS.
-Use the [GUI smoke checklist](validation.md#manual-gui-smoke-test), repeat
-Home/Move/Pick/Place and both BT tasks, and confirm rendering/perception continue
-during movement. Check reactive disturbance callbacks, gripper verification,
-placement reacquisition and repeated commands. Controls should reject overlap.
-
-The old async update budgets/tolerances are unchanged; standalone scenarios now
-share GUI cooperative timing rather than blocking physics stepping. Actual
-wall-clock timing, physics/render cadence and benchmark accuracy must be
-revalidated on Isaac. The cloud cannot prove native startup or those behaviors.
-
-Reserved for Phase 3B: uncertain held state after lift failure/cancellation,
-failed-retreat reporting, recovery-motion safety, diagnostic-only speed and
-initialization-pose Home semantics. Phase 3A does not repair those issues, alter
-their skill results, or change camera/lifecycle ownership. No Phase 3B/3C work
-or automatic merge is included.
+Superseded troubleshooting reports and initial size counts are recoverable
+from Git as described in [history](history.md#phase-3a-diagnostic-history).
