@@ -137,3 +137,65 @@ Inspect `manipulation_trials[*].backend_commands` for the first failing trial
 and keep both JSON and log. No production correction is proposed until these
 measurements identify a specific execution defect. The success and accuracy
 requirements remain unchanged.
+
+## Command-trace findings and sequential handoff correction
+
+The subsequent instrumented workstation run reproduced the same results and
+physical errors, including the 79.18 mm trial-2 miss. The user's observation of
+shaking and ground contact is consistent with unstable control/contact; the
+trace does not by itself identify a motion-planning mathematics defect.
+The user also confirmed shaking/ground contact during the passing Phase 2 run.
+This motion-quality problem therefore predates Phase 3A and remains unresolved
+independently of the benchmark's execution-path divergence.
+
+Verified observations:
+
+- Every recorded motion has exactly one physics step per controller iteration,
+  including trial 3's 1,000-step release approach (16.6667 simulated seconds).
+  Gripper opening/closing consume 60/90 physics steps respectively. This rules
+  out a count mismatch within these traced loops; update-event phase ordering
+  is not established by boundary counts.
+- Trial 2 loses the carried object during descent, before the open command.
+  At descent start the cube is approximately `[0.4783, -0.0751, 0.1222]` m;
+  at descent completion it is on the table at `[0.4328, -0.0317, 0.0250]` m,
+  while TCP is `[0.4627, -0.0849, 0.0330]` m. The physical miss is already
+  present before release, rather than being solely a perception/reporting error.
+- Trial 3 keeps the object near the TCP, but the release approach never satisfies
+  orientation tolerance. Its final state is not proof of the path's minimum
+  clearance or absence of oscillation.
+- Exactly one physics tick separates the end of Pick's lift from the start of
+  Place's pre-place command in each recorded trial: 1783 to 1784, 2590 to 2591,
+  and 3503 to 3504. TCP and cube move during that tick. Place captures current
+  orientation when it starts, so that tick also changes its requested poses.
+  Phase 2's direct synchronous skill sequence did not insert this scheduling
+  boundary.
+
+The minimal correction keeps sequential Pick and Place in one Kit coroutine
+submission, directly awaiting both skills and retaining separate status,
+failure details, snapshots and command traces. Failed Pick still skips Place.
+Home and scene setup are unchanged. No production backend, skill, lifecycle,
+planner, tracking, source, launcher or dependency changes are made. The change
+removes a verified orchestration difference; it is not yet established that
+this tick causes the full placement error or the observed shaking.
+
+Offline verification: 198 discovered unit tests, eight standalone offline
+checks and the architecture check pass. The new handoff test models a physics
+tick at task submission, verifies no submission between Pick and Place, and
+checks sequencing and argument forwarding. Existing tests retain failed Pick,
+Place timeout, failed cleanup and unchanged accuracy coverage. These checks
+cannot establish native stability.
+
+Workstation validation uses the benchmark command above after pulling the
+Phase 3A branch. The trace should show identical physics-step indices at the
+Pick-lift completion / Place-pre-approach start boundary. Check all four trial
+statuses and the original 25 mm accuracy gate, and observe the arm throughout.
+Even a passing benchmark does not resolve observed shaking or ground strikes.
+If those persist, retain this trace and investigate backend feedback timing,
+arm targets/velocities retained during gripper phases, and contact behaviour;
+do not conceal instability by adjusting tolerances or adding retries.
+
+Two pre-existing limitations also remain relevant: `speed` is recorded but does
+not scale RMPflow motion, and this project never registers the support plane or
+scene obstacles with RMPflow. Reachability/endpoint checks do not establish a
+collision-free trajectory. These are not proven causes of the Phase 3A
+divergence and no speculative controller/planner changes are included here.

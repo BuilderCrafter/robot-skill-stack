@@ -250,23 +250,31 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
                 f"Object not visible before manipulation trial {index}"
             )
 
-        command_trace = []
-        with trace_backend_commands(bundle, command_trace):
+        async def pick_and_place():
+            # A single Kit task preserves a direct sequential handoff. Launching
+            # Place in a second task adds a physics tick under the old command
+            # before Place captures the TCP orientation for its release poses.
             before_pick = trial_snapshot(bundle, object_id)
-            pick = run_kit_coroutine(bundle.runtime.execute_async(
+            pick = await bundle.runtime.execute_async(
                 "pick",
                 object_id=object_id,
-            ), simulation_app)
+            )
             after_pick = trial_snapshot(bundle, object_id)
             place = None
             if pick.ok:
-                place = run_kit_coroutine(bundle.runtime.execute_async(
+                place = await bundle.runtime.execute_async(
                     "place",
                     target=Pose(target),
                     mode="stable",
-                ), simulation_app)
+                )
+            after_place = trial_snapshot(bundle, object_id) if place is not None else None
+            return before_pick, pick, after_pick, place, after_place
 
-        after_place = trial_snapshot(bundle, object_id) if place is not None else None
+        command_trace = []
+        with trace_backend_commands(bundle, command_trace):
+            before_pick, pick, after_pick, place, after_place = run_kit_coroutine(
+                pick_and_place(), simulation_app,
+            )
         final_true = np.asarray(
             cube.get_world_pose()[0],
             dtype=float,

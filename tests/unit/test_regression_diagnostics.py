@@ -56,6 +56,10 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                     objects={'cube': NS(get_world_pose=lambda: (obj.pose.position, None))})
         attempts = []
         async def execute(name, **kwargs):
+            # Model updates inside commands, independently of task submission.
+            world.current_time += 1/60
+            world.current_time_step_index += 1
+            updater.update_count += 1
             if name == 'home':
                 return SkillResult(SkillStatus.SUCCESS)
             if name == 'pick':
@@ -85,7 +89,10 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                             move_to_pose_async=AsyncMock(), close_gripper_async=AsyncMock(),
                             home_async=AsyncMock(), get_end_effector_pose=Mock(return_value=Pose([.45, 0, .1])))
         def bridge(coroutine, app):
+            # Scheduling another standalone Kit task allows an extra physics
+            # tick. A direct await of the next skill must avoid that handoff.
             world.current_time += 1/60
+            world.current_time_step_index += 1
             updater.update_count += 1
             return asyncio.run(coroutine)
         def set_pose(cube, position, world, **kwargs):
@@ -100,6 +107,31 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         module.set_cube_pose = set_pose
         module.object_snapshot = lambda item: {'position': item.pose.position.tolist(), 'visible': item.visible}
         return module, bundle
+
+    def test_pick_place_handoff_does_not_submit_a_second_kit_task(self):
+        module, bundle = self.benchmark(failed=None)
+        bridge = Mock(wraps=module.run_kit_coroutine)
+        module.run_kit_coroutine = bridge
+        execute = bundle.runtime.execute_async.side_effect
+        handoffs = []
+        async def observe_handoff(name, **kwargs):
+            if name == 'place':
+                handoffs[-1].append(bundle.world.current_time_step_index)
+            result = await execute(name, **kwargs)
+            if name == 'pick':
+                handoffs.append([bundle.world.current_time_step_index])
+            return result
+        bundle.runtime.execute_async.side_effect = observe_handoff
+        module.main(self.result, self.out)
+        self.assertEqual(bridge.call_count, 8)  # Home and one Pick/Place task per trial.
+        self.assertEqual(len(handoffs), 4)
+        self.assertTrue(all(finished == started for finished, started in handoffs))
+        calls = bundle.runtime.execute_async.await_args_list
+        self.assertEqual([call.args[0] for call in calls], ['home', 'pick', 'place']*4)
+        for index, (_, target) in enumerate(module.MANIPULATION_TRIALS):
+            self.assertEqual(calls[index*3+1].kwargs, {'object_id': 'cube'})
+            self.assertEqual(calls[index*3+2].kwargs['mode'], 'stable')
+            np.testing.assert_array_equal(calls[index*3+2].kwargs['target'].position, target)
 
     def test_command_trace_preserves_dispatch_and_records_physics_and_geometry(self):
         module, bundle = self.benchmark()
