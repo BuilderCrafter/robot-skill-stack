@@ -11,9 +11,10 @@ drop; it does not implement an active arm hold or resolve wobbling. The script
 still closes SimulationApp using its existing finalization path.
 
 All four benchmark trials remain required for success, with the same accuracy
-limits. All eight original Isaac scenarios remain. No production backend,
-skill, perception, planner, tracking, lifecycle, launcher or dependency changes
-are included in this step.
+limits. All eight original Isaac scenarios remain. The initial failure-handling
+and diagnostic step changed no production code. The subsequent arm-hold
+correction below changes only backend motion finalization; skills, perception,
+planning, tracking, lifecycle, launchers and dependencies remain unchanged.
 
 The existing Place modes have separate unit-tested contracts:
 
@@ -106,3 +107,61 @@ New tests cover fail-fast benchmark handling with original held state and
 timeout details, stable versus release semantics, recorder forwarding/event
 ordering, retained arm targets versus partial gripper commands, idle periods
 without extra actions, timeout stopping and callback/wrapper restoration.
+
+## Workstation trace findings and arm-hold correction
+
+The supplied `control.json` reports `RECORDED`, not startup failure. All seven
+stages completed. The trace spans 6.50 simulated seconds in 2.06 wall-clock
+seconds, with hover/side/back motions completing in 62/29/29 iterations. This
+short execution explains why it could appear to stop before the test began.
+
+World physics, rendering and controller timesteps all match at 1/60 s. Event
+order is computation/application at step N, physics callback at N+1, then the
+awaited-update continuation at N+1 with advanced feedback. That sampled path
+does not show skipped physics or computation repeatedly using the same frame.
+It does not establish that every contact-heavy benchmark path is stable.
+
+The trace confirms retained nonzero arm velocity targets after motion returns:
+
+| Following phase | Maximum retained arm velocity target | TCP displacement during phase |
+| --- | --- | --- |
+| Open empty gripper | 0.18149 rad/s | 14.21 mm |
+| Idle after sideways motion | 0.16597 rad/s | 14.36 mm |
+| Idle after return motion | 0.13188 rad/s | 12.22 mm |
+
+Finger-only commands do not replace the arm targets. Actual velocity eventually
+settles even though the old requested velocity remains nonzero; this is not
+evidence of unlimited drift. It establishes that a completed command leaves a
+nonstationary drive request active. The movement during closure can also change
+the object/TCP relationship after Pick's pre-close attachment measurement.
+These findings support a bounded correction, not a claim to have explained all
+observed wobbling or ground contact.
+
+`move_to_pose_async` now applies one arm-only position-hold action when exiting
+after it has issued a motion command. It preserves the last RMPflow joint
+position targets and active joint indices and sets their velocity targets to
+zero. The `finally` path covers success, timeout and cancellation; an immediately
+rejected target or paused motion with no applied action emits no hold. It does
+not change gripper targets, mutate the original RMPflow action, await another
+frame, relax tolerances or alter active RMPflow calculations. No gains, new
+planner, retries or lifecycle changes are introduced.
+
+This changes post-command settling and therefore needs native accuracy and
+grasp validation, even though completion tolerances remain unchanged. It is a
+position-target hold, not an instantaneous stop or proof of contact safety.
+An SDK error while applying the hold still propagates as a command error.
+
+Offline validation passed 212 discovered unit tests, eight standalone checks
+and the architecture check. Backend tests cover arm-only target preservation,
+zero final velocity targets, original-action immutability, unchanged physics
+budgets, timeout/cancellation, rejection without a command, and following
+gripper operations. Native stability remains unverified after the change.
+
+After pulling the Phase 3A branch, rerun the diagnostic command above into a
+fresh output directory (for example `outputs/control-hold`). Its final arm
+velocity targets should now be zero through gripper and idle phases; compare
+TCP drift and observed motion rather than requiring instantaneous zero motion.
+Then run the benchmark and placement commands above if motion is stable. All
+four stable trials and the existing accuracy gates must pass before the full
+regression group and intentional-release check. The GUI selector still follows
+native validation.
