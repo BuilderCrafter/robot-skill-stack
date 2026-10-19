@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Protocol
+import time
 
 from robot_skill_stack.world.model.context import ObservationContext
 from robot_skill_stack.world.model.observations import ObjectObservation
@@ -16,6 +17,21 @@ class ObservationBatch:
     """
     observations: list[ObjectObservation] = field(default_factory=list)
     timestamp: float | None = None
+
+
+@dataclass
+class ObservationHealth:
+    last_frame_at: float | None = None
+    error: str | None = None
+    stale_after: float = 1.0
+
+    @property
+    def status(self):
+        if self.error:
+            return 'failed'
+        if self.last_frame_at is None:
+            return 'waiting'
+        return 'stale' if time.monotonic()-self.last_frame_at >= self.stale_after else 'fresh'
 
 
 class WorldObservationProvider(Protocol):

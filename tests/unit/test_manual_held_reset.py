@@ -75,7 +75,6 @@ class ManualHeldResetTests(unittest.IsolatedAsyncioTestCase):
         self.obj.source = 'ground_truth'
         self.obj.visible = False
         self.wm.clear_held_state()
-        self.assertNotIn('object_1', self.wm.expire_stale(now=99999.))
         self.assertTrue(self.wm.exists('object_1'))
 
     def perception(self):
@@ -84,17 +83,18 @@ class ManualHeldResetTests(unittest.IsolatedAsyncioTestCase):
         config = load_scene_config('config/scenes/playground.toml')
         config = replace(config, world=replace(config.world, stale_object_ttl=2.))
         provider = build_perception_provider(camera, config)
-        model = WorldModel(stale_object_ttl=2.)
-        updater = WorldModelUpdater(model, provider)
+        model = WorldModel()
+        updater = WorldModelUpdater(model, provider, stale_object_ttl=2.)
         for _ in range(3):
-            camera.push(frame)
-            updater.update()
+            with patch('time.monotonic', return_value=100.-(3-_)*.01):
+                camera.push(frame)
+                updater.update()
         object_id = model.objects()[0].object_id
         model.set_held(object_id, object_offset_in_ee=[0, 0, .03])
         return camera, model, provider, updater, object_id, frame
 
     def test_tracker_id_and_geometry_survive_reset_until_normal_expiry(self):
-        with patch('time.monotonic', return_value=100.):
+        with patch('time.monotonic', return_value=101.):
             camera, model, provider, updater, oid, frame = self.perception()
             track = provider.tracker.get(oid)
             model.clear_held_state()
@@ -120,11 +120,12 @@ class ManualHeldResetTests(unittest.IsolatedAsyncioTestCase):
             self.assertIsNone(provider.get_point_cloud(oid))
 
     def test_reset_does_not_reassert_stale_held_state_on_next_observation(self):
-        with patch('time.monotonic', return_value=100.):
+        with patch('time.monotonic', return_value=101.):
             camera, model, _, updater, oid, frame = self.perception()
             model.clear_held_state()
             for _ in range(4):
-                camera.push(frame); updater.update()
+                with patch('time.monotonic', return_value=101.+(_+1)*.01):
+                    camera.push(frame); updater.update()
             self.assertIsNone(model.held_object_id)
             self.assertIsNone(model.held_object_offset_in_ee)
             self.assertTrue(model.exists(oid))

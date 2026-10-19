@@ -192,11 +192,12 @@ async def _build_runtime(
         await app.next_update_async()
 
     provider = await _create_state_provider(world, config)
-    model = WorldModel(stale_object_ttl=config.world.stale_object_ttl)
+    model = WorldModel()
     updater = WorldModelUpdater(
         model,
         provider,
         update_hz=_update_hz(config),
+        stale_object_ttl=config.world.stale_object_ttl,
     )
     try:
         backend = IsaacFrankaBackend(

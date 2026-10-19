@@ -28,6 +28,7 @@ class PickSkill(BaseSkill):
         failures=(
             FailureCode.OBJECT_NOT_FOUND,
             FailureCode.OBJECT_POSE_UNKNOWN,
+            FailureCode.WORLD_STATE_UNAVAILABLE,
             FailureCode.OBJECT_MOVED,
             FailureCode.UNREACHABLE,
             FailureCode.NO_VALID_GRASP,
@@ -105,6 +106,11 @@ class PickSkill(BaseSkill):
         )
 
     def _start(self, object_id):
+        if not self.world_model.observations_healthy:
+            return None, SkillResult(
+                SkillStatus.FAILED, 'Observation source is not fresh; Pick was not started.',
+                FailureCode.WORLD_STATE_UNAVAILABLE,
+            )
         obj = self.world_model.get(object_id)
         if obj is None:
             return None, SkillResult(

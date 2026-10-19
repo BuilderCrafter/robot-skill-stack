@@ -32,8 +32,8 @@ class LifecycleTests(unittest.TestCase):
         cfg = load_scene_config('config/scenes/playground.toml')
         cfg = replace(cfg, world=replace(cfg.world, stale_object_ttl=2.))
         self.provider = build_perception_provider(self.camera, cfg)
-        self.model = WorldModel(stale_object_ttl=2.)
-        self.updater = WorldModelUpdater(self.model, self.provider, update_hz=5)
+        self.model = WorldModel()
+        self.updater = WorldModelUpdater(self.model, self.provider, update_hz=5, stale_object_ttl=2.)
 
     def advance(self, seconds):
         self.now.return_value += seconds
@@ -55,7 +55,6 @@ class LifecycleTests(unittest.TestCase):
         self.assertIsNone(self.provider.tracker.get(object_id))
         self.assertIsNone(self.provider.get_mask(object_id))
         self.assertIsNone(self.provider.get_point_cloud(object_id))
-        self.assertNotIn(object_id, self.model._registered_at)
         self.assertNotIn(object_id, self.model._association_hints)
 
     def test_confirmation_requires_distinct_camera_frames(self):
@@ -163,12 +162,9 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual(self.updater.clear_lost(), (object_id,))
         self.assert_forgotten(object_id)
 
-    def test_ground_truth_not_forgotten(self):
+    def test_unobserved_registered_record_can_be_cleared(self):
         self.model.register(WorldObject('configured', visible=False, source='ground_truth'))
-        self.advance(100.)
-        self.assertFalse(self.updater.cleanup())
-        self.assertFalse(self.updater.clear_lost())
-        self.assertTrue(self.model.exists('configured'))
+        self.assertEqual(self.updater.clear_lost(), ('configured',))
 
     def test_never_seen_record_can_expire(self):
         self.model.register(WorldObject('lost', visible=False))

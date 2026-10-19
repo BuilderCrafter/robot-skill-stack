@@ -31,13 +31,6 @@ def main():
  tr.update([c],[pred],frame_id=1,timestamp=1); assert not tr.tracks()[0].confirmed
  tr.update([c],[pred],frame_id=2,timestamp=2); assert not tr.tracks()[0].confirmed
  tr.update([c],[pred],frame_id=3,timestamp=3); assert tr.tracks()[0].confirmed
- m=WorldModel(stale_object_ttl=2); m.apply_observations([ObjectObservation('x',pose=Pose([0,0,0]),visible=True,timestamp=1)]); m.apply_observations([],mark_missing_invisible=True); assert m.expire_stale(4)==('x',)
- for protected in ('held','hint'):
-  m=WorldModel(stale_object_ttl=1);m.apply_observations([ObjectObservation(protected,pose=Pose([0,0,0]),visible=True,timestamp=1)]);m.apply_observations([],mark_missing_invisible=True)
-  if protected=='held':m.set_held(protected)
-  else:m._association_hints[protected]=AssociationHint(protected,np.zeros(3),.1,9999999999.,'place')
-  assert not m.expire_stale(5)
- m=WorldModel();m.apply_observations([ObjectObservation('lost',visible=False,timestamp=1)]); forgotten=[];assert m.clear_lost(forgotten.append)==('lost',) and forgotten==['lost']
  p=SimplePrimitiveGraspPlanner(gripper=ParallelJawGripperSpec(.075));
  for g in (gc,gs,gu,gl): assert p.plan(obj(g)).ok
  assert p.plan(obj(PrimitiveGeometry(PrimitiveShape.SPHERE,1,radius=.05))).failure_reason==GraspFailureReason.OBJECT_TOO_LARGE

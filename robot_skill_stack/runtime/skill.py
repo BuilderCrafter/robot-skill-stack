@@ -13,6 +13,7 @@ class SkillStatus(str, Enum):
 class FailureCode(str, Enum):
     BUSY = "busy"
     OBJECT_NOT_FOUND = "object_not_found"
+    WORLD_STATE_UNAVAILABLE = "world_state_unavailable"
     OBJECT_POSE_UNKNOWN = "object_pose_unknown"
     OBJECT_MOVED = "object_moved"
 
