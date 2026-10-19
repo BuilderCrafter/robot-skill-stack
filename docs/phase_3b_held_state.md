@@ -33,8 +33,10 @@ The backend has no WorldModel or perception dependency.
 
 For Franka, finite two-finger measurements must lie within the finger travel
 range (with tolerance derived from the existing minimum grasp width). A total
-opening below 5 mm indicates empty closure; fingers at the configured open
-position indicate an open/free gripper. Under a close command, intermediate
+opening below 5 mm indicates empty closure; fingers at the physical upper
+joint limits indicate an open/free gripper. Limits are read from the loaded
+articulation using the two finger joint names, independently of the SDK's
+nominal open/action targets. Under a close command, intermediate
 width up to the existing 75 mm grasp maximum supports Held. Partial opening,
 out-of-range values and invalid/missing measurements indicate Uncertain.
 
@@ -91,9 +93,24 @@ closing/lift/opening, timeout/exception preservation, protected candidate IDs,
 manual reset, bounded sampling, normal arm hold and recovery rejection.
 SDK doubles cannot establish native API compatibility or contact behaviour.
 
-Cloud validation passes 242 discovered unit tests (21 added), all eight
+Cloud validation passes 244 discovered unit tests (23 added), all eight
 standalone offline checks, architecture/syntax checks and documentation links.
 The Isaac benchmark and loss diagnostic below have not been run in the cloud.
+
+The first workstation upload at `0ec88c6` reported FAIL for both tests at the
+initial opening. Measured positions were 0.0399999991 m per finger (80 mm total
+opening), but the check used the SDK nominal target rather than physical joint
+travel. The trace's requested opening targets exceeded the measured travel;
+the exact nominal target was not logged. No close or cube-removal injection
+occurred. This was a feedback-verification regression, not a successful fast run.
+
+The correction reads the actual articulation limits, retaining the same
+position tolerance and 60-update opening duration. Result details now include
+physical limits, nominal targets, measured positions and classified state.
+Unit tests cover an over-travel nominal target and non-adjacent finger indices.
+The loss diagnostic also reports the original Pick failure when injection is
+never reached. Native reruns of both scenarios are still required; retain them
+in a fresh output directory such as `outputs/phase3b-open-limits`.
 
 From the existing workstation checkout, first run the ordinary benchmark and
 observe all four trials. It must retain the 25 mm gate and smooth motion:

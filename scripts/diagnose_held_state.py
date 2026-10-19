@@ -59,7 +59,10 @@ def run_check(bundle, metrics, journal):
                        attachment_cleared=model.held_object_offset_in_ee is None,
                        gripper_feedback=backend.gripper_feedback().details)
         assert 'injection_error' not in metrics, metrics.get('injection_error')
-        assert metrics['injected'], 'Cube removal never triggered; this is not a loss-detection pass'
+        assert metrics['injected'], (
+            f"Pick stopped before loss injection: {metrics['failure_code']}: {result.message}; "
+            f"details={result.details}. Loss detection was not exercised."
+        )
         assert result.failure_code == FailureCode.GRASP_LOST, metrics
         assert model.gripper_state == GripperState.FREE, metrics
         assert model.held_object_id is None and metrics['attachment_cleared'], metrics

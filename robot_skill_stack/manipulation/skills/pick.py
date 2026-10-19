@@ -288,7 +288,7 @@ class PickSkill(BaseSkill):
                 if not result.ok:
                     return SkillResult(
                         SkillStatus.FAILED,
-                        "Could not open gripper.",
+                        result.message or "Could not open gripper.",
                         FailureCode.GRASP_FAILED,
                         result.details,
                     )

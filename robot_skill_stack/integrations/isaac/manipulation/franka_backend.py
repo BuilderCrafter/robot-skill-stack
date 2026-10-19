@@ -40,6 +40,9 @@ class IsaacFrankaBackend(ManipulationBackend):
         self.grasp_min_width = float(grasp_min_width)
         self.grasp_max_width = float(grasp_max_width)
         self._gripper_command = None
+        # SDK nominal opening/action targets can exceed the loaded USD travel.
+        finger_indices = [robot.get_dof_index(f'panda_finger_joint{i}') for i in (1, 2)]
+        self._finger_limits = np.asarray(robot.get_dof_limits(), dtype=float)[finger_indices].copy()
 
         rmpflow = RmpFlow(**interface_config_loader.load_supported_motion_policy_config('Franka', 'RMPflow'))
         self.motion_controller = MotionPolicyController(
@@ -127,17 +130,23 @@ class IsaacFrankaBackend(ManipulationBackend):
             "estimated_width_m": width,
             "minimum_grasp_width_m": self.grasp_min_width,
             "maximum_grasp_width_m": self.grasp_max_width,
+            "finger_lower_limits_m": self._finger_limits[:, 0].tolist(),
+            "finger_upper_limits_m": self._finger_limits[:, 1].tolist(),
+            "nominal_open_positions_m": np.asarray(self.robot.gripper.joint_opened_positions).tolist(),
         }
-        opened = np.asarray(self.robot.gripper.joint_opened_positions)
+        lower, opened = self._finger_limits[:, 0], self._finger_limits[:, 1]
         tolerance = self.grasp_min_width / 2
         valid = (joints.shape == (2,) and width is not None and
-                 np.all(joints >= -tolerance) and np.all(joints <= opened+tolerance))
+                 np.all(joints >= lower-tolerance) and np.all(joints <= opened+tolerance))
         state = GripperState.UNCERTAIN
         if valid:
-            if width < self.grasp_min_width or np.all(np.abs(joints-opened) <= tolerance):
+            if width < self.grasp_min_width:
                 state = GripperState.FREE
             elif self._gripper_command == 'close' and width <= self.grasp_max_width:
                 state = GripperState.HELD
+            elif np.all(np.abs(joints-opened) <= tolerance):
+                state = GripperState.FREE
+        details['grasp_state'] = state.value
         return GripperFeedback(state, width, details)
 
     async def inspect_gripper_async(self):
@@ -270,10 +279,11 @@ class IsaacFrankaBackend(ManipulationBackend):
             await self._next_update()
 
         feedback = self.gripper_feedback()
+        opened = (feedback.state == GripperState.FREE and feedback.width is not None and
+                  feedback.width > self.grasp_max_width)
         return BackendResult(
-            feedback.state == GripperState.FREE and feedback.width is not None and
-            feedback.width > self.grasp_max_width,
-            "Gripper opening completed; measured opening must confirm release.",
+            opened,
+            "Gripper opened." if opened else "Measured finger positions do not confirm opening.",
             details=feedback.details,
         )
 
