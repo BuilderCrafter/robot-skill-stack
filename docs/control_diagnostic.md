@@ -165,3 +165,32 @@ Then run the benchmark and placement commands above if motion is stable. All
 four stable trials and the existing accuracy gates must pass before the full
 regression group and intentional-release check. The GUI selector still follows
 native validation.
+
+## Native arm-hold comparison
+
+The next supplied `control-hold/control.json` completed all seven stages with
+`RECORDED` status. Timesteps still match at 1/60 s. During every gripper/idle
+sample, the retained arm velocity targets are zero. Using the same first/last
+`after_update` TCP measurements in each phase:
+
+| Phase | Before hold | With hold |
+| --- | --- | --- |
+| Open empty gripper | 14.21 mm | 1.35 mm |
+| Close empty gripper | 0.076 mm | 0.017 mm |
+| Idle after sideways motion | 14.36 mm | 1.15 mm |
+| Idle after return motion | 12.22 mm | 1.62 mm |
+
+This verifies the intended target change and substantially reduces observed
+post-command movement in the empty-gripper case. It does not establish loaded
+grasp stability or collision-free manipulation. The configured profile is the
+expected playground with ground truth and a 50 mm cube.
+
+Holding the last joint position target also removes the old continued approach
+to the Cartesian goal. Motion completion was within the unchanged 20 mm
+tolerance, but the last return pose settled approximately 20.32 mm from target
+after idle (19.98 mm at reported completion). This small post-command change
+must remain visible; native manipulation must still meet its existing grasp,
+success and 25 mm true placement-accuracy requirements. No thresholds are
+relaxed to compensate. The next required measurement is the stable benchmark,
+followed by placement feasibility and the full regression group if successful.
+Intentional-release validation and GUI selection remain pending.
