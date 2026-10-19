@@ -1,7 +1,7 @@
 """Exercise scenario assertions/reporting with doubles; never start native Isaac."""
 import ast
 import asyncio
-from contextlib import ExitStack
+from contextlib import ExitStack, contextmanager
 import json
 from pathlib import Path
 import tempfile
@@ -33,7 +33,8 @@ def scenario(name):
              (isinstance(node, ast.Assign) and all(isinstance(t, ast.Name) and t.id.isupper() for t in node.targets))]
     module = ModuleType(name)
     module.__dict__.update(np=np, Path=Path, Pose=Pose, FailureCode=FailureCode, time=time,
-                           ExitStack=ExitStack, patch=patch, write_result=write_result, simulation_app=object())
+                           ExitStack=ExitStack, contextmanager=contextmanager, patch=patch,
+                           write_result=write_result, simulation_app=object())
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), 'exec'), module.__dict__)
     return module
 
@@ -50,7 +51,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         model = WorldModel()
         obj = WorldObject('cube', 'cube', Pose([.45, 0, .025]), [.05]*3, visible=True)
         model.register(obj)
-        world, updater = NS(current_time=0.), NS(update_count=0, last_error=None)
+        world, updater = NS(current_time=0., current_time_step_index=0), NS(update_count=0, last_error=None)
         bundle = NS(world=world, world_model=model, world_updater=updater,
                     objects={'cube': NS(get_world_pose=lambda: (obj.pose.position, None))})
         attempts = []
@@ -80,7 +81,9 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                 raise ValueError('release controller error')
             return BackendResult(cleanup == 'ok', 'release result', details={'feedback': cleanup})
         bundle.runtime = NS(execute_async=AsyncMock(side_effect=execute))
-        bundle.backend = NS(open_gripper_async=AsyncMock(side_effect=release))
+        bundle.backend = NS(open_gripper_async=AsyncMock(side_effect=release),
+                            move_to_pose_async=AsyncMock(), close_gripper_async=AsyncMock(),
+                            home_async=AsyncMock(), get_end_effector_pose=Mock(return_value=Pose([.45, 0, .1])))
         def bridge(coroutine, app):
             world.current_time += 1/60
             updater.update_count += 1
@@ -97,6 +100,88 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         module.set_cube_pose = set_pose
         module.object_snapshot = lambda item: {'position': item.pose.position.tolist(), 'visible': item.visible}
         return module, bundle
+
+    def test_command_trace_preserves_dispatch_and_records_physics_and_geometry(self):
+        module, bundle = self.benchmark()
+        target = Pose([.48, -.08, .025], [1, 0, 0, 0])
+        result = BackendResult(False, 'orientation timeout', timed_out=True, details={'steps': 1000})
+        async def move(*args, **kwargs):
+            bundle.world.current_time += 1000/60
+            bundle.world.current_time_step_index += 1000
+            bundle.backend.get_end_effector_pose.return_value = target
+            return result
+        original = bundle.backend.move_to_pose_async
+        original.side_effect = move
+        records = []
+        with module.trace_backend_commands(bundle, records):
+            actual = asyncio.run(bundle.backend.move_to_pose_async(target, speed=.15, orientation_tolerance=.1))
+        self.assertIs(actual, result)
+        self.assertIs(bundle.backend.move_to_pose_async, original)
+        original.assert_awaited_once_with(target, speed=.15, orientation_tolerance=.1)
+        row = records[0]
+        self.assertEqual(row['target']['position'], target.position.tolist())
+        self.assertEqual(row['after']['physics_step']-row['before']['physics_step'], 1000)
+        self.assertEqual(row['result']['details']['steps'], 1000)
+        self.assertEqual(row['after']['tcp_position'], target.position.tolist())
+        self.assertEqual(row['after']['cube_position'], [.45, 0, .025])
+        self.assertTrue(row['result']['timed_out'])
+        bundle.backend.open_gripper_async.assert_not_awaited()
+        json.dumps(records, allow_nan=False)
+
+    def test_command_trace_preserves_exception_or_cancellation_even_if_diagnostic_read_fails(self):
+        for failure in (ValueError('primary command error'), asyncio.CancelledError()):
+            with self.subTest(failure=type(failure).__name__):
+                module, bundle = self.benchmark()
+                original = bundle.backend.close_gripper_async
+                original.side_effect = failure
+                bundle.backend.get_end_effector_pose.side_effect = RuntimeError('query failed')
+                records = []
+                with module.trace_backend_commands(bundle, records):
+                    with self.assertRaises(type(failure)) as raised:
+                        asyncio.run(bundle.backend.close_gripper_async(width=.04))
+                self.assertIs(raised.exception, failure)
+                self.assertIs(bundle.backend.close_gripper_async, original)
+                original.assert_awaited_once_with(width=.04)
+                self.assertIn('query failed', records[0]['after']['diagnostic_error'])
+                self.assertIn(type(failure).__name__, records[0]['exception'])
+
+    def test_failed_trial_persists_command_trace_and_restores_backend_before_cleanup(self):
+        module, bundle = self.benchmark()
+        execute = bundle.runtime.execute_async.side_effect
+        bundle.backend.close_gripper_async.return_value = BackendResult(True, 'closed')
+        async def execute_with_command(name, **kwargs):
+            if name == 'pick':
+                await bundle.backend.close_gripper_async()
+            return await execute(name, **kwargs)
+        bundle.runtime.execute_async.side_effect = execute_with_command
+        with self.assertRaisesRegex(AssertionError, 'Only 3/4'):
+            module.main(self.result, self.out)
+        rows = json.loads(self.result.read_text())['metrics']['manipulation_trials']
+        for row in rows:
+            self.assertEqual([r['command'] for r in row['backend_commands']], ['close_gripper_async'])
+            self.assertTrue(row['backend_commands'][0]['result']['ok'])
+        self.assertTrue(rows[0]['cleanup']['ok'])
+        bundle.backend.close_gripper_async.assert_awaited()
+
+    def test_setup_failure_preserves_prior_trials_and_current_physical_state(self):
+        module, bundle = self.benchmark(failed=None)
+        execute = bundle.runtime.execute_async.side_effect
+        homes = 0
+        async def execute_with_visibility_loss(name, **kwargs):
+            nonlocal homes
+            if name == 'home':
+                homes += 1
+                if homes == 4:
+                    bundle.world_model.require('cube').visible = False
+            return await execute(name, **kwargs)
+        bundle.runtime.execute_async.side_effect = execute_with_visibility_loss
+        with self.assertRaisesRegex(RuntimeError, 'not visible.*trial 4'):
+            module.main(self.result, self.out)
+        metrics = json.loads(self.result.read_text())['metrics']
+        self.assertEqual(len(metrics['manipulation_trials']), 3)
+        self.assertEqual(metrics['failed_setup']['trial'], 4)
+        self.assertFalse(metrics['failed_setup']['world_state']['object']['visible'])
+        self.assertEqual(metrics['failed_setup']['physical_state']['cube_position'], [.46, .02, .025])
 
     def test_failed_trial_is_saved_before_async_cleanup_and_retained_in_final_failure(self):
         module, bundle = self.benchmark()

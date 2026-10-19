@@ -13,7 +13,9 @@ import argparse
 import sys
 import time
 import traceback
+from contextlib import ExitStack, contextmanager
 from pathlib import Path
+from unittest.mock import patch
 
 
 from robot_skill_stack.common.types import Pose
@@ -74,6 +76,57 @@ def trial_snapshot(bundle, object_id):
         "object": None if obj is None else object_snapshot(obj),
         "held_object_id": bundle.world_model.held_object_id,
     }
+
+
+def physical_snapshot(bundle):
+    # Read-only diagnostics: never step the world or change a control target.
+    try:
+        position, orientation = bundle.objects["cube"].get_world_pose()
+        tcp = bundle.backend.get_end_effector_pose()
+        return {
+            "monotonic_s": time.monotonic(),
+            "simulation_time_s": float(bundle.world.current_time),
+            "physics_step": int(bundle.world.current_time_step_index),
+            "cube_position": np.asarray(position).tolist(),
+            "cube_orientation": np.asarray(orientation).tolist(),
+            "tcp_position": tcp.position.tolist(),
+            "tcp_orientation": None if tcp.orientation is None else tcp.orientation.tolist(),
+        }
+    except Exception as exc:
+        # A diagnostic read must not mask a command's original result/exception.
+        return {"diagnostic_error": f"{type(exc).__name__}: {exc}"}
+
+
+@contextmanager
+def trace_backend_commands(bundle, records):
+    def wrap(name, command):
+        async def traced(*args, **kwargs):
+            row = {"command": name, "before": physical_snapshot(bundle)}
+            if name == "move_to_pose_async":
+                target = args[0] if args else kwargs["target"]
+                row["target"] = {
+                    "position": target.position.tolist(),
+                    "orientation": None if target.orientation is None else target.orientation.tolist(),
+                }
+            records.append(row)
+            try:
+                result = await command(*args, **kwargs)
+                row["result"] = {
+                    "ok": result.ok, "timed_out": result.timed_out,
+                    "message": result.message, "details": dict(result.details),
+                }
+                return result
+            except BaseException as exc:
+                row["exception"] = f"{type(exc).__name__}: {exc}"
+                raise
+            finally:
+                row["after"] = physical_snapshot(bundle)
+        return traced
+
+    with ExitStack() as stack:
+        for name in ("move_to_pose_async", "open_gripper_async", "close_gripper_async", "home_async"):
+            stack.enter_context(patch.object(bundle.backend, name, new=wrap(name, getattr(bundle.backend, name))))
+        yield
 
 
 def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
@@ -189,23 +242,29 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
         )
         tracked = bundle.world_model.get(object_id)
         if tracked is None or not tracked.visible:
+            metrics["failed_setup"] = {
+                "trial": index, "world_state": trial_snapshot(bundle, object_id),
+                "physical_state": physical_snapshot(bundle),
+            }
             raise RuntimeError(
                 f"Object not visible before manipulation trial {index}"
             )
 
-        before_pick = trial_snapshot(bundle, object_id)
-        pick = run_kit_coroutine(bundle.runtime.execute_async(
-            "pick",
-            object_id=object_id,
-        ), simulation_app)
-        after_pick = trial_snapshot(bundle, object_id)
-        place = None
-        if pick.ok:
-            place = run_kit_coroutine(bundle.runtime.execute_async(
-                "place",
-                target=Pose(target),
-                mode="stable",
+        command_trace = []
+        with trace_backend_commands(bundle, command_trace):
+            before_pick = trial_snapshot(bundle, object_id)
+            pick = run_kit_coroutine(bundle.runtime.execute_async(
+                "pick",
+                object_id=object_id,
             ), simulation_app)
+            after_pick = trial_snapshot(bundle, object_id)
+            place = None
+            if pick.ok:
+                place = run_kit_coroutine(bundle.runtime.execute_async(
+                    "place",
+                    target=Pose(target),
+                    mode="stable",
+                ), simulation_app)
 
         after_place = trial_snapshot(bundle, object_id) if place is not None else None
         final_true = np.asarray(
@@ -248,6 +307,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
             "before_pick": before_pick,
             "after_pick": after_pick,
             "after_place": after_place,
+            "backend_commands": command_trace,
         }
         metrics["manipulation_trials"].append(row)
         print(

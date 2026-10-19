@@ -70,3 +70,70 @@ making changes. If failure persists, reproduce the same trial on the Phase 2
 baseline in a separate checkout with the same workstation, scene and launcher;
 compare result details and physical errors before attributing it to Phase 3A.
 Do not add sleeps, retries or relax accuracy gates merely to obtain a pass.
+
+## Workstation follow-up: Phase 2 comparison
+
+The supplied Phase 2 `benchmark.json` reports PASS with all four manipulations
+successful. Compared with the Phase 3A `run-hp4ge9ch.zip` results:
+
+| Trial | Phase 2 true target error | Phase 3A outcome |
+| --- | --- | --- |
+| 1 | 13.62 mm, success | 10.71 mm, success |
+| 2 | 4.56 mm, success | 79.18 mm, Place failed |
+| 3 | 8.30 mm, success | Release approach timed out |
+| 4 | 5.03 mm, success | Object not visible during setup; not executed |
+
+Trial 2's perceived placement error (78.60 mm) agrees with its physical error
+(79.18 mm), so stale perception alone cannot explain the miss. Trial 3's release
+approach exhausted 1,000 updates: position error was 5.23 mm (limit 15 mm), but
+orientation error was 0.12354 rad (limit 0.10 rad). Opening the gripper during
+cleanup succeeded. Trial 4's setup exception is a later failure.
+
+Both runs have identical perception benchmark statistics (2.01 mm maximum
+position error, 2.95 mm maximum size error). AST comparison against `904c5b7`
+confirms unchanged async backend motion/gripper/Home methods and unchanged Place
+`execute_async`, `_poses` and `_finish`. Phase 2's benchmark used the removed
+synchronous execution path. These observations strengthen the execution-timing
+hypothesis but do not establish the exact cause or exclude run variability.
+Do not treat this as a proven baseline defect or a perception-only failure.
+
+The new Phase 3A placement-feasibility result passed: 1.184 mm physical drift,
+zero calls to every backend command, unchanged held ID, and successful safe
+placement with 8.97 mm physical error.
+
+### Narrow diagnostic addition
+
+Benchmark-only wrappers now record each Pick/Place motion and gripper command's
+target, result, simulation time, physics-step index, measured TCP pose and true
+cube pose before/after the command. Original results, arguments, exceptions and
+cancellation propagate; wrappers are restored before cleanup. No per-frame
+logging, world stepping, retries, waits or control-target changes are added.
+Read-only snapshots add CPU overhead and may affect wall-clock perception
+scheduling, so the trace is diagnostic evidence rather than an exact replay.
+Failed trial-setup state is also retained without discarding earlier trials.
+
+The trace can distinguish:
+
+- Controller convergence: compare requested pose with measured TCP after motion.
+- Execution cadence: compare physics-step deltas with returned motion `steps`.
+- Object slip/release drift: compare true cube position relative to TCP across
+  approach, descent, opening and retreat.
+- Setup failure: compare physical pose with the cached visibility and age.
+
+Offline verification of this addition passed 197 discovered unit tests, all
+eight standalone offline checks and the architecture check. Four new tests
+cover trace forwarding/restoration, timeout and geometry recording, exception/
+cancellation preservation despite diagnostic-read failure, persisted trial
+traces, and failed-setup reporting. Native behaviour remains unverified here.
+
+After pulling `refactor/phase-3a-execution`, run from the repository root:
+
+```bash
+mkdir -p outputs/phase3a-comparison
+./run_isaac_python.sh tests/regression/test_benchmark.py --result outputs/phase3a-comparison/benchmark.json --artifacts-dir outputs/phase3a-comparison/benchmark > outputs/phase3a-comparison/benchmark.log 2>&1
+```
+
+Inspect `manipulation_trials[*].backend_commands` for the first failing trial
+and keep both JSON and log. No production correction is proposed until these
+measurements identify a specific execution defect. The success and accuracy
+requirements remain unchanged.
