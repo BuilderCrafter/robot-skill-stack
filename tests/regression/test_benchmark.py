@@ -421,8 +421,8 @@ def main(result_path=None, artifacts_dir=None, control_trace=False):
                 out.mkdir(parents=True, exist_ok=True)
                 path = out/'control_trace.jsonl'
                 stream = stack.enter_context(path.open('w', encoding='utf-8'))
-                metrics.update(control_samples=[], control_trace_file=str(path))
-                journal = TraceJournal(metrics['control_samples'], stream)
+                metrics['control_trace_file'] = str(path)
+                journal = TraceJournal(stream)
                 journal.mark('startup')
                 print('Control trace journal:', path, flush=True)
             _run_benchmark(metrics, result_path, artifacts_dir, journal)
@@ -437,7 +437,7 @@ if __name__ == "__main__":
     parser.add_argument("--result")
     parser.add_argument("--artifacts-dir")
     parser.add_argument('--control-trace', action='store_true',
-                        help='Record loaded joint/TCP/cube feedback at each control update for diagnosis')
+                        help='Stream loaded joint/TCP/cube feedback to control_trace.jsonl for diagnosis')
     args = parser.parse_args()
     try:
         main(args.result, args.artifacts_dir, args.control_trace)

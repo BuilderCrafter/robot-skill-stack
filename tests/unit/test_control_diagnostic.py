@@ -100,13 +100,13 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         cube = NS(get_world_pose=lambda: (np.array([.4, 0, .025+.1*backend.world.current_time_step_index]),
                                           np.array([1, 0, 0, 0])))
         position, orientation = np.array([.4, 0, .15]), np.array([0, 0, 1, 0])
-        samples = []
         stream = io.StringIO()
-        journal = TraceJournal(samples, stream)
+        journal = TraceJournal(stream)
         with module.record_control(backend, scheduler, journal, cube=cube) as set_stage:
             set_stage('trial_3:pick')
             backend.motion_controller.forward(position, orientation)
             await backend._next_update()
+        samples = [json.loads(line) for line in stream.getvalue().splitlines()]
         backend.motion_controller.forward.assert_called_once_with(position, orientation)
         self.assertEqual(samples[1]['target_position'], position.tolist())
         self.assertEqual(samples[1]['target_orientation'], orientation.tolist())
@@ -115,7 +115,7 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(samples[0]['cube_position'], [.4, 0, .025])
         self.assertEqual(samples[-1]['cube_position'], [.4, 0, .125])
         self.assertTrue(all(s['stage'] == 'trial_3:pick' for s in samples))
-        self.assertEqual([json.loads(line) for line in stream.getvalue().splitlines()], samples)
+        self.assertEqual(len(samples), 4)
 
     def test_flushed_journal_survives_abrupt_process_exit_without_exception_handler(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -124,7 +124,7 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
 import os, sys
 from tests.support.control_trace import TraceJournal
 stream = open(sys.argv[1], 'w')
-journal = TraceJournal([], stream)
+journal = TraceJournal(stream)
 journal.mark('trial_1:pick')
 journal.append({'event': 'before_apply', 'stage': 'trial_1:pick', 'physics_step': 10})
 os._exit(37)

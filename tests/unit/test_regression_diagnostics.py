@@ -255,7 +255,10 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                     module.main(self.result, self.out, control_trace=True)
                 report = json.loads(self.result.read_text())
                 self.assertEqual(report['status'], 'FAIL')
-                stages = [sample['stage'] for sample in report['metrics']['control_samples']]
+                self.assertNotIn('control_samples', report['metrics'])
+                journal_path = Path(report['metrics']['control_trace_file'])
+                samples = [json.loads(line) for line in journal_path.read_text().splitlines()]
+                stages = [sample['stage'] for sample in samples]
                 self.assertIn('initial_settle', stages)
                 self.assertIn('trial_1:home', stages)
                 self.assertIn('trial_1:pick', stages)

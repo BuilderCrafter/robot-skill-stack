@@ -1,4 +1,4 @@
-"""Temporary workstation telemetry shared by the empty and loaded diagnostics."""
+"""Optional workstation telemetry shared by the empty and loaded diagnostics."""
 from contextlib import ExitStack, contextmanager
 import json
 import time
@@ -8,20 +8,16 @@ import numpy as np
 
 
 class TraceJournal:
-    """Keep complete samples on disk without depending on Python shutdown."""
-    def __init__(self, samples, stream):
-        self.samples, self.stream = samples, stream
+    """Stream complete samples to disk without retaining a second copy in memory."""
+    def __init__(self, stream):
+        self.stream = stream
 
-    def _write(self, row):
+    def append(self, row):
         self.stream.write(json.dumps(row)+'\n')
         self.stream.flush()
 
-    def append(self, row):
-        self._write(row)
-        self.samples.append(row)
-
     def mark(self, stage):
-        self._write({'event': 'stage', 'stage': stage, 'monotonic_s': time.monotonic()})
+        self.append({'event': 'stage', 'stage': stage, 'monotonic_s': time.monotonic()})
 
 
 def action_snapshot(action):

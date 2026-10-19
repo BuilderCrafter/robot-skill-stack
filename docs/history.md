@@ -16,3 +16,19 @@ git archive archive/perception-v2-pre-phase-2 > /tmp/robot-skill-stack-pre-phase
 
 Extract that archive into a separate directory when historical code is needed.
 The tag also preserves the legacy cube planner and classifier removed in Phase 2.
+
+## Phase 3A diagnostic history
+
+Merged commit `6f696d0` preserves the full Phase 3A troubleshooting chronology,
+including superseded cleanup attempts, failed runs, comparison commands and
+initial size counts. Current behaviour and validation are summarized in
+[execution](phase_3a_execution.md) and [control diagnostics](control_diagnostic.md).
+The duplicate `phase_3a_regression_repairs.md` report was removed during cleanup.
+
+Read the original reports without changing the current checkout:
+
+```bash
+git show 6f696d0:docs/phase_3a_regression_repairs.md
+git show 6f696d0:docs/control_diagnostic.md
+git show 6f696d0:docs/phase_3a_execution.md
+```
