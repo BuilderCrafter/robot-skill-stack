@@ -45,19 +45,8 @@ class SkillResult:
         return self.status == SkillStatus.SUCCESS
 
 
-@dataclass(frozen=True)
-class SkillSpec:
-    name: str
-    description: str
-
-    inputs: tuple[str, ...]
-    preconditions: tuple[str, ...]
-    effects: tuple[str, ...]
-    failures: tuple[FailureCode, ...]
-
-
 class BaseSkill(ABC):
-    SPEC: SkillSpec
+    name: str
 
     @abstractmethod
     async def execute_async(self, *args, **kwargs) -> SkillResult:

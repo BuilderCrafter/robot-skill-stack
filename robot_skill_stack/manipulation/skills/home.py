@@ -5,20 +5,13 @@ from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
-    SkillSpec,
     SkillStatus,
 )
 
 
 class HomeSkill(BaseSkill):
-    SPEC = SkillSpec(
-        "home",
-        "Return the robot to a known safe pose.",
-        ("optional named pose",),
-        (),
-        ("robot reaches a safe pose",),
-        (FailureCode.PATH_BLOCKED, FailureCode.TIMEOUT, FailureCode.GRASP_LOST, FailureCode.GRASP_UNCERTAIN),
-    )
+    """Return to the backend startup reference; path safety is not guaranteed."""
+    name = "home"
 
     def __init__(self, backend: ManipulationBackend, world_model: WorldModel):
         self.backend = backend

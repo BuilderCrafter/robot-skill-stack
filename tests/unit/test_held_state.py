@@ -201,6 +201,28 @@ class HeldStateTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(model.held_object_uncertain)
         self.assertIsNone(model.held_object_offset_in_ee)
 
+    async def test_home_preserves_held_attachment_and_stops_on_in_motion_loss(self):
+        for loses_object in (False, True):
+            with self.subTest(loses_object=loses_object):
+                model, backend, runtime = await self.picked()
+                if loses_object:
+                    move = backend.move_to_pose_async
+                    async def slip(target, **kwargs):
+                        backend.closed = False
+                        return await move(target, **kwargs)
+                    backend.move_to_pose_async = slip
+                result = await runtime.execute_async('home')
+                self.assertEqual(result.ok, not loses_object)
+                if loses_object:
+                    self.assertEqual(result.failure_code, FailureCode.GRASP_LOST)
+                    self.assertEqual(model.gripper_state, GripperState.FREE)
+                    self.assertIsNone(model.held_object_offset_in_ee)
+                else:
+                    self.assertEqual(model.gripper_state, GripperState.HELD)
+                    self.assertEqual(model.held_object_id, 'target')
+                    self.assertIsNotNone(model.held_object_offset_in_ee)
+                self.assertEqual([c[0] for c in backend.calls], ['move'])
+
     async def test_interrupted_opening_resolves_state_without_masking_cancellation(self):
         for state in (GripperState.FREE, GripperState.HELD, GripperState.UNCERTAIN):
             with self.subTest(state=state):

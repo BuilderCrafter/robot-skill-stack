@@ -77,4 +77,5 @@ class ManipulationBackend(ABC):
 
     @abstractmethod
     async def home_async(self, name: str = "home", *, grasp_check=None) -> BackendResult:
+        """Move to an adapter-defined named pose; this is not a safety guarantee."""
         ...

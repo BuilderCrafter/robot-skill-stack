@@ -4,7 +4,7 @@ import importlib.util
 from pathlib import Path
 from types import ModuleType, SimpleNamespace as NS
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 import numpy as np
 
@@ -83,6 +83,12 @@ class FrankaFingerLimitTests(unittest.TestCase):
                    gripper=NS(joint_opened_positions=np.array([.05, .05]),
                               get_joint_positions=lambda: [.04, .03]))
         backend = module.IsaacFrankaBackend(NS(get_physics_dt=lambda: 1/60), robot)
+        # Home is a copy of the measured startup TCP, not an invented joint/Cartesian target.
+        np.testing.assert_array_equal(backend.named_poses['home'].position, np.zeros(3))
+        module.ArticulationKinematicsSolver.return_value.compute_end_effector_pose.return_value[0][:] = 1
+        module.rot_matrices_to_quats.return_value[:] = 0
+        np.testing.assert_array_equal(backend.named_poses['home'].position, np.zeros(3))
+        np.testing.assert_array_equal(backend.named_poses['home'].orientation, [1., 0., 0., 0.])
         np.testing.assert_array_equal(backend._finger_limits, [[0., .04], [0., .03]])
         self.assertEqual(robot.get_dof_index.call_args_list,
                          [unittest.mock.call('panda_finger_joint1'),
@@ -303,6 +309,32 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.details['pose_name'], 'home')
         self.assertEqual(state.updates, 2)
         self.assertFalse((await backend.home_async('missing')).ok)
+
+    async def test_named_home_forwards_exact_pose_guard_tolerances_and_failure(self):
+        for timed_out in (False, True):
+            with self.subTest(timed_out=timed_out):
+                backend, _, _ = self.adapter()
+                pose = Pose([.4, .1, .2])
+                backend.named_poses['test_pose'] = pose
+                failure = BackendResult(False, 'controller failed', timed_out=timed_out, details={'steps': 3})
+                backend.move_to_pose_async = AsyncMock(return_value=failure)
+                guard = Mock()
+                result = await backend.home_async('test_pose', grasp_check=guard)
+                self.assertIs(result, failure)
+                self.assertEqual(result.message, 'controller failed')
+                self.assertEqual(result.details, {'steps': 3, 'pose_name': 'test_pose'})
+                backend.move_to_pose_async.assert_awaited_once_with(
+                    pose, position_tolerance=.025, orientation_tolerance=.10, grasp_check=guard)
+
+    async def test_unknown_named_pose_issues_no_command(self):
+        backend, state, _ = self.adapter()
+        backend.move_to_pose_async = AsyncMock()
+        result = await backend.home_async('missing')
+        self.assertFalse(result.ok)
+        self.assertEqual(result.details['available_poses'], ['home'])
+        self.assertEqual(state.updates, 0)
+        backend.move_to_pose_async.assert_not_called()
+        backend.robot.apply_action.assert_not_called()
 
     async def test_position_feedback_distinguishes_empty_held_opening_and_invalid(self):
         backend, _, _ = self.adapter()

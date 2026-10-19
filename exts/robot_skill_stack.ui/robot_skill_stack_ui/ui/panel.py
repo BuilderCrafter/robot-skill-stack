@@ -101,7 +101,8 @@ class ControlPanel:
                     self._action('place', 'Place', c._place_clicked,
                                  tooltip='Target XYZ is the placed object center, not the wrist position.')
                     self._action('move', 'Move', c._move_clicked)
-                    self._action('home', 'Home', c._home_clicked)
+                    self._action('home', 'Home', c._home_clicked,
+                                 tooltip='Return to the captured startup TCP pose. Path safety is not guaranteed.')
             with section('Tasks', 'list'):
                 with ui.HStack(height=30, spacing=9):
                     self._action('task', 'Pick & Place', partial(c._run_task, False))

@@ -41,7 +41,7 @@ The setup's `[scene]` supplies workspace bounds and support-plane height.
 Discovery, tracking and fitting thresholds use the existing Python defaults;
 the former algorithm-tuning TOML sections are removed. RGB-D startup validates
 only the robot and camera prims, without requiring ground-truth object IDs,
-sizes or wrappers. See [Phase 4B](phase_4b_config_adapters_ui.md).
+sizes or wrappers. See [configuration](configuration.md).
 
 V1 uses the current `PrimitiveEstimator` geometry as the class label. Unused
 semantic voting/history has been removed. One greedy distance/size association
@@ -63,7 +63,23 @@ invisible and coordinates expiration with source forgetting. It uses a 1 s
 freshness budget and the existing `[world].stale_object_ttl` (15 s by default).
 The source adapter owns its camera. WorldModel keeps cached state, attachments
 and placement hints; GUI refresh does not perform lifetime maintenance.
-See [Phase 4A](phase_4a_world_model.md) for health and API details.
+
+Health is `waiting`, `fresh`, `stale` or `failed`. The 1 s freshness budget uses
+the local monotonic clock, so health ages even while physics is paused. Old,
+repeated or future batch timestamps do not refresh state; source exceptions
+immediately invalidate visibility and remain failed until a new valid sample.
+Pick/Place and observation-dependent tasks reject unhealthy sources; Home/Move
+retain their readiness/held-state guards. Cached row visibility can remain
+unchanged while paused until the updater next runs; it is not fresh evidence.
+
+Confirmed objects without measurements remain invisible until reacquired or
+expired. Missing pending tracks are dropped; confirmed RGB-D tracks persist
+until updater forgetting. Held/uncertain attachments and active placement hints
+protect their IDs from expiry and Clear Lost. Expiration coordinates WorldModel
+removal and source `forget(id)`, preventing independent lifetime rules. Ground
+truth follows the same expiry rules when observations stop; its scene-defined
+IDs return with the next valid sample. Never-observed test records can expire
+immediately and must not be used as permanent runtime state.
 
 ## Manipulation boundary
 
@@ -110,6 +126,8 @@ The point cloud is generated only when requested and is not persisted.
 Deferred work includes arbitrary-object 6D geometry, learned/general grasp
 planning, difficult occlusion, touching/stacked segmentation, and robust
 large-scale multi-object re-identification.
+The current single greedy association pass can confuse crossing similar objects;
+geometry labels are current measurements, without semantic-history voting.
 
 ## Validation
 

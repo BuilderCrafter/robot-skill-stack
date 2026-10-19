@@ -65,7 +65,11 @@ It does not prove an SDK getter bug: instantaneous solver/contact velocity
 can differ from displacement over a frame. Scene obstacles/support plane are
 not registered with RMPflow, so endpoint checks and one successful run do not
 establish general collision avoidance. See the
-[execution record](phase_3a_execution.md) for adapter tradeoffs and ownership.
+[architecture](architecture.md) for execution and ownership. This frame average
+can miss within-frame motion. The first sample or non-advancing simulation time
+uses zero velocity; history survives Cartesian goal resets and spans gripper-only
+intervals. The default Franka RMPflow configuration and closed-loop position
+feedback remain in use, without velocity clipping or new trajectory restrictions.
 
 ## Loaded benchmark journal
 
@@ -123,4 +127,4 @@ and command failures before changing gains, constraints or accuracy limits.
 
 Run both Isaac groups and the GUI checklist in [validation](validation.md)
 after behaviour changes. Older failed runs and abandoned diagnostic procedures
-are recoverable from [Git history](history.md#phase-3a-diagnostic-history).
+are recoverable from [Git history](history.md#simplification-records).

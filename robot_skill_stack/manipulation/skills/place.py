@@ -15,34 +15,13 @@ from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
-    SkillSpec,
     SkillStatus,
 )
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PlaceSkill(BaseSkill):
-    SPEC = SkillSpec(
-        name="place",
-        description="Place or release the currently held object.",
-        inputs=("target", "mode"),
-        preconditions=(
-            "an object is held",
-            "target is unoccupied",
-            "target is reachable",
-        ),
-        effects=("object is released",),
-        failures=(
-            FailureCode.NOT_HOLDING_OBJECT,
-            FailureCode.TARGET_OCCUPIED,
-            FailureCode.UNREACHABLE,
-            FailureCode.PLACE_FAILED,
-            FailureCode.WORLD_STATE_UNAVAILABLE,
-            FailureCode.GRASP_LOST,
-            FailureCode.GRASP_UNCERTAIN,
-            FailureCode.TIMEOUT,
-        ),
-    )
+    name = "place"
 
     def __init__(
         self,
@@ -180,58 +159,48 @@ class PlaceSkill(BaseSkill):
         placement,
         retreat_result,
     ):
+        details = {
+            "object_id": object_id,
+            "release_confirmed": True,
+            "placement_verified": None,  # Release mode deliberately skips landing verification.
+            "retreat_ok": retreat_result.ok,
+            "retreat_message": retreat_result.message,
+            "retreat_details": retreat_result.details,
+            "placement_planner_details": placement.details,
+        }
+        message = f"Released '{object_id}'."
+        verification_message = None
         if mode == "release":
-            return SkillResult(
-                SkillStatus.SUCCESS,
-                f"Released '{object_id}'.",
-                details={
-                    "object_id": object_id,
-                    "release_position": target.position.tolist(),
-                    "retreat_ok": retreat_result.ok,
-                    "placement_planner_details": placement.details,
-                },
-            )
+            details["release_position"] = target.position.tolist()
+        else:
+            details.update(target_position=target.position.tolist(), visible=obj.visible)
+            if obj.pose is None or not obj.visible:
+                details["placement_verified"] = False
+                verification_message = "Could not reacquire object after placement."
+            else:
+                error = float(np.linalg.norm(obj.pose.position - target.position))
+                details.update(final_position=obj.pose.position.tolist(), placement_error_m=error,
+                               placement_verified=error <= self.placement_tolerance)
+                if not details["placement_verified"]:
+                    verification_message = f"Placement error {error:.3f} m."
+            message = f"Placed '{object_id}'."
+        if verification_message:
+            details["verification_message"] = verification_message
 
-        if obj.pose is None or not obj.visible:
+        # Release is already confirmed: a retreat failure must not restore attachment.
+        # Give the motion failure precedence, retaining verification evidence above.
+        if not retreat_result.ok:
+            details["failed_stage"] = "retreat"
             return SkillResult(
-                SkillStatus.FAILED,
-                "Could not reacquire object after placement.",
-                FailureCode.PLACE_FAILED,
-                {
-                    "object_id": object_id,
-                    "target_position": target.position.tolist(),
-                    "visible": obj.visible,
-                    "retreat_ok": retreat_result.ok,
-                    "placement_planner_details": placement.details,
-                },
+                SkillStatus.TIMEOUT if retreat_result.timed_out else SkillStatus.FAILED,
+                "Object released, but retreat failed: " + (retreat_result.message or "motion did not complete."),
+                motion_failure_code(retreat_result, FailureCode.PLACE_FAILED),
+                details,
             )
-
-        error = float(np.linalg.norm(obj.pose.position - target.position))
-        if error > self.placement_tolerance:
-            return SkillResult(
-                SkillStatus.FAILED,
-                f"Placement error {error:.3f} m.",
-                FailureCode.PLACE_FAILED,
-                {
-                    "target_position": target.position.tolist(),
-                    "final_position": obj.pose.position.tolist(),
-                    "placement_error_m": error,
-                    "retreat_ok": retreat_result.ok,
-                    "placement_planner_details": placement.details,
-                },
-            )
-
-        return SkillResult(
-            SkillStatus.SUCCESS,
-            f"Placed '{object_id}'.",
-            details={
-                "target_position": target.position.tolist(),
-                "final_position": obj.pose.position.tolist(),
-                "placement_error_m": error,
-                "retreat_ok": retreat_result.ok,
-                "placement_planner_details": placement.details,
-            },
-        )
+        if verification_message:
+            details["failed_stage"] = "verification"
+            return SkillResult(SkillStatus.FAILED, verification_message, FailureCode.PLACE_FAILED, details)
+        return SkillResult(SkillStatus.SUCCESS, message, details=details)
 
     async def execute_async(self, target: Pose, mode="stable"):
         prepared, target, failure = self._prepare(target, mode)
@@ -289,12 +258,18 @@ class PlaceSkill(BaseSkill):
         if not result.ok:
             self.world_model.clear_association_hint(object_id)
             return SkillResult(
-                SkillStatus.FAILED,
+                SkillStatus.TIMEOUT if result.timed_out else SkillStatus.FAILED,
                 result.message or "Could not release object.",
                 (FailureCode.GRASP_UNCERTAIN if self.world_model.held_object_uncertain
-                 else FailureCode.PLACE_FAILED),
+                 else motion_failure_code(result, FailureCode.PLACE_FAILED)),
                 {
                     **result.details,
+                    "object_id": object_id,
+                    "failed_stage": "release",
+                    "release_confirmed": False,
+                    "placement_verified": None,
+                    "retreat_ok": None,
+                    "gripper_state": self.world_model.gripper_state.value,
                     "placement_planner_details": placement.details,
                 },
             )
