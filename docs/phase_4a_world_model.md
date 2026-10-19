@@ -132,7 +132,7 @@ Behavioral tests and this review record add lines; total repository diff size is
 not presented as an implementation reduction.
 
 Baseline: 244 unit tests, eight standalone offline checks and architecture/syntax
-passed. Final cloud run: 264 unit tests, all eight offline checks and
+passed. Final cloud run: 266 unit tests, all eight offline checks and
 architecture/syntax passed. Tests cover both production adapters (SDK access
 doubled for ground truth), multiple primitives/IDs, missing/reacquired objects,
 confirmation, TTL/forgetting, held/uncertain/hint protection, long-distance
@@ -147,6 +147,29 @@ Reproduce with the prepared environment's Python:
 python3 scripts/run_all_regressions.py --unit-only
 # Cloud equivalent: .venv/bin/python scripts/run_all_regressions.py --unit-only
 ```
+
+## First workstation results and fixture repair
+
+The first uploaded `phase4a-regression.zip` reports five regression
+scenarios passing, including the four-trial benchmark, and one failing:
+`test_grasp_planning` expected `NO_VALID_GRASP` but received `OBJECT_NOT_FOUND`.
+The operator separately reported both Isaac scenarios passing; those artifacts
+were not included in this ZIP.
+
+The failure was reproduced offline using the actual scenario, updater, runtime
+and planner. The test registered a synthetic 90 mm cube without a measurement
+timestamp before submitting its Kit task. Cleanup during that submission gap
+removed the never-observed record before Pick inspected it. The planner's size
+check was never reached.
+
+The test now installs the synthetic record, directly awaits Pick and removes
+the record in `finally`, all within one Kit task. Oversized rejection occurs
+before any yielding backend command. Tests exercise cleanup before task startup,
+verify `NO_VALID_GRASP` / `object_too_large` with zero backend commands, and
+check fixture removal on error/cancellation while preserving the original error.
+The original physical-motion and 25 mm placement gates remain unchanged.
+No production lifetime, freshness, control or planner changes were needed.
+The repaired native scenario still requires a workstation rerun.
 
 ## Workstation validation
 

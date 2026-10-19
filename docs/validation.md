@@ -1,6 +1,6 @@
 # Lower-level validation
 
-Phase 4A cloud validation passes 264 discovered unit tests, all eight standalone
+Phase 4A cloud validation passes 266 discovered unit tests, all eight standalone
 offline modules, architecture boundaries and Python syntax. Native Phase 4A
 validation is pending; use the [workstation checklist](phase_4a_world_model.md#workstation-validation).
 

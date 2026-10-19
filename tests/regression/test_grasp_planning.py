@@ -31,6 +31,26 @@ from robot_skill_stack.world.model.entities import WorldObject
 TARGET = np.array([0.4465, 0.22, 0.025])
 
 
+async def reject_oversized_object(bundle):
+    # This synthetic record has no observation source. Install, inspect and
+    # remove it within one Kit task: the planner rejects it before any yield.
+    fake_id = "oversized_test_object"
+    bundle.world_model.register(
+        WorldObject(
+            object_id=fake_id,
+            class_name="cube",
+            pose=Pose([0.45, -0.10, 0.045]),
+            size=np.array([0.09, 0.09, 0.09]),
+            graspable=True,
+            visible=True,
+        )
+    )
+    try:
+        return await bundle.runtime.execute_async("pick", object_id=fake_id)
+    finally:
+        bundle.world_model.remove(fake_id)
+
+
 def main(result_path=None, artifacts_dir=None):
     metrics = {}
     out = Path(
@@ -51,22 +71,7 @@ def main(result_path=None, artifacts_dir=None):
 
     print("[3] Verify oversized object is rejected before motion...")
     ee_before = bundle.backend.get_end_effector_pose().position.copy()
-    fake_id = "oversized_test_object"
-    bundle.world_model.register(
-        WorldObject(
-            object_id=fake_id,
-            class_name="cube",
-            pose=Pose([0.45, -0.10, 0.045]),
-            size=np.array([0.09, 0.09, 0.09]),
-            graspable=True,
-            visible=True,
-        )
-    )
-
-    oversized = run_kit_coroutine(bundle.runtime.execute_async(
-        "pick",
-        object_id=fake_id,
-    ), simulation_app)
+    oversized = run_kit_coroutine(reject_oversized_object(bundle), simulation_app)
     ee_after = bundle.backend.get_end_effector_pose().position.copy()
     ee_motion = float(np.linalg.norm(ee_after - ee_before))
 
@@ -110,8 +115,6 @@ def main(result_path=None, artifacts_dir=None):
         raise AssertionError(
             "Robot moved even though grasp feasibility failed"
         )
-
-    bundle.world_model._objects.pop(fake_id, None)
 
     print("[4] Real perception-driven cube Pick + Place...")
     pick = run_kit_coroutine(bundle.runtime.execute_async(
