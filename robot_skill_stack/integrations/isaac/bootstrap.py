@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -13,9 +13,7 @@ from isaacsim.robot.manipulators.examples.franka import Franka
 from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
 from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
-from robot_skill_stack.manipulation.grasping import (
-    SimplePrimitiveGraspPlanner,
-)
+from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner, ParallelJawGripperSpec
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.runtime.runtime import RobotRuntime
@@ -72,8 +70,8 @@ def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
     paths = [
         config.robot.prim_path,
-        config.world.objects_root,
-        *[obj.prim_path for obj in config.objects.values()],
+        config.ground_truth.objects_root,
+        *[obj.prim_path for obj in config.ground_truth.objects.values()],
     ]
 
     if config.world.provider == "perception":
@@ -92,15 +90,15 @@ def _validate_stage(config: SceneConfig):
 
 def _create_robot(world: World, config: SceneConfig):
     cfg = config.robot
-    if cfg.type != "franka":
-        raise RuntimeError(f"Unsupported robot type: {cfg.type}")
+    if cfg.backend != "franka":
+        raise RuntimeError(f"Unsupported robot type: {cfg.backend}")
 
-    robot = world.scene.get_object(cfg.id)
+    robot = world.scene.get_object('franka')
     if robot is None:
         robot = world.scene.add(
             Franka(
                 prim_path=cfg.prim_path,
-                name=cfg.id,
+                name='franka',
             )
         )
     return robot
@@ -108,7 +106,7 @@ def _create_robot(world: World, config: SceneConfig):
 
 def _create_objects(world: World, config: SceneConfig):
     objects = {}
-    for object_id, cfg in config.objects.items():
+    for object_id, cfg in config.ground_truth.objects.items():
         obj = world.scene.get_object(object_id)
         if obj is None:
             obj = world.scene.add(
@@ -128,8 +126,8 @@ async def _create_state_provider(
 ) -> WorldObservationProvider:
     if config.world.provider == "ground_truth":
         return IsaacGroundTruthProvider(
-            config.world.objects_root,
-            config.objects,
+            config.ground_truth.objects_root,
+            config.ground_truth.objects,
         )
 
     if config.world.provider != "perception":
@@ -179,7 +177,7 @@ async def _build_runtime(
         previous.close()
     print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
           f'provider={config.world.provider} perception=geometry_v1 '
-          f'configured_objects={list(config.objects)}', flush=True)
+          f'configured_objects={list(config.ground_truth.objects)}', flush=True)
     robot = _create_robot(world, config)
     objects = _create_objects(world, config)
 
@@ -212,18 +210,10 @@ async def _build_runtime(
             max_motion_steps=1000,
         )
 
-        grasp = config.grasping
         planner = SimplePrimitiveGraspPlanner(
-            approach_height=grasp.approach_height,
-            default_lift_height=grasp.default_lift_height,
-            grasp_z_offset=grasp.grasp_z_offset,
-            gripper=replace(
-                grasp.gripper,
-                max_width=min(grasp.gripper.max_width, backend.grasp_max_width),
-                min_width=max(grasp.gripper.min_width, backend.grasp_min_width),
-            ),
-            safety=grasp.safety,
-            support_plane_z=config.perception.discovery.support_plane_z,
+            gripper=ParallelJawGripperSpec(max_width=backend.grasp_max_width,
+                                          min_width=backend.grasp_min_width, open_width=.080),
+            support_plane_z=config.scene.support_plane_z,
             world_model=model,
             current_pose=backend.get_end_effector_pose,
             pose_reachable=backend.check_reachability,

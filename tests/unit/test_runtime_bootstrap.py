@@ -99,10 +99,8 @@ class BootstrapTests(unittest.TestCase):
 
     def test_invalid_updater_configuration_closes_selected_source(self):
         async def fn(m,e):
-            cfg=m.load_scene_config('x.toml')
-            cfg=replace(cfg,world=replace(cfg.world,stale_object_ttl=-1.))
-            with patch.object(m,'load_scene_config',return_value=cfg):
-                with self.assertRaisesRegex(ValueError,'TTL'):
+            with patch.object(m,'WorldModelUpdater',side_effect=ValueError('injected updater failure')):
+                with self.assertRaisesRegex(ValueError,'updater failure'):
                     await m.build_runtime('x.toml')
             e.providers[0].close.assert_called_once()
             self.assertEqual(e.world._physics_functions,{})
