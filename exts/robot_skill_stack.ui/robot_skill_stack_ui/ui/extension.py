@@ -103,6 +103,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self.panel.set_enabled(
             initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy or (self.bundle is not None and self.bundle.runtime.busy),
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
+            observations_fresh=self.bundle is not None and self.bundle.world_model.observations_healthy,
             selected=selected, perception=self.bundle is not None and self.bundle.config.world.provider == 'perception')
 
     @staticmethod
@@ -330,15 +331,16 @@ class RobotSkillStackExtension(omni.ext.IExt):
             return
         if self.busy and self.view_model is None:
             return
-        self.bundle.world_updater.cleanup()
         self.view_model.ensure_selection()
         signature = self.view_model.signature()
         self.panel.update_objects(self.view_model.rows(), self.view_model.selected_id,
                                   rebuild=force or signature != self._object_signature)
         self._object_signature = signature
-        self.panel.runtime_info.text = 'Perception' if self.bundle.config.world.provider == 'perception' else 'Ground truth'
+        source_name = 'Perception' if self.bundle.config.world.provider == 'perception' else 'Ground truth'
+        health = self.bundle.world_model.source_health
+        self.panel.runtime_info.text = source_name if health is None else f'{source_name} — {health.status}'
         self.panel.runtime_info.tooltip = f'NumPy {np.__version__} from {np.__file__}'
-        error = getattr(self.bundle.world_updater, 'last_error', None)
+        error = None if health is None else health.error
         if isinstance(error, str) and error:
             self._set_status('WorldModel update failed: '+error, 'error')
             if time.monotonic() >= self._diagnostic_at:

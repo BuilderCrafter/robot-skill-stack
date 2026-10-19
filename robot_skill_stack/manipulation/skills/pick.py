@@ -106,11 +106,6 @@ class PickSkill(BaseSkill):
         )
 
     def _start(self, object_id):
-        if not self.world_model.observations_healthy:
-            return None, SkillResult(
-                SkillStatus.FAILED, 'Observation source is not fresh; Pick was not started.',
-                FailureCode.WORLD_STATE_UNAVAILABLE,
-            )
         obj = self.world_model.get(object_id)
         if obj is None:
             return None, SkillResult(
@@ -124,6 +119,11 @@ class PickSkill(BaseSkill):
                 "Gripper is occupied or uncertain; inspect/reset it before another Pick.",
                 FailureCode.GRASP_UNCERTAIN if self.world_model.held_object_uncertain
                 else FailureCode.GRASP_FAILED,
+            )
+        if not self.world_model.observations_healthy:
+            return None, SkillResult(
+                SkillStatus.FAILED, 'Observation source is not fresh; Pick was not started.',
+                FailureCode.WORLD_STATE_UNAVAILABLE,
             )
         if obj.pose is None or not obj.visible:
             return None, SkillResult(
@@ -204,6 +204,11 @@ class PickSkill(BaseSkill):
         planned_position,
         local_replans,
     ):
+        if not self.world_model.observations_healthy:
+            return False, local_replans, SkillResult(
+                SkillStatus.FAILED, 'Observation source stopped providing fresh state during Pick.',
+                FailureCode.WORLD_STATE_UNAVAILABLE,
+            )
         displacement = self._movement(obj, planned_position)
         if (
             displacement is None

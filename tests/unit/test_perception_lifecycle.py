@@ -1,7 +1,7 @@
 from __future__ import annotations
 import unittest
 from dataclasses import replace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -97,6 +97,38 @@ class LifecycleTests(unittest.TestCase):
         for _ in range(4):
             self.step()
         self.assertFalse(self.model.objects())
+
+    def test_rgbd_empty_frame_and_unavailable_frame_have_distinct_batches(self):
+        self.camera.push(self.empty)
+        batch = self.provider.observe()
+        self.assertEqual(batch.observations, [])
+        self.assertIsNotNone(batch.timestamp)
+        repeated = self.provider.observe()
+        self.assertIsNone(repeated.timestamp)
+        self.camera.get_frame_token = lambda: None
+        self.camera.push(self.sphere)
+        self.assertIsNone(self.provider.observe().timestamp)
+
+    def test_camera_exception_invalidates_visibility_until_a_new_frame(self):
+        object_id = self.confirmed()
+        depth = self.camera.get_depth
+        self.camera.get_depth = Mock(side_effect=RuntimeError('camera disconnected'))
+        self.step()
+        self.assertEqual(self.updater.health.status, 'failed')
+        self.assertFalse(self.model.require(object_id).visible)
+        self.camera.get_depth = depth
+        self.step()  # Cached camera token cannot resolve a source failure.
+        self.assertEqual(self.updater.health.status, 'failed')
+        self.step(self.sphere)
+        self.assertTrue(self.model.require(object_id).visible)
+        self.assertEqual(self.updater.health.status, 'fresh')
+
+    def test_source_close_owns_camera_and_is_idempotent(self):
+        self.camera.close = Mock()
+        self.updater.stop()
+        self.updater.stop()
+        self.provider.close()
+        self.camera.close.assert_called_once_with()
 
     def test_missing_depth_does_not_repeat_visible_observations(self):
         object_id = self.confirmed()

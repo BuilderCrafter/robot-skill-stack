@@ -29,7 +29,7 @@ class PerceptionStateProvider:
     def _current_observations(self):
         observations = []
         for track in self.tracker.tracks():
-            if not track.confirmed:
+            if not track.confirmed or not track.visible:
                 continue
             geometry = track.geometry
             shape = None if geometry is None or geometry.shape.value == 'unknown' else geometry.shape.value
@@ -39,7 +39,7 @@ class PerceptionStateProvider:
                 object_id=track.object_id, class_name=shape,
                 pose=Pose(track.position.copy(), orientation, frame='world'),
                 size=track.size.copy(), geometry=geometry, graspable=None,
-                visible=track.visible, confidence=track.confidence, source=self.source, timestamp=track.last_seen,
+                confidence=track.confidence, source=self.source, timestamp=track.last_seen,
                 metadata={
                     'class_confidence': 0. if geometry is None else geometry.confidence,
                     'mask_pixels': 0 if track.mask is None else int(track.mask.sum()),

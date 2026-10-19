@@ -97,6 +97,17 @@ class BootstrapTests(unittest.TestCase):
             e.providers[0].close.assert_called_once(); e.providers[0].camera.close.assert_called_once()
         self.run_case(fn)
 
+    def test_invalid_updater_configuration_closes_selected_source(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            cfg=replace(cfg,world=replace(cfg.world,stale_object_ttl=-1.))
+            with patch.object(m,'load_scene_config',return_value=cfg):
+                with self.assertRaisesRegex(ValueError,'TTL'):
+                    await m.build_runtime('x.toml')
+            e.providers[0].close.assert_called_once()
+            self.assertEqual(e.world._physics_functions,{})
+        self.run_case(fn)
+
     def test_repeat_build_after_stop_replaces_only_owned_callback(self):
         async def fn(m,e):
             a=await m.build_runtime('a.toml'); e.world.stop()

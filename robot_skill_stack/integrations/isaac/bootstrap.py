@@ -193,12 +193,16 @@ async def _build_runtime(
 
     provider = await _create_state_provider(world, config)
     model = WorldModel()
-    updater = WorldModelUpdater(
-        model,
-        provider,
-        update_hz=_update_hz(config),
-        stale_object_ttl=config.world.stale_object_ttl,
-    )
+    try:
+        updater = WorldModelUpdater(
+            model,
+            provider,
+            update_hz=_update_hz(config),
+            stale_object_ttl=config.world.stale_object_ttl,
+        )
+    except BaseException:
+        provider.close()
+        raise
     try:
         backend = IsaacFrankaBackend(
             world=world,

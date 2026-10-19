@@ -80,15 +80,15 @@ class PlaceSkill(BaseSkill):
         )
 
     def _prepare(self, target, mode):
-        if not self.world_model.observations_healthy:
-            return None, None, SkillResult(
-                SkillStatus.FAILED, "Observation source is not fresh; Place was not started.",
-                FailureCode.WORLD_STATE_UNAVAILABLE,
-            )
         if self.world_model.held_object_uncertain:
             return None, None, SkillResult(
                 SkillStatus.FAILED, 'Grasp is uncertain; inspect/reset the gripper first.',
                 FailureCode.GRASP_UNCERTAIN,
+            )
+        if not self.world_model.observations_healthy:
+            return None, None, SkillResult(
+                SkillStatus.FAILED, "Observation source is not fresh; Place was not started.",
+                FailureCode.WORLD_STATE_UNAVAILABLE,
             )
         if mode == "default":
             mode = "stable"
