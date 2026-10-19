@@ -32,7 +32,7 @@ robot_skill_stack/
   runtime/                    skill API, registry, runtime
   world/
     model/                    WorldModel, observations, provider/updater
-    perception/               RGB-D discovery, tracking, semantics, geometry
+    perception/               RGB-D discovery, tracking, geometry
   manipulation/
     backend.py                simulator-agnostic manipulation contract
     skills/                   home, move, pick, place
@@ -107,8 +107,9 @@ Place). The GUI and Behavior Trees use this path; standalone Isaac tests drive
 the same coroutine with Kit's existing bridge. `runtime.busy` reports an active
 command; overlapping commands fail with `FailureCode.BUSY` rather than queuing.
 See `docs/phase_3a_execution.md` for interface migration and validation.
-The next held-state upgrade and its pending workstation tests are described
-in [Phase 3B](docs/phase_3b_held_state.md).
+The merged held-state upgrade is described in [Phase 3B](docs/phase_3b_held_state.md).
+The observation cleanup and its pending workstation validation are described in
+[Phase 4A](docs/phase_4a_world_model.md).
 
 Use one runner from the repository root with Python dependencies installed:
 

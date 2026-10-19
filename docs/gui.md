@@ -1,8 +1,11 @@
 # Isaac GUI
 
 The Isaac extension reads cached state from `WorldModel` and sends manipulation
-commands through `RobotRuntime`. It also checks Franka readiness, invokes updater
-cleanup, and offers perception frame capture.
+commands through `RobotRuntime`. It checks Franka readiness, displays source
+health, and offers perception frame capture. Refresh is read-only; Clear Lost
+explicitly requests removal through the updater. Stale or failed source state
+disables Pick, Place and observation-dependent tasks. Home/Move remain available
+subject to existing readiness and held-state checks. No controls were added.
 
 ## Launch
 

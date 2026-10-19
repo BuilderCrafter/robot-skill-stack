@@ -38,9 +38,27 @@ Ground truth implements the same `WorldObservationProvider` contract and remains
 an oracle/reference provider. `[world].provider` swaps between `ground_truth`
 and `perception` without changing skills, behavior trees, or the runtime API.
 
-The tracker maintains `SemanticBelief`, but the V1 provider emits its geometry
-shape as the class label rather than the resolved semantic history. Production
-V1 uses `PrimitiveEstimator`; there is no separate classifier selection path.
+V1 uses the current `PrimitiveEstimator` geometry as the class label. Unused
+semantic voting/history has been removed. One greedy distance/size association
+pass gives placement hints priority over ordinary proximity. Three consecutive
+fresh detections confirm an ID; only complete detections refresh it. Partial
+occlusion can therefore hide objects sooner, while confirmed IDs remain
+available for reacquisition until the updater expires them.
+
+## Observation ownership
+
+Sources implement `observe(context) -> ObservationBatch`, `forget(id)` and
+`close()`. A fresh batch has a strictly increasing local monotonic timestamp;
+a fresh frame with no accepted objects has an empty observation list. No new
+camera token or missing depth returns a batch without a timestamp, not cached
+observations. Errors raise and the updater records the source failure.
+
+Only `WorldModelUpdater` applies observations, marks missing/stale objects
+invisible and coordinates expiration with source forgetting. It uses a 1 s
+freshness budget and the existing `[world].stale_object_ttl` (15 s by default).
+The source adapter owns its camera. WorldModel keeps cached state, attachments
+and placement hints; GUI refresh does not perform lifetime maintenance.
+See [Phase 4A](phase_4a_world_model.md) for health and API details.
 
 ## Manipulation boundary
 
