@@ -4,6 +4,14 @@ Base: merged Phase 2 commit `904c5b7` on `main` (including the direct-script
 startup correction). Phase 2 ancestry was verified before creating
 `refactor/phase-3a-execution`; the starting checkout was clean.
 
+This document records the initial execution refactor, including its original
+size counts and validation. Subsequent regression repairs add benchmark failure
+reporting, diagnostics and two Franka backend corrections: zero-velocity arm
+hold on motion exit and frame-based velocity feedback for RMPflow. See the
+[current workstation result and merge checks](control_diagnostic.md#latest-workstation-result-and-merge-checks)
+for final branch status. Statements below about unchanged async backend bodies
+refer to the initial refactor, before those evidence-backed corrections.
+
 ## Before and after
 
 Before, runtime, skills, Franka commands and BT nodes each had sync and async

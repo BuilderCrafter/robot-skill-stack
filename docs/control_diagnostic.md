@@ -1,5 +1,47 @@
 # Phase 3A: failure handling, placement modes and controller diagnosis
 
+## Latest workstation result and merge checks
+
+The uploaded `phase3a-frame-feedback.zip` reports **PASS** after the frame
+velocity correction (`b574cf8`). All four perception-driven Pick/Place trials
+and all four retreats succeed. True placement errors are 9.67, 2.55, 7.63 and
+3.24 mm (mean 5.77 mm), within the unchanged 25 mm gate. Maximum perception
+position/size errors are 2.01/2.95 mm, within the 15/12 mm limits. The log
+confirms repository-local NumPy 1.26.4. The operator reports no contortions and
+acceptable motion throughout this run.
+
+The 1,716 recorded controller calls use velocity feedback exactly matching
+joint-position differences over elapsed simulation time. Raw wrist velocity
+still reaches 2.61 rad/s, while controller wrist feedback peaks at 0.98 rad/s.
+This supports the contact-sensitive velocity feedback diagnosis. One observed
+run does not establish general collision avoidance or stability in every scene.
+
+No further control tuning or architecture changes are proposed before merging.
+Keep the opt-in trace for diagnosis; normal regression execution leaves it off.
+The latest cloud run passes 221 discovered unit tests, all eight standalone
+offline checks and the architecture check. Before merging, run **both** Isaac
+groups on the final code, without `--control-trace`, then perform the GUI smoke
+test in [validation.md](validation.md#manual-gui-smoke-test):
+
+```bash
+git switch refactor/phase-3a-execution
+git pull --ff-only
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/phase3a-final/isaac
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/phase3a-final/regression
+./run_isaac_sim.sh
+```
+
+Both integration scenarios and all six regressions must pass. The regression
+group repeats benchmark with tracing disabled and rechecks occupied-target
+rejection after the controller change. In the GUI, exercise Home, Move, Pick,
+Place and both BT tasks; observe motion and continued rendering/perception.
+These final checks are pending. The existing `release` skill mode is preserved;
+its GUI selector remains a separate follow-up after this validation. No Phase
+3B work or automatic merge is included.
+
+The sections below retain the diagnostic history; earlier failed runs and
+initially pending hypotheses do not describe the latest result above.
+
 ## Current changes
 
 The benchmark stops at the first failed Pick/Place trial. It preserves the
@@ -7,14 +49,16 @@ original status, failure code, details, physical measurements, held-state
 snapshot and command trace. It issues no cleanup release, Home or next-trial
 command and does not clear held state. Completed/expected trial counts are
 reported separately. This removes the cleanup command that caused the midair
-drop; it does not implement an active arm hold or resolve wobbling. The script
-still closes SimulationApp using its existing finalization path.
+drop. The separate backend corrections below address retained arm velocity
+targets and active-motion velocity feedback. The script still closes
+SimulationApp using its existing finalization path.
 
 All four benchmark trials remain required for success, with the same accuracy
 limits. All eight original Isaac scenarios remain. The initial failure-handling
-and diagnostic step changed no production code. The subsequent arm-hold
-correction below changes only backend motion finalization; skills, perception,
-planning, tracking, lifecycle, launchers and dependencies remain unchanged.
+and diagnostic step changed no production code. Subsequent corrections change
+backend motion finalization and RMPflow velocity feedback; skills, perception,
+planning mathematics, tracking, lifecycle, launchers and dependencies remain
+unchanged.
 
 The existing Place modes have separate unit-tested contracts:
 

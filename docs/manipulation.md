@@ -57,8 +57,9 @@ it. General learned or arbitrary-object grasp planning is not implemented.
 `SimplePlacementPlanner` performs a conservative AABB overlap check before any
 placement motion. It compares the held object's estimated size and requested
 target against other currently visible WorldModel objects. An occupied target
-returns `TARGET_OCCUPIED` before the end effector moves. Invisible/stale objects
-are not treated as hard obstacles in this V1 checker.
+returns `TARGET_OCCUPIED` before issuing any backend motion or gripper command;
+physical settling can continue during simulation updates. Invisible/stale
+objects are not treated as hard obstacles in this V1 checker.
 
 ## Current execution limitations
 
@@ -67,8 +68,9 @@ the observed final object position; release mode allows an intentional midair
 drop after reaching the requested object-center release pose and opening the
 gripper. Failed approach/descent/open commands remain failures in either mode.
 The current GUI Place button uses stable mode. See the
-[controller diagnostic](control_diagnostic.md) for the current investigation
-and native validation required before exposing release mode in the GUI.
+[controller diagnostic](control_diagnostic.md#latest-workstation-result-and-merge-checks)
+for the passing native benchmark and final validation required before exposing
+release mode in the GUI.
 
 All command callers use `await runtime.execute_async(...)`. Synchronous skill and
 backend commands have been removed; standalone Isaac scripts drive the same

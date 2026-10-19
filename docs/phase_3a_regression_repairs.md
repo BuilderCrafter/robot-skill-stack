@@ -1,9 +1,10 @@
 # Phase 3A regression repairs
 
-Current follow-up: [failure handling, placement modes and controller diagnosis](control_diagnostic.md).
-The fail-fast benchmark policy there supersedes the historical cleanup steps
-below. Controller convergence and GUI release-mode selection await native
-validation; the latest benchmark run still failed.
+Current status: [workstation result and merge checks](control_diagnostic.md#latest-workstation-result-and-merge-checks).
+The latest native benchmark passes all four trials with no operator-observed
+contortions; final integration/regression groups and GUI checks remain pending.
+The fail-fast benchmark policy supersedes the historical cleanup steps below.
+The release-mode GUI selector remains a separate follow-up.
 
 ## Evidence and limits
 
