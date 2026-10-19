@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+from collections.abc import Callable
+from functools import partial
 
 import numpy as np
 import omni.kit.app
@@ -20,8 +22,8 @@ from robot_skill_stack.manipulation.skills.home import HomeSkill
 from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
-from robot_skill_stack.world.model.provider import WorldObservationProvider
 from robot_skill_stack.world.model.updater import WorldModelUpdater
+from robot_skill_stack.world.perception.diagnostics import save_capture
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
@@ -34,7 +36,7 @@ class IsaacRuntimeBundle:
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
     config: SceneConfig
-    state_provider: WorldObservationProvider
+    capture_frame: Callable[[Path], Path] | None = None
     _closed: bool = field(default=False, init=False, repr=False)
 
     def close(self):
@@ -145,9 +147,9 @@ async def _build_runtime(
             backend=backend,
             world_model=model,
             world_updater=updater,
-            runtime=RobotRuntime(registry),
+            runtime=RobotRuntime(registry, model),
             config=config,
-            state_provider=provider,
+            capture_frame=partial(save_capture, provider) if config.world.provider == "perception" else None,
         )
         # Register only after every construction step succeeds.
         updater.update()

@@ -25,7 +25,6 @@ from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import create_pick_and_place_recovery_tree
 from robot_skill_stack.presentation import WorldModelViewModel
-from robot_skill_stack.world.perception.diagnostics import save_capture
 
 from .panel import ControlPanel
 from .window_lifecycle import retire_window
@@ -59,7 +58,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._tasks.clear()
         if self.bundle is not None:
             try:
-                self._close_bundle(self.bundle)
+                self.bundle.close()
             except Exception:
                 pass
         self.panel.destroy()
@@ -104,18 +103,10 @@ class RobotSkillStackExtension(omni.ext.IExt):
             initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy or (self.bundle is not None and self.bundle.runtime.busy),
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
             observations_fresh=self.bundle is not None and self.bundle.world_model.observations_healthy,
-            selected=selected, perception=self.bundle is not None and self.bundle.config.world.provider == 'perception')
-
-    @staticmethod
-    def _close_bundle(bundle):
-        close = getattr(type(bundle), 'close', None)
-        if close is not None:
-            bundle.close()
-        else:
-            bundle.world_updater.stop(bundle.world)
+            selected=selected, capture_available=self.bundle is not None and self.bundle.capture_frame is not None)
 
     def _initialize_clicked(self):
-        if self.busy or self._pending_clear is not None:
+        if self.busy or (self.bundle is not None and self.bundle.runtime.busy) or self._pending_clear is not None:
             return
         if self.bundle is not None and self._robot_ready():
             self._set_status('Runtime already initialized. Restart Isaac to change profiles.', 'success')
@@ -132,11 +123,11 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 profile = ROOT / profile
             previous, self.bundle, self.view_model = self.bundle, None, None
             if previous is not None:
-                self._close_bundle(previous)
+                previous.close()
             self._refresh(force=True)
             bundle = await build_runtime(profile)
             if self._shutting_down:
-                self._close_bundle(bundle)
+                bundle.close()
                 return
             self.bundle = bundle
             self._active_profile = str(profile.resolve())
@@ -153,10 +144,10 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self._refresh(force=True)
 
     def _clear_lost_clicked(self):
-        if self.bundle is None or self.bundle.config.world.provider != 'perception':
-            self._set_status('Clear Lost is available for perception objects only.', 'warning')
+        if self.bundle is None:
+            self._set_status('Initialize the runtime first.', 'warning')
             return
-        if self.busy or self._pending_clear is not None:
+        if self.busy or (self.bundle is not None and self.bundle.runtime.busy) or self._pending_clear is not None:
             self._set_status('Wait for the current operation or confirmation to finish.', 'warning')
             return
         try:
@@ -167,7 +158,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self._set_status(f'Clear Lost failed: {exc}', 'error')
 
     def _clear_held_clicked(self):
-        if self.busy:
+        if self.busy or (self.bundle is not None and self.bundle.runtime.busy):
             self._set_status('Wait for the current operation to finish.', 'warning')
             return
         if self.bundle is None:
@@ -195,19 +186,23 @@ class RobotSkillStackExtension(omni.ext.IExt):
         if self.busy or self.bundle is not bundle or bundle.world_model.held_object_id != object_id:
             self._set_status('Held state or runtime changed. Nothing was cleared.', 'warning')
             return
-        bundle.world_model.clear_held_state()
+        try:
+            bundle.runtime.clear_held_state(object_id)
+        except RuntimeError as exc:
+            self._set_status(str(exc), 'warning')
+            return
         message = f'Cleared held state for {object_id}. No robot motion was commanded.'
         carb.log_warn('[robot_skill_stack.ui] manual reset: ' + message)
         self._set_status(message, 'success')
         self._refresh(force=True)
 
     def _capture_perception_clicked(self):
-        if self.bundle is None or self.bundle.config.world.provider != 'perception':
-            self._set_status('Capture is available for perception only.', 'warning')
+        if self.bundle is None or self.bundle.capture_frame is None:
+            self._set_status('This source does not provide frame capture.', 'warning')
             return
         try:
             stamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
-            path = save_capture(self.bundle.state_provider, ROOT / 'outputs' / 'perception' / f'capture_{stamp}.npz')
+            path = self.bundle.capture_frame(ROOT / 'outputs' / 'perception' / f'capture_{stamp}.npz')
             self._set_status(f'Saved {path.name} in outputs/perception.', 'success')
             carb.log_info(f'[robot_skill_stack.ui] perception capture: {path}')
         except Exception as exc:
@@ -236,7 +231,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         elif self.busy or self.bundle.runtime.busy or self._pending_clear is not None:
             message = 'Another operation or confirmation is in progress.'
         elif not self._robot_ready():
-            message = 'Robot articulation is not initialized. Press Initialize after Play/Reset.'
+            message = 'Robot backend is not ready. Press Initialize after Play/Reset.'
         else:
             return True
         self._set_status(message, 'warning')
@@ -329,14 +324,12 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.panel.ee.text = 'EE position:   unavailable'
             self._update_controls()
             return
-        if self.busy and self.view_model is None:
-            return
         self.view_model.ensure_selection()
         signature = self.view_model.signature()
         self.panel.update_objects(self.view_model.rows(), self.view_model.selected_id,
                                   rebuild=force or signature != self._object_signature)
         self._object_signature = signature
-        source_name = 'Perception' if self.bundle.config.world.provider == 'perception' else 'Ground truth'
+        source_name = self.bundle.config.world.provider.replace('_', ' ').capitalize()
         health = self.bundle.world_model.source_health
         self.panel.runtime_info.text = source_name if health is None else f'{source_name} — {health.status}'
         self.panel.runtime_info.tooltip = f'NumPy {np.__version__} from {np.__file__}'

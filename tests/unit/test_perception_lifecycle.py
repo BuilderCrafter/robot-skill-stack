@@ -280,7 +280,7 @@ class LifecycleTests(unittest.TestCase):
         backend = FakeAsyncBackend()
         registry = SkillRegistry()
         registry.register(PickSkill(backend, self.model, SimplePrimitiveGraspPlanner()))
-        result = asyncio.run(RobotRuntime(registry).execute_async('pick', object_id=object_id))
+        result = asyncio.run(RobotRuntime(registry, self.model).execute_async('pick', object_id=object_id))
         self.assertTrue(result.ok, result.message)
         self.assertEqual(self.model.held_object_id, object_id)
 

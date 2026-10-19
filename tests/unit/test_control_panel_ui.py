@@ -40,8 +40,11 @@ def bundle_(provider='perception'):
     runtime.execute_async = AsyncMock(return_value=SkillResult(SkillStatus.SUCCESS, 'Done'))
     updater = Mock()
     updater.clear_lost.return_value = ()
-    return SimpleNamespace(world_model=wm, backend=backend, runtime=runtime, world=Mock(),
-                           world_updater=updater, state_provider=Mock(),
+    runtime.clear_held_state.side_effect = lambda expected_id: wm.clear_held_state()
+    world = Mock()
+    return SimpleNamespace(world_model=wm, backend=backend, runtime=runtime, world=world,
+                           world_updater=updater, close=Mock(side_effect=lambda: updater.stop(world)),
+                           capture_frame=Mock(return_value=ROOT / "outputs/perception/test.npz") if provider == "perception" else None,
                            config=SimpleNamespace(world=SimpleNamespace(provider=provider)))
 
 
@@ -100,6 +103,27 @@ class ControlPanelTests(unittest.TestCase):
         self.c._confirm_clear_held()
         self.assertEqual(self.panel.held.text, 'Held object:   None')
         self.assertFalse(bundle.world_model.held_object_uncertain)
+
+    def test_manual_reset_routes_through_runtime_and_respects_external_command(self):
+        from robot_skill_stack.runtime.registry import SkillRegistry
+        from robot_skill_stack.runtime.runtime import RobotRuntime
+        bundle=self.hold()
+        bundle.runtime=RobotRuntime(SkillRegistry(),bundle.world_model)
+        self.c._clear_held_clicked()
+        bundle.runtime._busy=True
+        self.c._confirm_clear_held()
+        self.assertEqual(bundle.world_model.held_object_id,'object_1')
+        self.assertIn('command is executing',self.panel.status.text)
+        bundle.runtime._busy=False
+        self.c._clear_held_clicked()
+        self.c._confirm_clear_held()
+        self.assertIsNone(bundle.world_model.held_object_id)
+
+    def test_clear_lost_cannot_run_during_external_command(self):
+        bundle=self.bind()
+        bundle.runtime.busy=True
+        self.c._clear_lost_clicked()
+        bundle.world_updater.clear_lost.assert_not_called()
 
     def test_native_two_columns_and_independent_scrolling(self):
         self.assertEqual(self.c.window.args[0], 'Robot Skill Stack')
@@ -274,18 +298,20 @@ class ControlPanelTests(unittest.TestCase):
         self.assertIsNone(self.c._pending_clear)
         self.assertIn('No held object', self.panel.status.text)
 
-    def test_clear_lost_uses_updater_and_ground_truth_is_protected(self):
+    def test_clear_lost_uses_generic_updater_with_either_source(self):
         for provider in ('perception', 'ground_truth'):
             bundle = self.bind(bundle_(provider))
             self.c._clear_lost_clicked()
-            self.assertEqual(bundle.world_updater.clear_lost.call_count, int(provider == 'perception'))
+            bundle.world_updater.clear_lost.assert_called_once_with()
 
-    def test_capture_control_kept_and_uses_provider(self):
+    def test_capture_control_uses_optional_adapter_callback(self):
         bundle = self.bind()
-        with patch.object(self.module, 'save_capture', return_value=ROOT / 'outputs/perception/test.npz') as save:
-            self.panel.buttons['capture'].click()
-            self.assertIs(save.call_args.args[0], bundle.state_provider)
-            self.assertIn('test.npz', self.panel.status.text)
+        self.panel.buttons['capture'].click()
+        bundle.capture_frame.assert_called_once()
+        self.assertEqual(bundle.capture_frame.call_args.args[0].suffix, '.npz')
+        self.assertIn('test.npz', self.panel.status.text)
+        self.bind(bundle_('ground_truth'))
+        self.assertFalse(self.panel.buttons['capture'].enabled)
 
     def test_profile_picker_sets_existing_profile(self):
         self.panel.buttons['profile'].click()

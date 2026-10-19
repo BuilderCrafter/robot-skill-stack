@@ -1,5 +1,6 @@
 """Failure/cancellation state transitions and carrying guards, without Isaac."""
 import asyncio
+from robot_skill_stack.world.model.world_model import WorldModel
 import unittest
 from unittest.mock import AsyncMock
 
@@ -251,7 +252,7 @@ class HeldStateTests(unittest.IsolatedAsyncioTestCase):
                         calls.append(_name)
                         return SkillResult(SkillStatus.FAILED, failure_code=code, details=details)
                     registry.register(Command(name, command))
-                root = create_pick_and_place_recovery_tree(RobotRuntime(registry), 'target', Pose([.45, .25, .05]))
+                root = create_pick_and_place_recovery_tree(RobotRuntime(registry, WorldModel()), 'target', Pose([.45, .25, .05]))
                 status = await BTExecutor(root).run_async(next_tick)
                 self.assertEqual(status, py_trees.common.Status.FAILURE)
                 self.assertEqual(calls, ['pick'])

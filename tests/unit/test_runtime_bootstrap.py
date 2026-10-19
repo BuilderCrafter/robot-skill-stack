@@ -241,7 +241,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_close_clears_bundle_owner_despite_camera_error(self):
         async def fn(m,e):
-            b=await m.build_runtime('a.toml'); b.state_provider.camera.close.side_effect=ValueError('camera')
+            b=await m.build_runtime('a.toml'); b.world_updater.provider.camera.close.side_effect=ValueError('camera')
             with self.assertRaises(ValueError): b.close()
             self.assertEqual(e.world._physics_functions,{}); self.assertIsNone(e.world._robot_skill_stack_bundle)
         self.run_case(fn)

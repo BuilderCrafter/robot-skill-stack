@@ -39,7 +39,36 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
         model = WorldModel()
         registry.register(HomeSkill(backend, model))
         registry.register(MoveToPoseSkill(backend, model))
-        return backend, RobotRuntime(registry)
+        return backend, RobotRuntime(registry, model)
+
+    async def test_operator_reset_is_software_only_and_rejects_busy_or_changed_attachment(self):
+        from robot_skill_stack.world.model.entities import WorldObject
+        model=WorldModel()
+        model.register(WorldObject('cube'))
+        model.set_held('cube',object_offset_in_ee=[0,0,.03],uncertain=True)
+        registry=SkillRegistry()
+        entered,release=asyncio.Event(),asyncio.Event()
+        async def blocked(**kwargs):
+            entered.set()
+            await release.wait()
+            return SkillResult(SkillStatus.SUCCESS)
+        registry.register(Command('blocked',blocked))
+        runtime=RobotRuntime(registry,model)
+        task=asyncio.create_task(runtime.execute_async('blocked'))
+        await entered.wait()
+        with self.assertRaisesRegex(RuntimeError,'command is executing'):
+            runtime.clear_held_state('cube')
+        self.assertEqual(model.held_object_id,'cube')
+        self.assertTrue(model.held_object_uncertain)
+        release.set()
+        await task
+        with self.assertRaisesRegex(RuntimeError,'Held object changed'):
+            runtime.clear_held_state('different')
+        self.assertEqual(runtime.clear_held_state('cube'),'cube')
+        self.assertIsNone(model.held_object_id)
+        self.assertFalse(model.held_object_uncertain)
+        self.assertIsNone(model.held_object_offset_in_ee)
+        self.assertTrue(model.exists('cube'))
 
     async def test_busy_rejects_overlap_without_motion_then_accepts_next_command(self):
         backend, runtime = self.stack()
@@ -113,7 +142,7 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
                     await next_tick()
                 return SkillResult(SkillStatus.SUCCESS)
             registry.register(Command(name, callback))
-        return RobotRuntime(registry), calls
+        return RobotRuntime(registry, WorldModel()), calls
 
     async def test_bt_sequence_uses_canonical_runtime_and_keeps_results(self):
         runtime, calls = self.task_runtime()
@@ -142,7 +171,7 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
         async def blocked(**kwargs):
             await asyncio.Event().wait()
         registry.register(Command('pick', blocked))
-        runtime = RobotRuntime(registry)
+        runtime = RobotRuntime(registry, WorldModel())
         root = create_pick_and_place_tree(runtime, 'object', Pose([.4, .2, .025]))
         status = await BTExecutor(root).run_async(next_tick, max_ticks=2)
         self.assertEqual(status, py_trees.common.Status.FAILURE)
@@ -158,7 +187,7 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
             entered.set()
             await asyncio.Event().wait()
         registry.register(Command('pick', blocked))
-        runtime = RobotRuntime(registry)
+        runtime = RobotRuntime(registry, WorldModel())
         root = create_pick_and_place_tree(runtime, 'object', Pose([.4, .2, .025]))
         task = asyncio.create_task(BTExecutor(root).run_async(next_tick))
         await asyncio.wait_for(entered.wait(), 2)

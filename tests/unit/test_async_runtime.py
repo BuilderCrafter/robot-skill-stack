@@ -108,7 +108,7 @@ async def run():
             SimplePrimitiveGraspPlanner(),
         )
     )
-    runtime = RobotRuntime(registry)
+    runtime = RobotRuntime(registry, model)
 
     move = await runtime.execute_async(
         "move_to_pose",
