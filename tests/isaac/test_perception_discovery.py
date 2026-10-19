@@ -25,6 +25,7 @@ from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from tests.support.results import save_pgm, save_ppm, write_result
 from robot_skill_stack.world.model.world_model import WorldModel
+from robot_skill_stack.world.model.updater import WorldModelUpdater
 
 ROOT = Path(__file__).resolve().parents[2]
 SCENE = ROOT / "scenes" / "playground.usd"
@@ -45,13 +46,12 @@ def nearest(observations, position):
     )
 
 
-def observe(provider, world, count=1, steps=6):
-    observations = []
+def observe(updater, world, count=1, steps=6):
     for _ in range(count):
         for _ in range(steps):
             world.step(render=True)
-        observations = provider.observe()
-    return observations
+        updater.update()
+    return updater.world_model.objects()
 
 
 def ground_truth(prim_path):
@@ -93,9 +93,11 @@ def main(result_path=None, artifacts_dir=None):
     for _ in range(60):
         world.step(render=True)
     provider = build_perception_provider(camera, config)
+    model = WorldModel()
+    updater = WorldModelUpdater(model, provider)
 
     print("[3] Single-cube discovery...")
-    obs = observe(provider, world, count=5)
+    obs = observe(updater, world, count=5)
     vis = visible(obs)
     metrics["single_visible_count"] = len(vis)
     if len(vis) != 1:
@@ -134,7 +136,7 @@ def main(result_path=None, artifacts_dir=None):
     print("[4] Static ID stability...")
     ids = []
     for _ in range(6):
-        current = visible(observe(provider, world, count=1))
+        current = visible(observe(updater, world, count=1))
         if len(current) != 1:
             raise AssertionError("Single-cube scene lost stable single-object discovery")
         ids.append(current[0].object_id)
@@ -144,7 +146,7 @@ def main(result_path=None, artifacts_dir=None):
     print("[5] Moving cube; ID must remain stable...")
     _, orientation = cube.get_world_pose()
     cube.set_world_pose(position=MOVE_TARGET, orientation=orientation)
-    obs = observe(provider, world, count=6, steps=8)
+    obs = observe(updater, world, count=6, steps=8)
     vis = visible(obs)
     moved = nearest(vis, MOVE_TARGET)
     moved_error = float(np.linalg.norm(moved.pose.position - cube.get_world_pose()[0]))
@@ -167,7 +169,7 @@ def main(result_path=None, artifacts_dir=None):
     second.CreateSizeAttr(0.05)
     xform = UsdGeom.Xformable(second.GetPrim())
     xform.AddTranslateOp().Set(Gf.Vec3d(*SECOND_POS.tolist()))
-    obs = observe(provider, world, count=6, steps=8)
+    obs = observe(updater, world, count=6, steps=8)
     vis = visible(obs)
     metrics["two_cube_visible_count"] = len(vis)
     print("Visible IDs:", [o.object_id for o in vis])
@@ -187,15 +189,13 @@ def main(result_path=None, artifacts_dir=None):
     print("[8] Removing second cube; track should persist but become invisible...")
     second_id = second_obs.object_id
     stage.RemovePrim(SECOND_PATH)
-    obs = observe(provider, world, count=2, steps=8)
+    obs = observe(updater, world, count=2, steps=8)
     second_after = next((o for o in obs if o.object_id == second_id), None)
     metrics["removed_track_retained"] = second_after is not None
     metrics["removed_track_invisible"] = bool(second_after is not None and not second_after.visible)
     assert second_after is not None and not second_after.visible
 
     print("[9] WorldModel integration...")
-    model = WorldModel()
-    model.apply_observations(obs, mark_missing_invisible=True)
     assert model.exists(first_id)
     assert model.exists(second_id)
     assert model.require(first_id).visible

@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-
 import numpy as np
-
-from robot_skill_stack.world.perception.semantics import SemanticBelief
 
 
 @dataclass
@@ -16,290 +13,98 @@ class ObjectTrack:
     last_seen: float
     frame_id: int | None
     mask: np.ndarray | None
-    belief: SemanticBelief
-    hits: int = 1
-    misses: int = 0
-    matched_by_hint: bool = False
-    association_hint_reason: str | None = None
     geometry: object | None = None
+    hits: int = 1
     confirmed: bool = False
-    consecutive_hits: int = 1
+    association_hint_reason: str | None = None
 
     @property
     def visible(self):
-        return self.misses == 0
+        return self.frame_id is not None
 
     @property
-    def class_name(self):
-        return self.belief.resolve()[0]
-
-    @property
-    def class_confidence(self):
-        return self.belief.resolve()[1]
+    def matched_by_hint(self):
+        return self.association_hint_reason is not None
 
 
 class ObjectTracker:
-    def __init__(
-        self,
-        *,
-        max_distance=0.18,
-        max_size_ratio=1.5,
-        max_misses=10,
-        occlusion_distance=0.12,
-        semantic_window=7,
-        semantic_min_samples=3,
-        semantic_threshold=0.70,
-        min_confirm_hits=3,
-        stale_track_ttl=None,
-    ):
+    """One greedy distance/size assignment; the updater owns confirmed-ID expiry.
+
+    Only complete (spawnable) detections refresh tracks. Pending detections must
+    match consecutive fresh frames; missing pending tracks are discarded.
+    """
+    def __init__(self, *, max_distance=0.18, max_size_ratio=1.5, min_confirm_hits=3):
         self.max_distance = float(max_distance)
         self.max_size_ratio = float(max_size_ratio)
-        self.max_misses = int(max_misses)
-        self.occlusion_distance = float(occlusion_distance)
-        self.semantic_window = int(semantic_window)
-        self.semantic_min_samples = int(semantic_min_samples)
-        self.semantic_threshold = float(semantic_threshold)
         self.min_confirm_hits = int(min_confirm_hits)
-        self.stale_track_ttl = None if stale_track_ttl is None else float(stale_track_ttl)
-        if self.min_confirm_hits < 1 or (self.stale_track_ttl is not None and self.stale_track_ttl <= 0):
-            raise ValueError("invalid track confirmation/expiry settings")
+        if self.max_distance <= 0 or self.max_size_ratio < 0 or self.min_confirm_hits < 1:
+            raise ValueError('Invalid track association/confirmation settings')
         self._tracks: dict[str, ObjectTrack] = {}
         self._next_id = 1
 
-    def _new_belief(self):
-        return SemanticBelief(
-            window_size=self.semantic_window,
-            min_samples=self.semantic_min_samples,
-            assignment_threshold=self.semantic_threshold,
-        )
-
-    def _new_track(self, candidate, prediction, frame_id, timestamp):
-        object_id = f"object_{self._next_id}"
-        self._next_id += 1
-        belief = self._new_belief()
-        belief.add(prediction)
-        track = ObjectTrack(
-            object_id=object_id,
-            position=candidate.position.copy(),
-            size=candidate.size.copy(),
-            confidence=candidate.confidence,
-            last_seen=timestamp,
-            frame_id=frame_id,
-            mask=candidate.mask.copy(),
-            belief=belief,
-            geometry=candidate.metadata.get("geometry"),
-            confirmed=self.min_confirm_hits <= 1,
-        )
-        self._tracks[object_id] = track
-        return track
-
-    @staticmethod
-    def _size_ratio(track, candidate):
-        return float(
-            np.linalg.norm(candidate.size - track.size)
-            / max(np.linalg.norm(track.size), 1e-6)
-        )
-
-    def _apply_match(
-        self,
-        track,
-        candidate,
-        prediction,
-        *,
-        size_ratio,
-        frame_id,
-        timestamp,
-        hint_reason=None,
-    ):
-        track.position = candidate.position.copy()
-        if candidate.spawnable or size_ratio <= 0.5:
-            track.size = candidate.size.copy()
-        track.confidence = candidate.confidence
-        track.last_seen = timestamp
-        track.frame_id = frame_id
-        track.mask = candidate.mask.copy()
-        track.hits += 1
-        track.consecutive_hits = 1 if track.misses else track.consecutive_hits + 1
-        track.confirmed = track.confirmed or track.consecutive_hits >= self.min_confirm_hits
-        if candidate.spawnable and candidate.metadata.get("geometry") is not None:
-            track.geometry = candidate.metadata["geometry"]
-        track.misses = 0
-        track.matched_by_hint = hint_reason is not None
-        track.association_hint_reason = hint_reason
-        if candidate.spawnable:
-            track.belief.add(prediction)
-
-    def update(
-        self,
-        candidates,
-        predictions,
-        *,
-        frame_id,
-        timestamp,
-        context=None,
-    ):
-        tracks = list(self._tracks.values())
-        matched_tracks, matched_candidates = set(), set()
-
-        hints = ()
-        held_object_id = None
-        if context is not None:
-            hints = tuple(h for h in context.association_hints if h.expires_at > timestamp)
-            held_object_id = context.held_object_id
-
-        track_index = {
-            track.object_id: i
-            for i, track in enumerate(tracks)
+    def update(self, candidates, *, frame_id, timestamp, context=None):
+        candidates = [c for c in candidates if c.spawnable]
+        tracks = self.tracks()
+        hints = {} if context is None else {
+            h.object_id: h for h in context.association_hints if h.expires_at > timestamp
         }
-
-        hint_pairs = []
-        for hint in hints:
-            ti = track_index.get(hint.object_id)
-            if ti is None:
-                continue
-            track = tracks[ti]
-
+        pairs = []
+        for ti, track in enumerate(tracks):
+            hint = hints.get(track.object_id)
             for ci, candidate in enumerate(candidates):
-                if not candidate.spawnable:
-                    continue
-
-                distance = float(
-                    np.linalg.norm(
-                        candidate.position - hint.expected_position
-                    )
-                )
-                if distance > hint.max_distance:
-                    continue
-
-                size_ratio = self._size_ratio(track, candidate)
+                size_ratio = float(np.linalg.norm(candidate.size-track.size) /
+                                   max(np.linalg.norm(track.size), 1e-6))
                 if size_ratio > self.max_size_ratio:
                     continue
+                distance = float(np.linalg.norm(candidate.position-track.position))
+                limit, reason = self.max_distance, None
+                if hint is not None:
+                    expected_distance = float(np.linalg.norm(candidate.position-hint.expected_position))
+                    if expected_distance <= hint.max_distance:
+                        distance, limit, reason = expected_distance, hint.max_distance, hint.reason
+                if distance <= limit:
+                    score = distance/limit + .25*min(size_ratio, 2.)
+                    pairs.append((reason is None, score, ti, ci, reason))
 
-                score = (
-                    distance / max(hint.max_distance, 1e-6)
-                    + 0.25 * min(size_ratio, 2.0)
-                )
-                hint_pairs.append(
-                    (score, ti, ci, size_ratio, hint.reason)
-                )
-
-        for _, ti, ci, size_ratio, reason in sorted(hint_pairs):
+        matched_tracks, matched_candidates = set(), set()
+        for _, _, ti, ci, reason in sorted(pairs):
             if ti in matched_tracks or ci in matched_candidates:
                 continue
-            self._apply_match(
-                tracks[ti],
-                candidates[ci],
-                predictions[ci],
-                size_ratio=size_ratio,
-                frame_id=frame_id,
-                timestamp=timestamp,
-                hint_reason=reason,
-            )
-            matched_tracks.add(ti)
-            matched_candidates.add(ci)
-
-        normal_pairs = []
-        for ti, track in enumerate(tracks):
-            if ti in matched_tracks:
-                continue
-
-            for ci, candidate in enumerate(candidates):
-                if ci in matched_candidates:
-                    continue
-
-                distance = float(
-                    np.linalg.norm(track.position - candidate.position)
-                )
-                if distance > self.max_distance:
-                    continue
-
-                size_ratio = self._size_ratio(track, candidate)
-                if candidate.spawnable:
-                    if size_ratio > self.max_size_ratio:
-                        continue
-                elif distance > self.occlusion_distance or size_ratio > .5:
-                    continue
-
-                score = (
-                    distance / max(self.max_distance, 1e-6)
-                    + 0.25 * min(size_ratio, 2.0)
-                )
-                normal_pairs.append((score, ti, ci, size_ratio))
-
-        for _, ti, ci, size_ratio in sorted(normal_pairs):
-            if ti in matched_tracks or ci in matched_candidates:
-                continue
-            self._apply_match(
-                tracks[ti],
-                candidates[ci],
-                predictions[ci],
-                size_ratio=size_ratio,
-                frame_id=frame_id,
-                timestamp=timestamp,
-            )
+            track, candidate = tracks[ti], candidates[ci]
+            track.position, track.size = candidate.position.copy(), candidate.size.copy()
+            track.confidence, track.last_seen = candidate.confidence, timestamp
+            track.frame_id, track.mask = frame_id, candidate.mask.copy()
+            track.geometry = candidate.metadata.get('geometry')
+            track.hits += 1
+            track.confirmed = track.hits >= self.min_confirm_hits
+            track.association_hint_reason = reason
             matched_tracks.add(ti)
             matched_candidates.add(ci)
 
         for ti, track in enumerate(tracks):
-            if ti in matched_tracks:
-                continue
-            track.misses += 1
-            track.frame_id = None
-            track.mask = None
-            track.matched_by_hint = False
-            track.association_hint_reason = None
+            if ti not in matched_tracks:
+                if not track.confirmed:
+                    self.forget(track.object_id)
+                else:
+                    track.frame_id = track.mask = None
+                    track.association_hint_reason = None
 
         for ci, candidate in enumerate(candidates):
-            if ci in matched_candidates or not candidate.spawnable:
-                continue
-            self._new_track(
-                candidate,
-                predictions[ci],
-                frame_id,
-                timestamp,
-            )
-
-        protected = {hint.object_id for hint in hints}
-        if held_object_id is not None:
-            protected.add(held_object_id)
-
-        expired = [
-            object_id
-            for object_id, track in self._tracks.items()
-            if self._expired(track, timestamp) and object_id not in protected
-        ]
-        for object_id in expired:
-            del self._tracks[object_id]
-
+            if ci not in matched_candidates:
+                object_id = f'object_{self._next_id}'
+                self._next_id += 1
+                self._tracks[object_id] = ObjectTrack(
+                    object_id, candidate.position.copy(), candidate.size.copy(), candidate.confidence,
+                    timestamp, frame_id, candidate.mask.copy(), candidate.metadata.get('geometry'),
+                    confirmed=self.min_confirm_hits == 1,
+                )
         return self.tracks()
-
-    def _expired(self, track, now):
-        if track.confirmed and self.stale_track_ttl is not None:
-            return not track.visible and now-track.last_seen >= self.stale_track_ttl
-        return track.misses > self.max_misses
-
-    def age(self, now, stale_after, context=None):
-        protected = set()
-        if context is not None:
-            protected = {context.held_object_id, *(h.object_id for h in context.association_hints if h.expires_at > now)}
-        invisible = []
-        for track in self.tracks():
-            if now-track.last_seen >= stale_after:
-                track.misses = max(track.misses, 1)
-                track.frame_id = track.mask = None
-            if not track.visible:
-                invisible.append(track.object_id)
-            if track.object_id not in protected and (
-                self._expired(track, now) or (not track.confirmed and now-track.last_seen >= stale_after)
-            ):
-                self.forget(track.object_id)
-        return tuple(invisible)
 
     def tracks(self):
         return tuple(self._tracks.values())
 
     def forget(self, object_id):
-        return self._tracks.pop(object_id, None)
+        self._tracks.pop(object_id, None)
 
     def get(self, object_id):
         return self._tracks.get(object_id)

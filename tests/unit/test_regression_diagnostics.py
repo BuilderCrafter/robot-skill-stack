@@ -47,6 +47,63 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         self.out = Path(temporary.name)
         self.result = self.out/'result.json'
 
+    def grasp_planning(self):
+        from tests.unit.test_grasp_attachment import AttachmentTests
+        from tests.unit.test_grasp_clearance import solid
+        from robot_skill_stack.world.model.provider import ObservationBatch
+        from robot_skill_stack.world.model.updater import WorldModelUpdater
+        module = scenario('test_grasp_planning')
+        module.WorldObject = WorldObject
+        model, backend, runtime = AttachmentTests().stack(solid('cube'))
+        obj = model.require('target')
+        obj.last_seen = time.monotonic()
+        updater = WorldModelUpdater(model, NS(observe=Mock(return_value=ObservationBatch()),
+                                              forget=Mock(), close=Mock()))
+        updater.health.last_frame_at = obj.last_seen
+        bundle = NS(world_model=model, backend=backend, runtime=runtime,
+                    world=object(), objects={'cube': NS(get_world_pose=lambda: (obj.pose.position, None))})
+        module.open_playground = Mock()
+        module.build_perception_runtime = Mock(return_value=bundle)
+        module.settle = Mock()
+        module.choose_object = lambda world_model: world_model.require('target')
+        module.object_snapshot = lambda item: {'position': item.pose.position.tolist()}
+        return module, bundle, updater
+
+    def test_oversized_rejection_survives_cleanup_before_kit_task_starts(self):
+        module, bundle, updater = self.grasp_planning()
+        rejected = []
+        def bridge(coroutine, app):
+            # The actual Kit bridge can advance physics/cleanup before the task
+            # begins. Use the real updater, runtime and planner to cover that race.
+            updater.cleanup()
+            result = asyncio.run(coroutine)
+            if not rejected:
+                self.assertEqual(result.failure_code, FailureCode.NO_VALID_GRASP)
+                self.assertEqual(result.details['grasp_failure_reason'], 'object_too_large')
+                self.assertEqual(bundle.backend.calls, [])
+                self.assertFalse(bundle.world_model.exists('oversized_test_object'))
+                rejected.append(result)
+            return result
+        module.run_kit_coroutine = bridge
+        module.main(self.result, self.out)
+        report = json.loads(self.result.read_text())
+        self.assertEqual(report['status'], 'PASS')
+        self.assertEqual(report['metrics']['oversized_failure_code'], 'no_valid_grasp')
+        self.assertLess(report['metrics']['true_target_error_mm'], 25.)
+        self.assertFalse(bundle.world_model.exists('oversized_test_object'))
+
+    def test_synthetic_grasp_fixture_is_removed_after_error_or_cancellation(self):
+        for error in (RuntimeError('original failure'), asyncio.CancelledError()):
+            with self.subTest(error=type(error).__name__):
+                module, bundle, _ = self.grasp_planning()
+                bundle.runtime = NS(execute_async=AsyncMock(side_effect=error))
+                with self.assertRaises(type(error)) as caught:
+                    asyncio.run(module.reject_oversized_object(bundle))
+                self.assertIs(caught.exception, error)
+                self.assertFalse(bundle.world_model.exists('oversized_test_object'))
+                self.assertTrue(bundle.world_model.exists('target'))
+                self.assertEqual(bundle.backend.calls, [])
+
     def benchmark(self, failed='place', placement_offset=0.):
         module = scenario('test_benchmark')
         model = WorldModel()

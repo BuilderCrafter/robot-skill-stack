@@ -87,6 +87,13 @@ limit. The hold is not an emergency stop; physical settling can continue.
 
 ## Validation
 
+Completed before Phase 4A: the subsequent `phase3b-dof-properties.zip` reports
+4/4 benchmark trials with successful retreats (errors 9.09, 10.80, 7.39 and
+4.01 mm against 25 mm), plus a passing injected-loss diagnostic. The operator
+then reported both full Isaac groups and manual checks passed and merged this
+phase. The failed attempts and commands below are the historical validation
+record; Phase 4A needs its own native rerun.
+
 Offline tests cover state transitions, invalid/empty readings, slips during
 lift/Place, brief transients, suspect motion completion, cancellation during
 closing/lift/opening, timeout/exception preservation, protected candidate IDs,
@@ -120,7 +127,7 @@ SingleArticulation inheritance were checked against the
 [Isaac Sim 5.1.0 source](https://github.com/isaac-sim/IsaacSim/blob/v5.1.0/source/extensions/isaacsim.core.prims/python/impl/single_articulation.py).
 The constructor double now matches that array layout and omits the unavailable
 getter. No private view access, fallback or hardcoded physical limit is needed.
-Native reruns of both scenarios are still required; retain them in a fresh
+For repeat validation, retain both scenario results in a fresh
 output directory such as `outputs/phase3b-dof-properties`.
 
 From the existing workstation checkout, first run the ordinary benchmark and

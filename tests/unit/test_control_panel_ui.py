@@ -39,7 +39,6 @@ def bundle_(provider='perception'):
     runtime.busy = False
     runtime.execute_async = AsyncMock(return_value=SkillResult(SkillStatus.SUCCESS, 'Done'))
     updater = Mock()
-    updater.cleanup.return_value = ()
     updater.clear_lost.return_value = ()
     return SimpleNamespace(world_model=wm, backend=backend, runtime=runtime, world=Mock(),
                            world_updater=updater, state_provider=Mock(),
@@ -47,6 +46,23 @@ def bundle_(provider='perception'):
 
 
 class ControlPanelTests(unittest.TestCase):
+    def test_refresh_is_read_only_and_displays_source_freshness(self):
+        from robot_skill_stack.world.model.provider import ObservationHealth
+        bundle = self.bind()
+        bundle.world_model.source_health = ObservationHealth(last_frame_at=100.)
+        obj = bundle.world_model.require('object_1')
+        before = obj.__dict__.copy()
+        bundle.world_updater.cleanup.side_effect = AssertionError('UI must not run cleanup')
+        with patch('time.monotonic', return_value=102.):
+            self.c._refresh(force=True)
+        self.assertEqual(obj.__dict__, before)
+        self.assertIn('stale', self.panel.runtime_info.text)
+        self.assertFalse(self.panel.buttons['pick'].enabled)
+        self.assertFalse(self.panel.buttons['task'].enabled)
+        self.assertTrue(self.panel.buttons['home'].enabled)
+        bundle.world_updater.cleanup.assert_not_called()
+        bundle.world_updater.update.assert_not_called()
+
     def test_external_runtime_command_blocks_gui_actions(self):
         bundle = self.bind()
         bundle.runtime.busy = True

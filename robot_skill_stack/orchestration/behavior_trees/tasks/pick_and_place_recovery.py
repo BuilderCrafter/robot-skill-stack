@@ -18,7 +18,8 @@ class RecoveryAllowed(py_trees.behaviour.Behaviour):
         result = self.first.result
         allowed = (result is not None and not result.details.get('gripper_engaged') and
                    result.failure_code not in (FailureCode.GRASP_LOST, FailureCode.GRASP_UNCERTAIN,
-                                               FailureCode.INTERNAL_ERROR, FailureCode.BUSY))
+                                               FailureCode.INTERNAL_ERROR, FailureCode.BUSY,
+                                               FailureCode.WORLD_STATE_UNAVAILABLE))
         return py_trees.common.Status.SUCCESS if allowed else py_trees.common.Status.FAILURE
 
 

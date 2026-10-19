@@ -192,7 +192,9 @@ class HeldStateTests(unittest.IsolatedAsyncioTestCase):
         obj = model.require('target')
         obj.visible, obj.last_seen = False, 0.
         self.assertFalse(model.remove('target'))
-        self.assertFalse(model.expire_stale(now=1e9))
+        from tests.unit.test_world_observations import source
+        from robot_skill_stack.world.model.updater import WorldModelUpdater
+        self.assertFalse(WorldModelUpdater(model, source()).cleanup(now=1e9))
         model.clear_held_state()
         self.assertEqual(model.gripper_state, GripperState.FREE)
         self.assertFalse(model.held_object_uncertain)
@@ -240,7 +242,8 @@ class HeldStateTests(unittest.IsolatedAsyncioTestCase):
     async def test_recovery_does_not_home_or_retry_after_gripper_engagement_or_loss(self):
         for code, details in ((FailureCode.GRASP_FAILED, {'gripper_engaged': True}),
                                (FailureCode.GRASP_LOST, {}), (FailureCode.GRASP_UNCERTAIN, {}),
-                               (FailureCode.INTERNAL_ERROR, {}), (FailureCode.BUSY, {})):
+                               (FailureCode.INTERNAL_ERROR, {}), (FailureCode.BUSY, {}),
+                               (FailureCode.WORLD_STATE_UNAVAILABLE, {})):
             with self.subTest(code=code):
                 registry, calls = SkillRegistry(), []
                 for name in ('pick', 'home', 'place'):

@@ -1,9 +1,19 @@
 # Lower-level validation
 
-Phase 3B held-state changes have a separate
-[workstation procedure](phase_3b_held_state.md#validation), including an explicit
-object-loss diagnostic. Native validation of that change is pending; the
-completed Phase 3A results below do not validate the new monitoring logic.
+Phase 4A cloud validation passes 266 discovered unit tests, all eight standalone
+offline modules, architecture boundaries and Python syntax. The operator reports
+the native automated tests passing after the fixture repair at `9ac2e04`.
+The final rerun artifacts were not uploaded. Phase 4A GUI/source-switch checks
+and the injected-loss diagnostic have not been separately confirmed; see the
+[workstation checklist](phase_4a_world_model.md#workstation-validation).
+
+Phase 3B completed before Phase 4A: uploaded benchmark evidence reports 4/4
+Pick/Place trials (errors 9.09, 10.80, 7.39 and 4.01 mm, unchanged 25 mm limit)
+and successful retreats. The uploaded object-loss diagnostic reports PASS with
+injection triggered, `GRASP_LOST`, Free state, cleared attachment, and no recovery
+Home or extra release. The operator subsequently reported both full Isaac groups
+and manual testing passed, then merged. These results do not validate Phase 4A.
+See the [held-state procedure](phase_3b_held_state.md#validation).
 
 Phase 3A completion: the reviewed `phase3a-frame-feedback.zip` reports all four
 Pick/Place benchmark trials passing, all retreats successful, and maximum true
@@ -12,7 +22,7 @@ confirmed both final Isaac groups (two integration scenarios and six
 regressions) and manual GUI testing passed, and approved merging. See the
 [Phase 3A record](control_diagnostic.md#latest-workstation-result-and-merge-checks)
 for the distinction between uploaded benchmark evidence and operator-reported
-final checks. Latest cloud validation passes 221 discovered unit tests, all
+final checks. The Phase 3A cloud validation passed 221 discovered unit tests, all
 eight standalone offline checks and the architecture check.
 
 Historical results recorded on the Isaac Sim workstation on 2026-09-26

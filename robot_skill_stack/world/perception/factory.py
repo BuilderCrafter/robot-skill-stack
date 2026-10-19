@@ -36,15 +36,9 @@ def build_perception_provider(camera, config):
 
 
 def build_tracker(config):
-    t, s = config.perception.tracking, config.perception.semantics
+    t = config.perception.tracking
     return ObjectTracker(
         max_distance=t.max_distance,
         max_size_ratio=t.max_size_ratio,
-        max_misses=t.max_misses,
-        occlusion_distance=t.occlusion_distance,
-        semantic_window=s.window_size,
-        semantic_min_samples=s.min_samples,
-        semantic_threshold=s.assignment_threshold,
         min_confirm_hits=t.min_confirm_hits,
-        stale_track_ttl=config.world.stale_object_ttl,
     )

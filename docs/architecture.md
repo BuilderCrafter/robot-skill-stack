@@ -16,7 +16,7 @@ Orchestration (Behavior Trees / future external planner)
 
 RGB-D → Discovery → PrimitiveEstimator → ObjectTracker
                                              │
-                                 ObjectObservation[]
+                                  ObservationBatch
                                              │
 Isaac ground truth ───────────────→ WorldModelUpdater → WorldModel
                                      ↑                   │
@@ -27,8 +27,12 @@ Isaac ground truth ───────────────→ WorldModelUp
 
 `runtime`, `world`, `manipulation`, and `orchestration` are simulator-agnostic.
 `integrations/isaac` owns Omniverse/Isaac imports. Perception and ground truth
-implement `WorldObservationProvider.observe(context)`; `WorldModelUpdater`
-samples the selected source through an Isaac physics callback. Skills query
+implement `observe(context) -> ObservationBatch`, `forget(id)` and `close()`.
+A batch distinguishes a fresh sample (including an empty frame) from no new
+sample; source errors raise. `WorldModelUpdater` owns scheduling, source health,
+visibility, timestamp expiration and coordinated forgetting through the existing
+Isaac physics callback. Sources own their resources, including camera cleanup.
+WorldModel stores object/attachment state and placement hints. Skills query
 cached WorldModel state and call a manipulation backend, without querying Isaac.
 
 The composition root is `integrations/isaac/bootstrap.py`. It loads a TOML
@@ -66,9 +70,11 @@ A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`
 `robot_skill_stack.presentation` contains a simulator-independent read model for
 WorldModel state. The Isaac extension renders that read model and invokes
 `RobotRuntime`. Object display and manipulation work with either source, but
-the extension also reads backend `is_ready` and runtime `busy`, invokes updater cleanup,
-and accesses perception capture. These are existing
-integration couplings, not capabilities of the generic presentation model.
+the extension also reads backend `is_ready` and runtime `busy`, and accesses
+perception capture. Ordinary refresh is read-only; only the explicit Clear Lost
+action requests updater cleanup. Source health is displayed in the existing
+source label and gates observation-dependent controls. These integration
+couplings are not capabilities of the generic presentation model.
 
 ## Launch and lifecycle
 
@@ -78,3 +84,6 @@ NumPy 1.26.4 before `SimulationApp`, selects the full experience, disables ROS
 bridge startup, and enables the UI extension. No `--no-ros-env` argument is used.
 Callback ownership, deferred World construction, camera cleanup, and deferred
 UI disposal remain in the existing Isaac integration/lifecycle code.
+
+See [Phase 4A](phase_4a_world_model.md) for source contracts, accepted tracking
+tradeoffs and pending native validation.

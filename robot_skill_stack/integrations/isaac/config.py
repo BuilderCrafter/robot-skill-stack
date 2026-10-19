@@ -58,8 +58,6 @@ class DiscoveryConfig:
 class TrackingConfig:
     max_distance: float = 0.18
     max_size_ratio: float = 1.50
-    max_misses: int = 30
-    occlusion_distance: float = 0.12
     min_confirm_hits: int = 3
 
 
@@ -73,19 +71,11 @@ class PrimitiveConfig:
 
 
 @dataclass(frozen=True)
-class SemanticConfig:
-    window_size: int = 7
-    min_samples: int = 3
-    assignment_threshold: float = 0.70
-
-
-@dataclass(frozen=True)
 class PerceptionConfig:
     camera_prim_path: str | None = None
     resolution: tuple[int, int] = (640, 480)
     discovery: DiscoveryConfig = field(default_factory=DiscoveryConfig)
     tracking: TrackingConfig = field(default_factory=TrackingConfig)
-    semantics: SemanticConfig = field(default_factory=SemanticConfig)
     primitives: PrimitiveConfig = field(default_factory=PrimitiveConfig)
 
 
@@ -152,7 +142,6 @@ def load_scene_config(path: str | Path) -> SceneConfig:
     resolution = p.get("resolution", [640, 480])
     d = p.get("discovery", {})
     t = p.get("tracking", {})
-    s = p.get("semantics", {})
     pr = p.get("primitives", {})
 
     perception = PerceptionConfig(
@@ -176,8 +165,6 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         tracking=TrackingConfig(
             max_distance=float(t.get("max_distance", 0.18)),
             max_size_ratio=float(t.get("max_size_ratio", 1.50)),
-            max_misses=int(t.get("max_misses", 30)),
-            occlusion_distance=float(t.get("occlusion_distance", 0.12)),
             min_confirm_hits=int(t.get("min_confirm_hits", 3)),
         ),
         primitives=PrimitiveConfig(
@@ -185,11 +172,6 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             ambiguity_margin=float(pr.get("ambiguity_margin", .07)),
             top_band=float(pr.get("top_band", .15)),
             fit_tolerance=float(pr.get("fit_tolerance", .0008)),
-        ),
-        semantics=SemanticConfig(
-            window_size=int(s.get("window_size", 7)),
-            min_samples=int(s.get("min_samples", 3)),
-            assignment_threshold=float(s.get("assignment_threshold", 0.70)),
         ),
     )
 

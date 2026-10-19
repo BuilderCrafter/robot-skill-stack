@@ -101,6 +101,7 @@ class FrameCamera:
     def get_intrinsics(self): return self.frame.intrinsics
     def get_world_from_camera_transform(self): return self.frame.world_from_camera
     def get_frame_token(self): return self.token
+    def close(self): pass
     def push(self, frame):
         self.frame = frame
         self.token += 1

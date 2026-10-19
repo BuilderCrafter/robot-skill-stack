@@ -9,49 +9,35 @@ from robot_skill_stack.world.model.context import AssociationHint, ObservationCo
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.common.types import GripperState
+from robot_skill_stack.world.model.provider import ObservationHealth
 
 
 class WorldModel:
-    def __init__(self, *, stale_object_ttl=15.0):
+    def __init__(self):
         self._objects: dict[str, WorldObject] = {}
         self._association_hints: dict[str, AssociationHint] = {}
         self.held_object_id: str | None = None
         self.held_object_offset_in_ee: np.ndarray | None = None
         self.held_object_uncertain = False
-        self.stale_object_ttl = float(stale_object_ttl)
-        if not np.isfinite(self.stale_object_ttl) or self.stale_object_ttl <= 0:
-            raise ValueError("stale_object_ttl must be finite and > 0")
-        self._registered_at: dict[str, float] = {}
+        self.source_health: ObservationHealth | None = None
 
     def register(self, obj: WorldObject) -> None:
         self._objects[obj.object_id] = obj
-        self._registered_at.setdefault(obj.object_id, time.monotonic())
 
     def _protected(self, now=None):
         return {self.held_object_id, *(hint.object_id for hint in self.association_hints(now))}
 
-    def _discard(self, object_id, forget=None):
-        if forget is not None:
-            forget(object_id)
-        self._objects.pop(object_id, None)
-        self._registered_at.pop(object_id, None)
-        self._association_hints.pop(object_id, None)
-
     def remove(self, object_id: str) -> bool:
         if object_id in self._protected() or object_id not in self._objects:
             return False
-        self._discard(object_id)
+        del self._objects[object_id]
+        self.clear_association_hint(object_id)
         return True
 
-    def clear_lost(self, forget=None) -> tuple[str, ...]:
-        protected = self._protected()
-        removed = []
-        for obj in list(self._objects.values()):
-            if obj.visible or obj.object_id in protected or obj.source == "ground_truth":
-                continue
-            self._discard(obj.object_id, forget)
-            removed.append(obj.object_id)
-        return tuple(removed)
+    @property
+    def observations_healthy(self):
+        # Standalone manually populated models have no connected source.
+        return self.source_health is None or self.source_health.status == 'fresh'
 
     def exists(self, object_id: str) -> bool:
         return object_id in self._objects
@@ -114,14 +100,12 @@ class WorldModel:
 
     def association_hints(self, now=None) -> tuple[AssociationHint, ...]:
         now = time.monotonic() if now is None else float(now)
-        expired = [
-            object_id
-            for object_id, hint in self._association_hints.items()
-            if hint.expires_at <= now
-        ]
-        for object_id in expired:
-            del self._association_hints[object_id]
-        return tuple(self._association_hints.values())
+        return tuple(h for h in self._association_hints.values() if h.expires_at > now)
+
+    def expire_hints(self, now):
+        self._association_hints = {
+            key: hint for key, hint in self._association_hints.items() if hint.expires_at > now
+        }
 
     def observation_context(self) -> ObservationContext:
         return ObservationContext(
@@ -156,7 +140,7 @@ class WorldModel:
 
             if (
                 obs.class_name is not None
-                or obs.metadata.get("class_belief_authoritative", False)
+                or obs.geometry is not None
             ):
                 obj.class_name = obs.class_name
             if obs.pose is not None:
@@ -183,21 +167,6 @@ class WorldModel:
             for object_id, obj in self._objects.items():
                 if object_id not in seen:
                     obj.visible = False
-
-    def expire_stale(self, now=None, forget=None) -> tuple[str, ...]:
-        now = time.monotonic() if now is None else float(now)
-        protected = self._protected(now)
-        removed = []
-        for obj in list(self._objects.values()):
-            if obj.visible or obj.object_id in protected or obj.source == "ground_truth":
-                continue
-            last_seen = obj.last_seen
-            if last_seen is None:
-                last_seen = self._registered_at[obj.object_id]
-            if now-last_seen >= self.stale_object_ttl:
-                self._discard(obj.object_id, forget)
-                removed.append(obj.object_id)
-        return tuple(removed)
 
     @property
     def gripper_state(self) -> GripperState:

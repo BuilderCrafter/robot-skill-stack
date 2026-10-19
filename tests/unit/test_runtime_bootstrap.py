@@ -1,4 +1,5 @@
 """Execute production bootstrap with recording SDK boundaries; no simulator emulation."""
+import time
 import asyncio
 from contextlib import contextmanager
 from dataclasses import replace
@@ -11,6 +12,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.config import load_scene_config
+from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.observations import ObjectObservation
 from tests.unit.test_runtime_lifecycle import StopPlayWorld
 
@@ -65,9 +67,10 @@ def bootstrap_fixture():
         cfg=load_scene_config(ROOT/'config/scenes/playground.toml')
         cfg=replace(cfg,world=replace(cfg.world,provider='ground_truth'))
         async def make_provider(world,config):
-            p=NS(observe=Mock(return_value=[ObjectObservation('cube',pose=Pose([.45,0,.025]),
-                                  class_name='cube',size=[.05]*3,visible=True,source='ground_truth')]),
-                 close=Mock(),camera=NS(close=Mock()))
+            camera=NS(close=Mock())
+            p=NS(observe=Mock(side_effect=lambda context: ObservationBatch([ObjectObservation('cube',pose=Pose([.45,0,.025]),
+                                  class_name='cube',size=[.05]*3,visible=True,source='ground_truth')], time.monotonic())),
+                 forget=Mock(), close=Mock(side_effect=camera.close), camera=camera)
             env.providers.append(p); return p
         with patch.object(m,'load_scene_config',return_value=cfg), patch.object(m,'_create_state_provider',side_effect=make_provider):
             yield m,env
@@ -92,6 +95,17 @@ class BootstrapTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'injected'): await m.build_runtime('x.toml')
             self.assertEqual(e.world._physics_functions,{})
             e.providers[0].close.assert_called_once(); e.providers[0].camera.close.assert_called_once()
+        self.run_case(fn)
+
+    def test_invalid_updater_configuration_closes_selected_source(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            cfg=replace(cfg,world=replace(cfg.world,stale_object_ttl=-1.))
+            with patch.object(m,'load_scene_config',return_value=cfg):
+                with self.assertRaisesRegex(ValueError,'TTL'):
+                    await m.build_runtime('x.toml')
+            e.providers[0].close.assert_called_once()
+            self.assertEqual(e.world._physics_functions,{})
         self.run_case(fn)
 
     def test_repeat_build_after_stop_replaces_only_owned_callback(self):

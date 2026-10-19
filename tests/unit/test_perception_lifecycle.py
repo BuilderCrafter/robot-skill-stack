@@ -1,7 +1,7 @@
 from __future__ import annotations
 import unittest
 from dataclasses import replace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -14,7 +14,6 @@ from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.world.perception.discovery import ObjectCandidate
-from robot_skill_stack.world.perception.semantics import SemanticPrediction
 from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
@@ -32,8 +31,8 @@ class LifecycleTests(unittest.TestCase):
         cfg = load_scene_config('config/scenes/playground.toml')
         cfg = replace(cfg, world=replace(cfg.world, stale_object_ttl=2.))
         self.provider = build_perception_provider(self.camera, cfg)
-        self.model = WorldModel(stale_object_ttl=2.)
-        self.updater = WorldModelUpdater(self.model, self.provider, update_hz=5)
+        self.model = WorldModel()
+        self.updater = WorldModelUpdater(self.model, self.provider, update_hz=5, stale_object_ttl=2.)
 
     def advance(self, seconds):
         self.now.return_value += seconds
@@ -55,7 +54,6 @@ class LifecycleTests(unittest.TestCase):
         self.assertIsNone(self.provider.tracker.get(object_id))
         self.assertIsNone(self.provider.get_mask(object_id))
         self.assertIsNone(self.provider.get_point_cloud(object_id))
-        self.assertNotIn(object_id, self.model._registered_at)
         self.assertNotIn(object_id, self.model._association_hints)
 
     def test_confirmation_requires_distinct_camera_frames(self):
@@ -99,6 +97,38 @@ class LifecycleTests(unittest.TestCase):
         for _ in range(4):
             self.step()
         self.assertFalse(self.model.objects())
+
+    def test_rgbd_empty_frame_and_unavailable_frame_have_distinct_batches(self):
+        self.camera.push(self.empty)
+        batch = self.provider.observe()
+        self.assertEqual(batch.observations, [])
+        self.assertIsNotNone(batch.timestamp)
+        repeated = self.provider.observe()
+        self.assertIsNone(repeated.timestamp)
+        self.camera.get_frame_token = lambda: None
+        self.camera.push(self.sphere)
+        self.assertIsNone(self.provider.observe().timestamp)
+
+    def test_camera_exception_invalidates_visibility_until_a_new_frame(self):
+        object_id = self.confirmed()
+        depth = self.camera.get_depth
+        self.camera.get_depth = Mock(side_effect=RuntimeError('camera disconnected'))
+        self.step(self.sphere)
+        self.assertEqual(self.updater.health.status, 'failed')
+        self.assertFalse(self.model.require(object_id).visible)
+        self.camera.get_depth = depth
+        self.step()  # Cached camera token cannot resolve a source failure.
+        self.assertEqual(self.updater.health.status, 'failed')
+        self.step(self.sphere)
+        self.assertTrue(self.model.require(object_id).visible)
+        self.assertEqual(self.updater.health.status, 'fresh')
+
+    def test_source_close_owns_camera_and_is_idempotent(self):
+        self.camera.close = Mock()
+        self.updater.stop()
+        self.updater.stop()
+        self.provider.close()
+        self.camera.close.assert_called_once_with()
 
     def test_missing_depth_does_not_repeat_visible_observations(self):
         object_id = self.confirmed()
@@ -163,12 +193,9 @@ class LifecycleTests(unittest.TestCase):
         self.assertEqual(self.updater.clear_lost(), (object_id,))
         self.assert_forgotten(object_id)
 
-    def test_ground_truth_not_forgotten(self):
+    def test_unobserved_registered_record_can_be_cleared(self):
         self.model.register(WorldObject('configured', visible=False, source='ground_truth'))
-        self.advance(100.)
-        self.assertFalse(self.updater.cleanup())
-        self.assertFalse(self.updater.clear_lost())
-        self.assertTrue(self.model.exists('configured'))
+        self.assertEqual(self.updater.clear_lost(), ('configured',))
 
     def test_never_seen_record_can_expire(self):
         self.model.register(WorldObject('lost', visible=False))
@@ -188,7 +215,7 @@ class LifecycleTests(unittest.TestCase):
         track = self.provider.tracker.get(object_id)
         seen = track.last_seen
         junk = ObjectCandidate(track.position, [.15, .15, .15], np.ones((3, 3), bool), spawnable=False)
-        self.provider.tracker.update([junk], [SemanticPrediction(None, 1.)], frame_id=99, timestamp=seen+.2)
+        self.provider.tracker.update([junk], frame_id=99, timestamp=seen+.2)
         self.assertEqual(track.last_seen, seen)
         self.assertFalse(track.visible)
 

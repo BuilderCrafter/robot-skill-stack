@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 
 import numpy as np
 import omni.usd
@@ -8,6 +9,7 @@ from pxr import Usd, UsdGeom
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
+from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 
 
@@ -100,7 +102,7 @@ class IsaacGroundTruthProvider:
             return cfg.graspable
         return bool(prim.GetCustomData().get("graspable", True))
 
-    def observe(self, context=None) -> list[ObjectObservation]:
+    def observe(self, context=None) -> ObservationBatch:
         observations = []
 
         for prim in self._objects():
@@ -125,4 +127,10 @@ class IsaacGroundTruthProvider:
                 )
             )
 
-        return observations
+        return ObservationBatch(observations, time.monotonic())
+
+    def forget(self, object_id):
+        pass  # Ground truth enumerates live scene objects on every sample.
+
+    def close(self):
+        pass  # This adapter owns no camera or subscriptions.

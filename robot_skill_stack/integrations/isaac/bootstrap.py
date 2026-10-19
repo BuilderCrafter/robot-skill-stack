@@ -50,13 +50,8 @@ class IsaacRuntimeBundle:
         try:
             self.world_updater.stop(self.world)
         finally:
-            close = getattr(getattr(self.state_provider, 'camera', None), 'close', None)
-            try:
-                if close is not None:
-                    close()
-            finally:
-                if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
-                    self.world._robot_skill_stack_bundle = None
+            if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
+                self.world._robot_skill_stack_bundle = None
 
 
 _BUILDING = False
@@ -197,12 +192,17 @@ async def _build_runtime(
         await app.next_update_async()
 
     provider = await _create_state_provider(world, config)
-    model = WorldModel(stale_object_ttl=config.world.stale_object_ttl)
-    updater = WorldModelUpdater(
-        model,
-        provider,
-        update_hz=_update_hz(config),
-    )
+    model = WorldModel()
+    try:
+        updater = WorldModelUpdater(
+            model,
+            provider,
+            update_hz=_update_hz(config),
+            stale_object_ttl=config.world.stale_object_ttl,
+        )
+    except BaseException:
+        provider.close()
+        raise
     try:
         backend = IsaacFrankaBackend(
             world=world,
@@ -255,9 +255,6 @@ async def _build_runtime(
         return bundle
     except BaseException:
         updater.stop(world)
-        close = getattr(getattr(provider, 'camera', None), 'close', None)
-        if close is not None:
-            close()
         raise
 
 

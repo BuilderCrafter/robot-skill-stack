@@ -1,4 +1,5 @@
 """Contract regressions for native 5.1 callback retention and async UI teardown."""
+import time
 import asyncio
 import builtins
 from contextlib import ExitStack
@@ -10,6 +11,7 @@ import unittest
 from unittest.mock import Mock, patch, AsyncMock
 
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
+from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from tests.support.fake_omni_ui import extension_environment
@@ -43,7 +45,7 @@ class StopPlayWorld:
 
 
 def provider():
-    return SimpleNamespace(observe=Mock(return_value=[]), close=Mock())
+    return SimpleNamespace(observe=Mock(side_effect=lambda context: ObservationBatch([], time.monotonic())), forget=Mock(), close=Mock())
 
 
 class CallbackLifecycleTests(unittest.TestCase):
@@ -89,7 +91,7 @@ class CallbackLifecycleTests(unittest.TestCase):
         w=StopPlayWorld(); p=provider(); p.observe.side_effect=ValueError('camera bad')
         u=WorldModelUpdater(WorldModel(),p); u.start(PhysicsCallbackScope(w)); w.tick()
         self.assertEqual(u.last_error,'ValueError: camera bad')
-        p.observe.side_effect=None; w.tick(); self.assertIsNone(u.last_error); self.assertEqual(u.update_count,1)
+        p.observe.side_effect=lambda context: ObservationBatch([], time.monotonic()); w.tick(); self.assertIsNone(u.last_error); self.assertEqual(u.update_count,1)
         u.stop(w)
 
     def test_start_failure_never_claims_a_callback(self):

@@ -202,14 +202,14 @@ class ControlPanel:
         self.status_dot.style = {'background_color': tint}
         self.status_time.text = datetime.now().strftime('%H:%M:%S')
 
-    def set_enabled(self, *, initialized, ready, busy, held_id, selected, perception):
+    def set_enabled(self, *, initialized, ready, busy, held_id, selected, perception, observations_fresh):
         idle = not busy and self.dialog is None
         motion = initialized and ready and idle
         values = {'initialize': idle, 'profile': idle and not (initialized and ready),
-                  'pick': motion and not held_id and selected is not None and selected.visible,
-                  'place': motion and bool(held_id), 'move': motion, 'move_to': motion, 'home': motion,
-                  'task': motion and not held_id and selected is not None and selected.visible,
-                  'recovery': motion and not held_id and selected is not None,
+                  'pick': motion and observations_fresh and not held_id and selected is not None and selected.visible,
+                  'place': motion and observations_fresh and bool(held_id), 'move': motion, 'move_to': motion, 'home': motion,
+                  'task': motion and observations_fresh and not held_id and selected is not None and selected.visible,
+                  'recovery': motion and observations_fresh and not held_id and selected is not None,
                   'clear_lost': initialized and perception and idle,
                   'clear_held': initialized and bool(held_id) and idle,
                   'capture': initialized and perception and not busy}

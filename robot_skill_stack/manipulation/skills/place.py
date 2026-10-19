@@ -37,6 +37,7 @@ class PlaceSkill(BaseSkill):
             FailureCode.TARGET_OCCUPIED,
             FailureCode.UNREACHABLE,
             FailureCode.PLACE_FAILED,
+            FailureCode.WORLD_STATE_UNAVAILABLE,
             FailureCode.GRASP_LOST,
             FailureCode.GRASP_UNCERTAIN,
             FailureCode.TIMEOUT,
@@ -83,6 +84,11 @@ class PlaceSkill(BaseSkill):
             return None, None, SkillResult(
                 SkillStatus.FAILED, 'Grasp is uncertain; inspect/reset the gripper first.',
                 FailureCode.GRASP_UNCERTAIN,
+            )
+        if not self.world_model.observations_healthy:
+            return None, None, SkillResult(
+                SkillStatus.FAILED, "Observation source is not fresh; Place was not started.",
+                FailureCode.WORLD_STATE_UNAVAILABLE,
             )
         if mode == "default":
             mode = "stable"
