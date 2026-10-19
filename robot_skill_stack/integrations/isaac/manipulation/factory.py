@@ -12,6 +12,8 @@ def create_robot(world, config):
     robot = world.scene.get_object('franka')
     if robot is None:
         robot = world.scene.add(Franka(prim_path=config.prim_path, name='franka'))
+    elif robot.prim_path != config.prim_path:
+        raise RuntimeError('Robot prim changed; restart Isaac before changing robot setups')
     return robot
 
 

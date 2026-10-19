@@ -103,7 +103,7 @@ class SetupConfigTests(unittest.TestCase):
     def test_world_tuning_requires_positive_finite_values(self):
         text = PLAYGROUND.read_text()
         for key in ('update_hz', 'stale_object_ttl'):
-            for value in ('0', '-1', 'nan', 'inf', '"bad"'):
+            for value in ('0', '-1', 'nan', 'inf', '"bad"', 'true'):
                 with self.subTest(key=key, value=value), self.assertRaisesRegex(ValueError, 'finite'):
                     self.load(text.replace('[world]', f'[world]\n{key}={value}'))
         cfg = self.load(text.replace('[world]', '[world]\nupdate_hz=3.0\nstale_object_ttl=10.0'))

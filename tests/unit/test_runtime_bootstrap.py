@@ -31,7 +31,7 @@ def bootstrap_fixture():
     class World(StopPlayWorld):
         def __init__(self, **kw):
             super().__init__(); env.world=self; self.context=None; self.playing=False
-            self.scene=NS(get_object=lambda name:NS(name=name),add=lambda obj:obj)
+            self.scene=NS(get_object=lambda name:NS(name=name,prim_path="/Franka"),add=lambda obj:obj)
         @classmethod
         def instance(cls): return env.world
         def get_physics_context(self): return self.context
@@ -111,6 +111,18 @@ class BootstrapTests(unittest.TestCase):
                              (.03,.012,.01,.01,.024,.025,.07,.17,.075))
         self.run_case(fn)
 
+    def test_existing_robot_reuse_rejects_a_changed_robot_prim(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            robot=NS(prim_path='/Franka')
+            world=NS(scene=NS(get_object=Mock(return_value=robot),add=Mock()))
+            self.assertIs(m.create_robot(world,cfg.robot),robot)
+            world.scene.add.assert_not_called()
+            with self.assertRaisesRegex(RuntimeError,'restart Isaac'):
+                m.create_robot(world,replace(cfg.robot,prim_path='/OtherFranka'))
+            world.scene.add.assert_not_called()
+        self.run_case(fn)
+
     def test_unknown_robot_backend_is_rejected_by_construction(self):
         async def fn(m,e):
             cfg=m.load_scene_config('x.toml')
@@ -121,6 +133,24 @@ class BootstrapTests(unittest.TestCase):
                     operation(*args)
             self.assertEqual(e.backend_calls,[])
         self.run_case(fn)
+
+    def test_oracle_helper_is_test_owned_and_never_creates_a_missing_prim(self):
+        import ast
+        path=ROOT/'tests/support/isaac_helpers.py'
+        tree=ast.parse(path.read_text())
+        node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='playground_cube')
+        valid=Mock(return_value=False)
+        constructor=Mock()
+        scope={'omni':NS(usd=NS(get_context=lambda:NS(get_stage=lambda:
+               NS(GetPrimAtPath=lambda p:NS(IsValid=valid))))),
+               'SingleXFormPrim':constructor,'PLAYGROUND_CUBE_PATH':'/World/Objects/Cube'}
+        exec(compile(ast.Module(body=[node],type_ignores=[]),str(path),'exec'),scope)
+        with self.assertRaisesRegex(RuntimeError,'Missing playground test fixture'):
+            scope['playground_cube']()
+        constructor.assert_not_called()
+        valid.return_value=True
+        self.assertIs(scope['playground_cube'](),constructor.return_value)
+        constructor.assert_called_once_with(prim_path='/World/Objects/Cube',name='cube',reset_xform_properties=False)
 
     def test_source_factories_select_only_the_requested_adapter(self):
         async def fn(m,e):
@@ -156,6 +186,7 @@ class BootstrapTests(unittest.TestCase):
                 b=await m.build_runtime('rgbd.toml')
             self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
             self.assertFalse(hasattr(b,'objects'))
+            self.assertTrue(callable(b.capture_frame))
             b.close()
         self.run_case(fn)
 
@@ -202,7 +233,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_ground_truth_populates_and_ticks(self):
         async def fn(m,e):
-            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube'))
+            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model); self.assertIsNone(b.capture_frame)
             count=b.world_updater.update_count; e.world.tick(); self.assertEqual(b.world_updater.update_count,count+1)
             b.close(); self.assertEqual(e.world._physics_functions,{})
         self.run_case(fn)

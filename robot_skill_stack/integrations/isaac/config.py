@@ -21,7 +21,7 @@ class WorldConfig:
 
     def __post_init__(self):
         for value in (self.update_hz, self.stale_object_ttl):
-            if value is not None and (not isinstance(value, (int, float)) or
+            if value is not None and (type(value) not in (int, float) or
                                       not math.isfinite(value) or value <= 0):
                 raise ValueError('update_hz and stale_object_ttl must be finite and > 0')
 
@@ -48,7 +48,7 @@ class PerceptionConfig:
     resolution: tuple[int, int] = (640, 480)
 
     def __post_init__(self):
-        if len(self.resolution) != 2 or any(not isinstance(v, int) or v <= 0 for v in self.resolution):
+        if len(self.resolution) != 2 or any(type(v) is not int or v <= 0 for v in self.resolution):
             raise ValueError('resolution must contain two positive integers')
         object.__setattr__(self, 'resolution', tuple(self.resolution))
 
