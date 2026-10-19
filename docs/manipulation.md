@@ -44,6 +44,11 @@ Unknown primitives and unsupported tilted orientations are rejected.
 
 The Franka integration configures a 75 mm usable maximum width. A 50 mm cube is
 accepted; a 90 mm cube is rejected before robot motion.
+The explicit Isaac robot factory returns the backend and its gripper spec;
+geometry no longer comes from scene-level grasp overrides. Planner settings
+retain their existing Python defaults. A new robot implements
+`ManipulationBackend` and extends that factory's explicit selection, without
+changing skills or GUI code.
 
 ## Future grasp planners
 
@@ -67,8 +72,11 @@ Finger-position feedback distinguishes Free, Held and Uncertain. Pick records
 the grasp before lifting; carrying motions check for loss; failed/interrupted
 gripper operations attempt bounded resolution. Uncertain state blocks commands
 and protects the candidate object until resolved. See
-[Phase 3B held state](phase_3b_held_state.md) for policy, API changes and pending
-workstation validation. No force sensing is used.
+[Phase 3B held state](phase_3b_held_state.md) for policy and API changes, and
+[validation](validation.md) for the operator-confirmed native results. No force
+sensing is used. `RobotRuntime(registry, world_model)` shares the skills' model;
+its `clear_held_state(expected_id)` provides the existing software-only operator
+reset while rejecting active commands or a changed held ID.
 
 ## Current execution limitations
 

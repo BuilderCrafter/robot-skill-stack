@@ -37,6 +37,11 @@ WorldModel
 Ground truth implements the same `WorldObservationProvider` contract and remains
 an oracle/reference provider. `[world].provider` swaps between `ground_truth`
 and `perception` without changing skills, behavior trees, or the runtime API.
+The setup's `[scene]` supplies workspace bounds and support-plane height.
+Discovery, tracking and fitting thresholds use the existing Python defaults;
+the former algorithm-tuning TOML sections are removed. RGB-D startup validates
+only the robot and camera prims, without requiring ground-truth object IDs,
+sizes or wrappers. See [Phase 4B](phase_4b_config_adapters_ui.md).
 
 V1 uses the current `PrimitiveEstimator` geometry as the class label. Unused
 semantic voting/history has been removed. One greedy distance/size association

@@ -1,11 +1,15 @@
 # Isaac GUI
 
 The Isaac extension reads cached state from `WorldModel` and sends manipulation
-commands through `RobotRuntime`. It checks Franka readiness, displays source
-health, and offers perception frame capture. Refresh is read-only; Clear Lost
+commands through `RobotRuntime`. It checks generic backend readiness, displays
+source health, and offers frame capture when the bundle provides that callback.
+Refresh is read-only; Clear Lost
 explicitly requests removal through the updater. Stale or failed source state
 disables Pick, Place and observation-dependent tasks. Home/Move remain available
-subject to existing readiness and held-state checks. No controls were added.
+subject to existing readiness and held-state checks. Clear Held remains an
+explicit, confirmed software-only reset through the runtime, rejected while a
+command is active. Clear Lost works with either source and preserves held/hinted
+objects. No controls were added or rearranged.
 
 ## Launch
 
@@ -50,3 +54,10 @@ There is no checked-in ground-truth profile. From the repository root, copy
 `outputs/` first), and change only `[world].provider` to `"ground_truth"` in the
 copy. Restart Isaac and select this profile before initialization; the current
 GUI does not switch profiles on an initialized robot. The USD scene is unchanged.
+
+Each file is a complete setup, without inheritance. `[scene]` contains the
+support-plane height and workspace bounds. `[perception]` contains camera
+references; `[ground_truth]` contains oracle references and optional object
+overrides. RGB-D can omit the entire ground-truth section, and ground truth can
+omit the camera section. Existing custom profiles need the
+[Phase 4B key migration](phase_4b_config_adapters_ui.md#configuration-and-migration).

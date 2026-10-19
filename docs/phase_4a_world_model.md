@@ -171,8 +171,10 @@ The original physical-motion and 25 mm placement gates remain unchanged.
 No production lifetime, freshness, control or planner changes were needed.
 After the repair at `9ac2e04`, the operator reported that the tests now pass.
 The final rerun artifacts were not uploaded; this is operator-reported native
-validation, not cloud execution. GUI/source-switch checks and the Phase 4A
-injected-loss diagnostic have not been separately confirmed.
+validation, not cloud execution. Before Phase 4B began, the operator also
+confirmed that both-source GUI checks, pause/resume, repeated initialization and
+shutdown, and the injected-loss diagnostic all passed. Phase 4A is merged into
+main at `1d9141f` (PR #5).
 
 ## Workstation validation
 

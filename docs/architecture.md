@@ -35,11 +35,27 @@ Isaac physics callback. Sources own their resources, including camera cleanup.
 WorldModel stores object/attachment state and placement hints. Skills query
 cached WorldModel state and call a manipulation backend, without querying Isaac.
 
-The composition root is `integrations/isaac/bootstrap.py`. It loads a TOML
-profile, validates stage prims, constructs Franka and the selected source, and
-registers Home, MoveToPose, Pick and Place. Production uses
+The composition root is `integrations/isaac/bootstrap.py`. It loads one TOML
+setup and validates the robot plus only the selected source's required prims.
+`manipulation/factory.py` selects the robot SDK wrapper, backend and gripper
+geometry; `world/factory.py` selects the observation source. Franka is the only
+implemented robot; RGB-D V1 and ground truth are the two sources. Unsupported
+selectors fail explicitly. No registry or configuration inheritance is involved.
+
+Construction retains its order: World/context, robot wrapper, reset/play, 30 Kit
+updates, source (RGB-D camera initialization and 60 updates), updater, backend,
+planners, skills/runtime, initial observation and the existing physics callback.
+The runtime and skills share the same WorldModel. Production uses
 `SimplePrimitiveGraspPlanner`. Simple placement feasibility checks target
-occupancy, not the entire transport path.
+occupancy, not the entire transport path. Callback ownership and cleanup remain
+with the existing bundle/updater lifecycle.
+
+`[scene]` owns support height and workspace bounds. Algorithm thresholds use
+their existing Python defaults; Franka construction supplies its gripper spec.
+RGB-D requires neither ground-truth objects nor their SDK wrappers. Optional
+`[ground_truth]` references apply only to oracle startup. Native tests own their
+playground cube handles in `tests/support/isaac_helpers.py`; these handles are
+not part of the production bundle. See the [Phase 4B migration](phase_4b_config_adapters_ui.md).
 
 There is one cooperative asynchronous command path:
 `RobotRuntime.execute_async` → skill `execute_async` → backend async command.
@@ -71,10 +87,12 @@ A future thesis layer should depend primarily on `RobotRuntime` and `WorldModel`
 WorldModel state. The Isaac extension renders that read model and invokes
 `RobotRuntime`. Object display and manipulation work with either source, but
 the extension also reads backend `is_ready` and runtime `busy`, and accesses
-perception capture. Ordinary refresh is read-only; only the explicit Clear Lost
-action requests updater cleanup. Source health is displayed in the existing
-source label and gates observation-dependent controls. These integration
-couplings are not capabilities of the generic presentation model.
+an optional bundle `capture_frame(path)` callback for diagnostics. Ordinary
+refresh is read-only. Clear Lost requests updater cleanup for either source;
+Clear Held keeps its confirmation and calls the runtime's software-only reset,
+which rejects busy commands and changed object IDs. Source health is displayed
+in the existing source label and gates observation-dependent controls. The
+extension closes the bundle rather than managing a source or camera directly.
 
 ## Launch and lifecycle
 
@@ -85,5 +103,6 @@ bridge startup, and enables the UI extension. No `--no-ros-env` argument is used
 Callback ownership, deferred World construction, camera cleanup, and deferred
 UI disposal remain in the existing Isaac integration/lifecycle code.
 
-See [Phase 4A](phase_4a_world_model.md) for source contracts, accepted tracking
-tradeoffs and pending native validation.
+See [Phase 4A](phase_4a_world_model.md) for source contracts and accepted tracking
+tradeoffs, and [Phase 4B](phase_4b_config_adapters_ui.md) for adapter construction
+and its outstanding native validation.

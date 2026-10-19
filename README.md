@@ -44,7 +44,7 @@ robot_skill_stack/
   integrations/
     isaac/                    Isaac bootstrap, camera, Franka backend, GT oracle
 
-config/                       scene/runtime profiles
+config/                       one TOML per scene/setup
 scenes/                       Isaac USD scenes
 tests/                        unit, Isaac integration, regression
 scripts/                      regression-suite runners
@@ -99,6 +99,13 @@ full Isaac experience, and disables its ROS bridge startup. Isaac Sim
 Open `scenes/playground.usd` and initialize `config/scenes/playground.toml`.
 See `docs/gui.md` for switching to ground truth.
 
+Each setup selects `[robot].backend` (`franka`) and `[world].provider`
+(`perception` or `ground_truth`). `[scene]` holds workspace bounds and support
+height. RGB-D needs a camera prim; only ground truth needs oracle references.
+Small explicit factories construct the adapters; skills and the GUI use their
+common interfaces. See [Phase 4B](docs/phase_4b_config_adapters_ui.md) for the
+complete setup example, migration notes and validation checklist.
+
 ## Validation
 
 Manipulation has one cooperative command API:
@@ -108,8 +115,9 @@ the same coroutine with Kit's existing bridge. `runtime.busy` reports an active
 command; overlapping commands fail with `FailureCode.BUSY` rather than queuing.
 See `docs/phase_3a_execution.md` for interface migration and validation.
 The merged held-state upgrade is described in [Phase 3B](docs/phase_3b_held_state.md).
-The observation cleanup and its pending workstation validation are described in
-[Phase 4A](docs/phase_4a_world_model.md).
+The merged observation cleanup and operator-confirmed workstation validation are
+described in [Phase 4A](docs/phase_4a_world_model.md). Phase 4B passes offline
+checks; its workstation validation remains required before merging.
 
 Use one runner from the repository root with Python dependencies installed:
 
