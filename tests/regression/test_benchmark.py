@@ -21,7 +21,7 @@ from unittest.mock import patch
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope
 from tests.support.isaac_async import run_kit_coroutine
-from tests.support.control_trace import record_control
+from tests.support.control_trace import TraceJournal, record_control
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -131,18 +131,40 @@ def trace_backend_commands(bundle, records):
         yield
 
 
-def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=False):
+def _run_benchmark(metrics, result_path=None, artifacts_dir=None, journal=None):
     out = Path(
         artifacts_dir
         or Path("outputs") / "phase_a_benchmark_tmp"
     )
     out.mkdir(parents=True, exist_ok=True)
 
-    print("[1] Opening playground...")
+    if journal is not None:
+        journal.mark('open_playground')
+    print("[1] Opening playground...", flush=True)
     open_playground(simulation_app)
 
-    print("[2] Building perception runtime...")
+    if journal is not None:
+        journal.mark('build_runtime')
+    print("[2] Building perception runtime...", flush=True)
     bundle = build_perception_runtime(simulation_app, out)
+    with ExitStack() as stack:
+        set_stage = lambda name: None
+        if journal is not None:
+            set_stage = stack.enter_context(record_control(
+                bundle.backend, PhysicsCallbackScope(bundle.world), journal, cube=bundle.objects['cube'],
+            ))
+
+        def stage(name):
+            if journal is not None:
+                journal.mark(name)
+            print('Benchmark stage:', name, flush=True)
+            set_stage(name)
+
+        _benchmark_body(bundle, metrics, result_path, stage)
+
+
+def _benchmark_body(bundle, metrics, result_path, stage):
+    stage('initial_settle')
     settle(bundle.world, 180)
 
     cube = bundle.objects["cube"]
@@ -154,6 +176,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
     size_max_errors = []
 
     for index, target in enumerate(PERCEPTION_POSITIONS, 1):
+        stage(f'perception_{index}')
         truth = set_cube_pose(
             cube,
             target,
@@ -227,19 +250,19 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
     target_errors = []
     metrics.update(manipulation_total=len(MANIPULATION_TRIALS), manipulation_completed=0,
                    manipulation_successes=0, manipulation_success_rate=0.0)
-    if control_trace:
-        metrics['control_samples'] = []
 
     for index, (start, target) in enumerate(
         MANIPULATION_TRIALS,
         1,
     ):
+        stage(f'trial_{index}:home')
         home = run_kit_coroutine(bundle.runtime.execute_async("home"), simulation_app)
         if not home.ok:
             raise RuntimeError(
                 f"Home failed before trial {index}: {home.message}"
             )
 
+        stage(f'trial_{index}:setup')
         truth_start = set_cube_pose(
             cube,
             start,
@@ -261,7 +284,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
             # Place in a second task adds a physics tick under the old command
             # before Place captures the TCP orientation for its release poses.
             before_pick = trial_snapshot(bundle, object_id)
-            set_stage(f'trial_{index}:pick')
+            stage(f'trial_{index}:pick')
             pick = await bundle.runtime.execute_async(
                 "pick",
                 object_id=object_id,
@@ -269,7 +292,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
             after_pick = trial_snapshot(bundle, object_id)
             place = None
             if pick.ok:
-                set_stage(f'trial_{index}:place')
+                stage(f'trial_{index}:place')
                 place = await bundle.runtime.execute_async(
                     "place",
                     target=Pose(target),
@@ -279,13 +302,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
             return before_pick, pick, after_pick, place, after_place
 
         command_trace = []
-        with ExitStack() as stack:
-            set_stage = lambda name: None
-            if control_trace:
-                set_stage = stack.enter_context(record_control(
-                    bundle.backend, PhysicsCallbackScope(bundle.world), metrics['control_samples'], cube=cube,
-                ))
-            stack.enter_context(trace_backend_commands(bundle, command_trace))
+        with trace_backend_commands(bundle, command_trace):
             before_pick, pick, after_pick, place, after_place = run_kit_coroutine(
                 pick_and_place(), simulation_app,
             )
@@ -397,7 +414,18 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=
 def main(result_path=None, artifacts_dir=None, control_trace=False):
     metrics = {"perception_trials": [], "manipulation_trials": []}
     try:
-        _run_benchmark(metrics, result_path, artifacts_dir, control_trace)
+        with ExitStack() as stack:
+            journal = None
+            if control_trace:
+                out = Path(artifacts_dir or Path('outputs')/'phase_a_benchmark_tmp')
+                out.mkdir(parents=True, exist_ok=True)
+                path = out/'control_trace.jsonl'
+                stream = stack.enter_context(path.open('w', encoding='utf-8'))
+                metrics.update(control_samples=[], control_trace_file=str(path))
+                journal = TraceJournal(metrics['control_samples'], stream)
+                journal.mark('startup')
+                print('Control trace journal:', path, flush=True)
+            _run_benchmark(metrics, result_path, artifacts_dir, journal)
     except BaseException as exc:
         write_result(result_path, status="FAIL", metrics=metrics,
                      error=f"{type(exc).__name__}: {exc}")

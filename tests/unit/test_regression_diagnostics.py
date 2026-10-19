@@ -19,6 +19,7 @@ from robot_skill_stack.runtime.skill import FailureCode, SkillResult, SkillStatu
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.world_model import WorldModel
 from tests.support.results import write_result
+from tests.support.control_trace import TraceJournal
 from tests.unit.test_placement import FakeBackend
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -34,7 +35,7 @@ def scenario(name, folder='tests/regression'):
     module = ModuleType(name)
     module.__dict__.update(np=np, Path=Path, Pose=Pose, FailureCode=FailureCode, time=time,
                            ExitStack=ExitStack, contextmanager=contextmanager, patch=patch,
-                           write_result=write_result, simulation_app=object())
+                           write_result=write_result, TraceJournal=TraceJournal, simulation_app=object())
     exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), 'exec'), module.__dict__)
     return module
 
@@ -254,13 +255,30 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                     module.main(self.result, self.out, control_trace=True)
                 report = json.loads(self.result.read_text())
                 self.assertEqual(report['status'], 'FAIL')
-                self.assertEqual(report['metrics']['control_samples'][0]['stage'], 'trial_1:pick')
+                stages = [sample['stage'] for sample in report['metrics']['control_samples']]
+                self.assertIn('initial_settle', stages)
+                self.assertIn('trial_1:home', stages)
+                self.assertIn('trial_1:pick', stages)
+                self.assertLess(stages.index('trial_1:home'), stages.index('trial_1:pick'))
                 self.assertEqual(len(contexts_closed), 1)
                 bundle.backend.open_gripper_async.assert_not_called()
                 if interrupted:
                     self.assertIn('KeyboardInterrupt: operator stop', report['error'])
                 else:
                     self.assertIn('primary place failure', report['error'])
+
+    def test_journal_has_flushed_startup_stage_before_runtime_construction(self):
+        module, _ = self.benchmark()
+        def fail_bootstrap(*args):
+            rows = [json.loads(line) for line in (self.out/'control_trace.jsonl').read_text().splitlines()]
+            self.assertEqual([row['stage'] for row in rows], ['startup', 'open_playground', 'build_runtime'])
+            raise RuntimeError('bootstrap failed')
+        module.build_perception_runtime.side_effect = fail_bootstrap
+        with self.assertRaisesRegex(RuntimeError, 'bootstrap failed'):
+            module.main(self.result, self.out, control_trace=True)
+        report = json.loads(self.result.read_text())
+        self.assertEqual(report['status'], 'FAIL')
+        self.assertEqual(report['metrics']['control_trace_file'], str(self.out/'control_trace.jsonl'))
 
     def test_timeout_with_held_object_stops_without_changing_failure_or_held_state(self):
         module, bundle = self.benchmark(failed=None)

@@ -248,3 +248,51 @@ the available boundary snapshots do not establish the exact collision source.
 Do not equate endpoint reachability or successful endpoint tolerance with safe
 intermediate motion. Controller diagnosis and loaded validation remain open;
 GUI release selection remains gated on those results.
+
+## Interrupted capture: write the trace while running
+
+The next uploaded `phase3a-loaded-control.zip` contains a log and profile, but
+no benchmark JSON. The log ends without Python's final exception/report output.
+Consequently there are no per-frame samples to analyze from that run. The
+previous claim that Ctrl+C would preserve the trace was too strong: a unit
+test exercising Python exception unwinding did not establish interruption
+behaviour of the native Isaac process.
+
+With `--control-trace`, benchmark now writes `control_trace.jsonl` inside its
+artifacts directory. Each completed sample is written and flushed immediately;
+startup and phase markers are also flushed before runtime construction and
+before motion begins. This file is the primary interrupted-run artifact. The
+final `benchmark.json` remains useful if Python reaches its reporting path,
+but is not required to recover the flushed journal prefix. Abrupt termination
+can leave the last JSONL line incomplete; retain all preceding complete lines.
+This is not a power-loss durability guarantee.
+
+Recorder scope now covers initial settling, perception sampling, Home, scene
+setup and Pick/Place, rather than starting after Home. Stage markers and
+console phase messages identify whether unexpected motion happens during
+initialization, Home or a manipulation skill. SDK runtime construction is
+marked but not instrumented or changed. No lifecycle, signal-handler,
+controller gain, pose tolerance or planning constraint changes are made.
+Recording CPU/disk overhead can affect wall-clock timing, as with any trace.
+
+Offline checks include a child process that writes samples and exits through
+`os._exit` without exception handling or file closure; the flushed JSONL prefix
+remains readable. Tests also verify startup markers exist before runtime
+construction, controller-target metadata is serialized before flushing, and
+Home precedes Pick in the recorded phases. Native signal behaviour itself
+remains unverified in the cloud.
+
+Run into a fresh directory on the workstation:
+
+```bash
+git switch refactor/phase-3a-execution
+git pull --ff-only
+mkdir -p outputs/phase3a-loaded-journal
+./run_isaac_python.sh tests/regression/test_benchmark.py --control-trace --result outputs/phase3a-loaded-journal/benchmark.json --artifacts-dir outputs/phase3a-loaded-journal/benchmark > outputs/phase3a-loaded-journal/benchmark.log 2>&1
+```
+
+Stop the simulation when contortion/contact appears; completing the sequence
+is unnecessary. Send the whole `outputs/phase3a-loaded-journal` folder as a ZIP,
+including **`benchmark/control_trace.jsonl`**, even if `benchmark.json` is absent.
+The active-motion cause is still undiagnosed; missing telemetry does not
+justify a speculative controller or planner modification.

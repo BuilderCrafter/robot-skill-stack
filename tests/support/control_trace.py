@@ -1,9 +1,27 @@
 """Temporary workstation telemetry shared by the empty and loaded diagnostics."""
 from contextlib import ExitStack, contextmanager
+import json
 import time
 from unittest.mock import patch
 
 import numpy as np
+
+
+class TraceJournal:
+    """Keep complete samples on disk without depending on Python shutdown."""
+    def __init__(self, samples, stream):
+        self.samples, self.stream = samples, stream
+
+    def _write(self, row):
+        self.stream.write(json.dumps(row)+'\n')
+        self.stream.flush()
+
+    def append(self, row):
+        self._write(row)
+        self.samples.append(row)
+
+    def mark(self, stage):
+        self._write({'event': 'stage', 'stage': stage, 'monotonic_s': time.monotonic()})
 
 
 def action_snapshot(action):
@@ -23,7 +41,7 @@ def record_control(backend, scheduler, samples, cube=None):
         nonlocal stage
         stage = name
 
-    def record(event, action=None, physics_dt=None):
+    def record(event, action=None, physics_dt=None, **details):
         tcp = backend.get_end_effector_pose()
         row = {
             'stage': stage, 'event': event, 'monotonic_s': time.monotonic(),
@@ -40,6 +58,7 @@ def record_control(backend, scheduler, samples, cube=None):
             position, orientation = cube.get_world_pose()
             row.update(cube_position=np.asarray(position).tolist(),
                        cube_orientation=np.asarray(orientation).tolist())
+        row.update(details)
         samples.append(row)
 
     def on_physics(dt):
@@ -57,11 +76,10 @@ def record_control(backend, scheduler, samples, cube=None):
     def forward(*args, **kwargs):
         record('before_forward')
         action = original_forward(*args, **kwargs)
-        record('after_forward', action)
         position = kwargs.get('target_end_effector_position', args[0] if args else None)
-        samples[-1]['target_position'] = np.asarray(position).tolist()
         orientation = kwargs.get('target_end_effector_orientation', args[1] if len(args) > 1 else None)
-        samples[-1]['target_orientation'] = None if orientation is None else np.asarray(orientation).tolist()
+        record('after_forward', action, target_position=np.asarray(position).tolist(),
+               target_orientation=None if orientation is None else np.asarray(orientation).tolist())
         return action
 
     def apply(action, *args, **kwargs):

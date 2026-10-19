@@ -1,5 +1,11 @@
 """Validate diagnostic forwarding and cleanup without loading native Isaac."""
 import asyncio
+import io
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
 from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import AsyncMock, Mock
@@ -9,7 +15,7 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.manipulation.backend import BackendResult
 from tests.unit.test_regression_diagnostics import scenario
-from tests.support.control_trace import record_control
+from tests.support.control_trace import TraceJournal, record_control
 
 
 class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
@@ -94,7 +100,9 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
                                           np.array([1, 0, 0, 0])))
         position, orientation = np.array([.4, 0, .15]), np.array([0, 0, 1, 0])
         samples = []
-        with module.record_control(backend, scheduler, samples, cube=cube) as set_stage:
+        stream = io.StringIO()
+        journal = TraceJournal(samples, stream)
+        with module.record_control(backend, scheduler, journal, cube=cube) as set_stage:
             set_stage('trial_3:pick')
             backend.motion_controller.forward(position, orientation)
             await backend._next_update()
@@ -104,6 +112,26 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(samples[0]['cube_position'], [.4, 0, .025])
         self.assertEqual(samples[-1]['cube_position'], [.4, 0, .125])
         self.assertTrue(all(s['stage'] == 'trial_3:pick' for s in samples))
+        self.assertEqual([json.loads(line) for line in stream.getvalue().splitlines()], samples)
+
+    def test_flushed_journal_survives_abrupt_process_exit_without_exception_handler(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'trace.jsonl'
+            code = """
+import os, sys
+from tests.support.control_trace import TraceJournal
+stream = open(sys.argv[1], 'w')
+journal = TraceJournal([], stream)
+journal.mark('trial_1:pick')
+journal.append({'event': 'before_apply', 'stage': 'trial_1:pick', 'physics_step': 10})
+os._exit(37)
+"""
+            process = subprocess.run([sys.executable, '-c', code, str(path)],
+                                     cwd=Path(__file__).resolve().parents[2], capture_output=True, timeout=10)
+            self.assertEqual(process.returncode, 37, process.stderr)
+            rows = [json.loads(line) for line in path.read_text().splitlines()]
+            self.assertEqual(rows[0]['event'], 'stage')
+            self.assertEqual(rows[1]['physics_step'], 10)
 
     async def test_partial_gripper_action_and_retained_arm_velocity_targets_are_distinguishable(self):
         module, backend, scheduler = self.stack()
