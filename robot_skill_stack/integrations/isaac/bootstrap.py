@@ -7,15 +7,12 @@ import numpy as np
 import omni.kit.app
 import omni.usd
 from isaacsim.core.api import World
-from isaacsim.core.prims import SingleXFormPrim
 
 from robot_skill_stack.integrations.isaac.manipulation.factory import create_robot, create_backend
 from robot_skill_stack.manipulation.backend import ManipulationBackend
-from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
-from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
 from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.integrations.isaac.world.factory import create_source, required_source_prims
 from robot_skill_stack.runtime.runtime import RobotRuntime
 from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
 from robot_skill_stack.runtime.registry import SkillRegistry
@@ -36,7 +33,6 @@ class IsaacRuntimeBundle:
     world_model: WorldModel
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
-    objects: dict
     config: SceneConfig
     state_provider: WorldObservationProvider
     _closed: bool = field(default=False, init=False, repr=False)
@@ -68,16 +64,7 @@ def _validate_environment(config: SceneConfig):
 
 def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
-    paths = [
-        config.robot.prim_path,
-        config.ground_truth.objects_root,
-        *[obj.prim_path for obj in config.ground_truth.objects.values()],
-    ]
-
-    if config.world.provider == "perception":
-        if not config.perception.camera_prim_path:
-            raise RuntimeError("Perception provider requires camera_prim_path")
-        paths.append(config.perception.camera_prim_path)
+    paths = [config.robot.prim_path, *required_source_prims(config)]
 
     missing = [
         path
@@ -86,55 +73,6 @@ def _validate_stage(config: SceneConfig):
     ]
     if missing:
         raise RuntimeError(f"Missing prims in current stage: {missing}")
-
-
-def _create_objects(world: World, config: SceneConfig):
-    objects = {}
-    for object_id, cfg in config.ground_truth.objects.items():
-        obj = world.scene.get_object(object_id)
-        if obj is None:
-            obj = world.scene.add(
-                SingleXFormPrim(
-                    prim_path=cfg.prim_path,
-                    name=object_id,
-                    reset_xform_properties=False,
-                )
-            )
-        objects[object_id] = obj
-    return objects
-
-
-async def _create_state_provider(
-    world: World,
-    config: SceneConfig,
-) -> WorldObservationProvider:
-    if config.world.provider == "ground_truth":
-        return IsaacGroundTruthProvider(
-            config.ground_truth.objects_root,
-            config.ground_truth.objects,
-        )
-
-    if config.world.provider != "perception":
-        raise RuntimeError(
-            f"Unsupported world provider: {config.world.provider}"
-        )
-    if not config.perception.camera_prim_path:
-        raise RuntimeError("Perception provider requires camera_prim_path")
-
-    camera = IsaacRgbdCamera(
-        config.perception.camera_prim_path,
-        resolution=config.perception.resolution,
-    )
-    try:
-        camera.initialize(semantic_segmentation=False)
-        app = omni.kit.app.get_app()
-        for _ in range(60):
-            await app.next_update_async()
-        provider = build_perception_provider(camera, config)
-        return provider
-    except BaseException:
-        camera.close()
-        raise
 
 
 def _update_hz(config: SceneConfig):
@@ -163,7 +101,6 @@ async def _build_runtime(
           f'provider={config.world.provider} perception=geometry_v1 '
           f'configured_objects={list(config.ground_truth.objects)}', flush=True)
     robot = create_robot(world, config.robot)
-    objects = _create_objects(world, config)
 
     await world.reset_async()
     if not world.is_playing():
@@ -173,7 +110,7 @@ async def _build_runtime(
     for _ in range(30):
         await app.next_update_async()
 
-    provider = await _create_state_provider(world, config)
+    provider = await create_source(config)
     model = WorldModel()
     try:
         updater = WorldModelUpdater(
@@ -209,7 +146,6 @@ async def _build_runtime(
             world_model=model,
             world_updater=updater,
             runtime=RobotRuntime(registry),
-            objects=objects,
             config=config,
             state_provider=provider,
         )

@@ -21,6 +21,7 @@ from robot_skill_stack.common.types import Pose
 from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
+    playground_cube,
     build_perception_runtime,
     nearest_object,
     object_snapshot,
@@ -78,10 +79,11 @@ def main(result_path=None, artifacts_dir=None):
 
     print("[3] Building runtime and discovering both cubes...")
     bundle = build_perception_runtime(simulation_app, out)
+    cube = playground_cube()
     settle(bundle.world, 240)
 
     first_true = np.asarray(
-        bundle.objects["cube"].get_world_pose()[0],
+        cube.get_world_pose()[0],
         dtype=float,
     )
     second_true = prim_position(second_prim)
@@ -133,7 +135,7 @@ def main(result_path=None, artifacts_dir=None):
     settle(bundle.world, 60)
 
     first_true_after = np.asarray(
-        bundle.objects["cube"].get_world_pose()[0],
+        cube.get_world_pose()[0],
         dtype=float,
     )
     first_error = float(

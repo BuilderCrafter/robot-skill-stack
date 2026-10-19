@@ -19,12 +19,12 @@ from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallba
 from robot_skill_stack.runtime.skill import FailureCode
 from tests.support.control_trace import TraceJournal, record_control
 from tests.support.isaac_async import run_kit_coroutine
-from tests.support.isaac_helpers import build_ground_truth_runtime, choose_object, open_playground, settle
+from tests.support.isaac_helpers import build_ground_truth_runtime, choose_object, open_playground, settle, playground_cube
 from tests.support.results import write_result
 
 
 def run_check(bundle, metrics, journal):
-    model, backend, cube = bundle.world_model, bundle.backend, bundle.objects['cube']
+    model, backend, cube = bundle.world_model, bundle.backend, playground_cube()
     object_id = choose_object(model).object_id
     initial_z = float(cube.get_world_pose()[0][2])
     metrics['injected'] = False

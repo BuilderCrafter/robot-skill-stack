@@ -24,6 +24,7 @@ from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCa
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from tests.support.results import save_pgm, save_ppm, write_result
+from tests.support.isaac_helpers import PLAYGROUND_CUBE_PATH
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 
@@ -76,7 +77,7 @@ def main(result_path=None, artifacts_dir=None):
     world = World(stage_units_in_meters=1.0)
     cube = world.scene.add(
         SingleXFormPrim(
-            prim_path=config.ground_truth.objects["cube"].prim_path,
+            prim_path=PLAYGROUND_CUBE_PATH,
             name="perception_v1_cube",
             reset_xform_properties=False,
         )
@@ -105,7 +106,7 @@ def main(result_path=None, artifacts_dir=None):
 
     track = vis[0]
     first_id = track.object_id
-    truth = ground_truth(config.ground_truth.objects["cube"].prim_path)
+    truth = ground_truth(PLAYGROUND_CUBE_PATH)
     pos_error = float(np.linalg.norm(track.pose.position - truth))
     size_error = np.abs(track.size - np.array([0.05, 0.05, 0.05]))
     metrics.update(

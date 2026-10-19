@@ -4,6 +4,8 @@ import re
 from pathlib import Path
 
 import numpy as np
+import omni.usd
+from isaacsim.core.prims import SingleXFormPrim
 from isaacsim.core.utils.stage import is_stage_loading, open_stage
 
 from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
@@ -12,6 +14,17 @@ from tests.support.isaac_async import run_kit_coroutine
 ROOT = Path(__file__).resolve().parents[2]
 SCENE = ROOT / "scenes" / "playground.usd"
 PROFILE = ROOT / "config" / "scenes" / "playground.toml"
+
+
+PLAYGROUND_CUBE_PATH = '/World/Objects/Cube'
+
+
+def playground_cube():
+    """Oracle/disturbance handle for tests only; not an observation dependency."""
+    stage = omni.usd.get_context().get_stage()
+    if not stage.GetPrimAtPath(PLAYGROUND_CUBE_PATH).IsValid():
+        raise RuntimeError(f'Missing playground test fixture: {PLAYGROUND_CUBE_PATH}')
+    return SingleXFormPrim(prim_path=PLAYGROUND_CUBE_PATH, name='cube', reset_xform_properties=False)
 
 
 def provider_profile(output_dir, provider, name=None):

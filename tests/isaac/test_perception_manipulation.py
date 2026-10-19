@@ -20,6 +20,7 @@ from isaacsim.core.utils.stage import is_stage_loading, open_stage
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
 from tests.support.isaac_async import run_kit_coroutine
+from tests.support.isaac_helpers import playground_cube
 from tests.support.results import write_result
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -96,6 +97,7 @@ def main(result_path=None, artifacts_dir=None):
     print("[2] Building runtime with real geometry perception...")
     profile = perception_profile(output_dir)
     bundle = run_kit_coroutine(build_runtime(profile), simulation_app)
+    cube = playground_cube()
 
     print("[3] Allowing tracker / semantic belief to settle...")
     for _ in range(180):
@@ -103,7 +105,7 @@ def main(result_path=None, artifacts_dir=None):
 
     obj = choose_object(bundle.world_model)
     original_id = obj.object_id
-    actual, _ = bundle.objects["cube"].get_world_pose()
+    actual, _ = cube.get_world_pose()
     initial_true = np.asarray(actual, dtype=float).copy()
     initial_error = float(
         np.linalg.norm(obj.pose.position - actual)
@@ -132,7 +134,7 @@ def main(result_path=None, artifacts_dir=None):
         "pick",
         object_id=original_id,
     ), simulation_app)
-    true_after_pick, _ = bundle.objects["cube"].get_world_pose()
+    true_after_pick, _ = cube.get_world_pose()
     true_after_pick = np.asarray(true_after_pick, dtype=float)
     metrics.update(
         pick_status=pick.status.value,
@@ -170,7 +172,7 @@ def main(result_path=None, artifacts_dir=None):
         target=Pose(TARGET),
         mode="stable",
     ), simulation_app)
-    final_true, _ = bundle.objects["cube"].get_world_pose()
+    final_true, _ = cube.get_world_pose()
     final_true = np.asarray(final_true, dtype=float)
     target_error = float(
         np.linalg.norm(final_true - TARGET)

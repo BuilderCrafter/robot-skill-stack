@@ -69,16 +69,21 @@ def bootstrap_fixture():
         factory=importlib.util.module_from_spec(factory_spec)
         sys.modules[factory_name]=factory
         factory_spec.loader.exec_module(factory)
+        source_name='robot_skill_stack.integrations.isaac.world.factory'
+        source_spec=importlib.util.spec_from_file_location(source_name,ISAAC/'world/factory.py')
+        source_factory=importlib.util.module_from_spec(source_spec)
+        sys.modules[source_name]=source_factory
+        source_spec.loader.exec_module(source_factory)
         spec.loader.exec_module(m)
         cfg=load_scene_config(ROOT/'config/scenes/playground.toml')
         cfg=replace(cfg,world=replace(cfg.world,provider='ground_truth'))
-        async def make_provider(world,config):
+        async def make_provider(config):
             camera=NS(close=Mock())
             p=NS(observe=Mock(side_effect=lambda context: ObservationBatch([ObjectObservation('cube',pose=Pose([.45,0,.025]),
                                   class_name='cube',size=[.05]*3,visible=True,source='ground_truth')], time.monotonic())),
                  forget=Mock(), close=Mock(side_effect=camera.close), camera=camera)
             env.providers.append(p); return p
-        with patch.object(m,'load_scene_config',return_value=cfg), patch.object(m,'_create_state_provider',side_effect=make_provider):
+        with patch.object(m,'load_scene_config',return_value=cfg), patch.object(m,'create_source',side_effect=make_provider):
             yield m,env
 
 
@@ -115,6 +120,84 @@ class BootstrapTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'Unsupported robot backend'):
                     operation(*args)
             self.assertEqual(e.backend_calls,[])
+        self.run_case(fn)
+
+    def test_source_factories_select_only_the_requested_adapter(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.world.factory']
+            truth=await factory.create_source(cfg)
+            factory.IsaacGroundTruthProvider.assert_called_once_with(
+                cfg.ground_truth.objects_root,cfg.ground_truth.objects)
+            factory.IsaacRgbdCamera.assert_not_called()
+            cfg=replace(cfg,world=replace(cfg.world,provider='perception'))
+            with patch.object(factory,'build_perception_provider',return_value=object()) as build:
+                source=await factory.create_source(cfg)
+            camera=factory.IsaacRgbdCamera.return_value
+            factory.IsaacRgbdCamera.assert_called_once_with('/World/PerceptionCamera',resolution=(640,480))
+            camera.initialize.assert_called_once_with(semantic_segmentation=False)
+            build.assert_called_once_with(camera,cfg)
+            camera.close.assert_not_called()
+            with patch.object(factory,'build_perception_provider',side_effect=ValueError('discovery init')):
+                with self.assertRaisesRegex(ValueError,'discovery init'):
+                    await factory.create_source(cfg)
+            camera.close.assert_called_once()
+        self.run_case(fn)
+
+    def test_rgbd_startup_needs_no_ground_truth_prims_or_objects(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            cfg=replace(cfg,world=replace(cfg.world,provider='perception'),
+                        ground_truth=replace(cfg.ground_truth,objects_root=None,objects={}))
+            valid={'/Franka','/World/PerceptionCamera'}
+            stage=NS(GetPrimAtPath=Mock(side_effect=lambda p:NS(IsValid=lambda:p in valid)))
+            with patch.object(m,'load_scene_config',return_value=cfg), \
+                 patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                b=await m.build_runtime('rgbd.toml')
+            self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
+            self.assertFalse(hasattr(b,'objects'))
+            b.close()
+        self.run_case(fn)
+
+    def test_ground_truth_startup_does_not_require_camera_prim(self):
+        async def fn(m,e):
+            valid={'/Franka','/World/Objects','/World/Objects/Cube'}
+            stage=NS(GetPrimAtPath=Mock(side_effect=lambda p:NS(IsValid=lambda:p in valid)))
+            with patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                b=await m.build_runtime('truth.toml')
+            self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
+            b.close()
+        self.run_case(fn)
+
+    def test_required_prims_are_validated_before_runtime_construction(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            for provider,paths in (('perception',('/Franka','/World/PerceptionCamera')),
+                                   ('ground_truth',('/Franka','/World/Objects','/World/Objects/Cube'))):
+                selected=replace(cfg,world=replace(cfg.world,provider=provider))
+                for missing in paths:
+                    stage=NS(GetPrimAtPath=lambda p:NS(IsValid=lambda:p!=missing))
+                    with patch.object(m,'load_scene_config',return_value=selected), \
+                         patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                        with self.assertRaisesRegex(RuntimeError,missing):
+                            await m.build_runtime('missing.toml')
+            self.assertIsNone(e.world)
+            self.assertFalse(e.providers)
+        self.run_case(fn)
+
+    def test_unknown_source_and_missing_selected_source_reference_fail_clearly(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.world.factory']
+            unknown=replace(cfg,world=replace(cfg.world,provider='unsupported'))
+            with self.assertRaisesRegex(ValueError,'Unsupported observation source'):
+                await factory.create_source(unknown)
+            rgbd=replace(cfg,world=replace(cfg.world,provider='perception'),
+                         perception=replace(cfg.perception,camera_prim_path=None))
+            with self.assertRaisesRegex(ValueError,'camera_prim_path'):
+                factory.required_source_prims(rgbd)
+            factory.IsaacRgbdCamera.assert_not_called()
+            factory.IsaacGroundTruthProvider.assert_not_called()
         self.run_case(fn)
 
     def test_ground_truth_populates_and_ticks(self):

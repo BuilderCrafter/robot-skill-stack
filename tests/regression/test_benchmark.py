@@ -24,6 +24,7 @@ from tests.support.isaac_async import run_kit_coroutine
 from tests.support.control_trace import TraceJournal, record_control
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
+    playground_cube,
     build_perception_runtime,
     choose_object,
     object_snapshot,
@@ -81,10 +82,10 @@ def trial_snapshot(bundle, object_id):
     }
 
 
-def physical_snapshot(bundle):
+def physical_snapshot(bundle, cube):
     # Read-only diagnostics: never step the world or change a control target.
     try:
-        position, orientation = bundle.objects["cube"].get_world_pose()
+        position, orientation = cube.get_world_pose()
         tcp = bundle.backend.get_end_effector_pose()
         return {
             "monotonic_s": time.monotonic(),
@@ -101,10 +102,10 @@ def physical_snapshot(bundle):
 
 
 @contextmanager
-def trace_backend_commands(bundle, records):
+def trace_backend_commands(bundle, records, cube):
     def wrap(name, command):
         async def traced(*args, **kwargs):
-            row = {"command": name, "before": physical_snapshot(bundle)}
+            row = {"command": name, "before": physical_snapshot(bundle, cube)}
             if name == "move_to_pose_async":
                 target = args[0] if args else kwargs["target"]
                 row["target"] = {
@@ -123,7 +124,7 @@ def trace_backend_commands(bundle, records):
                 row["exception"] = f"{type(exc).__name__}: {exc}"
                 raise
             finally:
-                row["after"] = physical_snapshot(bundle)
+                row["after"] = physical_snapshot(bundle, cube)
         return traced
 
     with ExitStack() as stack:
@@ -148,11 +149,12 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, journal=None):
         journal.mark('build_runtime')
     print("[2] Building perception runtime...", flush=True)
     bundle = build_perception_runtime(simulation_app, out)
+    cube = playground_cube()
     with ExitStack() as stack:
         set_stage = lambda name: None
         if journal is not None:
             set_stage = stack.enter_context(record_control(
-                bundle.backend, PhysicsCallbackScope(bundle.world), journal, cube=bundle.objects['cube'],
+                bundle.backend, PhysicsCallbackScope(bundle.world), journal, cube=cube,
             ))
 
         def stage(name):
@@ -161,14 +163,13 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None, journal=None):
             print('Benchmark stage:', name, flush=True)
             set_stage(name)
 
-        _benchmark_body(bundle, metrics, result_path, stage)
+        _benchmark_body(bundle, cube, metrics, result_path, stage)
 
 
-def _benchmark_body(bundle, metrics, result_path, stage):
+def _benchmark_body(bundle, cube, metrics, result_path, stage):
     stage('initial_settle')
     settle(bundle.world, 180)
 
-    cube = bundle.objects["cube"]
     obj = choose_object(bundle.world_model)
     object_id = obj.object_id
 
@@ -274,7 +275,7 @@ def _benchmark_body(bundle, metrics, result_path, stage):
         if tracked is None or not tracked.visible:
             metrics["failed_setup"] = {
                 "trial": index, "world_state": trial_snapshot(bundle, object_id),
-                "physical_state": physical_snapshot(bundle),
+                "physical_state": physical_snapshot(bundle, cube),
             }
             raise RuntimeError(
                 f"Object not visible before manipulation trial {index}"
@@ -303,7 +304,7 @@ def _benchmark_body(bundle, metrics, result_path, stage):
             return before_pick, pick, after_pick, place, after_place
 
         command_trace = []
-        with trace_backend_commands(bundle, command_trace):
+        with trace_backend_commands(bundle, command_trace, cube):
             before_pick, pick, after_pick, place, after_place = run_kit_coroutine(
                 pick_and_place(), simulation_app,
             )
