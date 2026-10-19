@@ -3,8 +3,8 @@
 The Isaac extension reads cached state from `WorldModel` and sends manipulation
 commands through `RobotRuntime`. It checks generic backend readiness, displays
 source health, and offers frame capture when the bundle provides that callback.
-Refresh is read-only; Clear Lost
-explicitly requests removal through the updater. Stale or failed source state
+Refresh is read-only; Clear Lost explicitly requests removal through the
+updater. Stale or failed source state
 disables Pick, Place and observation-dependent tasks. Home/Move remain available
 subject to existing readiness and held-state checks. Clear Held remains an
 explicit, confirmed software-only reset through the runtime, rejected while a
@@ -40,7 +40,7 @@ objects:
 - visibility state
 - held state
 
-Click an object row to select it. `Pick Selected` and the Pick+Place Behavior
+Click an object row to select it. `Pick` and the Pick+Place Behavior
 Trees use that selected persistent ID. Place acts on the currently held object.
 
 The same object display and manipulation controls work with
@@ -49,15 +49,17 @@ The same object display and manipulation controls work with
 The panel refreshes from cached WorldModel state at roughly 5 Hz, including
 during async execution. It never starts a second perception loop.
 
-There is no checked-in ground-truth profile. From the repository root, copy
-`config/scenes/playground.toml` to `outputs/playground_ground_truth.toml` (create
-`outputs/` first), and change only `[world].provider` to `"ground_truth"` in the
-copy. Restart Isaac and select this profile before initialization; the current
-GUI does not switch profiles on an initialized robot. The USD scene is unchanged.
+Use a complete setup file to select the source; the
+[configuration guide](configuration.md#required-settings-and-source-selection)
+provides the ground-truth copy command, schema and migration notes. Restart
+Isaac before switching setups; the GUI does not switch an initialized robot.
 
-Each file is a complete setup, without inheritance. `[scene]` contains the
-support-plane height and workspace bounds. `[perception]` contains camera
-references; `[ground_truth]` contains oracle references and optional object
-overrides. RGB-D can omit the entire ground-truth section, and ground truth can
-omit the camera section. Existing custom profiles need the
-[Phase 4B key migration](phase_4b_config_adapters_ui.md#configuration-and-migration).
+Capture writes an on-demand RGB-D `.npz` under `outputs/perception/`. To replay
+one without starting Isaac, use the existing wrapper (which uses Isaac's Python
+and repo-local NumPy, but constructs no `SimulationApp`):
+
+```bash
+python3 scripts/replay_perception_capture.py outputs/perception/capture_TIMESTAMP.npz
+```
+
+This is diagnostic replay of one frame, not a separate observation runtime.

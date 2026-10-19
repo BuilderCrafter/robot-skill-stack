@@ -1,125 +1,206 @@
-# Lower-level validation
+# Validation and release baseline
 
-Phase 4B cloud validation passes 286 discovered unit tests, all eight standalone
-offline modules, architecture boundaries and Python syntax. The final runner
-report is `outputs/phase4b-final/run-wsp5ua8i/summary.json` in the implementation
-workspace (ignored artifacts, not committed). No native Phase 4B test ran in the
-cloud. Run both workstation groups and the two-source GUI checklist in
-[Phase 4B](phase_4b_config_adapters_ui.md#workstation-validation) before merging.
+## Supported launch and test workflow
 
-Phase 4A cloud validation passed 266 discovered unit tests and the same eight
-standalone modules/static checks. After the fixture repair at `9ac2e04`, the
-operator confirmed all native automated tests, GUI checks with both sources,
-pause/resume, repeated initialization/shutdown and the injected-loss diagnostic
-passed. Final rerun artifacts were not uploaded; these are operator-reported
-results. Phase 4A is merged into main at `1d9141f`; its results do not validate
-the Phase 4B configuration and construction changes.
-
-Phase 3B completed before Phase 4A: uploaded benchmark evidence reports 4/4
-Pick/Place trials (errors 9.09, 10.80, 7.39 and 4.01 mm, unchanged 25 mm limit)
-and successful retreats. The uploaded object-loss diagnostic reports PASS with
-injection triggered, `GRASP_LOST`, Free state, cleared attachment, and no recovery
-Home or extra release. The operator subsequently reported both full Isaac groups
-and manual testing passed, then merged. These results do not validate Phase 4A.
-See the [held-state procedure](phase_3b_held_state.md#validation).
-
-Phase 3A completion: the reviewed `phase3a-frame-feedback.zip` reports all four
-Pick/Place benchmark trials passing, all retreats successful, and maximum true
-placement error 9.67 mm (unchanged limit: 25 mm). The operator subsequently
-confirmed both final Isaac groups (two integration scenarios and six
-regressions) and manual GUI testing passed, and approved merging. See the
-[Phase 3A record](control_diagnostic.md#latest-workstation-result-and-merge-checks)
-for the distinction between uploaded benchmark evidence and operator-reported
-final checks. The Phase 3A cloud validation passed 221 discovered unit tests, all
-eight standalone offline checks and the architecture check.
-
-Historical results recorded on the Isaac Sim workstation on 2026-09-26
-(not revalidated by the Phase 1 cloud run):
-
-- Perception V1: complete suite PASS; single-cube localization approximately 2 mm and same-ID reacquisition after Pick/Place.
-- Robust execution (Phase A): all five stages PASS; deterministic workspace benchmark mean localization error about 1.85 mm, worst observed about 2.41 mm; 4/4 Pick+Place benchmark trials; mean physical placement error about 4.93 mm; reactive Pick, BT recovery and multi-object manipulation PASS.
-- Grasp planning (Phase B): unit and Isaac stages PASS; 90 mm cube rejected before motion with `NO_VALID_GRASP`; normal 50 mm perception-driven cube still Pick+Place successful with about 6 mm physical target error.
-
-The regression suites are retained under `tests/` and runners under `scripts/`.
-Historical experiments and Phase 1 records are recoverable as described in
-[history.md](history.md).
-
-## Single regression entry point
-
-From the repository root, use Python 3.11/3.12 with `requirements.txt` installed:
+Use the existing Isaac Sim **5.1.0-rc.19 / Python 3.11** installation and
+repository-local `.deps` with **NumPy 1.26.4** and **py_trees 2.6.0**. From the
+repository root:
 
 ```bash
-python scripts/run_all_regressions.py --unit-only
-python scripts/run_all_regressions.py --group isaac
-python scripts/run_all_regressions.py --group regression
-# All groups, retaining optional logs, JSON and scenario artifacts:
-python scripts/run_all_regressions.py --artifacts-dir outputs/regressions
+./run_isaac_sim.sh
+python3 scripts/run_all_regressions.py --unit-only
+python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
+python3 scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
 ```
 
-- `unit` / `--unit-only`: architecture and syntax checks, unittest discovery under
-  `tests/unit`, and all eight retained standalone unit scripts. Uses the invoking
-  Python without the Isaac wrapper. Fake SDK/UI tests do not validate real Isaac.
-- `isaac`: both scenarios under `tests/isaac` (discovery and manipulation).
-- `regression`: all six scenarios under `tests/regression` (benchmark, grasp
-  planning, reactive pick, recovery, multi-object manipulation and placement).
+The GUI wrapper sets `ISAAC_SIM` (default `/home/etfrobotics/isaacsim`), uses the
+full experience and preserves ROS bridge startup overrides. `run_isaac_python.sh`
+prepends `.deps` and the repository to `PYTHONPATH`. GUI/scenario entry scripts
+import and verify NumPy before importing `SimulationApp`: Isaac/plugin imports
+can otherwise establish an incompatible NumPy first, too late to replace safely.
+The version/path log proves pre-import, not successful native SDK startup.
+Never add `--no-ros-env`; this Isaac launcher does not support it. Do not change
+drivers, workstation dependencies, Isaac installation or SSH configuration to
+run this checklist.
 
-The last two groups require the Isaac workstation. The wrapper still prepends
-`.deps`; each scenario script imports/verifies NumPy 1.26.4 before importing
-`SimulationApp`. The runner invokes those files directly, without `-c` or
-`runpy`, preserving the normal script `__main__` and argument context. Direct
-script invocation has the same NumPy guard. The working GUI launch is unchanged.
-See [isaac_runner_startup.md](isaac_runner_startup.md) for the startup assessment
-and the workstation procedure if a native crash persists.
+Native tests launch conventional files directly through the wrapper. The retired
+`python.sh -c` + `runpy` dispatch changed the registered `__main__`, `__file__`,
+`__spec__` and argument context and coincided with startup segfaults. The precise
+native fault was not established in the cloud; direct-script launching restores
+the working execution context without changing the SDK. If startup regresses,
+compare a minimal direct-script `SimulationApp` probe and GUI experience/logs
+before blaming scenario code. The original probe and evidence are recoverable
+from `1f53ed8:docs/isaac_runner_startup.md` (see [history](history.md)).
 
-Each selected scenario runs once. A failed command or missing/non-PASS Isaac
-result fails the run, while the remaining selected checks still execute. Reports
-are written in fresh directories so prior successes cannot be reused. Without
-`--artifacts-dir`, scenario JSON is temporary and terminal diagnostics remain
-visible. With it, each command has a log and `summary.json` records its status
-and actual exit code. No tar packaging or milestone wrapper scripts are needed.
+| Group | Checks |
+| --- | --- |
+| `unit` / `--unit-only` | Architecture/syntax, unittest discovery and eight standalone offline modules; uses invoking Python 3.11/3.12 with `requirements.txt` |
+| `isaac` | Discovery and perception-manipulation integration scenarios |
+| `regression` | Benchmark, grasp planning, reactive pick, recovery, multi-object and placement feasibility |
 
-The cloud `.venv` is an offline test environment, not a replacement for Isaac's
-`.deps` launch path. Unit tests can also be run directly, but discovery alone
-omits the eight standalone scripts; the consolidated runner includes them.
-The static check excludes local virtual environments and validates generic-package
-imports/syntax, not every semantic architectural dependency.
+Omit group selection to run all checks. Each selected scenario runs once. Failed
+exit codes, missing result JSON or non-PASS native results fail the run; later
+checks still run. Fresh artifact directories prevent stale PASS reuse. With
+`--artifacts-dir`, inspect logs, scenario JSON and `summary.json` with actual
+exit codes. Without it, native result files are temporary and terminal output
+remains visible. Do not treat an open window or a NumPy line as a test pass.
+
+Offline doubles cover behavior and boundaries, not real rendering, physics,
+camera timing or SDK compatibility. The cloud `.venv` does not substitute for
+Isaac's `.deps` launch environment. Unit discovery alone omits eight standalone
+modules; use the consolidated runner.
+
+## Final Phase 4C workstation commands
+
+From the normal checkout, without a separate temporary checkout:
+
+```bash
+git fetch origin
+git switch refactor/phase-4c-final-cleanup
+git pull --ff-only
+python3 scripts/run_all_regressions.py --unit-only \
+  --artifacts-dir outputs/phase4c-unit
+python3 scripts/run_all_regressions.py --group isaac \
+  --artifacts-dir outputs/phase4c-isaac
+python3 scripts/run_all_regressions.py --group regression \
+  --artifacts-dir outputs/phase4c-regression
+./run_isaac_python.sh scripts/diagnose_held_state.py \
+  --result outputs/phase4c-loss.json \
+  --artifacts-dir outputs/phase4c-loss
+```
+
+Keep all **two integration scenarios and six regressions**, including the
+**four-trial benchmark** and **25 mm maximum physical placement-error gate**.
+All trials must pass; no threshold relaxation is part of consolidation. Preserve
+the benchmark's existing localization/size limits and same-ID reacquisition.
+Occupied-target rejection must invoke zero backend motion/gripper commands;
+physical settling during the Kit bridge remains diagnostic, not a command spy.
+
+The separate injected-loss diagnostic must show that removal actually triggered,
+Pick returned `GRASP_LOST`, state became Free, attachment cleared, and there was
+one initial open, one close and no cleanup release or recovery Home. A quick
+pre-injection failure is not a pass. Retain its streamed journal even if the
+process is interrupted. It tests deterministic removal, not all natural slips.
 
 ## Manual GUI smoke test
 
-Phase 3A migrates standalone commands and the recovery BT to the same async
-runtime used by the GUI. The existing Kit bridge pumps application updates;
-do not use `asyncio.run()` to control live Isaac. Direct-script dispatch and
-pre-SimulationApp NumPy verification are unchanged. Re-run both workstation
-groups after this execution migration; cloud doubles cannot validate rendering,
-controller timing, physics callbacks or camera updates during commands.
+Launch `./run_isaac_sim.sh`, open `scenes/playground.usd` and use the checked-in
+setup. Then repeat with a complete ground-truth copy as described in
+[configuration](configuration.md#required-settings-and-source-selection).
+Restart Isaac before switching setups; no code/environment changes are needed.
 
-Run on the university Isaac Sim 5.1.0-rc.19 workstation when revalidating GUI
-or runtime changes:
+- [ ] Verify NumPy version/path, initialized backend, source health, selectable
+  IDs and live cached poses with **both sources**. Also initialize RGB-D using a
+  setup copy without the optional ground-truth section.
+- [ ] Observe separated cubes, spheres and cylinders in the configured workspace;
+  check geometry display and lost/visible transitions during controlled occlusion.
+- [ ] Exercise Home and Move in a clear workspace. Home returns to the captured
+  startup TCP reference; it is not a certified collision-free joint pose.
+- [ ] Pick a supported object, verify grasp/Held state, then stable Place at a free
+  tabletop target. Check actual release, final pose, same-ID reacquisition and
+  cleared attachment. The GUI uses stable mode only.
+- [ ] Run both BT tasks and sequential commands. Confirm responsive rendering and
+  perception throughout, and disabled overlapping actions while busy. Recovery
+  must not restart Pick while Home is running or recover after closure/loss.
+- [ ] Verify occupied placement and clearly unreachable targets fail before the
+  corresponding motion. Do not place physical obstructions in a robot path to
+  manufacture a failure.
+- [ ] Check disappearance/reacquisition and health on pause/resume. Pause long
+  enough for stale health and disabled observation-dependent controls; resume
+  and confirm recovery from fresh samples. Held/hinted IDs must stay protected.
+- [ ] Check Clear Lost and, only after establishing safe physical state, confirmed
+  software-only Clear Held. A busy command or changed ID must reject reset.
+  Uncertain state blocks automatic manipulation until explicitly resolved.
+- [ ] Exercise Stop/Play, reset/reinitialization and shutdown. Look for duplicate
+  callbacks, residual tasks, stale controls or camera/window cleanup errors.
+- [ ] Check RGB-D Capture and replay when diagnostics are needed; ground truth
+  should not offer frame capture. See [GUI](gui.md) and
+  [control diagnostics](control_diagnostic.md).
+- [ ] Review any motion/release/retreat failure: FAILED/TIMEOUT must remain a
+  failure; confirmed release stays Free. Inspect Place's separate outcome fields
+  described in [manipulation](manipulation.md#place-and-intentional-release).
+  Deterministic failure cases are exercised offline by the command below. If a
+  native failure case does not occur, record it as not exercised natively;
+  do not deliberately block the arm or claim that unit doubles prove physics.
 
-1. Confirm `ISAAC_SIM` points to the installation and `.deps` has the pinned
-   NumPy 1.26.4 and py_trees 2.6.0. Launch `./run_isaac_sim.sh`. Check the logged
-   NumPy version/path, full experience startup, ROS bridge startup overrides,
-   absence of an unsupported-option error, and the **Robot Skill Stack** window.
-2. Open `scenes/playground.usd`, select `config/scenes/playground.toml`, and press
-   **Initialize Runtime**. Confirm readiness, object rows, selectable IDs and live
-   cached poses. Check logs for camera or updater failures.
-3. With separated supported objects in the configured workspace, confirm V1
-   geometry observations for cubes, spheres and cylinders. Check lost/visible
-   state after a controlled occlusion; do not treat an offline fixture as this test.
-4. Select a graspable object, run Pick, confirm physical attachment and held state,
-   then Place at a known free tabletop target. Confirm physical release, pose,
-   same-ID reacquisition, and held-state clearing. Exercise Move and Home in a
-   clear workspace. Check GUI responsiveness during motion.
-5. Check an occupied placement target and an oversized/unreachable grasp are
-   rejected before the corresponding unsafe motion. Review both the result and
-   `retreat_ok`; Place can currently report success despite failed retreat.
-6. Create the local ground-truth profile described in [gui.md](gui.md), restart
-   Isaac, open the same scene and initialize that profile. Repeat WorldModel
-   initialization and basic manipulation; no core or GUI edits should be needed.
-7. Exercise Stop/Play, reset/reinitialize, and shutdown. Check for duplicate
-   callbacks, stale controls, camera cleanup errors, and residual tasks.
-8. Repeat sequential commands and both BT tasks. Confirm rendering/perception
-   continue during motion and GUI actions stay disabled while a command is busy.
-   Recovery must run the existing Home-and-retry sequence without restarting
-   Pick while Home is running. Coroutine cancellation is not an emergency stop;
-   uncertain physical/held state remains outside this phase.
+```bash
+python3 -m unittest tests.unit.test_place_modes tests.unit.test_execution_runtime
+```
+
+Stop immediately and investigate if shaking, contortion or unintended contact
+returns. Do not mask it by increasing tolerances or accepting inaccurate results.
+The [control diagnostic](control_diagnostic.md) gives journal commands; ZIP the
+complete output directory, including partial logs/journals after interruption.
+
+## Phase 4C release readiness
+
+Base: clean merged main **`1f53ed8`**, Phase 4B PR #6. The operator reported Phase
+4B native tests and manual checks passing before merging. Those results establish
+the starting point, not native validation of Phase 4C.
+
+Changes are limited to Place result reporting, honest Home descriptions/tooltip
+and unused skill metadata removal. Robot/source factories, source/WorldModel
+contracts, controller feedback/hold, automatic held-state handling, perception,
+planning mathematics, BT policy, lifecycle and dependency/launch paths remain.
+Home's target and trajectory are unchanged. Place failures stop both BTs before
+final Home; release mode still intentionally skips landing verification.
+
+| Measure | Baseline | Phase 4C |
+| --- | ---: | ---: |
+| Production Python, package + GUI, comments/blanks included | 5324 lines / 76 files | 5257 lines / 76 files |
+| Active Markdown files under `docs/` | 14 | 8 |
+| Discovered unit tests | 286 PASS | 297 PASS |
+| Standalone offline modules | 8 PASS | 8 PASS |
+| Architecture/syntax | PASS | PASS |
+| Native two + six scenarios and loss diagnostic | Prior-phase operator report | **Not run in cloud; pending workstation** |
+
+Final cloud command: `.venv/bin/python scripts/run_all_regressions.py --unit-only
+--artifacts-dir outputs/phase4c-unit`, with all ten runner steps PASS. Artifacts
+are local/ignored at `outputs/phase4c-unit/run-n2jt3ivp/summary.json` and neighboring
+logs. Local documentation links/anchors, historical Git references and
+`git diff --check` also pass. Production Python decreases 67 lines (1.3%);
+no large implementation shrink is claimed for this finishing phase.
+
+New/extended checks cover both Place modes, release/retreat failures and timeouts,
+verification evidence, Free versus retained attachment, no automatic task
+recovery, Home named/unknown poses, failure propagation, carrying loss and actual
+HomeSkill recovery-tree execution. Existing 286 tests, eight standalone modules,
+eight native scenarios and all accuracy gates are retained.
+
+Public migration: custom skills declare `name` rather than `SPEC = SkillSpec(...)`;
+unused `SkillSpec` and `SkillRegistry.specs()` are removed. Command names,
+`execute_async`, backend/observation contracts and configuration are unchanged.
+Place details add explicit stage outcomes; callers must now handle retreat
+failure as overall failure, even after successful release.
+
+Implementation files changed: `manipulation/skills/place.py` for reporting,
+`runtime/skill.py`, `runtime/registry.py` and all four skill declarations for
+metadata removal. `manipulation/backend.py` and Isaac `franka_backend.py` only
+change Home documentation/comments; the GUI panel only adds the Home tooltip.
+No production module was deleted or moved. Four unit-test modules are extended.
+
+The small registry, placement protocol/types/implementation split, read-only
+presentation helpers, operator dialogs and active trace/capture diagnostics were
+reviewed and retained. Further merging offers little meaningful reduction here
+and risks obscuring already validated boundaries. Duplicate result formatting
+remains local where phase-specific failure evidence differs; no generic result
+or recovery framework was introduced.
+
+Six historical phase/startup reports and the speculative ROS note are removed
+from active docs, with Git recovery references in [history](history.md). Current
+schema is in [configuration](configuration.md); behavior and troubleshooting
+lessons are consolidated into the durable documents, not another phase report.
+Known limits remain: no general collision-free transport, startup-reference
+Home, delayed position-only grasp evidence, simple greedy identity association,
+no arbitrary-object planning, and no automatic post-release recovery.
+
+Release checklist:
+
+- [x] Final cloud suite and repository/doc consistency checks pass.
+- [ ] Both native groups pass with all accuracy gates unchanged.
+- [ ] Injected-loss diagnostic passes after actual injection.
+- [ ] Both-source manual checklist passes; unexercised native failure paths are recorded honestly.
+- [ ] Review the PR and results before merging; do not label/tag a validated release early.
+
+No native Phase 4C validation or release tag is claimed. No additional robot,
+ROS/LLM integration, force sensing, planner framework or thesis work was started.

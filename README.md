@@ -1,142 +1,94 @@
 # Robot Skill Stack
 
-Deterministic lower-level robotics stack for the course project, structured so
-future thesis-level planning can integrate without rewriting the robot layer.
+Course-level robotics stack for Isaac Sim and the Franka Panda, with a small
+foundation for later planning research. It uses geometry-based RGB-D V1 or
+Isaac ground truth, one cached WorldModel and one cooperative async command path.
 
-## Architecture
+Capabilities include cube/box, sphere and cylinder fitting; persistent object
+IDs and placement reacquisition; gripper-position grasp verification and loss
+detection; reactive Pick; stable Place or intentional release through the API;
+target-occupancy rejection; two small Behavior Trees; and an Isaac GUI.
+Only Franka is implemented. YOLO/V2, ROS and additional robot adapters are not
+part of the supported runtime.
 
-```text
-orchestration / Behavior Trees
-            │
-        RobotRuntime
-            │
-    manipulation skills
-      │             │
- GraspPlanner   PlacementPlanner   ManipulationBackend
-                      │
-               Isaac integration
+## Quick start
 
-RGB-D sensor → perception → WorldModel
-                         ↑       │
-                         └ action-aware association hints
-```
-
-The generic package does not import Isaac Sim. Simulator-specific code is
-isolated under `robot_skill_stack/integrations/isaac`.
-
-## Repository layout
-
-```text
-robot_skill_stack/
-  common/                     shared types
-  runtime/                    skill API, registry, runtime
-  world/
-    model/                    WorldModel, observations, provider/updater
-    perception/               RGB-D discovery, tracking, geometry
-  manipulation/
-    backend.py                simulator-agnostic manipulation contract
-    skills/                   home, move, pick, place
-    grasping/                 replaceable feasibility-aware grasp planners
-    placement/                target-occupancy feasibility
-  presentation/               simulator-independent WorldModel UI view
-  orchestration/
-    behavior_trees/           BT nodes, tasks, executor
-  integrations/
-    isaac/                    Isaac bootstrap, camera, Franka backend, GT oracle
-
-config/                       one TOML per scene/setup
-scenes/                       Isaac USD scenes
-tests/                        unit, Isaac integration, regression
-scripts/                      regression-suite runners
-docs/                         architecture and subsystem documentation
-exts/                         optional Isaac UI extension
-```
-
-## Current course-level capabilities
-
-- geometry-first RGB-D discovery and primitive fitting for cubes/boxes, spheres,
-  and upright or lying cylinders, without Isaac semantic labels
-- persistent object IDs, held-track retention, and placement association hints
-- WorldModel with swappable perception / ground-truth providers
-- lazy object point-cloud access
-- action-aware reacquisition after robot-mediated transport
-- reactive Pick with bounded local replanning
-- gripper-feedback grasp verification
-- placement target occupancy rejection before motion
-- stable Place verification
-- Behavior Tree Pick+Place and recovery
-- multi-object manipulation
-- replaceable grasp-planner interface with feasibility rejection
-- Isaac GUI with selectable live WorldModel objects
-
-Isaac startup selects the production `SimplePrimitiveGraspPlanner`.
-V1 is the supported perception source. ROS 2 and external robot/source adapters are
-future work, not implemented integrations.
-
-## Dependencies
-
-The tested repo-local dependencies are:
-
-```text
-numpy==1.26.4
-py_trees==2.6.0
-```
-
-They are intentionally not vendored into the repository. If `.deps` is not
-already present on the Isaac machine, recreate it from the repo root:
+On the configured Isaac Sim **5.1.0-rc.19 / Python 3.11** workstation, from the
+repository root:
 
 ```bash
-./run_isaac_python.sh -m pip install --target .deps -r requirements.txt
+./run_isaac_sim.sh
 ```
 
-## Isaac GUI launch
+Set `ISAAC_SIM` if the installation differs from `/home/etfrobotics/isaacsim`.
+Open `scenes/playground.usd`, select `config/scenes/playground.toml` in the
+**Robot Skill Stack** panel and press **Initialize Runtime**.
 
-Set `ISAAC_SIM` to the installation directory if it differs from
-`/home/etfrobotics/isaacsim`, then run `./run_isaac_sim.sh` from the repository.
-The launcher verifies NumPy 1.26.4 before importing `SimulationApp`, uses the
-full Isaac experience, and disables its ROS bridge startup. Isaac Sim
-5.1.0-rc.19's `python.sh` does not support `--no-ros-env`; do not add it.
-Open `scenes/playground.usd` and initialize `config/scenes/playground.toml`.
-See `docs/gui.md` for switching to ground truth.
+The wrappers prepend repository-local `.deps` and import/verify **NumPy 1.26.4
+before `SimulationApp`**. The other runtime pin is **py_trees 2.6.0**. Use the
+existing workstation installation and dependencies; do not bypass the wrappers
+or add unsupported launcher options. See [validation](docs/validation.md) for
+launch constraints and [configuration](docs/configuration.md) to select ground
+truth or another setup. Restart Isaac before changing setups.
 
-Each setup selects `[robot].backend` (`franka`) and `[world].provider`
-(`perception` or `ground_truth`). `[scene]` holds workspace bounds and support
-height. RGB-D needs a camera prim; only ground truth needs oracle references.
-Small explicit factories construct the adapters; skills and the GUI use their
-common interfaces. See [Phase 4B](docs/phase_4b_config_adapters_ui.md) for the
-complete setup example, migration notes and validation checklist.
+For plain-Python development, use a Python 3.11/3.12 environment with
+`requirements.txt` installed. The cloud `.venv` is for offline tests and does
+not replace Isaac's `.deps` path.
 
-## Validation
+## Tests and diagnostics
 
-Manipulation has one cooperative command API:
-`await runtime.execute_async("pick", object_id=...)` (likewise Home, Move and
-Place). The GUI and Behavior Trees use this path; standalone Isaac tests drive
-the same coroutine with Kit's existing bridge. `runtime.busy` reports an active
-command; overlapping commands fail with `FailureCode.BUSY` rather than queuing.
-See `docs/phase_3a_execution.md` for interface migration and validation.
-The merged held-state upgrade is described in [Phase 3B](docs/phase_3b_held_state.md).
-The merged observation cleanup and operator-confirmed workstation validation are
-described in [Phase 4A](docs/phase_4a_world_model.md). Phase 4B passes offline
-checks; its workstation validation remains required before merging.
-
-Use one runner from the repository root with Python dependencies installed:
+One runner covers all retained checks:
 
 ```bash
 python3 scripts/run_all_regressions.py --unit-only
-python3 scripts/run_all_regressions.py --group isaac
-python3 scripts/run_all_regressions.py --group regression
+python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
+python3 scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
 ```
 
-`--unit-only` runs static checks, unittest discovery, and the eight standalone
-unit modules with the invoking Python; it does not require Isaac. The `isaac`
-and `regression` groups require the workstation and dispatch through the existing
-Isaac wrapper with pinned NumPy pre-import. Omit the group to run everything.
-Add `--artifacts-dir outputs/regressions` to retain logs, scenario results and
-artifacts in a fresh run directory; otherwise output goes to the terminal.
+The first command runs architecture/syntax checks, discovered tests and eight
+standalone offline modules. The other groups require Isaac and contain two
+integration scenarios and six regressions. Omit the group to run everything.
+Artifacts are written to fresh run directories; a NumPy line or open window is
+not a passing scenario. See [validation](docs/validation.md) for the final
+acceptance checklist, injected-loss diagnostic and pending native results.
 
-See `docs/validation.md` for the manual Isaac smoke checklist,
-`docs/phase_2_pruning.md` for before/after results, and `docs/history.md` for
-recovering removed experiments from the preservation tag.
+## Architecture and layout
 
-See `docs/architecture.md`, `docs/perception.md`, `docs/manipulation.md`,
-`docs/validation.md`, `docs/gui.md`, and `docs/ros2.md`.
+```text
+GUI / Behavior Trees → RobotRuntime → skills → ManipulationBackend
+                                        ↘ grasp / placement checks
+RGB-D V1 / ground truth → WorldModelUpdater → WorldModel → skills / GUI
+```
+
+The generic runtime, manipulation, world, presentation and orchestration code
+has no Isaac imports. `integrations/isaac/bootstrap.py` assembles the robot and
+source through explicit factories, using one small TOML per setup. New adapters
+implement these existing contracts; no plugin system is needed.
+
+| Path | Responsibility |
+| --- | --- |
+| `robot_skill_stack/runtime/` | Skill interface, name registry, async command ownership |
+| `robot_skill_stack/manipulation/` | Skills, held-state policy, grasp/placement feasibility |
+| `robot_skill_stack/world/` | Observations, cached state, source health, V1 geometry/tracking |
+| `robot_skill_stack/orchestration/` | Minimal BT tasks and executor |
+| `robot_skill_stack/presentation/` | Read-only WorldModel display model |
+| `robot_skill_stack/integrations/isaac/` | Composition, Franka backend, camera, ground truth, lifecycle |
+| `exts/` | Isaac GUI extension |
+| `config/scenes/`, `scenes/` | Setup TOML and USD scene |
+| `tests/`, `scripts/` | Offline/native validation and focused diagnostics |
+
+## Documentation
+
+- [Architecture](docs/architecture.md): contracts, execution and lifecycle ownership.
+- [Configuration](docs/configuration.md): current TOML schema and source selection.
+- [GUI](docs/gui.md): existing controls and explicit operator recovery.
+- [Manipulation](docs/manipulation.md): skills, Home, Place results and held state.
+- [Perception / WorldModel](docs/perception.md): geometry, observations and identity.
+- [Validation](docs/validation.md): commands, acceptance gates and release readiness.
+- [Control diagnostics](docs/control_diagnostic.md): instability correction and trace capture.
+- [History](docs/history.md): retired experiments and earlier phase reports.
+
+Home is a captured startup TCP reference, not a certified safe configuration.
+Endpoint/clearance checks do not establish collision-free transport. Finger
+positions do not prove object identity or prevent slipping. Read the limitations
+before relying on recovery or manipulating a new scene.
