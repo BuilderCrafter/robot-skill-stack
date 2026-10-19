@@ -138,10 +138,10 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         original.side_effect = move
         records = []
         with module.trace_backend_commands(bundle, records):
-            actual = asyncio.run(bundle.backend.move_to_pose_async(target, speed=.15, orientation_tolerance=.1))
+            actual = asyncio.run(bundle.backend.move_to_pose_async(target, orientation_tolerance=.1))
         self.assertIs(actual, result)
         self.assertIs(bundle.backend.move_to_pose_async, original)
-        original.assert_awaited_once_with(target, speed=.15, orientation_tolerance=.1)
+        original.assert_awaited_once_with(target, orientation_tolerance=.1)
         row = records[0]
         self.assertEqual(row['target']['position'], target.position.tolist())
         self.assertEqual(row['after']['physics_step']-row['before']['physics_step'], 1000)

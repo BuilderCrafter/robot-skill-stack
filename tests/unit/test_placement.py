@@ -30,7 +30,7 @@ class FakeBackend(ManipulationBackend):
         self.open_calls = 0
         self.closed = True
 
-    async def move_to_pose_async(self, target, speed=0.5, position_tolerance=None, orientation_tolerance=None,
+    async def move_to_pose_async(self, target, position_tolerance=None, orientation_tolerance=None,
                                  grasp_check=None):
         self.move_calls += 1
         self.ee = target

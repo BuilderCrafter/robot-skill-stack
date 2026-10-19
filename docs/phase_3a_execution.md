@@ -84,7 +84,7 @@ See [control diagnostics](control_diagnostic.md) for evidence and commands and
 
 The GUI keeps stable placement with no release/drop selector planned.
 Intentional release remains available through the skill API. Remaining held
-state, retreat, recovery, speed and Home limitations are recorded in
+state, retreat, recovery and Home limitations are recorded in
 [manipulation](manipulation.md#current-execution-limitations); they are not
 part of this cleanup or an automatic start of Phase 3B.
 

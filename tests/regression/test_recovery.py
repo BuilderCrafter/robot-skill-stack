@@ -81,7 +81,6 @@ def main(result_path=None, artifacts_dir=None):
     moved = run_kit_coroutine(bundle.runtime.execute_async(
         "move_to_pose",
         target=away,
-        speed=0.3,
     ), simulation_app)
     if not moved.ok:
         raise RuntimeError(

@@ -301,7 +301,6 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         result = await backend.home_async()
         self.assertTrue(result.ok)
         self.assertEqual(result.details['pose_name'], 'home')
-        self.assertEqual(result.details['requested_speed'], .35)
         self.assertEqual(state.updates, 2)
         self.assertFalse((await backend.home_async('missing')).ok)
 

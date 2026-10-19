@@ -242,7 +242,6 @@ class PlaceSkill(BaseSkill):
         result = await self.holding.run_motion(
             self.backend.move_to_pose_async,
             pre,
-            speed=0.4,
             position_tolerance=0.020,
             orientation_tolerance=0.10,
         )
@@ -259,7 +258,6 @@ class PlaceSkill(BaseSkill):
         result = await self.holding.run_motion(
             self.backend.move_to_pose_async,
             release,
-            speed=0.15,
             position_tolerance=0.015,
             orientation_tolerance=0.10,
         )
@@ -298,7 +296,6 @@ class PlaceSkill(BaseSkill):
         retreat_result = await self.holding.run_motion(
             self.backend.move_to_pose_async,
             retreat,
-            speed=0.3,
             position_tolerance=0.020,
             orientation_tolerance=0.10,
         )

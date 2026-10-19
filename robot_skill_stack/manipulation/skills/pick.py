@@ -65,12 +65,11 @@ class PickSkill(BaseSkill):
             result.details,
         )
 
-    async def _motion_async(self, pose, speed, tolerance, message):
+    async def _motion_async(self, pose, tolerance, message):
         return self._motion_result(
             await self.holding.run_motion(
                 self.backend.move_to_pose_async,
                 pose,
-                speed=speed,
                 position_tolerance=tolerance,
                 orientation_tolerance=0.10,
             ),
@@ -296,7 +295,6 @@ class PickSkill(BaseSkill):
 
             failure = await self._motion_async(
                 plan.pre_grasp,
-                0.4,
                 0.020,
                 "Pre-grasp failed.",
             )
@@ -317,7 +315,6 @@ class PickSkill(BaseSkill):
 
             failure = await self._motion_async(
                 plan.grasp,
-                0.15,
                 0.010,
                 "Grasp approach failed.",
             )
@@ -351,7 +348,6 @@ class PickSkill(BaseSkill):
 
             failure = await self._motion_async(
                 plan.lift,
-                0.2,
                 0.020,
                 "Lift failed.",
             )

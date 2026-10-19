@@ -44,7 +44,6 @@ class ManipulationBackend(ABC):
     async def move_to_pose_async(
         self,
         target: Pose,
-        speed: float = 0.5,
         position_tolerance: float | None = None,
         orientation_tolerance: float | None = None,
         grasp_check: Callable[[], BackendResult | None] | None = None,

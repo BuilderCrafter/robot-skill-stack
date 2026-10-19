@@ -86,9 +86,10 @@ backend commands have been removed; standalone Isaac scripts drive the same
 coroutine through the external Kit bridge. Read-only queries stay synchronous.
 Motion tolerances and update budgets are unchanged; bounded gripper inspection
 adds observation updates around grasp/release and ambiguous feedback.
-Franka's `speed` argument is diagnostic and does not scale motion.
+The former diagnostic-only `speed` argument and `requested_speed` result field
+have been removed from the motion API; they never scaled Franka motion.
 Its `home` is the TCP pose captured during backend construction, not a separately
 configured safe joint pose. Gripper width feedback verifies grasping; it is not
 a force/contact sensor. Place reports `retreat_ok` separately and can currently
 report success despite a failed retreat. Broader recovery policy, retreat
-reporting, speed and Home semantics remain deferred beyond this held-state step.
+reporting and Home semantics remain deferred beyond this held-state step.

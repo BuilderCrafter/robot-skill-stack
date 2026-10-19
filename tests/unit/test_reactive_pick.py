@@ -34,7 +34,6 @@ class FakeBackend(ManipulationBackend):
     async def move_to_pose_async(
         self,
         target,
-        speed=0.5,
         position_tolerance=None,
         orientation_tolerance=None,
         grasp_check=None,

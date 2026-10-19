@@ -179,7 +179,6 @@ class IsaacFrankaBackend(ManipulationBackend):
     async def move_to_pose_async(
         self,
         target: Pose,
-        speed=0.5,
         position_tolerance=None,
         orientation_tolerance=None,
         grasp_check=None,
@@ -246,7 +245,6 @@ class IsaacFrankaBackend(ManipulationBackend):
                             "steps": step + 1,
                             "position_error_m": last_pos_error,
                             "orientation_error_rad": last_ori_error,
-                            "requested_speed": speed,
                             "position_tolerance_m": pos_tol,
                             "orientation_tolerance_rad": ori_tol,
                         },
@@ -323,7 +321,6 @@ class IsaacFrankaBackend(ManipulationBackend):
 
         result = await self.move_to_pose_async(
             self.named_poses[name],
-            speed=0.35,
             position_tolerance=0.025,
             orientation_tolerance=0.10,
             grasp_check=grasp_check,

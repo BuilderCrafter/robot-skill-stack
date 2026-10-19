@@ -17,7 +17,7 @@ class MoveToPoseSkill(BaseSkill):
     SPEC = SkillSpec(
         "move_to_pose",
         "Move the robot end effector to a requested pose.",
-        ("target", "speed"),
+        ("target",),
         ("target pose is valid", "target is reachable"),
         ("end effector reaches target pose",),
         (
@@ -59,7 +59,6 @@ class MoveToPoseSkill(BaseSkill):
     async def execute_async(
         self,
         target: Pose,
-        speed=0.5,
         position_tolerance=None,
         orientation_tolerance=None,
     ):
@@ -72,7 +71,6 @@ class MoveToPoseSkill(BaseSkill):
         result = await self.holding.run_motion(
             self.backend.move_to_pose_async,
             target,
-            speed=speed,
             position_tolerance=(
                 position_tolerance or self.position_tolerance
             ),
