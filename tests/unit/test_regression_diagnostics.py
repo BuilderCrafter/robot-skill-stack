@@ -226,6 +226,41 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         self.assertEqual(report['metrics']['manipulation_completed'], 1)
         self.assertEqual(report['metrics']['manipulation_total'], 4)
         self.assertIn('primary place failure', report['error'])
+        self.assertNotIn('control_samples', report['metrics'])
+
+    def test_loaded_trace_is_opt_in_and_retained_on_failure_or_operator_interrupt(self):
+        for interrupted in (False, True):
+            with self.subTest(interrupted=interrupted):
+                module, bundle = self.benchmark()
+                contexts_closed = []
+                @contextmanager
+                def recorder(backend, scheduler, samples, cube):
+                    self.assertIs(backend, bundle.backend)
+                    self.assertIs(cube, bundle.objects['cube'])
+                    try:
+                        yield lambda stage: samples.append({'stage': stage})
+                    finally:
+                        contexts_closed.append(True)
+                module.record_control = recorder
+                module.PhysicsCallbackScope = Mock()
+                if interrupted:
+                    execute = bundle.runtime.execute_async.side_effect
+                    async def stop(name, **kwargs):
+                        if name == 'pick':
+                            raise KeyboardInterrupt('operator stop')
+                        return await execute(name, **kwargs)
+                    bundle.runtime.execute_async.side_effect = stop
+                with self.assertRaises(KeyboardInterrupt if interrupted else AssertionError):
+                    module.main(self.result, self.out, control_trace=True)
+                report = json.loads(self.result.read_text())
+                self.assertEqual(report['status'], 'FAIL')
+                self.assertEqual(report['metrics']['control_samples'][0]['stage'], 'trial_1:pick')
+                self.assertEqual(len(contexts_closed), 1)
+                bundle.backend.open_gripper_async.assert_not_called()
+                if interrupted:
+                    self.assertIn('KeyboardInterrupt: operator stop', report['error'])
+                else:
+                    self.assertIn('primary place failure', report['error'])
 
     def test_timeout_with_held_object_stops_without_changing_failure_or_held_state(self):
         module, bundle = self.benchmark(failed=None)

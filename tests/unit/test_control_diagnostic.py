@@ -9,11 +9,13 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.manipulation.backend import BackendResult
 from tests.unit.test_regression_diagnostics import scenario
+from tests.support.control_trace import record_control
 
 
 class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
     def stack(self):
         module = scenario('diagnose_isaac_control', folder='scripts')
+        module.record_control = record_control
         world = NS(current_time=0., current_time_step_index=0,
                    step=Mock(side_effect=AssertionError('unexpected blocking world.step')))
         action = NS(joint_positions=np.array([.1, .2]), joint_velocities=np.array([.3, .4]),
@@ -85,6 +87,23 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         for call in backend.move_to_pose_async.await_args_list:
             self.assertEqual(call.args[0].position[2], .25)
             self.assertEqual(call.kwargs['orientation_tolerance'], .10)
+
+    async def test_loaded_trace_records_true_cube_motion_and_positional_controller_arguments(self):
+        module, backend, scheduler = self.stack()
+        cube = NS(get_world_pose=lambda: (np.array([.4, 0, .025+.1*backend.world.current_time_step_index]),
+                                          np.array([1, 0, 0, 0])))
+        position, orientation = np.array([.4, 0, .15]), np.array([0, 0, 1, 0])
+        samples = []
+        with module.record_control(backend, scheduler, samples, cube=cube) as set_stage:
+            set_stage('trial_3:pick')
+            backend.motion_controller.forward(position, orientation)
+            await backend._next_update()
+        backend.motion_controller.forward.assert_called_once_with(position, orientation)
+        self.assertEqual(samples[1]['target_position'], position.tolist())
+        self.assertEqual(samples[1]['target_orientation'], orientation.tolist())
+        self.assertEqual(samples[0]['cube_position'], [.4, 0, .025])
+        self.assertEqual(samples[-1]['cube_position'], [.4, 0, .125])
+        self.assertTrue(all(s['stage'] == 'trial_3:pick' for s in samples))
 
     async def test_partial_gripper_action_and_retained_arm_velocity_targets_are_distinguishable(self):
         module, backend, scheduler = self.stack()

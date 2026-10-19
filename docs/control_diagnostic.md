@@ -194,3 +194,57 @@ success and 25 mm true placement-accuracy requirements. No thresholds are
 relaxed to compensate. The next required measurement is the stable benchmark,
 followed by placement feasibility and the full regression group if successful.
 Intentional-release validation and GUI selection remain pending.
+
+## Loaded benchmark still fails: trace the active lift
+
+The subsequent supplied benchmark fails at trial 3 with `grasp_failed`,
+`Object was lost during lift.` Trial 1 and 2 complete Pick and Place with
+10.72 mm and 15.35 mm physical target errors. Trial 3 closes around the cube
+(50.03 mm feedback width), then takes 452 controller iterations to lift and
+ends with an effectively empty gripper (0.0021 mm width). The cube is back on
+the table. Place is never called for this trial, trial 4 is unrun, and no
+cleanup command follows the failure. The benchmark correctly remains FAIL.
+
+The user still observes twisting, shaking and ground contact. The arm hold
+corrected a measured post-command defect, but it is not sufficient to make
+active loaded trajectories reliable. Command-boundary snapshots cannot locate
+the transient joint motion, physical contact or exact object-loss instant.
+No new gain, planning or tolerance change is justified by those snapshots.
+
+The same recorder used by the empty-gripper diagnostic now lives in
+`tests/support/control_trace.py`. Benchmark has an opt-in `--control-trace`
+diagnostic flag that records joint actions/feedback, TCP and true cube poses
+through the existing Pick/Place sequence, with trial/skill labels and requested
+Cartesian targets. Data are retained in `metrics.control_samples` on failure
+or an operator KeyboardInterrupt. Temporary callbacks/wrappers are restored.
+Normal benchmark and regression-group execution leave this flag off. All eight
+original scenarios and their success/accuracy gates remain unchanged.
+
+On the workstation, from the repository root:
+
+```bash
+git switch refactor/phase-3a-execution
+git pull --ff-only
+mkdir -p outputs/phase3a-loaded-control
+./run_isaac_python.sh tests/regression/test_benchmark.py --control-trace --result outputs/phase3a-loaded-control/benchmark.json --artifacts-dir outputs/phase3a-loaded-control/benchmark > outputs/phase3a-loaded-control/benchmark.log 2>&1
+```
+
+If the arm starts contorting or contacting the ground, Ctrl+C can stop the
+diagnostic and preserve its partial trace; completing the failed sequence is
+not necessary. Send a ZIP of `outputs/phase3a-loaded-control` because the frame
+trace can be large. No extra control commands or waits are introduced by the
+recorder, though its CPU overhead may affect wall-clock scheduling.
+
+Use the trace to distinguish abrupt RMPflow joint targets, poor tracking or
+contact-induced motion despite smooth targets, and loss/slip of the object
+relative to the hand. Also examine whether orientation requirements or posture
+preferences compete with positional motion, especially at controller resets
+between segments or near a singular configuration. The user specifically
+raised excessive motion constraints as a hypothesis; it is not ruled out.
+No position/orientation tolerance, path restriction or gain is changed for
+this diagnostic. The project does not register the support plane/scene
+obstacles with RMPflow, which remains a concrete collision-avoidance limitation;
+the available boundary snapshots do not establish the exact collision source.
+Do not equate endpoint reachability or successful endpoint tolerance with safe
+intermediate motion. Controller diagnosis and loaded validation remain open;
+GUI release selection remains gated on those results.

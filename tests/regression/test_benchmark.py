@@ -19,7 +19,9 @@ from unittest.mock import patch
 
 
 from robot_skill_stack.common.types import Pose
+from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope
 from tests.support.isaac_async import run_kit_coroutine
+from tests.support.control_trace import record_control
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -129,7 +131,7 @@ def trace_backend_commands(bundle, records):
         yield
 
 
-def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
+def _run_benchmark(metrics, result_path=None, artifacts_dir=None, control_trace=False):
     out = Path(
         artifacts_dir
         or Path("outputs") / "phase_a_benchmark_tmp"
@@ -225,6 +227,8 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
     target_errors = []
     metrics.update(manipulation_total=len(MANIPULATION_TRIALS), manipulation_completed=0,
                    manipulation_successes=0, manipulation_success_rate=0.0)
+    if control_trace:
+        metrics['control_samples'] = []
 
     for index, (start, target) in enumerate(
         MANIPULATION_TRIALS,
@@ -257,6 +261,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
             # Place in a second task adds a physics tick under the old command
             # before Place captures the TCP orientation for its release poses.
             before_pick = trial_snapshot(bundle, object_id)
+            set_stage(f'trial_{index}:pick')
             pick = await bundle.runtime.execute_async(
                 "pick",
                 object_id=object_id,
@@ -264,6 +269,7 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
             after_pick = trial_snapshot(bundle, object_id)
             place = None
             if pick.ok:
+                set_stage(f'trial_{index}:place')
                 place = await bundle.runtime.execute_async(
                     "place",
                     target=Pose(target),
@@ -273,7 +279,13 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
             return before_pick, pick, after_pick, place, after_place
 
         command_trace = []
-        with trace_backend_commands(bundle, command_trace):
+        with ExitStack() as stack:
+            set_stage = lambda name: None
+            if control_trace:
+                set_stage = stack.enter_context(record_control(
+                    bundle.backend, PhysicsCallbackScope(bundle.world), metrics['control_samples'], cube=cube,
+                ))
+            stack.enter_context(trace_backend_commands(bundle, command_trace))
             before_pick, pick, after_pick, place, after_place = run_kit_coroutine(
                 pick_and_place(), simulation_app,
             )
@@ -382,11 +394,11 @@ def _run_benchmark(metrics, result_path=None, artifacts_dir=None):
     write_result(result_path, status="PASS", metrics=metrics)
 
 
-def main(result_path=None, artifacts_dir=None):
+def main(result_path=None, artifacts_dir=None, control_trace=False):
     metrics = {"perception_trials": [], "manipulation_trials": []}
     try:
-        _run_benchmark(metrics, result_path, artifacts_dir)
-    except Exception as exc:
+        _run_benchmark(metrics, result_path, artifacts_dir, control_trace)
+    except BaseException as exc:
         write_result(result_path, status="FAIL", metrics=metrics,
                      error=f"{type(exc).__name__}: {exc}")
         raise
@@ -396,9 +408,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--result")
     parser.add_argument("--artifacts-dir")
+    parser.add_argument('--control-trace', action='store_true',
+                        help='Record loaded joint/TCP/cube feedback at each control update for diagnosis')
     args = parser.parse_args()
     try:
-        main(args.result, args.artifacts_dir)
+        main(args.result, args.artifacts_dir, args.control_trace)
     except Exception as exc:
         traceback.print_exc()
         sys.exit(1)
