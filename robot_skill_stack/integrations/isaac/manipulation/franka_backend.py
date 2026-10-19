@@ -64,6 +64,8 @@ class IsaacFrankaBackend(ManipulationBackend):
             end_effector_frame,
         )
 
+        # Preserve the validated target: TCP after bootstrap reset and startup updates.
+        # This is a startup reference, not a safe joint configuration or collision-free path.
         home = self.get_end_effector_pose()
         self.named_poses = {
             "home": Pose(

@@ -114,6 +114,19 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(runtime.busy)
         self.assertTrue((await runtime.execute_async('home')).ok)
 
+    async def test_home_forwards_name_and_preserves_backend_failure(self):
+        for timed_out in (False, True):
+            with self.subTest(timed_out=timed_out):
+                backend, runtime = self.stack()
+                backend.home_async = AsyncMock(return_value=BackendResult(
+                    False, 'named motion failed', timed_out=timed_out, details={'pose_name': 'home'}))
+                result = await runtime.execute_async('home', name='home')
+                backend.home_async.assert_awaited_once_with('home')
+                self.assertEqual(result.status, SkillStatus.TIMEOUT if timed_out else SkillStatus.FAILED)
+                self.assertEqual(result.failure_code, FailureCode.TIMEOUT if timed_out else FailureCode.PATH_BLOCKED)
+                self.assertEqual(result.message, 'named motion failed')
+                self.assertEqual(result.details['pose_name'], 'home')
+
     async def test_cancelled_command_releases_ownership_and_propagates_cancellation(self):
         backend, runtime = self.stack()
         entered = asyncio.Event()
@@ -158,6 +171,35 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(calls, ['pick', 'home', 'pick', 'place', 'home'])
         first = next(node for node in root.iterate() if node.name == 'Pick object')
         self.assertEqual(first.result.failure_code, FailureCode.OBJECT_POSE_UNKNOWN)
+
+    async def test_recovery_uses_real_home_skill_and_stops_if_it_times_out(self):
+        for succeeds in (False, True):
+            with self.subTest(succeeds=succeeds):
+                model, registry = WorldModel(), SkillRegistry()
+                backend = FakeAsyncBackend()
+                backend.home_async = AsyncMock(return_value=BackendResult(
+                    succeeds, 'home timeout' if not succeeds else '', timed_out=not succeeds))
+                pick = AsyncMock(side_effect=[
+                    SkillResult(SkillStatus.FAILED, failure_code=FailureCode.OBJECT_POSE_UNKNOWN),
+                    SkillResult(SkillStatus.SUCCESS),
+                ])
+                place = AsyncMock(return_value=SkillResult(SkillStatus.SUCCESS))
+                registry.register(Command('pick', pick))
+                registry.register(Command('place', place))
+                registry.register(HomeSkill(backend, model))
+                runtime = RobotRuntime(registry, model)
+                tree = create_pick_and_place_recovery_tree(
+                    runtime, 'object', Pose([.4, .2, .025]), return_home=False)
+                status = await BTExecutor(tree).run_async(next_tick)
+                self.assertEqual(status, py_trees.common.Status.SUCCESS if succeeds else py_trees.common.Status.FAILURE)
+                backend.home_async.assert_awaited_once_with('home')
+                self.assertEqual(pick.await_count, 2 if succeeds else 1)
+                self.assertEqual(place.await_count, 1 if succeeds else 0)
+                home = next(node for node in tree.iterate() if node.name == 'Recovery Home')
+                if not succeeds:
+                    self.assertEqual(home.result.status, SkillStatus.TIMEOUT)
+                    self.assertEqual(home.result.failure_code, FailureCode.TIMEOUT)
+                self.assertFalse(runtime.busy)
 
     async def test_bt_failure_stops_later_commands(self):
         runtime, calls = self.task_runtime(fail_first=True)

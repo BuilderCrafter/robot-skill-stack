@@ -13,10 +13,10 @@ from robot_skill_stack.runtime.skill import (
 class HomeSkill(BaseSkill):
     SPEC = SkillSpec(
         "home",
-        "Return the robot to a known safe pose.",
+        "Return to the backend's named startup pose; path safety is not guaranteed.",
         ("optional named pose",),
         (),
-        ("robot reaches a safe pose",),
+        ("robot reaches the named pose",),
         (FailureCode.PATH_BLOCKED, FailureCode.TIMEOUT, FailureCode.GRASP_LOST, FailureCode.GRASP_UNCERTAIN),
     )
 
