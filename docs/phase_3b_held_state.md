@@ -109,8 +109,19 @@ position tolerance and 60-update opening duration. Result details now include
 physical limits, nominal targets, measured positions and classified state.
 Unit tests cover an over-travel nominal target and non-adjacent finger indices.
 The loss diagnostic also reports the original Pick failure when injection is
-never reached. Native reruns of both scenarios are still required; retain them
-in a fresh output directory such as `outputs/phase3b-open-limits`.
+never reached.
+
+The next workstation upload at `aa29f84` failed during runtime construction,
+before perception or manipulation trials: `Franka` has no `get_dof_limits()`.
+The first constructor double incorrectly provided that method. The corrected
+adapter uses the public `dof_properties` structured array's `lower` and `upper`
+fields, indexed by finger joint names. This API and the Franka → Robot →
+SingleArticulation inheritance were checked against the
+[Isaac Sim 5.1.0 source](https://github.com/isaac-sim/IsaacSim/blob/v5.1.0/source/extensions/isaacsim.core.prims/python/impl/single_articulation.py).
+The constructor double now matches that array layout and omits the unavailable
+getter. No private view access, fallback or hardcoded physical limit is needed.
+Native reruns of both scenarios are still required; retain them in a fresh
+output directory such as `outputs/phase3b-dof-properties`.
 
 From the existing workstation checkout, first run the ordinary benchmark and
 observe all four trials. It must retain the 25 mm gate and smooth motion:

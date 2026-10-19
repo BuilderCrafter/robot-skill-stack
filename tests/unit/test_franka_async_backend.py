@@ -67,18 +67,29 @@ class FrankaFingerLimitTests(unittest.TestCase):
             np.zeros(3), np.eye(3),
         )
         module.rot_matrices_to_quats.return_value = np.array([1., 0., 0., 0.])
-        limits = np.array([[-1., 1.], [0., .03], [-2., 2.], [0., .04]])
+        # Isaac Sim 5.1 SingleArticulation exposes structured dof_properties;
+        # get_dof_limits() belongs to its underlying view, not Franka/Robot.
+        properties = np.zeros(4, dtype=[
+            ('type', int), ('hasLimits', bool), ('lower', float), ('upper', float),
+            ('driveMode', int), ('maxVelocity', float), ('maxEffort', float),
+            ('stiffness', float), ('damping', float),
+        ])
+        properties['lower'] = [-1., 0., -2., 0.]
+        properties['upper'] = [1., .03, 2., .04]
         robot = NS(get_dof_index=Mock(side_effect={'panda_finger_joint1': 3,
                                                    'panda_finger_joint2': 1}.__getitem__),
-                   get_dof_limits=Mock(return_value=limits),
+                   dof_properties=properties,
                    get_world_pose=lambda: (np.zeros(3), np.array([1., 0., 0., 0.])),
                    gripper=NS(joint_opened_positions=np.array([.05, .05]),
                               get_joint_positions=lambda: [.04, .03]))
         backend = module.IsaacFrankaBackend(NS(get_physics_dt=lambda: 1/60), robot)
         np.testing.assert_array_equal(backend._finger_limits, [[0., .04], [0., .03]])
-        robot.get_dof_limits.assert_called_once_with()
+        self.assertEqual(robot.get_dof_index.call_args_list,
+                         [unittest.mock.call('panda_finger_joint1'),
+                          unittest.mock.call('panda_finger_joint2')])
         self.assertEqual(backend.gripper_feedback().state, GripperState.FREE)
-        limits[:] = 0  # Cached physical bounds are independent of the SDK buffer.
+        properties['lower'][:] = 0
+        properties['upper'][:] = 0  # Cached bounds are independent of the SDK buffer.
         np.testing.assert_array_equal(backend._finger_limits, [[0., .04], [0., .03]])
 
 

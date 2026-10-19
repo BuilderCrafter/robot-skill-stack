@@ -42,7 +42,10 @@ class IsaacFrankaBackend(ManipulationBackend):
         self._gripper_command = None
         # SDK nominal opening/action targets can exceed the loaded USD travel.
         finger_indices = [robot.get_dof_index(f'panda_finger_joint{i}') for i in (1, 2)]
-        self._finger_limits = np.asarray(robot.get_dof_limits(), dtype=float)[finger_indices].copy()
+        properties = robot.dof_properties
+        self._finger_limits = np.column_stack((
+            properties['lower'][finger_indices], properties['upper'][finger_indices],
+        ))
 
         rmpflow = RmpFlow(**interface_config_loader.load_supported_motion_policy_config('Franka', 'RMPflow'))
         self.motion_controller = MotionPolicyController(
