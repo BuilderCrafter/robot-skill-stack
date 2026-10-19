@@ -230,8 +230,8 @@ async def _build_runtime(
         )
 
         registry = SkillRegistry()
-        registry.register(MoveToPoseSkill(backend))
-        registry.register(HomeSkill(backend))
+        registry.register(MoveToPoseSkill(backend, model))
+        registry.register(HomeSkill(backend, model))
         placement_planner = SimplePlacementPlanner(clearance=0.005)
 
         registry.register(PickSkill(backend, model, planner))

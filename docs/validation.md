@@ -1,5 +1,10 @@
 # Lower-level validation
 
+Phase 3B held-state changes have a separate
+[workstation procedure](phase_3b_held_state.md#validation), including an explicit
+object-loss diagnostic. Native validation of that change is pending; the
+completed Phase 3A results below do not validate the new monitoring logic.
+
 Phase 3A completion: the reviewed `phase3a-frame-feedback.zip` reports all four
 Pick/Place benchmark trials passing, all retreats successful, and maximum true
 placement error 9.67 mm (unchanged limit: 25 mm). The operator subsequently

@@ -77,6 +77,7 @@ def trial_snapshot(bundle, object_id):
         "observation_age_s": None if obj is None or obj.last_seen is None else now-obj.last_seen,
         "object": None if obj is None else object_snapshot(obj),
         "held_object_id": bundle.world_model.held_object_id,
+        "gripper_state": bundle.world_model.gripper_state.value,
     }
 
 

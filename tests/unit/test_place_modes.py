@@ -20,6 +20,7 @@ class PlaceModeTests(unittest.IsolatedAsyncioTestCase):
         backend.move_to_pose_async = AsyncMock(wraps=backend.move_to_pose_async)
         async def release():
             backend.open_calls += 1
+            backend.closed = False
             obj.pose = Pose(self.target.position if landing is None else landing)
             obj.visible = visible
             return BackendResult(True)

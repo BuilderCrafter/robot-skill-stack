@@ -344,7 +344,9 @@ class RobotSkillStackExtension(omni.ext.IExt):
             if time.monotonic() >= self._diagnostic_at:
                 self._diagnostic_at = time.monotonic()+5.
                 carb.log_error('[robot_skill_stack.updater] '+error)
-        self.panel.held.text = f'Held object:   {self.bundle.world_model.held_object_id or "None"}'
+        held = self.bundle.world_model.held_object_id or 'None'
+        uncertain = ' (uncertain)' if self.bundle.world_model.held_object_uncertain else ''
+        self.panel.held.text = f'Held object:   {held}{uncertain}'
         self.panel.ee.text = 'EE position:   unavailable'
         if self._robot_ready():
             try:

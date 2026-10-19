@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import Enum
 import numpy as np
+
+
+class GripperState(str, Enum):
+    FREE = "free"
+    HELD = "held"
+    UNCERTAIN = "uncertain"
 
 
 @dataclass

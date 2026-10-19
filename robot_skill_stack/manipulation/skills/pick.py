@@ -5,6 +5,8 @@ import numpy as np
 from robot_skill_stack.common.rotations import quat_matrix
 
 from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.manipulation.held_state import HeldState, motion_failure_code
+from robot_skill_stack.common.types import GripperState
 from robot_skill_stack.manipulation.grasping.planner import GraspPlanner
 from robot_skill_stack.runtime.skill import (
     BaseSkill,
@@ -30,6 +32,8 @@ class PickSkill(BaseSkill):
             FailureCode.UNREACHABLE,
             FailureCode.NO_VALID_GRASP,
             FailureCode.GRASP_FAILED,
+            FailureCode.GRASP_LOST,
+            FailureCode.GRASP_UNCERTAIN,
             FailureCode.TIMEOUT,
         ),
     )
@@ -45,6 +49,7 @@ class PickSkill(BaseSkill):
     ):
         self.backend = backend
         self.world_model = world_model
+        self.holding = HeldState(backend, world_model)
         self.grasp_planner = grasp_planner
         self.movement_threshold = float(movement_threshold)
         self.max_local_replans = int(max_local_replans)
@@ -55,16 +60,15 @@ class PickSkill(BaseSkill):
             return None
         return SkillResult(
             SkillStatus.TIMEOUT if result.timed_out else SkillStatus.FAILED,
-            message,
-            FailureCode.TIMEOUT
-            if result.timed_out
-            else FailureCode.GRASP_FAILED,
+            result.message if result.details.get('grasp_failure') else message,
+            motion_failure_code(result, FailureCode.GRASP_FAILED),
             result.details,
         )
 
     async def _motion_async(self, pose, speed, tolerance, message):
         return self._motion_result(
-            await self.backend.move_to_pose_async(
+            await self.holding.run_motion(
+                self.backend.move_to_pose_async,
                 pose,
                 speed=speed,
                 position_tolerance=tolerance,
@@ -112,8 +116,9 @@ class PickSkill(BaseSkill):
         if self.world_model.held_object_id is not None:
             return None, SkillResult(
                 SkillStatus.FAILED,
-                "Gripper is already holding an object.",
-                FailureCode.GRASP_FAILED,
+                "Gripper is occupied or uncertain; inspect/reset it before another Pick.",
+                FailureCode.GRASP_UNCERTAIN if self.world_model.held_object_uncertain
+                else FailureCode.GRASP_FAILED,
             )
         if obj.pose is None or not obj.visible:
             return None, SkillResult(
@@ -232,9 +237,6 @@ class PickSkill(BaseSkill):
             if obj.visible:
                 visual_lift = float(final_position[2] - initial[2])
 
-        self.world_model.set_held(
-            object_id, object_offset_in_ee=grasp_details.get("object_offset_in_ee_m"),
-        )
         return SkillResult(
             SkillStatus.SUCCESS,
             f"Picked '{object_id}'.",
@@ -335,25 +337,16 @@ class PickSkill(BaseSkill):
                 continue
 
             self._record_attachment(grasp_result, planned_position)
-            close = await self.backend.close_gripper_async()
+            close, grasp_at_contact = await self.holding.close(
+                object_id, grasp_result.details.get('object_offset_in_ee_m'),
+            )
             if not close.ok:
                 return SkillResult(
                     SkillStatus.FAILED,
-                    "Could not close gripper.",
-                    FailureCode.GRASP_FAILED,
-                    {**close.details, "local_replans": local_replans},
-                )
-
-            grasp_at_contact = self.backend.verify_grasp()
-            if not grasp_at_contact.ok:
-                return SkillResult(
-                    SkillStatus.FAILED,
-                    "Gripper closed without detecting an object.",
-                    FailureCode.GRASP_FAILED,
-                    {
-                        **grasp_at_contact.details,
-                        "local_replans": local_replans,
-                    },
+                    close.message or "Could not confirm grasp.",
+                    (FailureCode.GRASP_UNCERTAIN
+                     if self.world_model.held_object_uncertain else FailureCode.GRASP_FAILED),
+                    {**close.details, "local_replans": local_replans, 'gripper_engaged': True},
                 )
 
             failure = await self._motion_async(
@@ -366,18 +359,22 @@ class PickSkill(BaseSkill):
                 failure.details.update(
                     local_replans=local_replans,
                     grasp_planner_details=grasp_result.details,
+                    gripper_engaged=True,
                 )
                 return failure
 
-            grasp_after_lift = self.backend.verify_grasp()
-            if not grasp_after_lift.ok:
+            grasp_after_lift = await self.holding.resolve()
+            if grasp_after_lift.state != GripperState.HELD:
                 return SkillResult(
                     SkillStatus.FAILED,
-                    "Object was lost during lift.",
-                    FailureCode.GRASP_FAILED,
+                    ("Object was lost during lift." if grasp_after_lift.state == GripperState.FREE
+                     else "Grasp could not be confirmed after lift."),
+                    (FailureCode.GRASP_LOST if grasp_after_lift.state == GripperState.FREE
+                     else FailureCode.GRASP_UNCERTAIN),
                     {
                         **grasp_after_lift.details,
                         "local_replans": local_replans,
+                        'gripper_engaged': True,
                     },
                 )
 

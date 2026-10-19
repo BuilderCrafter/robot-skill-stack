@@ -5,8 +5,8 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.common.rotations import quat_matrix
-from robot_skill_stack.common.types import Pose
-from robot_skill_stack.manipulation.backend import BackendResult, ManipulationBackend
+from robot_skill_stack.common.types import Pose, GripperState
+from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
 from robot_skill_stack.manipulation.grasping import GraspPlan, GraspResult, SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.grasping.primitive import _top_q
 from robot_skill_stack.manipulation.skills.pick import PickSkill
@@ -54,13 +54,23 @@ class GeometryBackend(ManipulationBackend):
         self.closed = True
         return BackendResult(True)
 
-    async def move_to_pose_async(self, target, **kwargs): return self._move(target)
+    async def move_to_pose_async(self, target, **kwargs):
+        result = self._move(target)
+        if kwargs.get('grasp_check'):
+            for _ in range(3):
+                failure = kwargs['grasp_check']()
+                if failure is not None:
+                    return failure
+        return result
     async def open_gripper_async(self): return self._open()
     async def close_gripper_async(self, width=None): return self._close()
-    def verify_grasp(self): return BackendResult(self.closed)
+    def gripper_feedback(self):
+        return GripperFeedback(GripperState.HELD if self.closed else GripperState.FREE,
+                               .05 if self.closed else 0.)
     def get_end_effector_pose(self): return self.ee
     def check_reachability(self, target): return True
-    async def home_async(self, name="home"): return BackendResult(True)
+    async def home_async(self, name="home", *, grasp_check=None):
+        return await self.move_to_pose_async(self.ee, grasp_check=grasp_check)
 
 
 class AlternatePlanner:

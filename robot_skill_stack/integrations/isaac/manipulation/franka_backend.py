@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from robot_skill_stack.manipulation.backend import BackendResult, ManipulationBackend
-from robot_skill_stack.common.types import Pose
+from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
+from robot_skill_stack.common.types import Pose, GripperState
 
 from isaacsim.core.utils.numpy.rotations import rot_matrices_to_quats
 from isaacsim.core.utils.types import ArticulationAction
@@ -39,6 +39,7 @@ class IsaacFrankaBackend(ManipulationBackend):
         self.max_motion_steps = max_motion_steps
         self.grasp_min_width = float(grasp_min_width)
         self.grasp_max_width = float(grasp_max_width)
+        self._gripper_command = None
 
         rmpflow = RmpFlow(**interface_config_loader.load_supported_motion_policy_config('Franka', 'RMPflow'))
         self.motion_controller = MotionPolicyController(
@@ -116,29 +117,48 @@ class IsaacFrankaBackend(ManipulationBackend):
         return bool(success)
 
 
-    def verify_grasp(self) -> BackendResult:
-        joints, width = self._gripper_feedback()
-        ok = (
-            width is not None
-            and self.grasp_min_width <= width <= self.grasp_max_width
-        )
+    def gripper_feedback(self) -> GripperFeedback:
+        try:
+            joints, width = self._gripper_feedback()
+        except Exception as exc:
+            return GripperFeedback(GripperState.UNCERTAIN, details={'feedback_error': str(exc)})
         details = {
             "joint_positions": joints.tolist(),
             "estimated_width_m": width,
             "minimum_grasp_width_m": self.grasp_min_width,
             "maximum_grasp_width_m": self.grasp_max_width,
         }
-        if ok:
-            return BackendResult(
-                True,
-                "Gripper feedback indicates an object is held.",
-                details=details,
-            )
-        return BackendResult(
-            False,
-            "Gripper feedback does not indicate a secure grasp.",
-            details=details,
-        )
+        opened = np.asarray(self.robot.gripper.joint_opened_positions)
+        tolerance = self.grasp_min_width / 2
+        valid = (joints.shape == (2,) and width is not None and
+                 np.all(joints >= -tolerance) and np.all(joints <= opened+tolerance))
+        state = GripperState.UNCERTAIN
+        if valid:
+            if width < self.grasp_min_width or np.all(np.abs(joints-opened) <= tolerance):
+                state = GripperState.FREE
+            elif self._gripper_command == 'close' and width <= self.grasp_max_width:
+                state = GripperState.HELD
+        return GripperFeedback(state, width, details)
+
+    async def inspect_gripper_async(self):
+        # Three stable samples, at most 12 intervals (0.2 s at the normal 60 Hz).
+        previous = None
+        previous_time = None
+        stable = 0
+        for sample in range(13):
+            feedback = self.gripper_feedback()
+            now = float(self.world.current_time)
+            same = (previous is not None and now > previous_time and feedback.state == previous.state and
+                    feedback.width is not None and previous.width is not None and
+                    abs(feedback.width-previous.width) <= .001)
+            stable = stable+1 if same else 1
+            if feedback.state != GripperState.UNCERTAIN and stable >= 3:
+                return feedback
+            previous = feedback
+            previous_time = now
+            if sample < 12:
+                await self._next_update()
+        return GripperFeedback(GripperState.UNCERTAIN, feedback.width, feedback.details)
 
     async def _next_update(self):
         import omni.kit.app
@@ -150,6 +170,7 @@ class IsaacFrankaBackend(ManipulationBackend):
         speed=0.5,
         position_tolerance=None,
         orientation_tolerance=None,
+        grasp_check=None,
     ) -> BackendResult:
         if target.frame != "world":
             return BackendResult(False, f"Unsupported frame: {target.frame}")
@@ -184,6 +205,11 @@ class IsaacFrankaBackend(ManipulationBackend):
                 self.robot.apply_action(action)
                 last_action = action
                 await self._next_update()
+
+                if grasp_check is not None:
+                    grasp_failure = grasp_check()
+                    if grasp_failure is not None:
+                        return grasp_failure
 
                 current = self.get_end_effector_pose()
                 last_pos_error = float(
@@ -237,19 +263,18 @@ class IsaacFrankaBackend(ManipulationBackend):
                 ))
 
     async def open_gripper_async(self) -> BackendResult:
+        self._gripper_command = 'open'
         action = self.robot.gripper.forward(action="open")
         for _ in range(60):
             self.robot.apply_action(action)
             await self._next_update()
 
-        joints, width = self._gripper_feedback()
+        feedback = self.gripper_feedback()
         return BackendResult(
-            True,
-            "Gripper opened.",
-            details={
-                "joint_positions": joints.tolist(),
-                "estimated_width_m": width,
-            },
+            feedback.state == GripperState.FREE and feedback.width is not None and
+            feedback.width > self.grasp_max_width,
+            "Gripper opening completed; measured opening must confirm release.",
+            details=feedback.details,
         )
 
     async def close_gripper_async(self, width=None) -> BackendResult:
@@ -259,6 +284,7 @@ class IsaacFrankaBackend(ManipulationBackend):
                 "Explicit gripper width is not implemented in V1.",
             )
 
+        self._gripper_command = 'close'
         action = self.robot.gripper.forward(action="close")
         for _ in range(90):
             self.robot.apply_action(action)
@@ -274,7 +300,7 @@ class IsaacFrankaBackend(ManipulationBackend):
             },
         )
 
-    async def home_async(self, name="home") -> BackendResult:
+    async def home_async(self, name="home", *, grasp_check=None) -> BackendResult:
         if name not in self.named_poses:
             return BackendResult(
                 False,
@@ -287,6 +313,7 @@ class IsaacFrankaBackend(ManipulationBackend):
             speed=0.35,
             position_tolerance=0.025,
             orientation_tolerance=0.10,
+            grasp_check=grasp_check,
         )
         if result.ok:
             result.message = f"Robot reached named pose '{name}'."

@@ -107,6 +107,8 @@ Place). The GUI and Behavior Trees use this path; standalone Isaac tests drive
 the same coroutine with Kit's existing bridge. `runtime.busy` reports an active
 command; overlapping commands fail with `FailureCode.BUSY` rather than queuing.
 See `docs/phase_3a_execution.md` for interface migration and validation.
+The next held-state upgrade and its pending workstation tests are described
+in [Phase 3B](docs/phase_3b_held_state.md).
 
 Use one runner from the repository root with Python dependencies installed:
 
