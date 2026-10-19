@@ -1,4 +1,6 @@
+import time
 from robot_skill_stack.common.types import Pose
+from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
@@ -12,14 +14,17 @@ class CountingProvider:
     def observe(self, context=None):
         self.calls += 1
         self.contexts.append(context)
-        return [
+        return ObservationBatch([
             ObjectObservation(
                 object_id="cube",
                 class_name="cube",
                 pose=Pose([self.calls, 0, 0]),
                 source="test",
             )
-        ]
+        ], timestamp=time.monotonic())
+
+    def forget(self, object_id): pass
+    def close(self): pass
 
 
 print("[1] Testing every-step updater...")

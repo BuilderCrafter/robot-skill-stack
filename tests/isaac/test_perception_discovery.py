@@ -50,7 +50,7 @@ def observe(provider, world, count=1, steps=6):
     for _ in range(count):
         for _ in range(steps):
             world.step(render=True)
-        observations = provider.observe()
+        observations = provider.observe().observations
     return observations
 
 

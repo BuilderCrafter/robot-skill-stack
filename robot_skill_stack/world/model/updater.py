@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from robot_skill_stack.world.model.provider import WorldObservationProvider
 from robot_skill_stack.world.model.world_model import WorldModel
 
@@ -29,7 +31,11 @@ class WorldModelUpdater:
         if self._closed:
             return []
         context = self.world_model.observation_context()
-        observations = self.provider.observe(context=context)
+        batch = self.provider.observe(context=context)
+        observations = batch.observations
+        if batch.timestamp is None:
+            self.cleanup()
+            return []
         self.world_model.apply_observations(
             observations,
             mark_missing_invisible=True,
@@ -42,20 +48,15 @@ class WorldModelUpdater:
     def cleanup(self, now=None):
         if self._closed:
             return ()
-        age = getattr(self.provider, "age", None)
-        if age is not None:
-            for object_id in age(now=now, context=self.world_model.observation_context()):
-                obj = self.world_model.get(object_id)
-                if obj is not None:
-                    obj.visible = False
-        return self.world_model.expire_stale(now=now, forget=getattr(self.provider, "forget", None))
+        now = time.monotonic() if now is None else now
+        for obj in self.world_model.objects():
+            if obj.last_seen is not None and now-obj.last_seen >= 1.0:
+                obj.visible = False
+        return self.world_model.expire_stale(now=now, forget=self.provider.forget)
 
     def clear_lost(self):
-        forget = getattr(self.provider, "forget", None)
-        if forget is None:
-            return ()
         self.cleanup()
-        return self.world_model.clear_lost(forget)
+        return self.world_model.clear_lost(self.provider.forget)
 
     def tick(self, step_size: float):
         if self._closed:
@@ -102,6 +103,4 @@ class WorldModelUpdater:
                 if exists is None or exists(name):
                     scheduler.remove_physics_callback(name)
         finally:
-            close = getattr(self.provider, "close", None)
-            if close is not None:
-                close()
+            self.provider.close()

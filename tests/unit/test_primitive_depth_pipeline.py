@@ -131,7 +131,7 @@ load_scene_config('config/scenes/playground.toml')
         with patch('time.monotonic', return_value=100.):
             for _ in range(3):
                 camera.token += 1
-                observations = provider.observe()
+                observations = provider.observe().observations
         self.assertEqual(len(observations), 1)
         self.assertEqual(observations[0].class_name, 'sphere')
         self.assertIsNone(observations[0].pose.orientation)
@@ -142,7 +142,7 @@ load_scene_config('config/scenes/playground.toml')
         with patch('time.monotonic', return_value=100.):
             for _ in range(3):
                 camera.token += 1
-                observations = provider.observe()
+                observations = provider.observe().observations
         self.assertEqual(observations[0].class_name, 'cylinder')
         self.assertEqual(observations[0].geometry.shape.value, 'cylinder')
 

@@ -50,13 +50,8 @@ class IsaacRuntimeBundle:
         try:
             self.world_updater.stop(self.world)
         finally:
-            close = getattr(getattr(self.state_provider, 'camera', None), 'close', None)
-            try:
-                if close is not None:
-                    close()
-            finally:
-                if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
-                    self.world._robot_skill_stack_bundle = None
+            if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
+                self.world._robot_skill_stack_bundle = None
 
 
 _BUILDING = False
@@ -255,9 +250,6 @@ async def _build_runtime(
         return bundle
     except BaseException:
         updater.stop(world)
-        close = getattr(getattr(provider, 'camera', None), 'close', None)
-        if close is not None:
-            close()
         raise
 
 

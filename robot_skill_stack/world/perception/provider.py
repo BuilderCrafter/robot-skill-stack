@@ -5,6 +5,7 @@ import numpy as np
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
+from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception.diagnostics import describe
 from robot_skill_stack.world.perception.frame import PerceptionFrame
 from robot_skill_stack.world.perception.geometry import ObjectGeometryService
@@ -21,6 +22,7 @@ class PerceptionStateProvider:
         self.primitive_estimator = primitive_estimator
         self.source = source
         self.stale_frame_timeout = float(stale_frame_timeout)
+        self._closed = False
         self._frame_id = 0
         self._last_token = None
         self.geometry = ObjectGeometryService(localizer, tracker)
@@ -55,18 +57,15 @@ class PerceptionStateProvider:
         now = time.monotonic() if now is None else float(now)
         return self.tracker.age(now, self.stale_frame_timeout, context)
 
-    def observe(self, context=None) -> list[ObjectObservation]:
+    def observe(self, context=None) -> ObservationBatch:
         timestamp = time.monotonic()
-        get_token = getattr(self.camera, 'get_frame_token', None)
-        token = get_token() if get_token is not None else None
+        token = self.camera.get_frame_token()
         depth = self.camera.get_depth()
-        if depth is None or (token is not None and token == self._last_token):
-            self.age(timestamp, context)
-            return self._current_observations()
+        if token is None or depth is None or token == self._last_token:
+            return ObservationBatch()
         depth = np.squeeze(np.asarray(depth))
         if depth.ndim != 2 or not depth.size:
-            self.age(timestamp, context)
-            return self._current_observations()
+            return ObservationBatch()
         rgb = self.camera.get_rgb()
         if rgb is None:
             rgb = np.zeros((*depth.shape, 3), dtype=np.uint8)
@@ -92,7 +91,7 @@ class PerceptionStateProvider:
         self.tracker.update(candidates, predictions, frame_id=frame.frame_id, timestamp=timestamp, context=context)
         self.geometry.update_frame(frame)
         self._last_token = token
-        return self._current_observations()
+        return ObservationBatch(self._current_observations(), timestamp)
 
     def forget(self, object_id: str):
         return self.tracker.forget(object_id)
@@ -102,3 +101,8 @@ class PerceptionStateProvider:
 
     def get_point_cloud(self, object_id: str):
         return self.geometry.get_point_cloud(object_id)
+
+    def close(self):
+        if not self._closed:
+            self._closed = True
+            self.camera.close()
