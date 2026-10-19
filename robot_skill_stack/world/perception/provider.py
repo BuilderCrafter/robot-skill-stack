@@ -52,8 +52,11 @@ class PerceptionStateProvider:
     def observe(self, context=None) -> ObservationBatch:
         timestamp = time.monotonic()
         token = self.camera.get_frame_token()
+        if token is None or token == self._last_token:
+            return ObservationBatch()
+        self._last_token = token
         depth = self.camera.get_depth()
-        if token is None or depth is None or token == self._last_token:
+        if depth is None:
             return ObservationBatch()
         depth = np.squeeze(np.asarray(depth))
         if depth.ndim != 2 or not depth.size:
@@ -78,7 +81,6 @@ class PerceptionStateProvider:
             self.diagnostics.append(describe(candidate, geometry))
         self.tracker.update(candidates, frame_id=frame.frame_id, timestamp=timestamp, context=context)
         self.geometry.update_frame(frame)
-        self._last_token = token
         return ObservationBatch(self._current_observations(), timestamp)
 
     def forget(self, object_id: str):

@@ -242,7 +242,8 @@ class HeldStateTests(unittest.IsolatedAsyncioTestCase):
     async def test_recovery_does_not_home_or_retry_after_gripper_engagement_or_loss(self):
         for code, details in ((FailureCode.GRASP_FAILED, {'gripper_engaged': True}),
                                (FailureCode.GRASP_LOST, {}), (FailureCode.GRASP_UNCERTAIN, {}),
-                               (FailureCode.INTERNAL_ERROR, {}), (FailureCode.BUSY, {})):
+                               (FailureCode.INTERNAL_ERROR, {}), (FailureCode.BUSY, {}),
+                               (FailureCode.WORLD_STATE_UNAVAILABLE, {})):
             with self.subTest(code=code):
                 registry, calls = SkillRegistry(), []
                 for name in ('pick', 'home', 'place'):

@@ -113,7 +113,7 @@ class LifecycleTests(unittest.TestCase):
         object_id = self.confirmed()
         depth = self.camera.get_depth
         self.camera.get_depth = Mock(side_effect=RuntimeError('camera disconnected'))
-        self.step()
+        self.step(self.sphere)
         self.assertEqual(self.updater.health.status, 'failed')
         self.assertFalse(self.model.require(object_id).visible)
         self.camera.get_depth = depth

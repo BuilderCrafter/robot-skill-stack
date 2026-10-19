@@ -106,13 +106,6 @@ class PickSkill(BaseSkill):
         )
 
     def _start(self, object_id):
-        obj = self.world_model.get(object_id)
-        if obj is None:
-            return None, SkillResult(
-                SkillStatus.FAILED,
-                f"Unknown object '{object_id}'.",
-                FailureCode.OBJECT_NOT_FOUND,
-            )
         if self.world_model.held_object_id is not None:
             return None, SkillResult(
                 SkillStatus.FAILED,
@@ -124,6 +117,13 @@ class PickSkill(BaseSkill):
             return None, SkillResult(
                 SkillStatus.FAILED, 'Observation source is not fresh; Pick was not started.',
                 FailureCode.WORLD_STATE_UNAVAILABLE,
+            )
+        obj = self.world_model.get(object_id)
+        if obj is None:
+            return None, SkillResult(
+                SkillStatus.FAILED,
+                f"Unknown object '{object_id}'.",
+                FailureCode.OBJECT_NOT_FOUND,
             )
         if obj.pose is None or not obj.visible:
             return None, SkillResult(

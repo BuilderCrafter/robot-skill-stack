@@ -62,6 +62,18 @@ class ObservationTests(unittest.TestCase):
         self.source.forget.assert_called_once_with('cube')
         self.assertEqual(self.updater.update_count, 1)
 
+    def test_fresh_batch_cannot_refresh_an_old_object_measurement(self):
+        obj = self.seen()
+        measured_at = obj.last_seen
+        self.now.return_value += 1.1
+        self.source.observe.return_value = ObservationBatch([
+            ObjectObservation('cube', pose=obj.pose, timestamp=measured_at),
+        ], self.now.return_value)
+        self.updater.update()
+        self.assertEqual(self.updater.health.status, 'fresh')
+        self.assertEqual(obj.last_seen, measured_at)
+        self.assertFalse(obj.visible)
+
     def test_failure_is_not_empty_and_requires_a_fresh_sample_to_recover(self):
         obj = self.seen()
         self.source.observe.side_effect = RuntimeError('disconnected')
@@ -132,10 +144,12 @@ class ObservationTests(unittest.TestCase):
         self.assertEqual(self.updater.update_count, 1)
 
     def test_timestamp_in_wrong_clock_domain_fails_closed(self):
-        self.source.observe.return_value = ObservationBatch([], float('nan'))
-        self.updater.update()
-        self.assertEqual(self.updater.health.status, 'failed')
-        self.assertIn('monotonic', self.updater.last_error)
+        for batch in (ObservationBatch([], float('nan')),
+                      ObservationBatch([ObjectObservation('bad', timestamp=float('nan'))], 100.)):
+            self.source.observe.return_value = batch
+            self.updater.update()
+            self.assertEqual(self.updater.health.status, 'failed')
+            self.assertIn('timestamp', self.updater.last_error.lower())
 
     def test_stale_source_blocks_new_pick_and_place_without_robot_commands(self):
         from tests.unit.test_held_state import HeldStateTests
@@ -150,6 +164,20 @@ class ObservationTests(unittest.TestCase):
                 **({'target': Pose([.45, .25, .05])} if held else {'object_id': 'target'})))
             self.assertEqual(result.failure_code, FailureCode.WORLD_STATE_UNAVAILABLE)
             self.assertEqual(backend.calls, [])
+
+    def test_unhealthy_source_cannot_trigger_recovery_home_for_an_expired_id(self):
+        import py_trees
+        from tests.unit.test_held_state import HeldStateTests
+        from tests.unit.test_execution_runtime import next_tick
+        from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
+        from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import create_pick_and_place_recovery_tree
+        model, backend, runtime = HeldStateTests().stack()
+        WorldModelUpdater(model, source())
+        model.remove('target')
+        root = create_pick_and_place_recovery_tree(runtime, 'target', Pose([.45, .25, .05]))
+        status = asyncio.run(BTExecutor(root).run_async(next_tick))
+        self.assertEqual(status, py_trees.common.Status.FAILURE)
+        self.assertEqual(backend.calls, [])
 
     def test_source_freezing_during_approach_stops_before_closure(self):
         from tests.unit.test_held_state import HeldStateTests

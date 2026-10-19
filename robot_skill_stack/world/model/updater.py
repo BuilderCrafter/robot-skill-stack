@@ -55,7 +55,10 @@ class WorldModelUpdater:
             if now-timestamp >= self.health.stale_after:
                 return []
             for observation in batch.observations:
-                observation.timestamp = timestamp
+                if observation.timestamp is None:
+                    observation.timestamp = timestamp
+                if not math.isfinite(observation.timestamp) or observation.timestamp > timestamp:
+                    raise ValueError('Object timestamp must be finite and no newer than its batch')
             self.world_model.apply_observations(batch.observations, mark_missing_invisible=True)
             self.health.last_frame_at = timestamp
             self.health.error = None
