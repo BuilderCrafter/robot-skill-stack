@@ -12,32 +12,13 @@ from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
-    SkillSpec,
     SkillStatus,
 )
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PickSkill(BaseSkill):
-    SPEC = SkillSpec(
-        name="pick",
-        description="Grasp an object and lift it.",
-        inputs=("object_id", "grasp_hint", "lift_height"),
-        preconditions=("object exists", "pose known", "gripper free"),
-        effects=("object is held", "object is lifted"),
-        failures=(
-            FailureCode.OBJECT_NOT_FOUND,
-            FailureCode.OBJECT_POSE_UNKNOWN,
-            FailureCode.WORLD_STATE_UNAVAILABLE,
-            FailureCode.OBJECT_MOVED,
-            FailureCode.UNREACHABLE,
-            FailureCode.NO_VALID_GRASP,
-            FailureCode.GRASP_FAILED,
-            FailureCode.GRASP_LOST,
-            FailureCode.GRASP_UNCERTAIN,
-            FailureCode.TIMEOUT,
-        ),
-    )
+    name = "pick"
 
     def __init__(
         self,

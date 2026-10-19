@@ -8,26 +8,12 @@ from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
-    SkillSpec,
     SkillStatus,
 )
 
 
 class MoveToPoseSkill(BaseSkill):
-    SPEC = SkillSpec(
-        "move_to_pose",
-        "Move the robot end effector to a requested pose.",
-        ("target",),
-        ("target pose is valid", "target is reachable"),
-        ("end effector reaches target pose",),
-        (
-            FailureCode.UNREACHABLE,
-            FailureCode.PATH_BLOCKED,
-            FailureCode.GRASP_LOST,
-            FailureCode.GRASP_UNCERTAIN,
-            FailureCode.TIMEOUT,
-        ),
-    )
+    name = "move_to_pose"
 
     def __init__(
         self,

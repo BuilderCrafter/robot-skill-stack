@@ -14,7 +14,7 @@ from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place import 
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import create_pick_and_place_recovery_tree
 from robot_skill_stack.runtime.registry import SkillRegistry
 from robot_skill_stack.runtime.runtime import RobotRuntime
-from robot_skill_stack.runtime.skill import BaseSkill, FailureCode, SkillResult, SkillSpec, SkillStatus
+from robot_skill_stack.runtime.skill import BaseSkill, FailureCode, SkillResult, SkillStatus
 from tests.unit.test_async_runtime import FakeAsyncBackend
 from robot_skill_stack.world.model.world_model import WorldModel
 
@@ -26,7 +26,7 @@ async def next_tick():
 class Command(BaseSkill):
     """A yielding command to exercise orchestration independently of geometry."""
     def __init__(self, name, callback):
-        self.SPEC = SkillSpec(name, name, (), (), (), ())
+        self.name = name
         self.callback = callback
 
     async def execute_async(self, **kwargs):
@@ -34,6 +34,18 @@ class Command(BaseSkill):
 
 
 class ExecutionTests(unittest.IsolatedAsyncioTestCase):
+    def test_registry_preserves_names_and_rejects_duplicate_or_missing_commands(self):
+        registry = SkillRegistry()
+        command = Command('home', AsyncMock())
+        registry.register(command)
+        self.assertEqual(registry.names(), ['home'])
+        self.assertIs(registry.get('home'), command)
+        with self.assertRaisesRegex(ValueError, 'already registered'):
+            registry.register(Command('home', AsyncMock()))
+        with self.assertRaisesRegex(KeyError, 'Unknown skill'):
+            registry.get('missing')
+        self.assertIs(registry.get('home'), command)
+
     def stack(self):
         backend, registry = FakeAsyncBackend(), SkillRegistry()
         model = WorldModel()

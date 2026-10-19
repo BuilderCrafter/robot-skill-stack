@@ -15,34 +15,13 @@ from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
-    SkillSpec,
     SkillStatus,
 )
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PlaceSkill(BaseSkill):
-    SPEC = SkillSpec(
-        name="place",
-        description="Place or release the currently held object.",
-        inputs=("target", "mode"),
-        preconditions=(
-            "an object is held",
-            "target is unoccupied",
-            "target is reachable",
-        ),
-        effects=("object is released",),
-        failures=(
-            FailureCode.NOT_HOLDING_OBJECT,
-            FailureCode.TARGET_OCCUPIED,
-            FailureCode.UNREACHABLE,
-            FailureCode.PLACE_FAILED,
-            FailureCode.WORLD_STATE_UNAVAILABLE,
-            FailureCode.GRASP_LOST,
-            FailureCode.GRASP_UNCERTAIN,
-            FailureCode.TIMEOUT,
-        ),
-    )
+    name = "place"
 
     def __init__(
         self,
