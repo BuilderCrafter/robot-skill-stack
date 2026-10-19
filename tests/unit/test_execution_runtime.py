@@ -220,6 +220,22 @@ class ExecutionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(calls, ['pick'])
         self.assertFalse(runtime.busy)
 
+    async def test_place_failure_stops_both_tasks_without_final_home_or_retry(self):
+        for factory in (create_pick_and_place_tree, create_pick_and_place_recovery_tree):
+            with self.subTest(task=factory.__name__):
+                runtime, calls = self.task_runtime()
+                async def failed_place(**kwargs):
+                    calls.append('place')
+                    return SkillResult(SkillStatus.TIMEOUT, 'retreat timed out', FailureCode.TIMEOUT,
+                                       {'release_confirmed': True, 'retreat_ok': False})
+                runtime.registry.get('place').callback = failed_place
+                tree = factory(runtime, 'object', Pose([.4, .2, .025]))
+                self.assertEqual(await BTExecutor(tree).run_async(next_tick), py_trees.common.Status.FAILURE)
+                self.assertEqual(calls, ['pick', 'place'])
+                place = next(node for node in tree.iterate() if node.name == 'Place object')
+                self.assertTrue(place.result.details['release_confirmed'])
+                self.assertFalse(runtime.busy)
+
     async def test_bt_tick_budget_cancels_and_drains_pending_command(self):
         registry = SkillRegistry()
         async def blocked(**kwargs):

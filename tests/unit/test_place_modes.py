@@ -87,6 +87,7 @@ class PlaceModeTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(model.gripper_state, GripperState.FREE)
                     self.assertIsNone(model.held_object_id)
                     self.assertIsNone(model.held_object_offset_in_ee)
+                    self.assertEqual(model.association_hints()[0].object_id, 'object_1')
                     self.assertEqual(backend.move_to_pose_async.await_count, 3)  # No retry/Home.
                     backend.open_gripper_async.assert_awaited_once()
                     self.assertFalse(backend.closed)  # No recovery close.
@@ -137,6 +138,7 @@ class PlaceModeTests(unittest.IsolatedAsyncioTestCase):
         for mode in ('stable', 'release'):
             with self.subTest(mode=mode):
                 model, backend, skill = self.stack()
+                model.set_held('object_1', object_offset_in_ee=[0, 0, .03])
                 backend.open_gripper_async.side_effect = None
                 backend.open_gripper_async.return_value = BackendResult(False, 'release failed')
                 result = await skill.execute_async(self.target, mode=mode)
@@ -146,6 +148,7 @@ class PlaceModeTests(unittest.IsolatedAsyncioTestCase):
                 self.assertIsNone(result.details['retreat_ok'])
                 self.assertEqual(result.details['failed_stage'], 'release')
                 self.assertEqual(model.held_object_id, 'object_1')
+                np.testing.assert_array_equal(model.held_object_offset_in_ee, [0, 0, .03])
                 self.assertEqual(backend.move_to_pose_async.await_count, 2)
 
     async def test_release_timeout_preserves_failure_and_actual_free_state(self):
