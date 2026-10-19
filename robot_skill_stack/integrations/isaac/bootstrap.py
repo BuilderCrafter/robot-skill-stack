@@ -1,23 +1,20 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from pathlib import Path
+from collections.abc import Callable
+from functools import partial
 
 import numpy as np
 import omni.kit.app
 import omni.usd
 from isaacsim.core.api import World
-from isaacsim.core.prims import SingleXFormPrim
-from isaacsim.robot.manipulators.examples.franka import Franka
 
-from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
-from robot_skill_stack.integrations.isaac.world.ground_truth_provider import IsaacGroundTruthProvider
-from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
-from robot_skill_stack.manipulation.grasping import (
-    SimplePrimitiveGraspPlanner,
-)
+from robot_skill_stack.integrations.isaac.manipulation.factory import create_robot, create_backend
+from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
 from robot_skill_stack.manipulation.placement import SimplePlacementPlanner
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.integrations.isaac.world.factory import create_source, required_source_prims
 from robot_skill_stack.runtime.runtime import RobotRuntime
 from robot_skill_stack.integrations.isaac.config import SceneConfig, load_scene_config
 from robot_skill_stack.runtime.registry import SkillRegistry
@@ -25,8 +22,8 @@ from robot_skill_stack.manipulation.skills.home import HomeSkill
 from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
-from robot_skill_stack.world.model.provider import WorldObservationProvider
 from robot_skill_stack.world.model.updater import WorldModelUpdater
+from robot_skill_stack.world.perception.diagnostics import save_capture
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
@@ -34,13 +31,12 @@ from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallba
 @dataclass
 class IsaacRuntimeBundle:
     world: World
-    backend: IsaacFrankaBackend
+    backend: ManipulationBackend
     world_model: WorldModel
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
-    objects: dict
     config: SceneConfig
-    state_provider: WorldObservationProvider
+    capture_frame: Callable[[Path], Path] | None = None
     _closed: bool = field(default=False, init=False, repr=False)
 
     def close(self):
@@ -70,16 +66,7 @@ def _validate_environment(config: SceneConfig):
 
 def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
-    paths = [
-        config.robot.prim_path,
-        config.world.objects_root,
-        *[obj.prim_path for obj in config.objects.values()],
-    ]
-
-    if config.world.provider == "perception":
-        if not config.perception.camera_prim_path:
-            raise RuntimeError("Perception provider requires camera_prim_path")
-        paths.append(config.perception.camera_prim_path)
+    paths = [config.robot.prim_path, *required_source_prims(config)]
 
     missing = [
         path
@@ -88,71 +75,6 @@ def _validate_stage(config: SceneConfig):
     ]
     if missing:
         raise RuntimeError(f"Missing prims in current stage: {missing}")
-
-
-def _create_robot(world: World, config: SceneConfig):
-    cfg = config.robot
-    if cfg.type != "franka":
-        raise RuntimeError(f"Unsupported robot type: {cfg.type}")
-
-    robot = world.scene.get_object(cfg.id)
-    if robot is None:
-        robot = world.scene.add(
-            Franka(
-                prim_path=cfg.prim_path,
-                name=cfg.id,
-            )
-        )
-    return robot
-
-
-def _create_objects(world: World, config: SceneConfig):
-    objects = {}
-    for object_id, cfg in config.objects.items():
-        obj = world.scene.get_object(object_id)
-        if obj is None:
-            obj = world.scene.add(
-                SingleXFormPrim(
-                    prim_path=cfg.prim_path,
-                    name=object_id,
-                    reset_xform_properties=False,
-                )
-            )
-        objects[object_id] = obj
-    return objects
-
-
-async def _create_state_provider(
-    world: World,
-    config: SceneConfig,
-) -> WorldObservationProvider:
-    if config.world.provider == "ground_truth":
-        return IsaacGroundTruthProvider(
-            config.world.objects_root,
-            config.objects,
-        )
-
-    if config.world.provider != "perception":
-        raise RuntimeError(
-            f"Unsupported world provider: {config.world.provider}"
-        )
-    if not config.perception.camera_prim_path:
-        raise RuntimeError("Perception provider requires camera_prim_path")
-
-    camera = IsaacRgbdCamera(
-        config.perception.camera_prim_path,
-        resolution=config.perception.resolution,
-    )
-    try:
-        camera.initialize(semantic_segmentation=False)
-        app = omni.kit.app.get_app()
-        for _ in range(60):
-            await app.next_update_async()
-        provider = build_perception_provider(camera, config)
-        return provider
-    except BaseException:
-        camera.close()
-        raise
 
 
 def _update_hz(config: SceneConfig):
@@ -179,9 +101,8 @@ async def _build_runtime(
         previous.close()
     print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
           f'provider={config.world.provider} perception=geometry_v1 '
-          f'configured_objects={list(config.objects)}', flush=True)
-    robot = _create_robot(world, config)
-    objects = _create_objects(world, config)
+          f'configured_objects={list(config.ground_truth.objects)}', flush=True)
+    robot = create_robot(world, config.robot)
 
     await world.reset_async()
     if not world.is_playing():
@@ -191,7 +112,7 @@ async def _build_runtime(
     for _ in range(30):
         await app.next_update_async()
 
-    provider = await _create_state_provider(world, config)
+    provider = await create_source(config)
     model = WorldModel()
     try:
         updater = WorldModelUpdater(
@@ -204,26 +125,10 @@ async def _build_runtime(
         provider.close()
         raise
     try:
-        backend = IsaacFrankaBackend(
-            world=world,
-            robot=robot,
-            position_tolerance=0.01,
-            orientation_tolerance=0.05,
-            max_motion_steps=1000,
-        )
-
-        grasp = config.grasping
+        backend, gripper = create_backend(world, robot, config.robot)
         planner = SimplePrimitiveGraspPlanner(
-            approach_height=grasp.approach_height,
-            default_lift_height=grasp.default_lift_height,
-            grasp_z_offset=grasp.grasp_z_offset,
-            gripper=replace(
-                grasp.gripper,
-                max_width=min(grasp.gripper.max_width, backend.grasp_max_width),
-                min_width=max(grasp.gripper.min_width, backend.grasp_min_width),
-            ),
-            safety=grasp.safety,
-            support_plane_z=config.perception.discovery.support_plane_z,
+            gripper=gripper,
+            support_plane_z=config.scene.support_plane_z,
             world_model=model,
             current_pose=backend.get_end_effector_pose,
             pose_reachable=backend.check_reachability,
@@ -242,10 +147,9 @@ async def _build_runtime(
             backend=backend,
             world_model=model,
             world_updater=updater,
-            runtime=RobotRuntime(registry),
-            objects=objects,
+            runtime=RobotRuntime(registry, model),
             config=config,
-            state_provider=provider,
+            capture_frame=partial(save_capture, provider) if config.world.provider == "perception" else None,
         )
         # Register only after every construction step succeeds.
         updater.update()

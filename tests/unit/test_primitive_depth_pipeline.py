@@ -41,7 +41,7 @@ load_scene_config('config/scenes/playground.toml')
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'unsupported.toml'
             path.write_text(text.replace('[perception]', '[perception]\ntype = "unsupported"'))
-            with self.assertRaisesRegex(ValueError, 'Only geometry-based'):
+            with self.assertRaisesRegex(ValueError, 'Invalid scene configuration'):
                 load_scene_config(path)
 
     def test_single_view_matrix(self):

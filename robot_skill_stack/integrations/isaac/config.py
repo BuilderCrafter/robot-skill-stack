@@ -2,191 +2,111 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+import math
 import tomllib
-
 import numpy as np
-
-from robot_skill_stack.manipulation.grasping.clearance import GraspSafetyConfig
-from robot_skill_stack.manipulation.grasping.types import ParallelJawGripperSpec
 
 
 @dataclass(frozen=True)
 class RobotConfig:
-    id: str
-    type: str
+    backend: str
     prim_path: str
 
 
 @dataclass(frozen=True)
 class WorldConfig:
-    objects_root: str = "/World/Objects"
-    provider: str = "ground_truth"
+    provider: str
     update_hz: float | None = None
     stale_object_ttl: float = 15.0
 
-
-@dataclass(frozen=True)
-class ObjectConfig:
-    id: str
-    prim_path: str
-    size: np.ndarray | None
-    graspable: bool
+    def __post_init__(self):
+        for value in (self.update_hz, self.stale_object_ttl):
+            if value is not None and (type(value) not in (int, float) or
+                                      not math.isfinite(value) or value <= 0):
+                raise ValueError('update_hz and stale_object_ttl must be finite and > 0')
 
 
 @dataclass(frozen=True)
-class DiscoveryConfig:
-    support_plane_z: float = 0.0
-    workspace_min: np.ndarray = field(
-        default_factory=lambda: np.array([0.20, -0.40, 0.0], dtype=float)
-    )
-    workspace_max: np.ndarray = field(
-        default_factory=lambda: np.array([0.70, 0.40, 0.22], dtype=float)
-    )
-    min_object_height: float = 0.008
-    max_object_height: float = 0.22
-    min_component_pixels: int = 30
-    max_component_pixels: int = 30000
-    candidate_max_extent: float = 0.18
-    spawn_min_extent: float = 0.02
-    spawn_max_extent: float = 0.12
-    spawn_compactness_ratio: float = 3.50
-    support_contact_tolerance: float = 0.015
-    component_neighbor_distance: float = 0.02
+class SceneGeometry:
+    support_plane_z: float
+    workspace_min: np.ndarray
+    workspace_max: np.ndarray
 
-
-@dataclass(frozen=True)
-class TrackingConfig:
-    max_distance: float = 0.18
-    max_size_ratio: float = 1.50
-    min_confirm_hits: int = 3
-
-
-
-@dataclass(frozen=True)
-class PrimitiveConfig:
-    classification_threshold: float = 0.58
-    ambiguity_margin: float = 0.07
-    top_band: float = 0.15
-    fit_tolerance: float = 0.0008
+    def __post_init__(self):
+        for name in ('workspace_min', 'workspace_max'):
+            value = np.asarray(getattr(self, name), dtype=float)
+            if value.shape != (3,) or not np.isfinite(value).all():
+                raise ValueError(f'{name} must contain three finite values')
+            object.__setattr__(self, name, value)
+        if not math.isfinite(self.support_plane_z) or np.any(self.workspace_min >= self.workspace_max):
+            raise ValueError('Scene requires a finite support plane and increasing workspace bounds')
 
 
 @dataclass(frozen=True)
 class PerceptionConfig:
     camera_prim_path: str | None = None
     resolution: tuple[int, int] = (640, 480)
-    discovery: DiscoveryConfig = field(default_factory=DiscoveryConfig)
-    tracking: TrackingConfig = field(default_factory=TrackingConfig)
-    primitives: PrimitiveConfig = field(default_factory=PrimitiveConfig)
+
+    def __post_init__(self):
+        if len(self.resolution) != 2 or any(type(v) is not int or v <= 0 for v in self.resolution):
+            raise ValueError('resolution must contain two positive integers')
+        object.__setattr__(self, 'resolution', tuple(self.resolution))
 
 
 @dataclass(frozen=True)
-class GraspConfig:
-    approach_height: float = 0.10
-    default_lift_height: float = 0.12
-    grasp_z_offset: float = 0.0
-    safety: GraspSafetyConfig = field(default_factory=GraspSafetyConfig)
-    gripper: ParallelJawGripperSpec = field(default_factory=lambda: ParallelJawGripperSpec(
-        max_width=0.075, min_width=0.005, open_width=0.080,
-    ))
+class ObjectConfig:
+    prim_path: str
+    size: np.ndarray | None = None
+    graspable: bool = True
+
+    def __post_init__(self):
+        if self.size is not None:
+            size = np.asarray(self.size, dtype=float)
+            if size.shape != (3,) or not np.isfinite(size).all() or np.any(size <= 0):
+                raise ValueError('Object size must contain three finite positive values')
+            object.__setattr__(self, 'size', size)
+
+
+@dataclass(frozen=True)
+class GroundTruthConfig:
+    objects_root: str | None = None
+    objects: dict[str, ObjectConfig] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
     world: WorldConfig
-    objects: dict[str, ObjectConfig]
+    scene: SceneGeometry
     perception: PerceptionConfig
-    grasping: GraspConfig = field(default_factory=GraspConfig)
-
-
-def _vec3(data, key, default):
-    value = np.asarray(data.get(key, default), dtype=float)
-    if value.shape != (3,):
-        raise ValueError(f"{key} must contain exactly three values")
-    return value
+    ground_truth: GroundTruthConfig
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
-    with Path(path).open("rb") as f:
-        data = tomllib.load(f)
-
-    r = data["robot"]
-    robot = RobotConfig(
-        id=r["id"],
-        type=r["type"],
-        prim_path=r["prim_path"],
-    )
-
-    w = data.get("world", {})
-    update_hz = w.get("update_hz")
-    world = WorldConfig(
-        objects_root=w.get("objects_root", "/World/Objects"),
-        provider=w.get("provider", "ground_truth"),
-        update_hz=None if update_hz is None else float(update_hz),
-        stale_object_ttl=float(w.get("stale_object_ttl", 15.0)),
-    )
-
-    objects = {}
-    for object_id, cfg in data.get("objects", {}).items():
-        size = cfg.get("size")
-        objects[object_id] = ObjectConfig(
-            id=object_id,
-            prim_path=cfg["prim_path"],
-            size=None if size is None else np.asarray(size, dtype=float),
-            graspable=cfg.get("graspable", True),
+    with Path(path).open('rb') as stream:
+        data = tomllib.load(stream)
+    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth'}
+    if unknown:
+        raise ValueError(f'Unsupported configuration sections: {sorted(unknown)}')
+    try:
+        ground_truth = dict(data.get('ground_truth', {}))
+        objects = {name: ObjectConfig(**cfg) for name, cfg in ground_truth.pop('objects', {}).items()}
+        config = SceneConfig(
+            RobotConfig(**data['robot']), WorldConfig(**data['world']),
+            SceneGeometry(**data['scene']), PerceptionConfig(**data.get('perception', {})),
+            GroundTruthConfig(objects=objects, **ground_truth),
         )
-
-    p = data.get("perception", {})
-    if p.get("type", "geometry_v1") != "geometry_v1":
-        raise ValueError("Only geometry-based perception is supported")
-    resolution = p.get("resolution", [640, 480])
-    d = p.get("discovery", {})
-    t = p.get("tracking", {})
-    pr = p.get("primitives", {})
-
-    perception = PerceptionConfig(
-        camera_prim_path=p.get("camera_prim_path"),
-        resolution=(int(resolution[0]), int(resolution[1])),
-        discovery=DiscoveryConfig(
-            support_plane_z=float(d.get("support_plane_z", 0.0)),
-            workspace_min=_vec3(d, "workspace_min", [0.20, -0.40, 0.0]),
-            workspace_max=_vec3(d, "workspace_max", [0.70, 0.40, 0.22]),
-            min_object_height=float(d.get("min_object_height", 0.008)),
-            max_object_height=float(d.get("max_object_height", 0.22)),
-            min_component_pixels=int(d.get("min_component_pixels", 30)),
-            max_component_pixels=int(d.get("max_component_pixels", 30000)),
-            candidate_max_extent=float(d.get("candidate_max_extent", 0.18)),
-            spawn_min_extent=float(d.get("spawn_min_extent", 0.02)),
-            spawn_max_extent=float(d.get("spawn_max_extent", 0.12)),
-            spawn_compactness_ratio=float(d.get("spawn_compactness_ratio", 3.50)),
-            support_contact_tolerance=float(d.get("support_contact_tolerance", 0.015)),
-            component_neighbor_distance=float(d.get("component_neighbor_distance", 0.02)),
-        ),
-        tracking=TrackingConfig(
-            max_distance=float(t.get("max_distance", 0.18)),
-            max_size_ratio=float(t.get("max_size_ratio", 1.50)),
-            min_confirm_hits=int(t.get("min_confirm_hits", 3)),
-        ),
-        primitives=PrimitiveConfig(
-            classification_threshold=float(pr.get("classification_threshold", .58)),
-            ambiguity_margin=float(pr.get("ambiguity_margin", .07)),
-            top_band=float(pr.get("top_band", .15)),
-            fit_tolerance=float(pr.get("fit_tolerance", .0008)),
-        ),
-    )
-
-    grasp = dict(data.get("grasping", {}))
-    safety = GraspSafetyConfig(**grasp.pop("safety", {}))
-    gripper = ParallelJawGripperSpec(**{
-        "max_width": 0.075, "min_width": 0.005, "open_width": 0.080,
-        **grasp.pop("gripper", {}),
-    })
-    grasping = GraspConfig(**grasp, safety=safety, gripper=gripper)
-
-    return SceneConfig(
-        robot=robot,
-        world=world,
-        objects=objects,
-        perception=perception,
-        grasping=grasping,
-    )
+    except (KeyError, TypeError) as exc:
+        raise ValueError(f'Invalid scene configuration: {exc}') from exc
+    if config.robot.backend != 'franka':
+        raise ValueError(f'Unsupported robot backend: {config.robot.backend}')
+    if config.world.provider not in ('perception', 'ground_truth'):
+        raise ValueError(f'Unsupported observation source: {config.world.provider}')
+    required = [config.robot.prim_path]
+    if config.world.provider == 'perception':
+        required.append(config.perception.camera_prim_path)
+    else:
+        required += [config.ground_truth.objects_root, *(o.prim_path for o in objects.values())]
+    if any(not isinstance(p, str) or not p.startswith('/') for p in required):
+        raise ValueError('Selected robot/source requires absolute simulator prim paths')
+    return config

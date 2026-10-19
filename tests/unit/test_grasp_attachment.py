@@ -90,7 +90,7 @@ class AttachmentTests(unittest.IsolatedAsyncioTestCase):
         registry = SkillRegistry()
         registry.register(PickSkill(backend, wm, grasp))
         registry.register(PlaceSkill(backend, wm))
-        return wm, backend, RobotRuntime(registry)
+        return wm, backend, RobotRuntime(registry, wm)
 
     async def pair(self, obj):
         target = Pose(obj.pose.position+[0, .25, 0])

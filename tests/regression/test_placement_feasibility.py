@@ -22,6 +22,7 @@ from pxr import Gf, UsdGeom, UsdPhysics
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.runtime.skill import FailureCode
 from tests.support.isaac_helpers import (
+    playground_cube,
     build_ground_truth_runtime,
     nearest_object,
     open_playground,
@@ -58,6 +59,7 @@ def _run_placement(metrics, result_path=None, artifacts_dir=None):
 
     print("[2] Building ground-truth runtime...")
     bundle = build_ground_truth_runtime(simulation_app, out)
+    cube = playground_cube()
     settle(bundle.world, 90)
 
     held_id = "cube"
@@ -123,7 +125,7 @@ def _run_placement(metrics, result_path=None, artifacts_dir=None):
     if not place.ok:
         raise RuntimeError(f"Safe placement failed: {place.message}")
 
-    final_true = np.asarray(bundle.objects["cube"].get_world_pose()[0], dtype=float)
+    final_true = np.asarray(cube.get_world_pose()[0], dtype=float)
     error = float(np.linalg.norm(final_true - SAFE_TARGET))
     metrics.update(
         safe_place_status=place.status.value,

@@ -67,6 +67,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         module.settle = Mock()
         module.choose_object = lambda world_model: world_model.require('target')
         module.object_snapshot = lambda item: {'position': item.pose.position.tolist()}
+        module.playground_cube = lambda: bundle.objects["cube"]
         return module, bundle, updater
 
     def test_oversized_rejection_survives_cleanup_before_kit_task_starts(self):
@@ -155,6 +156,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         module.choose_object = Mock(return_value=obj)
         module.set_cube_pose = set_pose
         module.object_snapshot = lambda item: {'position': item.pose.position.tolist(), 'visible': item.visible}
+        module.playground_cube = lambda: bundle.objects["cube"]
         return module, bundle
 
     def test_pick_place_handoff_does_not_submit_a_second_kit_task(self):
@@ -194,7 +196,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         original = bundle.backend.move_to_pose_async
         original.side_effect = move
         records = []
-        with module.trace_backend_commands(bundle, records):
+        with module.trace_backend_commands(bundle, records, bundle.objects["cube"]):
             actual = asyncio.run(bundle.backend.move_to_pose_async(target, orientation_tolerance=.1))
         self.assertIs(actual, result)
         self.assertIs(bundle.backend.move_to_pose_async, original)
@@ -217,7 +219,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
                 original.side_effect = failure
                 bundle.backend.get_end_effector_pose.side_effect = RuntimeError('query failed')
                 records = []
-                with module.trace_backend_commands(bundle, records):
+                with module.trace_backend_commands(bundle, records, bundle.objects["cube"]):
                     with self.assertRaises(type(failure)) as raised:
                         asyncio.run(bundle.backend.close_gripper_async(width=.04))
                 self.assertIs(raised.exception, failure)
@@ -421,6 +423,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         module.open_playground = module.spawn_obstacle = module.settle = Mock()
         module.build_ground_truth_runtime = Mock(return_value=bundle)
         module.nearest_object = Mock(return_value=obstacle)
+        module.playground_cube = lambda: bundle.objects["cube"]
         return module
 
     def test_command_free_rejection_passes_despite_residual_physical_drift(self):

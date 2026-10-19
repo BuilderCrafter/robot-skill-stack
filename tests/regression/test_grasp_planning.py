@@ -20,6 +20,7 @@ from robot_skill_stack.common.types import Pose
 from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
+    playground_cube,
     build_perception_runtime,
     choose_object,
     object_snapshot,
@@ -64,6 +65,7 @@ def main(result_path=None, artifacts_dir=None):
 
     print("[2] Building runtime...")
     bundle = build_perception_runtime(simulation_app, out)
+    cube = playground_cube()
     settle(bundle.world, 180)
 
     obj = choose_object(bundle.world_model)
@@ -133,7 +135,7 @@ def main(result_path=None, artifacts_dir=None):
         raise RuntimeError(f"Place failed: {place.message}")
 
     true_final = np.asarray(
-        bundle.objects["cube"].get_world_pose()[0],
+        cube.get_world_pose()[0],
         dtype=float,
     )
     target_error = float(

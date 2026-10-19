@@ -19,6 +19,7 @@ from robot_skill_stack.common.types import Pose
 from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
+    playground_cube,
     build_perception_runtime,
     choose_object,
     object_snapshot,
@@ -45,7 +46,7 @@ def main(result_path=None, artifacts_dir=None):
     bundle = build_perception_runtime(simulation_app, out)
     settle(bundle.world, 180)
 
-    cube = bundle.objects["cube"]
+    cube = playground_cube()
     obj = choose_object(bundle.world_model)
     object_id = obj.object_id
     initial_true = np.asarray(

@@ -22,7 +22,7 @@ ISAAC=ROOT/'robot_skill_stack/integrations/isaac'
 
 @contextmanager
 def bootstrap_fixture():
-    env=NS(world=None, providers=[], fail_backend=False, init_calls=0)
+    env=NS(world=None, providers=[], fail_backend=False, init_calls=0, backend_calls=[])
     async def next_update(): await asyncio.sleep(0)
     app=ModuleType('omni.kit.app'); app.get_app=lambda: NS(next_update_async=next_update)
     kit,omni,usd=ModuleType('omni.kit'),ModuleType('omni'),ModuleType('omni.usd')
@@ -31,7 +31,7 @@ def bootstrap_fixture():
     class World(StopPlayWorld):
         def __init__(self, **kw):
             super().__init__(); env.world=self; self.context=None; self.playing=False
-            self.scene=NS(get_object=lambda name:NS(name=name),add=lambda obj:obj)
+            self.scene=NS(get_object=lambda name:NS(name=name,prim_path="/Franka"),add=lambda obj:obj)
         @classmethod
         def instance(cls): return env.world
         def get_physics_context(self): return self.context
@@ -43,6 +43,7 @@ def bootstrap_fixture():
         async def play_async(self):
             self.play(); self.playing=True; await next_update()
     def backend(**kw):
+        env.backend_calls.append(kw)
         if env.fail_backend: raise ValueError('injected backend failure')
         return NS(grasp_min_width=.005,grasp_max_width=.075,
                   get_end_effector_pose=lambda:Pose([0,0,.2],[0,0,1,0]),check_reachability=lambda p:True)
@@ -63,16 +64,26 @@ def bootstrap_fixture():
     spec=importlib.util.spec_from_file_location(name,ISAAC/'bootstrap.py')
     m=importlib.util.module_from_spec(spec); modules[name]=m
     with patch.dict(sys.modules,modules):
+        factory_name='robot_skill_stack.integrations.isaac.manipulation.factory'
+        factory_spec=importlib.util.spec_from_file_location(factory_name,ISAAC/'manipulation/factory.py')
+        factory=importlib.util.module_from_spec(factory_spec)
+        sys.modules[factory_name]=factory
+        factory_spec.loader.exec_module(factory)
+        source_name='robot_skill_stack.integrations.isaac.world.factory'
+        source_spec=importlib.util.spec_from_file_location(source_name,ISAAC/'world/factory.py')
+        source_factory=importlib.util.module_from_spec(source_spec)
+        sys.modules[source_name]=source_factory
+        source_spec.loader.exec_module(source_factory)
         spec.loader.exec_module(m)
         cfg=load_scene_config(ROOT/'config/scenes/playground.toml')
         cfg=replace(cfg,world=replace(cfg.world,provider='ground_truth'))
-        async def make_provider(world,config):
+        async def make_provider(config):
             camera=NS(close=Mock())
             p=NS(observe=Mock(side_effect=lambda context: ObservationBatch([ObjectObservation('cube',pose=Pose([.45,0,.025]),
                                   class_name='cube',size=[.05]*3,visible=True,source='ground_truth')], time.monotonic())),
                  forget=Mock(), close=Mock(side_effect=camera.close), camera=camera)
             env.providers.append(p); return p
-        with patch.object(m,'load_scene_config',return_value=cfg), patch.object(m,'_create_state_provider',side_effect=make_provider):
+        with patch.object(m,'load_scene_config',return_value=cfg), patch.object(m,'create_source',side_effect=make_provider):
             yield m,env
 
 
@@ -82,9 +93,147 @@ class BootstrapTests(unittest.TestCase):
             with bootstrap_fixture() as (m,e): await fn(m,e)
         asyncio.run(run())
 
+    def test_explicit_franka_selection_preserves_backend_and_gripper_values(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.manipulation.factory']
+            robot=object()
+            world=NS(scene=NS(get_object=Mock(return_value=None),add=Mock(return_value=robot)))
+            self.assertIs(m.create_robot(world,cfg.robot),robot)
+            factory.Franka.assert_called_once_with(prim_path='/Franka',name='franka')
+            backend,gripper=m.create_backend(world,robot,cfg.robot)
+            self.assertEqual(e.backend_calls[-1],dict(world=world,robot=robot,
+                             position_tolerance=.01,orientation_tolerance=.05,max_motion_steps=1000))
+            self.assertEqual((gripper.min_width,gripper.max_width,gripper.aperture),(.005,.075,.08))
+            self.assertEqual((gripper.tcp_to_palm,gripper.fingertip_offset,gripper.pad_above_tcp,
+                              gripper.pad_below_tcp,gripper.finger_depth,gripper.finger_thickness,
+                              gripper.palm_depth,gripper.palm_width,gripper.palm_height),
+                             (.03,.012,.01,.01,.024,.025,.07,.17,.075))
+        self.run_case(fn)
+
+    def test_existing_robot_reuse_rejects_a_changed_robot_prim(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            robot=NS(prim_path='/Franka')
+            world=NS(scene=NS(get_object=Mock(return_value=robot),add=Mock()))
+            self.assertIs(m.create_robot(world,cfg.robot),robot)
+            world.scene.add.assert_not_called()
+            with self.assertRaisesRegex(RuntimeError,'restart Isaac'):
+                m.create_robot(world,replace(cfg.robot,prim_path='/OtherFranka'))
+            world.scene.add.assert_not_called()
+        self.run_case(fn)
+
+    def test_unknown_robot_backend_is_rejected_by_construction(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            unknown=replace(cfg.robot,backend='unsupported')
+            for operation,args in ((m.create_robot,(None,unknown)),
+                                   (m.create_backend,(None,None,unknown))):
+                with self.assertRaisesRegex(ValueError,'Unsupported robot backend'):
+                    operation(*args)
+            self.assertEqual(e.backend_calls,[])
+        self.run_case(fn)
+
+    def test_oracle_helper_is_test_owned_and_never_creates_a_missing_prim(self):
+        import ast
+        path=ROOT/'tests/support/isaac_helpers.py'
+        tree=ast.parse(path.read_text())
+        node=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='playground_cube')
+        valid=Mock(return_value=False)
+        constructor=Mock()
+        scope={'omni':NS(usd=NS(get_context=lambda:NS(get_stage=lambda:
+               NS(GetPrimAtPath=lambda p:NS(IsValid=valid))))),
+               'SingleXFormPrim':constructor,'PLAYGROUND_CUBE_PATH':'/World/Objects/Cube'}
+        exec(compile(ast.Module(body=[node],type_ignores=[]),str(path),'exec'),scope)
+        with self.assertRaisesRegex(RuntimeError,'Missing playground test fixture'):
+            scope['playground_cube']()
+        constructor.assert_not_called()
+        valid.return_value=True
+        self.assertIs(scope['playground_cube'](),constructor.return_value)
+        constructor.assert_called_once_with(prim_path='/World/Objects/Cube',name='cube',reset_xform_properties=False)
+
+    def test_source_factories_select_only_the_requested_adapter(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.world.factory']
+            truth=await factory.create_source(cfg)
+            factory.IsaacGroundTruthProvider.assert_called_once_with(
+                cfg.ground_truth.objects_root,cfg.ground_truth.objects)
+            factory.IsaacRgbdCamera.assert_not_called()
+            cfg=replace(cfg,world=replace(cfg.world,provider='perception'))
+            with patch.object(factory,'build_perception_provider',return_value=object()) as build:
+                source=await factory.create_source(cfg)
+            camera=factory.IsaacRgbdCamera.return_value
+            factory.IsaacRgbdCamera.assert_called_once_with('/World/PerceptionCamera',resolution=(640,480))
+            camera.initialize.assert_called_once_with(semantic_segmentation=False)
+            build.assert_called_once_with(camera,cfg)
+            camera.close.assert_not_called()
+            with patch.object(factory,'build_perception_provider',side_effect=ValueError('discovery init')):
+                with self.assertRaisesRegex(ValueError,'discovery init'):
+                    await factory.create_source(cfg)
+            camera.close.assert_called_once()
+        self.run_case(fn)
+
+    def test_rgbd_startup_needs_no_ground_truth_prims_or_objects(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            cfg=replace(cfg,world=replace(cfg.world,provider='perception'),
+                        ground_truth=replace(cfg.ground_truth,objects_root=None,objects={}))
+            valid={'/Franka','/World/PerceptionCamera'}
+            stage=NS(GetPrimAtPath=Mock(side_effect=lambda p:NS(IsValid=lambda:p in valid)))
+            with patch.object(m,'load_scene_config',return_value=cfg), \
+                 patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                b=await m.build_runtime('rgbd.toml')
+            self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
+            self.assertFalse(hasattr(b,'objects'))
+            self.assertTrue(callable(b.capture_frame))
+            b.close()
+        self.run_case(fn)
+
+    def test_ground_truth_startup_does_not_require_camera_prim(self):
+        async def fn(m,e):
+            valid={'/Franka','/World/Objects','/World/Objects/Cube'}
+            stage=NS(GetPrimAtPath=Mock(side_effect=lambda p:NS(IsValid=lambda:p in valid)))
+            with patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                b=await m.build_runtime('truth.toml')
+            self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
+            b.close()
+        self.run_case(fn)
+
+    def test_required_prims_are_validated_before_runtime_construction(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            for provider,paths in (('perception',('/Franka','/World/PerceptionCamera')),
+                                   ('ground_truth',('/Franka','/World/Objects','/World/Objects/Cube'))):
+                selected=replace(cfg,world=replace(cfg.world,provider=provider))
+                for missing in paths:
+                    stage=NS(GetPrimAtPath=lambda p:NS(IsValid=lambda:p!=missing))
+                    with patch.object(m,'load_scene_config',return_value=selected), \
+                         patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                        with self.assertRaisesRegex(RuntimeError,missing):
+                            await m.build_runtime('missing.toml')
+            self.assertIsNone(e.world)
+            self.assertFalse(e.providers)
+        self.run_case(fn)
+
+    def test_unknown_source_and_missing_selected_source_reference_fail_clearly(self):
+        async def fn(m,e):
+            cfg=m.load_scene_config('x.toml')
+            factory=sys.modules['robot_skill_stack.integrations.isaac.world.factory']
+            unknown=replace(cfg,world=replace(cfg.world,provider='unsupported'))
+            with self.assertRaisesRegex(ValueError,'Unsupported observation source'):
+                await factory.create_source(unknown)
+            rgbd=replace(cfg,world=replace(cfg.world,provider='perception'),
+                         perception=replace(cfg.perception,camera_prim_path=None))
+            with self.assertRaisesRegex(ValueError,'camera_prim_path'):
+                factory.required_source_prims(rgbd)
+            factory.IsaacRgbdCamera.assert_not_called()
+            factory.IsaacGroundTruthProvider.assert_not_called()
+        self.run_case(fn)
+
     def test_ground_truth_populates_and_ticks(self):
         async def fn(m,e):
-            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube'))
+            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model); self.assertIsNone(b.capture_frame)
             count=b.world_updater.update_count; e.world.tick(); self.assertEqual(b.world_updater.update_count,count+1)
             b.close(); self.assertEqual(e.world._physics_functions,{})
         self.run_case(fn)
@@ -99,10 +248,8 @@ class BootstrapTests(unittest.TestCase):
 
     def test_invalid_updater_configuration_closes_selected_source(self):
         async def fn(m,e):
-            cfg=m.load_scene_config('x.toml')
-            cfg=replace(cfg,world=replace(cfg.world,stale_object_ttl=-1.))
-            with patch.object(m,'load_scene_config',return_value=cfg):
-                with self.assertRaisesRegex(ValueError,'TTL'):
+            with patch.object(m,'WorldModelUpdater',side_effect=ValueError('injected updater failure')):
+                with self.assertRaisesRegex(ValueError,'updater failure'):
                     await m.build_runtime('x.toml')
             e.providers[0].close.assert_called_once()
             self.assertEqual(e.world._physics_functions,{})
@@ -125,7 +272,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_close_clears_bundle_owner_despite_camera_error(self):
         async def fn(m,e):
-            b=await m.build_runtime('a.toml'); b.state_provider.camera.close.side_effect=ValueError('camera')
+            b=await m.build_runtime('a.toml'); b.world_updater.provider.camera.close.side_effect=ValueError('camera')
             with self.assertRaises(ValueError): b.close()
             self.assertEqual(e.world._physics_functions,{}); self.assertIsNone(e.world._robot_skill_stack_bundle)
         self.run_case(fn)

@@ -203,20 +203,15 @@ class GraspClearanceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.planner(grasp_orientation=[1, 0, 0, 0])
 
-    def test_config_defaults_and_overrides_do_not_require_scene_replacement(self):
-        original = '[robot]\nid="franka"\ntype="franka"\nprim_path="/Franka"\n'
+    def test_scene_geometry_is_shared_by_perception_and_grasp_planning(self):
+        original = Path('config/scenes/playground.toml').read_text()
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory)/"scene.toml"
-            path.write_text(original)
+            path = Path(directory)/'scene.toml'
+            path.write_text(original.replace('support_plane_z = 0.0', 'support_plane_z = 0.35'))
             cfg = load_scene_config(path)
-            self.assertEqual(cfg.grasping.gripper.open_width, .08)
-            path.write_text(original+'\n[grasping.safety]\nmax_object_height = 0.15\n'
-                            '[grasping.gripper]\ntcp_to_palm = 0.025\n')
-            changed = load_scene_config(path)
-            self.assertEqual(changed.grasping.safety.max_object_height, .15)
-            self.assertEqual(changed.grasping.gripper.tcp_to_palm, .025)
-            self.assertEqual(changed.perception.resolution, cfg.perception.resolution)
-            np.testing.assert_equal(changed.perception.discovery.workspace_min, cfg.perception.discovery.workspace_min)
+            self.assertEqual(cfg.scene.support_plane_z, .35)
+            self.assertFalse(hasattr(cfg.perception, 'discovery'))
+            self.assertFalse(hasattr(cfg, 'grasping'))
 
     def test_many_accepted_plans_satisfy_height_and_opening_constraints(self):
         count = 0

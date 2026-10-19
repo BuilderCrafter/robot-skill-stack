@@ -1,11 +1,19 @@
 # Lower-level validation
 
-Phase 4A cloud validation passes 266 discovered unit tests, all eight standalone
-offline modules, architecture boundaries and Python syntax. The operator reports
-the native automated tests passing after the fixture repair at `9ac2e04`.
-The final rerun artifacts were not uploaded. Phase 4A GUI/source-switch checks
-and the injected-loss diagnostic have not been separately confirmed; see the
-[workstation checklist](phase_4a_world_model.md#workstation-validation).
+Phase 4B cloud validation passes 286 discovered unit tests, all eight standalone
+offline modules, architecture boundaries and Python syntax. The final runner
+report is `outputs/phase4b-final/run-wsp5ua8i/summary.json` in the implementation
+workspace (ignored artifacts, not committed). No native Phase 4B test ran in the
+cloud. Run both workstation groups and the two-source GUI checklist in
+[Phase 4B](phase_4b_config_adapters_ui.md#workstation-validation) before merging.
+
+Phase 4A cloud validation passed 266 discovered unit tests and the same eight
+standalone modules/static checks. After the fixture repair at `9ac2e04`, the
+operator confirmed all native automated tests, GUI checks with both sources,
+pause/resume, repeated initialization/shutdown and the injected-loss diagnostic
+passed. Final rerun artifacts were not uploaded; these are operator-reported
+results. Phase 4A is merged into main at `1d9141f`; its results do not validate
+the Phase 4B configuration and construction changes.
 
 Phase 3B completed before Phase 4A: uploaded benchmark evidence reports 4/4
 Pick/Place trials (errors 9.09, 10.80, 7.39 and 4.01 mm, unchanged 25 mm limit)

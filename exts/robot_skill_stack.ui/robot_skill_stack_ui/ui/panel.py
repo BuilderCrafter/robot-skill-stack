@@ -202,7 +202,7 @@ class ControlPanel:
         self.status_dot.style = {'background_color': tint}
         self.status_time.text = datetime.now().strftime('%H:%M:%S')
 
-    def set_enabled(self, *, initialized, ready, busy, held_id, selected, perception, observations_fresh):
+    def set_enabled(self, *, initialized, ready, busy, held_id, selected, capture_available, observations_fresh):
         idle = not busy and self.dialog is None
         motion = initialized and ready and idle
         values = {'initialize': idle, 'profile': idle and not (initialized and ready),
@@ -210,9 +210,9 @@ class ControlPanel:
                   'place': motion and observations_fresh and bool(held_id), 'move': motion, 'move_to': motion, 'home': motion,
                   'task': motion and observations_fresh and not held_id and selected is not None and selected.visible,
                   'recovery': motion and observations_fresh and not held_id and selected is not None,
-                  'clear_lost': initialized and perception and idle,
+                  'clear_lost': initialized and idle,
                   'clear_held': initialized and bool(held_id) and idle,
-                  'capture': initialized and perception and not busy}
+                  'capture': initialized and capture_available and not busy}
         for key, widget in self.buttons.items():
             widget.enabled = bool(values.get(key, idle))
         self.profile.enabled = values['profile']
