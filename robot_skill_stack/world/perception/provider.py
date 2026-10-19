@@ -9,19 +9,17 @@ from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception.diagnostics import describe
 from robot_skill_stack.world.perception.frame import PerceptionFrame
 from robot_skill_stack.world.perception.geometry import ObjectGeometryService
-from robot_skill_stack.world.perception.semantics import SemanticPrediction
 
 
 class PerceptionStateProvider:
     def __init__(self, camera, localizer, discoverer, tracker,
-                 primitive_estimator=None, *, source='rgbd_geometry_perception', stale_frame_timeout=1.0):
+                 primitive_estimator=None, *, source='rgbd_geometry_perception'):
         self.camera = camera
         self.localizer = localizer
         self.discoverer = discoverer
         self.tracker = tracker
         self.primitive_estimator = primitive_estimator
         self.source = source
-        self.stale_frame_timeout = float(stale_frame_timeout)
         self._closed = False
         self._frame_id = 0
         self._last_token = None
@@ -44,18 +42,12 @@ class PerceptionStateProvider:
                 visible=track.visible, confidence=track.confidence, source=self.source, timestamp=track.last_seen,
                 metadata={
                     'class_confidence': 0. if geometry is None else geometry.confidence,
-                    'class_belief_authoritative': True, 'semantic_samples': track.belief.samples,
-                    'track_hits': track.hits, 'track_misses': track.misses,
                     'mask_pixels': 0 if track.mask is None else int(track.mask.sum()),
                     'association_hint_match': track.matched_by_hint,
                     'association_hint_reason': track.association_hint_reason,
                 },
             ))
         return observations
-
-    def age(self, now=None, context=None):
-        now = time.monotonic() if now is None else float(now)
-        return self.tracker.age(now, self.stale_frame_timeout, context)
 
     def observe(self, context=None) -> ObservationBatch:
         timestamp = time.monotonic()
@@ -74,7 +66,6 @@ class PerceptionStateProvider:
                                 self.camera.get_world_from_camera_transform(), timestamp)
         candidates = self.discoverer.discover(frame)
         self.diagnostics = []
-        predictions = []
         for candidate in candidates:
             geometry = None
             if self.primitive_estimator is not None:
@@ -84,11 +75,8 @@ class PerceptionStateProvider:
                     candidate.position = np.asarray(geometry.metadata['center'], float)
                     candidate.size = np.asarray(geometry.metadata['size_world'], float)
                     candidate.spawnable = self.discoverer.is_spawnable(candidate.size)
-            label = None if geometry is None or geometry.shape.value == 'unknown' else geometry.shape.value
-            prediction = SemanticPrediction(label, 1. if label is None else geometry.confidence)
-            predictions.append(prediction)
             self.diagnostics.append(describe(candidate, geometry))
-        self.tracker.update(candidates, predictions, frame_id=frame.frame_id, timestamp=timestamp, context=context)
+        self.tracker.update(candidates, frame_id=frame.frame_id, timestamp=timestamp, context=context)
         self.geometry.update_frame(frame)
         self._last_token = token
         return ObservationBatch(self._current_observations(), timestamp)

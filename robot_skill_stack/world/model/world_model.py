@@ -140,7 +140,7 @@ class WorldModel:
 
             if (
                 obs.class_name is not None
-                or obs.metadata.get("class_belief_authoritative", False)
+                or obs.geometry is not None
             ):
                 obj.class_name = obs.class_name
             if obs.pose is not None:

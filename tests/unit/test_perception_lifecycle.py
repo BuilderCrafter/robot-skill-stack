@@ -14,7 +14,6 @@ from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.world.perception.discovery import ObjectCandidate
-from robot_skill_stack.world.perception.semantics import SemanticPrediction
 from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
@@ -184,7 +183,7 @@ class LifecycleTests(unittest.TestCase):
         track = self.provider.tracker.get(object_id)
         seen = track.last_seen
         junk = ObjectCandidate(track.position, [.15, .15, .15], np.ones((3, 3), bool), spawnable=False)
-        self.provider.tracker.update([junk], [SemanticPrediction(None, 1.)], frame_id=99, timestamp=seen+.2)
+        self.provider.tracker.update([junk], frame_id=99, timestamp=seen+.2)
         self.assertEqual(track.last_seen, seen)
         self.assertFalse(track.visible)
 

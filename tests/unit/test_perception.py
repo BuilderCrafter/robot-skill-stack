@@ -11,10 +11,6 @@ from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer, 
 from robot_skill_stack.world.perception.frame import PerceptionFrame
 from robot_skill_stack.world.perception.geometry import ObjectGeometryService
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
-from robot_skill_stack.world.perception.semantics import (
-    SemanticBelief,
-    SemanticPrediction,
-)
 from robot_skill_stack.world.perception.tracker import ObjectTracker
 from tests.support.results import fail_result, write_result
 from robot_skill_stack.world.model.context import AssociationHint, ObservationContext
@@ -41,10 +37,6 @@ def candidate(
     )
 
 
-def prediction():
-    return SemanticPrediction("cube", 1.0)
-
-
 def hint(object_id, position, radius=0.08):
     return AssociationHint(
         object_id=object_id,
@@ -58,67 +50,45 @@ def hint(object_id, position, radius=0.08):
 def main(result_path=None):
     metrics = {}
 
-    belief = SemanticBelief(
-        window_size=5,
-        min_samples=3,
-        assignment_threshold=0.6,
-    )
-    belief.add(SemanticPrediction("box", 0.9))
-    belief.add(SemanticPrediction("cube", 0.9))
-    belief.add(SemanticPrediction("cube", 0.9))
-    assert belief.resolve()[0] == "cube"
-    belief.add(SemanticPrediction("box", 1.0))
-    belief.add(SemanticPrediction("box", 1.0))
-    assert belief.resolve()[0] == "box"
-    metrics["semantic_reclassification"] = True
-
     tracker = ObjectTracker(
         max_distance=0.15,
-        max_misses=2,
-        semantic_min_samples=1,
     )
     tracks = tracker.update(
         [candidate()],
-        [prediction()],
         frame_id=1,
         timestamp=1.0,
     )
     first_id = tracks[0].object_id
     tracks = tracker.update(
         [candidate(x=0.43)],
-        [prediction()],
         frame_id=2,
         timestamp=2.0,
     )
     assert len(tracks) == 1 and tracks[0].object_id == first_id
     tracks = tracker.update(
         [candidate(x=0.43), candidate(x=0.62)],
-        [prediction(), prediction()],
         frame_id=3,
         timestamp=3.0,
     )
     assert len(tracks) == 2
-    tracker.update([], [], frame_id=4, timestamp=4.0)
+    tracker.update([], frame_id=4, timestamp=4.0)
     assert not tracker.get(first_id).visible
     metrics["tracker_identity"] = True
     metrics["tracker_new_object"] = True
     metrics["tracker_missing_object"] = True
 
     held_tracker = ObjectTracker(
+        min_confirm_hits=1,
         max_distance=0.10,
-        max_misses=1,
-        semantic_min_samples=1,
     )
     held_id = held_tracker.update(
         [candidate()],
-        [prediction()],
         frame_id=1,
         timestamp=1.0,
     )[0].object_id
     held_context = ObservationContext(held_object_id=held_id)
     for frame_id in range(2, 7):
         held_tracker.update(
-            [],
             [],
             frame_id=frame_id,
             timestamp=float(frame_id),
@@ -135,7 +105,6 @@ def main(result_path=None):
     )
     tracks = held_tracker.update(
         [moved],
-        [prediction()],
         frame_id=7,
         timestamp=7.0,
         context=moved_context,
@@ -148,12 +117,9 @@ def main(result_path=None):
 
     multi = ObjectTracker(
         max_distance=0.10,
-        max_misses=5,
-        semantic_min_samples=1,
     )
     first = multi.update(
         [candidate(x=0.35, y=0.0), candidate(x=0.60, y=0.0)],
-        [prediction(), prediction()],
         frame_id=1,
         timestamp=1.0,
     )
@@ -168,7 +134,6 @@ def main(result_path=None):
             candidate(x=0.60, y=0.01),
             candidate(x=0.35, y=0.25),
         ],
-        [prediction(), prediction()],
         frame_id=2,
         timestamp=2.0,
         context=context,
@@ -226,10 +191,9 @@ def main(result_path=None):
         [[100.0, 0, 10.0], [0, 100.0, 10.0], [0, 0, 1.0]]
     )
     localizer = RgbdLocalizer(K)
-    tracker2 = ObjectTracker(semantic_min_samples=1)
+    tracker2 = ObjectTracker()
     track = tracker2.update(
         [candidate()],
-        [prediction()],
         frame_id=1,
         timestamp=1.0,
     )[0]

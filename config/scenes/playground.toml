@@ -37,14 +37,7 @@ component_neighbor_distance = 0.02
 [perception.tracking]
 max_distance = 0.18
 max_size_ratio = 1.50
-max_misses = 30
-occlusion_distance = 0.12
 min_confirm_hits = 3
-
-[perception.semantics]
-window_size = 7
-min_samples = 3
-assignment_threshold = 0.70
 
 [perception.primitives]
 classification_threshold = 0.58
