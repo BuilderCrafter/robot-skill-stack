@@ -16,6 +16,7 @@ from robot_skill_stack.runtime.registry import SkillRegistry
 from robot_skill_stack.runtime.runtime import RobotRuntime
 from robot_skill_stack.runtime.skill import BaseSkill, FailureCode, SkillResult, SkillSpec, SkillStatus
 from tests.unit.test_async_runtime import FakeAsyncBackend
+from robot_skill_stack.world.model.world_model import WorldModel
 
 
 async def next_tick():
@@ -35,8 +36,9 @@ class Command(BaseSkill):
 class ExecutionTests(unittest.IsolatedAsyncioTestCase):
     def stack(self):
         backend, registry = FakeAsyncBackend(), SkillRegistry()
-        registry.register(HomeSkill(backend))
-        registry.register(MoveToPoseSkill(backend))
+        model = WorldModel()
+        registry.register(HomeSkill(backend, model))
+        registry.register(MoveToPoseSkill(backend, model))
         return backend, RobotRuntime(registry)
 
     async def test_busy_rejects_overlap_without_motion_then_accepts_next_command(self):

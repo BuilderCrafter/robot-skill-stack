@@ -5,6 +5,7 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.common.rotations import quat_matrix
 from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.manipulation.held_state import HeldState, motion_failure_code
 from robot_skill_stack.manipulation.placement import (
     PlacementFailureReason,
     PlacementPlanner,
@@ -36,6 +37,8 @@ class PlaceSkill(BaseSkill):
             FailureCode.TARGET_OCCUPIED,
             FailureCode.UNREACHABLE,
             FailureCode.PLACE_FAILED,
+            FailureCode.GRASP_LOST,
+            FailureCode.GRASP_UNCERTAIN,
             FailureCode.TIMEOUT,
         ),
     )
@@ -54,6 +57,7 @@ class PlaceSkill(BaseSkill):
     ):
         self.backend = backend
         self.world_model = world_model
+        self.holding = HeldState(backend, world_model)
         self.placement_planner = (
             placement_planner or SimplePlacementPlanner()
         )
@@ -69,14 +73,17 @@ class PlaceSkill(BaseSkill):
             return None
         return SkillResult(
             SkillStatus.TIMEOUT if result.timed_out else SkillStatus.FAILED,
-            message,
-            FailureCode.TIMEOUT
-            if result.timed_out
-            else FailureCode.PLACE_FAILED,
+            result.message if result.details.get('grasp_failure') else message,
+            motion_failure_code(result, FailureCode.PLACE_FAILED),
             result.details,
         )
 
     def _prepare(self, target, mode):
+        if self.world_model.held_object_uncertain:
+            return None, None, SkillResult(
+                SkillStatus.FAILED, 'Grasp is uncertain; inspect/reset the gripper first.',
+                FailureCode.GRASP_UNCERTAIN,
+            )
         if mode == "default":
             mode = "stable"
         if mode not in ("stable", "release"):
@@ -232,7 +239,8 @@ class PlaceSkill(BaseSkill):
             return failure
         pre, release, retreat = poses
 
-        result = await self.backend.move_to_pose_async(
+        result = await self.holding.run_motion(
+            self.backend.move_to_pose_async,
             pre,
             speed=0.4,
             position_tolerance=0.020,
@@ -248,7 +256,8 @@ class PlaceSkill(BaseSkill):
             )
             return failure
 
-        result = await self.backend.move_to_pose_async(
+        result = await self.holding.run_motion(
+            self.backend.move_to_pose_async,
             release,
             speed=0.15,
             position_tolerance=0.015,
@@ -272,21 +281,22 @@ class PlaceSkill(BaseSkill):
             reason="place",
         )
 
-        result = await self.backend.open_gripper_async()
+        result = await self.holding.release()
         if not result.ok:
             self.world_model.clear_association_hint(object_id)
             return SkillResult(
                 SkillStatus.FAILED,
-                "Could not release object.",
-                FailureCode.PLACE_FAILED,
+                result.message or "Could not release object.",
+                (FailureCode.GRASP_UNCERTAIN if self.world_model.held_object_uncertain
+                 else FailureCode.PLACE_FAILED),
                 {
                     **result.details,
                     "placement_planner_details": placement.details,
                 },
             )
 
-        self.world_model.set_held(None)
-        retreat_result = await self.backend.move_to_pose_async(
+        retreat_result = await self.holding.run_motion(
+            self.backend.move_to_pose_async,
             retreat,
             speed=0.3,
             position_tolerance=0.020,

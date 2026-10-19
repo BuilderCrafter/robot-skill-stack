@@ -75,6 +75,16 @@ class ControlPanelTests(unittest.TestCase):
         self.c._refresh()
         return bundle
 
+    def test_uncertain_grasp_uses_existing_held_label_and_manual_reset(self):
+        bundle = self.bind()
+        bundle.world_model.set_held('object_1', uncertain=True)
+        self.c._refresh()
+        self.assertEqual(self.panel.held.text, 'Held object:   object_1 (uncertain)')
+        self.c._clear_held_clicked()
+        self.c._confirm_clear_held()
+        self.assertEqual(self.panel.held.text, 'Held object:   None')
+        self.assertFalse(bundle.world_model.held_object_uncertain)
+
     def test_native_two_columns_and_independent_scrolling(self):
         self.assertEqual(self.c.window.args[0], 'Robot Skill Stack')
         self.assertEqual((self.c.window.width, self.c.window.height), (1180, 920))

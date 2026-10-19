@@ -61,6 +61,15 @@ returns `TARGET_OCCUPIED` before issuing any backend motion or gripper command;
 physical settling can continue during simulation updates. Invisible/stale
 objects are not treated as hard obstacles in this V1 checker.
 
+## Held-state evidence
+
+Finger-position feedback distinguishes Free, Held and Uncertain. Pick records
+the grasp before lifting; carrying motions check for loss; failed/interrupted
+gripper operations attempt bounded resolution. Uncertain state blocks commands
+and protects the candidate object until resolved. See
+[Phase 3B held state](phase_3b_held_state.md) for policy, API changes and pending
+workstation validation. No force sensing is used.
+
 ## Current execution limitations
 
 Place supports `mode="stable"` (default) and `mode="release"`. Stable mode checks
@@ -75,10 +84,11 @@ for the passing native benchmark and operator-confirmed final validation.
 All command callers use `await runtime.execute_async(...)`. Synchronous skill and
 backend commands have been removed; standalone Isaac scripts drive the same
 coroutine through the external Kit bridge. Read-only queries stay synchronous.
-The existing async command tolerances, update budgets and sequence are unchanged.
+Motion tolerances and update budgets are unchanged; bounded gripper inspection
+adds observation updates around grasp/release and ambiguous feedback.
 Franka's `speed` argument is diagnostic and does not scale motion.
 Its `home` is the TCP pose captured during backend construction, not a separately
 configured safe joint pose. Gripper width feedback verifies grasping; it is not
 a force/contact sensor. Place reports `retreat_ok` separately and can currently
-report success despite a failed retreat. Uncertain held state, recovery motion,
-retreat reporting, speed and Home semantics remain reserved for Phase 3B.
+report success despite a failed retreat. Broader recovery policy, retreat
+reporting, speed and Home semantics remain deferred beyond this held-state step.

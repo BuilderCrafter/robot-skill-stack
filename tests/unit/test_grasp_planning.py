@@ -7,9 +7,9 @@ import sys
 
 import numpy as np
 
-from robot_skill_stack.manipulation.backend import BackendResult, ManipulationBackend
+from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
 from robot_skill_stack.runtime.skill import FailureCode
-from robot_skill_stack.common.types import Pose
+from robot_skill_stack.common.types import Pose, GripperState
 from robot_skill_stack.manipulation.grasping import (
     GraspFailureReason,
     GraspPlan,
@@ -52,6 +52,7 @@ class FakeBackend(ManipulationBackend):
     grasp_min_width, grasp_max_width = .005, .075
 
     def __init__(self):
+        self.closed = False
         self.ee = Pose(
             [0.45, 0.0, 0.2],
             [0.0, 0.0, 1.0, 0.0],
@@ -63,19 +64,27 @@ class FakeBackend(ManipulationBackend):
         speed=0.5,
         position_tolerance=None,
         orientation_tolerance=None,
+        grasp_check=None,
     ):
         self.ee = target
+        if grasp_check:
+            for _ in range(3):
+                failure = grasp_check()
+                if failure is not None:
+                    return failure
         return BackendResult(True)
 
     async def open_gripper_async(self):
+        self.closed = False
         return BackendResult(True)
 
     async def close_gripper_async(self, width=None):
+        self.closed = True
         return BackendResult(True)
 
-    def verify_grasp(self):
-        return BackendResult(
-            True,
+    def gripper_feedback(self):
+        return GripperFeedback(
+            GripperState.HELD if self.closed else GripperState.FREE, .05 if self.closed else 0.,
             details={"estimated_width_m": 0.05},
         )
 
@@ -85,8 +94,8 @@ class FakeBackend(ManipulationBackend):
     def check_reachability(self, target):
         return True
 
-    async def home_async(self, name="home"):
-        return BackendResult(True)
+    async def home_async(self, name="home", *, grasp_check=None):
+        return await self.move_to_pose_async(self.ee, grasp_check=grasp_check)
 
 
 class AlternatePlanner:

@@ -3,8 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any
+from collections.abc import Callable
 
-from robot_skill_stack.common.types import Pose
+from robot_skill_stack.common.types import Pose, GripperState
 
 
 @dataclass
@@ -15,8 +16,20 @@ class BackendResult:
     details: dict[str, Any] = field(default_factory=dict)
 
 
+@dataclass
+class GripperFeedback:
+    state: GripperState
+    width: float | None = None
+    details: dict[str, Any] = field(default_factory=dict)
+
+
 class ManipulationBackend(ABC):
-    """Commands yield on the simulator thread; queries do not advance simulation."""
+    """Commands yield on the simulator thread; queries do not advance simulation.
+
+    Carrying commands call grasp_check after each update, before reporting
+    completion. A returned failure must stop the command using its normal hold.
+    Neither motion completion nor a gripper command alone proves attachment.
+    """
 
     # Parallel-jaw grasp capabilities consumed by the composition root.
     grasp_min_width: float
@@ -34,6 +47,7 @@ class ManipulationBackend(ABC):
         speed: float = 0.5,
         position_tolerance: float | None = None,
         orientation_tolerance: float | None = None,
+        grasp_check: Callable[[], BackendResult | None] | None = None,
     ) -> BackendResult:
         ...
 
@@ -46,9 +60,13 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
-    def verify_grasp(self) -> BackendResult:
-        """Return whether gripper feedback indicates an object is currently held."""
+    def gripper_feedback(self) -> GripperFeedback:
+        """Read positions: distinguish supported grasp, confirmed empty and unknown."""
         ...
+
+    async def inspect_gripper_async(self) -> GripperFeedback:
+        """Resolve stationary feedback; simulators override with bounded sampling."""
+        return self.gripper_feedback()
 
     @abstractmethod
     def get_end_effector_pose(self) -> Pose:
@@ -59,5 +77,5 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
-    async def home_async(self, name: str = "home") -> BackendResult:
+    async def home_async(self, name: str = "home", *, grasp_check=None) -> BackendResult:
         ...

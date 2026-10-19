@@ -6,9 +6,10 @@ import sys
 
 import numpy as np
 
-from robot_skill_stack.common.types import Pose
+from robot_skill_stack.common.types import Pose, GripperState
 from robot_skill_stack.manipulation.backend import (
     BackendResult,
+    GripperFeedback,
     ManipulationBackend,
 )
 from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner
@@ -32,6 +33,7 @@ class FakeAsyncBackend(ManipulationBackend):
             [0.0, 0.0, 1.0, 0.0],
         )
         self.async_calls = 0
+        self.closed = False
 
     def check_reachability(self, target):
         return True
@@ -40,9 +42,9 @@ class FakeAsyncBackend(ManipulationBackend):
         return self.ee
 
 
-    def verify_grasp(self):
-        return BackendResult(
-            True,
+    def gripper_feedback(self):
+        return GripperFeedback(
+            GripperState.HELD if self.closed else GripperState.FREE, .05 if self.closed else 0.,
             details={"estimated_width_m": 0.05},
         )
 
@@ -50,21 +52,33 @@ class FakeAsyncBackend(ManipulationBackend):
         await asyncio.sleep(0)
         self.async_calls += 1
         self.ee = target
+        if kwargs.get('grasp_check'):
+            for _ in range(3):
+                failure = kwargs['grasp_check']()
+                if failure is not None:
+                    return failure
         return BackendResult(True)
 
     async def open_gripper_async(self):
         await asyncio.sleep(0)
         self.async_calls += 1
+        self.closed = False
         return BackendResult(True)
 
     async def close_gripper_async(self, width=None):
         await asyncio.sleep(0)
         self.async_calls += 1
+        self.closed = True
         return BackendResult(True)
 
-    async def home_async(self, name="home"):
+    async def home_async(self, name="home", *, grasp_check=None):
         await asyncio.sleep(0)
         self.async_calls += 1
+        if grasp_check:
+            for _ in range(3):
+                failure = grasp_check()
+                if failure is not None:
+                    return failure
         return BackendResult(
             True,
             f"Robot reached named pose '{name}'.",
@@ -85,8 +99,8 @@ async def run():
     )
 
     registry = SkillRegistry()
-    registry.register(MoveToPoseSkill(backend))
-    registry.register(HomeSkill(backend))
+    registry.register(MoveToPoseSkill(backend, model))
+    registry.register(HomeSkill(backend, model))
     registry.register(
         PickSkill(
             backend,

@@ -21,6 +21,8 @@ class FailureCode(str, Enum):
 
     NO_VALID_GRASP = "no_valid_grasp"
     GRASP_FAILED = "grasp_failed"
+    GRASP_LOST = "grasp_lost"
+    GRASP_UNCERTAIN = "grasp_uncertain"
 
     NOT_HOLDING_OBJECT = "not_holding_object"
     TARGET_OCCUPIED = "target_occupied"

@@ -8,7 +8,8 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from robot_skill_stack.common.types import Pose
+from robot_skill_stack.common.types import Pose, GripperState
+from robot_skill_stack.manipulation.backend import BackendResult
 
 
 class ArticulationPolicyDouble:
@@ -55,6 +56,41 @@ def load_backend_module():
 
 def load_backend():
     return load_backend_module().IsaacFrankaBackend
+
+
+class FrankaFingerLimitTests(unittest.TestCase):
+    def test_constructor_reads_named_finger_limits_from_articulation(self):
+        module = load_backend_module()
+        module.interface_config_loader.load_supported_motion_policy_config.return_value = {}
+        module.interface_config_loader.load_supported_lula_kinematics_solver_config.return_value = {}
+        module.ArticulationKinematicsSolver.return_value.compute_end_effector_pose.return_value = (
+            np.zeros(3), np.eye(3),
+        )
+        module.rot_matrices_to_quats.return_value = np.array([1., 0., 0., 0.])
+        # Isaac Sim 5.1 SingleArticulation exposes structured dof_properties;
+        # get_dof_limits() belongs to its underlying view, not Franka/Robot.
+        properties = np.zeros(4, dtype=[
+            ('type', int), ('hasLimits', bool), ('lower', float), ('upper', float),
+            ('driveMode', int), ('maxVelocity', float), ('maxEffort', float),
+            ('stiffness', float), ('damping', float),
+        ])
+        properties['lower'] = [-1., 0., -2., 0.]
+        properties['upper'] = [1., .03, 2., .04]
+        robot = NS(get_dof_index=Mock(side_effect={'panda_finger_joint1': 3,
+                                                   'panda_finger_joint2': 1}.__getitem__),
+                   dof_properties=properties,
+                   get_world_pose=lambda: (np.zeros(3), np.array([1., 0., 0., 0.])),
+                   gripper=NS(joint_opened_positions=np.array([.05, .05]),
+                              get_joint_positions=lambda: [.04, .03]))
+        backend = module.IsaacFrankaBackend(NS(get_physics_dt=lambda: 1/60), robot)
+        np.testing.assert_array_equal(backend._finger_limits, [[0., .04], [0., .03]])
+        self.assertEqual(robot.get_dof_index.call_args_list,
+                         [unittest.mock.call('panda_finger_joint1'),
+                          unittest.mock.call('panda_finger_joint2')])
+        self.assertEqual(backend.gripper_feedback().state, GripperState.FREE)
+        properties['lower'][:] = 0
+        properties['upper'][:] = 0  # Cached bounds are independent of the SDK buffer.
+        np.testing.assert_array_equal(backend._finger_limits, [[0., .04], [0., .03]])
 
 
 class FrankaFrameFeedbackTests(unittest.TestCase):
@@ -134,12 +170,16 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         cls = load_backend()
         backend = cls.__new__(cls)  # Supply SDK boundaries without creating a native controller.
         state = NS(updates=0, position=Pose([0, 0, 0]))
-        backend.world = NS(is_playing=lambda: playing,
+        backend.world = NS(is_playing=lambda: playing, current_time=0.,
                            step=Mock(side_effect=AssertionError('blocking world.step used')))
+        backend._gripper_command = None
+        backend._finger_limits = np.array([[0., .04], [0., .04]])
         backend.robot = NS(handles_initialized=True, apply_action=Mock(),
                            get_world_pose=lambda: (np.zeros(3), np.array([1., 0., 0., 0.])),
                            gripper=NS(forward=Mock(return_value='gripper_action'),
-                                      get_joint_positions=lambda: [.025, .025]))
+                                      joint_opened_positions=np.array([.05, .05]),
+                                      get_joint_positions=lambda: [.04, .04] if backend._gripper_command == 'open'
+                                      else [.025, .025]))
         action = NS(joint_positions=np.arange(7, dtype=float)/10,
                     joint_velocities=np.full(7, .18), joint_indices=np.arange(7))
         backend.motion_controller = NS(reset=Mock(), forward=Mock(return_value=action),
@@ -154,6 +194,8 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         async def next_update():
             await asyncio.sleep(0)
             state.updates += 1
+            if playing:
+                backend.world.current_time += 1/60
             if reaches and state.updates >= 2:
                 state.position = target
         backend._next_update = next_update
@@ -232,7 +274,7 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(state.updates, 60)
         self.assertTrue((await backend.close_gripper_async()).ok)
         self.assertEqual(state.updates, 150)
-        self.assertTrue(backend.verify_grasp().ok)
+        self.assertEqual(backend.gripper_feedback().state.value, 'held')
         backend.world.step.assert_not_called()
 
     async def test_gripper_commands_follow_arm_hold_without_overwriting_arm_targets(self):
@@ -262,6 +304,85 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.details['requested_speed'], .35)
         self.assertEqual(state.updates, 2)
         self.assertFalse((await backend.home_async('missing')).ok)
+
+    async def test_position_feedback_distinguishes_empty_held_opening_and_invalid(self):
+        backend, _, _ = self.adapter()
+        for command, positions, expected in (
+            ('close', [.025, .025], GripperState.HELD),
+            ('close', [.0375, .0375], GripperState.HELD),
+            ('close', [0., 0.], GripperState.FREE),
+            ('close', [.04, .04], GripperState.FREE),
+            ('open', [.025, .025], GripperState.UNCERTAIN),
+            ('close', [np.nan, .025], GripperState.UNCERTAIN),
+            ('close', [-1., -1.], GripperState.UNCERTAIN),
+            ('close', [.2, .2], GripperState.UNCERTAIN),
+            ('close', [.025], GripperState.UNCERTAIN),
+        ):
+            with self.subTest(command=command, positions=positions):
+                backend._gripper_command = command
+                backend.robot.gripper.get_joint_positions = lambda: positions
+                self.assertEqual(backend.gripper_feedback().state, expected)
+        backend.robot.gripper.get_joint_positions = Mock(side_effect=RuntimeError('sensor unavailable'))
+        self.assertEqual(backend.gripper_feedback().state, GripperState.UNCERTAIN)
+
+    async def test_stationary_inspection_is_stable_bounded_and_never_commands_motion(self):
+        for playing, invalid, expected, updates in (
+            (True, False, GripperState.HELD, 2),
+            (True, True, GripperState.UNCERTAIN, 12),
+            (False, False, GripperState.UNCERTAIN, 12),
+        ):
+            with self.subTest(playing=playing, invalid=invalid):
+                backend, state, _ = self.adapter(playing=playing)
+                backend._gripper_command = 'close'
+                if invalid:
+                    backend.robot.gripper.get_joint_positions = lambda: [np.nan, .025]
+                feedback = await backend.inspect_gripper_async()
+                self.assertEqual(feedback.state, expected)
+                self.assertEqual(state.updates, updates)
+                backend.robot.apply_action.assert_not_called()
+                backend.robot.gripper.forward.assert_not_called()
+
+    async def test_changing_finger_width_does_not_prematurely_confirm_a_grasp(self):
+        backend, state, _ = self.adapter()
+        backend._gripper_command = 'close'
+        # Closing fingers pass through the held-width range before settling.
+        backend.robot.gripper.get_joint_positions = lambda: [.035-.003*min(state.updates, 4)]*2
+        feedback = await backend.inspect_gripper_async()
+        self.assertEqual(feedback.state, GripperState.HELD)
+        self.assertEqual(state.updates, 6)
+        self.assertAlmostEqual(feedback.width, .046)
+
+    async def test_motion_guard_stops_before_next_action_and_applies_existing_arm_hold(self):
+        backend, state, target = self.adapter(reaches=False)
+        failure = BackendResult(False, 'Object lost', details={'grasp_failure': True, 'grasp_state': 'free'})
+        check = Mock(side_effect=[None, None, failure])
+        result = await backend.move_to_pose_async(target, grasp_check=check)
+        self.assertIs(result, failure)
+        self.assertEqual(state.updates, 3)
+        self.assertEqual(check.call_count, 3)
+        self.assertEqual(backend.robot.apply_action.call_count, 4)  # Three motions and the existing hold.
+        self.assert_arm_hold(backend)
+
+    async def test_open_command_duration_is_not_treated_as_verified_release(self):
+        backend, state, _ = self.adapter()
+        backend.robot.gripper.get_joint_positions = lambda: [.025, .025]
+        result = await backend.open_gripper_async()
+        self.assertFalse(result.ok)
+        self.assertEqual(state.updates, 60)
+
+    async def test_open_verification_uses_physical_limits_when_sdk_target_exceeds_travel(self):
+        backend, state, _ = self.adapter()
+        # Native failure: measured 0.0399999991 m per finger, despite an SDK
+        # opening request beyond the USD's 0.04 m physical travel.
+        backend.robot.gripper.get_joint_positions = lambda: [0.03999999910593033]*2
+        result = await backend.open_gripper_async()
+        self.assertTrue(result.ok, result.details)
+        self.assertEqual(state.updates, 60)
+        self.assertEqual(result.details['grasp_state'], 'free')
+        self.assertEqual(result.details['finger_upper_limits_m'], [.04, .04])
+        self.assertEqual(result.details['nominal_open_positions_m'], [.05, .05])
+        feedback = await backend.inspect_gripper_async()
+        self.assertEqual(feedback.state, GripperState.FREE)
 
 
 if __name__ == '__main__':

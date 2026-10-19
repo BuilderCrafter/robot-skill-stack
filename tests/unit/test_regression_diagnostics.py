@@ -333,6 +333,7 @@ class RegressionDiagnosticsTests(unittest.TestCase):
         backend = FakeBackend()
         async def release():
             held.pose = Pose(module.SAFE_TARGET)
+            backend.closed = False
             return BackendResult(True)
         backend.open_gripper_async = release
         place = PlaceSkill(backend, model)
