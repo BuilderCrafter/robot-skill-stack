@@ -1,8 +1,11 @@
 # Lower-level validation
 
 Phase 4A cloud validation passes 266 discovered unit tests, all eight standalone
-offline modules, architecture boundaries and Python syntax. Native Phase 4A
-validation is pending; use the [workstation checklist](phase_4a_world_model.md#workstation-validation).
+offline modules, architecture boundaries and Python syntax. The operator reports
+the native automated tests passing after the fixture repair at `9ac2e04`.
+The final rerun artifacts were not uploaded. Phase 4A GUI/source-switch checks
+and the injected-loss diagnostic have not been separately confirmed; see the
+[workstation checklist](phase_4a_world_model.md#workstation-validation).
 
 Phase 3B completed before Phase 4A: uploaded benchmark evidence reports 4/4
 Pick/Place trials (errors 9.09, 10.80, 7.39 and 4.01 mm, unchanged 25 mm limit)

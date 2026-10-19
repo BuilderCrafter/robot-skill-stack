@@ -169,7 +169,10 @@ verify `NO_VALID_GRASP` / `object_too_large` with zero backend commands, and
 check fixture removal on error/cancellation while preserving the original error.
 The original physical-motion and 25 mm placement gates remain unchanged.
 No production lifetime, freshness, control or planner changes were needed.
-The repaired native scenario still requires a workstation rerun.
+After the repair at `9ac2e04`, the operator reported that the tests now pass.
+The final rerun artifacts were not uploaded; this is operator-reported native
+validation, not cloud execution. GUI/source-switch checks and the Phase 4A
+injected-loss diagnostic have not been separately confirmed.
 
 ## Workstation validation
 
