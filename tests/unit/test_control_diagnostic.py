@@ -31,6 +31,7 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
                    get_applied_action=Mock(return_value=action), apply_action=Mock())
         backend = NS(world=world, robot=robot, motion_controller=NS(forward=Mock(return_value=action)),
                      get_end_effector_pose=Mock(return_value=Pose([.45, 0, .25], [0, 0, 1, 0])))
+        backend.motion_controller.get_articulation_motion_policy = lambda: NS(joint_velocity_feedback=np.zeros(2))
         callbacks = {}
         scheduler = NS(add_physics_callback=Mock(side_effect=lambda name, callback_fn: callbacks.update({name: callback_fn})),
                        remove_physics_callback=Mock(side_effect=lambda name: callbacks.pop(name)))
@@ -109,6 +110,8 @@ class ControlDiagnosticTests(unittest.IsolatedAsyncioTestCase):
         backend.motion_controller.forward.assert_called_once_with(position, orientation)
         self.assertEqual(samples[1]['target_position'], position.tolist())
         self.assertEqual(samples[1]['target_orientation'], orientation.tolist())
+        self.assertEqual(samples[1]['controller_joint_velocities'], [0., 0.])
+        self.assertEqual(samples[1]['joint_velocities'], [.3, .4])
         self.assertEqual(samples[0]['cube_position'], [.4, 0, .025])
         self.assertEqual(samples[-1]['cube_position'], [.4, 0, .125])
         self.assertTrue(all(s['stage'] == 'trial_3:pick' for s in samples))

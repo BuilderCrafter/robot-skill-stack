@@ -11,26 +11,122 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 
 
-def load_backend():
+class ArticulationPolicyDouble:
+    """Only the public SDK adapter API used by our feedback policy."""
+    def __init__(self, robot, motion_policy, default_physics_dt):
+        self.robot, self.policy, self.dt = robot, motion_policy, default_physics_dt
+
+    def get_active_joints_subset(self):
+        return self.robot.active
+
+    def get_watched_joints_subset(self):
+        return self.robot.watched
+
+    def get_motion_policy(self):
+        return self.policy
+
+    def get_default_physics_dt(self):
+        return self.dt
+
+
+def load_backend_module():
     names = ('isaacsim', 'isaacsim.core', 'isaacsim.core.utils', 'isaacsim.core.utils.numpy',
-             'isaacsim.core.utils.numpy.rotations', 'isaacsim.robot', 'isaacsim.robot.manipulators',
-             'isaacsim.robot.manipulators.examples', 'isaacsim.robot.manipulators.examples.franka',
-             'isaacsim.robot.manipulators.examples.franka.controllers',
-             'isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller',
-             'isaacsim.robot_motion', 'isaacsim.robot_motion.motion_generation')
+             'isaacsim.core.utils.numpy.rotations', 'isaacsim.robot_motion',
+             'isaacsim.robot_motion.motion_generation',
+             'isaacsim.robot_motion.motion_generation.lula',
+             'isaacsim.robot_motion.motion_generation.lula.motion_policies')
     modules = {name: ModuleType(name) for name in names}
     modules[names[4]].rot_matrices_to_quats = Mock()
-    modules[names[10]].RMPFlowController = Mock()
+    modules[names[-1]].RmpFlow = Mock()
     modules['isaacsim.core.utils.types'] = ModuleType('isaacsim.core.utils.types')
     modules['isaacsim.core.utils.types'].ArticulationAction = NS
-    for name in ('ArticulationKinematicsSolver', 'LulaKinematicsSolver', 'interface_config_loader'):
-        setattr(modules[names[-1]], name, Mock())
+    generation = modules['isaacsim.robot_motion.motion_generation']
+    generation.ArticulationMotionPolicy = ArticulationPolicyDouble
+    for name in ('ArticulationKinematicsSolver', 'LulaKinematicsSolver', 'interface_config_loader',
+                 'MotionPolicyController'):
+        setattr(generation, name, Mock())
     path = Path(__file__).resolve().parents[2]/'robot_skill_stack/integrations/isaac/manipulation/franka_backend.py'
     spec = importlib.util.spec_from_file_location('franka_commands_under_test', path)
     module = importlib.util.module_from_spec(spec)
     with patch.dict('sys.modules', modules):
         spec.loader.exec_module(module)
-    return module.IsaacFrankaBackend
+    return module
+
+
+def load_backend():
+    return load_backend_module().IsaacFrankaBackend
+
+
+class FrankaFrameFeedbackTests(unittest.TestCase):
+    def adapter(self):
+        positions = np.zeros(7)
+        active = NS(get_joint_positions=Mock(return_value=positions),
+                    get_joint_velocities=Mock(side_effect=AssertionError('instantaneous velocity used')),
+                    make_articulation_action=Mock(side_effect=lambda *targets: targets))
+        watched = NS(get_joint_positions=Mock(return_value=np.array([])),
+                     get_joint_velocities=Mock(return_value=np.array([])))
+        world = NS(current_time=1., get_physics_dt=lambda: 1/60)
+        policy = NS(compute_joint_targets=Mock(return_value=('positions', 'velocities')))
+        cls = load_backend_module().FrankaFrameVelocityPolicy
+        adapter = cls(NS(active=active, watched=watched), policy, world)
+        return adapter, active, policy, world
+
+    def test_contact_velocity_spikes_do_not_seed_rmpflow_rollout(self):
+        adapter, active, policy, world = self.adapter()
+        # Second native close: q7 barely changes while raw qd7 is 0.18..0.79 rad/s.
+        active.get_joint_positions.return_value[6] = 1.214380264
+        self.assertEqual(adapter.get_next_articulation_action(), ('positions', 'velocities'))
+        np.testing.assert_array_equal(policy.compute_joint_targets.call_args.args[1], np.zeros(7))
+        world.current_time += 1/60
+        active.get_joint_positions.return_value[6] += .000002
+        adapter.get_next_articulation_action()
+        self.assertAlmostEqual(policy.compute_joint_targets.call_args.args[1][6], .00012)
+        active.get_joint_velocities.assert_not_called()
+        self.assertEqual(policy.compute_joint_targets.call_args.args[4], 1/60)
+        np.testing.assert_array_equal(policy.compute_joint_targets.call_args.args[2], [])
+
+    def test_real_motion_is_not_clipped_and_gripper_gap_uses_elapsed_simulation_time(self):
+        adapter, active, policy, world = self.adapter()
+        adapter.get_next_articulation_action()
+        world.current_time += 1/60
+        active.get_joint_positions.return_value[:] += .05
+        adapter.get_next_articulation_action()
+        np.testing.assert_allclose(adapter.joint_velocity_feedback, np.full(7, 3.))
+        # No forward calls during gripper closure: divide by 1.5 s, not one frame.
+        world.current_time += 1.5
+        active.get_joint_positions.return_value[:] += .003
+        adapter.get_next_articulation_action(physics_dt=.01)
+        np.testing.assert_allclose(adapter.joint_velocity_feedback, np.full(7, .002))
+        self.assertEqual(policy.compute_joint_targets.call_args.args[4], .01)
+
+    def test_rmpflow_mutation_does_not_corrupt_measurement_history_or_trace(self):
+        adapter, active, policy, world = self.adapter()
+        def rollout(q, qd, watched_q, watched_qd, dt):
+            q[:] += 100
+            qd[:] += 200
+            return q, qd
+        policy.compute_joint_targets.side_effect = rollout
+        adapter.get_next_articulation_action()
+        world.current_time += 1/60
+        active.get_joint_positions.return_value[:] += .01
+        adapter.get_next_articulation_action()
+        np.testing.assert_allclose(adapter.joint_velocity_feedback, np.full(7, .6))
+        np.testing.assert_allclose(active.get_joint_positions.return_value, np.full(7, .01))
+        targets = active.make_articulation_action.call_args.args
+        np.testing.assert_allclose(targets[0], np.full(7, 100.01))
+        np.testing.assert_allclose(targets[1], np.full(7, 200.6))
+
+    def test_same_or_rewound_simulation_time_restarts_measurement_without_dividing_by_zero(self):
+        adapter, active, policy, world = self.adapter()
+        for now in (1., 1., 0.):
+            world.current_time = now
+            active.get_joint_positions.return_value[:] += .01
+            adapter.get_next_articulation_action()
+            np.testing.assert_array_equal(adapter.joint_velocity_feedback, np.zeros(7))
+        world.current_time += 1/60
+        active.get_joint_positions.return_value[:] += .01
+        adapter.get_next_articulation_action()
+        np.testing.assert_allclose(adapter.joint_velocity_feedback, np.full(7, .6))
 
 
 class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
@@ -41,11 +137,13 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         backend.world = NS(is_playing=lambda: playing,
                            step=Mock(side_effect=AssertionError('blocking world.step used')))
         backend.robot = NS(handles_initialized=True, apply_action=Mock(),
+                           get_world_pose=lambda: (np.zeros(3), np.array([1., 0., 0., 0.])),
                            gripper=NS(forward=Mock(return_value='gripper_action'),
                                       get_joint_positions=lambda: [.025, .025]))
         action = NS(joint_positions=np.arange(7, dtype=float)/10,
                     joint_velocities=np.full(7, .18), joint_indices=np.arange(7))
-        backend.motion_controller = NS(reset=Mock(), forward=Mock(return_value=action))
+        backend.motion_controller = NS(reset=Mock(), forward=Mock(return_value=action),
+                                       get_motion_policy=lambda: NS(set_robot_base_pose=Mock()))
         backend.position_tolerance, backend.orientation_tolerance = .025, .10
         backend.max_motion_steps = 3
         backend.grasp_min_width, backend.grasp_max_width = .005, .075
@@ -71,6 +169,16 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.details['position_tolerance_m'], .025)
         self.assertEqual(result.details['orientation_tolerance_rad'], .10)
         self.assert_arm_hold(backend)
+
+    async def test_motion_reset_restores_robot_base_pose(self):
+        backend, state, target = self.adapter()
+        policy = NS(set_robot_base_pose=Mock())
+        backend.motion_controller.get_motion_policy = lambda: policy
+        await backend.move_to_pose_async(target)
+        backend.motion_controller.reset.assert_called_once_with()
+        call = policy.set_robot_base_pose.call_args.kwargs
+        np.testing.assert_array_equal(call['robot_position'], np.zeros(3))
+        np.testing.assert_array_equal(call['robot_orientation'], [1, 0, 0, 0])
 
     def assert_arm_hold(self, backend):
         motion = backend.motion_controller.forward.return_value

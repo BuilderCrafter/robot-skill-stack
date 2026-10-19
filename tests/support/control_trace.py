@@ -78,8 +78,10 @@ def record_control(backend, scheduler, samples, cube=None):
         action = original_forward(*args, **kwargs)
         position = kwargs.get('target_end_effector_position', args[0] if args else None)
         orientation = kwargs.get('target_end_effector_orientation', args[1] if len(args) > 1 else None)
+        feedback = backend.motion_controller.get_articulation_motion_policy().joint_velocity_feedback
         record('after_forward', action, target_position=np.asarray(position).tolist(),
-               target_orientation=None if orientation is None else np.asarray(orientation).tolist())
+               target_orientation=None if orientation is None else np.asarray(orientation).tolist(),
+               controller_joint_velocities=None if feedback is None else np.asarray(feedback).tolist())
         return action
 
     def apply(action, *args, **kwargs):

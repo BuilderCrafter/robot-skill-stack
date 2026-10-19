@@ -7,14 +7,15 @@ from robot_skill_stack.common.types import Pose
 
 from isaacsim.core.utils.numpy.rotations import rot_matrices_to_quats
 from isaacsim.core.utils.types import ArticulationAction
-from isaacsim.robot.manipulators.examples.franka.controllers.rmpflow_controller import (
-    RMPFlowController,
-)
 from isaacsim.robot_motion.motion_generation import (
     ArticulationKinematicsSolver,
     LulaKinematicsSolver,
     interface_config_loader,
+    MotionPolicyController,
 )
+from isaacsim.robot_motion.motion_generation.lula.motion_policies import RmpFlow
+
+from robot_skill_stack.integrations.isaac.manipulation.franka_feedback import FrankaFrameVelocityPolicy
 
 
 class IsaacFrankaBackend(ManipulationBackend):
@@ -39,11 +40,12 @@ class IsaacFrankaBackend(ManipulationBackend):
         self.grasp_min_width = float(grasp_min_width)
         self.grasp_max_width = float(grasp_max_width)
 
-        self.motion_controller = RMPFlowController(
+        rmpflow = RmpFlow(**interface_config_loader.load_supported_motion_policy_config('Franka', 'RMPflow'))
+        self.motion_controller = MotionPolicyController(
             name="franka_backend_rmpflow",
-            robot_articulation=robot,
+            articulation_motion_policy=FrankaFrameVelocityPolicy(robot, rmpflow, world),
         )
-        self.motion_controller.reset()
+        self._reset_motion_controller()
 
         cfg = interface_config_loader.load_supported_lula_kinematics_solver_config(
             "Franka"
@@ -71,6 +73,14 @@ class IsaacFrankaBackend(ManipulationBackend):
     def _update_base(self):
         pos, ori = self.robot.get_world_pose()
         self.lula_solver.set_robot_base_pose(pos, ori)
+
+    def _reset_motion_controller(self):
+        self.motion_controller.reset()
+        # The SDK example controller also restores base pose after RMPflow reset.
+        pos, ori = self.robot.get_world_pose()
+        self.motion_controller.get_motion_policy().set_robot_base_pose(
+            robot_position=pos, robot_orientation=ori,
+        )
 
     @staticmethod
     def _quat_error(q1, q2):
@@ -157,7 +167,7 @@ class IsaacFrankaBackend(ManipulationBackend):
             else orientation_tolerance
         )
 
-        self.motion_controller.reset()
+        self._reset_motion_controller()
         last_pos_error = last_ori_error = None
 
         last_action = None

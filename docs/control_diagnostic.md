@@ -296,3 +296,90 @@ is unnecessary. Send the whole `outputs/phase3a-loaded-journal` folder as a ZIP,
 including **`benchmark/control_trace.jsonl`**, even if `benchmark.json` is absent.
 The active-motion cause is still undiagnosed; missing telemetry does not
 justify a speculative controller or planner modification.
+
+## Loaded journal: velocity feedback amplification
+
+The next upload, `phase3a-loaded-journal.zip`, contains 6,672 complete journal
+rows, including the interrupted second Pick. Trial 1 passes with 10.72 mm true
+placement error. Trial 2 is interrupted during lift; it has no final result.
+The flushed journal therefore provides the evidence missing from the previous
+upload. The user reports slight wobbling on Pick 1, severe shaking/contortion
+and ground contact on Pick 2.
+
+During the final 30 control frames of each gripper closure, the held arm has
+zero desired arm velocity. Wrist joint 7 feedback differs sharply from its
+observed position changes:
+
+| Closure | Joint-position range (rad) | Raw velocity range (rad/s) | Maximum frame displacement / elapsed time (rad/s) |
+| --- | --- | --- | --- |
+| Trial 1, steps 1197–1226 | 0.00001538 | -0.626 to +0.443 | 0.0003934 |
+| Trial 2, steps 2026–2055 | 0.00002372 | +0.177 to +0.792 | 0.0001717 |
+
+At the first second-trial lift command (step 2055), raw wrist velocity is
+0.634 rad/s. At step 2056 it is 2.252 rad/s, although the intervening position
+change corresponds to about 0.184 rad/s. RMPflow's next wrist target velocity
+is 1.678 rad/s. By step 2105 the TCP has swept from approximately
+`[0.475, 0.096, 0.034]` to `[0.360, 0.177, 0.025]` m despite a lift target of
+`[0.479, 0.099, 0.146]` m. The trace establishes a feedback mismatch and its
+amplification into commanded motion. It does not prove that the SDK getter is
+buggy: instantaneous contact/solver velocity may differ from displacement
+over a whole frame. It also does not establish every cause of ground contact.
+
+The narrow corrective experiment is `FrankaFrameVelocityPolicy`, a small
+subclass of Isaac's public `ArticulationMotionPolicy`. It supplies measured
+active-joint position differences divided by elapsed **simulation** time as
+RMPflow's velocity input. Position feedback remains closed loop. The first
+sample, repeated simulation timestamp, or rewound time uses zero velocity
+because no valid interval is available. History survives goal resets, and a
+gripper-only interval uses its entire duration rather than one frame. This
+introduces a frame-averaged velocity estimate and can miss rapid within-frame
+motion; the first estimate also assumes zero velocity. It requires native
+validation, particularly under loaded contact and after gripper pauses.
+
+Controller construction now explicitly composes the same Franka RMPflow
+configuration with Isaac's standard `MotionPolicyController`; reset still
+restores the robot base pose. No gains, posture preferences, Cartesian goals,
+pose tolerances, speed limits, collision geometry, skills or lifecycle steps
+are changed. No clipping or additional trajectory constraints are introduced.
+The inherited integration interval comes from the world's physics timestep
+(the uploaded run verifies 1/60 s throughout). RMPflow's in-place rollout
+cannot mutate the measurement history or recorded feedback copies.
+
+The trace records raw `joint_velocities` alongside
+`controller_joint_velocities` after each forward call. Offline tests exercise
+the observed near-stationary wrist case, preserve actual high joint velocity,
+cover gripper gaps/time resets, and verify SDK rollout mutation cannot corrupt
+measurements. These checks establish the adapter's logic, not native motion
+stability. Collision avoidance remains limited by the absent registered scene
+obstacles. A passing endpoint/benchmark result alone does not establish safe
+intermediate motion.
+
+Run this targeted check first, in the existing checkout:
+
+```bash
+git switch refactor/phase-3a-execution
+git pull --ff-only
+mkdir -p outputs/phase3a-frame-feedback
+./run_isaac_python.sh tests/regression/test_benchmark.py --control-trace --result outputs/phase3a-frame-feedback/benchmark.json --artifacts-dir outputs/phase3a-frame-feedback/benchmark > outputs/phase3a-frame-feedback/benchmark.log 2>&1
+```
+
+Stop immediately if contortion/contact returns and send the folder as a ZIP,
+including `benchmark/control_trace.jsonl`. Assess smoothness, loaded lift
+paths, retained objects, all four successful trials and the unchanged 25 mm
+true placement-error gate. Do not treat a failure or early interruption as a
+pass. If motion is stable, also run the placement rejection test and full
+regression group before treating the repair as validated:
+
+```bash
+./run_isaac_python.sh tests/regression/test_placement_feasibility.py --result outputs/phase3a-frame-feedback/placement.json --artifacts-dir outputs/phase3a-frame-feedback/placement
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/phase3a-frame-feedback/regressions
+```
+
+The full group runs all six regression scenarios; the two additional Isaac
+integration scenarios are selected with `--group isaac` (or run everything
+with `--group all`). Launchers, repository-local NumPy and dependency pins
+are unchanged. No merge or GUI release selector is part of this repair.
+
+Cloud validation: `scripts/run_all_regressions.py --unit-only` passes the
+architecture check, 221 discovered unit tests and all eight standalone offline
+checks. Isaac startup, API integration and loaded motion remain unrun here.
