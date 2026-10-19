@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 import argparse
 import sys
 
@@ -16,6 +18,9 @@ from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class FakeBackend(ManipulationBackend):
+    is_ready = True
+    grasp_min_width, grasp_max_width = .005, .075
+
     def __init__(self, obj, *, move_every_time=False):
         self.obj = obj
         self.move_every_time = move_every_time
@@ -25,7 +30,7 @@ class FakeBackend(ManipulationBackend):
             [0.0, 0.0, 1.0, 0.0],
         )
 
-    def move_to_pose(
+    async def move_to_pose_async(
         self,
         target,
         speed=0.5,
@@ -42,10 +47,10 @@ class FakeBackend(ManipulationBackend):
             self.obj.visible = True
         return BackendResult(True)
 
-    def open_gripper(self):
+    async def open_gripper_async(self):
         return BackendResult(True)
 
-    def close_gripper(self, width=None):
+    async def close_gripper_async(self, width=None):
         return BackendResult(True)
 
     def verify_grasp(self):
@@ -60,7 +65,7 @@ class FakeBackend(ManipulationBackend):
     def check_reachability(self, target):
         return True
 
-    def home(self, name="home"):
+    async def home_async(self, name="home"):
         return BackendResult(True)
 
 
@@ -93,7 +98,7 @@ def main(result_path=None):
         movement_threshold=0.02,
         max_local_replans=2,
     )
-    result = skill.execute("object_1")
+    result = asyncio.run(skill.execute_async("object_1"))
     assert result.ok
     assert result.details["local_replans"] == 1
     assert model.held_object_id == "object_1"
@@ -112,7 +117,7 @@ def main(result_path=None):
         movement_threshold=0.02,
         max_local_replans=1,
     )
-    result = skill.execute("object_1")
+    result = asyncio.run(skill.execute_async("object_1"))
     assert not result.ok
     assert result.failure_code == FailureCode.OBJECT_MOVED
     assert result.details["local_replans"] == 1

@@ -18,6 +18,7 @@ import omni.usd
 from pxr import Gf, Usd, UsdGeom, UsdPhysics
 
 from robot_skill_stack.common.types import Pose
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -111,24 +112,24 @@ def main(result_path=None, artifacts_dir=None):
     print("Second cube ID:", second_id)
 
     print("[4] Manipulate first cube...")
-    pick1 = bundle.runtime.execute(
+    pick1 = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=first_id,
-    )
+    ), simulation_app)
     if not pick1.ok:
         raise RuntimeError(
             f"First Pick failed: {pick1.message}"
         )
-    place1 = bundle.runtime.execute(
+    place1 = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(FIRST_TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     if not place1.ok:
         raise RuntimeError(
             f"First Place failed: {place1.message}"
         )
-    bundle.runtime.execute("home")
+    run_kit_coroutine(bundle.runtime.execute_async("home"), simulation_app)
     settle(bundle.world, 60)
 
     first_true_after = np.asarray(
@@ -145,24 +146,24 @@ def main(result_path=None, artifacts_dir=None):
         )
 
     print("[5] Manipulate second cube...")
-    pick2 = bundle.runtime.execute(
+    pick2 = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=second_id,
-    )
+    ), simulation_app)
     if not pick2.ok:
         raise RuntimeError(
             f"Second Pick failed: {pick2.message}"
         )
-    place2 = bundle.runtime.execute(
+    place2 = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(SECOND_TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     if not place2.ok:
         raise RuntimeError(
             f"Second Place failed: {place2.message}"
         )
-    bundle.runtime.execute("home")
+    run_kit_coroutine(bundle.runtime.execute_async("home"), simulation_app)
     settle(bundle.world, 60)
 
     second_true_after = prim_position(second_prim)

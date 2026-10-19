@@ -10,6 +10,8 @@ from isaacsim import SimulationApp
 simulation_app = SimulationApp({"headless": False})
 
 import argparse
+from contextlib import ExitStack
+from unittest.mock import patch
 import sys
 import traceback
 from pathlib import Path
@@ -25,6 +27,7 @@ from tests.support.isaac_helpers import (
     open_playground,
     settle,
 )
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 
 OBSTACLE_PATH = "/World/Objects/PlacementObstacle"
@@ -45,8 +48,7 @@ def spawn_obstacle():
     return prim
 
 
-def main(result_path=None, artifacts_dir=None):
-    metrics = {}
+def _run_placement(metrics, result_path=None, artifacts_dir=None):
     out = Path(artifacts_dir or Path("outputs") / "placement_feasibility_tmp")
     out.mkdir(parents=True, exist_ok=True)
 
@@ -66,18 +68,25 @@ def main(result_path=None, artifacts_dir=None):
     print("Obstacle WorldModel ID:", obstacle.object_id)
 
     print("[3] Pick configured cube...")
-    pick = bundle.runtime.execute("pick", object_id=held_id)
+    pick = run_kit_coroutine(bundle.runtime.execute_async("pick", object_id=held_id), simulation_app)
     if not pick.ok:
         raise RuntimeError(f"Pick failed: {pick.message}")
 
     ee_before = bundle.backend.get_end_effector_pose().position.copy()
 
-    print("[4] Attempt occupied placement; robot must not move...")
-    occupied = bundle.runtime.execute(
-        "place",
-        target=Pose(obstacle.pose.position.copy()),
-        mode="stable",
-    )
+    print("[4] Attempt occupied placement; no backend commands may be issued...")
+    # Kit updates can continue an earlier physical action even when Place rejects.
+    # Spy on command invocations (including unawaited calls), allowing read-only queries.
+    with ExitStack() as stack:
+        commands = {name: stack.enter_context(patch.object(
+            bundle.backend, name, wraps=getattr(bundle.backend, name)))
+            for name in ("move_to_pose_async", "open_gripper_async", "close_gripper_async", "home_async")}
+        occupied = run_kit_coroutine(bundle.runtime.execute_async(
+            "place",
+            target=Pose(obstacle.pose.position.copy()),
+            mode="stable",
+        ), simulation_app)
+        command_counts = {name: spy.call_count for name, spy in commands.items()}
     ee_after = bundle.backend.get_end_effector_pose().position.copy()
     ee_motion = float(np.linalg.norm(ee_after - ee_before))
 
@@ -89,6 +98,7 @@ def main(result_path=None, artifacts_dir=None):
         ),
         occupied_details=occupied.details,
         ee_motion_during_rejection_mm=ee_motion * 1000,
+        rejection_backend_command_counts=command_counts,
         held_after_rejection=bundle.world_model.held_object_id,
     )
 
@@ -98,17 +108,18 @@ def main(result_path=None, artifacts_dir=None):
         raise AssertionError(
             f"Expected TARGET_OCCUPIED, got {occupied.failure_code}"
         )
-    if ee_motion > 1e-4:
-        raise AssertionError("Robot moved despite placement rejection")
+    print("EE drift during Kit updates [mm]:", ee_motion * 1000, "commands:", command_counts)
+    if any(command_counts.values()):
+        raise AssertionError(f"Backend commands issued despite placement rejection: {command_counts}")
     if bundle.world_model.held_object_id != held_id:
         raise AssertionError("Held-object state changed after rejected placement")
 
     print("[5] Place at a free target...")
-    place = bundle.runtime.execute(
+    place = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(SAFE_TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     if not place.ok:
         raise RuntimeError(f"Safe placement failed: {place.message}")
 
@@ -133,6 +144,16 @@ def main(result_path=None, artifacts_dir=None):
     write_result(result_path, status="PASS", metrics=metrics)
 
 
+def main(result_path=None, artifacts_dir=None):
+    metrics = {}
+    try:
+        _run_placement(metrics, result_path, artifacts_dir)
+    except Exception as exc:
+        write_result(result_path, status="FAIL", metrics=metrics,
+                     error=f"{type(exc).__name__}: {exc}")
+        raise
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--result")
@@ -142,11 +163,6 @@ if __name__ == "__main__":
         main(args.result, args.artifacts_dir)
     except Exception as exc:
         traceback.print_exc()
-        write_result(
-            args.result,
-            status="FAIL",
-            error=f"{type(exc).__name__}: {exc}",
-        )
         sys.exit(1)
     finally:
         simulation_app.close()

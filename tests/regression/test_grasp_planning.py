@@ -17,6 +17,7 @@ from pathlib import Path
 
 from robot_skill_stack.runtime.skill import FailureCode
 from robot_skill_stack.common.types import Pose
+from tests.support.isaac_async import run_kit_coroutine
 from tests.support.results import write_result
 from tests.support.isaac_helpers import (
     build_perception_runtime,
@@ -62,10 +63,10 @@ def main(result_path=None, artifacts_dir=None):
         )
     )
 
-    oversized = bundle.runtime.execute(
+    oversized = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=fake_id,
-    )
+    ), simulation_app)
     ee_after = bundle.backend.get_end_effector_pose().position.copy()
     ee_motion = float(np.linalg.norm(ee_after - ee_before))
 
@@ -113,18 +114,18 @@ def main(result_path=None, artifacts_dir=None):
     bundle.world_model._objects.pop(fake_id, None)
 
     print("[4] Real perception-driven cube Pick + Place...")
-    pick = bundle.runtime.execute(
+    pick = run_kit_coroutine(bundle.runtime.execute_async(
         "pick",
         object_id=object_id,
-    )
+    ), simulation_app)
     if not pick.ok:
         raise RuntimeError(f"Pick failed: {pick.message}")
 
-    place = bundle.runtime.execute(
+    place = run_kit_coroutine(bundle.runtime.execute_async(
         "place",
         target=Pose(TARGET),
         mode="stable",
-    )
+    ), simulation_app)
     if not place.ok:
         raise RuntimeError(f"Place failed: {place.message}")
 

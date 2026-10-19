@@ -250,7 +250,7 @@ class LifecycleTests(unittest.TestCase):
         from robot_skill_stack.runtime.registry import SkillRegistry
         from robot_skill_stack.runtime.runtime import RobotRuntime
         object_id = self.confirmed()
-        backend = FakeAsyncBackend()  # Synchronous methods raise AssertionError.
+        backend = FakeAsyncBackend()
         registry = SkillRegistry()
         registry.register(PickSkill(backend, self.model, SimplePrimitiveGraspPlanner()))
         result = asyncio.run(RobotRuntime(registry).execute_async('pick', object_id=object_id))

@@ -1,5 +1,15 @@
 # Lower-level validation
 
+Phase 3A completion: the reviewed `phase3a-frame-feedback.zip` reports all four
+Pick/Place benchmark trials passing, all retreats successful, and maximum true
+placement error 9.67 mm (unchanged limit: 25 mm). The operator subsequently
+confirmed both final Isaac groups (two integration scenarios and six
+regressions) and manual GUI testing passed, and approved merging. See the
+[Phase 3A record](control_diagnostic.md#latest-workstation-result-and-merge-checks)
+for the distinction between uploaded benchmark evidence and operator-reported
+final checks. Latest cloud validation passes 221 discovered unit tests, all
+eight standalone offline checks and the architecture check.
+
 Historical results recorded on the Isaac Sim workstation on 2026-09-26
 (not revalidated by the Phase 1 cloud run):
 
@@ -53,8 +63,15 @@ imports/syntax, not every semantic architectural dependency.
 
 ## Manual GUI smoke test
 
-Run on the university Isaac Sim 5.1.0-rc.19 workstation; these checks are pending
-until performed there:
+Phase 3A migrates standalone commands and the recovery BT to the same async
+runtime used by the GUI. The existing Kit bridge pumps application updates;
+do not use `asyncio.run()` to control live Isaac. Direct-script dispatch and
+pre-SimulationApp NumPy verification are unchanged. Re-run both workstation
+groups after this execution migration; cloud doubles cannot validate rendering,
+controller timing, physics callbacks or camera updates during commands.
+
+Run on the university Isaac Sim 5.1.0-rc.19 workstation when revalidating GUI
+or runtime changes:
 
 1. Confirm `ISAAC_SIM` points to the installation and `.deps` has the pinned
    NumPy 1.26.4 and py_trees 2.6.0. Launch `./run_isaac_sim.sh`. Check the logged
@@ -78,3 +95,8 @@ until performed there:
    initialization and basic manipulation; no core or GUI edits should be needed.
 7. Exercise Stop/Play, reset/reinitialize, and shutdown. Check for duplicate
    callbacks, stale controls, camera cleanup errors, and residual tasks.
+8. Repeat sequential commands and both BT tasks. Confirm rendering/perception
+   continue during motion and GUI actions stay disabled while a command is busy.
+   Recovery must run the existing Home-and-retry sequence without restarting
+   Pick while Home is running. Coroutine cancellation is not an emergency stop;
+   uncertain physical/held state remains outside this phase.

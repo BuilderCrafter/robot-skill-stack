@@ -101,6 +101,13 @@ See `docs/gui.md` for switching to ground truth.
 
 ## Validation
 
+Manipulation has one cooperative command API:
+`await runtime.execute_async("pick", object_id=...)` (likewise Home, Move and
+Place). The GUI and Behavior Trees use this path; standalone Isaac tests drive
+the same coroutine with Kit's existing bridge. `runtime.busy` reports an active
+command; overlapping commands fail with `FailureCode.BUSY` rather than queuing.
+See `docs/phase_3a_execution.md` for interface migration and validation.
+
 Use one runner from the repository root with Python dependencies installed:
 
 ```bash

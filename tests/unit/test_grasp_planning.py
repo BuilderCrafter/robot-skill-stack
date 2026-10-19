@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 import argparse
 import sys
 
@@ -46,13 +48,16 @@ def world_object(
 
 
 class FakeBackend(ManipulationBackend):
+    is_ready = True
+    grasp_min_width, grasp_max_width = .005, .075
+
     def __init__(self):
         self.ee = Pose(
             [0.45, 0.0, 0.2],
             [0.0, 0.0, 1.0, 0.0],
         )
 
-    def move_to_pose(
+    async def move_to_pose_async(
         self,
         target,
         speed=0.5,
@@ -62,10 +67,10 @@ class FakeBackend(ManipulationBackend):
         self.ee = target
         return BackendResult(True)
 
-    def open_gripper(self):
+    async def open_gripper_async(self):
         return BackendResult(True)
 
-    def close_gripper(self, width=None):
+    async def close_gripper_async(self, width=None):
         return BackendResult(True)
 
     def verify_grasp(self):
@@ -80,7 +85,7 @@ class FakeBackend(ManipulationBackend):
     def check_reachability(self, target):
         return True
 
-    def home(self, name="home"):
+    async def home_async(self, name="home"):
         return BackendResult(True)
 
 
@@ -159,7 +164,7 @@ def main(result_path=None):
         model,
         planner,
     )
-    result = skill.execute("object_1")
+    result = asyncio.run(skill.execute_async("object_1"))
     assert not result.ok
     assert result.failure_code == FailureCode.NO_VALID_GRASP
     assert (
@@ -176,7 +181,7 @@ def main(result_path=None):
         model,
         AlternatePlanner(),
     )
-    result = skill.execute("object_1")
+    result = asyncio.run(skill.execute_async("object_1"))
     assert result.ok
     assert result.details["grasp_planner_details"]["strategy"] == (
         "alternate_test_planner"

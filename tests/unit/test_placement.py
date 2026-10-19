@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+
 import argparse
 import sys
 
@@ -19,21 +21,24 @@ from tests.support.results import fail_result, write_result
 
 
 class FakeBackend(ManipulationBackend):
+    is_ready = True
+    grasp_min_width, grasp_max_width = .005, .075
+
     def __init__(self):
         self.ee = Pose([0.45, 0.0, 0.20], [0.0, 0.0, 1.0, 0.0])
         self.move_calls = 0
         self.open_calls = 0
 
-    def move_to_pose(self, target, speed=0.5, position_tolerance=None, orientation_tolerance=None):
+    async def move_to_pose_async(self, target, speed=0.5, position_tolerance=None, orientation_tolerance=None):
         self.move_calls += 1
         self.ee = target
         return BackendResult(True)
 
-    def open_gripper(self):
+    async def open_gripper_async(self):
         self.open_calls += 1
         return BackendResult(True)
 
-    def close_gripper(self, width=None):
+    async def close_gripper_async(self, width=None):
         return BackendResult(True)
 
     def verify_grasp(self):
@@ -45,7 +50,7 @@ class FakeBackend(ManipulationBackend):
     def check_reachability(self, target):
         return True
 
-    def home(self, name="home"):
+    async def home_async(self, name="home"):
         return BackendResult(True)
 
 
@@ -94,7 +99,7 @@ def main(result_path=None):
     model, held, obstacle = make_model()
     backend = FakeBackend()
     skill = PlaceSkill(backend, model, planner)
-    result = skill.execute(Pose(obstacle.pose.position.copy()))
+    result = asyncio.run(skill.execute_async(Pose(obstacle.pose.position.copy())))
     assert not result.ok
     assert result.failure_code == FailureCode.TARGET_OCCUPIED
     assert backend.move_calls == 0

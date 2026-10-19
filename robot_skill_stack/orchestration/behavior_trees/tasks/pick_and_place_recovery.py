@@ -12,16 +12,15 @@ def create_pick_and_place_recovery_tree(
     object_id: str,
     target: Pose,
     return_home=True,
-    skill_node_cls=SkillNode,
 ):
-    first = skill_node_cls(
+    first = SkillNode(
         f"Pick {object_id}",
         runtime,
         "pick",
         object_id=object_id,
         grasp_hint="top",
     )
-    retry = skill_node_cls(
+    retry = SkillNode(
         f"Retry Pick {object_id}",
         runtime,
         "pick",
@@ -32,18 +31,18 @@ def create_pick_and_place_recovery_tree(
         name="Recover & Retry",
         memory=True,
         children=[
-            skill_node_cls("Recovery Home", runtime, "home"),
+            SkillNode("Recovery Home", runtime, "home"),
             retry,
         ],
     )
     selector = py_trees.composites.Selector(
         name="Pick With Recovery",
-        memory=False,
+        memory=True,
         children=[first, recovery],
     )
     children = [
         selector,
-        skill_node_cls(
+        SkillNode(
             f"Place {object_id}",
             runtime,
             "place",
@@ -53,7 +52,7 @@ def create_pick_and_place_recovery_tree(
     ]
     if return_home:
         children.append(
-            skill_node_cls("Final Home", runtime, "home")
+            SkillNode("Final Home", runtime, "home")
         )
     return py_trees.composites.Sequence(
         name="Pick & Place With Recovery",

@@ -22,7 +22,6 @@ import py_trees
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
 from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
-from robot_skill_stack.orchestration.behavior_trees.nodes.skill_node import AsyncSkillNode
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import create_pick_and_place_recovery_tree
 from robot_skill_stack.presentation import WorldModelViewModel
@@ -83,7 +82,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             self.panel.set_status(text, level)
 
     def _robot_ready(self):
-        return bool(self.bundle is not None and getattr(self.bundle.backend.robot, 'handles_initialized', False))
+        return bool(self.bundle is not None and self.bundle.backend.is_ready)
 
     def _on_update(self, event):
         if self._shutting_down:
@@ -102,7 +101,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             return
         selected = self.view_model.selected_object() if self.view_model is not None else None
         self.panel.set_enabled(
-            initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy,
+            initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy or (self.bundle is not None and self.bundle.runtime.busy),
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
             selected=selected, perception=self.bundle is not None and self.bundle.config.world.provider == 'perception')
 
@@ -233,7 +232,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _can_run(self):
         if self.bundle is None:
             message = 'Initialize the runtime first.'
-        elif self.busy or self._pending_clear is not None:
+        elif self.busy or self.bundle.runtime.busy or self._pending_clear is not None:
             message = 'Another operation or confirmation is in progress.'
         elif not self._robot_ready():
             message = 'Robot articulation is not initialized. Press Initialize after Play/Reset.'
@@ -287,7 +286,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
         try:
             factory = create_pick_and_place_recovery_tree if recovery else create_pick_and_place_tree
             root = factory(self.bundle.runtime, object_id=object_id, target=target,
-                           return_home=True, skill_node_cls=AsyncSkillNode)
+                           return_home=True)
             status = await BTExecutor(root).run_async(omni.kit.app.get_app().next_update_async, verbose=False)
             ok = status == py_trees.common.Status.SUCCESS
             self._set_status(f'{"SUCCESS" if ok else "FAILED"}: {name}', 'success' if ok else 'error')

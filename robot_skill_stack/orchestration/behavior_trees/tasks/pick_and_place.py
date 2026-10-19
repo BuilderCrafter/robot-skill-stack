@@ -12,17 +12,16 @@ def create_pick_and_place_tree(
     object_id: str,
     target: Pose,
     return_home=True,
-    skill_node_cls=SkillNode,
 ):
     children = [
-        skill_node_cls(
+        SkillNode(
             f"Pick {object_id}",
             runtime,
             "pick",
             object_id=object_id,
             grasp_hint="top",
         ),
-        skill_node_cls(
+        SkillNode(
             f"Place {object_id}",
             runtime,
             "place",
@@ -32,7 +31,7 @@ def create_pick_and_place_tree(
     ]
     if return_home:
         children.append(
-            skill_node_cls("Home", runtime, "home")
+            SkillNode("Home", runtime, "home")
         )
     return py_trees.composites.Sequence(
         name="Pick & Place",

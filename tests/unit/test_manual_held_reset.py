@@ -18,7 +18,7 @@ from tests.unit import test_grasp_attachment as attachment_tests
 from tests.unit.test_grasp_clearance import solid
 
 
-class ManualHeldResetTests(unittest.TestCase):
+class ManualHeldResetTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.wm = WorldModel()
         self.obj = WorldObject('object_1', pose=Pose([.45, 0, .025]), size=[.05]*3,
@@ -129,32 +129,29 @@ class ManualHeldResetTests(unittest.TestCase):
             self.assertIsNone(model.held_object_offset_in_ee)
             self.assertTrue(model.exists(oid))
 
-    def test_sync_and_async_pick_another_object_after_manual_reset(self):
+    async def test_pick_another_object_after_manual_reset(self):
         helper = attachment_tests.AttachmentTests()
-        for asynchronous in (False, True):
-            with self.subTest(asynchronous=asynchronous):
-                wm, backend, runtime = helper.stack(solid(), asynchronous)
-                invoke = lambda name, **kw: helper.invoke(runtime, asynchronous, name, **kw)
-                self.assertTrue(invoke('pick', object_id='target').ok)
-                backend.closed = False  # Test double: a slip followed by a fresh observed table pose.
-                wm.require("target").pose = Pose([.7, -.25, .05])
-                next_object = solid('cube'); next_object.object_id = 'next'
-                wm.register(next_object)
-                backend.obj = next_object
-                self.assertFalse(invoke('pick', object_id='next').ok)
-                calls = len(backend.calls)
-                wm.clear_held_state()
-                self.assertEqual(len(backend.calls), calls)
-                picked = invoke('pick', object_id='next')
-                self.assertTrue(picked.ok, picked)
-                self.assertEqual(wm.held_object_id, 'next')
+        wm, backend, runtime = helper.stack(solid())
+        self.assertTrue((await runtime.execute_async('pick', object_id='target')).ok)
+        backend.closed = False  # Test double: slip followed by a fresh observed table pose.
+        wm.require("target").pose = Pose([.7, -.25, .05])
+        next_object = solid('cube'); next_object.object_id = 'next'
+        wm.register(next_object)
+        backend.obj = next_object
+        self.assertFalse((await runtime.execute_async('pick', object_id='next')).ok)
+        calls = len(backend.calls)
+        wm.clear_held_state()
+        self.assertEqual(len(backend.calls), calls)
+        picked = await runtime.execute_async('pick', object_id='next')
+        self.assertTrue(picked.ok, picked)
+        self.assertEqual(wm.held_object_id, 'next')
 
-    def test_place_after_reset_refuses_without_any_motion(self):
+    async def test_place_after_reset_refuses_without_any_motion(self):
         helper = attachment_tests.AttachmentTests()
         wm, backend, runtime = helper.stack()
         wm.set_held('target', object_offset_in_ee=[0, 0, .03])
         wm.clear_held_state()
-        result = runtime.execute('place', target=Pose([.45, .25, .05]))
+        result = await runtime.execute_async('place', target=Pose([.45, .25, .05]))
         self.assertFalse(result.ok)
         self.assertEqual(backend.calls, [])
 
