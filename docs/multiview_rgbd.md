@@ -1,5 +1,8 @@
 # Experimental multi-view RGB-D perception
 
+Follow-up: [robustness and performance, iteration two](multiview_robustness_performance.md).
+The first-iteration measurements below remain the preserved comparison baseline.
+
 This experiment tests whether complementary depth surfaces improve geometric
 primitive fitting before solving automatic segmentation. V1 is the unchanged
 reference, never a runtime dependency of the experimental implementation.
