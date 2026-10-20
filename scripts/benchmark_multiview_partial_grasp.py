@@ -43,8 +43,10 @@ def partial_scenes(split='selection'):
     # This vertical panel clips A's measured Y extent while B sees the target.
     a_panel = _blocker(reference, EYES['selection'][0], partial=True)
     # A static elevated plate clips B's X extent; A retains the full span.
-    b_roof = ResearchObject('roof_B', 'cube', np.array([.36, -.01, .085]),
-                            np.array([.18, .30, .014]))
+    # The previous .450m roof edge also removed6.548mm from A in native
+    # capture. Shorten it to.420m; retain the original failed capture/audit.
+    b_roof = ResearchObject('roof_B', 'cube', np.array([.345, -.01, .085]),
+                            np.array([.15, .30, .014]))
     # A joined cover assembly hides the same Y extent from both viewpoints.
     roof = ResearchObject('roof_both', 'cube', np.array([.445, .04, .085]),
                           np.array([.30, .17, .014]))
