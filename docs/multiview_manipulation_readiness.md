@@ -18,7 +18,7 @@ The previous implementation is exported, with original and import-isolated
 SHA256 hashes, to `outputs/multiview-readiness/baseline_snapshot/manifest.json`.
 The export contains all seven package modules and the instrumented original
 benchmark. Its only changes are import isolation and research capture/timing
-instrumentation. The original package tree is
+instrumentation. The baseline repository tree is
 `1a611c419dd07117759073b932ea43eabbaf1334`.
 
 The complete baseline suite passed before production edits:
@@ -69,6 +69,8 @@ Native processes run sequentially.
 ./run_isaac_python.sh scripts/preserve_multiview_baseline.py \
   --ref 7d1eb65e26354ac9bfc5a6b19664005729a6491d \
   --output outputs/multiview-readiness/baseline_snapshot
+# The following baseline suite ran at that commit before development.
+# Running it on the final branch instead validates the final implementation.
 ./run_isaac_python.sh scripts/run_all_regressions.py --group all \
   --artifacts-dir outputs/multiview-readiness-baseline
 ./run_isaac_python.sh outputs/multiview-readiness/baseline_snapshot/benchmark_original.py \
@@ -357,6 +359,13 @@ holdout uses seed 141421357, new dimensions and arrangements, and camera eyes
 `(1.58, .18, 1.02)` / `(.29, -.81, .59)` m; it is captured and evaluated only
 after source freeze. Repeated frames of a static geometry do not establish
 statistical significance.
+The inherited perturbations are 0.5 mm standard-deviation additive depth noise,
+35% independent depth dropout, and a Camera-B calibration perturbation of
+0.05 degrees world yaw plus `[0.5, -0.3, 0.2]` mm translation. Original tokens
+and acquisition times survive these deterministic modifications. Perturbations
+apply to the inherited fixed stress subset: each of three variants contributes
+17 targets in addition to the 52 clean targets. These are separate from the
+controlled fitting study's 0.3 mm Cartesian point noise.
 
 On the new clean holdout, matched detection recall improves **45/52 to 49/52**,
 unknown observations fall **8 to 4**, and mixed clouds **7 to 3**. Across all
@@ -371,11 +380,17 @@ holdout fits improves 0.883 to 0.590 mm, center error over detected targets
 3.902 to 1.570 mm, with unchanged axis error 0.00559 degrees. These metrics
 have different eligibility denominators; unknown merged centers remain in
 localization error, and unknown objects do not have primitive dimensions.
+Improved clean localization mean/p95/worst is 1.570/11.265/26.673 mm across
+49 detections; known-fit dimension error is 0.590/1.275/1.861 mm across 45.
+The long localization tail includes conservative unknown merged components.
 
 The unresolved original approximately 1.671 mm cylinder/occluder remains the
 single original miss. Original mean center error is 0.196 to **0.191 mm**,
 dimension error 1.150 to **0.572 mm**, and axis error remains 0.0169 degrees.
 Zero original false objects, duplicates or mixed outputs are added.
+Final original center mean/p95/worst is 0.191/0.415/0.774 mm; dimension error
+0.572/1.143/1.544 mm; and axis error 0.0169/0.0496/0.0496 degrees. The original
+workload uses at most seven numerical fits, with zero budget exhaustion.
 
 ### Native original workload profile
 
@@ -447,8 +462,147 @@ The 1.671 mm physical separation remains unresolved. Truth colors in this
 diagnostic are scoring only. High-resolution figures, full clouds, raw frames
 and proposed partitions remain under ignored `outputs/`.
 
-Final native regression results and exact artifact run IDs are appended after
-the sequential checks complete.
+### Final checks and artifact records
+
+| Check | Actual result | Artifact |
+| --- | --- | --- |
+| 374 discovered units, eight standalone checks, architecture | PASS | `outputs/multiview-readiness-final-unit/run-qlz5p03_/` |
+| Four multi-view native tests, including planner and stationary real Franka | PASS | `outputs/multiview-readiness-native/run-43rwrjjd/` |
+| Two unchanged V1 native Isaac tests | PASS | `outputs/multiview-readiness-v1-isaac/run-w2uaue_w/` |
+| All six unchanged robotics regressions, including manipulation benchmark | PASS | `outputs/multiview-readiness-v1-regression/run-3gxqbe6z/` |
+| Existing ground-truth injected grasp-loss diagnostic | PASS | `outputs/multiview-readiness/held-loss/result.json` |
+
+The loss injection is exercised: the existing skill reports `grasp_lost`, state
+becomes `free`, held identity and attachment clear, with exactly one open and
+one close from the original Pick and zero home commands. There is no extra
+recovery/release command. This is the unchanged baseline ground-truth fixture,
+not a multi-view manipulation attempt. Negative research experiments above
+remain FAIL; a passing regression suite does not change the
+readiness decision. The original eight V1/robotics scenarios and their gates
+are unchanged, as are V1, ground truth, WorldModel/updater, runtime/skills,
+planner, control/gripper code, original scenes, launchers and dependencies.
+Only four experimental production modules, research scripts/tests and this
+documentation/figures change. Preexisting untracked `models/` is untouched.
+
+### Exact reproduction commands
+
+Run each native command to completion before starting the next. Preserve
+previous captures/results when repeating; use new output directories for new
+runs. Earlier methodology sections distinguish numerical replay from native
+throughput and validation gates from experimental completion.
+
+```bash
+# Frozen final package: this published checkpoint has the same seven hashes.
+./run_isaac_python.sh scripts/preserve_multiview_baseline.py \
+  --ref 7b77918959d334b2021282b1719d3c29acd76e04 \
+  --output outputs/multiview-readiness/frozen_final
+./run_isaac_python.sh outputs/multiview-readiness/frozen_final/benchmark_original.py \
+  --result outputs/multiview-readiness/final-original/result.json \
+  --artifacts-dir outputs/multiview-readiness/final-original --repeats 2
+
+# Previous captured datasets, retained unchanged for exact matched comparison.
+./run_isaac_python.sh scripts/benchmark_multiview_robustness.py \
+  --replay outputs/multiview-iteration2/selection-capture-v2 \
+  --baseline-pythonpath outputs/multiview-readiness/baseline_snapshot \
+  --result outputs/multiview-readiness/previous-selection-replay/result.json \
+  --artifacts-dir outputs/multiview-readiness/previous-selection-replay
+./run_isaac_python.sh scripts/benchmark_multiview_robustness.py \
+  --replay outputs/multiview-iteration2/holdout-capture \
+  --baseline-pythonpath outputs/multiview-readiness/baseline_snapshot \
+  --result outputs/multiview-readiness/previous-holdout-replay/result.json \
+  --artifacts-dir outputs/multiview-readiness/previous-holdout-replay
+
+# New independent native captures; evaluate only after freezing the source.
+./run_isaac_python.sh scripts/benchmark_multiview_readiness_holdout.py \
+  --capture-only --split holdout \
+  --result outputs/multiview-readiness/final-holdout-capture/result.json \
+  --artifacts-dir outputs/multiview-readiness/final-holdout-capture
+./run_isaac_python.sh scripts/benchmark_multiview_readiness_holdout.py \
+  --replay outputs/multiview-readiness/final-holdout-capture --split holdout \
+  --result outputs/multiview-readiness/final-holdout-evaluation/result.json \
+  --artifacts-dir outputs/multiview-readiness/final-holdout-evaluation
+
+# Alternative selection and controlled geometry; no native throughput claims.
+./run_isaac_python.sh scripts/probe_multiview_readiness_segmentation.py \
+  --methods baseline retained nearest surface hybrid \
+  --output outputs/multiview-readiness/segmentation-alternatives.json \
+  --artifacts-dir outputs/multiview-readiness/segmentation-alternatives
+./run_isaac_python.sh scripts/probe_multiview_readiness_segmentation.py \
+  --controls --methods baseline retained nearest surface \
+  --output outputs/readiness-segmentation/retained-controls.json \
+  --artifacts-dir outputs/readiness-segmentation/control-partitions
+./run_isaac_python.sh scripts/probe_multiview_dimensions.py \
+  --capture outputs/multiview-readiness/geometry/controlled-capture \
+  --baseline-pythonpath outputs/multiview-readiness/baseline_snapshot \
+  --output outputs/multiview-readiness/geometry/controlled-final --alternatives
+./run_isaac_python.sh scripts/probe_multiview_grasp_geometry.py \
+  --capture outputs/multiview-readiness/planner-baseline-selection-v2 \
+  --baseline-pythonpath outputs/multiview-readiness/baseline_snapshot \
+  --output outputs/multiview-readiness/geometry/planner-selection-replay
+
+# Read-only native planner selection and independent paired width holdout.
+./run_isaac_python.sh scripts/benchmark_multiview_grasp_readiness.py --strict \
+  --result outputs/multiview-readiness/planner-improved-selection/result.json \
+  --artifacts-dir outputs/multiview-readiness/planner-improved-selection
+./run_isaac_python.sh scripts/benchmark_multiview_grasp_readiness.py \
+  --split holdout --baseline-pythonpath outputs/multiview-readiness/baseline_snapshot --strict \
+  --result outputs/multiview-readiness/planner-final-holdout/result.json \
+  --artifacts-dir outputs/multiview-readiness/planner-final-holdout
+./run_isaac_python.sh scripts/benchmark_multiview_partial_grasp.py --no-ik \
+  --result outputs/multiview-readiness/partial-boxes/result.json \
+  --artifacts-dir outputs/multiview-readiness/partial-boxes
+
+# Stationary native test; no motion flag is set by the regression runner.
+./run_isaac_python.sh tests/multiview/test_robot_occlusion.py \
+  --result outputs/multiview-readiness/robot-static/result.json \
+  --artifacts-dir outputs/multiview-readiness/robot-static
+
+# These three commands require the same explicit workstation supervision.
+./run_isaac_python.sh tests/multiview/test_robot_occlusion.py --supervised-motion \
+  --result outputs/multiview-readiness/robot-final-tall/result.json \
+  --artifacts-dir outputs/multiview-readiness/robot-final-tall
+./run_isaac_python.sh scripts/benchmark_multiview_robot.py \
+  --supervised-motion --temporal-viewpoints \
+  --result outputs/multiview-readiness/robot-final-temporal/result.json \
+  --artifacts-dir outputs/multiview-readiness/robot-final-temporal
+./run_isaac_python.sh scripts/benchmark_multiview_robot.py \
+  --supervised-motion --occlusion-fixtures --workspace-max-z .32 \
+  --result outputs/multiview-readiness/robot-final-height/result.json \
+  --artifacts-dir outputs/multiview-readiness/robot-final-height
+python3 scripts/analyze_multiview_robot.py \
+  --input outputs/multiview-readiness/robot-final-tall \
+  --output outputs/multiview-readiness/robot-final-tall/analysis --depth-proximity
+python3 scripts/analyze_multiview_robot.py \
+  --input outputs/multiview-readiness/robot-final-temporal \
+  --output outputs/multiview-readiness/robot-final-temporal/analysis
+python3 scripts/analyze_multiview_robot.py \
+  --input outputs/multiview-readiness/robot-final-height \
+  --output outputs/multiview-readiness/robot-final-height/analysis
+
+# Isolated CPU clutter profile: do not run beside native performance tests.
+./run_isaac_python.sh scripts/profile_multiview_readiness.py \
+  --output outputs/multiview-readiness/fragmented-clutter-profile.json --repeats 3
+./run_isaac_python.sh scripts/plot_multiview_readiness_segmentation.py \
+  --evaluation outputs/multiview-readiness/segmentation-alternatives.json \
+  --partitions outputs/multiview-readiness/segmentation-alternatives \
+  --control-partitions outputs/readiness-segmentation/control-partitions \
+  --failure-dir outputs/multiview-readiness-native/run-43rwrjjd/multiview_test_close_object_recovery/1_1 \
+  --output outputs/multiview-readiness/figures \
+  --docs-dir docs/assets/multiview_readiness
+
+# Required final regressions, sequential; all original eight gates unchanged.
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only \
+  --artifacts-dir outputs/multiview-readiness-final-unit
+./run_isaac_python.sh scripts/run_all_regressions.py --group multiview \
+  --artifacts-dir outputs/multiview-readiness-native
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac \
+  --artifacts-dir outputs/multiview-readiness-v1-isaac
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression \
+  --artifacts-dir outputs/multiview-readiness-v1-regression
+./run_isaac_python.sh scripts/diagnose_held_state.py \
+  --result outputs/multiview-readiness/held-loss/result.json \
+  --artifacts-dir outputs/multiview-readiness/held-loss
+```
 
 ## G. Readiness decision and smallest next steps
 
