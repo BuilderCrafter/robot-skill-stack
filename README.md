@@ -52,6 +52,11 @@ Artifacts are written to fresh run directories; a NumPy line or open window is
 not a passing scenario. See [validation](docs/validation.md) for the final
 acceptance checklist, injected-loss diagnostic and pending native results.
 
+An opt-in [multi-view RGB-D experiment](docs/multiview_rgbd.md) adds a separate
+`multi_view` source and two-camera scene. Its research results, native tests,
+limitations and reproduction commands are documented separately; the ordinary
+playground continues to use single-camera V1.
+
 ## Architecture and layout
 
 ```text

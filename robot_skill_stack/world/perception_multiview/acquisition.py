@@ -22,7 +22,9 @@ class DepthFrame:
         if (k.shape != (3, 3) or t.shape != (4, 4) or
                 not np.isfinite(k).all() or not np.isfinite(t).all() or
                 min(k[0, 0], k[1, 1]) <= 0 or
+                not np.allclose(k[2], [0, 0, 1]) or abs(k[0, 1])+abs(k[1, 0]) > 1e-8 or
                 not np.allclose(t[3], [0, 0, 0, 1]) or
+                np.linalg.det(t[:3, :3]) < 0 or
                 not np.allclose(t[:3, :3].T @ t[:3, :3], np.eye(3), atol=1e-5)):
             raise ValueError('Invalid pinhole calibration or rigid transform')
 
@@ -79,12 +81,16 @@ class FrameSynchronizer:
         # Consume attempted tokens, including frames whose buffers are invalid.
         # An old buffer cannot later be relabelled as a fresh acquisition.
         self._consumed = tokens
+        self.status = {'state': 'acquiring', 'skew_seconds': skew}
         frames = []
         for key, camera in self.cameras.items():
             depth = camera.get_depth()
             if depth is None:
                 self.status = {'state': 'missing_depth', 'cameras': [key]}
                 raise RuntimeError(f'Missing multi-view depth: {key}')
+            if not np.any(np.isfinite(depth) & (np.asarray(depth) > 0)):
+                self.status = {'state': 'invalid_depth', 'cameras': [key]}
+                raise RuntimeError(f'Invalid multi-view depth: {key}')
             rgb = camera.get_rgb()
             frames.append(DepthFrame(
                 key, tokens[key], np.array(depth, dtype=float, copy=True),

@@ -82,6 +82,13 @@ class AcquisitionTests(unittest.TestCase):
         self.a.close.assert_called_once()
         self.b.close.assert_called_once()
 
+    def test_all_invalid_depth_is_a_source_failure_not_silent_single_view_fusion(self):
+        self.b.get_depth.return_value[:] = np.nan
+        with self.assertRaisesRegex(RuntimeError, 'Invalid multi-view depth'):
+            self.rig.capture()
+        self.assertEqual(self.rig.status['state'], 'invalid_depth')
+        self.assertIsNone(self.rig.capture())
+
     def test_voxels_bound_duplicate_density_and_crop_removes_table_and_background(self):
         points = np.array([[.4, 0, .02], [.4001, 0, .02], [.45, .1, .05]])
         fused = fuse_clouds([points, np.repeat(points, 100, axis=0)])

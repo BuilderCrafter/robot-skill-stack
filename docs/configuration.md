@@ -35,10 +35,11 @@ size = [0.05, 0.05, 0.05]
 | Section | Meaning |
 | --- | --- |
 | `robot` | Backend selector and existing absolute robot prim path; only `franka` is implemented |
-| `world` | `provider` is `perception` (geometry V1) or `ground_truth`; unknown names fail |
+| `world` | `provider` is `perception` (geometry V1), `ground_truth`, or experimental `multi_view`; unknown names fail |
 | `scene` | Finite support height and increasing three-dimensional world-coordinate workspace bounds, in meters; also used by grasp planning |
 | `perception` | Existing camera prim for RGB-D; optional resolution defaults to `[640, 480]` |
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
+| `multi_view` | Opt-in experimental source: exactly two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both

@@ -54,6 +54,29 @@ class PerceptionConfig:
 
 
 @dataclass(frozen=True)
+class MultiViewConfig:
+    camera_prim_paths: tuple[str, ...] = ()
+    resolution: tuple[int, int] = (640, 480)
+    max_skew: float = .025
+    voxel_size: float = .002
+    stride: int = 2
+
+    def __post_init__(self):
+        object.__setattr__(self, 'camera_prim_paths', tuple(self.camera_prim_paths))
+        object.__setattr__(self, 'resolution', PerceptionConfig(resolution=self.resolution).resolution)
+        for key in ('max_skew', 'voxel_size'):
+            value = getattr(self, key)
+            if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
+                raise ValueError(f'{key} must be finite and positive')
+        if type(self.stride) is not int or not 1 <= self.stride <= 8:
+            raise ValueError('multi_view stride must be an integer between 1 and 8')
+        if self.camera_prim_paths and (len(self.camera_prim_paths) != 2 or
+                len(set(self.camera_prim_paths)) != 2 or
+                any(not isinstance(p, str) or not p.startswith('/') for p in self.camera_prim_paths)):
+            raise ValueError('multi_view requires exactly two distinct absolute camera prim paths')
+
+
+@dataclass(frozen=True)
 class ObjectConfig:
     prim_path: str
     size: np.ndarray | None = None
@@ -80,12 +103,13 @@ class SceneConfig:
     scene: SceneGeometry
     perception: PerceptionConfig
     ground_truth: GroundTruthConfig
+    multi_view: MultiViewConfig = field(default_factory=MultiViewConfig)
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
     with Path(path).open('rb') as stream:
         data = tomllib.load(stream)
-    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth'}
+    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth', 'multi_view'}
     if unknown:
         raise ValueError(f'Unsupported configuration sections: {sorted(unknown)}')
     try:
@@ -95,16 +119,21 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             RobotConfig(**data['robot']), WorldConfig(**data['world']),
             SceneGeometry(**data['scene']), PerceptionConfig(**data.get('perception', {})),
             GroundTruthConfig(objects=objects, **ground_truth),
+            MultiViewConfig(**data.get('multi_view', {})),
         )
     except (KeyError, TypeError) as exc:
         raise ValueError(f'Invalid scene configuration: {exc}') from exc
     if config.robot.backend != 'franka':
         raise ValueError(f'Unsupported robot backend: {config.robot.backend}')
-    if config.world.provider not in ('perception', 'ground_truth'):
+    if config.world.provider not in ('perception', 'ground_truth', 'multi_view'):
         raise ValueError(f'Unsupported observation source: {config.world.provider}')
     required = [config.robot.prim_path]
     if config.world.provider == 'perception':
         required.append(config.perception.camera_prim_path)
+    elif config.world.provider == 'multi_view':
+        if not config.multi_view.camera_prim_paths:
+            raise ValueError('multi_view requires exactly two camera prim paths')
+        required.extend(config.multi_view.camera_prim_paths)
     else:
         required += [config.ground_truth.objects_root, *(o.prim_path for o in objects.values())]
     if any(not isinstance(p, str) or not p.startswith('/') for p in required):
