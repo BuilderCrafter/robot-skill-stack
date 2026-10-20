@@ -82,6 +82,74 @@ processes run sequentially. No dependency/environment changes or `--no-ros-env`.
   --docs-dir docs/assets/multiview_observability
 ```
 
-The following checkpoints record the corrected fixtures, method selection,
-source freeze, independent holdout, native performance and explicit readiness
-decision. Baseline failure analysis alone does not establish a safe solution.
+## B. Current physical-boundary evidence
+
+The corrected B-only roof ends at world X = 420 mm, rather than 450 mm. It
+still blocks B, but no longer removes 6.548 mm of the target's extent from the
+intended clear A view. The valid both-camera 90 mm fixture is unchanged. A fresh
+native baseline run with the corrected controls detects/classifies all five
+targets, passes all fixture audits, and still has one false-feasible/width
+violation. See `outputs/multiview-observability/corrected-partial-baseline/`.
+The original failed controls and captures remain available separately.
+
+Four methods were compared on 51 frozen baseline candidate clouds, including
+18 box candidates, extracted without oracle masks from the old partial and
+selection captures. This is a single-frame functional comparison; it does not
+establish publication, current freshness or live performance.
+
+| Method | Bounded boxes / 18 | Reason retained or rejected |
+| --- | ---: | --- |
+| Require direct support for every vertical face | 0 | Rejects the usual unseen opposite faces despite physical silhouette evidence. |
+| Anchored top-plane free-space strip 4 mm outward | 14 | Conservative, but sparse free samples and a fixed outward offset lose useful observations. |
+| Contradict an extra 4 mm box extension on each side | 17 | Stronger coverage, but a unilateral 4 mm limit costs up to 8 mm across a dimension. |
+| Adjacent measured-top/free-depth transitions, with side-plane tightening | 16 | Retains 16/17 candidates excluding the mandatory unsafe box; rejects that hidden dimension and one close-neighbor ambiguity. |
+
+The comparison script, candidate arrays, rows, parameters and source hashes are
+saved in `outputs/multiview-observability/method-comparison-initial/`. The selected
+method's accepted boxes grow by a mean 0.811 mm on their most affected axis,
+worst 3.241 mm in a close-pair case. Clear 80/90 mm reference boxes grow only
+0.226/0.249 mm. These are resolution-aware empirical bounds under the fitted
+single-box model, not certified physical bounds for arbitrary hidden shapes.
+
+The selected helper inspects a bounded ribbon around each fitted top edge in
+each current calibrated depth image. It distinguishes measured occupied top,
+valid depth farther than the proposed top-plane intersection, nearer occluder,
+missing depth, and pixels outside the image. A physical edge needs adjacent
+occupied/free pixels with free evidence outward from the measured interior in
+three separated intervals along the edge. Foreground, invalid and out-of-view
+space never count as free. An edge can be supported by either camera; one
+occluded camera does not veto the other's actual physical-boundary evidence.
+
+Each accepted ray transition supplies an outward interval, rather than an
+assertion that the last cloud sample is the physical edge. Current measured
+side planes can tighten that interval only when a top/free transition also
+exists. Top-plane spread contributes a lateral ray margin; top/side edge voxels
+are excluded from the plane-noise estimate. Both local X and Y signs must be
+bounded, the top must be measured, and current low-side samples must support
+the configured table-contact prior. Z support remains an explicit prior.
+
+`geometric_observability` records per-axis/sign status, interval, per-camera
+occupied/free/occluded/missing/out-of-frame counts, transitions and side-plane
+evidence. The source combines this decision with its existing surface-parameter
+check. It preserves classification scores and measured geometry; eligible boxes
+publish the current outward geometry, with the pre-bound estimate retained in
+metadata. An ambiguous known box remains a known box with `graspable=False`.
+Sphere/cylinder finalization, point clouds, fit budgets, association, timestamps
+and held/uncertain state retain their existing paths. There is no gripper-width
+constant, history cache or simulator import in the helper.
+
+Repeated obstructed fixed views cannot reveal a hidden boundary. The temporal
+experiment therefore requires a new complete view to restore eligibility;
+merely repeating frozen input cannot do so. The method assumes one supported
+yaw box, finite depth and useful calibration. Correlated calibration/top-plane
+error, thin hidden extensions and unsupported box shapes remain limitations;
+the perturbation experiments measure their effect without claiming a universal
+safety certificate.
+
+```bash
+./run_isaac_python.sh scripts/probe_multiview_observability.py \
+  --capture outputs/multiview-readiness/partial-boxes \
+            outputs/multiview-iteration2/selection-capture-v2 \
+  --baseline-pythonpath outputs/multiview-observability/baseline_snapshot \
+  --output outputs/multiview-observability/method-comparison-initial
+```

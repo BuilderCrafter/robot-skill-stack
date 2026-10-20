@@ -8,6 +8,7 @@ from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, unknown_fit
+from robot_skill_stack.world.perception_multiview.observability import assess
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points, refine_cluster, supported_object_cloud
 from robot_skill_stack.world.perception_multiview.tracking import Detection, MultiViewTracker
 
@@ -73,7 +74,7 @@ class MultiViewProvider:
         segmented = time.perf_counter()
         detections, rejected = [], []
         fit_timer = _FitTimer(self.fitter)
-        refinement_seconds, split_components = 0., 0
+        refinement_seconds, observability_seconds, split_components = 0., 0., 0
         for index, cluster in enumerate(sorted(clusters, key=len, reverse=True)):
             if len(detections) >= 8 or index >= 16:
                 rejected.append({'points': len(cluster), 'reason': 'object_count_limit'})
@@ -102,6 +103,27 @@ class MultiViewProvider:
                         rejected.append({'points': len(cluster), 'reason': reason})
                         continue
                     fit.geometry.metadata['support_contact_inferred'] = True
+                before_observability = time.perf_counter()
+                evidence = assess(fit, cluster, frames, view_clouds=view_clouds,
+                                  support_plane_z=self.scene.support_plane_z)
+                geometry = fit.geometry
+                geometry.metadata['geometric_observability'] = evidence
+                if evidence['applicable']:
+                    geometry.metadata['surface_parameters_observable'] = bool(
+                        geometry.metadata.get('parameter_observable', False))
+                    geometry.metadata['parameter_observable'] = bool(
+                        geometry.metadata['surface_parameters_observable'] and evidence['observable'])
+                    bounds = evidence['conservative_geometry']
+                    if bounds is not None:
+                        geometry.metadata['measured_box_geometry'] = dict(center=fit.center.tolist(),
+                            box_size=geometry.box_size.tolist(), size_world=fit.size.tolist())
+                        fit.center = np.asarray(bounds['center'], dtype=float)
+                        geometry.box_size = np.asarray(bounds['box_size'], dtype=float)
+                        c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
+                        rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+                        fit.size = abs(rotation) @ geometry.box_size
+                        geometry.metadata.update(center=fit.center.tolist(), size_world=fit.size.tolist())
+                observability_seconds += time.perf_counter()-before_observability
                 views = tuple(frame.camera_id for frame, cloud in zip(frames, view_clouds) if len(cloud) >= 5)
                 detections.append(Detection(fit, cluster, views))
         fitted = time.perf_counter()
@@ -132,7 +154,8 @@ class MultiViewProvider:
             acquisition_ms=(acquired-started)*1000, projection_ms=(projected-acquired)*1000,
             fusion_ms=(merged-projected)*1000,
             segmentation_ms=(segmented-merged+refinement_seconds)*1000,
-            fitting_ms=(fitted-segmented-refinement_seconds)*1000, tracking_ms=(finished-fitted)*1000,
+            fitting_ms=(fitted-segmented-refinement_seconds-observability_seconds)*1000,
+            observability_ms=observability_seconds*1000, tracking_ms=(finished-fitted)*1000,
             total_ms=(finished-started)*1000)
         return ObservationBatch(observations, timestamp)
 
