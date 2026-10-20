@@ -63,12 +63,19 @@ def _box_distance(points, center, rotation, size):
     return abs(np.linalg.norm(np.maximum(q, 0), axis=1)+np.minimum(q.max(1), 0))
 
 
-def _cylinder_distance(points, center, axis, radius, length):
-    delta = points-center
-    along = delta @ axis
-    radial = np.linalg.norm(delta-along[:, None]*axis, axis=1)
-    q = np.column_stack((radial-radius, abs(along)-length/2))
-    return abs(np.linalg.norm(np.maximum(q, 0), axis=1)+np.minimum(q.max(1), 0))
+def _box_search(points, sides, angles):
+    """Batch yaw hypotheses while retaining full-cloud percentile bounds."""
+    c, s = np.cos(angles), np.sin(angles)
+    xy = np.stack((points[:, 0, None]*c+points[:, 1, None]*s,
+                   -points[:, 0, None]*s+points[:, 1, None]*c), axis=2)
+    lo, hi = np.percentile(xy, [.1, 99.9], axis=0)
+    local_sides = np.stack((sides[:, 0, None]*c+sides[:, 1, None]*s,
+                            -sides[:, 0, None]*s+sides[:, 1, None]*c), axis=2)
+    error = np.percentile(np.minimum(abs(local_sides-lo), abs(local_sides-hi)).min(2), 75, axis=0)
+    index = int(np.argmin(error))
+    yaw = float(angles[index])
+    r = np.array([[c[index], -s[index], 0.], [s[index], c[index], 0.], [0., 0., 1.]])
+    return yaw, r, lo[index], hi[index]
 
 
 class SurfaceFitter:
@@ -111,18 +118,13 @@ class SurfaceFitter:
         height = top_z-plane
         if len(top) < 15 or len(sides) < 15 or height < .008:
             return None
-        best = None
         # Surface distances select yaw, rather than PCA of biased partial faces.
-        for yaw in np.linspace(0, np.pi/2, 91, endpoint=False):
-            c, s = np.cos(yaw), np.sin(yaw)
-            r = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
-            xy = p[:, :2] @ r[:2, :2]
-            lo, hi = np.percentile(xy, [.1, 99.9], axis=0)
-            local_sides = sides[:, :2] @ r[:2, :2]
-            error = float(np.percentile(np.minimum(abs(local_sides-lo), abs(local_sides-hi)).min(1), 75))
-            if best is None or error < best[0]:
-                best = error, yaw, r, lo, hi
-        _, yaw, r, lo, hi = best
+        # Coarse coverage spans the full supported interval. Refinement uses all
+        # samples; sparse curved surfaces must still compete against box fits.
+        yaw, r, lo, hi = _box_search(p, sides, np.deg2rad(np.arange(0, 90, 5.)))
+        for width, step in ((5., .5), (.5, .05)):
+            angles = yaw+np.deg2rad(np.arange(-width, width+step/2, step))
+            yaw, r, lo, hi = _box_search(p, sides, angles)
         local_size = np.r_[hi-lo, height]
         if min(local_size) < .007 or max(local_size) > .20:
             return None
@@ -151,10 +153,12 @@ class SurfaceFitter:
         length = float(hi-lo)
         if length < .01:
             return None
-        core = p[(axial > lo+.15*length) & (axial < hi-.15*length)]
+        core_mask = (axial > lo+.15*length) & (axial < hi-.15*length)
+        cross_points = np.column_stack((p @ side, p @ other))
+        core = cross_points[core_mask]
         if len(core) < 20:
             return None
-        fit = _radial(np.column_stack((core @ side, core @ other)))
+        fit = _radial(core)
         if fit is None:
             return None
         cross, radius = fit
@@ -164,11 +168,35 @@ class SurfaceFitter:
         extent = abs(axis)*length/2+radius*np.sqrt(np.maximum(1-axis*axis, 0))
         if center[2]-extent[2] < plane-.004:
             return None
-        residual = _cylinder_distance(p, center, axis, radius, length)
-        side_error = abs(np.linalg.norm(np.column_stack((core @ side, core @ other))-cross, axis=1)-radius)
+        radial = np.linalg.norm(cross_points-cross, axis=1)
+        q = np.column_stack((radial-radius, abs(axial-(lo+hi)/2)-length/2))
+        residual = abs(np.linalg.norm(np.maximum(q, 0), axis=1)+np.minimum(q.max(1), 0))
+        side_error = abs(radial[core_mask]-radius)
         side_quality = np.exp(-.5*(np.percentile(side_error, 80)/self.tolerance)**2)
         return self._candidate('cylinder', center, 2*extent, residual, side_quality,
                                radius=radius, axis=axis, length=length)
+
+    def _lying_cylinder(self, p, plane):
+        """Cover all horizontal axes, then refine the strongest surface fit."""
+        best = None
+        visited = set()
+        for width, step in ((None, None), (10., 2.), (2., .25)):
+            if width is None:
+                angles = np.deg2rad(np.arange(0, 180, 10.))
+            elif best is None:
+                break
+            else:
+                angle = np.arctan2(best.geometry.axis[1], best.geometry.axis[0])
+                angles = angle+np.deg2rad(np.arange(-width, width+step/2, step))
+            for angle in angles:
+                token = round(float(angle % np.pi), 10)
+                if token in visited:
+                    continue
+                visited.add(token)
+                fit = self._cylinder_axis(p, plane, [np.cos(angle), np.sin(angle), 0.])
+                if fit is not None and (best is None or fit.geometry.confidence > best.geometry.confidence):
+                    best = fit
+        return best
 
     def fit(self, points, *, support_plane_z=0.):
         p = voxelize(points, .0015, self.max_points)
@@ -180,18 +208,8 @@ class SurfaceFitter:
         if len(p) >= 30:
             fits = [f for f in (self._sphere(p, support_plane_z), self._box(p, support_plane_z),
                                 self._cylinder_axis(p, support_plane_z, [0., 0., 1.])) if f is not None]
-            # A bounded axis search handles lying cylinders without sampling PCA bias.
-            best = None
-            for angle in np.linspace(0, np.pi, 36, endpoint=False):
-                f = self._cylinder_axis(p, support_plane_z, [np.cos(angle), np.sin(angle), 0.])
-                if f is not None and (best is None or f.geometry.confidence > best.geometry.confidence):
-                    best = f
+            best = self._lying_cylinder(p, support_plane_z)
             if best is not None:
-                angle = np.arctan2(best.geometry.axis[1], best.geometry.axis[0])
-                for refined in angle+np.deg2rad(np.linspace(-5, 5, 21)):
-                    f = self._cylinder_axis(p, support_plane_z, [np.cos(refined), np.sin(refined), 0.])
-                    if f is not None and f.geometry.confidence > best.geometry.confidence:
-                        best = f
                 fits.append(best)
             for fit in fits:
                 shape = fit.geometry.shape.value

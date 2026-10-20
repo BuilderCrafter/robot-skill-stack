@@ -145,3 +145,63 @@ for diagnostics, matching and isolated fitting experiments, never provider input
   --fitter-package-dir outputs/multiview-iteration2/baseline_snapshot \
   --result outputs/selection-grouping-new.json
 ```
+
+## Checkpoint C: fitter optimization
+
+The retained fitter batches box transforms/quantiles, searches the complete
+supported yaw interval at 5° spacing, then refines at 0.5° and 0.05°. Horizontal
+cylinders cover the full 180° interval at 10°, then refine at 2° and 0.25°.
+Repeated axes are skipped only within that fitting operation. Cross-section
+projections and radial residuals are reused. Every hypothesis still uses the
+same bounded cloud, with the original 1,200-point limit, robust radial solver,
+confidence/coverage requirements, competing shapes and unknown margin. No
+historical fit, simulator geometry or decisive-winner shortcut replaces current
+evidence. There are no new dependencies or worker threads.
+
+The serialized numerical comparison at
+`outputs/multiview-iteration2/fitting-original-final/` replayed 114 saved clouds
+three times per alternative. Mean/p95/worst fitting times were
+44.16/62.72/78.88 ms originally and 27.22/41.29/51.85 ms retained: a 38.35%
+mean reduction, with zero class changes across 342 paired rows. Box-only
+optimization gave 37.71 ms. A 600-point cap gave 23.26 ms and preserved those
+classes, but did not speed up the lower-density selection set or improve its
+dimensions. A 300-point cap gave 20.22 ms but rejected a previously correct
+rotated box, so reduced sampling was not retained. All alternatives and failed
+rows are exported by `scripts/probe_multiview_fitting.py`.
+
+Separate sparse/noisy stress replay retained all 297 outcomes: 288 perturbed
+known shapes plus nine explicit unknown fixtures. Both versions correctly
+classified 224 known shapes, conservatively rejected 64, and correctly rejected
+all nine unknown fixtures. There were zero wrong primitive labels and zero
+changed labels. This demonstrates preserved conservative rejection on this
+corpus, not universal noise robustness. Artifacts:
+`outputs/iteration2-fitting/production-stress/`.
+
+On the 52 valid selection oracle clouds, both versions classified 52/52 correctly
+(including the expected unknown). Retained mean fitting time was 20.41 versus
+35.63 ms. Mean dimension error changed 1.064 to 1.056 mm, center error 0.248 to
+0.236 mm and supported box/cylinder yaw/axis error 0.103° to 0.009°. These are
+isolated oracle fitting results, not automatic segmentation or live throughput.
+Tiny localization changes are secondary to preserved classification. Artifacts:
+`outputs/multiview-iteration2/fitting-selection-v2/`.
+
+The curved-dimension weakness remains. Saved sphere surfaces already lie inside
+their nominal analytic geometry: mean per-cloud median radial errors were
+−0.692/−0.768/−0.771 mm for A/B/fused. Raw fitted radius bias was
+−0.791/−0.746/−0.822 mm; final fitter voxelization changed mean radius by at most
+about 0.0023 mm. This is consistent with faceted rendered surfaces and viewpoint
+sampling, without proving a simulator defect. No arbitrary radius inflation or
+simulator-specific correction was added. Full radius diagnostics are retained.
+
+```bash
+./run_isaac_python.sh scripts/probe_multiview_fitting.py \
+  --baseline-pythonpath outputs/multiview-iteration2/baseline_snapshot \
+  --geometry outputs/multiview-geometry-final \
+  --detection outputs/multiview-detection-01 \
+  --variants baseline box_only improved sample600 sample300 --repeats 3 \
+  --profile --radius-diagnostics --output outputs/fitting-comparison-new
+```
+
+The production method was frozen before accessing holdout captures. Fitting and
+segmentation selection used only original and selection data. Subsequent holdout
+failures will be retained without tuning the algorithms on them.
