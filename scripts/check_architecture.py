@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import os
 import py_compile
 from pathlib import Path
 
@@ -34,10 +35,17 @@ def main():
                 if name.startswith(FORBIDDEN):
                     violations.append((path.relative_to(ROOT), name))
 
-    for path in ROOT.rglob("*.py"):
-        if any(part in {".deps", ".venv", "venv", "env", "__pycache__"} for part in path.parts):
-            continue
-        py_compile.compile(str(path), doraise=True)
+    # Prune before traversal: Python 3.11 rglob enters protected editor paths
+    # even when a later filter would skip their contents.
+    excluded = {".deps", ".venv", "venv", "env", "__pycache__",
+                ".git", ".codex", ".agents", ".aws", "outputs"}
+    def scan_error(error):
+        raise error
+    for directory, children, files in os.walk(ROOT, onerror=scan_error):
+        children[:] = [name for name in children if name not in excluded]
+        for name in files:
+            if name.endswith('.py'):
+                py_compile.compile(str(Path(directory)/name), doraise=True)
 
     if violations:
         print("Architecture boundary violations:")

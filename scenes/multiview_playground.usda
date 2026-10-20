@@ -1,0 +1,61 @@
+#usda 1.0
+(
+    subLayers = [@playground.usd@]
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "Objects"
+    {
+        over "Cube" (active = false) {}
+    }
+    def Camera "PerceptionCameraSide"
+    {
+        float focalLength = 24
+        float horizontalAperture = 20.955
+        float verticalAperture = 15.2908
+        float2 clippingRange = (0.05, 10)
+        matrix4d xformOp:transform = ((0.9734171683, -0.2290393337, 0, 0), (0.1311651672, 0.5574519604, 0.8197822947, 0), (-0.1877623906, -0.7979901600, 0.5726752913, 0), (0.25, -0.85, 0.65, 1))
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+    }
+    def Xform "MultiViewObjects"
+    {
+        def Cube "Box"
+        {
+            double size = 1
+            double3 xformOp:translate = (0.38, -0.18, 0.025)
+            float xformOp:rotateZ = 25
+            float3 xformOp:scale = (0.05, 0.04, 0.05)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+            color3f[] primvars:displayColor = [(0.8, 0.2, 0.1)]
+        }
+        def Sphere "Sphere"
+        {
+            double radius = 0.027
+            double3 xformOp:translate = (0.48, 0, 0.027)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            color3f[] primvars:displayColor = [(0.1, 0.7, 0.2)]
+        }
+        def Cylinder "Upright"
+        {
+            double radius = 0.018
+            double height = 0.09
+            uniform token axis = "Z"
+            double3 xformOp:translate = (0.38, 0.18, 0.045)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            color3f[] primvars:displayColor = [(0.1, 0.3, 0.8)]
+        }
+        def Cylinder "Lying"
+        {
+            double radius = 0.018
+            double height = 0.09
+            uniform token axis = "X"
+            double3 xformOp:translate = (0.58, -0.18, 0.018)
+            float xformOp:rotateZ = 20
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ"]
+            color3f[] primvars:displayColor = [(0.8, 0.6, 0.1)]
+        }
+    }
+}
