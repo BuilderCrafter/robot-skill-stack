@@ -4,10 +4,30 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts.analyze_multiview_robot import analyze
+import numpy as np
+
+from scripts.analyze_multiview_robot import analyze, depth_proximity
 
 
 class RobotAnalysisTests(unittest.TestCase):
+    def test_proximity_uses_saved_depth_surface_instead_of_tcp_center_distance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            # The left pixel lies on the target; the right pixel is a measured
+            # non-target surface 100mm away and 10mm from the measured TCP.
+            np.savez(path/'camera.npz', depth=np.ones((1, 2)),
+                intrinsics=np.array([[10., 0., .5], [0., 10., .5], [0., 0., 1.]]),
+                world_from_camera=np.eye(4))
+            frame = dict(files=['camera.npz'], objects=[dict(name='target', shape='sphere',
+                center=[-.01, 0., 1.], size=[.02, .02, .02], yaw=0., radius=.01,
+                length=.02, axis=[0., 0., 1.])])
+            result = depth_proximity(path, frame, dict(tcp_position=[.11, 0., 1.]),
+                                     stride=1, roi_radius=.02, support_z=0.)
+        target = result['objects']['target']
+        self.assertEqual(target['target_depth_points'], 1)
+        self.assertEqual(target['tcp_roi_other_depth_points'], 1)
+        self.assertAlmostEqual(target['measured_minimum_depth_surface_distance_mm'], 100.)
+
     def fixture(self, path):
         scenes, samples, rows, detections = [], [], [], []
         # Two genuine tracker-confirmation frames, an established ID, full

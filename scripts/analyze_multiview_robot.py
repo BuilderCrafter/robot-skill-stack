@@ -103,6 +103,7 @@ def analyze(root, *, minimum_visible_points=8, include_depth_proximity=False, de
         if not count and key in frames:
             confirmation = scene_by_key[phase].get('needs_confirmation', False) and sample['frame_index'] < 2
         record = dict(phase=phase, sample_index=sample_index, frame_index=sample.get('frame_index'),
+            expected_objects=len(frames.get(key, {}).get('objects', [])),
             fresh_capture=fresh, confirmation_frame=confirmation, source_health=sample.get('source_health'),
             source_error=sample.get('source_error'), batch_timestamp=stamp, captured_at=sample.get('captured_at'),
             delivered_at=delivered, **{key: value for key, value in sample.items() if key.endswith('_ms')})
@@ -267,6 +268,16 @@ def analyze(root, *, minimum_visible_points=8, include_depth_proximity=False, de
             points=distribution([row['surface_points'] for row in selected]),
             ratio_to_observed_run_max=distribution([row['ratio_to_observed_run_max'] for row in selected])))
     evaluated = [row for row in object_rows if not row['confirmation_frame']]
+    proximity_summaries = []
+    if include_depth_proximity:
+        for phase, name in sorted({(row['phase'], row['object']) for row in object_rows}):
+            selected = [row['tcp_depth_proximity'] for row in object_rows
+                        if (row['phase'], row['object']) == (phase, name) and row.get('tcp_depth_proximity')]
+            proximity_summaries.append(dict(phase=phase, object=name,
+                sampled_minimum_surface_distance_mm=distribution([
+                    row['measured_minimum_depth_surface_distance_mm'] for row in selected]),
+                samples_with_target_and_tcp_roi_geometry=sum(
+                    row['measured_minimum_depth_surface_distance_mm'] is not None for row in selected)))
     summary = dict(kind='offline_real_franka_artifact_analysis', input=str(root), samples=len(samples),
         source_result_status=None if not (root/'result.json').exists() else json.loads((root/'result.json').read_text()).get('status'),
         expected_after_confirmation=len(evaluated), correct_after_confirmation=sum(row['correct'] for row in evaluated),
@@ -291,6 +302,9 @@ def analyze(root, *, minimum_visible_points=8, include_depth_proximity=False, de
         numerical_fit_count=distribution([row['numerical_fits'] for row in frame_rows]),
         latency_ms={key: distribution([row.get(key) for row in frame_rows]) for key in
                     sorted({key for row in frame_rows for key in row if key.endswith('_ms')})},
+        occupied_fresh_sample_latency_ms={key: distribution([row.get(key) for row in frame_rows
+            if row['fresh_capture'] and row['expected_objects']]) for key in
+            sorted({key for row in frame_rows for key in row if key.endswith('_ms')})},
         physics_step_intervals=distribution([row.get('physics_step_interval') for row in frame_rows]),
         timestamp_issues=timestamp_issues, source_failures=sum(row.get('source_health') == 'failed' for row in samples),
         artifact_integrity_issues=integrity_issues, minimum_visible_points=minimum_visible_points,
@@ -301,12 +315,15 @@ def analyze(root, *, minimum_visible_points=8, include_depth_proximity=False, de
             for event in events if event['event_kind'] == 'reacquisition']),
         per_phase=phase_summaries, visibility=visibility_summary,
         depth_proximity_computed=include_depth_proximity,
+        tcp_depth_proximity=proximity_summaries,
         methodological_limits=[
             'Confirmation frames remain in raw exports and are excluded only from explicitly named confirmed summaries.',
             'Fully hidden means zero scoring-surface points in all saved camera views; low-density visibility is separately reported.',
             'Ratios use observed run maxima; viewpoint, size, sampling and motion affect counts, so they are not physical occlusion percentages.',
             'Reacquisition time starts at the first sampled capture with at least the configured visible points, not the unobserved physical reveal instant.',
             'Delivery intervals include recording/analysis overhead between calls and are not deployment throughput.',
+            'Overall timing distributions include empty scenes; occupied fresh-sample timing distributions are exported separately.',
+            'TCP depth proximity is sampled distance to non-target measured geometry near the TCP, not semantic gripper clearance.',
             'IK, swept-path safety and manipulation success are not established by this perception analyzer.'],
         input_sha256={filename: hashlib.sha256((root/filename).read_bytes()).hexdigest() for filename in
                       ('capture_manifest.json', 'samples.json', 'rows.json', 'detections.json')})
@@ -325,6 +342,7 @@ def main(args):
         (output/f'{filename}.json').write_text(json.dumps(rows, indent=2)+'\n')
         write_csv(output/f'{filename}.csv', rows)
     write_csv(output/'phases.csv', [dict(phase=phase, **values) for phase, values in summary['per_phase'].items()])
+    write_csv(output/'depth_proximity.csv', summary['tcp_depth_proximity'])
     print(json.dumps({key: summary[key] for key in ('samples', 'expected_after_confirmation',
         'correct_after_confirmation', 'missing_after_confirmation', 'fully_hidden_both_cameras_established',
         'source_failures', 'successful_correct_reacquisitions', 'depth_proximity_computed')}, indent=2))
