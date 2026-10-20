@@ -1,6 +1,6 @@
 """Measured islands, ambiguous missing data, view evidence and fitting bounds."""
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -135,6 +135,46 @@ class SegmentationReadinessTests(unittest.TestCase):
         self.assertEqual(len(refined), 1)
         self.assertIs(refined[0][0], points)
         fitter.fit.assert_not_called()
+
+    def test_fresh_good_evidence_restores_graspability_on_the_same_identity(self):
+        from robot_skill_stack.integrations.isaac.config import load_scene_config
+        from robot_skill_stack.world.model.updater import WorldModelUpdater
+        from robot_skill_stack.world.model.world_model import WorldModel
+        from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
+        from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+        from tests.unit.test_multiview_provider import Camera
+        frames = analytic_frames([Solid('sphere')])
+        cameras = [Camera(frame) for frame in frames]
+        with patch('time.monotonic', return_value=100.) as clock:
+            rig = FrameSynchronizer(dict(zip(('A', 'B'), cameras)))
+            provider = MultiViewProvider(rig, load_scene_config('config/scenes/multiview_playground.toml').scene)
+            self.addCleanup(provider.close)
+            good = [False]
+            def finalize(fit, points, **kwargs):
+                fit.geometry.metadata['parameter_observable'] = good[0]
+                return fit
+            provider.fitter.finalize = finalize
+            model = WorldModel()
+            updater = WorldModelUpdater(model, provider)
+            for _ in range(3):
+                clock.return_value += .2
+                for camera in cameras:
+                    camera.number += 1
+                updater.update()
+            self.assertEqual(len(model.objects()), 1)
+            original = model.objects()[0]
+            self.assertEqual(original.class_name, 'sphere')
+            self.assertFalse(original.graspable)
+            previous_time = original.last_seen
+            good[0] = True
+            clock.return_value += .2
+            for camera in cameras:
+                camera.number += 1
+            updater.update()
+            refreshed = model.require(original.object_id)
+            self.assertTrue(refreshed.graspable)
+            self.assertGreater(refreshed.last_seen, previous_time)
+            self.assertEqual(len(model.objects()), 1)
 
 
 if __name__ == '__main__':

@@ -7,22 +7,36 @@ from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
-from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
+from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, unknown_fit
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points, refine_cluster, supported_object_cloud
 from robot_skill_stack.world.perception_multiview.tracking import Detection, MultiViewTracker
 
 
 class _FitTimer:
     """Account for cached child fits separately from geometric partition work."""
-    def __init__(self, fitter):
+    def __init__(self, fitter, max_calls=24):
         self.fitter, self.seconds = fitter, 0.
+        self.max_calls, self.calls, self.exhaustions = max_calls, 0, 0
+
+    @property
+    def remaining(self):
+        return max(0, self.max_calls-self.calls)
 
     def fit(self, points, **kwargs):
         started = time.perf_counter()
         try:
+            if not self.remaining:
+                self.exhaustions += 1
+                return unknown_fit(points, reason='candidate_budget_exhausted')
+            self.calls += 1
             return self.fitter.fit(points, **kwargs)
         finally:
             self.seconds += time.perf_counter()-started
+
+
+def _voxel_ids(points, voxel):
+    keys = np.ascontiguousarray(np.floor(points/voxel+1e-9), dtype=np.int64)
+    return keys.view(np.dtype((np.void, 3*keys.dtype.itemsize))).ravel()
 
 
 class MultiViewProvider:
@@ -46,8 +60,10 @@ class MultiViewProvider:
             self.diagnostics['synchronization'] = dict(self.rig.status)
             return ObservationBatch()
         acquired = time.perf_counter()
-        clouds = [voxelize(crop_workspace(project_depth(frame, stride=self.stride)[0], self.scene),
+        clouds = [voxelize(crop_workspace(project_depth(frame, stride=self.stride,
+                           bounds=(self.scene.workspace_min, self.scene.workspace_max))[0], self.scene),
                            self.voxel_size, self.max_points) for frame in frames]
+        view_voxels = [_voxel_ids(cloud, self.voxel_size) for cloud in clouds]
         projected = time.perf_counter()
         # Each camera has already been density-balanced above; repeating its
         # voxelization in fuse_clouds would reproduce exactly the same centroids.
@@ -63,7 +79,7 @@ class MultiViewProvider:
                 rejected.append({'points': len(cluster), 'reason': 'object_count_limit'})
                 continue
             before_refine, before_fits = time.perf_counter(), fit_timer.seconds
-            partitions = refine_cluster(cluster, fit_timer, support_plane_z=self.scene.support_plane_z)
+            partitions = refine_cluster(cluster, fit_timer, support_plane_z=self.scene.support_plane_z, frames=frames)
             refinement_seconds += time.perf_counter()-before_refine-(fit_timer.seconds-before_fits)
             split_components += len(partitions) > 1
             for cluster, cached_fit in partitions:
@@ -72,6 +88,11 @@ class MultiViewProvider:
                     rejected.append({'points': len(cluster), 'reason': reason if not supported else 'object_count_limit'})
                     continue
                 fit = cached_fit or fit_timer.fit(cluster, support_plane_z=self.scene.support_plane_z)
+                cluster_voxels = _voxel_ids(cluster, self.voxel_size)
+                view_clouds = tuple(cloud[np.isin(keys, cluster_voxels)]
+                                    for cloud, keys in zip(clouds, view_voxels))
+                fit = self.fitter.finalize(fit, cluster, support_plane_z=self.scene.support_plane_z,
+                                           view_clouds=view_clouds)
                 if not supported:
                     # Curved surfaces may establish a hidden support contact.
                     bottom = fit.center[2]-fit.size[2]/2
@@ -81,9 +102,7 @@ class MultiViewProvider:
                         rejected.append({'points': len(cluster), 'reason': reason})
                         continue
                     fit.geometry.metadata['support_contact_inferred'] = True
-                lo, hi = cluster.min(0)-.004, cluster.max(0)+.004
-                views = tuple(frame.camera_id for frame, cloud in zip(frames, clouds)
-                              if np.count_nonzero(((cloud >= lo) & (cloud <= hi)).all(1)) >= 5)
+                views = tuple(frame.camera_id for frame, cloud in zip(frames, view_clouds) if len(cloud) >= 5)
                 detections.append(Detection(fit, cluster, views))
         fitted = time.perf_counter()
         timestamp = min(frame.acquired_at for frame in frames)
@@ -98,7 +117,8 @@ class MultiViewProvider:
             observations.append(ObjectObservation(
                 object_id=track.object_id, class_name=geometry.shape.value if known else None,
                 pose=Pose(fit.center.copy(), orientation), size=fit.size.copy(), geometry=geometry,
-                graspable=None if known else False, confidence=geometry.confidence,
+                graspable=bool(known and geometry.metadata.get('parameter_observable', False)),
+                confidence=geometry.confidence,
                 source='multi_view_geometry', timestamp=timestamp,
                 metadata={'class_confidence': geometry.confidence,
                           'contributing_views': list(track.detection.views),
@@ -108,6 +128,7 @@ class MultiViewProvider:
         finished = time.perf_counter()
         self.diagnostics = dict(synchronization=dict(self.rig.status), workspace_points=len(fused),
             clusters=len(clusters), split_components=split_components, detections=len(detections), rejected=rejected,
+            numerical_fits=fit_timer.calls, fit_budget=fit_timer.max_calls, fit_budget_exhaustions=fit_timer.exhaustions,
             acquisition_ms=(acquired-started)*1000, projection_ms=(projected-acquired)*1000,
             fusion_ms=(merged-projected)*1000,
             segmentation_ms=(segmented-merged+refinement_seconds)*1000,
