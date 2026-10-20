@@ -51,3 +51,65 @@ Checkpoint B measures oracle-segmented object surfaces in a research utility.
 Automatic detection and manipulation readiness are not established by capture
 or analytic unit tests. Quantitative fitting and production-source results will
 be recorded below after execution.
+
+## Isolated surface fitting
+
+`SurfaceFitter` consumes unorganized world-coordinate XYZ samples, without V1
+imports. It fits robust algebraic spheres, table-supported yaw boxes using
+surface-distance search and planar footprint coverage, and capped cylinders
+using radial fits and bounded upright/lying axis search. All candidates compete
+using 80th-percentile surface residuals and coverage; weak or ambiguous evidence
+stays unknown. Two-stage voxelization suppresses within-view and across-view
+duplicate density. Sample counts never directly increase fit confidence.
+
+Initial native benchmark: `outputs/multiview-geometry-01/result.json`, 8 objects ×
+2 camera/position arrangements × 2 repeated captures = 32 matched trials per
+method. Oracle surface masks exist only in `tests/support/multiview_research.py`.
+V1 A/B are evaluated unchanged on the same images; surface A/B/fused use the
+independent experimental fitter. Every trial, including any rejection, is saved.
+
+| Method | Correct / trials | Mean center error (mm) | Mean dimension error (mm) | Mean processing (ms) |
+| --- | ---: | ---: | ---: | ---: |
+| V1 A | 32/32 | 1.932 | 1.509 | 93.2 |
+| V1 B | 32/32 | 1.013 | 1.164 | 133.9 |
+| Surface A | 32/32 | 0.295 | 1.364 | 58.9 |
+| Surface B | 32/32 | 0.192 | 1.054 | 65.3 |
+| Fused surfaces | 32/32 | 0.146 | 1.167 | 63.9 |
+
+This first run establishes improved center fitting, **no classification gain**
+in these isolated scenes, and a dimension-error regression relative to B alone.
+V1 processing includes discovery; surface-fit timing excludes oracle extraction,
+projection and rendering, so those timing columns are not equivalent pipelines.
+The next benchmark includes a fixed occluder between A and the object, retaining
+the same objects and a complementary B viewpoint. Two cameras do not observe
+surfaces hidden from both views. These measurements justify continuing the
+automatic-segmentation experiment, not declaring manipulation readiness.
+
+The completed extended benchmark is retained at
+`outputs/multiview-geometry-02/`: 48 trials per method, including 16 occluded
+trials. All 240 method/trial rows are in JSON and CSV, with 72 object PLYs,
+representative RGBs and separate render/acquisition/fusion timings.
+
+| Method | Correct | Unknown | Center mean / p95 (mm) | Dimension mean (mm) |
+| --- | ---: | ---: | ---: | ---: |
+| V1 A | 44/48 | 4 | 2.950 / 8.826 | 2.050 |
+| V1 B | 48/48 | 0 | 1.005 / 1.375 | 1.151 |
+| Surface A | 44/48 | 4 | 1.252 / 6.868 | 1.892 |
+| Surface B | 48/48 | 0 | 0.199 / 0.483 | 1.036 |
+| Fused surfaces | 48/48 | 0 | 0.167 / 0.475 | 1.115 |
+
+All methods detected oracle-matched points in all 48 trials. Under occlusion,
+A's two fitters each classified 12/16; B and fused classified 16/16. Mean center
+errors in those 16 trials were 4.987 mm (V1 A), 3.166 mm (surface A), 0.215 mm
+(surface B) and 0.210 mm (fused). Dimension/axis errors are reported only where
+the corresponding primitive parameters exist; sample counts are in result JSON.
+Unknown trials remain in the accuracy denominator and center metrics. B's
+dimension error remains better than fusion, and V1's box/axis search is slightly
+more precise than the new bounded yaw search. Repeated captures of identical
+static geometry are not independent random draws; no significance claim is made.
+
+```bash
+./run_isaac_python.sh scripts/benchmark_multiview_geometry.py \
+  --result outputs/multiview-geometry-new/result.json \
+  --artifacts-dir outputs/multiview-geometry-new --repeats 2
+```
