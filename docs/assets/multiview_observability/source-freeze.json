@@ -1,0 +1,19 @@
+{
+  "kind": "production_source_freeze_before_independent_holdout",
+  "git_commit": "e12e0f24ff0f0d5e75254a3a8483bd4425b3c78e",
+  "utc": "2026-10-20T20:56:31.310237+00:00",
+  "sha256": {
+    "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+    "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+    "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+    "robot_skill_stack/world/perception_multiview/fitting.py": "0fe1a9e24bcac2f8b5e62b823416bc24ca4a7572119ad55200faf8f83d29ad6e",
+    "robot_skill_stack/world/perception_multiview/observability.py": "e6d86a48aec65e4f67153fafb7cdf453657481396b0d66e2cf1611b767bd997a",
+    "robot_skill_stack/world/perception_multiview/provider.py": "b3b192ae8119249e2e36844ebdaa083ba24773a50cd88c3bc2d0ab219f4b5457",
+    "robot_skill_stack/world/perception_multiview/segmentation.py": "327c75d0ad5736d278c59dda35e8e3076da779de7709b3a5b89fa5a7cc9a76f2",
+    "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a"
+  },
+  "selection_seed": 11235813,
+  "independent_holdout_seed": 223606797,
+  "holdout_generated": false,
+  "decision": "No production parameter or algorithm tuning after this freeze; unfavorable holdout results remain failures."
+}
