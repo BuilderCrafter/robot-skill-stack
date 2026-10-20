@@ -1,5 +1,7 @@
 """Independent calibrated-ray preflights, not perception acceptance tests."""
 from dataclasses import replace
+import hashlib
+import json
 import unittest
 
 import numpy as np
@@ -43,6 +45,40 @@ def ideal_fixture_frames(scene, index=3, resolution=(320, 240)):
 
 
 class ObservabilityResearchTests(unittest.TestCase):
+    def test_holdout_cover_revision_preserves_original_captured_fixture_parameters(self):
+        from scripts.benchmark_multiview_grasp_readiness import plain_values
+        from scripts.benchmark_multiview_observability import scene_payload
+        encode = lambda payload: hashlib.sha256(json.dumps(plain_values(payload), sort_keys=True,
+                                                           separators=(',', ':')).encode()).hexdigest()
+        selection = [scene_payload(scene) for scene in observability_scenes()]
+        # Snapshot before the holdout-only correction, after selection top-view
+        # camera repair. No selection scene may change in this revision.
+        self.assertEqual(encode(selection), 'ae45f7773c809e0b7a3a287d807af56f4b9b4fd1eeabfab4e3fc5c718af1d5b4')
+        holdout = observability_scenes('holdout')
+        original = plain_values([scene_payload(scene) for scene in holdout])
+        changed = []
+        for scene, payload in zip(holdout, original):
+            if scene.requirements['case'] in ('B_clear', 'opposite_extents'):
+                scale = scene.objects[0].size[1]/.09
+                self.assertAlmostEqual(payload['clutter'][0]['size'][1], .067*scale)
+                payload['clutter'][0]['size'][1] = .047*scale
+                changed.append(scene.key)
+        self.assertEqual(len(changed), 8)
+        # Digest of the original45 captured fixture records, omitting only the
+        # depth-frame filenames. Restoring that one size field must reproduce
+        # all original targets,seeds,cameras,clutter,requirements and ordering.
+        self.assertEqual(encode(original), '4841022990c95cada5e2d7042cf7cccd51e52eb43a7591ce05e3fc92088af733')
+
+    def test_corrected_holdout_panels_meet_actual_native_lens_visibility(self):
+        # The independent holdout was captured after source freeze. This test
+        # checks only corrected fixture rays, never a detector/planner outcome.
+        scenes = [scene for scene in observability_scenes('holdout')
+                  if scene.requirements['case'] in ('B_clear', 'opposite_extents')]
+        self.assertEqual(len(scenes), 8)
+        for scene in scenes:
+            audit = audit_observability_scene(scene, ideal_fixture_frames(scene, resolution=(640, 480)))
+            self.assertTrue(audit['valid'], (scene.key, audit['errors']))
+
     def test_selection_coverage_identity_and_mandatory_geometry(self):
         from scripts.benchmark_multiview_partial_grasp import partial_scenes
         scenes = observability_scenes()

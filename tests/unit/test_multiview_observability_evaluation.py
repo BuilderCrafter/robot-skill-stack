@@ -101,6 +101,23 @@ class ObservabilityEvaluationTests(unittest.TestCase):
         self.assertTrue(row['full_scene_proposed_obstacle_violation'])
         self.assertEqual(row['full_scene_proposed_obstacle_evidence']['blocker'], 'physical_roof')
 
+    def test_held_pick_rejection_is_separate_from_geometry_false_infeasibility(self):
+        target = box('target', (.45, 0.), (.05, .05, .05))
+        observed = truth_world_object(target)
+        model = WorldModel()
+        model.register(observed)
+        model.set_held(observed.object_id, uncertain=True)
+        row = score_planning(target, observed, model, (target,), QueryOnlyBackend())
+        self.assertTrue(row['estimated_feasible'])
+        self.assertFalse(row['read_only_pick_precondition_feasible'])
+        self.assertFalse(row['false_infeasible'])
+        self.assertTrue(model.held_object_uncertain)
+        roof = ResearchObject('physical_roof', 'cube', np.array([.45, 0., .105]), np.array([.1, .1, .01]))
+        row = score_planning(target, observed, model, (target, roof), QueryOnlyBackend())
+        self.assertFalse(row['read_only_pick_precondition_feasible'])
+        self.assertTrue(row['full_scene_false_feasible'])
+        self.assertTrue(row['full_scene_proposed_obstacle_violation'])
+
     def test_strict_current_gate_retains_bad_baseline_and_fails_invalid_or_unsafe_current(self):
         summary = dict(baseline=dict(contracts_passed=False, safe_valid_geometry=False, full_scene_safety_passed=False),
                        improved=dict(contracts_passed=True, safe_valid_geometry=True, full_scene_safety_passed=True))

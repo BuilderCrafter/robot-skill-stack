@@ -111,6 +111,14 @@ def _scene(name, split, seed, canonical_target, case, *, yaw=0., center=None):
     eyes = tuple(transform(eye) for eye in RIG_EYES[split])
     targets = tuple(transform((.45, 0., .04)) for _ in range(2))
     blockers = _canonical_blockers()
+    if split == 'holdout' and case in ('B_clear', 'opposite_extents'):
+        # Initial held-out camera angles let A see the fullY extent around the
+        #47mm cover. A fixed67mm cover restores the predeclared partial-view
+        #condition; targets/seeds/poses/cameras and valid scenes stay unchanged.
+        # Original native captures and their failed visibility audit are kept.
+        panel_size = blockers['A'][0].size.copy()
+        panel_size[1] = .067
+        blockers['A'] = (replace(blockers['A'][0], size=panel_size),)
     extra_x = (target.size[0]/scale-.09)/2
     # Keep the plate/curtain shadow relative to the target's farX side as the
     # horizontal aspect ratio varies. All boxes remain rigid (no affine shear).

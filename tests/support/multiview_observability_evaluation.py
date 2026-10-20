@@ -6,7 +6,10 @@ planner obstacle checks also score the actual proposed pose against every true
 solid. Both scopes must be safe for strict acceptance; a dimensionally correct
 grasp may still collide with an unobserved cover. Real measured cover surfaces
 are reported as clutter, with unmatched-target counts retained separately from
-off-geometry false positives. No oracle geometry enters the source or updater.
+off-geometry false positives. Geometry feasibility uses the unchanged planner's
+own verdict. Pick precondition verdicts remain separate, so deliberate held or
+uncertain fixture states cannot masquerade as geometric false rejections.
+No oracle geometry enters the source or updater.
 """
 import copy
 from contextlib import nullcontext
@@ -56,6 +59,11 @@ def match(objects, observations):
 def score_planning(truth, observed, model, solids, backend, *, targets=None):
     targets = (truth,) if targets is None else targets
     row = evaluate_grasp(truth, observed, model, targets, backend=backend)
+    raw_planner_feasible = bool(row['estimated_plan'] is not None and row['estimated_plan']['feasible'])
+    row.update(read_only_pick_precondition_feasible=row['estimated_feasible'],
+        estimated_feasible=raw_planner_feasible, estimated_geometry_feasible=raw_planner_feasible,
+        false_feasible=bool(raw_planner_feasible and not row['truth_feasible']),
+        false_infeasible=bool(row['truth_feasible'] and not raw_planner_feasible))
     scene_model = WorldModel()
     for obj in solids:
         scene_model.register(truth_world_object(obj))
