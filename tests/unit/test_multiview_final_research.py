@@ -20,12 +20,16 @@ def ideal_final_frames(scene, layout, index=3, resolution=(320, 240)):
     solids = [Solid(obj.shape, tuple(obj.center), tuple(obj.size), obj.yaw,
                     obj.axis, obj.radius, obj.length) for obj in objects]
     width, height = resolution
-    k = np.array([[554.25622559*width/640, 0., width/2],
-                  [0., 554.25628662*height/480, height/2], [0., 0., 1.]])
     y, x = np.indices((height, width))
-    rays = np.c_[(x.ravel()+.5-k[0, 2])/k[0, 0], (y.ravel()+.5-k[1, 2])/k[1, 1], np.ones(height*width)]
     frames = []
     for ci, (eye, target) in enumerate(zip(layout.eyes, layout.targets)):
+        # Native capture confirms the two inherited USD camera lenses differ.
+        fx, fy = ((554.2562255859375, 554.2562866210938),
+                  (732.999267578125, 732.999267578125))[ci]
+        k = np.array([[fx*width/640, 0., width/2],
+                      [0., fy*height/480, height/2], [0., 0., 1.]])
+        rays = np.c_[(x.ravel()+.5-k[0, 2])/k[0, 0],
+                     (y.ravel()+.5-k[1, 2])/k[1, 1], np.ones(height*width)]
         fixed = None if layout.world_from_cameras is None else layout.world_from_cameras[ci]
         if fixed is not None:
             transform = np.asarray(fixed, float).copy()
@@ -82,6 +86,8 @@ class FinalResearchTests(unittest.TestCase):
         first, second = final_scenes('coarse'), final_scenes('shortlist')
         self.assertEqual(len(first), 13)
         self.assertEqual(sum(len(scene.objects) for scene in first), 31)
+        self.assertEqual(len(second), 15)
+        self.assertEqual(sum(len(scene.objects) for scene in second), 37)
         self.assertTrue({scene.seed for scene in first}.isdisjoint(scene.seed for scene in second))
         for scenes in (first, second):
             for scene in scenes:
@@ -103,15 +109,64 @@ class FinalResearchTests(unittest.TestCase):
                     self.assertAlmostEqual(gap*1000, scene.requirements['gap_mm'], places=7)
 
     def test_temporal_motion_preserves_all_physical_objects_with_bounded_steps(self):
-        scene = next(scene for scene in final_scenes() if scene.temporal)
-        previous, names = None, [obj.name for obj in scene.objects]
-        for index in range(12):
-            objects, phase = scene_frame_content(scene, index)
+        for split, count in (('coarse', 3), ('shortlist', 4)):
+            scene = next(scene for scene in final_scenes(split) if scene.temporal)
+            previous, names = None, [obj.name for obj in scene.objects]
+            self.assertEqual(len(names), count)
+            for index in range(12):
+                objects, phase = scene_frame_content(scene, index)
+                self.assertEqual([obj.name for obj in objects], names)
+                self.assertEqual(phase, ('clear', 'moving', 'covered', 'revealed')[index//3])
+                if previous is not None:
+                    self.assertLess(max(np.linalg.norm(a.center-b.center) for a, b in zip(objects, previous)), .12)
+                previous = objects
+            if split == 'coarse':
+                self.assertNotIn('fixture_version', scene.requirements)
+                covered, _ = scene_frame_content(scene, 6)
+                expected = scene.objects[0].center[:2]+np.asarray(scene.requirements['movement_delta_m'])[:2]+[.105, 0.]
+                np.testing.assert_array_equal(covered[2].center[:2], expected)
+            else:
+                self.assertEqual(scene.requirements['fixture_version'], 2)
+                self.assertEqual([item['object_index'] for item in scene.requirements['cover_destinations_m']], [2, 3])
+
+    def test_added_supported_occlusion_has_one_view_and_full_hiding_in_analytic_depth(self):
+        scenes = {scene.name: scene for scene in final_scenes('shortlist')}
+        for name in ('asymmetric_high_left', 'front_symmetric', 'front_wider'):
+            layout = next(layout for layout in camera_layouts() if layout.name == name)
+            for scene_name, both in (('supported_one_view', False), ('supported_full_hide', True)):
+                scene = scenes[scene_name]
+                self.assertEqual(len(scene.objects), 3 if both else 2)
+                self.assertEqual(fixture_geometry_errors(scene.objects), [])
+                audit = audit_final_scene(scene, ideal_final_frames(scene, layout, resolution=(640, 480)))
+                self.assertTrue(audit['valid'], audit['errors'])
+                raw = [camera['raw_points'] for camera in audit['objects'][0]['cameras']]
+                self.assertEqual(raw[0], 0, (name, scene_name, raw))
+                if both:
+                    self.assertEqual(raw[1], 0, (name, raw))
+                else:
+                    self.assertGreaterEqual(raw[1], VISIBILITY['minimum_camera_surface_points'])
+                for cover in audit['objects'][1:]:
+                    self.assertGreaterEqual(sum(camera['raw_points'] for camera in cover['cameras']),
+                                            VISIBILITY['minimum_camera_surface_points'])
+
+    def test_two_cover_temporal_depth_restores_same_physical_target(self):
+        scene = next(scene for scene in final_scenes('shortlist') if scene.temporal)
+        layout = next(layout for layout in camera_layouts() if layout.name == 'asymmetric_high_left')
+        names = [obj.name for obj in scene.objects]
+        for index, hidden in ((2, False), (6, True), (11, False)):
+            objects, _ = scene_frame_content(scene, index)
             self.assertEqual([obj.name for obj in objects], names)
-            self.assertEqual(phase, ('clear', 'moving', 'covered', 'revealed')[index//3])
-            if previous is not None:
-                self.assertLess(max(np.linalg.norm(a.center-b.center) for a, b in zip(objects, previous)), .12)
-            previous = objects
+            self.assertEqual(fixture_geometry_errors(objects), [])
+            audit = audit_final_scene(scene, ideal_final_frames(scene, layout, index=index,
+                resolution=(640, 480)), index=index)
+            self.assertTrue(audit['valid'], audit['errors'])
+            target = audit['objects'][0]
+            self.assertEqual(target['fully_hidden'], hidden)
+            raw = [camera['raw_points'] for camera in target['cameras']]
+            if hidden:
+                self.assertEqual(raw, [0, 0])
+            else:
+                self.assertTrue(all(value >= VISIBILITY['minimum_camera_surface_points'] for value in raw))
 
     def test_visibility_is_physical_surface_fraction_and_does_not_invalidate_occlusion(self):
         layout = next(layout for layout in camera_layouts() if layout.name == 'front_narrower')

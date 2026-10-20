@@ -26,7 +26,9 @@ from robot_skill_stack.world.perception_multiview.provider import MultiViewProvi
 from scripts.benchmark_multiview_robustness import (
     BorrowedRig, capture_workspace, load_frames, populate_scene, save_frames, write_csv,
 )
-from tests.support.multiview_final_evaluation import PerceptionSession, STAGES, latest_scene_summary, plain, summarize
+from tests.support.multiview_final_evaluation import (
+    PerceptionSession, STAGES, latest_scene_summary, plain, settle_physics, summarize, temporal_recovery,
+)
 from tests.support.multiview_iteration2 import distribution, object_from_payload, object_payload
 
 
@@ -155,10 +157,36 @@ def native_robot_diagnostics(layout):
     return result
 
 
+def native_settling(world):
+    """Read cached USD rigid-link transforms without constructing a backend."""
+    import omni.usd
+    from pxr import Usd, UsdGeom
+    stage = omni.usd.get_context().get_stage()
+    base = stage.GetPrimAtPath('/Franka')
+    if not base.IsValid():
+        raise RuntimeError('Cannot measure initial physics settling without resolved /Franka')
+    tracked = [prim for prim in Usd.PrimRange(base) if prim.IsA(UsdGeom.Xformable) and
+               (prim == base or 'link' in prim.GetName() or 'hand' in prim.GetName())]
+    cache = UsdGeom.XformCache(Usd.TimeCode.Default())
+    box = UsdGeom.BBoxCache(Usd.TimeCode.Default(), [UsdGeom.Tokens.default_, UsdGeom.Tokens.render,
+                                                  UsdGeom.Tokens.proxy])
+    def transforms():
+        cache.Clear()
+        return {str(prim.GetPath()): np.asarray(cache.GetLocalToWorldTransform(prim)).T.tolist() for prim in tracked}
+    def bounds():
+        box.Clear()
+        extent = box.ComputeWorldBound(base).ComputeAlignedRange()
+        return [np.asarray(extent.GetMin()).tolist(), np.asarray(extent.GetMax()).tolist()]
+    return settle_physics(lambda: world.step(render=True), transforms, bounds)
+
+
 def native_timing(world, rig, scene, classes, sample_count, record):
     """Serial sources alone, fresh render+source loops; scoring is outside."""
     values = []
-    for method, cls in classes:
+    ordered = list(classes)
+    if record.get('order_index', 0) % 2:
+        ordered.reverse()
+    for method_order, (method, cls) in enumerate(ordered):
         source = cls(BorrowedRig(rig), scene)
         try:
             for index in range(3+sample_count):
@@ -171,6 +199,7 @@ def native_timing(world, rig, scene, classes, sample_count, record):
                 if index >= 3:
                     values.append(dict(trial=record['key'], layout=record['layout']['name'], method=method,
                         sample=index-3, render_ms=(rendered-started)*1000,
+                        method_order=method_order, trial_order=record.get('order_index'),
                         render_plus_source_ms=(finished-started)*1000,
                         fresh=batch.timestamp is not None, acquisition_timestamp=batch.timestamp,
                         **plain(source.diagnostics)))
@@ -202,6 +231,9 @@ def annotate_visibility(rows, audit):
         item = measured.get(row['object'], {})
         row['visibility'] = item
         row['sufficiently_visible'] = item.get('sufficiently_visible')
+        counts = [camera['raw_points'] for camera in item.get('cameras', [])]
+        row['strict_true_one_view'] = bool(len(counts) == 2 and min(counts) == 0 and max(counts) >= 8)
+        row['effective_one_view'] = bool(len(counts) == 2 and sum(value >= 8 for value in counts) == 1)
 
 
 def completion_gate(*, errors, hashes_stable, audits, summaries, capture_only):
@@ -263,8 +295,11 @@ def run(args, app=None):
             from tests.support.multiview_native import CAMERAS, open_experiment
             world = open_experiment(app)
             rig = create_cameras(CAMERAS, resolution=(640, 480))
-            for _ in range(60):
-                world.step(render=True)
+            manifest['physics_settling'] = native_settling(world)
+            write_json(output/'physics_settling.json', manifest['physics_settling'])
+            write_json(output/'capture_manifest.json', manifest)
+            if not manifest['physics_settling']['stable']:
+                raise RuntimeError('Initial physics did not settle within the declared600-step bound')
         for order_index, (scene, record, layout) in enumerate(selected):
             sessions = {name: PerceptionSession(cls, cfg, method=name, mode=mode) for name, (cls, mode) in specs.items()}
             record['order_index'] = order_index
@@ -297,7 +332,7 @@ def run(args, app=None):
                             snapshot.update(capture_workspace(output, record['key'], index, frames, objects, cfg.scene))
                         record['frames'].append(snapshot)
                     context = dict(trial=record['key'], scene_key=scene.key, layout=record['layout']['name'],
-                        split=scene.split, seed=scene.seed, phase=phase, temporal=scene.temporal)
+                        split=scene.split, seed=scene.seed, phase=phase, temporal=scene.temporal, condition=scene.name)
                     audit = audit_final_scene(scene, frames, index=index, config=cfg.scene)
                     audit.update(**context, frame_index=index, scored=index >= 2)
                     audits.append(audit)
@@ -353,6 +388,7 @@ def run(args, app=None):
                 summaries[layout_name][method] = summarize(subset(rows), subset(samples), subset(detections), subset(contracts))
                 summaries[layout_name][method]['latest_static_scene_metrics'] = latest_scene_summary(
                     subset(rows), subset(samples), subset(detections), subset(contracts))
+                summaries[layout_name][method]['temporal_recovery'] = temporal_recovery(subset(rows), subset(samples))
         end = provenance(args)
         stable = start['sha256'] == end['sha256']
         flat = {f'{layout}/{method}': value for layout, methods in summaries.items() for method, value in methods.items()}
@@ -375,6 +411,25 @@ def run(args, app=None):
                 all_samples_fresh=all(value['fresh'] for value in values))
                 for method in dict.fromkeys(value['method'] for value in timings)
                 for values in [[value for value in timings if value['method'] == method]]}))
+        # Replay inherits the capture's measured native timings; it does not
+        # infer render rate from current CPU replay or old acquisition gaps.
+        native_path = capture_root/'native_timings.json'
+        native_samples = json.loads(native_path.read_text()) if args.replay and native_path.exists() else timings
+        requested_keys = {record['key'] for _, record, _ in selected}
+        native_samples = [value for value in native_samples if value['trial'] in requested_keys]
+        result['metrics']['native_timing_by_layout'] = {
+            name: {method: dict(samples=len(values),
+                effective_hz=1000/np.mean([value['render_plus_source_ms'] for value in values]),
+                render_plus_source_ms=distribution([value['render_plus_source_ms'] for value in values]),
+                render_ms=distribution([value['render_ms'] for value in values]),
+                stages_ms={stage: distribution([value.get(stage) for value in values]) for stage in STAGES},
+                all_samples_fresh=all(value['fresh'] for value in values),
+                origin=str(native_path), scope='Actual native source-only measurements saved during capture.')
+                for method in dict.fromkeys(value['method'] for value in native_samples if value['layout'] == name)
+                for values in [[value for value in native_samples if value['layout'] == name and value['method'] == method]]}
+            for name in dict.fromkeys(value['layout'] for value in native_samples)}
+        recovery = [event for methods in summaries.values() for value in methods.values() for event in value['temporal_recovery']]
+        write_json(output/'temporal_recovery.json', recovery)
         for filename, values in [('rows', rows), ('samples', samples), ('detections', detections),
                                  ('observations', observations), ('contracts', contracts)]:
             write_csv(output/f'{filename}.csv', plain(values))

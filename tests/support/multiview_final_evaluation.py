@@ -37,6 +37,70 @@ def angular_distance_degrees(first, second, period):
     return float(np.rad2deg(abs((first-second+period/2) % period-period/2)))
 
 
+def transform_drift(reference, current):
+    """Rigid translation/rotation drift, removing SDK floating-point scale error."""
+    if set(reference) != set(current) or not reference:
+        raise ValueError('Settling requires the same nonempty tracked link/hand transforms')
+    shifts, angles = [], []
+    for name, previous in reference.items():
+        previous, value = np.asarray(previous), np.asarray(current[name])
+        shifts.append(float(np.linalg.norm(value[:3, 3]-previous[:3, 3])))
+        a, _, b = np.linalg.svd(previous[:3, :3]); before = a @ b
+        a, _, b = np.linalg.svd(value[:3, :3]); after = a @ b
+        angles.append(float(np.rad2deg(np.arccos(np.clip((np.trace(before.T @ after)-1)/2, -1., 1.)))))
+    return max(shifts), max(angles)
+
+
+def settle_physics(step, transforms, bounds, *, max_steps=600, stable_steps=60,
+                   translation_m=.0001, rotation_deg=.01, aabb_m=.0001):
+    """Measure passive initial physics settling; no pose/controller changes.
+
+    Cheap cached link transforms are read every rendered physics step. World
+    AABB is evaluated only at window starts and candidate stable endpoints.
+    Every transform must stay close to the SAME window start, rather than
+    permitting slow cumulative drift through consecutive adjacent comparisons.
+    """
+    if min(max_steps, stable_steps) < 1 or min(translation_m, rotation_deg, aabb_m) <= 0:
+        raise ValueError('Settling limits and step counts must be positive')
+    initial = transforms()
+    initial_bounds = np.asarray(bounds(), float)
+    reference, reference_bounds = initial, initial_bounds
+    final, final_bounds = initial, initial_bounds
+    consecutive, resets, steps, shift, angle, bound_delta = 0, 0, 0, 0., 0., 0.
+    window_shift, window_angle = 0., 0.
+    stable = False
+    for steps in range(1, max_steps+1):
+        step()
+        final = transforms()
+        shift, angle = transform_drift(reference, final)
+        if shift > translation_m or angle > rotation_deg:
+            reference, reference_bounds = final, np.asarray(bounds(), float)
+            consecutive, resets = 0, resets+1
+            window_shift, window_angle = 0., 0.
+            continue
+        window_shift, window_angle = max(window_shift, shift), max(window_angle, angle)
+        consecutive += 1
+        if consecutive < stable_steps:
+            continue
+        final_bounds = np.asarray(bounds(), float)
+        bound_delta = float(np.max(abs(final_bounds-reference_bounds)))
+        if bound_delta <= aabb_m:
+            stable = True
+            break
+        reference, reference_bounds = final, final_bounds
+        consecutive, resets = 0, resets+1
+        window_shift, window_angle = 0., 0.
+    if not stable:
+        final_bounds = np.asarray(bounds(), float)
+    return plain(dict(stable=stable, steps=steps, max_steps=max_steps,
+        required_consecutive_steps=stable_steps, consecutive_stable_steps=consecutive, window_resets=resets,
+        limits=dict(translation_m=translation_m, rotation_deg=rotation_deg, aabb_m=aabb_m),
+        final_window_max_translation_m=window_shift, final_window_max_rotation_deg=window_angle,
+        final_window_aabb_delta_m=bound_delta, initial_transforms=initial, final_transforms=final,
+        initial_aabb=initial_bounds, final_aabb=final_bounds, no_robot_backend_or_commands=True,
+        scope='Initial passive rendered physics settling before camera-layout trials; no robot pose or controller changes.'))
+
+
 def box_orientation(truth, geometry):
     """Compare physical horizontal axes, preserving the rectangle's 180° rule.
 
@@ -297,7 +361,74 @@ def summarize(rows, samples, detections, contracts):
         radius_correct_mm=distribution([row['radius_error_mm'] for row in values if row['correct']]))
         for shape in sorted({row['truth'] for row in selected})
         for values in [[row for row in selected if row['truth'] == shape]]}
+    result['by_condition'] = {condition: basic_counts(values)
+        for condition in sorted({row.get('condition', row.get('scene_key', 'unspecified')) for row in selected})
+        for values in [[row for row in selected if row.get('condition', row.get('scene_key', 'unspecified')) == condition]]}
+    result['one_view_strata'] = {name: basic_counts(values) for name, flag in
+        [('strict_true_one_view', 'strict_true_one_view'), ('effective_one_view', 'effective_one_view')]
+        for values in [[row for row in selected if row.get(flag) is True]]}
     return plain(result)
+
+
+def basic_counts(rows):
+    return dict(expected=len(rows), detected=sum(row['detected'] for row in rows),
+        correct=sum(row['correct'] for row in rows), unknown=sum(row['unknown'] for row in rows),
+        missing=sum(not row['detected'] for row in rows),
+        center_correct_mm=distribution([row['center_error_mm'] for row in rows if row['correct']]),
+        dimension_correct_mm=distribution([row['dimension_error_mm'] for row in rows if row['correct']]))
+
+
+def temporal_recovery(rows, samples):
+    """Saved capture-to-capture recovery; never new live delivery latency.
+
+    A reappearance requires >=8 raw truth-associated samples in the camera
+    union. Fully hidden means EXACTLY zero, independently of the predeclared
+    stronger sufficient-visibility flag. Every unresolved event stays censored.
+    """
+    rows = [row for row in rows if row.get('temporal') and row.get('scored', True)]
+    stamps = {(row['trial'], row['frame_index']): row.get('original_acquired_at') for row in samples}
+    events = []
+    for trial, name in sorted({(row['trial'], row['object']) for row in rows}):
+        last_id, active = None, None
+        sequence = sorted([row for row in rows if row['trial'] == trial and row['object'] == name],
+                          key=lambda row: row['frame_index'])
+        for row in sequence:
+            count = sum(camera['raw_points'] for camera in row.get('visibility', {}).get('cameras', []))
+            stamp = stamps.get((trial, row['frame_index']))
+            if active is None and (not row['correct'] or count == 0):
+                active = dict(trial=trial, object=name, method=row.get('method'), layout=row.get('layout'),
+                    onset_frame=row['frame_index'], onset_phase=row.get('phase'), prior_id=last_id,
+                    onset_kind='fully_hidden' if count == 0 else 'low_density' if count < 8 else 'visible_classification_failure',
+                    fully_hidden_frames=[], low_density_frames=[], visible_failure_frames=[],
+                    first_revisible_frame=None, first_revisible_acquired_at=None,
+                    first_sufficiently_visible_frame=None, recovered_frame=None,
+                    recovered_acquired_at=None, recovered_id=None)
+                events.append(active)
+            if active is not None:
+                if count == 0:
+                    active['fully_hidden_frames'].append(row['frame_index'])
+                elif count < 8:
+                    active['low_density_frames'].append(row['frame_index'])
+                elif not row['correct']:
+                    active['visible_failure_frames'].append(row['frame_index'])
+                if count >= 8 and active['first_revisible_frame'] is None:
+                    active.update(first_revisible_frame=row['frame_index'], first_revisible_acquired_at=stamp)
+                if row.get('sufficiently_visible') and active['first_sufficiently_visible_frame'] is None:
+                    active['first_sufficiently_visible_frame'] = row['frame_index']
+                if count >= 8 and row['correct']:
+                    active.update(recovered_frame=row['frame_index'], recovered_acquired_at=stamp,
+                                  recovered_id=row['object_id'])
+                    active = None
+            if row['correct']:
+                last_id = row['object_id']
+    for event in events:
+        event['censored'] = event['recovered_frame'] is None
+        event['identity_preserved'] = None if event['prior_id'] is None or event['recovered_id'] is None else (
+            event['prior_id'] == event['recovered_id'])
+        event['saved_capture_reacquisition_ms'] = None if (event['recovered_acquired_at'] is None or
+            event['first_revisible_acquired_at'] is None) else 1000*(
+                event['recovered_acquired_at']-event['first_revisible_acquired_at'])
+    return events
 
 
 def latest_scene_summary(rows, samples, detections, contracts):

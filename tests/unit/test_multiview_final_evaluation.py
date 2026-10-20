@@ -15,10 +15,11 @@ from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from scripts.benchmark_multiview_final_perception import balanced_pairs, completion_gate, layout_hash, verify_freeze
-from scripts.benchmark_multiview_final_perception import parser, run
+from scripts.benchmark_multiview_final_perception import annotate_visibility, parser, run
 from scripts.benchmark_multiview_robustness import save_frames
 from tests.support.multiview_final_evaluation import (
-    PerceptionSession, box_orientation, geometry_row, latest_scene_summary, score_frame, summarize,
+    PerceptionSession, box_orientation, geometry_row, latest_scene_summary, score_frame, settle_physics,
+    summarize, temporal_recovery,
 )
 from tests.support.multiview_iteration2 import box, object_payload, sphere
 
@@ -195,6 +196,70 @@ class FinalPerceptionEvaluationTests(unittest.TestCase):
         self.assertEqual(len(rows), 4)
         self.assertEqual(len(raw), 2)
         self.assertEqual(raw[-1]['timestamp'], 100.6)
+
+    def test_strict_one_view_requires_zero_hidden_points_and_recovery_uses_saved_clock(self):
+        target = box('target', (.45, 0.), (.06, .03, .05))
+        rows, samples = [], []
+        for index, correct, counts in [(2, True, [30, 30]), (3, False, [0, 0]),
+                                       (4, False, [0, 12]), (5, True, [1, 24]), (6, False, [2, 3])]:
+            row = geometry_row(target, observation(target) if correct else None)
+            row.update(method='current', layout='test', trial='temporal', frame_index=index,
+                       phase='covered' if index < 5 else 'revealed', scored=True, temporal=True)
+            annotate_visibility([row], dict(objects=[dict(object='target',
+                cameras=[dict(raw_points=count) for count in counts], sufficiently_visible=min(counts) >= 8)]))
+            rows.append(row)
+            samples.append(dict(trial='temporal', frame_index=index, original_acquired_at=100.+index*.1))
+        self.assertTrue(rows[2]['strict_true_one_view'])
+        self.assertFalse(rows[3]['strict_true_one_view'])
+        self.assertTrue(rows[3]['effective_one_view'])
+        events = temporal_recovery(rows, samples)
+        self.assertEqual(len(events), 2)
+        self.assertEqual(events[0]['fully_hidden_frames'], [3])
+        self.assertEqual(events[0]['first_revisible_frame'], 4)
+        self.assertAlmostEqual(events[0]['saved_capture_reacquisition_ms'], 100.)
+        self.assertTrue(events[0]['identity_preserved'])
+        self.assertTrue(events[1]['censored'])
+        self.assertEqual(events[1]['low_density_frames'], [6])
+
+    def test_physics_settling_rejects_cumulative_drift_then_requires_full_stable_window(self):
+        counter = [0]
+        def step():
+            counter[0] += 1
+        def transforms():
+            pose = np.eye(4)
+            pose[0, 3] = min(counter[0], 80)*.00002
+            return {'/Franka/link': pose.tolist()}
+        def bounds():
+            offset = min(counter[0], 80)*.00002
+            return [[offset, 0., 0.], [offset+1., 1., 1.]]
+        result = settle_physics(step, transforms, bounds)
+        self.assertTrue(result['stable'])
+        self.assertGreaterEqual(result['steps'], 135)
+        self.assertEqual(result['consecutive_stable_steps'], 60)
+        self.assertGreater(result['window_resets'], 0)
+        self.assertLessEqual(result['final_window_max_translation_m'], .0001)
+        self.assertNotEqual(result['initial_transforms'], result['final_transforms'])
+
+    def test_physics_settling_checks_aabb_and_times_out_without_faking_stability(self):
+        counter = [0]
+        def step():
+            counter[0] += 1
+        transform = lambda: {'/Franka/link': np.eye(4).tolist()}
+        def bounds():
+            offset = min(counter[0], 80)*.00001
+            return [[offset, 0., 0.], [offset+1., 1., 1.]]
+        result = settle_physics(step, transform, bounds)
+        self.assertTrue(result['stable'])
+        self.assertEqual(result['steps'], 180)
+        self.assertEqual(result['window_resets'], 2)
+        counter[0] = 0
+        def moving():
+            pose = np.eye(4)
+            pose[0, 3] = counter[0]*.001
+            return {'/Franka/link': pose.tolist()}
+        timeout = settle_physics(step, moving, bounds, max_steps=20, stable_steps=6)
+        self.assertFalse(timeout['stable'])
+        self.assertEqual(timeout['steps'], 20)
 
 
 if __name__ == '__main__':

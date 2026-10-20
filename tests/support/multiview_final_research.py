@@ -157,10 +157,11 @@ def _pair(kind, middle, gap, rng, prefix):
 
 
 def final_scenes(split='coarse', *, holdout_authorized=False):
-    """Thirteen scenes/thirty-one objects per development split, no camera input.
+    """Matched scenes with no camera input; the coarse draw remains13/31.
 
-    Final holdout uses new dimensions,yaws,positions,arrangements under seed
-    20261219, but must not be generated before source AND layout freeze.
+    Shortlist adds supported one-view/full hiding and a second temporal cover:
+    fifteen scenes/thirty-seven objects. Final holdout uses two independent
+    draws under20261219/20261220, but requires source AND layout freeze first.
     """
     if split not in SEEDS:
         raise ValueError('Choose coarse,shortlist or frozen holdout')
@@ -218,7 +219,46 @@ def _scene_draw(split, seed, prefix=''):
         requirements=dict(identity='Same truth names through movement,covered,revealed phases; actual visibility determines recovery scope.',
                           movement_delta_m=motion),
         note='Supported box changes rendered pose; no robot or gripper commands.')
+    if split != 'coarse':
+        # Keep the coarse RNG sequence and legacy three-object temporal fixture
+        # unchanged. Later splits add camera-independent supported covers only.
+        previous = scenes[-1]
+        group, cover_scale = _supported_cover_group(rng, both=True)
+        target, cover_a, cover_b = group
+        covers = (cover_a, cover_b)
+        destinations = [cover.center+np.asarray(motion) for cover in covers]
+        starts = (target.center[:2]+np.array([.19, .285])*cover_scale,
+                  target.center[:2]+np.array([.19, -.285])*cover_scale)
+        objects = (target, previous.objects[1])+tuple(
+            replace(cover, center=np.r_[xy, cover.center[2]]) for cover, xy in zip(covers, starts))
+        objects = tuple(replace(obj, name=f'final_{split}_{previous.name}_{index}')
+                        for index, obj in enumerate(objects))
+        scenes[-1] = replace(previous, objects=objects,
+            requirements={**previous.requirements, 'fixture_version': 2,
+                'cover_destinations_m': [dict(object_index=index+2, center_m=center.tolist())
+                                         for index, center in enumerate(destinations)],
+                'visibility_outcome': 'Record actual clear,one-view,full hiding and return; all supported covers remain scored.'},
+            note='Two supported boxes approach and retreat over three fresh-frame steps; no robot commands.')
+        for name, both in (('supported_one_view', False), ('supported_full_hide', True)):
+            objects, _ = _supported_cover_group(rng, both=both)
+            add(name, objects, requirements=dict(fixture_version=2,
+                intended_visibility='full_hiding' if both else 'positive_Y_view_hidden_negative_Y_clear',
+                visibility_outcome='Audit actual native depths; layout-dependent hiding is an outcome, not fixture invalidity.'),
+                note='Same physical scene across layouts; only table-supported scored cube/sphere objects.')
     return tuple(scenes)
+
+
+def _supported_cover_group(rng, *, both):
+    """Low sphere and supported covers, independent of any camera geometry."""
+    offset = rng.uniform(-.008, .008, 2)
+    scale = float(rng.uniform(.97, 1.03))
+    target_xy = np.array([.39, 0.])+offset
+    objects = (sphere('target', target_xy, .0195*scale),
+        box('cover_a', target_xy+np.array([.085, .08])*scale, np.array([.06, .11, .16])*scale))
+    if both:
+        objects += (box('cover_b', target_xy+np.array([.085, -.09])*scale,
+                        np.array([.06, .11, .16])*scale),)
+    return objects, scale
 
 
 def scene_frame_count(scene):
@@ -233,7 +273,6 @@ def scene_frame_content(scene, index):
         return scene.objects, 'static'
     objects = list(scene.objects)
     movement = np.asarray(scene.requirements['movement_delta_m'])
-    cover_destination = np.r_[scene.objects[0].center[:2]+movement[:2]+[.105, 0.], objects[2].center[2]]
     if index < 3:
         phase = 'clear'
         cover_fraction = 0.
@@ -250,7 +289,17 @@ def scene_frame_content(scene, index):
         objects[0] = replace(objects[0], center=objects[0].center+movement+np.array([.01, .01, 0.]))
         phase = 'revealed'
         cover_fraction = (11-index)/3
-    objects[2] = replace(objects[2], center=objects[2].center*(1-cover_fraction)+cover_destination*cover_fraction)
+    if scene.requirements.get('fixture_version') == 2:
+        for specification in scene.requirements['cover_destinations_m']:
+            slot = specification['object_index']
+            destination = np.asarray(specification['center_m'])
+            objects[slot] = replace(objects[slot],
+                center=objects[slot].center*(1-cover_fraction)+destination*cover_fraction)
+    else:
+        # Manifest-reconstructed coarse/older three-object fixtures retain their
+        # exact historical path; no new cover is synthesized during replay.
+        destination = np.r_[scene.objects[0].center[:2]+movement[:2]+[.105, 0.], objects[2].center[2]]
+        objects[2] = replace(objects[2], center=objects[2].center*(1-cover_fraction)+destination*cover_fraction)
     return tuple(objects), phase
 
 
