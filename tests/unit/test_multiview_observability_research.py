@@ -77,6 +77,21 @@ class ObservabilityResearchTests(unittest.TestCase):
         audit = audit_observability_scene(scene, ideal_fixture_frames(scene, resolution=(640, 480)))
         self.assertTrue(audit['valid'], audit['errors'])
 
+    def test_top_only_cameras_are_below_preserved_native_foreground(self):
+        for scene in observability_scenes():
+            if scene.requirements['case'] != 'missing_sides':
+                continue
+            target = scene.objects[0]
+            for eye in scene.eyes:
+                # First native failed capture hits foreground atZ>=0.4601m;
+                # both optical origins must be below it and above the target.
+                self.assertLess(eye[2], .46)
+                self.assertGreater(eye[2], target.size[2]+.05)
+                yaw = target.yaw
+                rotation = np.array([[np.cos(yaw), -np.sin(yaw)], [np.sin(yaw), np.cos(yaw)]])
+                local_xy = (np.asarray(eye[:2])-target.center[:2]) @ rotation
+                self.assertTrue((abs(local_xy) < target.size[:2]/2).all())
+
     def test_selection_physical_visibility_preflight(self):
         failures = []
         for scene in observability_scenes():

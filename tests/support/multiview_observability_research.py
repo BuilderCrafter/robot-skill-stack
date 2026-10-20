@@ -142,8 +142,11 @@ def _scene(name, split, seed, canonical_target, case, *, yaw=0., center=None):
         # Both origins lie above the footprint, so only top-face rays hit the
         # box. This is a physical view ablation, not an oracle depth mask.
         delta = 0. if split == 'selection' else .002
-        eyes = (tuple(center+np.array([-.004, delta, .85])*scale),
-                tuple(center+np.array([.004, -delta, 1.10])*scale))
+        # Higher vertical rays hit inherited stage foreground atZ≈0.46–0.59m
+        # in the preserved first native capture. Place these fixture cameras
+        # below that obstruction, keeping their XY origins inside the footprint.
+        eyes = ((float(center[0]-.004*scale), float(center[1]+delta*scale), .35),
+                (float(center[0]+.004*scale), float(center[1]-delta*scale), .40))
         targets = (tuple(center), tuple(center))
         requirement.update(missing_sides=True)
     elif case == 'edge_adjacent_occluder':
