@@ -1,5 +1,7 @@
 # Multi-view robustness and performance, iteration two
 
+Latest summary: [final cube/sphere perception checkpoint](multiview_perception_final.md). This historical report retains its original results and limitations.
+
 This research continues `research/multiview-rgbd-fusion` at
 `42e3258ac5a5c79bba766262357e77f80d158c14`. The new branch is
 `research/multiview-robustness-performance`; its PR targets the experimental

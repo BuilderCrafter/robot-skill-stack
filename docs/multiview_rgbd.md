@@ -1,5 +1,7 @@
 # Experimental multi-view RGB-D perception
 
+Latest summary: [final cube/sphere perception checkpoint](multiview_perception_final.md). This historical report retains its original results and limitations.
+
 Follow-up: [robustness and performance, iteration two](multiview_robustness_performance.md).
 The first-iteration measurements below remain the preserved comparison baseline.
 

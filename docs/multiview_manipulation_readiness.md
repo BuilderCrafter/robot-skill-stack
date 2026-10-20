@@ -1,5 +1,7 @@
 # Multi-view manipulation readiness
 
+Latest summary: [final cube/sphere perception checkpoint](multiview_perception_final.md). This historical report retains its original results and limitations.
+
 **Decision: continue controlled observation and read-only planning research;
 NO-GO for supervised Pick/Place integration and autonomous manipulation.**
 A valid physical-occlusion test exposes an oversized 90 mm box as a confident,
