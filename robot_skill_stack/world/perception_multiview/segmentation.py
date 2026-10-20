@@ -254,7 +254,7 @@ def _ambiguous_partition(points, parent_fit, evidence):
     return [(points, PrimitiveFit(geometry, parent_fit.center, parent_fit.size))]
 
 
-def refine_cluster(points, fitter, *, support_plane_z=0., parent_fit=None, frames=()):
+def _refine_cluster_with_seeds(points, fitter, *, support_plane_z=0., parent_fit=None, frames=(), fine, verdict):
     """Accept metric cuts only when separate supported primitives explain them.
 
     Sparse islands are assigned using exclusive current surface evidence, then
@@ -266,7 +266,6 @@ def refine_cluster(points, fitter, *, support_plane_z=0., parent_fit=None, frame
     original = [(points, parent_fit)]
     if len(points) < 50:
         return original
-    fine = _metric_components(points)
     if not 2 <= len(fine) <= 8:
         return original
     _, parent_reason = supported_object_cloud(points, support_plane_z)
@@ -329,7 +328,31 @@ def refine_cluster(points, fitter, *, support_plane_z=0., parent_fit=None, frame
             np.mean(_surface_distance(points, parent_fit) <= .003) >= .95):
         evidence = _partition_view_evidence(parent_fit, [fit for _, fit in refined], frames, support_plane_z)
         if evidence['occupied_bridge']:
+            verdict['occupied_bridge'] = True
             return [(points, parent_fit)]
         if not evidence['free_gap']:
             return _ambiguous_partition(points, parent_fit, evidence)
     return sorted(refined, key=lambda item: tuple(item[0].mean(0)))
+
+
+def refine_cluster(points, fitter, *, support_plane_z=0., parent_fit=None, frames=()):
+    """Try the original 4 mm seeds before one guarded sparse-sampling retry.
+
+    Every primitive/support/coverage/gap test remains in the shared helper.
+    An explicit ambiguity or occupied bridge is final. A one-component cloud
+    does not build a second graph. Both passes share the caller's fit budget.
+    """
+    if len(points) < 50:
+        return [(points, parent_fit)]
+    fine, verdict = _metric_components(points), {}
+    first = _refine_cluster_with_seeds(points, fitter, support_plane_z=support_plane_z,
+        parent_fit=parent_fit, frames=frames, fine=fine, verdict=verdict)
+    untouched = len(first) == 1 and first[0][0] is points and first[0][1] is parent_fit
+    explicit_unknown = any(fit is not None and fit.geometry.metadata.get('reason') ==
+        'ambiguous_single_or_multiple_surfaces' for _, fit in first)
+    if (not untouched or explicit_unknown or verdict.get('occupied_bridge', False) or
+            not 2 <= len(fine) <= 8 or getattr(fitter, 'remaining', 5) < 5):
+        return first
+    retry = _metric_components(points, radius=.0045)
+    return _refine_cluster_with_seeds(points, fitter, support_plane_z=support_plane_z,
+        parent_fit=parent_fit, frames=frames, fine=retry, verdict={})

@@ -1,5 +1,7 @@
 # Multi-view geometric observability and grasp safety
 
+Latest summary: [final cube/sphere perception checkpoint](multiview_perception_final.md). This historical report retains its original results and limitations.
+
 This focused continuation starts from merged research parent
 `3314eafcfd8199ad711172b955a373d63350b1eb` (PR #10), on
 `research/multiview-geometric-observability`. V1, ground truth, WorldModel,
