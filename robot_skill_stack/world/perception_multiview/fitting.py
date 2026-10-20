@@ -5,6 +5,7 @@ tilted boxes are outside this experiment. Scores measure residual/coverage,
 not statistical probabilities or the number of overlapping camera samples.
 """
 from dataclasses import dataclass
+from copy import deepcopy
 
 import numpy as np
 
@@ -17,6 +18,21 @@ class PrimitiveFit:
     geometry: PrimitiveGeometry
     center: np.ndarray
     size: np.ndarray
+
+
+def unknown_fit(points, *, reason='insufficient_or_ambiguous_surface', support_plane_z=None,
+                confidence=0., scores=None):
+    """Describe current finite samples without model search or stored geometry."""
+    p = np.asarray(points, float).reshape(-1, 3)
+    p = p[np.isfinite(p).all(1)]
+    lo, hi = (p.min(0), p.max(0)) if len(p) else (np.zeros(3), np.zeros(3))
+    if support_plane_z is not None:
+        if not np.isfinite(support_plane_z):
+            raise ValueError('Support plane must be finite')
+        lo[2] = min(lo[2], support_plane_z)
+    geometry = PrimitiveGeometry(PrimitiveShape.UNKNOWN, confidence, scores=dict(scores or {}),
+                                 metadata={'reason': str(reason), 'fit_points': len(p)})
+    return PrimitiveFit(geometry, (lo+hi)/2, hi-lo)
 
 
 def _radial(points):
@@ -76,6 +92,61 @@ def _box_search(points, sides, angles):
     yaw = float(angles[index])
     r = np.array([[c[index], -s[index], 0.], [s[index], c[index], 0.], [0., 0., 1.]])
     return yaw, r, lo[index], hi[index]
+
+
+def _radius_evidence(points, fit, plane):
+    """Measured radii under the supported shape's existing contact prior."""
+    g = fit.geometry
+    if g.shape == PrimitiveShape.SPHERE:
+        upper = points[points[:, 2]-plane >= g.radius]
+        if len(upper) < 20:
+            return None
+        z = upper[:, 2]-plane
+        return (((upper[:, :2]-fit.center[:2])**2).sum(1)+z*z)/(2*z)
+    axis = g.axis
+    along = (points-fit.center) @ axis
+    core = points[abs(along) < .35*g.length]
+    if len(core) < 20:
+        return None
+    if abs(axis[2]) > .999:
+        return np.linalg.norm(core[:, :2]-fit.center[:2], axis=1)
+    upper = core[core[:, 2]-plane >= g.radius]
+    if len(upper) < 20:
+        return None
+    side = np.cross([0., 0., 1.], axis)
+    horizontal = (upper-fit.center) @ side
+    z = upper[:, 2]-plane
+    return (horizontal*horizontal+z*z)/(2*z)
+
+
+def _cylinder_observability(points, fit, tolerance):
+    """Require curvature and measured cap interiors before using dimensions."""
+    g = fit.geometry
+    delta = points-fit.center
+    along = delta @ g.axis
+    core = delta[abs(along) < .35*g.length]
+    if len(core) < 20:
+        return False, {'reason': 'insufficient_curved_surface'}
+    reference = np.eye(3)[np.argmin(abs(g.axis))]
+    side = np.cross(g.axis, reference)
+    side /= np.linalg.norm(side)
+    other = np.cross(g.axis, side)
+    angles = np.sort(np.arctan2(core @ other, core @ side))
+    coverage = float(2*np.pi-np.diff(np.r_[angles, angles[0]+2*np.pi]).max())
+    # Upright cross sections have no measured centre prior: less than a half
+    # circle may fit a small-radius arc deceptively well. Horizontal cylinders
+    # additionally have the configured support-contact constraint.
+    required = np.pi if abs(g.axis[2]) > .999 else np.pi/2
+    radial = np.linalg.norm(delta-along[:, None]*g.axis, axis=1)
+    interior = radial < .85*g.radius
+    ends = [1.] if abs(g.axis[2]) > .999 else [-1., 1.]
+    caps = [int(np.count_nonzero(interior & (abs(along-end*g.length/2) < 2*tolerance))) for end in ends]
+    evidence = {'curvature_span_rad': coverage, 'cap_interior_points': caps}
+    if coverage < required:
+        return False, dict(evidence, reason='insufficient_curvature_extent')
+    if min(caps) < 5:
+        return False, dict(evidence, reason='unobserved_axial_endpoint')
+    return True, evidence
 
 
 class SurfaceFitter:
@@ -198,6 +269,88 @@ class SurfaceFitter:
                     best = fit
         return best
 
+    def finalize(self, fit, points, *, support_plane_z=0., view_clouds=()):
+        """Report conservative current extents without repeating classification.
+
+        The surface fit remains the classification evidence. Empirical outer
+        dimensions describe measured residual spread, not a calibrated confidence
+        interval. Missing geometric observability is explicit for the source's
+        graspable flag; it never changes held/tracking state or invents samples.
+        """
+        if not np.isfinite(support_plane_z):
+            raise ValueError('Support plane must be finite')
+        result = PrimitiveFit(deepcopy(fit.geometry), fit.center.copy(), fit.size.copy())
+        g = result.geometry
+        p = np.asarray(points, float).reshape(-1, 3)
+        p = p[np.isfinite(p).all(1)]
+        evidence = {'method': 'measured_outer_envelope', 'current_points': len(p)}
+        g.metadata.update(parameter_observable=False, parameter_uncertainty=evidence)
+        if g.shape == PrimitiveShape.UNKNOWN or len(p) < 30:
+            evidence['reason'] = 'unknown_or_insufficient_current_surface'
+            return result
+        g.metadata['surface_fit'] = dict(center=fit.center.tolist(), size_world=fit.size.tolist(),
+            radius=g.radius, length=g.length, box_size=None if g.box_size is None else g.box_size.tolist())
+        if g.shape == PrimitiveShape.CUBE:
+            c, s = np.cos(g.yaw), np.sin(g.yaw)
+            rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+            local = p @ rotation
+            half = g.box_size/2
+            old_center = fit.center @ rotation
+            padding = float(np.percentile(_box_distance(p, fit.center, rotation, g.box_size), 95))
+            lo = np.minimum(local.min(0), old_center-half)-padding
+            hi = np.maximum(local.max(0), old_center+half)+padding
+            lo[2] = support_plane_z
+            dimensions = hi-lo
+            evidence.update(surface_padding_m=padding, dimension_envelope_m=dimensions.tolist())
+            if padding > self.tolerance or np.max(dimensions-g.box_size) > 2*self.tolerance:
+                evidence['reason'] = 'inconsistent_box_surface_extent'
+                return result
+            result.center = ((lo+hi)/2) @ rotation.T
+            g.box_size = dimensions
+            result.size = abs(rotation) @ dimensions
+        else:
+            contact = g.shape == PrimitiveShape.SPHERE or abs(g.axis[2]) < .001
+            if contact and abs(fit.center[2]-g.radius-support_plane_z) > .004:
+                evidence['reason'] = 'unobserved_support_contact'
+                return result
+            if g.shape == PrimitiveShape.CYLINDER:
+                observable, details = _cylinder_observability(p, fit, self.tolerance)
+                evidence.update(details)
+                if not observable:
+                    return result
+            samples = _radius_evidence(p, fit, support_plane_z)
+            if samples is None:
+                evidence['reason'] = 'insufficient_radius_evidence'
+                return result
+            low, median, high = np.percentile(samples, [5, 50, 95])
+            outer = float(max(g.radius, 2*high-median))
+            view_extents = []
+            for cloud in view_clouds:
+                q = np.asarray(cloud, float).reshape(-1, 3)
+                q = q[np.isfinite(q).all(1)]
+                values = _radius_evidence(q, fit, support_plane_z)
+                if values is not None:
+                    middle, upper = np.percentile(values, [50, 95])
+                    view_extents.append(float(2*upper-middle))
+            if view_extents:
+                outer = max(outer, max(view_extents))
+            evidence.update(radius_samples=len(samples), radius_envelope_m=[float(low), outer],
+                            contact_radius_m=float(median), view_outer_radii_m=view_extents)
+            if (outer-g.radius > .004 or
+                    (view_extents and np.ptp(view_extents) > 2*self.tolerance)):
+                evidence['reason'] = 'inconsistent_radius_evidence'
+                return result
+            g.radius = outer
+            if contact:
+                result.center[2] = support_plane_z+outer
+            if g.shape == PrimitiveShape.SPHERE:
+                result.size = np.full(3, 2*outer)
+            else:
+                result.size = abs(g.axis)*g.length+2*outer*np.sqrt(np.maximum(1-g.axis*g.axis, 0))
+        evidence['reason'] = 'current_surface_envelope'
+        g.metadata.update(parameter_observable=True, center=result.center.tolist(), size_world=result.size.tolist())
+        return result
+
     def fit(self, points, *, support_plane_z=0.):
         p = voxelize(points, .0015, self.max_points)
         if not np.isfinite(support_plane_z):
@@ -220,10 +373,7 @@ class SurfaceFitter:
         if fits and ranked[0] >= self.threshold and ranked[0]-ranked[1] >= self.margin:
             result = max(fits, key=lambda f: f.geometry.confidence)
         else:
-            lo, hi = np.percentile(p, [0, 100], axis=0) if len(p) else (np.zeros(3), np.zeros(3))
-            lo[2] = min(lo[2], support_plane_z)
-            result = PrimitiveFit(PrimitiveGeometry(PrimitiveShape.UNKNOWN, ranked[0], metadata={
-                'reason': 'insufficient_or_ambiguous_surface'}), (lo+hi)/2, hi-lo)
+            result = unknown_fit(p, support_plane_z=support_plane_z, confidence=ranked[0])
         result.geometry.scores = scores
         result.geometry.metadata.update(residuals_m=residuals, fit_points=len(p))
         return result

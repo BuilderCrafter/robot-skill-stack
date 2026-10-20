@@ -1,10 +1,11 @@
 """Bounded, deterministic NumPy point-cloud operations in metres."""
 from pathlib import Path
+from itertools import product
 
 import numpy as np
 
 
-def project_depth(frame, *, stride=2, pixel_offset=.5):
+def project_depth(frame, *, stride=2, pixel_offset=.5, bounds=None):
     """Image-plane depth, ROS camera axes (+X right, +Y down, +Z forward).
 
     Half-pixel centres match Isaac 5.1 get_pointcloud's depth fallback. Return
@@ -12,8 +13,27 @@ def project_depth(frame, *, stride=2, pixel_offset=.5):
     """
     if type(stride) is not int or stride < 1:
         raise ValueError('stride must be a positive integer')
-    y, x = np.indices(frame.depth[::stride, ::stride].shape)
-    y, x = y.ravel()*stride, x.ravel()*stride
+    if bounds is None:
+        y, x = np.indices(frame.depth[::stride, ::stride].shape)
+        y, x = y.ravel()*stride, x.ravel()*stride
+    else:
+        lo, hi = np.asarray(bounds, float)
+        if lo.shape != (3,) or hi.shape != (3,) or not np.isfinite([lo, hi]).all() or np.any(lo > hi):
+            raise ValueError('Projection bounds must be finite ordered XYZ corners')
+        corners = np.array(list(product(*zip(lo, hi))))
+        camera = (corners-frame.world_from_camera[:3, 3]) @ frame.world_from_camera[:3, :3]
+        if np.any(camera[:, 2] <= 0):
+            # A box crossing the optical plane has no finite image rectangle.
+            return project_depth(frame, stride=stride, pixel_offset=pixel_offset)
+        k = frame.intrinsics
+        pixels = camera[:, :2]/camera[:, 2, None]*[k[0, 0], k[1, 1]]+k[:2, 2]-pixel_offset
+        first = np.floor(pixels.min(0)/stride).astype(int)*stride-stride
+        last = np.ceil(pixels.max(0)/stride).astype(int)*stride+stride
+        height, width = frame.depth.shape
+        columns = np.arange(max(0, first[0]), min(width, last[0]+1), stride)
+        rows = np.arange(max(0, first[1]), min(height, last[1]+1), stride)
+        y, x = np.meshgrid(rows, columns, indexing='ij')
+        y, x = y.ravel(), x.ravel()
     z = frame.depth[y, x]
     valid = np.isfinite(z) & (z > 0)
     y, x, z = y[valid], x[valid], z[valid]
