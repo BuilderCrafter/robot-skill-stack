@@ -16,52 +16,14 @@ import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
-from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
+from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, orientation_metadata
 from robot_skill_stack.world.perception_multiview.observability import assess
 from scripts.benchmark_multiview_robustness import ROOT, load_frames
 from tests.support.multiview_final_evaluation import box_orientation, plain
 from tests.support.multiview_iteration2 import distribution, object_from_payload, surface_memberships
 
 
-def orientation_proposal(fit, points):
-    """Current empirical side intervals, without a hard near-square threshold."""
-    geometry = fit.geometry
-    if geometry.shape.value == 'sphere':
-        return dict(face_grid_observable=False, major_axis_observable=False,
-                    reason='featureless_sphere_has_no_geometric_orientation', yaw_hypothesis_rad=None)
-    if geometry.shape.value != 'cube':
-        return dict(face_grid_observable=False, major_axis_observable=False, reason='not_a_known_box')
-    evidence = geometry.metadata.get('geometric_observability', {})
-    bounded = bool(geometry.metadata.get('parameter_observable', False) and evidence.get('observable', False))
-    c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
-    rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
-    p = np.asarray(points, float).reshape(-1, 3)
-    p = p[np.isfinite(p).all(1)]
-    bounded = bool(bounded and len(p) >= 30)
-    result = dict(face_grid_observable=bounded, face_grid_period_degrees=90,
-        major_axis_observable=False, major_axis_period_degrees=180,
-        yaw_hypothesis_rad=float(geometry.yaw), major_axis_yaw_rad=None,
-        reason='unbounded_current_footprint', side_intervals_m=None,
-        scope='Empirical side-order evidence under fitted supported-box/ray model; no angular confidence interval')
-    if len(p) < 30:
-        result['reason'] = 'insufficient_current_points'
-        return result
-    span = np.ptp((p-fit.center) @ rotation, axis=0)[:2]
-    padding = float(geometry.metadata.get('parameter_uncertainty', {}).get('surface_padding_m', 0.))
-    # Observed span, with the existing measured residual margin, supplies the
-    # lower side evidence. Published current outward extents supply the upper.
-    # These are empirical intervals, not certified uncertainty on hidden shapes.
-    lower = np.maximum(0., span-2*padding)
-    upper = np.maximum(geometry.box_size[:2], span+2*padding)
-    result['side_intervals_m'] = np.c_[lower, upper].tolist()
-    numerical = 16*np.finfo(float).eps*max(upper)
-    major = 0 if lower[0]-upper[1] > numerical else 1 if lower[1]-upper[0] > numerical else None
-    if bounded and major is not None:
-        result.update(major_axis_observable=True, major_axis_yaw_rad=float(geometry.yaw+major*np.pi/2),
-                      reason='distinct_current_side_intervals')
-    elif bounded:
-        result['reason'] = 'overlapping_current_side_intervals'
-    return result
+orientation_proposal = orientation_metadata
 
 
 def finalize_with_evidence(fitter, fit, points, frames, views, plane):

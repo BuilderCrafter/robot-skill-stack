@@ -15,7 +15,23 @@ import numpy as np
 _DEPTH_TOLERANCE = .002
 _PIXEL_RADIUS = 3
 _EDGE_SAMPLES = 48
+_RIBBON_OFFSETS = np.array([(x, y) for x in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)
+                                for y in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)])
+_PIXEL_NEIGHBORS = np.array([(x, y) for x in (-1, 0, 1) for y in (-1, 0, 1) if x or y])
+_EDGE_POSITIONS = np.linspace(-.4, .4, _EDGE_SAMPLES)
 
+
+
+def _unique_pixels(raw):
+    low = raw.min(0)
+    high = raw.max(0)
+    width = int(high[0])-int(low[0])+1
+    height = int(high[1])-int(low[1])+1
+    if width*height > np.iinfo(np.int64).max:
+        return np.unique(raw, axis=0)
+    codes = (raw[:, 1]-low[1])*width+raw[:, 0]-low[0]
+    codes = np.unique(codes)
+    return np.column_stack((codes % width+low[0], codes // width+low[1]))
 
 def _view_boundary(center, size, rotation, top_z, top_spread, frame, axis, sign):
     """Inspect a bounded pixel ribbon, retaining adjacent occupied/free pairs."""
@@ -24,7 +40,7 @@ def _view_boundary(center, size, rotation, top_z, top_spread, frame, axis, sign)
     other = 1-axis
     local = np.zeros((_EDGE_SAMPLES, 3))
     local[:, axis] = sign*size[axis]/2
-    local[:, other] = np.linspace(-.4, .4, _EDGE_SAMPLES)*size[other]
+    local[:, other] = _EDGE_POSITIONS*size[other]
     boundary = center+local @ rotation.T
     boundary[:, 2] = top_z
     camera = (boundary-transform[:3, 3]) @ transform[:3, :3]
@@ -35,9 +51,8 @@ def _view_boundary(center, size, rotation, top_z, top_spread, frame, axis, sign)
         result['out_of_frame'] = _EDGE_SAMPLES
         return result
     projected = camera[:, :2]/camera[:, 2, None]*[k[0, 0], k[1, 1]]+k[:2, 2]-.5
-    offsets = np.array([(x, y) for x in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)
-                        for y in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)])
-    pixels = np.unique((np.rint(projected).astype(int)[:, None]+offsets).reshape(-1, 2), axis=0)
+    offsets = _RIBBON_OFFSETS
+    pixels = _unique_pixels((np.rint(projected).astype(int)[:, None]+offsets).reshape(-1, 2))
     inside = ((pixels[:, 0] >= 0) & (pixels[:, 0] < width) &
               (pixels[:, 1] >= 0) & (pixels[:, 1] < height))
     result['out_of_frame'] = int(np.count_nonzero(~inside))
@@ -70,7 +85,7 @@ def _view_boundary(center, size, rotation, top_z, top_spread, frame, axis, sign)
         return result
     # Eight image neighbors, using bounded sorted lookups rather than a dense
     # all-pairs point or image search for every box side.
-    neighbors = np.array([(x, y) for x in (-1, 0, 1) for y in (-1, 0, 1) if x or y])
+    neighbors = _PIXEL_NEIGHBORS
     ids = pixels[:, 1]*width+pixels[:, 0]
     order = np.argsort(ids)
     nearby = pixels[free_ids, None]+neighbors

@@ -35,6 +35,55 @@ def unknown_fit(points, *, reason='insufficient_or_ambiguous_surface', support_p
     return PrimitiveFit(geometry, (lo+hi)/2, hi-lo)
 
 
+def orientation_metadata(fit, points):
+    """Current empirical side intervals, without a hard near-square threshold."""
+    geometry = fit.geometry
+    if geometry.shape.value == 'sphere':
+        return dict(face_grid_observable=False, major_axis_observable=False,
+                    reason='featureless_sphere_has_no_geometric_orientation', yaw_hypothesis_rad=None)
+    if geometry.shape.value == 'cylinder':
+        axis = geometry.axis
+        observed = bool(geometry.metadata.get('parameter_observable', False))
+        return dict(face_grid_observable=False, major_axis_observable=False,
+            axis_observable=observed, axis_hypothesis=None if axis is None else axis.tolist(),
+            axis_direction_period_degrees=180, rotation_about_axis_observable=False,
+            yaw_hypothesis_rad=None, reason='existing_cylinder_axis_and_parameter_evidence',
+            scope='Existing upright/lying cylinder axis support unchanged; no angular confidence interval')
+    if geometry.shape.value != 'cube':
+        return dict(face_grid_observable=False, major_axis_observable=False, reason='not_a_known_box')
+    evidence = geometry.metadata.get('geometric_observability', {})
+    bounded = bool(geometry.metadata.get('parameter_observable', False) and evidence.get('observable', False))
+    c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
+    rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+    p = np.asarray(points, float).reshape(-1, 3)
+    p = p[np.isfinite(p).all(1)]
+    bounded = bool(bounded and len(p) >= 30)
+    result = dict(face_grid_observable=bounded, face_grid_period_degrees=90,
+        major_axis_observable=False, major_axis_period_degrees=180,
+        yaw_hypothesis_rad=float(geometry.yaw), major_axis_yaw_rad=None,
+        reason='unbounded_current_footprint', side_intervals_m=None,
+        scope='Empirical side-order evidence under fitted supported-box/ray model; no angular confidence interval')
+    if len(p) < 30:
+        result['reason'] = 'insufficient_current_points'
+        return result
+    span = np.ptp((p-fit.center) @ rotation, axis=0)[:2]
+    padding = float(geometry.metadata.get('parameter_uncertainty', {}).get('surface_padding_m', 0.))
+    # Observed span, with the existing measured residual margin, supplies the
+    # lower side evidence. Published current outward extents supply the upper.
+    # These are empirical intervals, not certified uncertainty on hidden shapes.
+    lower = np.maximum(0., span-2*padding)
+    upper = np.maximum(geometry.box_size[:2], span+2*padding)
+    result['side_intervals_m'] = np.c_[lower, upper].tolist()
+    numerical = 16*np.finfo(float).eps*max(upper)
+    major = 0 if lower[0]-upper[1] > numerical else 1 if lower[1]-upper[0] > numerical else None
+    if bounded and major is not None:
+        result.update(major_axis_observable=True, major_axis_yaw_rad=float(geometry.yaw+major*np.pi/2),
+                      reason='distinct_current_side_intervals')
+    elif bounded:
+        result['reason'] = 'overlapping_current_side_intervals'
+    return result
+
+
 def _radial(points):
     origin = points.mean(0)
     span = float(np.max(np.ptp(points, axis=0)))
