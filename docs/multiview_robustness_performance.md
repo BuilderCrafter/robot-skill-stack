@@ -66,3 +66,82 @@ Measurements use the university workstation: AMD Ryzen 7 7800X3D, RTX 4070 SUPER
 (12,282 MiB), NVIDIA driver 580.167.08, Isaac Sim 5.1.0-rc.19, repository-local
 NumPy 1.26.4, py_trees 2.6.0 and the established Isaac Python wrapper. Dependencies,
 launcher, baseline scene, V1 and the robotics architecture are unchanged.
+
+## Checkpoint B: separation alternatives
+
+The reproducible research probe is `scripts/probe_multiview_segmentation.py`.
+It tested smaller occupied cells; exact 3/4/5 mm distance graphs; density-adaptive
+connectivity; local PCA normal-angle and tangent-plane gates; and primitive-
+supported metric partitions. Competing prototypes remain in this research
+utility, not in production dispatch. Translated isolated native clouds test
+geometry/density in isolation, but omit mutual occlusion. New native captures
+provide the occlusion-sensitive selection comparison.
+
+On the 42 previously accepted native single-object clouds, 3 mm occupied cells
+lost two sparse objects. A 4 mm metric graph falsely split four and lost two;
+5 mm avoided those splits but still lost two. Adaptive density and normal-angle
+gates also lost two, increased computation, and did not improve close-pair
+separation. Tangent gates added nine false splits on the 32 translated pairs.
+These alternatives were rejected as global production replacements. Full rows,
+including every negative outcome, are in
+`outputs/iteration2-segmentation/result-initial.json`.
+
+The retained hierarchy preserves broad connectivity, with a faster vectorized
+cell-neighbor lookup and integer union graph. An exact 4 mm point-distance graph
+proposes cuts within each broad component. A cut needs at least two individually
+known, supported primitive fits explaining at least 85% of the original cloud.
+An oversized component may instead yield a known supported object beside a
+dense, separately oversized remainder. Nearly coincident child fits are vetoed.
+Implausible or overly fragmented cuts retain the complete parent; missing
+samples are never reconstructed. Fitting work is cached for accepted children.
+No identities, object counts, expected positions or truth labels guide the cut.
+Resource limits bound processing, as in the original provider.
+
+The selected rule preserved all 42 singles and reduced mixed translated pairs
+from 32/32 to 14/32, with zero false splits or target-component losses
+(`selected-original-clouds.json`). On 27 valid native selection workspaces,
+coarse grouping produced 14 mixed components; plain radius grouping eliminated
+mixes but caused one false split and two losses. The hierarchy reduced mixed
+components to five, with zero false splits and zero target-component losses
+(`native-selection-v2.json`). These are segmentation diagnostics, not automatic
+classification counts. Remaining mixes were four sphere pairs at 2/4/6/10 mm
+and a 2 mm box/cylinder pair. Sparse sphere samples left only 72–81% of the
+cloud in dense seeds, so the conservative coverage requirement refused a cut.
+Sparse-island model assignment was not retained without further evidence.
+
+The original hidden-B failure is now directly observable: its 5,040-point merged
+component spans approximately 150 × 74 × 196 mm. Exact metric partition gives a
+4,315-point oversized occluder and a 517-point supported cylinder, covering
+95.9% of the parent together. The remaining sparse samples are not invented or
+assigned by truth. Native automatic recovery is evaluated after combining the
+fitter changes.
+
+The new selection/holdout fixture uses disjoint deterministic seeds and camera
+viewpoints, 2/4/6/10 mm gaps, varied dimensions/yaws, isolated supported shapes,
+unknown ellipsoid, empty workspace, physical A/B occluders, true one-view cases,
+an elevated link surrogate and temporal disappearance/reacquisition. The first
+selection capture reused primitive paths across different USD types; twelve
+gap scenes rendered invalid empty workspace clouds. That failed run and its
+invalid probe remain under `outputs/multiview-iteration2/selection-capture/`.
+Unique per-scene paths repaired the captures; visibility prerequisites now fail
+the fixture explicitly. The second capture's 27 scenes and 52 nonempty oracle
+clouds passed an independent audit at `selection-capture-v2/fixture_audit.json`.
+Its original script exited during SimulationApp shutdown before final result
+writing; the audit records that missing finalization. The launcher was unchanged;
+the new benchmark now closes the app after writing results/provenance.
+
+Selection one-view coverage was verified from saved depth, not assumed from
+scene names: A-hidden had 0/468 target points (A/B); B-hidden had 94/0. All
+acquisition timestamps and tokens survive replay. Oracle masks are used only
+for diagnostics, matching and isolated fitting experiments, never provider input.
+
+```bash
+./run_isaac_python.sh scripts/benchmark_multiview_robustness.py --capture-only \
+  --split selection --result outputs/selection-new/result.json \
+  --artifacts-dir outputs/selection-new
+./run_isaac_python.sh scripts/probe_multiview_segmentation.py \
+  --methods voxel8,radius4,selected \
+  --capture-manifest outputs/selection-new/capture_manifest.json \
+  --fitter-package-dir outputs/multiview-iteration2/baseline_snapshot \
+  --result outputs/selection-grouping-new.json
+```

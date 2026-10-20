@@ -6,10 +6,23 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, fuse_clouds, project_depth, voxelize
+from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
-from robot_skill_stack.world.perception_multiview.segmentation import cluster_points, supported_object_cloud
+from robot_skill_stack.world.perception_multiview.segmentation import cluster_points, refine_cluster, supported_object_cloud
 from robot_skill_stack.world.perception_multiview.tracking import Detection, MultiViewTracker
+
+
+class _FitTimer:
+    """Account for cached child fits separately from geometric partition work."""
+    def __init__(self, fitter):
+        self.fitter, self.seconds = fitter, 0.
+
+    def fit(self, points, **kwargs):
+        started = time.perf_counter()
+        try:
+            return self.fitter.fit(points, **kwargs)
+        finally:
+            self.seconds += time.perf_counter()-started
 
 
 class MultiViewProvider:
@@ -36,32 +49,42 @@ class MultiViewProvider:
         clouds = [voxelize(crop_workspace(project_depth(frame, stride=self.stride)[0], self.scene),
                            self.voxel_size, self.max_points) for frame in frames]
         projected = time.perf_counter()
-        fused = fuse_clouds(clouds, voxel=self.voxel_size, max_points=self.max_points)
+        # Each camera has already been density-balanced above; repeating its
+        # voxelization in fuse_clouds would reproduce exactly the same centroids.
+        fused = voxelize(np.concatenate(clouds), self.voxel_size, self.max_points)
         merged = time.perf_counter()
         clusters = cluster_points(fused)
         segmented = time.perf_counter()
         detections, rejected = [], []
+        fit_timer = _FitTimer(self.fitter)
+        refinement_seconds, split_components = 0., 0
         for index, cluster in enumerate(sorted(clusters, key=len, reverse=True)):
-            supported, reason = supported_object_cloud(cluster, self.scene.support_plane_z)
-            if ((not supported and reason != 'no_observed_support_contact') or
-                    len(detections) >= 8 or index >= 16):
-                rejected.append({'points': len(cluster), 'reason': reason if not supported else 'object_count_limit'})
+            if len(detections) >= 8 or index >= 16:
+                rejected.append({'points': len(cluster), 'reason': 'object_count_limit'})
                 continue
-            fit = self.fitter.fit(cluster, support_plane_z=self.scene.support_plane_z)
-            if not supported:
-                # Curved surfaces can establish the support contact even when its
-                # pixels are hidden. Elevated fitted links still fail this test.
-                bottom = fit.center[2]-fit.size[2]/2
-                inferred = (fit.geometry.shape.value in ('sphere', 'cylinder') and
-                            abs(bottom-self.scene.support_plane_z) <= .004)
-                if not inferred:
-                    rejected.append({'points': len(cluster), 'reason': reason})
+            before_refine, before_fits = time.perf_counter(), fit_timer.seconds
+            partitions = refine_cluster(cluster, fit_timer, support_plane_z=self.scene.support_plane_z)
+            refinement_seconds += time.perf_counter()-before_refine-(fit_timer.seconds-before_fits)
+            split_components += len(partitions) > 1
+            for cluster, cached_fit in partitions:
+                supported, reason = supported_object_cloud(cluster, self.scene.support_plane_z)
+                if ((not supported and reason != 'no_observed_support_contact') or len(detections) >= 8):
+                    rejected.append({'points': len(cluster), 'reason': reason if not supported else 'object_count_limit'})
                     continue
-                fit.geometry.metadata['support_contact_inferred'] = True
-            lo, hi = cluster.min(0)-.004, cluster.max(0)+.004
-            views = tuple(frame.camera_id for frame, cloud in zip(frames, clouds)
-                          if np.count_nonzero(((cloud >= lo) & (cloud <= hi)).all(1)) >= 5)
-            detections.append(Detection(fit, cluster, views))
+                fit = cached_fit or fit_timer.fit(cluster, support_plane_z=self.scene.support_plane_z)
+                if not supported:
+                    # Curved surfaces may establish a hidden support contact.
+                    bottom = fit.center[2]-fit.size[2]/2
+                    inferred = (fit.geometry.shape.value in ('sphere', 'cylinder') and
+                                abs(bottom-self.scene.support_plane_z) <= .004)
+                    if not inferred:
+                        rejected.append({'points': len(cluster), 'reason': reason})
+                        continue
+                    fit.geometry.metadata['support_contact_inferred'] = True
+                lo, hi = cluster.min(0)-.004, cluster.max(0)+.004
+                views = tuple(frame.camera_id for frame, cloud in zip(frames, clouds)
+                              if np.count_nonzero(((cloud >= lo) & (cloud <= hi)).all(1)) >= 5)
+                detections.append(Detection(fit, cluster, views))
         fitted = time.perf_counter()
         timestamp = min(frame.acquired_at for frame in frames)
         tracks = self.tracker.update(detections, timestamp, context)
@@ -84,10 +107,11 @@ class MultiViewProvider:
                           'association_hint_reason': track.hint_reason}))
         finished = time.perf_counter()
         self.diagnostics = dict(synchronization=dict(self.rig.status), workspace_points=len(fused),
-            clusters=len(clusters), detections=len(detections), rejected=rejected,
+            clusters=len(clusters), split_components=split_components, detections=len(detections), rejected=rejected,
             acquisition_ms=(acquired-started)*1000, projection_ms=(projected-acquired)*1000,
-            fusion_ms=(merged-projected)*1000, segmentation_ms=(segmented-merged)*1000,
-            fitting_ms=(fitted-segmented)*1000, tracking_ms=(finished-fitted)*1000,
+            fusion_ms=(merged-projected)*1000,
+            segmentation_ms=(segmented-merged+refinement_seconds)*1000,
+            fitting_ms=(fitted-segmented-refinement_seconds)*1000, tracking_ms=(finished-fitted)*1000,
             total_ms=(finished-started)*1000)
         return ObservationBatch(observations, timestamp)
 
