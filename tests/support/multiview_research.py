@@ -68,6 +68,9 @@ def metric_row(obj, fit, **extra):
                 axis_error_deg=axis_error, confidence=geometry.confidence,
                 scores=geometry.scores, estimated_center=fit.center.tolist(),
                 estimated_size=fit.size.tolist(), truth_center=obj.center.tolist(),
+                estimated_dimensions=None if predicted is None else predicted.tolist(),
+                estimated_axis=None if geometry.axis is None else geometry.axis.tolist(),
+                estimated_yaw=geometry.yaw, residuals_m=geometry.metadata.get('residuals_m', {}),
                 truth_dimensions=truth_size.tolist(), **extra)
 
 

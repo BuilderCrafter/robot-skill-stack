@@ -27,7 +27,7 @@ from tests.support.results import fail_result, write_result
 
 
 def main(args):
-    output = Path(args.artifacts_dir)
+    output = Path(args.artifacts_dir) if args.artifacts_dir else Path(args.result).parent/'multiview_contract'
     output.mkdir(parents=True, exist_ok=True)
     world = open_experiment(simulation_app)
     cfg = load_scene_config(ROOT/'config/scenes/multiview_playground.toml')
@@ -155,7 +155,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--result', required=True)
-    parser.add_argument('--artifacts-dir', required=True)
+    parser.add_argument('--artifacts-dir')
     args = parser.parse_args()
     code = 0
     try:
