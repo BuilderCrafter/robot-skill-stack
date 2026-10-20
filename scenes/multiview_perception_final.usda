@@ -1,0 +1,56 @@
+#usda 1.0
+(
+    subLayers = [@multiview_playground.usda@]
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "PerceptionCamera"
+    {
+        matrix4d xformOp:transform = ((0.0159999694824, 0.999840622244, -0.00792029586339, 0), (-0.606240610037, 0.0159999694824, 0.795120320277, 0), (0.795120320277, -0.00792029586339, 0.606399987793, 0), (1.65896001728, -0.0528134801776, 1.10358086042, 1))
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+    }
+    over "PerceptionCameraSide"
+    {
+        matrix4d xformOp:transform = ((-0.947492278987, -0.319778644158, 0, 0), (0.187268366703, -0.554869234675, 0.810586634015, 0), (-0.259208294798, 0.76802457718, 0.5856187401, 0), (0.18, 0.8, 0.65, 1))
+        uniform token[] xformOpOrder = ["xformOp:transform"]
+    }
+    over "MultiViewObjects" (active = false) {}
+    def Xform "FinalPerceptionObjects"
+    {
+        def Cube "Square"
+        {
+            double size = 1
+            double3 xformOp:translate = (0.36, -0.16, 0.0275)
+            float xformOp:rotateZ = 25
+            float3 xformOp:scale = (0.055, 0.055, 0.055)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+            color3f[] primvars:displayColor = [(0.85, 0.3, 0.15)]
+        }
+        def Cube "Rectangle"
+        {
+            double size = 1
+            double3 xformOp:translate = (0.54, 0.16, 0.024)
+            float xformOp:rotateZ = -33
+            float3 xformOp:scale = (0.068, 0.042, 0.048)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ", "xformOp:scale"]
+            color3f[] primvars:displayColor = [(0.2, 0.45, 0.9)]
+        }
+        def Sphere "SmallSphere"
+        {
+            double radius = 0.022
+            double3 xformOp:translate = (0.36, 0.16, 0.022)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            color3f[] primvars:displayColor = [(0.2, 0.72, 0.35)]
+        }
+        def Sphere "LargeSphere"
+        {
+            double radius = 0.03
+            double3 xformOp:translate = (0.54, -0.16, 0.03)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+            color3f[] primvars:displayColor = [(0.9, 0.68, 0.15)]
+        }
+    }
+}

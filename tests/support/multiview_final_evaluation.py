@@ -111,11 +111,16 @@ def box_orientation(truth, geometry):
     result = dict(yaw_error_deg=None, yaw_raw_major_axis_error_deg=None,
         yaw_symmetry_degrees=None, yaw_precision_eligible=False,
         yaw_ambiguity='not_a_correct_box', estimated_yaw=None, truth_yaw=float(truth.yaw))
-    if geometry is None or geometry.shape.value != 'cube' or geometry.yaw is None or geometry.box_size is None:
+    if geometry is None or geometry.shape.value != 'cube' or geometry.box_size is None:
+        return result
+    orientation = geometry.metadata.get('orientation_observability')
+    hypothesis = geometry.yaw if geometry.yaw is not None else (
+        None if orientation is None else orientation.get('yaw_hypothesis_rad'))
+    if hypothesis is None:
         return result
     actual, predicted = np.asarray(truth.size), np.asarray(geometry.box_size)
     first = float(truth.yaw)+(np.pi/2 if actual[1] > actual[0] else 0.)
-    second = float(geometry.yaw)+(np.pi/2 if predicted[1] > predicted[0] else 0.)
+    second = float(hypothesis)+(np.pi/2 if predicted[1] > predicted[0] else 0.)
     exact_square = bool(abs(actual[0]-actual[1]) <= 1e-8)
     period = np.pi/2 if exact_square else np.pi
     raw = angular_distance_degrees(first, second, period)
@@ -123,13 +128,22 @@ def box_orientation(truth, geometry):
     truth_near = not exact_square and abs(actual[0]-actual[1]) <= max(.001, .02*max(actual[:2]))
     prediction_near = not exact_square and abs(predicted[0]-predicted[1]) <= max(.001, .02*max(predicted[:2]))
     evidence = geometry.metadata.get('parameter_observable')
-    reason = ('near_square_truth' if truth_near else 'near_square_estimate' if prediction_near else
-              'incomplete_geometry_evidence' if evidence is False else None)
+    orientation_reason = None if orientation is None else (
+        'face_grid_evidence_ambiguous' if exact_square and not orientation.get('face_grid_observable', False) else
+        'major_axis_evidence_ambiguous' if not exact_square and not orientation.get('major_axis_observable', False) else None)
+    reason = orientation_reason
+    if reason is None:
+        reason = ('near_square_truth' if truth_near else 'near_square_estimate' if prediction_near else
+                  'incomplete_geometry_evidence' if evidence is False else None)
     result.update(yaw_error_deg=raw if reason is None else None,
         yaw_raw_major_axis_error_deg=raw, yaw_symmetry_degrees=90 if exact_square else 180,
         yaw_precision_eligible=reason is None, yaw_ambiguity=reason,
-        estimated_yaw=float(geometry.yaw), truth_major_axis_yaw=first,
+        estimated_yaw=None if geometry.yaw is None else float(geometry.yaw),
+        fitted_yaw_hypothesis_rad=float(hypothesis), truth_major_axis_yaw=first,
         estimated_major_axis_yaw=second, truth_footprint_square=exact_square,
+        near_square_truth=truth_near, near_square_estimate=prediction_near,
+        source_face_grid_observable=None if orientation is None else orientation.get('face_grid_observable'),
+        source_major_axis_observable=None if orientation is None else orientation.get('major_axis_observable'),
         near_square_tolerance_mm=float(max(.001, .02*max(actual[:2]))*1000))
     return result
 
@@ -395,6 +409,13 @@ def temporal_recovery(rows, samples):
         for row in sequence:
             count = sum(camera['raw_points'] for camera in row.get('visibility', {}).get('cameras', []))
             stamp = stamps.get((trial, row['frame_index']))
+            # A new both-view hiding interval censors the earlier visible
+            # failure episode. Its clock must not include a later period in
+            # which the object cannot be observed at all.
+            if (active is not None and count == 0 and
+                    (active['onset_kind'] != 'fully_hidden' or active['first_revisible_frame'] is not None)):
+                active.update(end_reason='interrupted_by_full_occlusion', interrupted_before_frame=row['frame_index'])
+                active = None
             if active is None and (not row['correct'] or count == 0):
                 active = dict(trial=trial, object=name, method=row.get('method'), layout=row.get('layout'),
                     onset_frame=row['frame_index'], onset_phase=row.get('phase'), prior_id=last_id,
@@ -402,7 +423,7 @@ def temporal_recovery(rows, samples):
                     fully_hidden_frames=[], low_density_frames=[], visible_failure_frames=[],
                     first_revisible_frame=None, first_revisible_acquired_at=None,
                     first_sufficiently_visible_frame=None, recovered_frame=None,
-                    recovered_acquired_at=None, recovered_id=None)
+                    recovered_acquired_at=None, recovered_id=None, end_reason='censored_end_of_capture')
                 events.append(active)
             if active is not None:
                 if count == 0:
@@ -417,7 +438,7 @@ def temporal_recovery(rows, samples):
                     active['first_sufficiently_visible_frame'] = row['frame_index']
                 if count >= 8 and row['correct']:
                     active.update(recovered_frame=row['frame_index'], recovered_acquired_at=stamp,
-                                  recovered_id=row['object_id'])
+                                  recovered_id=row['object_id'], end_reason='recovered')
                     active = None
             if row['correct']:
                 last_id = row['object_id']

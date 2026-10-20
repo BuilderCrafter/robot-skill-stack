@@ -82,6 +82,23 @@ class FinalPerceptionEvaluationTests(unittest.TestCase):
         self.assertAlmostEqual(row['height_error_mm'], 10.)
         self.assertAlmostEqual(row['dimension_error_mm'], 10.)
 
+    def test_source_orientation_evidence_controls_precision_without_discarding_raw_error(self):
+        target = box('rectangle', (.45, 0.), (.09, .04, .05), .3)
+        fitted = PrimitiveGeometry('cube', box_size=target.size, yaw=None, metadata={
+            'parameter_observable': True, 'orientation_observability': dict(
+                yaw_hypothesis_rad=.3, face_grid_observable=True, major_axis_observable=False)})
+        result = box_orientation(target, fitted)
+        self.assertFalse(result['yaw_precision_eligible'])
+        self.assertEqual(result['yaw_ambiguity'], 'major_axis_evidence_ambiguous')
+        self.assertAlmostEqual(result['yaw_raw_major_axis_error_deg'], 0.)
+        self.assertIsNone(result['estimated_yaw'])
+        square = box('square', (.45, 0.), (.05, .05, .04), .3)
+        fitted.box_size = square.size
+        fitted.metadata['orientation_observability'].update(face_grid_observable=False, major_axis_observable=True)
+        result = box_orientation(square, fitted)
+        self.assertFalse(result['yaw_precision_eligible'])
+        self.assertEqual(result['yaw_ambiguity'], 'face_grid_evidence_ambiguous')
+
     def test_sphere_radius_has_signed_bias_and_no_orientation_metric(self):
         target = sphere('sphere', (.45, 0.), .03)
         fitted = PrimitiveGeometry('sphere', radius=.029)
@@ -239,6 +256,29 @@ class FinalPerceptionEvaluationTests(unittest.TestCase):
         self.assertGreater(result['window_resets'], 0)
         self.assertLessEqual(result['final_window_max_translation_m'], .0001)
         self.assertNotEqual(result['initial_transforms'], result['final_transforms'])
+
+    def test_new_full_occlusion_censors_prior_visible_failure_and_restarts_recovery_clock(self):
+        target = box('target', (.45, 0.), (.06, .03, .05))
+        rows, samples = [], []
+        for index, correct, counts in [(2, True, [30, 30]), (3, False, [0, 12]),
+                                       (4, False, [0, 0]), (5, False, [0, 0]), (6, True, [0, 30])]:
+            row = geometry_row(target, observation(target) if correct else None)
+            row.update(method='current', layout='test', trial='temporal', frame_index=index,
+                       phase='covered', scored=True, temporal=True)
+            annotate_visibility([row], dict(objects=[dict(object='target',
+                cameras=[dict(raw_points=count) for count in counts], sufficiently_visible=max(counts) >= 30)]))
+            rows.append(row)
+            samples.append(dict(trial='temporal', frame_index=index, original_acquired_at=100.+index*.1))
+        events = temporal_recovery(rows, samples)
+        self.assertEqual(len(events), 2)
+        self.assertTrue(events[0]['censored'])
+        self.assertEqual(events[0]['visible_failure_frames'], [3])
+        self.assertEqual(events[0]['end_reason'], 'interrupted_by_full_occlusion')
+        self.assertEqual(events[1]['fully_hidden_frames'], [4, 5])
+        self.assertEqual(events[1]['first_revisible_frame'], 6)
+        self.assertEqual(events[1]['recovered_frame'], 6)
+        self.assertEqual(events[1]['saved_capture_reacquisition_ms'], 0.)
+        self.assertTrue(events[1]['identity_preserved'])
 
     def test_physics_settling_checks_aabb_and_times_out_without_faking_stability(self):
         counter = [0]
