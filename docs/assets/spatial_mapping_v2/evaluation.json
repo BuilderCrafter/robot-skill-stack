@@ -1,0 +1,1305 @@
+{
+  "validation_local_date": "2026-10-22",
+  "baseline_commit": "45bfe3904a7649438773285a18ed95fdfbb3919e",
+  "native_status": "PASS",
+  "artifact_directory": "outputs/spatial-mapping-v2-final/run-9pgmzcgn",
+  "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping --artifacts-dir outputs/spatial-mapping-v2-final",
+  "configuration": {
+    "cameras": 2,
+    "resolution": [
+      640,
+      480
+    ],
+    "voxel_size": 0.01,
+    "dimensions": [
+      115,
+      120,
+      114
+    ],
+    "bounds_min": [
+      -0.3,
+      -0.6,
+      -0.02
+    ],
+    "bounds_max": [
+      0.85,
+      0.6,
+      1.12
+    ],
+    "max_rays": 1024,
+    "stride": 8,
+    "depth_tolerance": 0.005,
+    "pose_tolerance": 0.01,
+    "max_frame_age": 5,
+    "stale_after": 5,
+    "evidence_ttl": 30
+  },
+  "timing_ms": {
+    "baseline_ms": {
+      "min": 2090.0763613171875,
+      "median": 2165.3041220270097,
+      "max": 2230.280152056366
+    },
+    "filtered_ms": {
+      "min": 2035.1416040211916,
+      "median": 2134.7056380473077,
+      "max": 2199.506579898298
+    },
+    "filter_ms": {
+      "min": 207.4891896918416,
+      "median": 226.948793977499,
+      "max": 238.12759993597865
+    }
+  },
+  "initialization_ms": 507.0299212820828,
+  "pose_capture": {
+    "calls": 240,
+    "mean_ms": 0.12954661894279224,
+    "max_ms": 0.20186882466077805
+  },
+  "maximum_pose_skew_seconds": 0.0,
+  "production_selected_totals": {
+    "robot": {
+      "pixels": 1146,
+      "masked": 1145,
+      "unfiltered_occupied": 1117,
+      "filtered_occupied": 1,
+      "unfiltered_free": 0,
+      "filtered_free": 2
+    },
+    "forearm": {
+      "pixels": 9,
+      "masked": 0,
+      "unfiltered_occupied": 9,
+      "filtered_occupied": 9,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "wrist": {
+      "pixels": 19,
+      "masked": 0,
+      "unfiltered_occupied": 19,
+      "filtered_occupied": 19,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "gripper": {
+      "pixels": 12,
+      "masked": 0,
+      "unfiltered_occupied": 12,
+      "filtered_occupied": 12,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "foreground": {
+      "pixels": 22,
+      "masked": 0,
+      "unfiltered_occupied": 22,
+      "filtered_occupied": 22,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "occluded": {
+      "pixels": 11,
+      "masked": 1,
+      "unfiltered_occupied": 11,
+      "filtered_occupied": 10,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    }
+  },
+  "dense_stride_totals": {
+    "robot": {
+      "pixels": 8255,
+      "masked": 8253,
+      "unfiltered_occupied": 1185,
+      "filtered_occupied": 1,
+      "unfiltered_free": 54,
+      "filtered_free": 25
+    },
+    "forearm": {
+      "pixels": 85,
+      "masked": 0,
+      "unfiltered_occupied": 12,
+      "filtered_occupied": 12,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "wrist": {
+      "pixels": 97,
+      "masked": 0,
+      "unfiltered_occupied": 25,
+      "filtered_occupied": 25,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "gripper": {
+      "pixels": 103,
+      "masked": 0,
+      "unfiltered_occupied": 16,
+      "filtered_occupied": 16,
+      "unfiltered_free": 1,
+      "filtered_free": 1
+    },
+    "foreground": {
+      "pixels": 139,
+      "masked": 0,
+      "unfiltered_occupied": 29,
+      "filtered_occupied": 29,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "occluded": {
+      "pixels": 97,
+      "masked": 4,
+      "unfiltered_occupied": 11,
+      "filtered_occupied": 10,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    }
+  },
+  "metric_scopes": {
+    "dense_stride": "Independent instance-ID reference on every stride-8 valid depth pixel; pixel-frame counts sum over configurations.",
+    "production_selected": "Exact fairly selected mapping pixels; voxel counts deduplicate within each configuration, then sum across configurations.",
+    "false_free": "GT-occupied probe centers and instance-labeled surface voxel references only; not a complete volumetric certificate.",
+    "moving_robot_occupancy": "Historical robot-reference cells in GT environment FREE; includes current robot volume, not only vacated cells."
+  },
+  "moving_robot_occupancy": {
+    "historical_reference_voxels_in_environment_free": 3191,
+    "unfiltered_occupied": 409,
+    "filtered_occupied": 1
+  },
+  "configurations": [
+    {
+      "name": "home_closed",
+      "actual_joints": [
+        -0.16536693274974823,
+        -0.029043078422546387,
+        0.06232672557234764,
+        -2.1479384899139404,
+        -0.44125494360923767,
+        2.485304594039917,
+        1.3404160737991333,
+        4.272062028576329e-07,
+        4.2651001308513514e-07
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 164,
+          "masked": 164,
+          "unfiltered_occupied": 164,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 164
+        },
+        "forearm": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "wrist": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "gripper": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "foreground": {
+          "pixels": 3,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 3
+        },
+        "occluded": {
+          "pixels": 3,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 3
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1128,
+          "masked": 1128,
+          "unfiltered_occupied": 164,
+          "filtered_occupied": 0,
+          "unfiltered_free": 13,
+          "filtered_free": 9,
+          "reference_voxels": 1126
+        },
+        "forearm": {
+          "pixels": 11,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 11
+        },
+        "wrist": {
+          "pixels": 9,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 9
+        },
+        "gripper": {
+          "pixels": 16,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 15
+        },
+        "foreground": {
+          "pixels": 25,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 25
+        },
+        "occluded": {
+          "pixels": 19,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 19
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1430755,
+        "free": 141940,
+        "occupied": 505,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1448286,
+        "free": 124573,
+        "occupied": 341,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link3/geometry/panda_link3",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 19,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "extended_open",
+      "actual_joints": [
+        9.468705286508339e-08,
+        -0.4476759433746338,
+        7.928991863082047e-08,
+        -1.651207447052002,
+        -8.732127025723457e-05,
+        1.3999733924865723,
+        0.6500022411346436,
+        0.03999974951148033,
+        0.039999913424253464
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 167,
+          "masked": 167,
+          "unfiltered_occupied": 167,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 167
+        },
+        "forearm": {
+          "pixels": 0,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 0
+        },
+        "wrist": {
+          "pixels": 4,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        },
+        "gripper": {
+          "pixels": 0,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 0
+        },
+        "foreground": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        },
+        "occluded": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1215,
+          "masked": 1215,
+          "unfiltered_occupied": 167,
+          "filtered_occupied": 0,
+          "unfiltered_free": 11,
+          "filtered_free": 2,
+          "reference_voxels": 1206
+        },
+        "forearm": {
+          "pixels": 6,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 6
+        },
+        "wrist": {
+          "pixels": 17,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 17
+        },
+        "gripper": {
+          "pixels": 18,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 18
+        },
+        "foreground": {
+          "pixels": 12,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 12
+        },
+        "occluded": {
+          "pixels": 19,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 19
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1426381,
+        "free": 146318,
+        "occupied": 501,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1442364,
+        "free": 130502,
+        "occupied": 334,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link3/geometry/panda_link3",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 19,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "rotated_closed",
+      "actual_joints": [
+        0.749713659286499,
+        -0.5982385277748108,
+        -0.40114501118659973,
+        -2.001160144805908,
+        0.3496556282043457,
+        1.5499767065048218,
+        0.24999955296516418,
+        3.539752015058184e-06,
+        3.1664907851336466e-07
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 154,
+          "masked": 154,
+          "unfiltered_occupied": 154,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 1,
+          "reference_voxels": 154
+        },
+        "forearm": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "wrist": {
+          "pixels": 3,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 3
+        },
+        "gripper": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "foreground": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "occluded": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1162,
+          "masked": 1161,
+          "unfiltered_occupied": 154,
+          "filtered_occupied": 0,
+          "unfiltered_free": 10,
+          "filtered_free": 4,
+          "reference_voxels": 1157
+        },
+        "forearm": {
+          "pixels": 15,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 15
+        },
+        "wrist": {
+          "pixels": 18,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 18
+        },
+        "gripper": {
+          "pixels": 17,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 1,
+          "filtered_free": 1,
+          "reference_voxels": 16
+        },
+        "foreground": {
+          "pixels": 12,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 12
+        },
+        "occluded": {
+          "pixels": 15,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 15
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1425543,
+        "free": 147169,
+        "occupied": 488,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1440780,
+        "free": 132086,
+        "occupied": 334,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link3/geometry/panda_link3",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 15,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "extended_side_open",
+      "actual_joints": [
+        -0.6501484513282776,
+        0.2539747953414917,
+        0.2973351776599884,
+        -1.6013141870498657,
+        -0.30008846521377563,
+        1.8999732732772827,
+        0.59999680519104,
+        0.0399981364607811,
+        0.03999977186322212
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 170,
+          "masked": 170,
+          "unfiltered_occupied": 170,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 170
+        },
+        "forearm": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "wrist": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "gripper": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        },
+        "foreground": {
+          "pixels": 5,
+          "masked": 0,
+          "unfiltered_occupied": 5,
+          "filtered_occupied": 5,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 5
+        },
+        "occluded": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1112,
+          "masked": 1112,
+          "unfiltered_occupied": 170,
+          "filtered_occupied": 0,
+          "unfiltered_free": 5,
+          "filtered_free": 3,
+          "reference_voxels": 1110
+        },
+        "forearm": {
+          "pixels": 15,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 15
+        },
+        "wrist": {
+          "pixels": 11,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 11
+        },
+        "gripper": {
+          "pixels": 13,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 13
+        },
+        "foreground": {
+          "pixels": 29,
+          "masked": 0,
+          "unfiltered_occupied": 5,
+          "filtered_occupied": 5,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 29
+        },
+        "occluded": {
+          "pixels": 14,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 14
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1433051,
+        "free": 139658,
+        "occupied": 491,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1451344,
+        "free": 121535,
+        "occupied": 321,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link4/geometry/panda_link4",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 14,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "moving_4",
+      "actual_joints": [
+        -0.4250636100769043,
+        0.017789805307984352,
+        0.19170431792736053,
+        -1.6171002388000488,
+        -0.20002007484436035,
+        1.7333192825317383,
+        0.6166661977767944,
+        0.03999814763665199,
+        0.03999979421496391
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 166,
+          "masked": 166,
+          "unfiltered_occupied": 166,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 166
+        },
+        "forearm": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "wrist": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "gripper": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "foreground": {
+          "pixels": 3,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 3
+        },
+        "occluded": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1184,
+          "masked": 1184,
+          "unfiltered_occupied": 166,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1182
+        },
+        "forearm": {
+          "pixels": 10,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 10
+        },
+        "wrist": {
+          "pixels": 10,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 10
+        },
+        "gripper": {
+          "pixels": 13,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 13
+        },
+        "foreground": {
+          "pixels": 17,
+          "masked": 0,
+          "unfiltered_occupied": 3,
+          "filtered_occupied": 3,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 17
+        },
+        "occluded": {
+          "pixels": 14,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 14
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1572701,
+        "free": 0,
+        "occupied": 499,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1572867,
+        "free": 0,
+        "occupied": 333,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link3/geometry/panda_link3",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 14,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "moving_8",
+      "actual_joints": [
+        -0.21669083833694458,
+        -0.2157038003206253,
+        0.10032394528388977,
+        -1.6337546110153198,
+        -0.10002214461565018,
+        1.5666528940200806,
+        0.6333330869674683,
+        0.03999872878193855,
+        0.039999861270189285
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 160,
+          "masked": 160,
+          "unfiltered_occupied": 147,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 160
+        },
+        "forearm": {
+          "pixels": 0,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 0
+        },
+        "wrist": {
+          "pixels": 4,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        },
+        "gripper": {
+          "pixels": 4,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        },
+        "foreground": {
+          "pixels": 4,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        },
+        "occluded": {
+          "pixels": 0,
+          "masked": 0,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 0
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1243,
+          "masked": 1243,
+          "unfiltered_occupied": 174,
+          "filtered_occupied": 0,
+          "unfiltered_free": 2,
+          "filtered_free": 0,
+          "reference_voxels": 1238
+        },
+        "forearm": {
+          "pixels": 13,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 13
+        },
+        "wrist": {
+          "pixels": 16,
+          "masked": 0,
+          "unfiltered_occupied": 6,
+          "filtered_occupied": 6,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 16
+        },
+        "gripper": {
+          "pixels": 13,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 13
+        },
+        "foreground": {
+          "pixels": 17,
+          "masked": 0,
+          "unfiltered_occupied": 6,
+          "filtered_occupied": 6,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 17
+        },
+        "occluded": {
+          "pixels": 4,
+          "masked": 2,
+          "unfiltered_occupied": 0,
+          "filtered_occupied": 0,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1540173,
+        "free": 32128,
+        "occupied": 899,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1544702,
+        "free": 27895,
+        "occupied": 603,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 0,
+          "projected_center_label": "/Franka/panda_link3/geometry/panda_link3",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 4,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    },
+    {
+      "name": "moving_12",
+      "actual_joints": [
+        1.8270688073585006e-08,
+        -0.4492459297180176,
+        2.5366414746486043e-08,
+        -1.6503905057907104,
+        -2.7953741664532572e-05,
+        1.399986743927002,
+        0.6500004529953003,
+        0.03999975323677063,
+        0.039999913424253464
+      ],
+      "selected": {
+        "robot": {
+          "pixels": 165,
+          "masked": 164,
+          "unfiltered_occupied": 149,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 1,
+          "reference_voxels": 165
+        },
+        "forearm": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        },
+        "wrist": {
+          "pixels": 2,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        },
+        "gripper": {
+          "pixels": 1,
+          "masked": 0,
+          "unfiltered_occupied": 1,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 1
+        },
+        "foreground": {
+          "pixels": 4,
+          "masked": 0,
+          "unfiltered_occupied": 4,
+          "filtered_occupied": 4,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 4
+        },
+        "occluded": {
+          "pixels": 2,
+          "masked": 1,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 2
+        }
+      },
+      "dense_stride": {
+        "robot": {
+          "pixels": 1211,
+          "masked": 1210,
+          "unfiltered_occupied": 190,
+          "filtered_occupied": 1,
+          "unfiltered_free": 13,
+          "filtered_free": 7,
+          "reference_voxels": 1202
+        },
+        "forearm": {
+          "pixels": 15,
+          "masked": 0,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 2,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 15
+        },
+        "wrist": {
+          "pixels": 16,
+          "masked": 0,
+          "unfiltered_occupied": 6,
+          "filtered_occupied": 6,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 16
+        },
+        "gripper": {
+          "pixels": 13,
+          "masked": 0,
+          "unfiltered_occupied": 5,
+          "filtered_occupied": 5,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 13
+        },
+        "foreground": {
+          "pixels": 27,
+          "masked": 0,
+          "unfiltered_occupied": 9,
+          "filtered_occupied": 9,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 27
+        },
+        "occluded": {
+          "pixels": 12,
+          "masked": 2,
+          "unfiltered_occupied": 2,
+          "filtered_occupied": 1,
+          "unfiltered_free": 0,
+          "filtered_free": 0,
+          "reference_voxels": 12
+        }
+      },
+      "baseline_counts": {
+        "unknown": 1494325,
+        "free": 77639,
+        "occupied": 1236,
+        "out_of_bounds": 0
+      },
+      "filtered_counts": {
+        "unknown": 1504500,
+        "free": 67876,
+        "occupied": 824,
+        "out_of_bounds": 0
+      },
+      "false_free_probe_centers": 0,
+      "center_states": [
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN",
+        "UNKNOWN"
+      ],
+      "occlusion_evidence": {
+        "/World/PerceptionCamera": {
+          "visible_probe_pixels": 1,
+          "projected_center_label": "/Franka/panda_link2/geometry/panda_link2",
+          "robot_in_front": true
+        },
+        "/World/PerceptionCameraSide": {
+          "visible_probe_pixels": 11,
+          "projected_center_label": "/World/SelfFilterProbes/occluded",
+          "robot_in_front": false
+        }
+      },
+      "fresh_at_integration": true
+    }
+  ],
+  "passed_checks": {
+    "delayed_frames_use_historical_geometry": true,
+    "duplicate_tokens_rejected": true,
+    "source_failure_not_fresh": true,
+    "recovered": true,
+    "reinitialized": true,
+    "saved_scenes_and_config_unchanged": true,
+    "cleaned_up": true
+  },
+  "limitations": [
+    "One selected robot surface pixel was not masked; one reference occupied cell remained.",
+    "One of eleven selected occlusion-edge obstacle returns was withheld; clear foreground and adjacent probes were retained.",
+    "Two selected robot-reference cells were FREE; a dense gripper surface reference was also FREE in both modes. Center checks are not exhaustive continuous ground truth.",
+    "Dense-stride and selected-ray denominators differ; counts summed across configurations are voxel-configuration events, not unique global voxels.",
+    "Historical robot-reference occupancy includes current robot volume and does not exclusively measure vacated-space ghosts.",
+    "The first native attempt ran alongside CPU-heavy units and exceeded acquisition-age limits; isolated final native runs passed without changing age thresholds.",
+    "Static mesh topology and mesh-to-body transforms, fixed cameras or exposure-calibrated frames, and initialized physics/history are required."
+  ]
+}

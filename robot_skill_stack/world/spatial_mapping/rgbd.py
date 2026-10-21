@@ -121,12 +121,20 @@ class RgbdMapper:
         self._rotation += max(1, selected)
         return allocation
 
-    def update(self, frames, exclusion_masks=None, *, now=None):
+    def update(self, frames, exclusion_masks=None, *, now=None, mask_provider=None):
+        """Integrate one complete batch; an optional provider supplies its masks.
+
+        After frame validation, token consumption and fair ray selection, the
+        provider receives ``(frames, {camera_id: (y_pixels, x_pixels)})``. It may
+        exclude selected rays, which are not backfilled with other candidates.
+        Failed work cannot be repaired and replayed using the same tokens.
+        """
         supplied_time = now is not None
         now = float(self.clock() if now is None else now)
         if not np.isfinite(now) or now < 0:
             raise ValueError('Current time must be finite and nonnegative')
-        self.diagnostics = dict(state='validating', rays=0, cameras={}, voxel_visits=0,
+        self.diagnostics = dict(state='validating', rays=0, allocated_rays=0, retained_rays=0,
+                                automatic_masked_selected=0, cameras={}, voxel_visits=0,
                                 voxel_visit_budget=self.max_voxel_visits)
         if frames is None:
             return self._no_frame('no_frames', now)
@@ -174,20 +182,26 @@ class RgbdMapper:
             if (not np.isfinite(acquired).all() or np.any(acquired > now) or
                     np.any(now-acquired >= self.max_frame_age)):
                 return self._failure('Stale, future or invalid acquisition timestamp', now)
+            by_id, valid_depths = {frame.camera_id: frame for frame in frames}, {}
+            for key in sorted(ids):
+                frame = by_id[key]
+                # Revalidate mutable calibration arrays before requesting masks.
+                DepthFrame(key, frame.token, frame.depth, frame.intrinsics,
+                           frame.world_from_camera, frame.acquired_at)
+                valid_depths[key] = np.isfinite(frame.depth) & (frame.depth > 0)
+                if not valid_depths[key].any():
+                    return self._failure(f'All depth pixels invalid: {key}', now)
             masks = {} if exclusion_masks is None else dict(exclusion_masks)
             if set(masks)-set(ids):
                 return self._failure('Exclusion mask has an unknown camera ID', now)
-            candidates, by_id = {}, {frame.camera_id: frame for frame in frames}
+            candidates = {}
             for key in sorted(ids):
                 frame = by_id[key]
-                # Revalidate mutable calibration arrays at the mapper boundary.
-                DepthFrame(key, frame.token, frame.depth, frame.intrinsics,
-                           frame.world_from_camera, frame.acquired_at)
-                valid_depth = np.isfinite(frame.depth) & (frame.depth > 0)
-                if not valid_depth.any():
-                    return self._failure(f'All depth pixels invalid: {key}', now)
+                valid_depth = valid_depths[key]
                 mask = masks.get(key)
-                if mask is not None and (np.asarray(mask).dtype != np.bool_ or np.shape(mask) != frame.depth.shape):
+                if ((mask is not None and (np.asarray(mask).dtype != np.bool_ or
+                        np.shape(mask) != frame.depth.shape)) or
+                        (mask_provider is not None and key in masks and mask is None)):
                     return self._failure(f'Exclusion mask must match boolean depth image: {key}', now)
                 y, x = np.indices(frame.depth[::self.stride, ::self.stride].shape)
                 y, x = y.ravel()*self.stride, x.ravel()*self.stride
@@ -198,17 +212,44 @@ class RgbdMapper:
                 candidates[key] = (y[keep], x[keep], depth[keep])
                 self.diagnostics['cameras'][key] = dict(sampled_pixels=len(x),
                     masked_pixels=int(masked.sum()), candidate_rays=int(keep.sum()), rays=0,
+                    allocated_rays=0, retained_rays=0, automatic_masked_selected=0,
                     free_voxels=0, occupied_voxels=0)
             allocation = self._allocate({key: len(value[0]) for key, value in candidates.items()})
-            self.diagnostics['rays'] = sum(allocation.values())
+            self.diagnostics['allocated_rays'] = sum(allocation.values())
+            selected_rays, pixels = {}, {}
+            for key in sorted(ids):
+                y, x, depth = candidates[key]
+                count = allocation[key]
+                selected = ((np.arange(count)+.5)*len(x)/count).astype(int) if count else np.empty(0, int)
+                selected_rays[key] = (y[selected], x[selected], depth[selected])
+                pixels[key] = selected_rays[key][:2]
+                self.diagnostics['cameras'][key]['allocated_rays'] = count
+            if mask_provider is not None and self.diagnostics['allocated_rays']:
+                try:
+                    automatic = dict(mask_provider(frames, pixels))
+                except Exception as exc:
+                    return self._failure(f'Invalid RGB-D snapshot: mask provider failed: {exc}', now)
+                if set(automatic) != set(ids):
+                    return self._failure('Automatic mask camera IDs must match every depth frame', now)
+                for key in sorted(ids):
+                    mask = np.asarray(automatic[key])
+                    if mask.dtype != np.bool_ or mask.shape != by_id[key].depth.shape:
+                        return self._failure(f'Automatic mask must match boolean depth image: {key}', now)
+                    y, x, depth = selected_rays[key]
+                    keep = ~mask[y, x]
+                    removed = int((~keep).sum())
+                    self.diagnostics['cameras'][key]['automatic_masked_selected'] = removed
+                    self.diagnostics['automatic_masked_selected'] += removed
+                    selected_rays[key] = (y[keep], x[keep], depth[keep])
+            retained = sum(len(value[0]) for value in selected_rays.values())
+            self.diagnostics.update(rays=retained, retained_rays=retained)
             free, occupied = set(), set()
             for key in sorted(ids):
-                count = allocation[key]
+                y, x, depth = selected_rays[key]
+                count = len(x)
+                self.diagnostics['cameras'][key]['retained_rays'] = count
                 if not count:
                     continue
-                y, x, depth = candidates[key]
-                selected = ((np.arange(count)+.5)*len(x)/count).astype(int)
-                x, y, depth = x[selected], y[selected], depth[selected]
                 frame = by_id[key]
                 k, transform = frame.intrinsics, frame.world_from_camera
                 rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(count)]
@@ -227,7 +268,7 @@ class RgbdMapper:
                 self.diagnostics['cameras'][key].update(rays=count,
                     free_voxels=len(view_free-view_occupied), occupied_voxels=len(view_occupied))
             free.difference_update(occupied)
-            self.diagnostics.update(rays=sum(allocation.values()), free_voxels=len(free), occupied_voxels=len(occupied))
+            self.diagnostics.update(free_voxels=len(free), occupied_voxels=len(occupied))
             if not free and not occupied:
                 return self._no_frame('no_intersecting_evidence', now)
             indices = lambda values: np.asarray(sorted(values), dtype=int).reshape(-1, 3)

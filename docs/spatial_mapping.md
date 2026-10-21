@@ -1,4 +1,4 @@
-# Spatial mapping V1
+# Spatial mapping
 
 Spatial mapping stores volumetric environment evidence independently of semantic
 objects. `world/spatial_mapping` contains the NumPy grid, occupancy evidence and
@@ -92,9 +92,10 @@ reconstruct the source after a renderer clock reset.
 
 `exclusion_masks={camera_id: boolean_depth_image}` skips each true pixel's entire
 ray. A masked robot hit therefore clears neither the robot nor space behind it.
-Automatic geometry-aware robot masks are **not implemented**. Callers must supply
-reliable masks; otherwise robot returns can enter the environmental map. Ground
-truth robot exclusion does not automatically mask depth images.
+V1 accepts caller-supplied masks; V2 adds the optional automatic robot filter
+described below. With automatic filtering disabled, callers must provide reliable
+robot masks or robot returns can enter the environmental map. Ground-truth robot
+exclusion does not automatically mask depth images.
 
 ## Configuration and explicit use
 
@@ -120,6 +121,9 @@ stale_after = 1.0
 evidence_ttl = 5.0
 excluded_prim_paths = ["/Franka"]   # Ground truth only.
 max_candidate_voxels = 8000000     # Ground-truth candidate work across all prims.
+automatic_robot_filter = false    # V2, RGB-D only; explicit opt-in.
+robot_depth_tolerance = 0.005     # Meters, optical-depth comparison.
+robot_pose_tolerance = 0.01       # Seconds, pose/render timestamp matching.
 # update_hz = 5.0                  # Optional limit on explicit update calls.
 ```
 
@@ -138,7 +142,10 @@ from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.integrations.isaac.spatial_mapping.factory import create_spatial_mapping
 
 config = load_scene_config("outputs/my_setup.toml")
-session = create_spatial_mapping(config.spatial_mapping)  # None when disabled.
+session = create_spatial_mapping(
+    config.spatial_mapping,
+    robot_prim_path=config.robot.prim_path,  # Required for automatic RGB-D filtering.
+)  # None when disabled.
 if session is not None:
     try:
         session.update(frames)     # RGB-D: already-acquired DepthFrames.
@@ -161,7 +168,7 @@ the owner's cameras. For an already initialized single V1 camera,
 it initializes no cameras and closes only its reader. Close taps/readers before
 replacing their acquisition owner. Caller-supplied frames need no adapter.
 
-## Verification and limits
+## V1 validation history and limits
 
 ```bash
 ./run_isaac_python.sh -m unittest \
@@ -181,7 +188,7 @@ replacing their acquisition owner. Caller-supplied frames need no adapter.
   --artifacts-dir outputs/spatial-mapping-regression
 ```
 
-The final offline run passed all 528 discovered tests (72 new mapping tests),
+The V1 final offline run passed all 528 discovered tests (72 new mapping tests),
 eight standalone checks and the architecture/syntax checks. Both mapping native
 scenarios passed, as did the six existing multi-view and two V1 scenarios. The
 legacy regression group initially passed five of six: its benchmark retained one
@@ -247,7 +254,255 @@ complete obstacle coverage or collision-safe robot motion.
 V1 is a bounded dense grid with sampled rays, finite evidence memory and explicit
 updates. Thin geometry between sampled rays, calibration/depth noise, occlusion
 and unmodeled robot returns limit RGB-D completeness. GT approximations can
-overoccupy. Unknown space is not certified free. Future work includes reliable
-robot masks, uncertainty-aware ray evidence and sparse storage, without changing
-the consumer contract. This stage supplies occupancy evidence; it implements no
-collision checking, avoidance or motion planning.
+overoccupy. Unknown space is not certified free. V2 adds model-derived robot
+masks; uncertainty-aware ray evidence and sparse storage remain future work.
+This stage supplies occupancy evidence; it implements no collision checking,
+avoidance or motion planning.
+
+## V2 automatic robot filtering
+
+Set `automatic_robot_filter = true` for RGB-D mapping and pass
+`robot_prim_path=config.robot.prim_path` to `create_spatial_mapping`. There is no
+automatic-filter fallback to `/Franka`; the configured robot can live elsewhere.
+The default remains off, and GT mapping continues to use its independent
+`excluded_prim_paths`. The two positive finite tolerances above are the only new
+tuning settings. `robot_pose_tolerance` is a time tolerance, not robot inflation.
+
+The Isaac adapter reads the robot's authored visual meshes, associates them with
+their kinematic rigid bodies and caches the local triangle geometry and fixed
+mesh-to-body transforms. This requires static visual meshes and static transforms
+relative to each rigid body; the standard Franka's arm and finger bodies can
+still move through their current PhysX poses. Skinning, deforming meshes and
+animated mesh-to-body transforms are not supported. The generic
+`world/spatial_mapping/robot_filter.py` builds reusable bounding-volume
+hierarchies (BVHs) and intersects calibrated camera rays with the actual
+triangles. Bounding boxes accelerate traversal; they do not define the final
+mask. There is no silhouette dilation, broad occupied robot envelope, new camera,
+extra render pipeline or production segmentation annotation.
+
+The mapper first validates caller masks and fairly selects at most `max_rays`
+from valid stride-grid candidates across cameras. The filter predicts the
+nearest positive robot surface only for those selected pixels, in optical-depth
+coordinates. A measured return
+more than `robot_depth_tolerance` in front of it is retained as possible external
+geometry. Returns consistent with the robot, and ambiguous returns behind that
+expected occluding surface, are withheld. Rays without a robot intersection are
+retained. Automatic exclusions are dropped without backfilling other rays.
+The automatic boolean masks have the full depth-image shape; unqueried pixels
+remain false and are not classified as robot. These are mapping masks rather
+than dense robot segmentation images. Factory construction keeps both strides
+equal. Diagnostics distinguish allocated, retained and automatically excluded
+selected rays, so a robot-dominated view cannot silently consume extra work.
+
+Automatic and caller-supplied `exclusion_masks` are combined with OR without
+changing either input. All configured cameras still participate in one complete
+batch. Every automatic mask must have the corresponding camera ID, boolean dtype
+and depth-image shape. The existing mapper skips each excluded ray completely:
+filtering contributes neither occupied robot voxels nor free evidence in front
+of or behind that return. Another unmasked camera can still observe the region.
+Nothing turns UNKNOWN into OCCUPIED.
+
+### Robot poses and frame time
+
+`DepthFrame.acquired_at` is the local monotonic time when existing camera buffers
+were read. Its `token[1]` identifies simulation time for the rendered exposure.
+Those clocks serve different purposes: sampling the robot at mapping-processing
+time can pair old depth with a newer arm pose. Native investigation found
+roughly 33–67 ms of render lag, and USD transforms read in a post-physics callback
+could still be one physics step old. These observations motivated pose history;
+they are not a fixed lag correction.
+
+Only the enabled Isaac filter owns a post-physics subscription and a bounded
+256-sample history of raw PhysX rigid-body poses. For the inspected Panda, the callback
+copies 11 body poses; it does no camera reads or mesh intersections. Camera-specific
+geometry uses the nearest history sample to each frame's original render
+timestamp, subject to `robot_pose_tolerance`. This is a bounded time approximation,
+not an exact pose or motion-error guarantee. It does not substitute the latest USD
+pose. Cached mesh data are reused as the arm and fingers move. The adapter
+borrows the global physics view and owns its subscription and body-view handle.
+Backward simulation time clears pose history. Callback errors are reported by
+the next mask request; they are not silently ignored. The geometry cache does
+not monitor runtime USD mesh, visibility, topology, mesh-to-body transform or
+stage edits. Callers must close and manually reinitialize the filter after such
+changes, once the model is static again. These edits do not automatically fail
+the next update or refresh the cached model.
+
+Construct the mapping session before acquiring the frames to be mapped so its
+pose history can collect matching samples. Missing or out-of-tolerance pose
+history, invalid poses and detected model-construction failures are explicit
+errors, with no unfiltered fallback. This does not imply detection of later
+changes to cached geometry. The
+RGB-D mapper validates complete camera tokens, age and calibration before
+requesting automatic masks. Attempted tokens are consumed before filtering, so
+repairing a failed filter cannot relabel the same buffers as fresh evidence.
+The normal completion-age check includes filter processing time; explicit
+`now=` retains its deterministic offline semantics.
+
+### Explicit use and lifecycle
+
+Existing `SharedFrames` and `CameraSnapshots` adapters continue to borrow camera
+resources. Install the mapping session while the simulator is initialized, then
+feed new observations through the existing acquisition owner:
+
+```python
+from robot_skill_stack.integrations.isaac.spatial_mapping import SharedFrames
+
+tap = SharedFrames(existing_provider.rig)
+session = create_spatial_mapping(
+    config.spatial_mapping,
+    stage=stage,
+    frame_source=tap,
+    own_frame_source=True,
+    robot_prim_path=config.robot.prim_path,
+)
+try:
+    # After the owner acquires a fresh batch and matching pose history exists:
+    existing_provider.observe()
+    updated = session.update()  # Automatic masks; no manual robot masks needed.
+    print(updated, session.robot_filter.diagnostics)
+finally:
+    session.close()             # Removes the filter subscription and restores the tap.
+```
+
+This example requires enabled RGB-D mapping with automatic filtering enabled.
+It illustrates explicit calls; bootstrap, semantic perception, the controller,
+skills and planner do not start or consume mapping. Any supported camera count
+uses those same calibrated snapshots. The filter creates no replacement cameras.
+
+Closing a session is idempotent. It attempts source, filter/history and owned
+frame-adapter cleanup even if an earlier close fails, preserving cleanup errors.
+Borrowed cameras, the robot, stage and global physics view remain owned by their
+existing components. Constructor failures clean resources whose ownership was
+acquired; the filter also owns cleanup of its partial initialization.
+
+Enabling filtering does not delete prior unfiltered occupancy. Start a fresh map
+with `session.map.clear()` when comparing modes, or allow existing evidence to
+clear through later valid free rays or its ordinary TTL. The implementation does
+not erase robot-shaped volumes, which could also remove external obstacles.
+
+### V2 verification and remaining limits
+
+SDK-free geometry tests cover calibrated half-pixel projection, actual triangle
+intersections, optical depth, foreground/self/behind distinctions, open/closed
+finger gaps, multiple views and moving snapshots. Integration tests cover the
+opt-in configuration, arbitrary robot path, mask composition, failed/repeated
+buffers, processing age and resource ownership:
+
+```bash
+./run_isaac_python.sh -m unittest \
+  tests.unit.test_spatial_mapping_robot_filter \
+  tests.unit.test_spatial_mapping_robot_adapter \
+  tests.unit.test_spatial_mapping_self_filter_integration
+./run_isaac_python.sh tests/spatial_mapping/test_robot_self_filter.py \
+  --result outputs/spatial-mapping-v2/result.json \
+  --artifacts-dir outputs/spatial-mapping-v2
+```
+
+The final V2 run on 22 October 2026 passed all 573 offline tests, eight standalone
+checks and architecture/syntax checks. All 17 native scenarios passed: three
+mapping, six multi-camera perception, two V1 perception/manipulation and six
+legacy manipulation regressions. The mapping suite includes the unchanged
+GT/RGB-D scenarios. The self-filter fixture used seven
+configurations, both existing 640×480 cameras and independent instance-ID
+annotations on those same render products. Production does not use those labels.
+The full [evaluation](assets/spatial_mapping_v2/evaluation.json) records per-pose
+reference denominators, state counts, calibration timing and test artifacts.
+The [verification record](assets/spatial_mapping_v2/verification.json) includes
+all suite results and confirms that all 19 frozen perception/configuration files
+are unchanged.
+
+| Configuration | Selected robot returns excluded/observed | Robot-reference OCCUPIED before → after | Selected external returns withheld/observed |
+| --- | ---: | ---: | ---: |
+| Home, closed | 164/164 | 164 → 0 | 0/12 |
+| Extended, open | 167/167 | 167 → 0 | 0/7 |
+| Rotated, closed | 154/154 | 154 → 0 | 0/11 |
+| Side extended, open | 170/170 | 170 → 0 | 0/11 |
+| Moving, sample 4 | 166/166 | 166 → 0 | 0/10 |
+| Moving, sample 8 | 160/160 | 147 → 0 | 0/12 |
+| Moving, sample 12 | 164/165 | 149 → 1 | 1/10 |
+
+These are exact mapping-selected rays and per-configuration reference cells,
+summed across configurations, not unique global voxels. All 62 selected clear
+forearm/wrist/gripper/foreground returns were retained. One of 11 selected
+occlusion-edge returns was withheld. A separate dense stride-8 validation found
+8,253/8,255 robot returns excluded, zero exclusions among the 424 clear adjacent
+and foreground returns, and four withheld among 97 occlusion-edge returns.
+Dense validation is evaluated separately and does not backfill production rays.
+
+At Home, the 115×120×114 grid (1,573,200 voxels, 1 cm) changed as follows:
+
+| Mode | FREE | OCCUPIED | UNKNOWN |
+| --- | ---: | ---: | ---: |
+| Unfiltered | 141,940 | 505 | 1,430,755 |
+| Filtered | 124,573 | 341 | 1,448,286 |
+
+The filter creates no occupied model envelope. The additional UNKNOWN cells
+reflect withheld whole rays, including their formerly cleared prefixes.
+Over historical robot-reference cells that GT classifies environment-FREE,
+occupied counts fell from 409 to one. This set includes current robot volume;
+it is not a measurement of exclusively vacated-space ghosts. Existing unfiltered
+ghosts still require valid free evidence, expiration or a deliberate map reset.
+
+No FREE classifications occurred at the 35 GT-occupied probe-center checks.
+There were two FREE classifications at selected robot surface-reference cells;
+the dense gripper reference also contained one FREE cell in both modes. These
+surface-cell checks expose voxel-boundary/sampling uncertainty and are not
+complete continuous-volume ground truth. One robot return remained unmasked
+while moving, and occlusion-edge external returns can be withheld. These residual
+errors remain visible in the report; neither robot exclusion nor FREE is a
+geometric collision certificate.
+
+The probe behind the arm had a robot-labeled foreground occluder in the first
+camera in every tested pose, and could be seen from the second camera. Its
+interior remained UNKNOWN rather than falsely cleared. Delayed-frame masks were
+unchanged after advancing the arm to another configuration. Frozen/repeated
+sources did not refresh map timestamps; resume, reinitialization and cleanup
+passed. Pose-history matches had zero measured simulation-time skew in this run,
+within the configured 10 ms limit.
+
+![Native self-filter accuracy and occupancy](assets/spatial_mapping_v2/self_filter_evaluation.png)
+
+Median model lookup/filtering was **227 ms** (207–238 ms) for 1,024 selected rays.
+One-time geometry/BVH initialization was 507 ms. The 11-body post-physics history
+capture averaged 0.130 ms, with a 0.202 ms maximum over 240 callbacks. The larger
+full-arm grid took 2.165 s unfiltered and 2.135 s filtered at the median: dropped
+robot rays offset the extra filtering work. These mapping times should not be
+compared directly with V1's smaller tabletop ROI. They exclude rendering and the
+separate dense validation pass. The comparison uses five-second acquisition and
+freshness limits because it runs both maps sequentially on the same original
+snapshot; timestamps are never rewritten. An initial run alongside CPU-heavy
+units correctly expired, so final native timing runs were isolated.
+
+Reproduce the final verification in sequence, with each native run isolated:
+
+```bash
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only \
+  --artifacts-dir outputs/spatial-mapping-v2-unit-final
+./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping \
+  --artifacts-dir outputs/spatial-mapping-v2-final
+./run_isaac_python.sh scripts/run_all_regressions.py --group multiview \
+  --artifacts-dir outputs/spatial-mapping-v2-perception
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac \
+  --artifacts-dir outputs/spatial-mapping-v2-v1
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression \
+  --artifacts-dir outputs/spatial-mapping-v2-regression
+```
+
+V2 is ready for broader spatial-mapping validation on additional layouts, speeds,
+thin obstacles and close-contact gaps. The results support practical robot
+exclusion with clear foreground preservation, while the remaining edge errors
+need continued evaluation. Runtime integration and motion planning remain
+separate tasks.
+
+This is model-based evidence filtering for collision-avoidance support, not a
+certified safety mechanism. Geometry/calibration error, render/pose mismatch and
+stride sampling can leave robot returns or withhold nearby external returns.
+Camera calibration is trusted as supplied: native validation uses fixed world
+cameras, and because existing acquisition reads K/T with the buffers rather than
+recovering historical extrinsics, moving cameras require caller-supplied frames
+calibrated at exposure.
+An obstacle within the depth tolerance can be ambiguous; withholding it does not
+mean the space is free. Missing views and occlusion still limit map coverage, and
+old evidence can persist until cleared or expired. Practical readiness depends
+on the native obstacle-preservation and latency results; it does not establish
+collision-safe motion or authorize runtime/planning integration.

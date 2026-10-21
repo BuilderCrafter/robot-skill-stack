@@ -1,0 +1,329 @@
+{
+  "validation_local_date": "2026-10-22",
+  "timezone": "Europe/Belgrade",
+  "branch": "feature/collision-aware-manipulation",
+  "baseline_commit": "45bfe3904a7649438773285a18ed95fdfbb3919e",
+  "main_commit_unchanged": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+  "status": "PASS",
+  "environment": {
+    "launcher": "./run_isaac_python.sh",
+    "isaac_sim": "5.1",
+    "python": "3.11",
+    "numpy": "1.26.4",
+    "native_execution": "Sequential, without concurrent CPU-heavy unit discovery or another simulator."
+  },
+  "offline": {
+    "unit_discovery_count": 573,
+    "standalone_checks": 8,
+    "architecture_boundary": "PASS",
+    "python_syntax": "PASS",
+    "new_unit_tests": {
+      "tests/unit/test_spatial_mapping_robot_filter.py": 13,
+      "tests/unit/test_spatial_mapping_robot_adapter.py": 12,
+      "tests/unit/test_spatial_mapping_self_filter_integration.py": 20
+    },
+    "new_unit_total": 45,
+    "spatial_mapping_unit_methods": 117
+  },
+  "native_scenario_count": 17,
+  "suites": [
+    {
+      "group": "unit",
+      "status": "PASS",
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/spatial-mapping-v2-unit-final",
+      "artifact_directory": "outputs/spatial-mapping-v2-unit-final/run-7_9c60w2",
+      "summary_sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+      "results": [
+        {
+          "name": "architecture",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "unit_discovery",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_async_runtime",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_grasp_planning",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_perception",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_placement",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_primitive_perception",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_reactive_pick",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_world_model_update_rate",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        {
+          "name": "test_world_model_view",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "group": "spatial_mapping",
+      "status": "PASS",
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping --artifacts-dir outputs/spatial-mapping-v2-final",
+      "artifact_directory": "outputs/spatial-mapping-v2-final/run-9pgmzcgn",
+      "summary_sha256": "c4085edf5846395cc247fee5b33e9515053f5c1fa8118c71d5b7f3836a5c07a5",
+      "results": [
+        {
+          "name": "spatial_mapping_test_ground_truth",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-final/run-9pgmzcgn/spatial_mapping_test_ground_truth.json",
+          "result_sha256": "5ac6762419a4cfe86e8b3f6718081c2b507d1ddd9bd84d4b15b58ef4378854c5"
+        },
+        {
+          "name": "spatial_mapping_test_rgbd",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-final/run-9pgmzcgn/spatial_mapping_test_rgbd.json",
+          "result_sha256": "a0cc92962bda2c3a419cb7bbb7492804ef93036d7617a22679843cd1a76233d6"
+        },
+        {
+          "name": "spatial_mapping_test_robot_self_filter",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-final/run-9pgmzcgn/spatial_mapping_test_robot_self_filter.json",
+          "result_sha256": "c31ade7317b29273eb913702832fe6b4e406d7e644118e35f32e323bc416b34d"
+        }
+      ]
+    },
+    {
+      "group": "multiview",
+      "status": "PASS",
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group multiview --artifacts-dir outputs/spatial-mapping-v2-perception",
+      "artifact_directory": "outputs/spatial-mapping-v2-perception/run-zky0qidl",
+      "summary_sha256": "b84bcc0bf5143b673abf1336fb129073d39cc1e7cbfa9a5b26f4788836f445e3",
+      "results": [
+        {
+          "name": "multiview_test_close_object_recovery",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_close_object_recovery.json",
+          "result_sha256": "f15a95f04641c8bb0678bdb9f0475cac5e46000291d584f912dec62b1a56ead4"
+        },
+        {
+          "name": "multiview_test_geometric_observability",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_geometric_observability.json",
+          "result_sha256": "438823a3cb95673f85a0e08a57dea54a9f1b8c762310675eb5ce0c2aa6dd561c"
+        },
+        {
+          "name": "multiview_test_grasp_planning_readiness",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_grasp_planning_readiness.json",
+          "result_sha256": "8ff30cf5f66038f7475f2875e5c8582ea714031a9b58a94138ca6d4e7b54c7bf"
+        },
+        {
+          "name": "multiview_test_robot_occlusion",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_robot_occlusion.json",
+          "result_sha256": "c7c1f93737ca67899d2d77a4da00e2cb3016ee96253cc0cf3fc4812565160234"
+        },
+        {
+          "name": "multiview_test_source_contract",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_source_contract.json",
+          "result_sha256": "7feabeabca74748dbb93c02af8016f205298bd8a1ebce99c26862e29ffe94054"
+        },
+        {
+          "name": "multiview_test_variable_camera_count",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-perception/run-zky0qidl/multiview_test_variable_camera_count.json",
+          "result_sha256": "20596c35276ddcd047a11f033428555bd05a34993343bdf56e1fe10eac23bd68"
+        }
+      ]
+    },
+    {
+      "group": "isaac",
+      "status": "PASS",
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/spatial-mapping-v2-v1",
+      "artifact_directory": "outputs/spatial-mapping-v2-v1/run-rwcxqu4j",
+      "summary_sha256": "c0d5903797301cd8454bc8926fdf92a44bd22b9a6107a776e4e418167bc3277d",
+      "results": [
+        {
+          "name": "isaac_test_perception_discovery",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-v1/run-rwcxqu4j/isaac_test_perception_discovery.json",
+          "result_sha256": "fb8a410ac3ad6bc4c929ad7935d93a86b7fca5ef7563278292d951aef28f11a2"
+        },
+        {
+          "name": "isaac_test_perception_manipulation",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-v1/run-rwcxqu4j/isaac_test_perception_manipulation.json",
+          "result_sha256": "8bf11283231f4e0ab014943dc9148eb13e2ac965fd01fa0c8d8363435fec3427"
+        }
+      ]
+    },
+    {
+      "group": "regression",
+      "status": "PASS",
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/spatial-mapping-v2-regression",
+      "artifact_directory": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z",
+      "summary_sha256": "0f94932559d12aa2cdbe098b3774e1fdca2f4f6d864a153762d58266aa9e1c4f",
+      "results": [
+        {
+          "name": "regression_test_benchmark",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_benchmark.json",
+          "result_sha256": "a32a4c1a3239056e430d54dfee51862096bc4bee9450d2180bd555e64fb09858"
+        },
+        {
+          "name": "regression_test_grasp_planning",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_grasp_planning.json",
+          "result_sha256": "f8a130afab5f5325fd7ae229b22c29149c8b8d0f681c6884a1abb3bcf926dd1b"
+        },
+        {
+          "name": "regression_test_multi_object",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_multi_object.json",
+          "result_sha256": "98ad2a1accb1e83ddfdb81a466f7e7e625f66605003b12a01b3e25e35b938532"
+        },
+        {
+          "name": "regression_test_placement_feasibility",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_placement_feasibility.json",
+          "result_sha256": "26e04cd6fe1fe0f19be3908c1a9517b631959783af58e45bfaf8e26229954cc1"
+        },
+        {
+          "name": "regression_test_reactive_pick",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_reactive_pick.json",
+          "result_sha256": "8c3a3099f7afce154f1f55df88359ebeae1d0fa61144a67113805188951bc681"
+        },
+        {
+          "name": "regression_test_recovery",
+          "status": "PASS",
+          "return_code": 0,
+          "error": null,
+          "result_json": "outputs/spatial-mapping-v2-regression/run-l3hrrf9z/regression_test_recovery.json",
+          "result_sha256": "2bef1bd79b6ae13c17bd1a50c927bef7470c00945e0e9578541d13def1eaed09"
+        }
+      ]
+    }
+  ],
+  "scope_audit": {
+    "freeze_manifest": "docs/assets/multiview_final/source-freeze.json",
+    "verified_hashes": 19,
+    "mismatches": [],
+    "verified_sha256": {
+      "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "robot_skill_stack/world/perception_multiview/fitting.py": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "robot_skill_stack/world/perception_multiview/observability.py": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "robot_skill_stack/world/perception_multiview/provider.py": "77854e22dbb00f0962fe2f73be78c18912ef007feffe854b81bef189e8a67795",
+      "robot_skill_stack/world/perception_multiview/segmentation.py": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "tests/support/multiview_final_research.py": "8ffcaf5f677327bd9f0a558482da2c3ad95521e2393c9ac33795c2c181d33a2b",
+      "scripts/benchmark_multiview_final_perception.py": "258ca263216efd88541ae472744c0b6b4624aa50b3ccc207306dfdce70151c21",
+      "tests/support/multiview_final_evaluation.py": "f26d460ca843c50e784c38897f51f10e06679236d1d53426935fb3371927ff06",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "config/scenes/multiview_playground.toml": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "docs/assets/multiview_final/selected-layout.json": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+      "docs/assets/multiview_final/selection.json": "532cb83a9714034ab948d47852424c52939c5ae178ddb87f0c81232579b6538f",
+      "scripts/create_multiview_final_demo.py": "27d0aa035e1051328fadc8f68bbcaaba1c1ea290a0b5ec6f2fd9bba72b30ff2c",
+      "scripts/verify_multiview_final_scene.py": "0f9117523f83f0ce4c6e24a778fc25f50a6b629ec96fceed93daa62a5b6c1a95"
+    },
+    "protected_paths_unchanged_from_baseline": [
+      "robot_skill_stack/world/spatial_mapping/occupancy.py",
+      "robot_skill_stack/world/model",
+      "robot_skill_stack/manipulation",
+      "robot_skill_stack/runtime",
+      "robot_skill_stack/orchestration",
+      "robot_skill_stack/presentation",
+      "robot_skill_stack/integrations/isaac/manipulation",
+      "robot_skill_stack/integrations/isaac/bootstrap.py",
+      "robot_skill_stack/integrations/isaac/sensors",
+      "robot_skill_stack/world/perception",
+      "robot_skill_stack/world/perception_multiview",
+      "run_isaac_python.sh",
+      "scripts/run_all_regressions.py",
+      "scenes",
+      "config/scenes"
+    ],
+    "untracked_models": "Preserved and excluded from staging/publication."
+  },
+  "evidence": {
+    "evaluation": "evaluation.json",
+    "evaluation_sha256": "0c676df60f40a2ee30e1e8c509c9c822e599983ff04e67ca93cf8560a1ac3ab7",
+    "figure": "self_filter_evaluation.png",
+    "figure_sha256": "ab0efa166a330a5a44b6edcd4d438270d904981bca2d683f89d4e88b4bbf6edb"
+  },
+  "notes": [
+    "An initial native self-filter run concurrent with CPU-heavy unit discovery exceeded the five-second acquisition-age limit; isolated final runs passed without changing that limit. Failed local artifacts were retained in outputs/spatial-mapping-v2-native.",
+    "Selected-ray and dense-stride measurements have separate denominators. Per-configuration voxel counts are not unique global voxels.",
+    "The wider full-arm mapping ROI takes about 2.1 seconds per update; measured filter lookup overhead is about 227 ms. Pose-capture callbacks are measured separately.",
+    "Residual robot leakage, occlusion-edge obstacle withholding and FREE surface-reference cells remain documented in evaluation.json and docs/spatial_mapping.md.",
+    "This validates the independent opt-in mapping subsystem. Runtime integration, motion planning and collision-safe motion certification were not performed."
+  ]
+}

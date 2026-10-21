@@ -25,10 +25,15 @@ class SpatialMappingConfig:
     update_hz: float | None = None
     excluded_prim_paths: tuple[str, ...] = ('/Franka',)
     max_candidate_voxels: int = 8_000_000
+    automatic_robot_filter: bool = False
+    robot_depth_tolerance: float = .005
+    robot_pose_tolerance: float = .01
 
     def __post_init__(self):
         if type(self.enabled) is not bool or self.source not in ('ground_truth', 'rgbd'):
             raise ValueError('spatial_mapping needs enabled=true/false and source=ground_truth or rgbd')
+        if type(self.automatic_robot_filter) is not bool:
+            raise ValueError('spatial_mapping automatic_robot_filter must be true/false')
         spec = self.grid_spec()
         object.__setattr__(self, 'bounds_min', tuple(spec.bounds_min))
         object.__setattr__(self, 'bounds_max', tuple(spec.bounds_max))
@@ -36,7 +41,8 @@ class SpatialMappingConfig:
             value = getattr(self, name)
             if type(value) is not int or value < 1:
                 raise ValueError(f'spatial_mapping {name} must be a positive integer')
-        for name in ('max_depth', 'max_skew', 'max_frame_age', 'stale_after', 'evidence_ttl', 'update_hz'):
+        for name in ('max_depth', 'max_skew', 'max_frame_age', 'stale_after', 'evidence_ttl',
+                     'update_hz', 'robot_depth_tolerance', 'robot_pose_tolerance'):
             value = getattr(self, name)
             if value is None and name == 'update_hz':
                 continue
