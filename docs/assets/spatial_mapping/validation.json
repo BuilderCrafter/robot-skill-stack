@@ -1,0 +1,392 @@
+{
+  "validated_at_utc": "2026-10-21T21:29:45.120625+00:00",
+  "baseline_commit": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+  "branch": "feature/collision-aware-manipulation",
+  "stage": 1,
+  "environment": {
+    "launcher": "./run_isaac_python.sh",
+    "numpy": "1.26.4",
+    "isaac_sim": "5.1",
+    "native_sessions": "strictly sequential"
+  },
+  "test_runs": {
+    "unit": {
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/spatial-mapping-unit-final",
+      "artifacts": "outputs/spatial-mapping-unit-final/run-9kj_ygqh",
+      "status": "PASS",
+      "cases": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "discovered_tests": 528,
+      "new_mapping_tests": 72,
+      "standalone_checks": 8
+    },
+    "spatial_mapping": {
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping --artifacts-dir outputs/spatial-mapping-native",
+      "artifacts": "outputs/spatial-mapping-native/run-r9_xl7wt",
+      "status": "PASS",
+      "cases": {
+        "spatial_mapping_test_ground_truth": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_rgbd": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    "multiview": {
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group multiview --artifacts-dir outputs/spatial-mapping-perception",
+      "artifacts": "outputs/spatial-mapping-perception/run-avloo0t0",
+      "status": "PASS",
+      "cases": {
+        "multiview_test_close_object_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_geometric_observability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_grasp_planning_readiness": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_robot_occlusion": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_source_contract": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_variable_camera_count": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    "isaac": {
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/spatial-mapping-v1",
+      "artifacts": "outputs/spatial-mapping-v1/run-wehtl5jp",
+      "status": "PASS",
+      "cases": {
+        "isaac_test_perception_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_perception_manipulation": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    "regression": {
+      "command": "./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/spatial-mapping-regression",
+      "artifacts": "outputs/spatial-mapping-regression/run-rfija6l5",
+      "status": "FAIL",
+      "cases": {
+        "regression_test_benchmark": {
+          "status": "FAIL",
+          "return_code": 1,
+          "error": null
+        },
+        "regression_test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_multi_object": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_placement_feasibility": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    }
+  },
+  "native_mapping": {
+    "ground_truth": {
+      "status": "PASS",
+      "metrics": {
+        "dimensions": [
+          120,
+          120,
+          70
+        ],
+        "voxel_size": 0.01,
+        "counts": {
+          "unknown": 0,
+          "free": 1002644,
+          "occupied": 5356,
+          "out_of_bounds": 0
+        },
+        "health": {
+          "status": "ok",
+          "fresh": true,
+          "stale": false,
+          "age_seconds": 0.0,
+          "timestamp": 2981259.69531994,
+          "reason": null,
+          "last_error": null
+        },
+        "updates": 5,
+        "update_ms": [
+          24.91809381172061,
+          12.327672448009253,
+          5.8781299740076065,
+          9.952052030712366,
+          6.063544657081366
+        ],
+        "queries": 17,
+        "unsupported_aabb_prims": 1,
+        "instance_proxies": true,
+        "moved_removed_free": true,
+        "invisible_colliders": true,
+        "failed_budget_preserved_timestamp": true,
+        "nonmeter_stage_units": true,
+        "unloaded_environment_failed": true,
+        "excluded_unloaded_robot": true,
+        "existing_scene_opened": false,
+        "existing_scenes_modified": false,
+        "robot_commands": 0
+      },
+      "error": null
+    },
+    "rgbd": {
+      "status": "PASS",
+      "metrics": {
+        "dimensions": [
+          68,
+          80,
+          32
+        ],
+        "voxel_size": 0.01,
+        "ground_truth_counts": {
+          "unknown": 0,
+          "free": 162504,
+          "occupied": 11576,
+          "out_of_bounds": 0
+        },
+        "rgbd_counts": {
+          "unknown": 149717,
+          "free": 24007,
+          "occupied": 356,
+          "out_of_bounds": 0
+        },
+        "ground_truth_health": {
+          "status": "ok",
+          "fresh": true,
+          "stale": false,
+          "age_seconds": 0.005849717650562525,
+          "timestamp": 2981277.920591879,
+          "reason": null,
+          "last_error": null
+        },
+        "rgbd_health": {
+          "status": "ok",
+          "fresh": true,
+          "stale": false,
+          "age_seconds": 0.5573314260691404,
+          "timestamp": 2981277.369753088,
+          "reason": null,
+          "last_error": null
+        },
+        "ground_truth_update_ms": 5.701342131942511,
+        "rgbd_update_ms": [
+          406.83037089183927,
+          378.2053547911346,
+          377.19763396307826,
+          375.3246469423175,
+          373.71856113895774,
+          378.40018793940544
+        ],
+        "camera_paths": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "matching_visible_surface_cells": 14,
+        "matching_free_cells": 18379,
+        "queries": [
+          {
+            "label": "measured_surface",
+            "position": [
+              0.33499999999999996,
+              -0.14500000000000002,
+              0.05500000000000001
+            ],
+            "ground_truth": "OCCUPIED",
+            "rgbd": "OCCUPIED",
+            "rgbd_probability": 0.9677045353015494,
+            "rgbd_observed": true
+          },
+          {
+            "label": "visible_empty_space",
+            "position": [
+              0.465,
+              -0.375,
+              0.255
+            ],
+            "ground_truth": "FREE",
+            "rgbd": "FREE",
+            "rgbd_probability": 0.16798161486607552,
+            "rgbd_observed": true
+          },
+          {
+            "label": "occluded_cube_interior",
+            "position": [
+              0.36,
+              -0.16,
+              0.0275
+            ],
+            "ground_truth": "OCCUPIED",
+            "rgbd": "UNKNOWN",
+            "rgbd_probability": 0.5,
+            "rgbd_observed": false
+          }
+        ],
+        "shared_exact_snapshots": true,
+        "duplicate_buffers_rejected": true,
+        "frozen_camera_not_fresh": true,
+        "recovered": true,
+        "reinitialized_without_new_cameras": true,
+        "saved_scenes_and_config_unchanged": true,
+        "robot_commands": 0,
+        "automatic_robot_masking": false,
+        "all_cameras_closed": true
+      },
+      "error": null
+    }
+  },
+  "benchmark_comparison": {
+    "initial": {
+      "status": "FAIL",
+      "error": "AssertionError: Perception benchmark exceeded 15 mm max position error",
+      "position_error_mm": {
+        "mean": 87.86211133799351,
+        "p95": 128.29097821218312,
+        "max": 129.287668656654,
+        "min": 39.43773626459166
+      },
+      "manipulation_trials": 0
+    },
+    "unchanged_main": {
+      "status": "PASS",
+      "error": null,
+      "position_error_mm": {
+        "mean": 1.5997308482846309,
+        "p95": 1.9036460375529325,
+        "max": 2.008677241814615,
+        "min": 1.2173855640366138
+      },
+      "manipulation_trials": 4
+    },
+    "feature_retry": {
+      "status": "PASS",
+      "error": null,
+      "position_error_mm": {
+        "mean": 1.5997308482846309,
+        "p95": 1.9036460375529325,
+        "max": 2.008677241814615,
+        "min": 1.2173855640366138
+      },
+      "manipulation_trials": 4
+    },
+    "retry_command": "./run_isaac_python.sh tests/regression/test_benchmark.py --result outputs/spatial-mapping-benchmark-retry/result.json --artifacts-dir outputs/spatial-mapping-benchmark-retry/artifacts",
+    "baseline_command": "./run_isaac_python.sh tests/regression/test_benchmark.py --result /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-baseline/benchmark.json --artifacts-dir /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-baseline/artifacts",
+    "baseline_cwd": "temporary detached checkout of baseline_commit, borrowing the same .deps",
+    "product_or_test_changes_for_retry": false,
+    "cause": "not isolated; initial observations stayed at one pose across twelve teleports"
+  },
+  "protected_perception": {
+    "files_checked": 19,
+    "changed": []
+  },
+  "final_native_scenarios": {
+    "total": 16,
+    "with_passing_result": 16,
+    "initial_regression_group_status": "FAIL",
+    "benchmark_retry": "PASS"
+  },
+  "limitations": [
+    "No automatic robot depth masks; caller masks skip whole rays.",
+    "Sampled RGB-D rays leave occluded and unsampled cells UNKNOWN.",
+    "Ground-truth cell intersections are conservative; unsupported finite geometry uses AABBs.",
+    "Dense bounded storage and explicit synchronous updates; no motion planning or collision certification.",
+    "Legacy benchmark had an intermittent initial failure; initial evidence is retained."
+  ]
+}

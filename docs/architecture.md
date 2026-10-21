@@ -41,6 +41,12 @@ increasing monotonic timestamp. No new sample has no timestamp; errors raise.
 coordinated forgetting. Sources own their camera/resources. WorldModel owns
 cached objects, attachment state and placement hints. See [perception](perception.md).
 
+Opt-in [spatial mapping](spatial_mapping.md) is a separate occupancy map, with
+simulator-independent voxel evidence/depth rays and Isaac geometry/camera
+adapters. Callers explicitly update/query it; WorldModel, skills, planners and
+runtime callbacks do not own or consume its grid. Mapping can borrow the same
+acquired RGB-D frames without initializing another camera pipeline.
+
 ## Construction
 
 `integrations/isaac/bootstrap.py` loads one [setup TOML](configuration.md), checks

@@ -6,6 +6,8 @@ import math
 import tomllib
 import numpy as np
 
+from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
+
 
 @dataclass(frozen=True)
 class RobotConfig:
@@ -106,12 +108,13 @@ class SceneConfig:
     perception: PerceptionConfig
     ground_truth: GroundTruthConfig
     multi_view: MultiViewConfig = field(default_factory=MultiViewConfig)
+    spatial_mapping: SpatialMappingConfig = field(default_factory=SpatialMappingConfig)
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
     with Path(path).open('rb') as stream:
         data = tomllib.load(stream)
-    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth', 'multi_view'}
+    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth', 'multi_view', 'spatial_mapping'}
     if unknown:
         raise ValueError(f'Unsupported configuration sections: {sorted(unknown)}')
     try:
@@ -122,6 +125,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             SceneGeometry(**data['scene']), PerceptionConfig(**data.get('perception', {})),
             GroundTruthConfig(objects=objects, **ground_truth),
             MultiViewConfig(**data.get('multi_view', {})),
+            SpatialMappingConfig(**data.get('spatial_mapping', {})),
         )
     except (KeyError, TypeError) as exc:
         raise ValueError(f'Invalid scene configuration: {exc}') from exc

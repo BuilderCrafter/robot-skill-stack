@@ -40,10 +40,15 @@ size = [0.05, 0.05, 0.05]
 | `perception` | Existing camera prim for RGB-D; optional resolution defaults to `[640, 480]` |
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
 | `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
+| `spatial_mapping` | Optional independent occupancy settings; disabled by default, with explicit construction/update and its own source, bounds and voxel budgets |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both
 need robot and scene settings. Only selected-source prims are validated.
+
+Spatial mapping does not follow `[world].provider` and does not automatically
+start when enabled in TOML. See [spatial mapping](spatial_mapping.md) for explicit
+construction, sharing existing camera frames, evidence aging and source limits.
 
 For multi-view, create an ordinary USD Camera prim, set its position and
 orientation, and add its absolute prim path to the list:
