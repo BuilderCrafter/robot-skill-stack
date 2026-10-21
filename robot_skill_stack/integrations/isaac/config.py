@@ -70,10 +70,12 @@ class MultiViewConfig:
                 raise ValueError(f'{key} must be finite and positive')
         if type(self.stride) is not int or not 1 <= self.stride <= 8:
             raise ValueError('multi_view stride must be an integer between 1 and 8')
-        if self.camera_prim_paths and (len(self.camera_prim_paths) != 2 or
-                len(set(self.camera_prim_paths)) != 2 or
-                any(not isinstance(p, str) or not p.startswith('/') for p in self.camera_prim_paths)):
-            raise ValueError('multi_view requires exactly two distinct absolute camera prim paths')
+        if self.camera_prim_paths and (len(self.camera_prim_paths) < 2 or
+                any(not isinstance(p, str) or not p.startswith('/') or
+                    any(not part.isidentifier() for part in p[1:].split('/'))
+                    for p in self.camera_prim_paths) or
+                len(set(self.camera_prim_paths)) != len(self.camera_prim_paths)):
+            raise ValueError('multi_view requires at least two distinct absolute camera prim paths')
 
 
 @dataclass(frozen=True)
@@ -132,7 +134,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         required.append(config.perception.camera_prim_path)
     elif config.world.provider == 'multi_view':
         if not config.multi_view.camera_prim_paths:
-            raise ValueError('multi_view requires exactly two camera prim paths')
+            raise ValueError('multi_view requires at least two camera prim paths')
         required.extend(config.multi_view.camera_prim_paths)
     else:
         required += [config.ground_truth.objects_root, *(o.prim_path for o in objects.values())]

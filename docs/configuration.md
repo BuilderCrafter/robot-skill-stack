@@ -39,11 +39,35 @@ size = [0.05, 0.05, 0.05]
 | `scene` | Finite support height and increasing three-dimensional world-coordinate workspace bounds, in meters; also used by grasp planning |
 | `perception` | Existing camera prim for RGB-D; optional resolution defaults to `[640, 480]` |
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
-| `multi_view` | Opt-in experimental source: exactly two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
+| `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both
 need robot and scene settings. Only selected-source prims are validated.
+
+For multi-view, create an ordinary USD Camera prim, set its position and
+orientation, and add its absolute prim path to the list:
+
+```toml
+[world]
+provider = "multi_view"
+
+[multi_view]
+camera_prim_paths = [
+    "/World/PerceptionCamera",
+    "/World/PerceptionCameraSide",
+    "/World/PerceptionCameraThird",
+]
+```
+
+Add further cameras in the same way; no Python changes are needed. To remove a
+camera, remove its entry, keeping at least two paths. Save the scene and TOML,
+then restart/reinitialize the provider with the changed configuration. Missing prims fail initialization. Every
+configured camera must supply a valid fresh frame within the synchronization
+skew limit; a failed camera is reported without partial-camera fallback. There
+is no configured camera-count maximum, but additional cameras require more
+rendering, memory and processing time. Existing fused-cloud and fitting budgets
+remain bounded; equal throughput across camera counts is not promised.
 
 To use ground truth without changing core code, copy the complete setup:
 
