@@ -54,7 +54,7 @@ _BUILDING = False
 
 
 def _validate_environment(config: SceneConfig):
-    if config.world.provider == "perception":
+    if config.world.provider in ("perception", "multi_view"):
         major = int(np.__version__.split(".", 1)[0])
         if major >= 2:
             raise RuntimeError(
@@ -80,7 +80,7 @@ def _validate_stage(config: SceneConfig):
 def _update_hz(config: SceneConfig):
     if config.world.update_hz is not None:
         return config.world.update_hz
-    return 5.0 if config.world.provider == "perception" else None
+    return 5.0 if config.world.provider in ("perception", "multi_view") else None
 
 
 async def _build_runtime(
@@ -99,8 +99,9 @@ async def _build_runtime(
     previous = getattr(world, '_robot_skill_stack_bundle', None)
     if previous is not None:
         previous.close()
+    mode = 'geometry_multiview' if config.world.provider == 'multi_view' else 'geometry_v1'
     print(f'[robot_skill_stack.runtime] profile={Path(profile_path).resolve()} '
-          f'provider={config.world.provider} perception=geometry_v1 '
+          f'provider={config.world.provider} perception={mode} '
           f'configured_objects={list(config.ground_truth.objects)}', flush=True)
     robot = create_robot(world, config.robot)
 

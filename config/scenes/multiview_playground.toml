@@ -1,0 +1,19 @@
+[robot]
+backend = "franka"
+prim_path = "/Franka"
+
+[world]
+provider = "multi_view"
+update_hz = 5.0
+
+[scene]
+support_plane_z = 0.0
+workspace_min = [0.20, -0.40, 0.0]
+workspace_max = [0.70, 0.40, 0.22]
+
+[multi_view]
+camera_prim_paths = ["/World/PerceptionCamera", "/World/PerceptionCameraSide"]
+resolution = [640, 480]
+max_skew = 0.025
+voxel_size = 0.002
+stride = 2

@@ -17,6 +17,10 @@ def required_source_prims(config):
             raise ValueError('Ground truth source requires objects_root')
         return [config.ground_truth.objects_root,
                 *(obj.prim_path for obj in config.ground_truth.objects.values())]
+    if config.world.provider == 'multi_view':
+        if not config.multi_view.camera_prim_paths:
+            raise ValueError('Multi-view requires camera_prim_paths')
+        return list(config.multi_view.camera_prim_paths)
     raise ValueError(f'Unsupported observation source: {config.world.provider}')
 
 
@@ -24,6 +28,19 @@ async def create_source(config) -> WorldObservationProvider:
     required_source_prims(config)
     if config.world.provider == 'ground_truth':
         return IsaacGroundTruthProvider(config.ground_truth.objects_root, config.ground_truth.objects)
+    if config.world.provider == 'multi_view':
+        from robot_skill_stack.integrations.isaac.world.multiview import create_cameras
+        from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+        settings = config.multi_view
+        rig = create_cameras(settings.camera_prim_paths, settings.resolution, max_skew=settings.max_skew)
+        try:
+            app = omni.kit.app.get_app()
+            for _ in range(60):
+                await app.next_update_async()
+            return MultiViewProvider(rig, config.scene, voxel_size=settings.voxel_size, stride=settings.stride)
+        except BaseException:
+            rig.close()
+            raise
     camera = IsaacRgbdCamera(config.perception.camera_prim_path,
                              resolution=config.perception.resolution)
     try:

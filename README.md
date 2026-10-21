@@ -52,6 +52,18 @@ Artifacts are written to fresh run directories; a NumPy line or open window is
 not a passing scenario. See [validation](docs/validation.md) for the final
 acceptance checklist, injected-loss diagnostic and pending native results.
 
+An opt-in [multi-view RGB-D experiment](docs/multiview_rgbd.md) adds a separate
+`multi_view` source and two-camera scene. Its research results, native tests,
+limitations and reproduction commands are documented separately; the ordinary
+playground continues to use single-camera V1.
+
+The [final cube/sphere perception checkpoint](docs/multiview_perception_final.md)
+records the camera study, frozen validation and remaining limitations. For the
+presentation, open [the experimental demo scene](scenes/multiview_perception_final.usda)
+with [its opt-in configuration](config/scenes/multiview_perception_final.toml).
+Both cameras remain editable in Isaac's Stage. Autonomous multi-view manipulation
+remains deferred.
+
 ## Architecture and layout
 
 ```text

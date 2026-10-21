@@ -1,0 +1,3260 @@
+{
+  "kind": "camera_selection_report_inputs",
+  "created_at_utc": "2026-10-20T22:46:44.322322+00:00",
+  "scope": "Saved pre-refinement camera-study JSON only. Final holdout, final dedicated profile and checkpoint decision pending.",
+  "selected_layout": "original_A_side_left_B",
+  "selected_eyes_m": [
+    [
+      1.6589600172814285,
+      -0.05281348017761145,
+      1.1035808604242954
+    ],
+    [
+      0.18,
+      0.8,
+      0.65
+    ]
+  ],
+  "selected_full_world_from_camera_ros": [
+    [
+      [
+        0.015999969482422105,
+        0.6062406100373334,
+        -0.7951203202774557,
+        1.6589600172814285
+      ],
+      [
+        0.9998406222443645,
+        -0.015999969482422105,
+        0.007920295863393323,
+        -0.05281348017761145
+      ],
+      [
+        -0.007920295863393323,
+        -0.7951203202774557,
+        -0.6063999877929689,
+        1.1035808604242954
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    [
+      [
+        -0.947492278987199,
+        -0.18726836670264893,
+        0.25920829479815244,
+        0.18
+      ],
+      [
+        -0.31977864415817964,
+        0.5548692346745154,
+        -0.768024577179711,
+        0.8
+      ],
+      [
+        0.0,
+        -0.8105866340152912,
+        -0.5856187400995295,
+        0.65
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  ],
+  "baseline_commit": "a347126b8bc8c94c86a308f2fa7c3f88151b0b46",
+  "baseline_tree": "3c2fde13bdbaa130b0c0ea3a5f6678c3843864c2",
+  "study_package_sha256": {
+    "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+    "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+    "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+    "robot_skill_stack/world/perception_multiview/fitting.py": "0fe1a9e24bcac2f8b5e62b823416bc24ca4a7572119ad55200faf8f83d29ad6e",
+    "robot_skill_stack/world/perception_multiview/observability.py": "e6d86a48aec65e4f67153fafb7cdf453657481396b0d66e2cf1611b767bd997a",
+    "robot_skill_stack/world/perception_multiview/provider.py": "b3b192ae8119249e2e36844ebdaa083ba24773a50cd88c3bc2d0ab219f4b5457",
+    "robot_skill_stack/world/perception_multiview/segmentation.py": "327c75d0ad5736d278c59dda35e8e3076da779de7709b3a5b89fa5a7cc9a76f2",
+    "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a"
+  },
+  "study_source_matches_preserved_baseline": true,
+  "axes": {
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "forward": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "left": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "right": [
+      -0.0,
+      -1.0,
+      -0.0
+    ],
+    "up": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "definition": "Forward from authoredFranka base toward horizontal configured workspace center; left=worldup crossforward."
+  },
+  "layouts": [
+    {
+      "name": "original_reference",
+      "eyes": [
+        [
+          1.6589600172814285,
+          -0.05281348017761145,
+          1.1035808604242954
+        ],
+        [
+          0.25,
+          -0.85,
+          0.65
+        ]
+      ],
+      "targets": [
+        [
+          0.8638396970039728,
+          -0.044893184314218126,
+          0.4971808726313265
+        ],
+        [
+          0.4377623906,
+          -0.052009839999999974,
+          0.07732470870000008
+        ]
+      ],
+      "note": "Exact composed historical USD poses; A approximately1.65896,-.05281,1.10358m; B.25,-.85,.65m.",
+      "world_from_cameras": [
+        [
+          [
+            0.015999969482422105,
+            0.6062406100373334,
+            -0.7951203202774557,
+            1.6589600172814285
+          ],
+          [
+            0.9998406222443645,
+            -0.015999969482422105,
+            0.007920295863393323,
+            -0.05281348017761145
+          ],
+          [
+            -0.007920295863393323,
+            -0.7951203202774557,
+            -0.6063999877929689,
+            1.1035808604242954
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        [
+          [
+            0.9734171683,
+            -0.1311651672,
+            0.1877623906,
+            0.25
+          ],
+          [
+            -0.2290393337,
+            -0.5574519604,
+            0.79799016,
+            -0.85
+          ],
+          [
+            0.0,
+            -0.8197822947,
+            -0.5726752913,
+            0.65
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "front_symmetric",
+      "eyes": [
+        [
+          1.05,
+          0.7,
+          0.85
+        ],
+        [
+          1.05,
+          -0.7,
+          0.85
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Preferred front-left/front-right hypothesis.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "front_higher",
+      "eyes": [
+        [
+          1.05,
+          0.7,
+          1.15
+        ],
+        [
+          1.05,
+          -0.7,
+          1.15
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Higher symmetric oblique views.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "front_lower",
+      "eyes": [
+        [
+          1.05,
+          0.7,
+          0.55
+        ],
+        [
+          1.05,
+          -0.7,
+          0.55
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Lower oblique views emphasize side surfaces.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "front_wider",
+      "eyes": [
+        [
+          0.95,
+          0.95,
+          0.8
+        ],
+        [
+          0.95,
+          -0.95,
+          0.8
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Wider lateral baseline.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "front_narrower",
+      "eyes": [
+        [
+          1.15,
+          0.45,
+          0.8
+        ],
+        [
+          1.15,
+          -0.45,
+          0.8
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Narrower front corner baseline.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "asymmetric_high_left",
+      "eyes": [
+        [
+          1.1,
+          0.65,
+          1.05
+        ],
+        [
+          0.9,
+          -0.8,
+          0.65
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "High left with lower lateral right.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "asymmetric_high_right",
+      "eyes": [
+        [
+          0.9,
+          0.8,
+          0.65
+        ],
+        [
+          1.1,
+          -0.65,
+          1.05
+        ]
+      ],
+      "targets": [
+        [
+          0.45,
+          0.0,
+          0.04
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Mirrored height asymmetry.",
+      "world_from_cameras": null
+    },
+    {
+      "name": "original_A_front_left_B",
+      "eyes": [
+        [
+          1.6589600172814285,
+          -0.05281348017761145,
+          1.1035808604242954
+        ],
+        [
+          0.95,
+          0.8,
+          0.8
+        ]
+      ],
+      "targets": [
+        [
+          0.8638396970039728,
+          -0.044893184314218126,
+          0.4971808726313265
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Preserve original A; move only B to front-left.",
+      "world_from_cameras": [
+        [
+          [
+            0.015999969482422105,
+            0.6062406100373334,
+            -0.7951203202774557,
+            1.6589600172814285
+          ],
+          [
+            0.9998406222443645,
+            -0.015999969482422105,
+            0.007920295863393323,
+            -0.05281348017761145
+          ],
+          [
+            -0.007920295863393323,
+            -0.7951203202774557,
+            -0.6063999877929689,
+            1.1035808604242954
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        null
+      ]
+    },
+    {
+      "name": "original_A_side_left_B",
+      "eyes": [
+        [
+          1.6589600172814285,
+          -0.05281348017761145,
+          1.1035808604242954
+        ],
+        [
+          0.18,
+          0.8,
+          0.65
+        ]
+      ],
+      "targets": [
+        [
+          0.8638396970039728,
+          -0.044893184314218126,
+          0.4971808726313265
+        ],
+        [
+          0.45,
+          0.0,
+          0.04
+        ]
+      ],
+      "note": "Preserve original A; complementary left lateral B.",
+      "world_from_cameras": [
+        [
+          [
+            0.015999969482422105,
+            0.6062406100373334,
+            -0.7951203202774557,
+            1.6589600172814285
+          ],
+          [
+            0.9998406222443645,
+            -0.015999969482422105,
+            0.007920295863393323,
+            -0.05281348017761145
+          ],
+          [
+            -0.007920295863393323,
+            -0.7951203202774557,
+            -0.6063999877929689,
+            1.1035808604242954
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        null
+      ]
+    }
+  ],
+  "aim_conventions": {
+    "workspace_target_m": [
+      0.45,
+      0.0,
+      0.04
+    ],
+    "authored": "Full original transforms preserve roll. Their target markers lie one unit along the original optical axis; they are not instructions to re-aim at the common target.",
+    "other": "A missing matrix uses the declared look-at target and world-Z up. Native arrays retain actual calibration. Runtime reads ordinary saved USD camera transforms."
+  },
+  "calibration": {
+    "resolution": [
+      640,
+      480
+    ],
+    "native_intrinsics_flat_per_camera": [
+      [
+        554.2562255859375,
+        0.0,
+        320.0,
+        0.0,
+        554.2562866210938,
+        240.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        732.999267578125,
+        0.0,
+        320.0,
+        0.0,
+        732.999267578125,
+        240.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "unique_intrinsics_counts": [
+      1,
+      1
+    ],
+    "note": "A focal pixels approximately 554.256, B 732.999. Unchanged across layouts; symmetric poses do not imply identical fields of view."
+  },
+  "definitions": {
+    "coarse": "13 physical scenes / 31 objects per layout: 12 static scenes / 28 targets and one 3-object temporal scene. Four frames per static scene and 12 temporal frames give 60 native samples per layout, 600 across ten layouts.",
+    "shortlist": "15 physical scenes / 37 objects per layout: 14 static scenes / 33 targets and one 4-object version-2 temporal scene. Four static frames and 12 temporal frames give 68 samples per layout, 204 across three layouts.",
+    "confirmation": "Frames 0/1 are retained but excluded from scored accuracy. Frames 2/3 and every later temporal frame are genuine distinct native acquisitions.",
+    "latest_static": "Exactly frame 3 per static scene: 28 target rows per layout for coarse, 33 for shortlist. Repeated static frames and temporal continuations do not increase these physical-target denominators; targets sharing a scene are not claimed statistically independent.",
+    "all_scored": "Both static frames 2/3 plus temporal frames 2\u201311: 86 target-frame rows per coarse layout (56+30), 106 per shortlist layout (66+40). All missing, unknown and severe cases remain in overall accuracy.",
+    "classification": "Correct detection and exact primitive class divided by every expected row, including misses and unknowns. Recall counts matched unknown observations as detected.",
+    "geometry": "Errors are conditional on correct classification, with each distribution retaining its sample count. Cube dimensions compare horizontal long/short sides plus Z, with height separate. Sphere radius is separate from diameter.",
+    "yaw": "After major horizontal-axis correspondence, rectangles use 180-degree symmetry and exact squares 90 degrees. The max(1 mm, 2% footprint span) near-square category is evaluation ambiguity, not runtime policy. Raw errors remain saved. Unscored/ambiguous counts include missing and wrong-class boxes.",
+    "visibility": "Sufficient visibility requires at least 30 fused 2 mm source samples and 0.18 area-weighted visible physical surface above the 4 mm table crop. Analytic surface quadrature is supported by exclusive current native-depth pixels. This is sampled surface coverage, not a point-count percentage or proof of complete dimensions.",
+    "strict_one_view": "Exactly zero raw truth-surface points in one camera and at least eight in the other. Effective one-view is a separate threshold and can permit 1\u20137 points in the other view.",
+    "recovery": "Saved capture-to-capture interval from first reappearance with at least eight raw union samples to correct detection. Full hiding means zero samples in both views. A new full hiding interval censors earlier unresolved visible failures. Zero ms means accepted on the first reappearance capture, excluding processing/delivery.",
+    "matching": "One-to-one center match within 40 mm. Mixed/false-split support needs at least eight points and 10% cloud support from each truth object. Every raw observation, including unmatched observations, is retained.",
+    "native_timing": "Twelve measured source-only samples per coarse layout: one per static scene after three fresh warmups, with eight rendered steps. Render+source Hz excludes comparisons, truth scoring and exports. Sparse screening timings are not final throughput evidence; failing layouts may process fewer accepted objects. No shortlist timing was acquired.",
+    "comparison": "Matched physical scenes across layouts have different images. Identical original frames are used among methods within a layout. Camera selection used the preserved baseline source, before geometric refinement. Final source/holdout/profile results are outside this artifact.",
+    "status": "PASS means the experiment completed with valid fixtures, stable run hashes and source contracts. It neither enforces 95% accuracy nor authorizes manipulation."
+  },
+  "coarse": {
+    "capture_status": "PASS",
+    "replay_status": "PASS",
+    "trials": 130,
+    "native_samples": 600,
+    "valid_audits": 600,
+    "source_contracts_passed": 1168,
+    "source_contract_failures": 0,
+    "rows": [
+      {
+        "layout": "asymmetric_high_left",
+        "latest_static": {
+          "expected": 28,
+          "detected": 27,
+          "correct": 26,
+          "missing": 1,
+          "unknown": 1,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.22190426684019304,
+            "p95": 0.365259800154283,
+            "worst": 0.5338850613878363,
+            "samples": 26
+          },
+          "dimension_correct_mm": {
+            "mean": 0.4551309420462454,
+            "p95": 0.7059013064857604,
+            "worst": 1.1124154909771602,
+            "samples": 26
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.012071997271497928,
+            "p95": 0.020403222175047545,
+            "worst": 0.022018923852444583,
+            "samples": 14
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.20868570715854737,
+            "p95": 0.2540702570819793,
+            "worst": 0.2771310124823276,
+            "samples": 12
+          },
+          "yaw_observable_deg": {
+            "mean": 0.014648140414411568,
+            "p95": 0.025107526480614945,
+            "worst": 0.025252448320354646,
+            "samples": 13
+          },
+          "observable_yaw_samples": 13,
+          "ambiguous_box_yaw": 2,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 26,
+              "detected": 27,
+              "unknown": 1,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            },
+            "effective_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 15,
+              "correct": 14,
+              "missing": 0,
+              "unknown": 1
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 12,
+              "correct": 12,
+              "missing": 1,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 82,
+          "detected": 84,
+          "missing": 2,
+          "unknown": 2
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.200834053636913,
+          "render_plus_source_ms": {
+            "mean": 238.04796553061655,
+            "p95": 372.30533910915244,
+            "worst": 474.21393217518926,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 80.67737341237564,
+            "p95": 95.08666847832501,
+            "worst": 100.603390019387,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.434857914224267,
+              "p95": 7.149991975165901,
+              "worst": 8.989122230559587,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 9.818717604503036,
+              "p95": 11.944127338938415,
+              "worst": 12.135174591094255,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.885386485606432,
+              "p95": 2.3937085643410665,
+              "worst": 3.5946820862591267,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 8.719463793871304,
+              "p95": 21.809607674367715,
+              "worst": 29.442998114973307,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 120.65264799942572,
+              "p95": 242.22409648355085,
+              "worst": 340.033661108464,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 11.729457299225032,
+              "p95": 20.830932306125757,
+              "worst": 22.55991753190756,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.10195944923907518,
+              "p95": 0.21103508770465845,
+              "worst": 0.24424586445093155,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 157.34249054609487,
+              "p95": 287.7804896328597,
+              "worst": 391.1016988568008,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 0,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.7183379192613866,
+          "minimum_surface_fraction": 0.48704103671706267,
+          "mean_union_gain_vs_best_single": 0.19513202374807606
+        }
+      },
+      {
+        "layout": "original_A_side_left_B",
+        "latest_static": {
+          "expected": 28,
+          "detected": 27,
+          "correct": 26,
+          "missing": 1,
+          "unknown": 1,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.2383553986037215,
+            "p95": 0.40397011071323147,
+            "worst": 1.1483539740302344,
+            "samples": 26
+          },
+          "dimension_correct_mm": {
+            "mean": 0.4612469872208934,
+            "p95": 0.824995985398657,
+            "worst": 1.9933640549751261,
+            "samples": 26
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.011562829960885491,
+            "p95": 0.019879743155638833,
+            "worst": 0.022610311228347946,
+            "samples": 13
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.218891119847106,
+            "p95": 0.2696996176709889,
+            "worst": 0.3165158377663735,
+            "samples": 13
+          },
+          "yaw_observable_deg": {
+            "mean": 0.013250548153955462,
+            "p95": 0.02290873737493739,
+            "worst": 0.025252448320354646,
+            "samples": 12
+          },
+          "observable_yaw_samples": 12,
+          "ambiguous_box_yaw": 3,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 26,
+              "detected": 27,
+              "unknown": 1,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.26994200381718464,
+                "p95": 0.26994200381718464,
+                "worst": 0.26994200381718464,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.4398391914528649,
+                "p95": 0.4398391914528649,
+                "worst": 0.4398391914528649,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.26994200381718464,
+                "p95": 0.26994200381718464,
+                "worst": 0.26994200381718464,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.4398391914528649,
+                "p95": 0.4398391914528649,
+                "worst": 0.4398391914528649,
+                "samples": 1
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 14,
+              "correct": 13,
+              "missing": 1,
+              "unknown": 1
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 13,
+              "correct": 13,
+              "missing": 0,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 82,
+          "detected": 84,
+          "missing": 2,
+          "unknown": 2
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.134720006957088,
+          "render_plus_source_ms": {
+            "mean": 241.85434523193786,
+            "p95": 404.99537296127505,
+            "worst": 556.0580380260944,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 79.33045306708664,
+            "p95": 98.84357308037579,
+            "worst": 99.68348313122988,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.401462937394778,
+              "p95": 6.5003028605133295,
+              "worst": 6.509752944111824,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 7.5710016923646135,
+              "p95": 8.688864251598714,
+              "worst": 9.537195321172476,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.8654473349452019,
+              "p95": 2.232680935412644,
+              "worst": 3.29685490578413,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 8.948333949471513,
+              "p95": 22.14944618754088,
+              "worst": 28.759420849382877,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 128.3612981593857,
+              "p95": 297.19225848093606,
+              "worst": 449.8038892634213,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 11.24841692702224,
+              "p95": 20.10921861510724,
+              "worst": 21.065887063741684,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.09987639108051856,
+              "p95": 0.21759481169283384,
+              "worst": 0.2722684293985367,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 162.4958373916646,
+              "p95": 333.00804432947166,
+              "worst": 490.3042921796441,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 6,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.727467996882091,
+          "minimum_surface_fraction": 0.4343105320304017,
+          "mean_union_gain_vs_best_single": 0.20000151709013844
+        }
+      },
+      {
+        "layout": "front_lower",
+        "latest_static": {
+          "expected": 28,
+          "detected": 27,
+          "correct": 25,
+          "missing": 1,
+          "unknown": 2,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.23793307755708645,
+            "p95": 0.5096625583743916,
+            "worst": 0.5817288658037525,
+            "samples": 25
+          },
+          "dimension_correct_mm": {
+            "mean": 0.47246898851451535,
+            "p95": 1.036629388641795,
+            "worst": 1.2066388069885137,
+            "samples": 25
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.011505597629785555,
+            "p95": 0.02018036680763793,
+            "worst": 0.02296222664493336,
+            "samples": 12
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.2072355140122431,
+            "p95": 0.2742288333115433,
+            "worst": 0.2949509969119232,
+            "samples": 13
+          },
+          "yaw_observable_deg": {
+            "mean": 0.013021632228185911,
+            "p95": 0.021972492030865102,
+            "worst": 0.024747551679642245,
+            "samples": 10
+          },
+          "observable_yaw_samples": 10,
+          "ambiguous_box_yaw": 5,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 25,
+              "detected": 27,
+              "unknown": 2,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 0,
+              "unknown": 1,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 0,
+              "unknown": 1,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 14,
+              "correct": 12,
+              "missing": 1,
+              "unknown": 2
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 13,
+              "correct": 13,
+              "missing": 0,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 80,
+          "detected": 84,
+          "missing": 2,
+          "unknown": 4
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.407835567741549,
+          "render_plus_source_ms": {
+            "mean": 226.86871699988842,
+            "p95": 358.7159389629959,
+            "worst": 446.6254161670804,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 75.8018931762005,
+            "p95": 90.47873790841548,
+            "worst": 97.16149419546127,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.30065328348428,
+              "p95": 6.035881466232239,
+              "worst": 6.422058679163456,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 11.06766851929327,
+              "p95": 12.94681003782898,
+              "worst": 13.910840731114149,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 1.0364851526295145,
+              "p95": 2.5032321223989116,
+              "worst": 3.4309551119804382,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 10.036808244573573,
+              "p95": 22.81420547515153,
+              "worst": 28.667299076914787,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 113.47514243486027,
+              "p95": 244.31373300030816,
+              "worst": 329.8980491235852,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 10.016231370779375,
+              "p95": 19.025045074522495,
+              "worst": 19.65819811448455,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.10598862233261268,
+              "p95": 0.21040923893451688,
+              "worst": 0.23701228201389313,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 151.0389776279529,
+              "p95": 286.34839383885253,
+              "worst": 375.8692708797753,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 5,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.6947008129130633,
+          "minimum_surface_fraction": 0.37257019438444927,
+          "mean_union_gain_vs_best_single": 0.18445607817574852
+        }
+      },
+      {
+        "layout": "original_reference",
+        "latest_static": {
+          "expected": 28,
+          "detected": 27,
+          "correct": 24,
+          "missing": 1,
+          "unknown": 3,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.22994605476890748,
+            "p95": 0.4721502235641388,
+            "worst": 0.7077164459059256,
+            "samples": 24
+          },
+          "dimension_correct_mm": {
+            "mean": 0.44685661423535966,
+            "p95": 0.9361547521981628,
+            "worst": 1.419558182023467,
+            "samples": 24
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.012025579965138991,
+            "p95": 0.021492332118823104,
+            "worst": 0.023699784574664207,
+            "samples": 12
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.20768310406945056,
+            "p95": 0.2577529686273453,
+            "worst": 0.2624092432142941,
+            "samples": 12
+          },
+          "yaw_observable_deg": {
+            "mean": 0.013107474670424772,
+            "p95": 0.024999999999998444,
+            "worst": 0.025010911920788477,
+            "samples": 11
+          },
+          "observable_yaw_samples": 11,
+          "ambiguous_box_yaw": 4,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 24,
+              "detected": 27,
+              "unknown": 3,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.23675210841886668,
+                "p95": 0.23675210841886668,
+                "worst": 0.23675210841886668,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.24892522775190468,
+                "p95": 0.24892522775190468,
+                "worst": 0.24892522775190468,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.23675210841886668,
+                "p95": 0.23675210841886668,
+                "worst": 0.23675210841886668,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.24892522775190468,
+                "p95": 0.24892522775190468,
+                "worst": 0.24892522775190468,
+                "samples": 1
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 15,
+              "correct": 12,
+              "missing": 0,
+              "unknown": 3
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 12,
+              "correct": 12,
+              "missing": 1,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 3,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 78,
+          "detected": 84,
+          "missing": 2,
+          "unknown": 6
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.2646309821092725,
+          "render_plus_source_ms": {
+            "mean": 234.4868768705055,
+            "p95": 391.34627643506957,
+            "worst": 514.9610796943307,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 77.87309167906642,
+            "p95": 91.65582463610917,
+            "worst": 92.60749630630016,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.25033671874553,
+              "p95": 5.618640733882785,
+              "worst": 5.731530021876097,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 7.136405212804675,
+              "p95": 8.58997374307364,
+              "worst": 9.844369255006313,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.8232822098458806,
+              "p95": 2.110081701539456,
+              "worst": 3.0039879493415356,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 8.446011420649787,
+              "p95": 20.50441510509699,
+              "worst": 26.469115633517504,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 124.36471794111033,
+              "p95": 268.447989434935,
+              "worst": 392.4454404041171,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 10.470114958782991,
+              "p95": 18.556047440506518,
+              "worst": 18.59532529488206,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.09676383342593908,
+              "p95": 0.2028386108577251,
+              "worst": 0.24041766300797462,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 156.58763229536513,
+              "p95": 311.00591027643515,
+              "worst": 440.8098068088293,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 6,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.6712830031857211,
+          "minimum_surface_fraction": 0.4364820846905538,
+          "mean_union_gain_vs_best_single": 0.1500191647975086
+        }
+      },
+      {
+        "layout": "front_symmetric",
+        "latest_static": {
+          "expected": 28,
+          "detected": 25,
+          "correct": 22,
+          "missing": 3,
+          "unknown": 3,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 3,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.19282833405975106,
+            "p95": 0.2602854258254377,
+            "worst": 0.47982105810187986,
+            "samples": 22
+          },
+          "dimension_correct_mm": {
+            "mean": 0.3945032789516238,
+            "p95": 0.5249089433266415,
+            "worst": 0.9837541318154369,
+            "samples": 22
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.013569390366813261,
+            "p95": 0.02073054601606575,
+            "worst": 0.02223510680848112,
+            "samples": 11
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.1882719822161212,
+            "p95": 0.23871159350640803,
+            "worst": 0.24843515631524718,
+            "samples": 11
+          },
+          "yaw_observable_deg": {
+            "mean": 0.01638782411989479,
+            "p95": 0.025001091192077447,
+            "worst": 0.025010911920788477,
+            "samples": 10
+          },
+          "observable_yaw_samples": 10,
+          "ambiguous_box_yaw": 5,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 22,
+              "detected": 25,
+              "unknown": 3,
+              "missing": 3
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            },
+            "effective_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 14,
+              "correct": 11,
+              "missing": 1,
+              "unknown": 3
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 11,
+              "correct": 11,
+              "missing": 2,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 74,
+          "detected": 80,
+          "missing": 6,
+          "unknown": 6
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.84564649368657,
+          "render_plus_source_ms": {
+            "mean": 206.37081167660654,
+            "p95": 338.8336590258404,
+            "worst": 377.7041560970247,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 77.63657893519849,
+            "p95": 92.44145739357919,
+            "worst": 95.93709884211421,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.122350101980071,
+              "p95": 5.427144793793559,
+              "worst": 5.4719047620892525,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 10.444671420070032,
+              "p95": 12.61902607511729,
+              "worst": 12.99601187929511,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.8277387047807375,
+              "p95": 2.2223675856366736,
+              "worst": 3.4202649258077145,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 8.2626345489795,
+              "p95": 20.799118303693817,
+              "worst": 30.50352819263935,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 93.9797341901188,
+              "p95": 217.77230899315322,
+              "worst": 255.66040305420756,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 9.972267240906755,
+              "p95": 20.59835160616785,
+              "worst": 22.310662548989058,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.09762146510183811,
+              "p95": 0.22498583421111099,
+              "worst": 0.2816258929669857,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 128.70701767193773,
+              "p95": 265.50497312564397,
+              "worst": 303.57079626992345,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 0,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.7028028195631646,
+          "minimum_surface_fraction": 0.3563714902807775,
+          "mean_union_gain_vs_best_single": 0.19253905926488424
+        }
+      },
+      {
+        "layout": "front_narrower",
+        "latest_static": {
+          "expected": 28,
+          "detected": 25,
+          "correct": 22,
+          "missing": 3,
+          "unknown": 3,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 3,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.2614240680966363,
+            "p95": 0.448779597315958,
+            "worst": 0.49496453010938585,
+            "samples": 22
+          },
+          "dimension_correct_mm": {
+            "mean": 0.47371185164483653,
+            "p95": 0.920145541083336,
+            "worst": 1.0425446884408662,
+            "samples": 22
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.012341088826286345,
+            "p95": 0.01940825816796297,
+            "worst": 0.021325215777939777,
+            "samples": 10
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.18231574838409748,
+            "p95": 0.2411510288259222,
+            "worst": 0.26028912260705334,
+            "samples": 12
+          },
+          "yaw_observable_deg": {
+            "mean": 0.014717665962120948,
+            "p95": 0.023244993284714657,
+            "worst": 0.024747551679642245,
+            "samples": 9
+          },
+          "observable_yaw_samples": 9,
+          "ambiguous_box_yaw": 6,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 27,
+              "correct": 21,
+              "detected": 24,
+              "unknown": 3,
+              "missing": 3
+            },
+            "severe_or_sparse": {
+              "expected": 1,
+              "correct": 1,
+              "detected": 1,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.4174066004301934,
+                "p95": 0.44598449952034896,
+                "worst": 0.4491598216414774,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.5596415625909665,
+                "p95": 0.7068760186383631,
+                "worst": 0.7232354026436294,
+                "samples": 2
+              }
+            },
+            "effective_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.4174066004301934,
+                "p95": 0.44598449952034896,
+                "worst": 0.4491598216414774,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.5596415625909665,
+                "p95": 0.7068760186383631,
+                "worst": 0.7232354026436294,
+                "samples": 2
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 13,
+              "correct": 10,
+              "missing": 2,
+              "unknown": 3
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 12,
+              "correct": 12,
+              "missing": 1,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 70,
+          "detected": 76,
+          "missing": 10,
+          "unknown": 6
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 26,
+          "missing": 4,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.924937877116433,
+          "render_plus_source_ms": {
+            "mean": 203.04824648580203,
+            "p95": 294.0519323339686,
+            "worst": 307.83468717709184,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 78.4883249628668,
+            "p95": 89.09154499415308,
+            "worst": 90.44505702331662,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.436286485443513,
+              "p95": 7.066526613198219,
+              "worst": 8.609632961452007,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 12.016063905321062,
+              "p95": 14.25222335383296,
+              "worst": 14.332266058772802,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 1.0000696250547965,
+              "p95": 2.841269178315995,
+              "worst": 4.481466952711344,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 8.648430656952163,
+              "p95": 21.856210590340183,
+              "worst": 33.05363841354847,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 88.46409254086514,
+              "p95": 169.13352143019432,
+              "worst": 201.7601765692234,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 8.876125561073422,
+              "p95": 20.590693596750498,
+              "worst": 21.668303292244673,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.09257288184016943,
+              "p95": 0.2099575940519571,
+              "worst": 0.2337070181965828,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 124.53364165655027,
+              "p95": 215.83952670916912,
+              "worst": 241.53538327664137,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 80,
+          "strict_one_view": 5,
+          "fully_hidden": 4,
+          "mean_surface_fraction": 0.6427705053684941,
+          "minimum_surface_fraction": 0.0,
+          "mean_union_gain_vs_best_single": 0.1510151163362344
+        }
+      },
+      {
+        "layout": "original_A_front_left_B",
+        "latest_static": {
+          "expected": 28,
+          "detected": 24,
+          "correct": 20,
+          "missing": 4,
+          "unknown": 4,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 4,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.3276137001382779,
+            "p95": 0.6718903136470968,
+            "worst": 0.9502131203114474,
+            "samples": 20
+          },
+          "dimension_correct_mm": {
+            "mean": 0.5636136162216742,
+            "p95": 1.1641270659745324,
+            "worst": 1.7588255772730683,
+            "samples": 20
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.012616132004681892,
+            "p95": 0.020788336933369452,
+            "worst": 0.023061048527797667,
+            "samples": 9
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.2049610992938727,
+            "p95": 0.2574203908817397,
+            "worst": 0.2701859988228708,
+            "samples": 11
+          },
+          "yaw_observable_deg": {
+            "mean": 0.014234780149865702,
+            "p95": 0.023432813084080604,
+            "worst": 0.024747551679642245,
+            "samples": 8
+          },
+          "observable_yaw_samples": 8,
+          "ambiguous_box_yaw": 7,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 20,
+              "detected": 24,
+              "unknown": 4,
+              "missing": 4
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.39096727398114184,
+                "p95": 0.39096727398114184,
+                "worst": 0.39096727398114184,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.26840618504210545,
+                "p95": 0.26840618504210545,
+                "worst": 0.26840618504210545,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.39096727398114184,
+                "p95": 0.39096727398114184,
+                "worst": 0.39096727398114184,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.26840618504210545,
+                "p95": 0.26840618504210545,
+                "worst": 0.26840618504210545,
+                "samples": 1
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 13,
+              "correct": 9,
+              "missing": 2,
+              "unknown": 4
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 11,
+              "correct": 11,
+              "missing": 2,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 70,
+          "detected": 78,
+          "missing": 8,
+          "unknown": 8
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 4.949818266384289,
+          "render_plus_source_ms": {
+            "mean": 202.02761923428625,
+            "p95": 296.3396518258378,
+            "worst": 301.36719439178705,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 83.34213968676825,
+            "p95": 113.872184837237,
+            "worst": 117.72109800949693,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.131863057613373,
+              "p95": 5.851461458951234,
+              "worst": 6.605240982025862,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 7.47285670756052,
+              "p95": 9.086711844429374,
+              "worst": 9.403354953974485,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.6910601320366064,
+              "p95": 1.8302264856174575,
+              "worst": 2.7609746903181076,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 6.662466175233324,
+              "p95": 15.281353308819225,
+              "worst": 21.94032073020935,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 90.95004166010767,
+              "p95": 184.4837523298338,
+              "worst": 187.01221467927098,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 7.663148843372862,
+              "p95": 19.40273887012154,
+              "worst": 20.32542461529374,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.08906792694081862,
+              "p95": 0.1755149569362402,
+              "worst": 0.1794053241610527,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 118.66050450286518,
+              "p95": 214.96833711862564,
+              "worst": 225.9237812831998,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 6,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.6021619795067006,
+          "minimum_surface_fraction": 0.3192182410423453,
+          "mean_union_gain_vs_best_single": 0.09520098663721031
+        }
+      },
+      {
+        "layout": "front_wider",
+        "latest_static": {
+          "expected": 28,
+          "detected": 23,
+          "correct": 18,
+          "missing": 5,
+          "unknown": 5,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 5,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.24499213664094352,
+            "p95": 0.37445092060309876,
+            "worst": 0.5301749281410566,
+            "samples": 18
+          },
+          "dimension_correct_mm": {
+            "mean": 0.5063825696527551,
+            "p95": 0.7819462683936076,
+            "worst": 1.105422044928285,
+            "samples": 18
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.013693834157603698,
+            "p95": 0.021571696736503304,
+            "worst": 0.023310981014032506,
+            "samples": 11
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.23184158525903667,
+            "p95": 0.292973673103555,
+            "worst": 0.29299943694212693,
+            "samples": 7
+          },
+          "yaw_observable_deg": {
+            "mean": 0.016390006504050255,
+            "p95": 0.025010911920788477,
+            "worst": 0.025010911920788477,
+            "samples": 10
+          },
+          "observable_yaw_samples": 10,
+          "ambiguous_box_yaw": 5,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 18,
+              "detected": 23,
+              "unknown": 5,
+              "missing": 5
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            },
+            "effective_one_view": {
+              "expected": 0,
+              "detected": 0,
+              "correct": 0,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": null,
+              "dimension_correct_mm": null
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 14,
+              "correct": 11,
+              "missing": 1,
+              "unknown": 3
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 9,
+              "correct": 7,
+              "missing": 4,
+              "unknown": 2
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 66,
+          "detected": 76,
+          "missing": 10,
+          "unknown": 10
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 5.491718868894082,
+          "render_plus_source_ms": {
+            "mean": 182.0923510240391,
+            "p95": 290.762649802491,
+            "worst": 335.50800988450646,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 74.6060557042559,
+            "p95": 84.84276544768363,
+            "worst": 85.3348420932889,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.032819036083917,
+              "p95": 5.351656721904874,
+              "worst": 5.607108119875193,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 8.031526231206954,
+              "p95": 9.486266341991723,
+              "worst": 10.066812857985497,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.7005879112208883,
+              "p95": 1.843664771877228,
+              "worst": 2.7118930593132973,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 7.219699871105452,
+              "p95": 17.38686289172619,
+              "worst": 23.504900746047497,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 76.21121848933399,
+              "p95": 171.05889017693693,
+              "worst": 218.06487580761313,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 10.170770615028838,
+              "p95": 21.814230270683765,
+              "worst": 23.066432680934668,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.09220970484117667,
+              "p95": 0.18959036096930504,
+              "worst": 0.19117724150419235,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 107.45883185882121,
+              "p95": 217.61390622705215,
+              "worst": 263.8637279160321,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 0,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.7660501231576908,
+          "minimum_surface_fraction": 0.6119246861924685,
+          "mean_union_gain_vs_best_single": 0.23964875792388524
+        }
+      },
+      {
+        "layout": "front_higher",
+        "latest_static": {
+          "expected": 28,
+          "detected": 22,
+          "correct": 18,
+          "missing": 6,
+          "unknown": 4,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 4,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.24348646068886545,
+            "p95": 0.41623829899788495,
+            "worst": 0.4994595517118067,
+            "samples": 18
+          },
+          "dimension_correct_mm": {
+            "mean": 0.4713490700665947,
+            "p95": 0.7920833975195488,
+            "worst": 0.8238910584163761,
+            "samples": 18
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.01200709842847994,
+            "p95": 0.0192894171894338,
+            "worst": 0.021082650506078215,
+            "samples": 10
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.18521041581534428,
+            "p95": 0.26835202386859425,
+            "worst": 0.2690415529076374,
+            "samples": 8
+          },
+          "yaw_observable_deg": {
+            "mean": 0.014717665962120948,
+            "p95": 0.023244993284714657,
+            "worst": 0.024747551679642245,
+            "samples": 9
+          },
+          "observable_yaw_samples": 9,
+          "ambiguous_box_yaw": 6,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 18,
+              "detected": 22,
+              "unknown": 4,
+              "missing": 6
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.15112420743803748,
+                "p95": 0.15112420743803748,
+                "worst": 0.15112420743803748,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.23997826568888936,
+                "p95": 0.23997826568888936,
+                "worst": 0.23997826568888936,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.3252918795749221,
+                "p95": 0.48204278449811827,
+                "worst": 0.4994595517118067,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.5132242732897931,
+                "p95": 0.7591456801306067,
+                "worst": 0.786470280890697,
+                "samples": 2
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 13,
+              "correct": 10,
+              "missing": 2,
+              "unknown": 3
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 9,
+              "correct": 8,
+              "missing": 4,
+              "unknown": 1
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 66,
+          "detected": 74,
+          "missing": 12,
+          "unknown": 8
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 5.6137840715999605,
+          "render_plus_source_ms": {
+            "mean": 178.13296472498527,
+            "p95": 253.60058220103383,
+            "worst": 261.6844200529158,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 82.53206479518364,
+            "p95": 97.278658230789,
+            "worst": 99.14499800652266,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.007865489460528,
+              "p95": 5.253948294557631,
+              "worst": 5.276601295918226,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 8.256993101288876,
+              "p95": 8.89426909852773,
+              "worst": 9.129735175520182,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.5632967610533038,
+              "p95": 1.4613423496484748,
+              "worst": 2.228439785540104,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 5.901054634402196,
+              "p95": 14.544038265012196,
+              "worst": 21.21748123317957,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 65.97848054176818,
+              "p95": 125.03432852681726,
+              "worst": 129.4594844803214,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 9.786968507493535,
+              "p95": 23.087478172965348,
+              "worst": 23.70912069454789,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.08223190282781918,
+              "p95": 0.17684169579297304,
+              "worst": 0.17727119848132133,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 95.57689093829443,
+              "p95": 169.3867770722136,
+              "worst": 175.36233784630895,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 2,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.6637261760591738,
+          "minimum_surface_fraction": 0.37257019438444927,
+          "mean_union_gain_vs_best_single": 0.15521991219434716
+        }
+      },
+      {
+        "layout": "asymmetric_high_right",
+        "latest_static": {
+          "expected": 28,
+          "detected": 22,
+          "correct": 16,
+          "missing": 6,
+          "unknown": 6,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 6,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.1996449744381677,
+            "p95": 0.32194973321409565,
+            "worst": 0.35723586798022133,
+            "samples": 16
+          },
+          "dimension_correct_mm": {
+            "mean": 0.3877751759565119,
+            "p95": 0.6119473375366253,
+            "worst": 0.6264512545582566,
+            "samples": 16
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.012615533266520991,
+            "p95": 0.02133709733874028,
+            "worst": 0.023600678333672576,
+            "samples": 9
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.22638711754958912,
+            "p95": 0.29975687191236866,
+            "worst": 0.3035563492647074,
+            "samples": 7
+          },
+          "yaw_observable_deg": {
+            "mean": 0.014234780149868882,
+            "p95": 0.023432813084080604,
+            "worst": 0.024747551679642245,
+            "samples": 8
+          },
+          "observable_yaw_samples": 8,
+          "ambiguous_box_yaw": 7,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 28,
+              "correct": 16,
+              "detected": 22,
+              "unknown": 6,
+              "missing": 6
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.35723586798022133,
+                "p95": 0.35723586798022133,
+                "worst": 0.35723586798022133,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.4604118484333036,
+                "p95": 0.4604118484333036,
+                "worst": 0.4604118484333036,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.35723586798022133,
+                "p95": 0.35723586798022133,
+                "worst": 0.35723586798022133,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.4604118484333036,
+                "p95": 0.4604118484333036,
+                "worst": 0.4604118484333036,
+                "samples": 1
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 15,
+              "detected": 13,
+              "correct": 9,
+              "missing": 2,
+              "unknown": 4
+            },
+            "sphere": {
+              "expected": 13,
+              "detected": 9,
+              "correct": 7,
+              "missing": 4,
+              "unknown": 2
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 86,
+          "correct": 62,
+          "detected": 74,
+          "missing": 12,
+          "unknown": 12
+        },
+        "temporal": {
+          "expected": 30,
+          "correct": 30,
+          "missing": 0,
+          "unknown": 0
+        },
+        "native": {
+          "samples": 12,
+          "effective_hz": 5.125377657736342,
+          "render_plus_source_ms": {
+            "mean": 195.1075738761574,
+            "p95": 323.10453578829765,
+            "worst": 333.2654209807515,
+            "samples": 12
+          },
+          "render_ms": {
+            "mean": 78.44041470283021,
+            "p95": 88.30579337663949,
+            "worst": 88.95578794181347,
+            "samples": 12
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "mean": 5.37395419087261,
+              "p95": 6.544191623106599,
+              "worst": 6.576157175004482,
+              "samples": 12
+            },
+            "projection_ms": {
+              "mean": 10.156631896582743,
+              "p95": 12.18052578624338,
+              "worst": 12.277600821107626,
+              "samples": 12
+            },
+            "fusion_ms": {
+              "mean": 0.87853012761722,
+              "p95": 2.4376809597015368,
+              "worst": 3.4327288158237934,
+              "samples": 12
+            },
+            "segmentation_ms": {
+              "mean": 7.995305699296296,
+              "p95": 20.22878197021781,
+              "worst": 29.650854412466288,
+              "samples": 12
+            },
+            "fitting_ms": {
+              "mean": 84.07357342851658,
+              "p95": 196.77688779775053,
+              "worst": 202.69473129883409,
+              "samples": 12
+            },
+            "observability_ms": {
+              "mean": 8.051416060576836,
+              "p95": 19.011648022569716,
+              "worst": 19.11743963137269,
+              "samples": 12
+            },
+            "tracking_ms": {
+              "mean": 0.08364933698127668,
+              "p95": 0.1687819603830576,
+              "worst": 0.16925577074289322,
+              "samples": 12
+            },
+            "total_ms": {
+              "mean": 116.61306074044357,
+              "p95": 243.5019707074389,
+              "worst": 252.8253197669983,
+              "samples": 12
+            }
+          },
+          "all_samples_fresh": true,
+          "origin": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/multiview-final/coarse-capture/native_timings.json",
+          "scope": "Actual native source-only measurements saved during capture."
+        },
+        "physical_visibility": {
+          "object_frames": 86,
+          "sufficient": 86,
+          "strict_one_view": 2,
+          "fully_hidden": 0,
+          "mean_surface_fraction": 0.7176108441444368,
+          "minimum_surface_fraction": 0.43603411513859275,
+          "mean_union_gain_vs_best_single": 0.1983898208280617
+        }
+      }
+    ],
+    "evaluated_methods": [
+      "current_fused"
+    ],
+    "method_definition": "Preserved baseline multi-view implementation before final algorithm refinement; camera poses vary, physical scenes match within this phase."
+  },
+  "shortlist": {
+    "capture_status": "PASS",
+    "replay_status": "PASS",
+    "trials": 45,
+    "native_samples": 204,
+    "valid_audits": 204,
+    "source_contracts_passed": 396,
+    "source_contract_failures": 0,
+    "rows": [
+      {
+        "layout": "original_A_side_left_B",
+        "latest_static": {
+          "expected": 33,
+          "detected": 32,
+          "correct": 31,
+          "missing": 1,
+          "unknown": 1,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.22005852367443038,
+            "p95": 0.5442952995813233,
+            "worst": 0.996894016322241,
+            "samples": 31
+          },
+          "dimension_correct_mm": {
+            "mean": 0.4279386070735332,
+            "p95": 1.0850953811396107,
+            "worst": 1.8969317681781679,
+            "samples": 31
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.009050670777530773,
+            "p95": 0.021774354390212067,
+            "worst": 0.028314741376204988,
+            "samples": 16
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.18279401942993195,
+            "p95": 0.2594053658859517,
+            "worst": 0.31341787357592327,
+            "samples": 15
+          },
+          "yaw_observable_deg": {
+            "mean": 0.009945117171597453,
+            "p95": 0.02323143669345703,
+            "worst": 0.024440535525383472,
+            "samples": 15
+          },
+          "observable_yaw_samples": 15,
+          "ambiguous_box_yaw": 3,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 33,
+              "correct": 31,
+              "detected": 32,
+              "unknown": 1,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 0,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 0
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.13776850995398798,
+                "p95": 0.13776850995398798,
+                "worst": 0.13776850995398798,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.2521323577886758,
+                "p95": 0.2521323577886758,
+                "worst": 0.2521323577886758,
+                "samples": 1
+              }
+            },
+            "effective_one_view": {
+              "expected": 1,
+              "detected": 1,
+              "correct": 1,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.13776850995398798,
+                "p95": 0.13776850995398798,
+                "worst": 0.13776850995398798,
+                "samples": 1
+              },
+              "dimension_correct_mm": {
+                "mean": 0.2521323577886758,
+                "p95": 0.2521323577886758,
+                "worst": 0.2521323577886758,
+                "samples": 1
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 18,
+              "detected": 17,
+              "correct": 16,
+              "missing": 1,
+              "unknown": 1
+            },
+            "sphere": {
+              "expected": 15,
+              "detected": 15,
+              "correct": 15,
+              "missing": 0,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 106,
+          "correct": 102,
+          "detected": 104,
+          "missing": 2,
+          "unknown": 2
+        },
+        "temporal": {
+          "expected": 40,
+          "correct": 40,
+          "missing": 0,
+          "unknown": 0,
+          "fully_hidden_rows": 0
+        },
+        "recovery": []
+      },
+      {
+        "layout": "front_lower",
+        "latest_static": {
+          "expected": 33,
+          "detected": 31,
+          "correct": 30,
+          "missing": 2,
+          "unknown": 1,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 1,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.220577049564078,
+            "p95": 0.4447839444818419,
+            "worst": 0.8100046665601853,
+            "samples": 30
+          },
+          "dimension_correct_mm": {
+            "mean": 0.41233280691011737,
+            "p95": 0.9147432306971898,
+            "worst": 1.2716519931503383,
+            "samples": 30
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.0086312551289729,
+            "p95": 0.02075726253335415,
+            "worst": 0.02799679369316216,
+            "samples": 16
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.20211706075370084,
+            "p95": 0.30382609344922046,
+            "worst": 0.3326293734686944,
+            "samples": 14
+          },
+          "yaw_observable_deg": {
+            "mean": 0.009945117171597453,
+            "p95": 0.02323143669345703,
+            "worst": 0.024440535525383472,
+            "samples": 15
+          },
+          "observable_yaw_samples": 15,
+          "ambiguous_box_yaw": 3,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 32,
+              "correct": 30,
+              "detected": 31,
+              "unknown": 1,
+              "missing": 1
+            },
+            "severe_or_sparse": {
+              "expected": 1,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 1
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.5476785903141377,
+                "p95": 0.7837720589355806,
+                "worst": 0.8100046665601853,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.7662204391674434,
+                "p95": 1.2211088377520487,
+                "worst": 1.2716519931503383,
+                "samples": 2
+              }
+            },
+            "effective_one_view": {
+              "expected": 3,
+              "detected": 3,
+              "correct": 3,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.42809922095476244,
+                "p95": 0.7575394513109758,
+                "worst": 0.8100046665601853,
+                "samples": 3
+              },
+              "dimension_correct_mm": {
+                "mean": 0.5900647951452194,
+                "p95": 1.1705656823537591,
+                "worst": 1.2716519931503383,
+                "samples": 3
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 18,
+              "detected": 17,
+              "correct": 16,
+              "missing": 1,
+              "unknown": 1
+            },
+            "sphere": {
+              "expected": 15,
+              "detected": 14,
+              "correct": 14,
+              "missing": 1,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 106,
+          "correct": 93,
+          "detected": 95,
+          "missing": 11,
+          "unknown": 2
+        },
+        "temporal": {
+          "expected": 40,
+          "correct": 33,
+          "missing": 7,
+          "unknown": 0,
+          "fully_hidden_rows": 6
+        },
+        "recovery": [
+          {
+            "trial": "shortlist_temporal__front_lower",
+            "object": "final_shortlist_temporal_0",
+            "method": "current_fused",
+            "layout": "front_lower",
+            "onset_frame": 3,
+            "onset_phase": "moving",
+            "prior_id": "multiview_4",
+            "onset_kind": "visible_classification_failure",
+            "fully_hidden_frames": [],
+            "low_density_frames": [],
+            "visible_failure_frames": [
+              3
+            ],
+            "first_revisible_frame": 3,
+            "first_revisible_acquired_at": 2899405.711310811,
+            "first_sufficiently_visible_frame": null,
+            "recovered_frame": null,
+            "recovered_acquired_at": null,
+            "recovered_id": null,
+            "end_reason": "interrupted_by_full_occlusion",
+            "interrupted_before_frame": 4,
+            "censored": true,
+            "identity_preserved": null,
+            "saved_capture_reacquisition_ms": null
+          },
+          {
+            "trial": "shortlist_temporal__front_lower",
+            "object": "final_shortlist_temporal_0",
+            "method": "current_fused",
+            "layout": "front_lower",
+            "onset_frame": 4,
+            "onset_phase": "moving",
+            "prior_id": "multiview_4",
+            "onset_kind": "fully_hidden",
+            "fully_hidden_frames": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "low_density_frames": [],
+            "visible_failure_frames": [],
+            "first_revisible_frame": 10,
+            "first_revisible_acquired_at": 2899408.921765542,
+            "first_sufficiently_visible_frame": 10,
+            "recovered_frame": 10,
+            "recovered_acquired_at": 2899408.921765542,
+            "recovered_id": "multiview_4",
+            "end_reason": "recovered",
+            "censored": false,
+            "identity_preserved": true,
+            "saved_capture_reacquisition_ms": 0.0
+          }
+        ]
+      },
+      {
+        "layout": "asymmetric_high_left",
+        "latest_static": {
+          "expected": 33,
+          "detected": 30,
+          "correct": 28,
+          "missing": 3,
+          "unknown": 2,
+          "false_positives": 0,
+          "false_splits": 0,
+          "duplicate_ids": 0,
+          "identity_switches": 0,
+          "mixed_accepted_clouds": 2,
+          "known_mixed": 0,
+          "graspable_mixed": 0,
+          "center_correct_mm": {
+            "mean": 0.21608753228289435,
+            "p95": 0.40138399040654593,
+            "worst": 0.4463658057532392,
+            "samples": 28
+          },
+          "dimension_correct_mm": {
+            "mean": 0.4124156025694758,
+            "p95": 0.6562721857939119,
+            "worst": 0.9288047347689177,
+            "samples": 28
+          },
+          "cube_height_correct_mm": {
+            "mean": 0.007856488200597145,
+            "p95": 0.01971237685034695,
+            "worst": 0.027742872277768116,
+            "samples": 15
+          },
+          "sphere_radius_correct_mm": {
+            "mean": 0.21110326857161782,
+            "p95": 0.268117963940636,
+            "worst": 0.2697325863672065,
+            "samples": 13
+          },
+          "yaw_observable_deg": {
+            "mean": 0.008571731663688619,
+            "p95": 0.022341948394171893,
+            "worst": 0.022713251479767913,
+            "samples": 14
+          },
+          "observable_yaw_samples": 14,
+          "ambiguous_box_yaw": 4,
+          "visibility_strata": {
+            "sufficiently_visible": {
+              "expected": 32,
+              "correct": 28,
+              "detected": 30,
+              "unknown": 2,
+              "missing": 2
+            },
+            "severe_or_sparse": {
+              "expected": 1,
+              "correct": 0,
+              "detected": 0,
+              "unknown": 0,
+              "missing": 1
+            }
+          },
+          "one_view_strata": {
+            "strict_true_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.25666373967804207,
+                "p95": 0.30343725936610794,
+                "worst": 0.30863431710922634,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.3203355798999351,
+                "p95": 0.3273735637590983,
+                "worst": 0.328155561965672,
+                "samples": 2
+              }
+            },
+            "effective_one_view": {
+              "expected": 2,
+              "detected": 2,
+              "correct": 2,
+              "unknown": 0,
+              "missing": 0,
+              "center_correct_mm": {
+                "mean": 0.25666373967804207,
+                "p95": 0.30343725936610794,
+                "worst": 0.30863431710922634,
+                "samples": 2
+              },
+              "dimension_correct_mm": {
+                "mean": 0.3203355798999351,
+                "p95": 0.3273735637590983,
+                "worst": 0.328155561965672,
+                "samples": 2
+              }
+            }
+          },
+          "classes": {
+            "cube": {
+              "expected": 18,
+              "detected": 17,
+              "correct": 15,
+              "missing": 1,
+              "unknown": 2
+            },
+            "sphere": {
+              "expected": 15,
+              "detected": 13,
+              "correct": 13,
+              "missing": 2,
+              "unknown": 0
+            }
+          },
+          "edge_correct": 4,
+          "edge_expected": 4
+        },
+        "all_scored": {
+          "expected": 106,
+          "correct": 91,
+          "detected": 95,
+          "missing": 11,
+          "unknown": 4
+        },
+        "temporal": {
+          "expected": 40,
+          "correct": 35,
+          "missing": 5,
+          "unknown": 0,
+          "fully_hidden_rows": 4
+        },
+        "recovery": [
+          {
+            "trial": "shortlist_temporal__asymmetric_high_left",
+            "object": "final_shortlist_temporal_0",
+            "method": "current_fused",
+            "layout": "asymmetric_high_left",
+            "onset_frame": 5,
+            "onset_phase": "moving",
+            "prior_id": "multiview_4",
+            "onset_kind": "fully_hidden",
+            "fully_hidden_frames": [
+              5,
+              6,
+              7,
+              8
+            ],
+            "low_density_frames": [],
+            "visible_failure_frames": [
+              9
+            ],
+            "first_revisible_frame": 9,
+            "first_revisible_acquired_at": 2899414.00656668,
+            "first_sufficiently_visible_frame": 10,
+            "recovered_frame": 10,
+            "recovered_acquired_at": 2899414.45789601,
+            "recovered_id": "multiview_4",
+            "end_reason": "recovered",
+            "censored": false,
+            "identity_preserved": true,
+            "saved_capture_reacquisition_ms": 451.32932998239994
+          }
+        ]
+      }
+    ],
+    "evaluated_methods": [
+      "current_fused"
+    ],
+    "method_definition": "Preserved baseline multi-view implementation before final algorithm refinement; camera poses vary, physical scenes match within this phase."
+  },
+  "selection_rationale": [
+    "Selected once from the independent shortlist; no further camera search.",
+    "Tied the best coarse static result, 26/28, with asymmetric_high_left. All four edge targets were correct, versus three for the original layout.",
+    "Independent shortlist static accuracy was 31/33, versus 30/33 for front_lower and 28/33 for asymmetric_high_left. All 33 selected-layout targets meet the declared sufficient-visibility criterion.",
+    "Selected-layout temporal accuracy was 40/40 with stable IDs and a correctly classified strict one-view object. Complete hiding was not achieved in the selected layout.",
+    "Frontal alternatives provide separate genuine full-hide/same-ID recovery evidence. That does not establish selected-layout full-hiding validation.",
+    "The choice preserves exact original Camera A and moves only B to (0.18, 0.80, 0.65) m.",
+    "The remaining static failure is one missing and one unknown nearby box in three_pairs_gap8. No false positives, known mixed clouds, duplicate IDs or identity switches occurred.",
+    "The preferred symmetric-front hypothesis was explicitly tested: 22/28 coarse static correct, so it was not selected.",
+    "Selected-layout coarse 4.135 Hz is a small pre-refinement screening measurement, not the final dedicated profile.",
+    "This is the best tested practical arrangement on limited selection data, without a global-optimum or statistical-significance claim."
+  ],
+  "settling": {
+    "coarse": {
+      "initial_two_trials_only": true,
+      "hand_trial1_displacement_from_trial0_m": 0.018104222088613897,
+      "hand_trial1_rotation_from_trial0_deg": 1.5847257790025981,
+      "hand_trial2_displacement_from_trial0_m": 0.022527306214773536,
+      "hand_trial2_rotation_from_trial0_deg": 2.1994443257644165,
+      "trials2_through129_all_link_hand_matrices_exactly_equal": true,
+      "final_half_all_link_hand_matrices_exactly_equal": true,
+      "supported_occlusion_order_range": [
+        110,
+        119
+      ],
+      "temporal_order_range": [
+        120,
+        129
+      ],
+      "supported_and_temporal_all_exactly_equal": true,
+      "recommended_future_precondition": "Physics/render-only settling: every tracked link remains within0.1mm and0.01deg of beginning of60-consecutive-step window, AABBcoordinate within0.1mm; bounded600steps, fail audit ifneverstable. No controllers/robotpose changes."
+    },
+    "coarse_minimum_camera_AABB_distance_m": 0.5733938035374488,
+    "coarse_all_camera_origins_outside_robot_AABB": true,
+    "snapshot_scope": "One resolved robot snapshot per trial, not every depth frame; no intra-trial stability claim.",
+    "mesh_caveat": "Native BBox valid and resolved link transforms available; descendant_meshes=0 so this artifact does not enumerate individual mesh bounds.",
+    "shortlist": {
+      "stable": true,
+      "steps": 270,
+      "max_steps": 600,
+      "required_consecutive_steps": 60,
+      "consecutive_stable_steps": 60,
+      "window_resets": 192,
+      "limits": {
+        "translation_m": 0.0001,
+        "rotation_deg": 0.01,
+        "aabb_m": 0.0001
+      },
+      "final_window_max_translation_m": 5.5263664427213006e-05,
+      "final_window_max_rotation_deg": 0.0056466159538444876,
+      "final_window_aabb_delta_m": 5.648782349357284e-05
+    }
+  },
+  "pending": [
+    "Final independent holdout",
+    "Dedicated final native profile",
+    "Final perception checkpoint decision"
+  ],
+  "manipulation_scope": "Historical manipulation NO-GO remains unaffected; no robot/backend commands in these studies.",
+  "artifact_sha256": {
+    "docs/assets/multiview_final/baseline.json": "88d7cf031d77084c440e822d927eedc5c0809e79ecb2abe62792d3bc2ea9e99d",
+    "docs/assets/multiview_final/selected-layout.json": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+    "outputs/multiview-final/camera-stage-inspection.json": "c4bd05e7a022541b7fecd46551fbbd759366613095cdd09637de413485c1ff6a",
+    "outputs/multiview-final/coarse-visibility-review.json": "ef041bd39ae85186e22f184895370dee2118b68e0a2dc8cc1c6a8bbf967c733d",
+    "outputs/multiview-final/coarse-capture/capture_manifest.json": "782e0fbc168d0b65bf6f5162498db47a4e611fd2e0edaa958e7a3e20db3870c9",
+    "outputs/multiview-final/coarse-capture/result.json": "ed2a8c5754ed9ff7d4c7c4d5f99715cfad576fb0793d5f9af8234affca170309",
+    "outputs/multiview-final/coarse-capture/provenance_start.json": "26bea9c131e3a29175da3a60ccd6e39e1f1490d5509ef963166025a8d21b858f",
+    "outputs/multiview-final/coarse-capture/provenance_end.json": "26bea9c131e3a29175da3a60ccd6e39e1f1490d5509ef963166025a8d21b858f",
+    "outputs/multiview-final/coarse-evaluation/result.json": "2e85f8a11443543ebb9e54e415d3265d29f2c89b2b308313417dec6820b31b0c",
+    "outputs/multiview-final/coarse-evaluation/rows.json": "c7c28ab0de85dfd50d3f262febc89570efcbb42c65a9336c87dc76d40a74e350",
+    "outputs/multiview-final/coarse-evaluation/samples.json": "57ac569a5d9ab9d132f00afa23d518d2671fe36d2cd15f171950644028c5c7e6",
+    "outputs/multiview-final/coarse-evaluation/detections.json": "c622fa0e5a77a267bbe72e3d4889e9625df861ab0808d91a483917f6cb255476",
+    "outputs/multiview-final/coarse-evaluation/contracts.json": "fe5634d21011531e92832ad4a43049a9fe484eb1edcbcf3b9b63f1541ac5e0ba",
+    "outputs/multiview-final/coarse-evaluation/temporal_recovery.json": "cd1aa518843050ca05d849ec7417b643f32a020e9766ecaf641d8211d737b27b",
+    "outputs/multiview-final/coarse-evaluation/provenance_start.json": "a4194831f695cc3db7e53dd41d5603836efafe475f3324799ccd76624e40654a",
+    "outputs/multiview-final/coarse-evaluation/provenance_end.json": "a4194831f695cc3db7e53dd41d5603836efafe475f3324799ccd76624e40654a",
+    "outputs/multiview-final/coarse-evaluation/provenance_derived_temporal_recovery.json": "dc5bcd0d387c3c6be50917fbf20d7ff793d40c9f0d47832a91af980604290886",
+    "outputs/multiview-final/shortlist-capture/capture_manifest.json": "6ebd34eac5a8c7efc48c69a512e220fb82f25954d69758eb4109b8e56fa0d8e0",
+    "outputs/multiview-final/shortlist-capture/result.json": "2ba81c78a8d8d418705f7aaa01167fcd4a42ec8f02a149b5a8fa5bb3042c618b",
+    "outputs/multiview-final/shortlist-capture/provenance_start.json": "1bb0c66ecfd51b5a226777b6089b438034823c611db1dc0b0a8793208bb0c726",
+    "outputs/multiview-final/shortlist-capture/provenance_end.json": "1bb0c66ecfd51b5a226777b6089b438034823c611db1dc0b0a8793208bb0c726",
+    "outputs/multiview-final/shortlist-evaluation/result.json": "7224e739435b37f353f145873713579d8cea106b772080272612d413616bcc53",
+    "outputs/multiview-final/shortlist-evaluation/rows.json": "58cdcc4e32923add8e826029e49037b561281eff053f8cdfc2fb95c5969bb2d5",
+    "outputs/multiview-final/shortlist-evaluation/samples.json": "e9578c9ef2dc9d06c5f4e95a367f87b171eda221f8598ff3539cbf5dbdb9e4ab",
+    "outputs/multiview-final/shortlist-evaluation/detections.json": "6bffd6f55397573903a439e1d82438f95be1a337d971ec7fafc80bb58578163f",
+    "outputs/multiview-final/shortlist-evaluation/contracts.json": "53563698c6cb8fc4f9c9e973bc4210285b0b85ca35429b6842d4e0bbe90c2af1",
+    "outputs/multiview-final/shortlist-evaluation/temporal_recovery.json": "85187f299144e819cc24843fa021e98b594fa5526ce57658ae406e271b1baa30",
+    "outputs/multiview-final/shortlist-evaluation/provenance_start.json": "d80b543d580b72c5de6b64d9b5576f39a7ab756d71d1d608283649b78dc51953",
+    "outputs/multiview-final/shortlist-evaluation/provenance_end.json": "d80b543d580b72c5de6b64d9b5576f39a7ab756d71d1d608283649b78dc51953",
+    "outputs/multiview-final/shortlist-evaluation/provenance_derived_temporal_recovery.json": "e36f4822b1b7bdfe2901e0a2b20fad8f9a0fe3fb5e9ae006a996ef01df9235e2",
+    "outputs/multiview-final/coarse-capture/native_timings.json": "e9dfdfc78fb8e6cafcb3ca1062e3c73c1d36f6cf922afa1d8efa9be47664d6cb",
+    "outputs/multiview-final/shortlist-capture/physics_settling.json": "34d272c5f2ba6f2c26788abc2c48ad4ccc86c27ddbe3d8c8c7b9de90b23aefbf"
+  }
+}

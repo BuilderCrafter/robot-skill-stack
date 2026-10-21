@@ -1,0 +1,181 @@
+{
+  "name": "original_A_side_left_B",
+  "eyes": [
+    [
+      1.6589600172814285,
+      -0.05281348017761145,
+      1.1035808604242954
+    ],
+    [
+      0.18,
+      0.8,
+      0.65
+    ]
+  ],
+  "targets": [
+    [
+      0.8638396970039728,
+      -0.044893184314218126,
+      0.4971808726313265
+    ],
+    [
+      0.45,
+      0.0,
+      0.04
+    ]
+  ],
+  "note": "Preserve original A; complementary left lateral B.",
+  "world_from_cameras": [
+    [
+      [
+        0.015999969482422105,
+        0.6062406100373334,
+        -0.7951203202774557,
+        1.6589600172814285
+      ],
+      [
+        0.9998406222443645,
+        -0.015999969482422105,
+        0.007920295863393323,
+        -0.05281348017761145
+      ],
+      [
+        -0.007920295863393323,
+        -0.7951203202774557,
+        -0.6063999877929689,
+        1.1035808604242954
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    [
+      [
+        -0.947492278987199,
+        -0.18726836670264893,
+        0.25920829479815244,
+        0.18
+      ],
+      [
+        -0.31977864415817964,
+        0.5548692346745154,
+        -0.768024577179711,
+        0.8
+      ],
+      [
+        0.0,
+        -0.8105866340152912,
+        -0.5856187400995295,
+        0.65
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  ],
+  "scene": "scenes/multiview_perception_final.usda",
+  "config": "config/scenes/multiview_perception_final.toml",
+  "objects": [
+    {
+      "name": "Square",
+      "shape": "cube",
+      "center": [
+        0.36,
+        -0.16,
+        0.0275
+      ],
+      "size": [
+        0.055,
+        0.055,
+        0.055
+      ],
+      "yaw": 0.4363323129985824,
+      "radius": 0.025,
+      "length": 0.08,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "Rectangle",
+      "shape": "cube",
+      "center": [
+        0.54,
+        0.16,
+        0.024
+      ],
+      "size": [
+        0.068,
+        0.042,
+        0.048
+      ],
+      "yaw": -0.5759586531581288,
+      "radius": 0.025,
+      "length": 0.08,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SmallSphere",
+      "shape": "sphere",
+      "center": [
+        0.36,
+        0.16,
+        0.022
+      ],
+      "size": [
+        0.044,
+        0.044,
+        0.044
+      ],
+      "yaw": 0.0,
+      "radius": 0.022,
+      "length": 0.08,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "LargeSphere",
+      "shape": "sphere",
+      "center": [
+        0.54,
+        -0.16,
+        0.03
+      ],
+      "size": [
+        0.06,
+        0.06,
+        0.06
+      ],
+      "yaw": 0.0,
+      "radius": 0.03,
+      "length": 0.08,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "camera_prims": [
+    "/World/PerceptionCamera",
+    "/World/PerceptionCameraSide"
+  ],
+  "authorship": "Ordinary inherited USD Camera prims; only this experimental layer overrides poses.",
+  "intrinsics": "Inherited unchanged from historical experimental scene; native audit records actual K.",
+  "runtime": "Actual saved transforms read every capture; this utility is not called by runtime startup."
+}

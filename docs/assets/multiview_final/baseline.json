@@ -1,0 +1,162 @@
+{
+  "baseline_commit": "a347126b8bc8c94c86a308f2fa7c3f88151b0b46",
+  "baseline_tree": "3c2fde13bdbaa130b0c0ea3a5f6678c3843864c2",
+  "prerequisite_pr": 11,
+  "prerequisite_merged": true,
+  "merged_utc": "2026-10-20T22:05:47Z",
+  "package_sha256": {
+    "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+    "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+    "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+    "robot_skill_stack/world/perception_multiview/fitting.py": "0fe1a9e24bcac2f8b5e62b823416bc24ca4a7572119ad55200faf8f83d29ad6e",
+    "robot_skill_stack/world/perception_multiview/observability.py": "e6d86a48aec65e4f67153fafb7cdf453657481396b0d66e2cf1611b767bd997a",
+    "robot_skill_stack/world/perception_multiview/provider.py": "b3b192ae8119249e2e36844ebdaa083ba24773a50cd88c3bc2d0ab219f4b5457",
+    "robot_skill_stack/world/perception_multiview/segmentation.py": "327c75d0ad5736d278c59dda35e8e3076da779de7709b3a5b89fa5a7cc9a76f2",
+    "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a"
+  },
+  "benchmark_configuration": {
+    "commit": "a347126b8bc8c94c86a308f2fa7c3f88151b0b46",
+    "recorded_utc": "2026-10-20T22:12:08.312787+00:00",
+    "configuration_note": "Exact authored USD camera control differs from historical benchmark look-at overrides; new layout study records full matrices.",
+    "files": {
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "config/scenes/multiview_playground.toml": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "scripts/benchmark_multiview_detection.py": "f469c5e9830d3c36e29428e0b8f135d056b506a40bfe48411b17a693cfdcfbb1",
+      "tests/support/multiview_native.py": "e682c8ec699d6fa61bb91332b59fd3a3410b3f0ac1d2d9633a5772276a4bc0ac",
+      "tests/support/multiview_research.py": "fee0abd1f185e2f5369002f18ca80a4645a470f6cf9141e5bdc9c1ca0cf0334a",
+      "tests/support/multiview_iteration2.py": "6176457da7509e502d8c9ee4bee05dc217c83b7e94a08267ef04737b6711f35c"
+    }
+  },
+  "original_benchmark_result": {
+    "status": "PASS",
+    "metrics": {
+      "kind": "automatic_detection_experiment",
+      "trials": 24,
+      "summary": {
+        "v1_A": {
+          "expected": 88,
+          "detected": 88,
+          "correct": 82,
+          "unknown": 6,
+          "false_positives": 0,
+          "duplicates": 0,
+          "missing": 0,
+          "mixed_clusters": 0,
+          "mixed_checked": 88,
+          "center_error_mm": {
+            "mean": 2.4912884995703504,
+            "p95": 8.323223269620465,
+            "samples": 88
+          },
+          "dimension_error_mm": {
+            "mean": 1.4784699663315497,
+            "p95": 2.6248882204215818,
+            "samples": 82
+          },
+          "axis_error_deg": {
+            "mean": 0.05564128337729711,
+            "p95": 0.14379566872607147,
+            "samples": 54
+          }
+        },
+        "v1_B": {
+          "expected": 88,
+          "detected": 80,
+          "correct": 80,
+          "unknown": 0,
+          "false_positives": 0,
+          "duplicates": 0,
+          "missing": 8,
+          "mixed_clusters": 0,
+          "mixed_checked": 80,
+          "center_error_mm": {
+            "mean": 1.0250915261639233,
+            "p95": 1.4881071119984826,
+            "samples": 80
+          },
+          "dimension_error_mm": {
+            "mean": 1.1928068685685511,
+            "p95": 1.6061064487211127,
+            "samples": 80
+          },
+          "axis_error_deg": {
+            "mean": 0.06331193538127283,
+            "p95": 0.14379566872607147,
+            "samples": 52
+          }
+        },
+        "multi_view": {
+          "expected": 88,
+          "detected": 87,
+          "correct": 87,
+          "unknown": 0,
+          "false_positives": 0,
+          "duplicates": 0,
+          "missing": 1,
+          "mixed_clusters": 0,
+          "mixed_checked": 87,
+          "center_error_mm": {
+            "mean": 0.23212145960364433,
+            "p95": 0.4964605099863532,
+            "samples": 87
+          },
+          "dimension_error_mm": {
+            "mean": 0.646915146064805,
+            "p95": 1.150194927061188,
+            "samples": 87
+          },
+          "axis_error_deg": {
+            "mean": 0.016949152539211247,
+            "p95": 0.04957449701045219,
+            "samples": 59
+          }
+        }
+      },
+      "latency_ms": {
+        "render_ms": {
+          "mean": 80.6518955117402,
+          "p95": 94.00215493515135
+        },
+        "acquisition_ms": {
+          "mean": 5.241414622610642,
+          "p95": 6.588161992840469
+        },
+        "projection_ms": {
+          "mean": 9.5219803107385,
+          "p95": 14.343251287937164
+        },
+        "fusion_ms": {
+          "mean": 2.805202526764737,
+          "p95": 6.964793265797198
+        },
+        "segmentation_ms": {
+          "mean": 25.63194238529023,
+          "p95": 57.61566516011953
+        },
+        "fitting_ms": {
+          "mean": 121.44982033512659,
+          "p95": 164.75690635852516
+        },
+        "total_ms": {
+          "mean": 172.48192500038488,
+          "p95": 230.21052966360003
+        },
+        "elapsed_ms": {
+          "mean": 253.1483948437704,
+          "p95": 309.8961590323597
+        }
+      },
+      "effective_update_hz": 3.95025218554969,
+      "process_max_rss_mib": 5235.265625,
+      "robot_commands": 0,
+      "clutter_note": "Elevated moving primitive surrogate; not exhaustive robot-link validation"
+    },
+    "error": null
+  },
+  "baseline_unit_artifacts": "outputs/multiview-final-baseline-unit/run-gjemmg3n",
+  "baseline_export": "outputs/multiview-final/baseline_snapshot",
+  "native_artifacts": "outputs/multiview-final/original-baseline",
+  "native_timing_note": "Historical two-arrangement workload; original A authored, B authored then historical look-at override. Separate exact-authored control used for new layout study.",
+  "robot_frame_note": "Authored Franka base identity; workspace center +X, left +Y, right -Y. Resolved native base geometry cross-check recorded in study manifest."
+}

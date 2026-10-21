@@ -1,0 +1,48 @@
+{
+  "frozen_at_utc": "2026-10-20T22:53:17.115859+00:00",
+  "source_commit": "ab5145d326ce67f6c5ddc867f8a4e7d1b149fd92",
+  "published_source_commit": "d89e7c06c78d0411b1079219c3e8b6b030e37f3e",
+  "source_tree": "f3eb44883d80e6ab5f4938c0a2aafe197bd93e9b",
+  "publication_note": "Published commit has the exact same Git tree; connector commit metadata differs.",
+  "sha256": {
+    "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+    "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+    "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+    "robot_skill_stack/world/perception_multiview/fitting.py": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+    "robot_skill_stack/world/perception_multiview/observability.py": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+    "robot_skill_stack/world/perception_multiview/provider.py": "77854e22dbb00f0962fe2f73be78c18912ef007feffe854b81bef189e8a67795",
+    "robot_skill_stack/world/perception_multiview/segmentation.py": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+    "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a"
+  },
+  "configuration_sha256": {
+    "tests/support/multiview_final_research.py": "8ffcaf5f677327bd9f0a558482da2c3ad95521e2393c9ac33795c2c181d33a2b",
+    "scripts/benchmark_multiview_final_perception.py": "258ca263216efd88541ae472744c0b6b4624aa50b3ccc207306dfdce70151c21",
+    "tests/support/multiview_final_evaluation.py": "f26d460ca843c50e784c38897f51f10e06679236d1d53426935fb3371927ff06",
+    "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+    "config/scenes/multiview_playground.toml": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+    "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+    "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+    "docs/assets/multiview_final/selected-layout.json": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+    "docs/assets/multiview_final/selection.json": "532cb83a9714034ab948d47852424c52939c5ae178ddb87f0c81232579b6538f",
+    "scripts/create_multiview_final_demo.py": "27d0aa035e1051328fadc8f68bbcaaba1c1ea290a0b5ec6f2fd9bba72b30ff2c",
+    "scripts/verify_multiview_final_scene.py": "0f9117523f83f0ce4c6e24a778fc25f50a6b629ec96fceed93daa62a5b6c1a95"
+  },
+  "layout_sha256": "5eadee2d63567b4a3b49dd0da2b838381de3cdaa1d9056d204b59cc675417f41",
+  "layout_names": [
+    "original_reference",
+    "original_A_side_left_B"
+  ],
+  "selected_layout": "original_A_side_left_B",
+  "independent_holdout_not_generated": true,
+  "declared_holdout_draw_seeds": [
+    20261219,
+    20261220
+  ],
+  "planned_holdout": {
+    "physical_scenes": 30,
+    "physical_objects": 74,
+    "layouts": 2
+  },
+  "guard_scope": "CLI enforces every production package hash and canonical layout hash BEFORE holdout generation; configuration/harness/scene hashes are separately recorded and audited.",
+  "source_scope": "V1/default config/core robot/runtime/planner/GUI/launchers and dependencies unchanged."
+}
