@@ -7,7 +7,7 @@ import numpy as np
 
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from robot_skill_stack.world.spatial_mapping.occupancy import GridSpec, OccupancyMap, OccupancyState as State
-from robot_skill_stack.world.spatial_mapping.rgbd import RgbdMapper, _ray_voxels
+from robot_skill_stack.world.spatial_mapping.rgbd import RgbdMapper, _ray_voxels, _traverse_rays
 
 
 def ray(origin=(.05, .15, .15), endpoint=(.65, .15, .15), *, camera='A', number=1, acquired=100.):
@@ -281,11 +281,11 @@ class RgbdMappingTests(unittest.TestCase):
         occupancy, mapper = self.make(map_options=dict(stale_after=10.))
         occupancy.integrate([], [[0, 0, 0]], timestamp=99., now=self.now)
         before = occupancy.snapshot()
-        original = _ray_voxels
+        original = _traverse_rays
         def slow_traversal(*args):
             self.now += 2.
-            yield from original(*args)
-        with patch('robot_skill_stack.world.spatial_mapping.rgbd._ray_voxels', slow_traversal):
+            return original(*args)
+        with patch('robot_skill_stack.world.spatial_mapping.rgbd._traverse_rays', slow_traversal):
             self.assertFalse(mapper.update((ray(),)))
         self.assertIn('stale during integration', occupancy.health['last_error'])
         self.assertFalse(occupancy.health['fresh'])
@@ -295,11 +295,11 @@ class RgbdMappingTests(unittest.TestCase):
 
     def test_explicit_evaluation_time_remains_deterministic_and_stamp_is_original(self):
         occupancy, mapper = self.make(map_options=dict(stale_after=10.))
-        original = _ray_voxels
+        original = _traverse_rays
         def slow_traversal(*args):
             self.now += .4
-            yield from original(*args)
-        with patch('robot_skill_stack.world.spatial_mapping.rgbd._ray_voxels', slow_traversal):
+            return original(*args)
+        with patch('robot_skill_stack.world.spatial_mapping.rgbd._traverse_rays', slow_traversal):
             self.assertTrue(mapper.update((ray(acquired=99.8),), now=100.))
         self.assertEqual(occupancy.timestamp, 99.8)
 

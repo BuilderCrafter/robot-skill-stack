@@ -506,3 +506,250 @@ mean the space is free. Missing views and occlusion still limit map coverage, an
 old evidence can persist until cleared or expired. Practical readiness depends
 on the native obstacle-preservation and latency results; it does not establish
 collision-safe motion or authorize runtime/planning integration.
+
+## V3 CPU performance
+
+V3 continues from `d260377` without changing mapping bounds, resolution,
+sampling, camera configuration, ray budgets, probability settings or the V2
+robot-depth rules. The unchanged seven-configuration native fixture first
+reproduced 2,133 ms median filtered updates, 2,190 ms unfiltered and 223 ms
+filter computation. Its 15 fresh updates are a reproduction check; the
+controlled before/after benchmark uses additional warm-up and repeated identical
+recorded observations. The original
+[profile](assets/spatial_mapping_v3/baseline_profile.json) retains this distinction.
+
+A focused SDK-free profile of the original Home observation found scalar voxel
+traversal consumed about 92% of `RgbdMapper.update`: 147,009 visits generated
+over 3.4 million function calls. Occupancy integration took about 29 ms, expiration
+8 ms and a separately measured full immutable snapshot 17 ms. These measurements
+support optimizing traversal rather than replacing the dense grid.
+
+`RgbdMapper` now advances finite rays in bounded batches of at most 256. It
+retains slab clipping, half-open grid bounds, `nextafter` entry selection,
+positive-length cells, simultaneous crossings and the original endpoint rules.
+Traversal emits flat integer voxel IDs; NumPy deduplicates them per view and
+across views, with occupied endpoints winning over free evidence. Every visit
+still counts before deduplication. Exceeding the configured global budget
+rejects the complete update without integrating partial evidence. The visit
+buffer is bounded by the remaining budget plus one, not the grid volume times
+the ray count.
+
+The occupancy engine, dense-grid representation, immutable snapshots and query
+API remain unchanged. Repeated flat-index validation inside integration is now
+a small cost and does not justify another internal update API. New differential
+tests retain a frozen V2 scalar reference and compare complete map states,
+probabilities, observation/expiration arrays, timestamps and diagnostics,
+including boundary, budget and multi-camera cases. Two existing clock-delay
+tests inject their delay at the new traversal entry point; their freshness and
+original-timestamp assertions are preserved.
+
+The accurate mesh filter and Isaac pose-history adapter are unchanged. Its
+separate seven-configuration profile attributed about 48% of cumulative time to
+BVH box tests and 22% to triangle cross products; repeated norm calculations
+accounted for only 4%. A research-only norm/leaf-array cache preserved all masks
+but changed median lookup from 178.48 to 175.28 ms, just 1.8%. This was too small
+to justify another cached layout, so the prototype was discarded. Neither
+triangle geometry nor tolerances were weakened for performance.
+
+The reproducible benchmark captures the exact V2 fixture from baseline Git
+objects into an isolated package namespace, including original depth/RGB,
+calibration, tokens, acquisition timestamps and exposure-matched mesh poses.
+Capture I/O is excluded from performance claims. CPU replay builds each version's
+mesh/BVH once, uses the same complete fifteen-update sequence and map resets,
+and alternates baseline/current pass order. It times updates separately from
+snapshots, queries, equality comparisons and disk writes. Explicit replay time
+is the original observation timeline; replay is not evidence of live freshness.
+The original capture manifest is retained, with a documented correction to its
+reset annotation before the moving sequence.
+
+Benchmark-only line attribution and cProfile runs provide phase evidence;
+their instrumented times are excluded from headline medians. Scalar traversal
+includes per-visit set insertion, whereas batched traversal and array dedup have
+separate costs. Expiration nested inside integration is reported as overlapping
+work rather than added twice. No profiling hooks run in normal mapping.
+
+Reproduce the performance comparison on the Isaac workstation, with no other
+CPU-heavy work or simulator running:
+
+```bash
+./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py \
+  --capture-only --baseline-ref d260377 \
+  --artifacts-dir outputs/spatial-mapping-v3-capture \
+  --result outputs/spatial-mapping-v3-capture/result.json
+./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py \
+  --replay outputs/spatial-mapping-v3-capture --warmup 2 --repeats 5 \
+  --semantic --profile --memory \
+  --artifacts-dir outputs/spatial-mapping-v3-performance \
+  --result outputs/spatial-mapping-v3-performance/result.json
+./run_isaac_python.sh scripts/check_spatial_mapping_live_freshness.py \
+  --artifacts-dir outputs/spatial-mapping-v3-live-final \
+  --result outputs/spatial-mapping-v3-live-final/result.json
+```
+
+The baseline commit must exist in the local Git history. Capture/replay validates
+input file hashes and records source and script hashes; benchmark PASS requires
+those sources to stay unchanged during execution. Raw captures, profiler files
+and verbose logs stay under ignored `outputs/`. The separate live check uses
+real production clocks and the original acquisition timestamps, with
+`max_frame_age=stale_after=1` for its independent filtered maps. Only its nested
+`live_default_freshness` measurements are timing evidence: the original fixture's
+unfiltered timers include the injected freshness check.
+
+### Controlled mapping results
+
+On the Ryzen 7 7800X3D workstation, two warm-up passes preceded five measured
+passes with alternating baseline/current order. Each pass processed all fifteen
+captured batches, retaining mapper rotation/token history and the native map
+resets. The table uses the last static batch and each moving configuration:
+35 representative updates per mode/version across seven configurations.
+
+| Same-input CPU update | Baseline median / p95 / max, ms | V3 median / p95 / max, ms | Median reduction |
+| --- | ---: | ---: | ---: |
+| Full-arm, robot filtering enabled | 1,763.9 / 1,812.2 / 1,822.5 | 252.8 / 266.7 / 287.8 | 1,511.1 ms, 85.7% |
+| Full-arm, filtering disabled | 1,785.5 / 1,839.9 / 1,853.4 | 77.4 / 81.3 / 82.2 | 1,708.1 ms, 95.7% |
+| Filter with recorded-pose assembly | 182.1 / 201.5 / 206.0 | 182.9 / 197.5 / 220.0 | Unchanged implementation |
+
+Every measured batch, including predecessors omitted from the timing summary,
+matched the baseline's complete state, probability, observation/expiration and
+last-observed arrays, map metadata and fixed spatial queries. Production-selected
+pixels and robot masks also matched the original capture exactly. There were no
+runtime errors or output mismatches. This preserves V2's residual errors as well
+as its successful exclusions; it does not improve or certify geometric accuracy.
+
+The separate native real-clock check passed fifteen fresh filtered updates:
+median/p95/max 300.9/311.2/313.0 ms, with a maximum original-observation age of
+335.6 ms at completion. Paired camera acquisition took 5.6/7.6/8.2 ms. The unchanged
+full-arm ground-truth mapper took 11.2/17.3/20.4 ms across eight native reference
+updates. These native measurements include stage/camera access and differ from
+SDK-free replay; they are not interchangeable timing distributions.
+
+The required uninstrumented native self-filter fixture also passed. Its fifteen
+fresh filtered updates changed from the reproduced baseline's
+2,132.7/2,189.7/2,207.3 ms median/p95/max to 303.6/314.8/321.8 ms, an 85.8% median
+reduction. Unfiltered updates took 90.2/95.9/96.5 ms. All native selected-reference
+quality counts matched the V2 reproduction: 1,145/1,146 robot returns excluded,
+robot-reference occupied cells 1,117 → one, all 62 clear nearby-obstacle returns
+retained and one of eleven occlusion-edge returns withheld. The same two robot
+surface-reference FREE cells remained; no FREE appeared at the 35 GT-occupied
+probe-center checks. The measured speedup preserves the documented residual
+errors and accuracy limits.
+
+No default timing limits were increased. The measured isolated full-arm workload
+now fits the original one-second acquisition/freshness defaults. The map keeps
+the oldest contributing acquisition timestamp, so processing and earlier
+consumers still consume the same freshness budget. Slow or delayed inputs remain
+explicit failures; the deterministic replay clock is never substituted in live
+mapping. TTL and repeated/frozen-frame behavior are unchanged.
+
+### Semantic perception and scheduling scope
+
+The semantic pipeline is unchanged. Its existing diagnostics split acquisition,
+projection/cropping/per-view voxelization, fusion, segmentation/refinement,
+fitting/finalization, observability and tracking/publication. The combined
+benchmark processes each original camera batch through semantic perception and
+then a filtered map, directly measuring both baseline and V3 schedules. It
+compares semantic class, persistent ID, geometry, confidence, grasp readiness,
+metadata and original timestamps across schedules and repeats. Timing on these
+full-arm views is distinct from the broader frozen tabletop research protocol.
+
+Existing `SharedFrames` can reuse the same acquired batch without another camera
+read. Sharing the semantic cloud would change mapping evidence: semantic
+projection uses stride 2, workspace/support cropping and voxel centroids, whereas
+mapping uses the selected stride-8 depth rays and needs their entire free-space
+segments. Calibration arithmetic is small relative to fitting and self-filter
+intersection work. No new shared preprocessing framework is justified here.
+
+Both APIs remain synchronous. Calling a roughly 300 ms native map update inside
+a simulation/control stepping loop would delay that loop for its processing
+duration, even though the pose-history callback itself remains small. Combining
+consumers adds their sequential latency and consumes more observation age.
+The replay benchmark does not demonstrate asynchronous execution or controller
+deadlines. Runtime scheduling and planner/controller integration remain future
+work; no worker threads, control callbacks or motion behavior were changed.
+
+The measured semantic-only median/p95/max was 103.0/105.8/109.1 ms. Fitting took
+86.9 ms at the median, compared with projection 4.1 ms, fusion 0.5 ms,
+segmentation 5.0 ms, observability 6.3 ms and tracking/publication 0.1 ms. No small
+projection/copy optimization would materially change this fitting-dominated
+workload, so all frozen perception code and its limits were retained. All 35
+representative samples contained four confirmed objects; class/identity,
+geometry, confidence and grasp-readiness signatures were identical across the
+semantic-only and both combined schedules.
+
+| Sequential same-input workload | Median / p95 / max, ms |
+| --- | ---: |
+| Perception plus baseline filtered mapping | 1,873.7 / 1,916.3 / 1,917.6 |
+| Perception plus V3 filtered mapping | 360.8 / 387.0 / 406.5 |
+
+The measured combined median reduction is 1,512.9 ms (80.7%); this is a directly
+timed sequence, not a sum of separate medians. Original observation and map
+timestamps were preserved. Its roughly 0.4 s tail is a CPU replay result, not a
+live deadline guarantee across other layouts, speeds or fitting workloads.
+
+### Phase and memory evidence
+
+Separate line-attributed Home profiling explains the gain. These instrumented
+single-update values are not substitutes for the warm latency distributions:
+
+| Filtered Home phase | Baseline ms | V3 ms |
+| --- | ---: | ---: |
+| Recorded-frame validation | 0.66 | 0.61 |
+| Candidate/selected rays | 0.21 | 0.20 |
+| Robot geometry/masks, with tracing overhead | 256.0 | 270.6 |
+| World-coordinate projection | 0.27 | 0.24 |
+| Traversal; scalar also includes per-visit insertion | 2,192.1 | 52.4 |
+| Remaining accumulation/deduplication | 64.9 | 9.9 |
+| Probabilistic integration, including nested expiry | 8.18 | 8.29 |
+| Expiry across session/integration, overlapping the above | 0.84 | 0.94 |
+
+Snapshot/query work was timed separately without the line profiler. Full
+immutable snapshots had median/p95/max 6.22/17.58/18.22 ms before and
+6.00/6.63/12.53 ms after; 1,000-position queries took 0.251/0.262/0.269 ms and
+0.236/0.284/0.319 ms. Those implementations were not changed, and their timing
+variation is not claimed as an optimization. Physical camera acquisition and
+native stage access are reported separately above.
+
+Separate memory workers measured traced peak update allocations of
+25,791,774 → 15,732,616 bytes, a 39.0% reduction. Resident memory after the update
+was 264.2 → 237.2 MB. These processes deliberately retained all fifteen captured
+batches (101.4 MB of frame buffers), cached geometry and a map; they are not
+production application RSS measurements. Process high-water RSS was already
+398.2 MB before each probe and stayed there, so no process-peak reduction is
+claimed. Tracemalloc was excluded from timing runs. The dense map still occupies
+the same storage; the reduction comes from traversal/accumulation temporaries.
+
+![Controlled V3 latency and allocation comparison](assets/spatial_mapping_v3/performance.png)
+
+The compact [evaluation](assets/spatial_mapping_v3/evaluation.json) records full
+distributions, configuration scopes, 30 baseline/current full-array/query
+comparisons, 150 exact captured-mask/selection checks and 300 recorded consistency
+checks, of which 240 compare later repetitions with their first measured result.
+The remaining 60 establish those initial signatures. Semantic equivalence and
+timestamp checks are recorded separately. Detailed replay inputs, samples and
+profiles remain local artifacts rather than committed bulk data.
+
+### Completed V3 validation
+
+On 22 October 2026, all 582 discovered offline tests (nine new), eight standalone
+checks and architecture/syntax checks passed. All 17 native scenarios passed:
+three spatial mapping, six multi-camera perception, two V1 perception/manipulation
+and six legacy manipulation regressions. All 19 frozen perception/configuration
+hashes remained unchanged. The [verification record](assets/spatial_mapping_v3/verification.json)
+contains exact commands, artifact paths, result hashes and protected-source
+checks. Reproduce the final groups sequentially:
+
+```bash
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only \
+  --artifacts-dir outputs/spatial-mapping-v3-unit-final
+for mapping_group in spatial_mapping multiview isaac regression; do
+  ./run_isaac_python.sh scripts/run_all_regressions.py --group "$mapping_group" \
+    --artifacts-dir "outputs/spatial-mapping-v3-final-$mapping_group" || break
+done
+```
+
+V3 meets the 500 ms full-arm stretch target on this tested configuration with
+equivalent occupancy quality. Accurate robot intersection is now the largest
+mapping cost; semantic fitting dominates the other consumer. Larger ray budgets,
+regions, complex scenes and longer observation queues still need measurement.
+The validated subsystem remains independent and explicitly updated; runtime
+integration, motion planning and controller scheduling have not begun.

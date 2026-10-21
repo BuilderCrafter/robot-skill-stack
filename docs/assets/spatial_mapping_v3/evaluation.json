@@ -1,0 +1,1573 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "validation_utc": "2026-10-21T23:27:42.491987+00:00",
+  "baseline_commit": "d260377a4d1e773e9bf45871c6de9020d1382e6d",
+  "benchmark": {
+    "warmup_passes": 2,
+    "measured_passes": 5,
+    "physical_configurations": 7,
+    "recorded_batches": 15,
+    "representative_record_indices": [
+      2,
+      5,
+      8,
+      11,
+      12,
+      13,
+      14
+    ],
+    "representative_denominator": "Last of three batches at each of four static configurations, plus all three moving configurations; five measured repeats give 35 samples per variant/filter mode.",
+    "processed_measured_updates": 300,
+    "measured_representative_updates": 140,
+    "processing_order": "Alternated by full-pass parity; each variant sees unchanged original order.",
+    "clear_map_before_records": [
+      0,
+      3,
+      6,
+      9,
+      12
+    ],
+    "capture_annotation_correction": "Original capture manifest omitted the index-12 moving-sequence reset annotation. Replay follows the unchanged V2 fixture; the original capture manifest and script remain unmodified.",
+    "clock_scope": "Explicit original acquisition timeline; excludes live acquisition, pose-history callbacks and real completion-age acceptance.",
+    "acquisition": "Exact existing two-camera frames borrowed once per batch; no new render or retimestamp in replay.",
+    "timed_update_scope": "Source/session update only, including selected-pixel filtering and recorded pose-instance assembly; loading, BVH initialization, full-state equality hashes, snapshot/query, profiler and memory instrumentation are excluded.",
+    "capture_timings_usable": false
+  },
+  "workload": {
+    "dimensions": [
+      115,
+      120,
+      114
+    ],
+    "voxel_count": 1573200,
+    "cameras": 2,
+    "resolution": [
+      640,
+      480
+    ],
+    "settings": {
+      "bounds_min": [
+        -0.3,
+        -0.6,
+        -0.02
+      ],
+      "bounds_max": [
+        0.85,
+        0.6,
+        1.12
+      ],
+      "voxel_size": 0.01,
+      "stride": 8,
+      "max_rays": 1024,
+      "max_voxel_visits": 500000,
+      "max_frame_age": 5.0,
+      "stale_after": 5.0,
+      "evidence_ttl": 30.0
+    },
+    "mesh_count": 11,
+    "triangles": 94212
+  },
+  "controlled_mapping": {
+    "summary": {
+      "baseline": {
+        "unfiltered": {
+          "update": {
+            "samples": 35,
+            "median_ms": 1785.4939852841198,
+            "p95_ms": 1839.931942569092,
+            "max_ms": 1853.3681528642774,
+            "mean_ms": 1786.087696373995
+          },
+          "snapshot": {
+            "samples": 35,
+            "median_ms": 6.3987011089921,
+            "p95_ms": 9.325923258438706,
+            "max_ms": 9.368397761136293,
+            "mean_ms": 6.62932407909206
+          },
+          "query_1000": {
+            "samples": 35,
+            "median_ms": 0.25561777874827385,
+            "p95_ms": 0.27700229547917843,
+            "max_ms": 0.3543519414961338,
+            "mean_ms": 0.2582958899438381
+          },
+          "configurations": {
+            "home_closed": {
+              "samples": 5,
+              "median_ms": 1762.7176218666136,
+              "p95_ms": 1764.5055105909705,
+              "max_ms": 1764.8356179706752,
+              "mean_ms": 1755.8928555808961
+            },
+            "extended_open": {
+              "samples": 5,
+              "median_ms": 1799.1495062597096,
+              "p95_ms": 1817.4991980195045,
+              "max_ms": 1820.7535077817738,
+              "mean_ms": 1799.886579439044
+            },
+            "rotated_closed": {
+              "samples": 5,
+              "median_ms": 1836.2421048805118,
+              "p95_ms": 1852.402835059911,
+              "max_ms": 1853.3681528642774,
+              "mean_ms": 1836.2484814599156
+            },
+            "extended_side_open": {
+              "samples": 5,
+              "median_ms": 1737.1860686689615,
+              "p95_ms": 1764.9954982101917,
+              "max_ms": 1766.8594000861049,
+              "mean_ms": 1744.8074084706604
+            },
+            "moving_4": {
+              "samples": 5,
+              "median_ms": 1772.4997061304748,
+              "p95_ms": 1775.8631682954729,
+              "max_ms": 1776.0408450849354,
+              "mean_ms": 1771.478848066181
+            },
+            "moving_8": {
+              "samples": 5,
+              "median_ms": 1802.1393907256424,
+              "p95_ms": 1809.7844989970326,
+              "max_ms": 1811.2727086991072,
+              "mean_ms": 1797.8021528571844
+            },
+            "moving_12": {
+              "samples": 5,
+              "median_ms": 1798.7321289256215,
+              "p95_ms": 1805.8149071410298,
+              "max_ms": 1806.60402122885,
+              "mean_ms": 1796.4975487440825
+            }
+          },
+          "filter": {
+            "samples": 0
+          }
+        },
+        "filtered": {
+          "update": {
+            "samples": 35,
+            "median_ms": 1763.903017155826,
+            "p95_ms": 1812.1519804466516,
+            "max_ms": 1822.5283669307828,
+            "mean_ms": 1757.0216076980744
+          },
+          "snapshot": {
+            "samples": 35,
+            "median_ms": 6.221631076186895,
+            "p95_ms": 17.58345221169293,
+            "max_ms": 18.216012977063656,
+            "mean_ms": 7.646966007139001
+          },
+          "query_1000": {
+            "samples": 35,
+            "median_ms": 0.25073811411857605,
+            "p95_ms": 0.2622131258249283,
+            "max_ms": 0.26934314519166946,
+            "mean_ms": 0.24930744298866817
+          },
+          "configurations": {
+            "home_closed": {
+              "samples": 5,
+              "median_ms": 1719.5044700056314,
+              "p95_ms": 1740.3274476528168,
+              "max_ms": 1745.2310412190855,
+              "mean_ms": 1721.262327581644
+            },
+            "extended_open": {
+              "samples": 5,
+              "median_ms": 1775.5506057292223,
+              "p95_ms": 1790.8869764767587,
+              "max_ms": 1792.7298080176115,
+              "mean_ms": 1778.3612860366702
+            },
+            "rotated_closed": {
+              "samples": 5,
+              "median_ms": 1811.2086169421673,
+              "p95_ms": 1820.8933259360492,
+              "max_ms": 1822.5283669307828,
+              "mean_ms": 1811.2719827331603
+            },
+            "extended_side_open": {
+              "samples": 5,
+              "median_ms": 1702.1119850687683,
+              "p95_ms": 1723.5893119126558,
+              "max_ms": 1728.7032292224467,
+              "mean_ms": 1704.1801093146205
+            },
+            "moving_4": {
+              "samples": 5,
+              "median_ms": 1744.4342849776149,
+              "p95_ms": 1749.1253518499434,
+              "max_ms": 1749.4140057824552,
+              "mean_ms": 1743.5751279816031
+            },
+            "moving_8": {
+              "samples": 5,
+              "median_ms": 1764.719164930284,
+              "p95_ms": 1794.6214445866644,
+              "max_ms": 1799.8701720498502,
+              "mean_ms": 1772.23427798599
+            },
+            "moving_12": {
+              "samples": 5,
+              "median_ms": 1770.5767177976668,
+              "p95_ms": 1776.3025095686316,
+              "max_ms": 1777.6613011956215,
+              "mean_ms": 1768.2661422528327
+            }
+          },
+          "filter": {
+            "samples": 35,
+            "median_ms": 182.06002982333302,
+            "p95_ms": 201.4782406389713,
+            "max_ms": 205.99920582026243,
+            "mean_ms": 184.8128101522369
+          }
+        }
+      },
+      "current": {
+        "unfiltered": {
+          "update": {
+            "samples": 35,
+            "median_ms": 77.40740571171045,
+            "p95_ms": 81.26412690617144,
+            "max_ms": 82.1666419506073,
+            "mean_ms": 77.53528888736453
+          },
+          "snapshot": {
+            "samples": 35,
+            "median_ms": 5.91993797570467,
+            "p95_ms": 6.225309194996953,
+            "max_ms": 12.453471310436726,
+            "mean_ms": 5.8753936019326956
+          },
+          "query_1000": {
+            "samples": 35,
+            "median_ms": 0.23011025041341782,
+            "p95_ms": 0.24595498107373714,
+            "max_ms": 0.2508987672626972,
+            "mean_ms": 0.2311925935958113
+          },
+          "configurations": {
+            "home_closed": {
+              "samples": 5,
+              "median_ms": 76.38105703517795,
+              "p95_ms": 76.94632336497307,
+              "max_ms": 76.94718614220619,
+              "mean_ms": 76.5813016332686
+            },
+            "extended_open": {
+              "samples": 5,
+              "median_ms": 77.93898601084948,
+              "p95_ms": 78.46469171345234,
+              "max_ms": 78.54055613279343,
+              "mean_ms": 77.91650341823697
+            },
+            "rotated_closed": {
+              "samples": 5,
+              "median_ms": 78.21002183482051,
+              "p95_ms": 81.39661196619272,
+              "max_ms": 81.44960599020123,
+              "mean_ms": 79.21132799237967
+            },
+            "extended_side_open": {
+              "samples": 5,
+              "median_ms": 74.82912996783853,
+              "p95_ms": 75.8768429979682,
+              "max_ms": 76.03268604725599,
+              "mean_ms": 74.9353134073317
+            },
+            "moving_4": {
+              "samples": 5,
+              "median_ms": 76.62585331127048,
+              "p95_ms": 81.16416092962027,
+              "max_ms": 82.1666419506073,
+              "mean_ms": 77.658258844167
+            },
+            "moving_8": {
+              "samples": 5,
+              "median_ms": 77.40740571171045,
+              "p95_ms": 78.55443069711328,
+              "max_ms": 78.56375258415937,
+              "mean_ms": 77.66507593914866
+            },
+            "moving_12": {
+              "samples": 5,
+              "median_ms": 78.89664731919765,
+              "p95_ms": 79.49548969045281,
+              "max_ms": 79.55522509291768,
+              "mean_ms": 78.77924097701907
+            }
+          },
+          "filter": {
+            "samples": 0
+          }
+        },
+        "filtered": {
+          "update": {
+            "samples": 35,
+            "median_ms": 252.81291967257857,
+            "p95_ms": 266.7295958381146,
+            "max_ms": 287.8235029056668,
+            "mean_ms": 253.43703255057335
+          },
+          "snapshot": {
+            "samples": 35,
+            "median_ms": 6.000056862831116,
+            "p95_ms": 6.632399186491966,
+            "max_ms": 12.527267914265394,
+            "mean_ms": 6.008932686277798
+          },
+          "query_1000": {
+            "samples": 35,
+            "median_ms": 0.23602088913321495,
+            "p95_ms": 0.2839304041117429,
+            "max_ms": 0.3190860152244568,
+            "mean_ms": 0.2423468977212906
+          },
+          "configurations": {
+            "home_closed": {
+              "samples": 5,
+              "median_ms": 253.49859008565545,
+              "p95_ms": 255.20447259768844,
+              "max_ms": 255.5878427810967,
+              "mean_ms": 253.31599256023765
+            },
+            "extended_open": {
+              "samples": 5,
+              "median_ms": 251.18913734331727,
+              "p95_ms": 254.89219091832638,
+              "max_ms": 254.92635695263743,
+              "mean_ms": 251.86491645872593
+            },
+            "rotated_closed": {
+              "samples": 5,
+              "median_ms": 243.06281795725226,
+              "p95_ms": 262.5064801424742,
+              "max_ms": 267.0408431440592,
+              "mean_ms": 247.71168529987335
+            },
+            "extended_side_open": {
+              "samples": 5,
+              "median_ms": 261.47369714453816,
+              "p95_ms": 263.50677935406566,
+              "max_ms": 263.6521952226758,
+              "mean_ms": 261.02709621191025
+            },
+            "moving_4": {
+              "samples": 5,
+              "median_ms": 264.11590026691556,
+              "p95_ms": 283.57804315164685,
+              "max_ms": 287.8235029056668,
+              "mean_ms": 268.63904371857643
+            },
+            "moving_8": {
+              "samples": 5,
+              "median_ms": 247.29475285857916,
+              "p95_ms": 252.42324154824018,
+              "max_ms": 252.81291967257857,
+              "mean_ms": 248.39394381269813
+            },
+            "moving_12": {
+              "samples": 5,
+              "median_ms": 242.50556621700525,
+              "p95_ms": 245.62051389366388,
+              "max_ms": 245.98954478278756,
+              "mean_ms": 243.1065497919917
+            }
+          },
+          "filter": {
+            "samples": 35,
+            "median_ms": 182.86281498149037,
+            "p95_ms": 197.51183027401567,
+            "max_ms": 219.97621608898044,
+            "mean_ms": 184.41397680767946
+          }
+        }
+      }
+    },
+    "initialization": {
+      "baseline": {
+        "mesh_bvh_seconds": 0.43107018107548356,
+        "mesh_count": 11,
+        "triangles": 94212
+      },
+      "current": {
+        "mesh_bvh_seconds": 0.41978933196514845,
+        "mesh_count": 11,
+        "triangles": 94212
+      }
+    },
+    "comparisons": {
+      "unfiltered": {
+        "before": {
+          "samples": 35,
+          "median_ms": 1785.4939852841198,
+          "p95_ms": 1839.931942569092,
+          "max_ms": 1853.3681528642774,
+          "mean_ms": 1786.087696373995
+        },
+        "after": {
+          "samples": 35,
+          "median_ms": 77.40740571171045,
+          "p95_ms": 81.26412690617144,
+          "max_ms": 82.1666419506073,
+          "mean_ms": 77.53528888736453
+        },
+        "median_saved_ms": 1708.0865795724094,
+        "median_reduction_percent": 95.66465043569481
+      },
+      "filtered": {
+        "before": {
+          "samples": 35,
+          "median_ms": 1763.903017155826,
+          "p95_ms": 1812.1519804466516,
+          "max_ms": 1822.5283669307828,
+          "mean_ms": 1757.0216076980744
+        },
+        "after": {
+          "samples": 35,
+          "median_ms": 252.81291967257857,
+          "p95_ms": 266.7295958381146,
+          "max_ms": 287.8235029056668,
+          "mean_ms": 253.43703255057335
+        },
+        "median_saved_ms": 1511.0900974832475,
+        "median_reduction_percent": 85.66741384227448
+      }
+    },
+    "per_configuration_comparisons": {
+      "home_closed": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1762.7176218666136,
+            "p95_ms": 1764.5055105909705,
+            "max_ms": 1764.8356179706752,
+            "mean_ms": 1755.8928555808961
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 76.38105703517795,
+            "p95_ms": 76.94632336497307,
+            "max_ms": 76.94718614220619,
+            "mean_ms": 76.5813016332686
+          },
+          "median_saved_ms": 1686.3365648314357,
+          "median_reduction_percent": 95.66685803286548
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1719.5044700056314,
+            "p95_ms": 1740.3274476528168,
+            "max_ms": 1745.2310412190855,
+            "mean_ms": 1721.262327581644
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 253.49859008565545,
+            "p95_ms": 255.20447259768844,
+            "max_ms": 255.5878427810967,
+            "mean_ms": 253.31599256023765
+          },
+          "median_saved_ms": 1466.005879919976,
+          "median_reduction_percent": 85.2574625708984
+        }
+      },
+      "extended_open": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1799.1495062597096,
+            "p95_ms": 1817.4991980195045,
+            "max_ms": 1820.7535077817738,
+            "mean_ms": 1799.886579439044
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 77.93898601084948,
+            "p95_ms": 78.46469171345234,
+            "max_ms": 78.54055613279343,
+            "mean_ms": 77.91650341823697
+          },
+          "median_saved_ms": 1721.2105202488601,
+          "median_reduction_percent": 95.66800948227596
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1775.5506057292223,
+            "p95_ms": 1790.8869764767587,
+            "max_ms": 1792.7298080176115,
+            "mean_ms": 1778.3612860366702
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 251.18913734331727,
+            "p95_ms": 254.89219091832638,
+            "max_ms": 254.92635695263743,
+            "mean_ms": 251.86491645872593
+          },
+          "median_saved_ms": 1524.361468385905,
+          "median_reduction_percent": 85.85288774463551
+        }
+      },
+      "rotated_closed": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1836.2421048805118,
+            "p95_ms": 1852.402835059911,
+            "max_ms": 1853.3681528642774,
+            "mean_ms": 1836.2484814599156
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 78.21002183482051,
+            "p95_ms": 81.39661196619272,
+            "max_ms": 81.44960599020123,
+            "mean_ms": 79.21132799237967
+          },
+          "median_saved_ms": 1758.0320830456913,
+          "median_reduction_percent": 95.74075653602824
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1811.2086169421673,
+            "p95_ms": 1820.8933259360492,
+            "max_ms": 1822.5283669307828,
+            "mean_ms": 1811.2719827331603
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 243.06281795725226,
+            "p95_ms": 262.5064801424742,
+            "max_ms": 267.0408431440592,
+            "mean_ms": 247.71168529987335
+          },
+          "median_saved_ms": 1568.145798984915,
+          "median_reduction_percent": 86.58007610588717
+        }
+      },
+      "extended_side_open": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1737.1860686689615,
+            "p95_ms": 1764.9954982101917,
+            "max_ms": 1766.8594000861049,
+            "mean_ms": 1744.8074084706604
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 74.82912996783853,
+            "p95_ms": 75.8768429979682,
+            "max_ms": 76.03268604725599,
+            "mean_ms": 74.9353134073317
+          },
+          "median_saved_ms": 1662.356938701123,
+          "median_reduction_percent": 95.69250920684777
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1702.1119850687683,
+            "p95_ms": 1723.5893119126558,
+            "max_ms": 1728.7032292224467,
+            "mean_ms": 1704.1801093146205
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 261.47369714453816,
+            "p95_ms": 263.50677935406566,
+            "max_ms": 263.6521952226758,
+            "mean_ms": 261.02709621191025
+          },
+          "median_saved_ms": 1440.63828792423,
+          "median_reduction_percent": 84.63827883016909
+        }
+      },
+      "moving_4": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1772.4997061304748,
+            "p95_ms": 1775.8631682954729,
+            "max_ms": 1776.0408450849354,
+            "mean_ms": 1771.478848066181
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 76.62585331127048,
+            "p95_ms": 81.16416092962027,
+            "max_ms": 82.1666419506073,
+            "mean_ms": 77.658258844167
+          },
+          "median_saved_ms": 1695.8738528192043,
+          "median_reduction_percent": 95.67696101464797
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1744.4342849776149,
+            "p95_ms": 1749.1253518499434,
+            "max_ms": 1749.4140057824552,
+            "mean_ms": 1743.5751279816031
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 264.11590026691556,
+            "p95_ms": 283.57804315164685,
+            "max_ms": 287.8235029056668,
+            "mean_ms": 268.63904371857643
+          },
+          "median_saved_ms": 1480.3183847106993,
+          "median_reduction_percent": 84.8595098971983
+        }
+      },
+      "moving_8": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1802.1393907256424,
+            "p95_ms": 1809.7844989970326,
+            "max_ms": 1811.2727086991072,
+            "mean_ms": 1797.8021528571844
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 77.40740571171045,
+            "p95_ms": 78.55443069711328,
+            "max_ms": 78.56375258415937,
+            "mean_ms": 77.66507593914866
+          },
+          "median_saved_ms": 1724.731985013932,
+          "median_reduction_percent": 95.70469375953533
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1764.719164930284,
+            "p95_ms": 1794.6214445866644,
+            "max_ms": 1799.8701720498502,
+            "mean_ms": 1772.23427798599
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 247.29475285857916,
+            "p95_ms": 252.42324154824018,
+            "max_ms": 252.81291967257857,
+            "mean_ms": 248.39394381269813
+          },
+          "median_saved_ms": 1517.4244120717049,
+          "median_reduction_percent": 85.98673614629506
+        }
+      },
+      "moving_12": {
+        "unfiltered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1798.7321289256215,
+            "p95_ms": 1805.8149071410298,
+            "max_ms": 1806.60402122885,
+            "mean_ms": 1796.4975487440825
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 78.89664731919765,
+            "p95_ms": 79.49548969045281,
+            "max_ms": 79.55522509291768,
+            "mean_ms": 78.77924097701907
+          },
+          "median_saved_ms": 1719.8354816064239,
+          "median_reduction_percent": 95.61376338085859
+        },
+        "filtered": {
+          "before": {
+            "samples": 5,
+            "median_ms": 1770.5767177976668,
+            "p95_ms": 1776.3025095686316,
+            "max_ms": 1777.6613011956215,
+            "mean_ms": 1768.2661422528327
+          },
+          "after": {
+            "samples": 5,
+            "median_ms": 242.50556621700525,
+            "p95_ms": 245.62051389366388,
+            "max_ms": 245.98954478278756,
+            "mean_ms": 243.1065497919917
+          },
+          "median_saved_ms": 1528.0711515806615,
+          "median_reduction_percent": 86.30358324610492
+        }
+      }
+    },
+    "exact_output_checks": {
+      "baseline_current_full_arrays_and_queries": {
+        "checks": 30,
+        "passed": 30
+      },
+      "captured_production_masks": {
+        "checks": 150,
+        "passed": 150
+      },
+      "deterministic_repeat": {
+        "checks": 300,
+        "passed": 300
+      }
+    },
+    "selected_pixel_checks": {
+      "checks": 150,
+      "passed": 150
+    },
+    "runtime_errors": [],
+    "equality_scope": "Whole-grid states, probabilities, observed/last_observed/expired arrays, source timestamp, revision, generation, health, counts and 1000 deterministic query results; exact selected masks and pixel selections. Hash comparisons cover complete array bytes, not only counts."
+  },
+  "semantic_and_combined": {
+    "summary": {
+      "semantic_only": {
+        "semantic_ms": {
+          "samples": 35,
+          "median_ms": 103.03223365917802,
+          "p95_ms": 105.83961098454893,
+          "max_ms": 109.08077098429203,
+          "mean_ms": 103.49365003140909
+        },
+        "mapping_ms": {
+          "samples": 35,
+          "median_ms": 0.0,
+          "p95_ms": 0.0,
+          "max_ms": 0.0,
+          "mean_ms": 0.0
+        },
+        "combined_ms": {
+          "samples": 35,
+          "median_ms": 103.03269373252988,
+          "p95_ms": 105.83986188285053,
+          "max_ms": 109.08131208270788,
+          "mean_ms": 103.49392014156494
+        }
+      },
+      "baseline": {
+        "semantic_ms": {
+          "samples": 35,
+          "median_ms": 103.51370135322213,
+          "p95_ms": 106.11268864013255,
+          "max_ms": 109.1525531373918,
+          "mean_ms": 103.8740054837295
+        },
+        "mapping_ms": {
+          "samples": 35,
+          "median_ms": 1770.8780108951032,
+          "p95_ms": 1811.6439843084663,
+          "max_ms": 1814.19659499079,
+          "mean_ms": 1761.8434176381145
+        },
+        "combined_ms": {
+          "samples": 35,
+          "median_ms": 1873.6538318917155,
+          "p95_ms": 1916.3023494184017,
+          "max_ms": 1917.6190881989896,
+          "mean_ms": 1865.7187369119908
+        }
+      },
+      "current": {
+        "semantic_ms": {
+          "samples": 35,
+          "median_ms": 103.88705087825656,
+          "p95_ms": 107.34601737931371,
+          "max_ms": 109.70137920230627,
+          "mean_ms": 104.28938171161073
+        },
+        "mapping_ms": {
+          "samples": 35,
+          "median_ms": 255.83109073340893,
+          "p95_ms": 282.4066980276256,
+          "max_ms": 303.3166388049722,
+          "mean_ms": 258.5439635307661
+        },
+        "combined_ms": {
+          "samples": 35,
+          "median_ms": 360.7758800499141,
+          "p95_ms": 387.02393732964987,
+          "max_ms": 406.4678526483476,
+          "mean_ms": 362.8345126020057
+        }
+      }
+    },
+    "scope": "Measured sequential semantic then filtered mapping on identical full-arm frames; frozen semantic code throughout. This is not generalized tabletop latency or asynchronous control latency.",
+    "semantic_source": "Unchanged working-tree implementation for all three scheduling modes.",
+    "directly_measured_combined_comparison": {
+      "before": {
+        "samples": 35,
+        "median_ms": 1873.6538318917155,
+        "p95_ms": 1916.3023494184017,
+        "max_ms": 1917.6190881989896,
+        "mean_ms": 1865.7187369119908
+      },
+      "after": {
+        "samples": 35,
+        "median_ms": 360.7758800499141,
+        "p95_ms": 387.02393732964987,
+        "max_ms": 406.4678526483476,
+        "mean_ms": 362.8345126020057
+      },
+      "median_saved_ms": 1512.8779518418014,
+      "median_reduction_percent": 80.74479533470382
+    },
+    "output_equality_checks": {
+      "deterministic_semantic_repeat": {
+        "checks": 225,
+        "passed": 225
+      },
+      "semantic_only_baseline_combined_current_combined": {
+        "checks": 15,
+        "passed": 15
+      }
+    },
+    "timestamp_contracts": {
+      "checks": 225,
+      "passed": 225
+    },
+    "output_signature_scope": "Classes, persistent IDs, poses, sizes, primitive geometry, confidence, graspable/readiness, observation and geometry metadata, and original timestamps; identical frozen semantic implementation in every mode.",
+    "provider_stage_distributions": {
+      "semantic_only": {
+        "acquisition_ms": {
+          "samples": 35,
+          "median_ms": 0.0005406327545642853,
+          "p95_ms": 0.0007241033017635342,
+          "max_ms": 0.0008610077202320099,
+          "mean_ms": 0.0005547223346573966
+        },
+        "projection_ms": {
+          "samples": 35,
+          "median_ms": 4.135724622756243,
+          "p95_ms": 4.346229089424014,
+          "max_ms": 4.850841127336025,
+          "mean_ms": 4.172512090631893
+        },
+        "fusion_ms": {
+          "samples": 35,
+          "median_ms": 0.5024787969887257,
+          "p95_ms": 0.5358395632356405,
+          "max_ms": 0.575886107981205,
+          "mean_ms": 0.5069968024534839
+        },
+        "segmentation_ms": {
+          "samples": 35,
+          "median_ms": 4.978138953447342,
+          "p95_ms": 5.506121646612882,
+          "max_ms": 5.767294205725193,
+          "mean_ms": 5.036873889288732
+        },
+        "fitting_ms": {
+          "samples": 35,
+          "median_ms": 86.91873541101813,
+          "p95_ms": 89.27570339292288,
+          "max_ms": 90.80596314743161,
+          "mean_ms": 87.28397141343781
+        },
+        "observability_ms": {
+          "samples": 35,
+          "median_ms": 6.309205666184425,
+          "p95_ms": 6.632936978712677,
+          "max_ms": 7.5608426705002785,
+          "mean_ms": 6.367677090955632
+        },
+        "tracking_ms": {
+          "samples": 35,
+          "median_ms": 0.10496610775589943,
+          "p95_ms": 0.12022331357002258,
+          "max_ms": 0.12388220056891441,
+          "mean_ms": 0.10773916063564164
+        },
+        "total_ms": {
+          "samples": 35,
+          "median_ms": 103.00512192770839,
+          "p95_ms": 105.81712406128645,
+          "max_ms": 109.06066233292222,
+          "mean_ms": 103.47632516973785
+        }
+      },
+      "baseline": {
+        "acquisition_ms": {
+          "samples": 35,
+          "median_ms": 0.0010421499609947205,
+          "p95_ms": 0.0013779383152723306,
+          "max_ms": 0.001562759280204773,
+          "mean_ms": 0.001052567469222205
+        },
+        "projection_ms": {
+          "samples": 35,
+          "median_ms": 4.287017043679953,
+          "p95_ms": 4.409449500963092,
+          "max_ms": 4.495487082749605,
+          "mean_ms": 4.300088395497629
+        },
+        "fusion_ms": {
+          "samples": 35,
+          "median_ms": 0.4983306862413883,
+          "p95_ms": 0.5565496161580086,
+          "max_ms": 0.6081461906433105,
+          "mean_ms": 0.5037692641573293
+        },
+        "segmentation_ms": {
+          "samples": 35,
+          "median_ms": 5.017461720854044,
+          "p95_ms": 5.12076267041266,
+          "max_ms": 5.148806609213352,
+          "mean_ms": 5.027504358440638
+        },
+        "fitting_ms": {
+          "samples": 35,
+          "median_ms": 87.24946435540915,
+          "p95_ms": 89.8371092043817,
+          "max_ms": 92.93582383543253,
+          "mean_ms": 87.52234703195947
+        },
+        "observability_ms": {
+          "samples": 35,
+          "median_ms": 6.3551911152899265,
+          "p95_ms": 6.551861483603715,
+          "max_ms": 6.779423449188471,
+          "mean_ms": 6.381899078509638
+        },
+        "tracking_ms": {
+          "samples": 35,
+          "median_ms": 0.11031609028577805,
+          "p95_ms": 0.12770695611834526,
+          "max_ms": 0.1454516313970089,
+          "mean_ms": 0.11329834482499532
+        },
+        "total_ms": {
+          "samples": 35,
+          "median_ms": 103.48857380449772,
+          "p95_ms": 106.08746903017163,
+          "max_ms": 109.12859812378883,
+          "mean_ms": 103.84995904085892
+        }
+      },
+      "current": {
+        "acquisition_ms": {
+          "samples": 35,
+          "median_ms": 0.0008610077202320099,
+          "p95_ms": 0.0014751683920621861,
+          "max_ms": 0.014405697584152222,
+          "mean_ms": 0.001301988959312439
+        },
+        "projection_ms": {
+          "samples": 35,
+          "median_ms": 4.202991258352995,
+          "p95_ms": 4.372711386531591,
+          "max_ms": 4.761704709380865,
+          "mean_ms": 4.227820810462747
+        },
+        "fusion_ms": {
+          "samples": 35,
+          "median_ms": 0.48390403389930725,
+          "p95_ms": 0.5237950943410395,
+          "max_ms": 0.5544559098780155,
+          "mean_ms": 0.4897806261266981
+        },
+        "segmentation_ms": {
+          "samples": 35,
+          "median_ms": 4.976355005055666,
+          "p95_ms": 5.103663308545947,
+          "max_ms": 5.407652352005243,
+          "mean_ms": 4.996810973222766
+        },
+        "fitting_ms": {
+          "samples": 35,
+          "median_ms": 87.73204497992992,
+          "p95_ms": 90.67215481773019,
+          "max_ms": 92.57369535043836,
+          "mean_ms": 88.05105783311384
+        },
+        "observability_ms": {
+          "samples": 35,
+          "median_ms": 6.358887068927288,
+          "p95_ms": 6.596578424796461,
+          "max_ms": 6.857318338006735,
+          "mean_ms": 6.3889477002833575
+        },
+        "tracking_ms": {
+          "samples": 35,
+          "median_ms": 0.10848324745893478,
+          "p95_ms": 0.12815026566386223,
+          "max_ms": 0.13472093269228935,
+          "mean_ms": 0.11300620223794665
+        },
+        "total_ms": {
+          "samples": 35,
+          "median_ms": 103.85855799540877,
+          "p95_ms": 107.33325784094632,
+          "max_ms": 109.66680385172367,
+          "mean_ms": 104.26872613440666
+        }
+      }
+    },
+    "representative_observation_counts": {
+      "semantic_only": {
+        "sample_counts": {
+          "4": 35
+        },
+        "confirmed_class_counts": {
+          "cube": 70,
+          "sphere": 70
+        }
+      },
+      "baseline": {
+        "sample_counts": {
+          "4": 35
+        },
+        "confirmed_class_counts": {
+          "cube": 70,
+          "sphere": 70
+        }
+      },
+      "current": {
+        "sample_counts": {
+          "4": 35
+        },
+        "confirmed_class_counts": {
+          "cube": 70,
+          "sphere": 70
+        }
+      }
+    }
+  },
+  "profiles": {
+    "scope": "Separate instrumented fresh-state Home update at recorded index2. Line/cProfile overhead is excluded from every headline median/p95/max.",
+    "raw_line_attribution": [
+      {
+        "variant": "baseline",
+        "filtered": false,
+        "configuration": "home_closed",
+        "record": 2,
+        "instrumented_total_ms": 2590.830306056887,
+        "source_line_attribution_ms": {
+          "acquisition_validation": 0.704245176166296,
+          "candidate_selection": 0.2016969956457615,
+          "robot_geometry_masks": 0.0002998858690261841,
+          "accumulation_dedup": 75.24816645309329,
+          "world_projection": 0.3078649751842022,
+          "ray_traversal": 2484.612522646785,
+          "probabilistic_integration": 17.298992723226547
+        },
+        "expiry_nested_and_session_ms": 7.8508746810257435,
+        "scope": "Single representative fresh-state update with line tracing. Nested expiry overlaps integration; scalar traversal includes per-visit insertion. Excluded from headline latency."
+      },
+      {
+        "variant": "baseline",
+        "filtered": true,
+        "configuration": "home_closed",
+        "record": 2,
+        "instrumented_total_ms": 2527.1594766527414,
+        "source_line_attribution_ms": {
+          "acquisition_validation": 0.6581698544323444,
+          "candidate_selection": 0.20585395395755768,
+          "robot_geometry_masks": 256.0021271929145,
+          "accumulation_dedup": 64.94246749207377,
+          "world_projection": 0.2707946114242077,
+          "ray_traversal": 2192.0710247941315,
+          "probabilistic_integration": 8.181583136320114
+        },
+        "expiry_nested_and_session_ms": 0.8414620533585548,
+        "scope": "Single representative fresh-state update with line tracing. Nested expiry overlaps integration; scalar traversal includes per-visit insertion. Excluded from headline latency."
+      },
+      {
+        "variant": "current",
+        "filtered": false,
+        "configuration": "home_closed",
+        "record": 2,
+        "instrumented_total_ms": 89.30707676336169,
+        "source_line_attribution_ms": {
+          "acquisition_validation": 0.6960700266063213,
+          "candidate_selection": 0.20900089293718338,
+          "robot_geometry_masks": 0.00033993273973464966,
+          "accumulation_dedup": 11.310117319226265,
+          "world_projection": 0.2887388691306114,
+          "ray_traversal": 58.906851802021265,
+          "probabilistic_integration": 16.232330817729235
+        },
+        "expiry_nested_and_session_ms": 1.6299341805279255,
+        "scope": "Single representative fresh-state update with line tracing. Nested expiry overlaps integration; scalar traversal includes per-visit insertion. Excluded from headline latency."
+      },
+      {
+        "variant": "current",
+        "filtered": true,
+        "configuration": "home_closed",
+        "record": 2,
+        "instrumented_total_ms": 343.1360749527812,
+        "source_line_attribution_ms": {
+          "acquisition_validation": 0.6143483333289623,
+          "candidate_selection": 0.19946182146668434,
+          "robot_geometry_masks": 270.60468401759863,
+          "accumulation_dedup": 9.865156840533018,
+          "world_projection": 0.24037901312112808,
+          "ray_traversal": 52.3651628755033,
+          "probabilistic_integration": 8.29229922965169
+        },
+        "expiry_nested_and_session_ms": 0.9415191598236561,
+        "scope": "Single representative fresh-state update with line tracing. Nested expiry overlaps integration; scalar traversal includes per-visit insertion. Excluded from headline latency."
+      }
+    ],
+    "category_scopes": {
+      "1_acquisition_and_validation": "Replay line attribution measures recorded-frame validation only. Actual paired camera acquisition is measured separately in the native live check.",
+      "2_candidate_selection": "Depth sampling, valid/manual-mask candidates, deterministic fair allocation and selected-pixel construction.",
+      "3_robot_geometry_and_masks": "Exact triangle masks and captured pose-instance assembly; ongoing native pose-history capture is a separate counter.",
+      "4_world_projection": "Calibrated optical rays, depth multiplication, affine world endpoints and endpoint grid indices.",
+      "5_ray_traversal": "Finite clipped DDA cell visits. Scalar baseline includes per-visit set insertion in this attribution; bounded batched traversal is separate from its later NumPy dedup.",
+      "6_accumulation_and_dedup": "Per-view/global evidence merging and occupied-wins dedup. Includes index conversion and a few completion checks.",
+      "7_probabilistic_integration": "OccupancyMap.integrate and evidence/timestamp publication; contains its own nested expiry calls.",
+      "8_expiry_and_dense_operations": "expiry_nested_and_session_ms includes session expiry and expiry nested inside integration. It overlaps category7 and must not be summed as an extra disjoint stage.",
+      "9_snapshot_and_queries": "Normal uninstrumented full-grid immutable snapshot and 1000-point query timing reported separately in controlled_mapping.summary."
+    },
+    "original_hotspot": {
+      "finding": "Scalar _ray_voxels accounts for about 92% of profiled RgbdMapper.update; 147009 traversal visits generate over 3.4 million Python function calls. Integration is about 29 ms, expiration about 8 ms; these are secondary to traversal.",
+      "original_profile_artifact": "docs/assets/spatial_mapping_v3/baseline_profile.json",
+      "functions": [
+        {
+          "file": "v3_profile_mapping.py",
+          "line": 16,
+          "function": "run",
+          "calls": 1,
+          "self_ms": 8.312345,
+          "cumulative_ms": 2423.462284
+        },
+        {
+          "file": "rgbd.py",
+          "line": 124,
+          "function": "update",
+          "calls": 1,
+          "self_ms": 66.21458700000001,
+          "cumulative_ms": 2408.886739
+        },
+        {
+          "file": "rgbd.py",
+          "line": 9,
+          "function": "_ray_voxels",
+          "calls": 148033,
+          "self_ms": 1259.9862990000001,
+          "cumulative_ms": 2216.6800540000004
+        },
+        {
+          "file": "fromnumeric.py",
+          "line": 2322,
+          "function": "any",
+          "calls": 294027,
+          "self_ms": 125.59346500000001,
+          "cumulative_ms": 605.0023610000001
+        }
+      ]
+    }
+  },
+  "memory": {
+    "workers": [
+      {
+        "variant": "baseline",
+        "record": 2,
+        "filtered": true,
+        "process_peak_rss_before_update_bytes": 398180352,
+        "process_peak_rss_after_update_bytes": 398180352,
+        "resident_before_update_bytes": 207101952,
+        "resident_after_update_bytes": 264224768,
+        "update_traced_current_bytes": 754495,
+        "update_traced_peak_bytes": 25791774,
+        "owned_frame_buffer_bytes": 101382000,
+        "owned_pose_array_bytes": 44880,
+        "scope": "Fresh SDK-free process per variant; RSS includes all captured inputs, cached geometry/BVH and map. Tracemalloc update is separately instrumented and not timed."
+      },
+      {
+        "variant": "current",
+        "record": 2,
+        "filtered": true,
+        "process_peak_rss_before_update_bytes": 398180352,
+        "process_peak_rss_after_update_bytes": 398180352,
+        "resident_before_update_bytes": 206983168,
+        "resident_after_update_bytes": 237191168,
+        "update_traced_current_bytes": 629838,
+        "update_traced_peak_bytes": 15732616,
+        "owned_frame_buffer_bytes": 101382000,
+        "owned_pose_array_bytes": 44880,
+        "scope": "Fresh SDK-free process per variant; RSS includes all captured inputs, cached geometry/BVH and map. Tracemalloc update is separately instrumented and not timed."
+      }
+    ],
+    "scope": "Fresh SDK-free process per variant; process RSS includes all recorded inputs, immutable geometry/BVH and the map. Separate tracemalloc update reports allocation pressure and is excluded from latency. RSS peaks can reflect prior BVH construction; resident before/after captures are also retained.",
+    "combined_benchmark_process_peak_rss_bytes": 398180352
+  },
+  "live_native_default_freshness": {
+    "status": "PASS",
+    "samples": 15,
+    "max_frame_age": 1.0,
+    "stale_after": 1.0,
+    "mapping_ms": {
+      "median": 300.87731312960386,
+      "p95": 311.21230153366923,
+      "maximum": 313.0225567147136
+    },
+    "paired_acquisition_ms": {
+      "median": 5.582657177001238,
+      "p95": 7.636136375367641,
+      "maximum": 8.248975966125727
+    },
+    "filter_ms": {
+      "samples": 15,
+      "median_ms": 220.6893009133637,
+      "p95_ms": 232.72799951955676,
+      "max_ms": 233.45633689314127,
+      "mean_ms": 219.18605783333382
+    },
+    "maximum_completion_age_ms": 335.63399594277143,
+    "successful_original_timestamps": 15,
+    "explicit_now_used": false,
+    "timestamps_rewritten": false,
+    "independent_map_per_sample": true,
+    "extra_camera_acquisitions": 0,
+    "ground_truth_ms": {
+      "samples": 8,
+      "median_ms": 11.244810884818435,
+      "p95_ms": 17.300253687426444,
+      "max_ms": 20.4469570890069,
+      "mean_ms": 12.27463927352801
+    },
+    "ground_truth_scope": "Unchanged full-arm Isaac reference mapper in this native scene; timings include stage access and dense evidence replacement.",
+    "fixture_comparison_timings_usable": false,
+    "pose_capture": {
+      "calls": 240,
+      "total_seconds": 0.031532051507383585,
+      "mean_seconds": 0.0001313835479474316,
+      "max_seconds": 0.00022887764498591423
+    },
+    "robot_adapter_initialization_seconds": 0.4983537979424
+  },
+  "native_quality": {
+    "status": "PASS",
+    "dense_stride_totals": {
+      "robot": {
+        "pixels": 8255,
+        "masked": 8253,
+        "unfiltered_occupied": 1185,
+        "filtered_occupied": 1,
+        "unfiltered_free": 54,
+        "filtered_free": 25
+      },
+      "forearm": {
+        "pixels": 85,
+        "masked": 0,
+        "unfiltered_occupied": 12,
+        "filtered_occupied": 12,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "wrist": {
+        "pixels": 97,
+        "masked": 0,
+        "unfiltered_occupied": 25,
+        "filtered_occupied": 25,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "gripper": {
+        "pixels": 103,
+        "masked": 0,
+        "unfiltered_occupied": 16,
+        "filtered_occupied": 16,
+        "unfiltered_free": 1,
+        "filtered_free": 1
+      },
+      "foreground": {
+        "pixels": 139,
+        "masked": 0,
+        "unfiltered_occupied": 29,
+        "filtered_occupied": 29,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "occluded": {
+        "pixels": 97,
+        "masked": 4,
+        "unfiltered_occupied": 11,
+        "filtered_occupied": 10,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      }
+    },
+    "production_selected_totals": {
+      "robot": {
+        "pixels": 1146,
+        "masked": 1145,
+        "unfiltered_occupied": 1117,
+        "filtered_occupied": 1,
+        "unfiltered_free": 0,
+        "filtered_free": 2
+      },
+      "forearm": {
+        "pixels": 9,
+        "masked": 0,
+        "unfiltered_occupied": 9,
+        "filtered_occupied": 9,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "wrist": {
+        "pixels": 19,
+        "masked": 0,
+        "unfiltered_occupied": 19,
+        "filtered_occupied": 19,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "gripper": {
+        "pixels": 12,
+        "masked": 0,
+        "unfiltered_occupied": 12,
+        "filtered_occupied": 12,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "foreground": {
+        "pixels": 22,
+        "masked": 0,
+        "unfiltered_occupied": 22,
+        "filtered_occupied": 22,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "occluded": {
+        "pixels": 11,
+        "masked": 1,
+        "unfiltered_occupied": 11,
+        "filtered_occupied": 10,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      }
+    },
+    "moving_robot_occupancy": {
+      "historical_reference_voxels_in_environment_free": 3191,
+      "unfiltered_occupied": 409,
+      "filtered_occupied": 1
+    },
+    "total_false_free_probe_center_queries": 0,
+    "probe_center_queries": 35,
+    "metric_scopes": {
+      "dense_stride": "Independent instance-ID reference on every stride-8 valid depth pixel; pixel-frame counts sum over configurations.",
+      "production_selected": "Exact fairly selected mapping pixels; voxel counts deduplicate within each configuration, then sum across configurations.",
+      "false_free": "GT-occupied probe centers and instance-labeled surface voxel references only; not a complete volumetric certificate.",
+      "moving_robot_occupancy": "Historical robot-reference cells in GT environment FREE; includes current robot volume, not only vacated cells."
+    },
+    "contracts": {
+      "delayed_frames_use_historical_geometry": true,
+      "duplicate_tokens_rejected": true,
+      "source_failure_not_fresh": true,
+      "recovered": true,
+      "reinitialized": true,
+      "saved_scenes_and_config_unchanged": true,
+      "cleaned_up": true
+    }
+  },
+  "rejected_filter_cache_probe": {
+    "retained_in_production": false,
+    "modification": "Research-only static edge norms and leaf slices; production robot_filter.py unchanged.",
+    "configurations": 7,
+    "measured_calls": 21,
+    "exact_masks": true,
+    "scope": "Offline CPU only; original camera/pose inputs and selected1024rays; excludes load/build; includes exact mask assertion.",
+    "before_ms": {
+      "median": 178.47949592396617,
+      "p95": 198.0554717592895,
+      "maximum": 207.99776818603277,
+      "mean": 181.68252245301292
+    },
+    "prototype_ms": {
+      "median": 175.28410721570253,
+      "p95": 188.90797812491655,
+      "maximum": 190.36975782364607,
+      "mean": 175.47827391397385
+    },
+    "median_saved_ms": 3.1953887082636356,
+    "median_reduction_percent": 1.7903393842085364,
+    "reason": "About 3.2ms/1.8% median improvement is marginal beside the validated traversal change; avoid permanent cache complexity.",
+    "profile": {
+      "calls": 7,
+      "cumulative_seconds": 1.817,
+      "box_hits_seconds": 0.865,
+      "cross_seconds": 0.397,
+      "norms_seconds": 0.07,
+      "scope": "Separate cProfile pass. Cumulative values overlap and include profiler overhead."
+    }
+  },
+  "provenance": {
+    "source_unchanged": true,
+    "script_unchanged": true,
+    "source_sha256": {
+      "robot_skill_stack/integrations/isaac/spatial_mapping/__init__.py": "301d83a88b8fd5efdd18ac8738543e370b9c4e9f6a167acb2633df97b14796d3",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/config.py": "2db1bf3256a5c5a080eb0a607a4c31f59c458f8977ab953025931fb061866a92",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/factory.py": "4e1ca96d3eaf862c57af3635c704dd491d6bcb9c527d543d12ef7a70bae64904",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/frames.py": "a94591caa3257a346d5e3c340593949a84c5d3fb7ab9a69486dcca623ff5a637",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py": "4e60f502c0f210a00d2ffa2e5217766a52e6ffa73e20f7ab174f5f2673b1c127",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "50de707d69822fbdc0c986becf35882483669f7a70014700ade35d63537f9cb0",
+      "robot_skill_stack/world/perception_multiview/__init__.py": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "robot_skill_stack/world/perception_multiview/acquisition.py": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "robot_skill_stack/world/perception_multiview/clouds.py": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "robot_skill_stack/world/perception_multiview/fitting.py": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "robot_skill_stack/world/perception_multiview/observability.py": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "robot_skill_stack/world/perception_multiview/provider.py": "77854e22dbb00f0962fe2f73be78c18912ef007feffe854b81bef189e8a67795",
+      "robot_skill_stack/world/perception_multiview/segmentation.py": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "robot_skill_stack/world/perception_multiview/tracking.py": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "robot_skill_stack/world/spatial_mapping/__init__.py": "751385754b70135368bba7e0b1a1310943625086c76aeddfa2cdd469c37589ff",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "fb9a4120ec3b27b30ecc01a30f2e608d812b0f986dd0942251492f5d3498fbac",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/robot_filter.py": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07"
+    },
+    "benchmark_script_sha256": "3c3ee9bfcb51c9322a75bf701057288216890b7d87d435c8dd465f21b01519b4",
+    "original_capture_script_sha256": "023f23b97bb0e3cbdc793b447e72b3d28fe4b78c15c60176d12aeb4d60f7f35e",
+    "baseline_commit": "d260377a4d1e773e9bf45871c6de9020d1382e6d",
+    "inputs_sha256": {
+      "outputs/spatial-mapping-v3-performance/result.json": "2bf7caf96ea8844b5a01894c08ba3960e0d8b0d7d0a8f4f5e209b5e3da300a29",
+      "outputs/spatial-mapping-v3-performance/provenance_start.json": "aff1dacd1689f1de0127bd5b1bbf74619abf2c1aadca5d362940447896eb86a6",
+      "outputs/spatial-mapping-v3-performance/provenance_end.json": "910646b3823b5b800768c0d63d328e70524556b79ff6b2e883f47be4c0d5854c",
+      "outputs/spatial-mapping-v3-performance/equality_checks.json": "5a850710ec4a8dc506b72c3b9b09ef199c16b77f2b26793907f630450ec8a8d2",
+      "outputs/spatial-mapping-v3-performance/semantic_equality_checks.json": "cee14d2fc0b9330083b2482e14e21987da37acb550f4c7387b2c72b1383593f9",
+      "outputs/spatial-mapping-v3-performance/phase_profiles.json": "d5ea76cbb11a1b6ce084dd666869cdbe8073816d9420c9f38ff196c8a87d10af",
+      "outputs/spatial-mapping-v3-capture/capture_manifest.json": "1c2ff1b3d72a0ddb78e8541c8f2429ea7a31b2062a677d81b696cb46b76b4889",
+      "outputs/spatial-mapping-v3-capture/capture_script_original.py": "023f23b97bb0e3cbdc793b447e72b3d28fe4b78c15c60176d12aeb4d60f7f35e",
+      "outputs/spatial-mapping-v3-live-final/result.json": "60f636af29137e73ddee74512ec3dcb14577ef25aa425756138e36f5e940365a",
+      "outputs/spatial-mapping-v3-baseline/result.json": "cb909347288e42fbef2dda0f6ee46a80815b5178efdcfd8dadbeb40688b950a7",
+      "outputs/spatial-mapping-v3-filter/before/result.json": "c26cbef2ef06a0ce152b92538b2a17069994b2a26868414396f7de2a67b79f5d",
+      "outputs/spatial-mapping-v3-filter/cache-prototype/result.json": "1ed60a992d605d34aab2ee62df29290fab53b760e05c979071c953e85279f571"
+    }
+  },
+  "reproduction": {
+    "capture": "./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py --capture-only --artifacts-dir outputs/spatial-mapping-v3-capture --result outputs/spatial-mapping-v3-capture/result.json",
+    "replay": "./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py --replay outputs/spatial-mapping-v3-capture --warmup 2 --repeats 5 --semantic --profile --memory --artifacts-dir outputs/spatial-mapping-v3-performance --result outputs/spatial-mapping-v3-performance/result.json",
+    "live": "./run_isaac_python.sh scripts/check_spatial_mapping_live_freshness.py --artifacts-dir outputs/spatial-mapping-v3-live-final --result outputs/spatial-mapping-v3-live-final/result.json"
+  },
+  "validation_local_date": "2026-10-22",
+  "timezone": "Europe/Belgrade",
+  "hardware": {
+    "cpu": "AMD Ryzen 7 7800X3D 8-Core Processor",
+    "logical_cpus": 16,
+    "gpu": "NVIDIA GeForce RTX 4070 SUPER 12 GiB",
+    "os": "Linux 6.8.1-1052-realtime x86_64",
+    "isaac_sim": "5.1",
+    "python": "3.11",
+    "numpy": "1.26.4"
+  },
+  "check_denominators": {
+    "mapping_consistency_entries": 300,
+    "initial_mapping_signatures": 60,
+    "later_mapping_repeat_comparisons": 240,
+    "independent_baseline_current_map_comparisons": 30,
+    "captured_mask_selection_comparisons": 150,
+    "semantic_consistency_entries": 225,
+    "initial_semantic_signatures": 45,
+    "later_semantic_repeat_comparisons": 180,
+    "semantic_cross_schedule_comparisons": 15,
+    "semantic_timestamp_contracts": 225
+  },
+  "native_fixture_comparison": {
+    "baseline_artifacts": "outputs/spatial-mapping-v3-baseline",
+    "optimized_result": "outputs/spatial-mapping-v3-final-spatial_mapping/run-8r1wqlg3/spatial_mapping_test_robot_self_filter.json",
+    "scope": "Same native scene, settings and seven configurations, fresh independent buffers. Identical-buffer equality is separately established by controlled replay.",
+    "baseline": {
+      "baseline_ms": {
+        "samples": 15,
+        "median_ms": 2190.387312322855,
+        "p95_ms": 2237.243503378704,
+        "max_ms": 2246.934095863253
+      },
+      "filtered_ms": {
+        "samples": 15,
+        "median_ms": 2132.7133518643677,
+        "p95_ms": 2189.7378641646355,
+        "max_ms": 2207.3480812832713
+      },
+      "filter_ms": {
+        "samples": 15,
+        "median_ms": 223.28115301206708,
+        "p95_ms": 234.9488400388509,
+        "max_ms": 236.1081913113594
+      }
+    },
+    "optimized": {
+      "baseline_ms": {
+        "samples": 15,
+        "median_ms": 90.23994207382202,
+        "p95_ms": 95.89408272877336,
+        "max_ms": 96.53641283512115
+      },
+      "filtered_ms": {
+        "samples": 15,
+        "median_ms": 303.5941109992564,
+        "p95_ms": 314.78137597441673,
+        "max_ms": 321.8178008683026
+      },
+      "filter_ms": {
+        "samples": 15,
+        "median_ms": 230.24878604337573,
+        "p95_ms": 238.59863225370646,
+        "max_ms": 239.6391169168055
+      }
+    },
+    "selected_quality_counts_identical": true,
+    "selected_quality": {
+      "robot": {
+        "pixels": 1146,
+        "masked": 1145,
+        "unfiltered_occupied": 1117,
+        "filtered_occupied": 1,
+        "unfiltered_free": 0,
+        "filtered_free": 2
+      },
+      "forearm": {
+        "pixels": 9,
+        "masked": 0,
+        "unfiltered_occupied": 9,
+        "filtered_occupied": 9,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "wrist": {
+        "pixels": 19,
+        "masked": 0,
+        "unfiltered_occupied": 19,
+        "filtered_occupied": 19,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "gripper": {
+        "pixels": 12,
+        "masked": 0,
+        "unfiltered_occupied": 12,
+        "filtered_occupied": 12,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "foreground": {
+        "pixels": 22,
+        "masked": 0,
+        "unfiltered_occupied": 22,
+        "filtered_occupied": 22,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      },
+      "occluded": {
+        "pixels": 11,
+        "masked": 1,
+        "unfiltered_occupied": 11,
+        "filtered_occupied": 10,
+        "unfiltered_free": 0,
+        "filtered_free": 0
+      }
+    },
+    "false_free_gt_probe_centers": 0
+  }
+}

@@ -6,55 +6,84 @@ import numpy as np
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 
 
-def _ray_voxels(origin, endpoint, spec):
-    """Yield cells with a positive-length intersection before the measured hit.
+def _traverse_rays(origin, endpoints, spec, max_visits):
+    """Return flat cells and visit count for bounded batches of finite rays.
 
-    Clip the actual finite segment, never an infinite camera ray. Simultaneous
-    boundary crossings advance together, so corner/edge touches do not clear
-    neighboring voxels that the ray never traversed.
+    Visits include duplicates and occupied endpoint cells. On budget exhaustion
+    return exactly ``max_visits+1`` visits; the caller rejects the whole update.
+    Workspace is bounded by 256 rays and the remaining visit budget, rather than
+    allocating a ray-by-grid array. Emission order across rays is immaterial to
+    the deduplicated evidence; each ray retains the scalar DDA boundary rules.
     """
-    origin, endpoint = np.asarray(origin, float), np.asarray(endpoint, float)
-    direction = endpoint-origin
-    lower, upper = np.asarray(spec.bounds_min), np.asarray(spec.bounds_max)
-    enter, leave = 0., 1.
-    for axis in range(3):
-        if direction[axis] == 0:
-            if not lower[axis] <= origin[axis] < upper[axis]:
-                return
-            continue
-        near, far = sorted(((lower[axis]-origin[axis])/direction[axis],
-                            (upper[axis]-origin[axis])/direction[axis]))
-        enter, leave = max(enter, near), min(leave, far)
-    if leave <= enter:
-        return
-    start = origin+enter*direction
-    # Select the voxel just inside the segment, including negative directions
-    # beginning on a cell boundary and entries through the exclusive upper face.
-    probe = np.where(direction == 0, start,
-                     np.nextafter(start, np.where(direction > 0, np.inf, -np.inf)))
-    probe = np.maximum(lower, np.minimum(probe, np.nextafter(upper, lower)))
-    cell = np.floor((probe-lower)/spec.voxel_size).astype(int)
-    step = np.sign(direction).astype(int)
-    crossing, interval = np.full(3, np.inf), np.full(3, np.inf)
-    moving = direction != 0
-    boundary = lower+(cell+(step > 0))*spec.voxel_size
-    crossing[moving] = (boundary[moving]-origin[moving])/direction[moving]
-    interval[moving] = spec.voxel_size/abs(direction[moving])
-    current = enter
+    origin, endpoints = np.asarray(origin, float), np.asarray(endpoints, float)
+    if (origin.shape != (3,) or endpoints.ndim != 2 or endpoints.shape[1] != 3 or
+            not np.isfinite(origin).all() or not np.isfinite(endpoints).all()):
+        raise ValueError('Traversal requires finite XYZ origin and endpoints')
+    lower, upper, shape = np.asarray(spec.bounds_min), np.asarray(spec.bounds_max), np.asarray(spec.shape)
+    steps = sum(spec.shape)+3
+    capacity = min(max_visits+1, len(endpoints)*steps)
+    output, used = np.empty(capacity, dtype=np.int64), 0
     tolerance = 32*np.finfo(float).eps
-    # A finite line can cross each grid plane at most once.
-    for _ in range(sum(spec.shape)+3):
-        if np.any(cell < 0) or np.any(cell >= spec.shape):
-            return
-        next_crossing = float(crossing.min())
-        if min(next_crossing, leave) > current+tolerance:
-            yield tuple(int(value) for value in cell)
-        if next_crossing >= leave-tolerance:
-            return
-        crossed = crossing <= next_crossing+1e-12
-        cell[crossed] += step[crossed]
-        crossing[crossed] += interval[crossed]
-        current = next_crossing
+    for begin in range(0, len(endpoints), 256):
+        direction = endpoints[begin:begin+256]-origin
+        enter, leave = np.zeros(len(direction)), np.ones(len(direction))
+        valid = np.ones(len(direction), bool)
+        for axis in range(3):
+            moving = direction[:, axis] != 0
+            valid &= moving | ((lower[axis] <= origin[axis]) & (origin[axis] < upper[axis]))
+            first, second = np.zeros(len(direction)), np.zeros(len(direction))
+            np.divide(lower[axis]-origin[axis], direction[:, axis], out=first, where=moving)
+            np.divide(upper[axis]-origin[axis], direction[:, axis], out=second, where=moving)
+            enter = np.where(moving, np.maximum(enter, np.minimum(first, second)), enter)
+            leave = np.where(moving, np.minimum(leave, np.maximum(first, second)), leave)
+        valid &= leave > enter
+        direction, enter, leave = direction[valid], enter[valid], leave[valid]
+        if not len(direction):
+            continue
+        start = origin+enter[:, None]*direction
+        probe = np.where(direction == 0, start,
+                         np.nextafter(start, np.where(direction > 0, np.inf, -np.inf)))
+        probe = np.maximum(lower, np.minimum(probe, np.nextafter(upper, lower)))
+        cell = np.floor((probe-lower)/spec.voxel_size).astype(np.int64)
+        step = np.sign(direction).astype(np.int64)
+        crossing, interval = np.full(direction.shape, np.inf), np.full(direction.shape, np.inf)
+        moving = direction != 0
+        boundary = lower+(cell+(step > 0))*spec.voxel_size
+        np.divide(boundary-origin, direction, out=crossing, where=moving)
+        np.divide(spec.voxel_size, abs(direction), out=interval, where=moving)
+        current, active = enter.copy(), np.ones(len(direction), bool)
+        for _ in range(steps):
+            active &= (cell >= 0).all(1) & (cell < shape).all(1)
+            ids = np.flatnonzero(active)
+            if not len(ids):
+                break
+            following = crossing[ids].min(1)
+            emitted = ids[np.minimum(following, leave[ids]) > current[ids]+tolerance]
+            if len(emitted):
+                positions = cell[emitted]
+                flat = (positions[:, 0]*shape[1]+positions[:, 1])*shape[2]+positions[:, 2]
+                take = min(len(flat), capacity-used)
+                output[used:used+take] = flat[:take]
+                used += take
+                if used > max_visits:
+                    return output[:used], used
+            done = following >= leave[ids]-tolerance
+            active[ids[done]] = False
+            advance, following = ids[~done], following[~done]
+            crossed = crossing[advance] <= following[:, None]+1e-12
+            cell[advance] += crossed*step[advance]
+            values = crossing[advance]
+            values[crossed] += interval[advance][crossed]
+            crossing[advance], current[advance] = values, following
+    return output[:used], used
+
+
+def _ray_voxels(origin, endpoint, spec):
+    """Yield one finite segment's cells, preserving the scalar helper contract."""
+    flat, _ = _traverse_rays(origin, np.asarray(endpoint, float).reshape(1, 3),
+                             spec, sum(spec.shape)+3)
+    for cell in np.column_stack(np.unravel_index(flat, spec.shape)):
+        yield tuple(int(value) for value in cell)
 
 
 class RgbdMapper:
@@ -243,7 +272,8 @@ class RgbdMapper:
                     selected_rays[key] = (y[keep], x[keep], depth[keep])
             retained = sum(len(value[0]) for value in selected_rays.values())
             self.diagnostics.update(rays=retained, retained_rays=retained)
-            free, occupied = set(), set()
+            free_parts, occupied_parts = [], []
+            shape = self.map.spec.shape
             for key in sorted(ids):
                 y, x, depth = selected_rays[key]
                 count = len(x)
@@ -255,23 +285,26 @@ class RgbdMapper:
                 rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(count)]
                 endpoints = (rays*depth[:, None]) @ transform[:3, :3].T+transform[:3, 3]
                 hit_indices = self.map.world_to_indices(endpoints)
-                view_occupied = {tuple(int(v) for v in index) for index in hit_indices if np.all(index >= 0)}
-                view_free = set()
-                for endpoint in endpoints:
-                    for index in _ray_voxels(transform[:3, 3], endpoint, self.map.spec):
-                        self.diagnostics['voxel_visits'] += 1
-                        if self.diagnostics['voxel_visits'] > self.max_voxel_visits:
-                            return self._failure('Voxel traversal budget exceeded', now)
-                        view_free.add(index)
-                free.update(view_free)
-                occupied.update(view_occupied)
+                valid_hits = hit_indices[(hit_indices >= 0).all(1)]
+                view_occupied = np.unique(np.ravel_multi_index(valid_hits.T, shape))
+                remaining = self.max_voxel_visits-self.diagnostics['voxel_visits']
+                visited, count_visits = _traverse_rays(transform[:3, 3], endpoints, self.map.spec, remaining)
+                self.diagnostics['voxel_visits'] += count_visits
+                if count_visits > remaining:
+                    return self._failure('Voxel traversal budget exceeded', now)
+                view_free = np.unique(visited)
+                free_parts.append(view_free)
+                occupied_parts.append(view_occupied)
                 self.diagnostics['cameras'][key].update(rays=count,
-                    free_voxels=len(view_free-view_occupied), occupied_voxels=len(view_occupied))
-            free.difference_update(occupied)
+                    free_voxels=len(np.setdiff1d(view_free, view_occupied, assume_unique=True)),
+                    occupied_voxels=len(view_occupied))
+            occupied = np.unique(np.concatenate(occupied_parts)) if occupied_parts else np.empty(0, np.int64)
+            free = np.unique(np.concatenate(free_parts)) if free_parts else np.empty(0, np.int64)
+            free = np.setdiff1d(free, occupied, assume_unique=True)
             self.diagnostics.update(free_voxels=len(free), occupied_voxels=len(occupied))
-            if not free and not occupied:
+            if not len(free) and not len(occupied):
                 return self._no_frame('no_intersecting_evidence', now)
-            indices = lambda values: np.asarray(sorted(values), dtype=int).reshape(-1, 3)
+            indices = lambda values: np.column_stack(np.unravel_index(values, shape))
             free_indices, occupied_indices = indices(free), indices(occupied)
             # Production clocks include traversal time. Explicit ``now`` is a
             # deterministic caller-supplied evaluation time (e.g. offline tests).

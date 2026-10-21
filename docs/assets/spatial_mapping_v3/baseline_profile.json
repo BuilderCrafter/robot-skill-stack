@@ -1,0 +1,270 @@
+{
+  "baseline_commit": "d260377a4d1e773e9bf45871c6de9020d1382e6d",
+  "validation_local_date": "2026-10-22",
+  "status": "PASS",
+  "native_command": "./run_isaac_python.sh tests/spatial_mapping/test_robot_self_filter.py --result outputs/spatial-mapping-v3-baseline/result.json --artifacts-dir outputs/spatial-mapping-v3-baseline",
+  "native_artifacts": "outputs/spatial-mapping-v3-baseline",
+  "native_timings": {
+    "baseline_ms": {
+      "samples": 15,
+      "median_ms": 2190.387312322855,
+      "p95_ms": 2237.243503378704,
+      "max_ms": 2246.934095863253
+    },
+    "filtered_ms": {
+      "samples": 15,
+      "median_ms": 2132.7133518643677,
+      "p95_ms": 2189.7378641646355,
+      "max_ms": 2207.3480812832713
+    },
+    "filter_ms": {
+      "samples": 15,
+      "median_ms": 223.28115301206708,
+      "p95_ms": 234.9488400388509,
+      "max_ms": 236.1081913113594
+    }
+  },
+  "native_timing_scope": "Unchanged V2 native fixture reproduction: four static poses with three fresh batches each, three moving configurations with one each. These 15 samples reproduce prior timing; controlled warm-replay benchmark is reported separately.",
+  "native_selected_quality": {
+    "robot": {
+      "pixels": 1146,
+      "masked": 1145,
+      "unfiltered_occupied": 1117,
+      "filtered_occupied": 1,
+      "unfiltered_free": 0,
+      "filtered_free": 2
+    },
+    "forearm": {
+      "pixels": 9,
+      "masked": 0,
+      "unfiltered_occupied": 9,
+      "filtered_occupied": 9,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "wrist": {
+      "pixels": 19,
+      "masked": 0,
+      "unfiltered_occupied": 19,
+      "filtered_occupied": 19,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "gripper": {
+      "pixels": 12,
+      "masked": 0,
+      "unfiltered_occupied": 12,
+      "filtered_occupied": 12,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "foreground": {
+      "pixels": 22,
+      "masked": 0,
+      "unfiltered_occupied": 22,
+      "filtered_occupied": 22,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    },
+    "occluded": {
+      "pixels": 11,
+      "masked": 1,
+      "unfiltered_occupied": 11,
+      "filtered_occupied": 10,
+      "unfiltered_free": 0,
+      "filtered_free": 0
+    }
+  },
+  "native_moving_robot_occupancy": {
+    "historical_reference_voxels_in_environment_free": 3191,
+    "unfiltered_occupied": 409,
+    "filtered_occupied": 1
+  },
+  "offline_profile": {
+    "scope": "One SDK-free unfiltered Home update using original recorded buffers/calibration/tokens/acquired_at and explicit original observation evaluation time. cProfile overhead is excluded from unprofiled timing comparisons.",
+    "configuration": {
+      "dimensions": [
+        115,
+        120,
+        114
+      ],
+      "voxel_size": 0.01,
+      "stride": 8,
+      "max_rays": 1024,
+      "voxel_visits": 147009
+    },
+    "functions": [
+      {
+        "file": "v3_profile_mapping.py",
+        "line": 16,
+        "function": "run",
+        "calls": 1,
+        "self_ms": 8.312345,
+        "cumulative_ms": 2423.462284
+      },
+      {
+        "file": "rgbd.py",
+        "line": 124,
+        "function": "update",
+        "calls": 1,
+        "self_ms": 66.21458700000001,
+        "cumulative_ms": 2408.886739
+      },
+      {
+        "file": "rgbd.py",
+        "line": 9,
+        "function": "_ray_voxels",
+        "calls": 148033,
+        "self_ms": 1259.9862990000001,
+        "cumulative_ms": 2216.6800540000004
+      },
+      {
+        "file": "fromnumeric.py",
+        "line": 2322,
+        "function": "any",
+        "calls": 294027,
+        "self_ms": 125.59346500000001,
+        "cumulative_ms": 605.0023610000001
+      },
+      {
+        "file": "fromnumeric.py",
+        "line": 71,
+        "function": "_wrapreduction",
+        "calls": 295073,
+        "self_ms": 198.307701,
+        "cumulative_ms": 481.05341400000003
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'reduce' of 'numpy.ufunc' objects>",
+        "calls": 442107,
+        "self_ms": 296.06491700000004,
+        "cumulative_ms": 296.06491700000004
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'min' of 'numpy.ndarray' objects>",
+        "calls": 147010,
+        "self_ms": 35.194115000000004,
+        "cumulative_ms": 159.289175
+      },
+      {
+        "file": "rgbd.py",
+        "line": 51,
+        "function": "<genexpr>",
+        "calls": 588036,
+        "self_ms": 128.761087,
+        "cumulative_ms": 128.761087
+      },
+      {
+        "file": "_methods.py",
+        "line": 43,
+        "function": "_amin",
+        "calls": 147010,
+        "self_ms": 20.743661,
+        "cumulative_ms": 124.09506
+      },
+      {
+        "file": "fromnumeric.py",
+        "line": 72,
+        "function": "<dictcomp>",
+        "calls": 295073,
+        "self_ms": 75.346412,
+        "cumulative_ms": 75.346412
+      },
+      {
+        "file": "rgbd.py",
+        "line": 274,
+        "function": "<lambda>",
+        "calls": 2,
+        "self_ms": 0.12293000000000001,
+        "cumulative_ms": 68.97091800000001
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method builtins.sorted>",
+        "calls": 3080,
+        "self_ms": 49.839195000000004,
+        "cumulative_ms": 49.839775
+      },
+      {
+        "file": "occupancy.py",
+        "line": 289,
+        "function": "integrate",
+        "calls": 1,
+        "self_ms": 12.318868,
+        "cumulative_ms": 29.479440000000004
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method builtins.min>",
+        "calls": 150087,
+        "self_ms": 24.146014,
+        "cumulative_ms": 24.146014
+      },
+      {
+        "file": "fromnumeric.py",
+        "line": 2317,
+        "function": "_any_dispatcher",
+        "calls": 294027,
+        "self_ms": 21.338969000000002,
+        "cumulative_ms": 21.338969000000002
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<built-in method numpy.asarray>",
+        "calls": 6080,
+        "self_ms": 21.024938,
+        "cumulative_ms": 21.024938
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'add' of 'set' objects>",
+        "calls": 147009,
+        "self_ms": 17.465979,
+        "cumulative_ms": 17.465979
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "function": "<method 'items' of 'dict' objects>",
+        "calls": 295075,
+        "self_ms": 14.777411,
+        "cumulative_ms": 14.777411
+      },
+      {
+        "file": "occupancy.py",
+        "line": 76,
+        "function": "shape",
+        "calls": 148004,
+        "self_ms": 10.121114,
+        "cumulative_ms": 10.121114
+      },
+      {
+        "file": "numeric.py",
+        "line": 274,
+        "function": "full",
+        "calls": 1973,
+        "self_ms": 8.273147,
+        "cumulative_ms": 9.272363
+      }
+    ],
+    "unprofiled_home_ms": [
+      1790.5497727915645,
+      1764.6819120272994,
+      1773.1783222407103,
+      1786.9289764203131,
+      1788.4324919432402
+    ],
+    "unprofiled_scope": "Five SDK-free updates after one warm-up. Includes construction of a fresh map/mapper (~6 ms), distinct from native and final benchmark map-update-only timing.",
+    "finding": "Scalar _ray_voxels accounts for about 92% of profiled RgbdMapper.update; 147009 traversal visits generate over 3.4 million Python function calls. Integration is about 29 ms, expiration about 8 ms; these are secondary to traversal.",
+    "separate_snapshot_median_ms": 17.12435624,
+    "separate_query_1000_median_ms": 0.20685652
+  }
+}
