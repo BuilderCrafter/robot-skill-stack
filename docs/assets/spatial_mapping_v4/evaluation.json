@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "date": "2026-10-22",
+  "baseline": "b9afb8e38b285fcace554ea0998e14ddc2e46467",
+  "static_summary": {
+    "scope": "Eight final static snapshots, one per episode; repeated voxel-events across episodes are not unique global cells.",
+    "center_false_free": 50,
+    "center_false_occupied": 152,
+    "whole_cell_false_free": 0,
+    "whole_cell_occupied_denominator": 26725,
+    "definite_occupied_excess": 0,
+    "definitely_clear_denominator": 55057,
+    "retained_event_states": {
+      "unknown": 0,
+      "free": 0,
+      "occupied": 349,
+      "out_of_bounds": 44
+    },
+    "masked_selected_external_events": 0,
+    "mapping_update_ms_all_32": {
+      "count": 32,
+      "median": 308.7442903779447,
+      "p95": 323.25322232209146,
+      "maximum": 327.0391128025949
+    },
+    "fresh_at_completion_all_32": true
+  },
+  "dynamic_direct_hits": {
+    "global_baseline_still_free": 329,
+    "current_same_events_free": 0,
+    "actor_entry_baseline_still_free": 21,
+    "actor_entry_current_same_events_free": 0,
+    "denominator": "Unique voxel/batch events; repeated cells across batches are not independent samples."
+  },
+  "dynamic_error_events": {
+    "baseline": {
+      "false_free": 2644,
+      "false_free_whole_cell": 220,
+      "false_occupied": 5193,
+      "definite_occupied_excess": 127
+    },
+    "current": {
+      "false_free": 2514,
+      "false_free_whole_cell": 220,
+      "false_occupied": 5496,
+      "definite_occupied_excess": 135
+    }
+  },
+  "denominator": "Static counts are voxel/episode observations; dynamic counts are repeated cell/batch events, not independent physical volumes.",
+  "changes": "Only direct positive votes that would leave a cell FREE are neutralized to observed UNKNOWN. No miss, TTL, filter, ray, sampling or resolution change.",
+  "artifacts": {
+    "static": "static_evaluation.json",
+    "temporal": "temporal_evaluation.json",
+    "performance": "performance.json",
+    "verification": "verification.json"
+  },
+  "limitations": [
+    "Visible 12mm object has zero selected rays and remains UNKNOWN.",
+    "Unhit prior FREE object interiors can remain FREE until TTL5 despite fresh global map health.",
+    "Most evaluated local volume remains UNKNOWN; sampled gaps do not certify continuous clearance.",
+    "Voxel boundaries mix object and air; strict false-OCCUPIED counts include nanometre-separated nominally touching cells.",
+    "USD rigid-body topology changes invalidate SDK pose views and require reinitialization.",
+    "The serial standalone 2Hz loop steps physics between mapping calls; it does not establish combined semantic/control runtime schedulability."
+  ],
+  "readiness": "Validated as an independent occupancy-evidence provider for the next integration design. Consumer must preserve UNKNOWN, cell age and source-health distinctions; FREE is not a collision-clearance certificate. Runtime integration and planning remain unimplemented."
+}

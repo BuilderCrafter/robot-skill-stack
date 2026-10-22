@@ -1,0 +1,2084 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "capture": "outputs/spatial-mapping-v4-static-baseline",
+  "baseline_source_commit": "b9afb8e38b285fcace554ea0998e14ddc2e46467",
+  "capture_manifest_sha256": "3748c24397ca48b54be1a43b52c50c3e147410ce73ea8f3c5a3dca5024b3ec78",
+  "source_script_sha256": "eeb26941f94086755dc623f40aba56ff47710bd5e9266943f3d3316ec97c9e21",
+  "settings": {
+    "bounds_min": [
+      -0.3,
+      -0.6,
+      -0.02
+    ],
+    "bounds_max": [
+      0.85,
+      0.6,
+      1.12
+    ],
+    "voxel_size": 0.01,
+    "stride": 8,
+    "max_rays": 1024,
+    "max_frame_age": 1.0,
+    "stale_after": 1.0,
+    "evidence_ttl": 5.0
+  },
+  "summary": {
+    "scope": "Eight final static snapshots, one per episode; repeated voxel-events across episodes are not unique global cells.",
+    "center_false_free": 50,
+    "center_false_occupied": 152,
+    "whole_cell_false_free": 0,
+    "whole_cell_occupied_denominator": 26725,
+    "definite_occupied_excess": 0,
+    "definitely_clear_denominator": 55057,
+    "retained_event_states": {
+      "unknown": 0,
+      "free": 0,
+      "occupied": 349,
+      "out_of_bounds": 44
+    },
+    "masked_selected_external_events": 0,
+    "mapping_update_ms_all_32": {
+      "count": 32,
+      "median": 308.7442903779447,
+      "p95": 323.25322232209146,
+      "maximum": 327.0391128025949
+    },
+    "fresh_at_completion_all_32": true
+  },
+  "episodes": [
+    {
+      "episode": "mixed",
+      "capture_index": 3,
+      "snapshot_file": "snapshot_mixed_3.npz",
+      "center_metrics": {
+        "input_voxels": 27545,
+        "excluded_voxels": 3732,
+        "evaluated_voxels": 23813,
+        "reference_occupied": {
+          "voxels": 10770,
+          "unknown": 10717,
+          "free": 8,
+          "occupied": 45
+        },
+        "reference_free": {
+          "voxels": 13043,
+          "unknown": 11826,
+          "free": 1186,
+          "occupied": 31
+        },
+        "false_free": {
+          "count": 8,
+          "denominator": 10770,
+          "rate": 0.0007428040854224698
+        },
+        "false_occupied": {
+          "count": 31,
+          "denominator": 13043,
+          "rate": 0.0023767538143065247
+        },
+        "unknown": {
+          "count": 22543,
+          "denominator": 23813,
+          "rate": 0.9466677865031705
+        },
+        "observed_region": {
+          "voxels": 1270,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 1231,
+            "denominator": 1270,
+            "rate": 0.9692913385826771
+          },
+          "agreement_classified": {
+            "count": 1231,
+            "denominator": 1270,
+            "rate": 0.9692913385826771
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 10270,
+          "unknown": 10232,
+          "free": 0,
+          "occupied": 38
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 10270,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 500,
+          "unknown": 485,
+          "free": 8,
+          "occupied": 7
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 9769,
+          "unknown": 8814,
+          "free": 955,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 3274,
+          "unknown": 3012,
+          "free": 231,
+          "occupied": 31
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 9769,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 78,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 78,
+          "out_of_bounds": 0
+        },
+        "unique_in_bounds_voxels": 78,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 78,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "LargeUnclassified": {
+          "raw_pixels": 26845,
+          "selected_events": 57,
+          "masked_selected_events": 0,
+          "retained_events": 57,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 5077,
+              "selected_events": 12,
+              "masked_selected_events": 0,
+              "retained_events": 12
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 21768,
+              "selected_events": 45,
+              "masked_selected_events": 0,
+              "retained_events": 45
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 57,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 57,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 57,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 57,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 9072,
+            "unknown": 9037,
+            "free": 0,
+            "occupied": 35,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Sphere": {
+          "raw_pixels": 1024,
+          "selected_events": 3,
+          "masked_selected_events": 0,
+          "retained_events": 3,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 1024,
+              "selected_events": 3,
+              "masked_selected_events": 0,
+              "retained_events": 3
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 3,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 3,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 372,
+            "unknown": 364,
+            "free": 5,
+            "occupied": 3,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Cylinder": {
+          "raw_pixels": 1751,
+          "selected_events": 4,
+          "masked_selected_events": 0,
+          "retained_events": 4,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 1751,
+              "selected_events": 4,
+              "masked_selected_events": 0,
+              "retained_events": 4
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 4,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 4,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 4,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 4,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 416,
+            "unknown": 414,
+            "free": 0,
+            "occupied": 2,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "RotatedBox": {
+          "raw_pixels": 5827,
+          "selected_events": 14,
+          "masked_selected_events": 0,
+          "retained_events": 14,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 3246,
+              "selected_events": 8,
+              "masked_selected_events": 0,
+              "retained_events": 8
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 2581,
+              "selected_events": 6,
+              "masked_selected_events": 0,
+              "retained_events": 6
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 14,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 14,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 14,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 14,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 910,
+            "unknown": 902,
+            "free": 3,
+            "occupied": 5,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "resolution",
+      "capture_index": 7,
+      "snapshot_file": "snapshot_resolution_3.npz",
+      "center_metrics": {
+        "input_voxels": 6096,
+        "excluded_voxels": 1048,
+        "evaluated_voxels": 5048,
+        "reference_occupied": {
+          "voxels": 414,
+          "unknown": 396,
+          "free": 8,
+          "occupied": 10
+        },
+        "reference_free": {
+          "voxels": 4634,
+          "unknown": 4032,
+          "free": 596,
+          "occupied": 6
+        },
+        "false_free": {
+          "count": 8,
+          "denominator": 414,
+          "rate": 0.01932367149758454
+        },
+        "false_occupied": {
+          "count": 6,
+          "denominator": 4634,
+          "rate": 0.001294777729823047
+        },
+        "unknown": {
+          "count": 4428,
+          "denominator": 5048,
+          "rate": 0.8771790808240888
+        },
+        "observed_region": {
+          "voxels": 620,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 606,
+            "denominator": 620,
+            "rate": 0.9774193548387097
+          },
+          "agreement_classified": {
+            "count": 606,
+            "denominator": 620,
+            "rate": 0.9774193548387097
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 156,
+          "unknown": 155,
+          "free": 0,
+          "occupied": 1
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 156,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 258,
+          "unknown": 241,
+          "free": 8,
+          "occupied": 9
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 4116,
+          "unknown": 3560,
+          "free": 556,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 518,
+          "unknown": 472,
+          "free": 40,
+          "occupied": 6
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 4116,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 18,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 16,
+          "out_of_bounds": 2
+        },
+        "unique_in_bounds_voxels": 16,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 16,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "ThinUpright": {
+          "raw_pixels": 5394,
+          "selected_events": 11,
+          "masked_selected_events": 0,
+          "retained_events": 11,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 2479,
+              "selected_events": 6,
+              "masked_selected_events": 0,
+              "retained_events": 6
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 2915,
+              "selected_events": 5,
+              "masked_selected_events": 0,
+              "retained_events": 5
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 11,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 11,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 11,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 11,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 176,
+            "unknown": 162,
+            "free": 8,
+            "occupied": 6,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Small12mm": {
+          "raw_pixels": 99,
+          "selected_events": 0,
+          "masked_selected_events": 0,
+          "retained_events": 0,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 44,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 55,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 0,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 0,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 4,
+            "unknown": 4,
+            "free": 0,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Boundary": {
+          "raw_pixels": 2399,
+          "selected_events": 7,
+          "masked_selected_events": 0,
+          "retained_events": 7,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 1526,
+              "selected_events": 4,
+              "masked_selected_events": 0,
+              "retained_events": 4
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 873,
+              "selected_events": 3,
+              "masked_selected_events": 0,
+              "retained_events": 3
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 7,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 5,
+              "out_of_bounds": 2
+            },
+            "unique_in_bounds_voxels": 5,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 5,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 234,
+            "unknown": 230,
+            "free": 0,
+            "occupied": 4,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "irregular",
+      "capture_index": 11,
+      "snapshot_file": "snapshot_irregular_3.npz",
+      "center_metrics": {
+        "input_voxels": 10968,
+        "excluded_voxels": 2371,
+        "evaluated_voxels": 8597,
+        "reference_occupied": {
+          "voxels": 2232,
+          "unknown": 2191,
+          "free": 17,
+          "occupied": 24
+        },
+        "reference_free": {
+          "voxels": 6365,
+          "unknown": 5476,
+          "free": 884,
+          "occupied": 5
+        },
+        "false_free": {
+          "count": 17,
+          "denominator": 2232,
+          "rate": 0.0076164874551971325
+        },
+        "false_occupied": {
+          "count": 5,
+          "denominator": 6365,
+          "rate": 0.0007855459544383347
+        },
+        "unknown": {
+          "count": 7667,
+          "denominator": 8597,
+          "rate": 0.8918227288589042
+        },
+        "observed_region": {
+          "voxels": 930,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 908,
+            "denominator": 930,
+            "rate": 0.9763440860215054
+          },
+          "agreement_classified": {
+            "count": 908,
+            "denominator": 930,
+            "rate": 0.9763440860215054
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 1636,
+          "unknown": 1629,
+          "free": 0,
+          "occupied": 7
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 1636,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 596,
+          "unknown": 562,
+          "free": 17,
+          "occupied": 17
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 5623,
+          "unknown": 4818,
+          "free": 805,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 742,
+          "unknown": 658,
+          "free": 79,
+          "occupied": 5
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 5623,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 32,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 32,
+          "out_of_bounds": 0
+        },
+        "unique_in_bounds_voxels": 32,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 32,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "LPart1": {
+          "raw_pixels": 4938,
+          "selected_events": 11,
+          "masked_selected_events": 0,
+          "retained_events": 11,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 2769,
+              "selected_events": 6,
+              "masked_selected_events": 0,
+              "retained_events": 6
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 2169,
+              "selected_events": 5,
+              "masked_selected_events": 0,
+              "retained_events": 5
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 11,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 11,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 11,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 11,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 972,
+            "unknown": 955,
+            "free": 7,
+            "occupied": 10,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "LPart2": {
+          "raw_pixels": 4559,
+          "selected_events": 8,
+          "masked_selected_events": 0,
+          "retained_events": 8,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 1592,
+              "selected_events": 4,
+              "masked_selected_events": 0,
+              "retained_events": 4
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 2967,
+              "selected_events": 4,
+              "masked_selected_events": 0,
+              "retained_events": 4
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 8,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 8,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 8,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 8,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 810,
+            "unknown": 799,
+            "free": 4,
+            "occupied": 7,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "ConvexWedge": {
+          "raw_pixels": 6121,
+          "selected_events": 13,
+          "masked_selected_events": 0,
+          "retained_events": 13,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 3323,
+              "selected_events": 8,
+              "masked_selected_events": 0,
+              "retained_events": 8
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 2798,
+              "selected_events": 5,
+              "masked_selected_events": 0,
+              "retained_events": 5
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 13,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 13,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 13,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 13,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 720,
+            "unknown": 704,
+            "free": 7,
+            "occupied": 9,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {
+        "z_m": 0.055,
+        "xy_min": [
+          0.20999999999999996,
+          -0.265
+        ],
+        "xy_max": [
+          0.7547668476316101,
+          0.32946911038197846
+        ],
+        "intersecting_robot_bounds": [],
+        "disjoint_from_recorded_exposure_robot_bounds": true
+      },
+      "approximate_gt_unsupported_aabbs": 3
+    },
+    {
+      "episode": "clutter",
+      "capture_index": 15,
+      "snapshot_file": "snapshot_clutter_3.npz",
+      "center_metrics": {
+        "input_voxels": 29375,
+        "excluded_voxels": 3420,
+        "evaluated_voxels": 25955,
+        "reference_occupied": {
+          "voxels": 12800,
+          "unknown": 12728,
+          "free": 11,
+          "occupied": 61
+        },
+        "reference_free": {
+          "voxels": 13155,
+          "unknown": 11947,
+          "free": 1168,
+          "occupied": 40
+        },
+        "false_free": {
+          "count": 11,
+          "denominator": 12800,
+          "rate": 0.000859375
+        },
+        "false_occupied": {
+          "count": 40,
+          "denominator": 13155,
+          "rate": 0.003040668947168377
+        },
+        "unknown": {
+          "count": 24675,
+          "denominator": 25955,
+          "rate": 0.9506838759391254
+        },
+        "observed_region": {
+          "voxels": 1280,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 1229,
+            "denominator": 1280,
+            "rate": 0.96015625
+          },
+          "agreement_classified": {
+            "count": 1229,
+            "denominator": 1280,
+            "rate": 0.96015625
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 11200,
+          "unknown": 11157,
+          "free": 0,
+          "occupied": 43
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 11200,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 1600,
+          "unknown": 1571,
+          "free": 11,
+          "occupied": 18
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 9627,
+          "unknown": 8720,
+          "free": 907,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 3528,
+          "unknown": 3227,
+          "free": 261,
+          "occupied": 40
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 9627,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 103,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 103,
+          "out_of_bounds": 0
+        },
+        "unique_in_bounds_voxels": 103,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 103,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "Left20mm": {
+          "raw_pixels": 14990,
+          "selected_events": 34,
+          "masked_selected_events": 0,
+          "retained_events": 34,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 3479,
+              "selected_events": 7,
+              "masked_selected_events": 0,
+              "retained_events": 7
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 11511,
+              "selected_events": 27,
+              "masked_selected_events": 0,
+              "retained_events": 27
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 34,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 34,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 34,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 34,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 3200,
+            "unknown": 3188,
+            "free": 2,
+            "occupied": 10,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Right20mm": {
+          "raw_pixels": 10391,
+          "selected_events": 24,
+          "masked_selected_events": 0,
+          "retained_events": 24,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 5659,
+              "selected_events": 13,
+              "masked_selected_events": 0,
+              "retained_events": 13
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 4732,
+              "selected_events": 11,
+              "masked_selected_events": 0,
+              "retained_events": 11
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 24,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 24,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 24,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 24,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 3200,
+            "unknown": 3181,
+            "free": 1,
+            "occupied": 18,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Left30mm": {
+          "raw_pixels": 11090,
+          "selected_events": 23,
+          "masked_selected_events": 0,
+          "retained_events": 23,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 5358,
+              "selected_events": 12,
+              "masked_selected_events": 0,
+              "retained_events": 12
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 5732,
+              "selected_events": 11,
+              "masked_selected_events": 0,
+              "retained_events": 11
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 23,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 23,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 23,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 23,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 3200,
+            "unknown": 3185,
+            "free": 1,
+            "occupied": 14,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Right30mm": {
+          "raw_pixels": 9807,
+          "selected_events": 22,
+          "masked_selected_events": 0,
+          "retained_events": 22,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 6060,
+              "selected_events": 14,
+              "masked_selected_events": 0,
+              "retained_events": 14
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 3747,
+              "selected_events": 8,
+              "masked_selected_events": 0,
+              "retained_events": 8
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 22,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 22,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 22,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 22,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 3200,
+            "unknown": 3174,
+            "free": 7,
+            "occupied": 19,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {
+        "gap20mm": {
+          "scope": "sampled_clear_region",
+          "valid": true,
+          "errors": [],
+          "input_points": 918,
+          "solid_points": 0,
+          "excluded_points": 0,
+          "in_bounds_points": 918,
+          "unique_in_bounds_voxels": 867,
+          "map_states": {
+            "voxels": 867,
+            "unknown": 866,
+            "free": 0,
+            "occupied": 1
+          },
+          "conservative_whole_cell_clear": {
+            "voxels": 289,
+            "unknown": 289,
+            "free": 0,
+            "occupied": 0
+          },
+          "possible_cell_overlap": {
+            "voxels": 578,
+            "unknown": 577,
+            "free": 0,
+            "occupied": 1
+          },
+          "excluded_reference_cells": {
+            "voxels": 0,
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0
+          },
+          "limitation": "Samples do not establish clearance of an unsampled continuous volume or a robot path."
+        },
+        "gap30mm": {
+          "scope": "sampled_clear_region",
+          "valid": true,
+          "errors": [],
+          "input_points": 918,
+          "solid_points": 0,
+          "excluded_points": 0,
+          "in_bounds_points": 918,
+          "unique_in_bounds_voxels": 867,
+          "map_states": {
+            "voxels": 867,
+            "unknown": 861,
+            "free": 4,
+            "occupied": 2
+          },
+          "conservative_whole_cell_clear": {
+            "voxels": 289,
+            "unknown": 286,
+            "free": 3,
+            "occupied": 0
+          },
+          "possible_cell_overlap": {
+            "voxels": 578,
+            "unknown": 575,
+            "free": 1,
+            "occupied": 2
+          },
+          "excluded_reference_cells": {
+            "voxels": 0,
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0
+          },
+          "limitation": "Samples do not establish clearance of an unsampled continuous volume or a robot path."
+        }
+      },
+      "slice_reference_check": {
+        "z_m": 0.105,
+        "xy_min": [
+          0.22700000000000004,
+          -0.14
+        ],
+        "xy_max": [
+          0.8270000000000001,
+          0.22000000000000003
+        ],
+        "intersecting_robot_bounds": [],
+        "disjoint_from_recorded_exposure_robot_bounds": true
+      },
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "both_visible",
+      "capture_index": 19,
+      "snapshot_file": "snapshot_both_visible_3.npz",
+      "center_metrics": {
+        "input_voxels": 3600,
+        "excluded_voxels": 700,
+        "evaluated_voxels": 2900,
+        "reference_occupied": {
+          "voxels": 1100,
+          "unknown": 1093,
+          "free": 0,
+          "occupied": 7
+        },
+        "reference_free": {
+          "voxels": 1800,
+          "unknown": 1606,
+          "free": 190,
+          "occupied": 4
+        },
+        "false_free": {
+          "count": 0,
+          "denominator": 1100,
+          "rate": 0.0
+        },
+        "false_occupied": {
+          "count": 4,
+          "denominator": 1800,
+          "rate": 0.0022222222222222222
+        },
+        "unknown": {
+          "count": 2699,
+          "denominator": 2900,
+          "rate": 0.9306896551724138
+        },
+        "observed_region": {
+          "voxels": 201,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 197,
+            "denominator": 201,
+            "rate": 0.9800995024875622
+          },
+          "agreement_classified": {
+            "count": 197,
+            "denominator": 201,
+            "rate": 0.9800995024875622
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 1100,
+          "unknown": 1093,
+          "free": 0,
+          "occupied": 7
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 1100,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 0,
+          "unknown": 0,
+          "free": 0,
+          "occupied": 0
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 1260,
+          "unknown": 1111,
+          "free": 149,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 540,
+          "unknown": 495,
+          "free": 41,
+          "occupied": 4
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 1260,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 12,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 12,
+          "out_of_bounds": 0
+        },
+        "unique_in_bounds_voxels": 12,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 12,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "OccludedTarget": {
+          "raw_pixels": 5549,
+          "selected_events": 12,
+          "masked_selected_events": 0,
+          "retained_events": 12,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 2210,
+              "selected_events": 5,
+              "masked_selected_events": 0,
+              "retained_events": 5
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 3339,
+              "selected_events": 7,
+              "masked_selected_events": 0,
+              "retained_events": 7
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 12,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 12,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 12,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 12,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 1100,
+            "unknown": 1093,
+            "free": 0,
+            "occupied": 7,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "one_view",
+      "capture_index": 23,
+      "snapshot_file": "snapshot_one_view_3.npz",
+      "center_metrics": {
+        "input_voxels": 8407,
+        "excluded_voxels": 700,
+        "evaluated_voxels": 7707,
+        "reference_occupied": {
+          "voxels": 1277,
+          "unknown": 1265,
+          "free": 1,
+          "occupied": 11
+        },
+        "reference_free": {
+          "voxels": 6430,
+          "unknown": 5716,
+          "free": 703,
+          "occupied": 11
+        },
+        "false_free": {
+          "count": 1,
+          "denominator": 1277,
+          "rate": 0.0007830853563038371
+        },
+        "false_occupied": {
+          "count": 11,
+          "denominator": 6430,
+          "rate": 0.0017107309486780716
+        },
+        "unknown": {
+          "count": 6981,
+          "denominator": 7707,
+          "rate": 0.905799922148696
+        },
+        "observed_region": {
+          "voxels": 726,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 714,
+            "denominator": 726,
+            "rate": 0.9834710743801653
+          },
+          "agreement_classified": {
+            "count": 714,
+            "denominator": 726,
+            "rate": 0.9834710743801653
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 1105,
+          "unknown": 1100,
+          "free": 0,
+          "occupied": 5
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 1105,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 172,
+          "unknown": 165,
+          "free": 1,
+          "occupied": 6
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 5646,
+          "unknown": 4997,
+          "free": 649,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 784,
+          "unknown": 719,
+          "free": 54,
+          "occupied": 11
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 5646,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 44,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 23,
+          "out_of_bounds": 21
+        },
+        "unique_in_bounds_voxels": 23,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 23,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "OccludedTarget": {
+          "raw_pixels": 3339,
+          "selected_events": 7,
+          "masked_selected_events": 0,
+          "retained_events": 7,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 3339,
+              "selected_events": 7,
+              "masked_selected_events": 0,
+              "retained_events": 7
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 7,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 7,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 7,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 7,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 1100,
+            "unknown": 1095,
+            "free": 0,
+            "occupied": 5,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "OpaquePanel0": {
+          "raw_pixels": 15768,
+          "selected_events": 37,
+          "masked_selected_events": 0,
+          "retained_events": 37,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 14682,
+              "selected_events": 35,
+              "masked_selected_events": 0,
+              "retained_events": 35
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 1086,
+              "selected_events": 2,
+              "masked_selected_events": 0,
+              "retained_events": 2
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 37,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 16,
+              "out_of_bounds": 21
+            },
+            "unique_in_bounds_voxels": 16,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 16,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 177,
+            "unknown": 170,
+            "free": 1,
+            "occupied": 6,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "both_hidden",
+      "capture_index": 27,
+      "snapshot_file": "snapshot_both_hidden_3.npz",
+      "center_metrics": {
+        "input_voxels": 21607,
+        "excluded_voxels": 700,
+        "evaluated_voxels": 20907,
+        "reference_occupied": {
+          "voxels": 1856,
+          "unknown": 1828,
+          "free": 4,
+          "occupied": 24
+        },
+        "reference_free": {
+          "voxels": 19051,
+          "unknown": 16127,
+          "free": 2875,
+          "occupied": 49
+        },
+        "false_free": {
+          "count": 4,
+          "denominator": 1856,
+          "rate": 0.0021551724137931034
+        },
+        "false_occupied": {
+          "count": 49,
+          "denominator": 19051,
+          "rate": 0.0025720434622854443
+        },
+        "unknown": {
+          "count": 17955,
+          "denominator": 20907,
+          "rate": 0.8588032716315109
+        },
+        "observed_region": {
+          "voxels": 2952,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 2899,
+            "denominator": 2952,
+            "rate": 0.9820460704607046
+          },
+          "agreement_classified": {
+            "count": 2899,
+            "denominator": 2952,
+            "rate": 0.9820460704607046
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 1134,
+          "unknown": 1134,
+          "free": 0,
+          "occupied": 0
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 1134,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 722,
+          "unknown": 694,
+          "free": 4,
+          "occupied": 24
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 17513,
+          "unknown": 14761,
+          "free": 2752,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 1538,
+          "unknown": 1366,
+          "free": 123,
+          "occupied": 49
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 17513,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 94,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 73,
+          "out_of_bounds": 21
+        },
+        "unique_in_bounds_voxels": 73,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 73,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "OccludedTarget": {
+          "raw_pixels": 0,
+          "selected_events": 0,
+          "masked_selected_events": 0,
+          "retained_events": 0,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 0,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 0,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 1100,
+            "unknown": 1100,
+            "free": 0,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "OpaquePanel0": {
+          "raw_pixels": 15768,
+          "selected_events": 37,
+          "masked_selected_events": 0,
+          "retained_events": 37,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 14682,
+              "selected_events": 35,
+              "masked_selected_events": 0,
+              "retained_events": 35
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 1086,
+              "selected_events": 2,
+              "masked_selected_events": 0,
+              "retained_events": 2
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 37,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 16,
+              "out_of_bounds": 21
+            },
+            "unique_in_bounds_voxels": 16,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 16,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 177,
+            "unknown": 170,
+            "free": 1,
+            "occupied": 6,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "OpaquePanel1": {
+          "raw_pixels": 24866,
+          "selected_events": 57,
+          "masked_selected_events": 0,
+          "retained_events": 57,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 772,
+              "selected_events": 2,
+              "masked_selected_events": 0,
+              "retained_events": 2
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 24094,
+              "selected_events": 55,
+              "masked_selected_events": 0,
+              "retained_events": 55
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 57,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 57,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 57,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 57,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 579,
+            "unknown": 558,
+            "free": 3,
+            "occupied": 18,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    },
+    {
+      "episode": "near_robot",
+      "capture_index": 31,
+      "snapshot_file": "snapshot_near_robot_3.npz",
+      "center_metrics": {
+        "input_voxels": 3406,
+        "excluded_voxels": 1487,
+        "evaluated_voxels": 1919,
+        "reference_occupied": {
+          "voxels": 293,
+          "unknown": 291,
+          "free": 1,
+          "occupied": 1
+        },
+        "reference_free": {
+          "voxels": 1626,
+          "unknown": 1493,
+          "free": 127,
+          "occupied": 6
+        },
+        "false_free": {
+          "count": 1,
+          "denominator": 293,
+          "rate": 0.0034129692832764505
+        },
+        "false_occupied": {
+          "count": 6,
+          "denominator": 1626,
+          "rate": 0.0036900369003690036
+        },
+        "unknown": {
+          "count": 1784,
+          "denominator": 1919,
+          "rate": 0.9296508598228244
+        },
+        "observed_region": {
+          "voxels": 135,
+          "unknown": 0,
+          "agreement_all_observed": {
+            "count": 128,
+            "denominator": 135,
+            "rate": 0.9481481481481482
+          },
+          "agreement_classified": {
+            "count": 128,
+            "denominator": 135,
+            "rate": 0.9481481481481482
+          }
+        },
+        "conservative_whole_cell_occupied": {
+          "voxels": 124,
+          "unknown": 124,
+          "free": 0,
+          "occupied": 0
+        },
+        "false_free_whole_cell": {
+          "count": 0,
+          "denominator": 124,
+          "rate": 0.0
+        },
+        "center_occupied_partial_or_boundary": {
+          "voxels": 169,
+          "unknown": 167,
+          "free": 1,
+          "occupied": 1
+        },
+        "conservative_whole_cell_clear": {
+          "voxels": 1503,
+          "unknown": 1384,
+          "free": 119,
+          "occupied": 0
+        },
+        "center_free_possible_cell_overlap": {
+          "voxels": 123,
+          "unknown": 109,
+          "free": 8,
+          "occupied": 6
+        },
+        "definite_occupied_excess": {
+          "count": 0,
+          "denominator": 1503,
+          "rate": 0.0
+        }
+      },
+      "retained_surface_events": {
+        "events": 12,
+        "event_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 12,
+          "out_of_bounds": 0
+        },
+        "unique_in_bounds_voxels": 12,
+        "unique_voxel_states": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 12,
+          "out_of_bounds": 0
+        }
+      },
+      "features": {
+        "Forearm": {
+          "raw_pixels": 792,
+          "selected_events": 2,
+          "masked_selected_events": 0,
+          "retained_events": 2,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 225,
+              "selected_events": 1,
+              "masked_selected_events": 0,
+              "retained_events": 1
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 567,
+              "selected_events": 1,
+              "masked_selected_events": 0,
+              "retained_events": 1
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 2,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 2,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 36,
+            "unknown": 36,
+            "free": 0,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Wrist": {
+          "raw_pixels": 519,
+          "selected_events": 2,
+          "masked_selected_events": 0,
+          "retained_events": 2,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 492,
+              "selected_events": 2,
+              "masked_selected_events": 0,
+              "retained_events": 2
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 27,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 2,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 2,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 36,
+            "unknown": 35,
+            "free": 1,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Gripper": {
+          "raw_pixels": 994,
+          "selected_events": 2,
+          "masked_selected_events": 0,
+          "retained_events": 2,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 540,
+              "selected_events": 1,
+              "masked_selected_events": 0,
+              "retained_events": 1
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 454,
+              "selected_events": 1,
+              "masked_selected_events": 0,
+              "retained_events": 1
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 2,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 2,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 2,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 48,
+            "unknown": 48,
+            "free": 0,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "Foreground": {
+          "raw_pixels": 1450,
+          "selected_events": 3,
+          "masked_selected_events": 0,
+          "retained_events": 3,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 883,
+              "selected_events": 2,
+              "masked_selected_events": 0,
+              "retained_events": 2
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 567,
+              "selected_events": 1,
+              "masked_selected_events": 0,
+              "retained_events": 1
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 3,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 3,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 125,
+            "unknown": 125,
+            "free": 0,
+            "occupied": 0,
+            "motion_disagreement_voxels": 0
+          }
+        },
+        "BehindRobot": {
+          "raw_pixels": 1095,
+          "selected_events": 3,
+          "masked_selected_events": 0,
+          "retained_events": 3,
+          "by_camera": {
+            "/World/PerceptionCamera": {
+              "raw_pixels": 0,
+              "selected_events": 0,
+              "masked_selected_events": 0,
+              "retained_events": 0
+            },
+            "/World/PerceptionCameraSide": {
+              "raw_pixels": 1095,
+              "selected_events": 3,
+              "masked_selected_events": 0,
+              "retained_events": 3
+            }
+          },
+          "retained_endpoint_states": {
+            "events": 3,
+            "event_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            },
+            "unique_in_bounds_voxels": 3,
+            "unique_voxel_states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 3,
+              "out_of_bounds": 0
+            }
+          },
+          "own_center_counts": {
+            "voxels": 48,
+            "unknown": 47,
+            "free": 0,
+            "occupied": 1,
+            "motion_disagreement_voxels": 0
+          }
+        }
+      },
+      "clear_corridors": {},
+      "slice_reference_check": {},
+      "approximate_gt_unsupported_aabbs": 2
+    }
+  ],
+  "reference_scope": {
+    "centers": "Exact analytic primitive or validated convex-mesh center membership; closed boundaries with a 1e-12 local-coordinate tolerance.",
+    "whole_cell_occupied": "All eight actual voxel corners lie inside one convex reference; sufficient interior, rather than exact coverage by a union.",
+    "whole_cell_clear": "No overlap with conservative inverse-cell or plane outer bounds; only this verified-clear stratum is scored as definite excess.",
+    "omissions": "Otherwise fixture-free ground-contact centers at or below 15 mm, and centers inside actual exposure mesh world bounds, are omitted. All fixture-occupied centers are retained.",
+    "surface": "Final-frame selected, retained native instance-labeled external depth endpoints. Event counts differ from unique cells; out-of-bounds events are explicit.",
+    "visual_collision": "Authored primitive physical and visual geometry coincide; the wedge collision convex hull matches its authored convex mesh. Mapper mesh AABBs are approximate and do not define exact physical truth."
+  },
+  "limitations": [
+    "UNKNOWN is expected and does not establish clearance.",
+    "Center false-FREE and false-OCCUPIED in partial-volume cells do not prove that the entire voxel is physically misclassified.",
+    "Zero excess in the conservative clear stratum does not establish accuracy of every possible-overlap cell.",
+    "The 12 mm object can have visible pixels and zero selected rays; coverage of obstacles near voxel resolution is not guaranteed.",
+    "This is the static baseline before the V4 temporal hit-handling correction; no runtime integration or planning is evaluated."
+  ]
+}

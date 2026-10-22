@@ -1,0 +1,2092 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Matched original 56-record native evidence; occupancy policy comparison, not timing or volumetric reconstruction.",
+  "provenance": {
+    "capture": "outputs/spatial-mapping-v4-temporal-baseline-v2",
+    "capture_manifest_sha256": "c4dbd089d611600ba97d1c4e97c9161b3484a53d255abe18138e41d2ec77bf27",
+    "policy_comparison_sha256": "5ab7d893ea378ddcdda599b9e38af7d9cec3cd3d99d02588939431f1bf982c81",
+    "baseline_commit": "b9afb8e38b285fcace554ea0998e14ddc2e46467",
+    "baseline_occupancy_sha256": "fb9a4120ec3b27b30ecc01a30f2e608d812b0f986dd0942251492f5d3498fbac",
+    "current_occupancy_sha256": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+    "derivation_script": "outputs/spatial-mapping-v4-temporal-baseline-v2/derive_temporal_assets.py",
+    "derivation_script_sha256": "057a28532d46ec0f0c971a7c84b06bf713ac342fa1bcb0831e64bc8d2fcc5c9a",
+    "original_timestamps_preserved": true,
+    "retimed_frames": false,
+    "native_baseline_checkpoints": 8,
+    "native_baseline_checkpoint_fields_all_equal": true,
+    "tracked_cell_projection": "Cell-independent policy diagnostics retain original HIT/MISS, TTL and time; full comparison separately verifies the complete grid.",
+    "tracked_cells": 2696,
+    "post_hit_native_baseline_field_values_verified": 1290
+  },
+  "settings": {
+    "bounds_min": [
+      -0.3,
+      -0.6,
+      -0.02
+    ],
+    "bounds_max": [
+      0.85,
+      0.6,
+      1.12
+    ],
+    "voxel_size": 0.01,
+    "stride": 8,
+    "max_rays": 1024,
+    "max_voxel_visits": 500000,
+    "max_depth": 5.0,
+    "max_skew": 0.025,
+    "max_frame_age": 1.0,
+    "stale_after": 1.0,
+    "evidence_ttl": 5.0
+  },
+  "fixture_contracts": {
+    "control_both_visible_then_fully_hidden": true,
+    "actor_both_visible_then_fully_hidden": true,
+    "in_bounds_selected_actor_hits": true,
+    "actual_physx_motion": true,
+    "actual_robot_joint_change": true,
+    "workspace_removal": true
+  },
+  "direct_hit_events": {
+    "global_baseline_still_free": 329,
+    "current_same_events_free": 0,
+    "actor_entry_baseline_still_free": 21,
+    "actor_entry_current_same_events_free": 0,
+    "denominator": "Unique voxel/batch events; repeated cells across batches are not independent samples."
+  },
+  "phases": [
+    {
+      "phase": "seed_control",
+      "records": 6,
+      "first_index": 0,
+      "last_index": 5,
+      "source_start": 2991854.776885602,
+      "source_end": 2991857.700995773,
+      "baseline_still_free_direct_hit_cell_batch_events": 0,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 15552,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 15552,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 66,
+              "denominator_cell_batch_sum": 82656,
+              "maximum": 11,
+              "final": 11
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 75864,
+              "maximum": 0,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 12
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 91731
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 15552,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 15552,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 66,
+              "denominator_cell_batch_sum": 82656,
+              "maximum": 11,
+              "final": 11
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 75864,
+              "maximum": 0,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 12
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 91731
+        }
+      }
+    },
+    {
+      "phase": "precondition_free",
+      "records": 10,
+      "first_index": 6,
+      "last_index": 15,
+      "source_start": 2991858.451262257,
+      "source_end": 2991865.841187258,
+      "baseline_still_free_direct_hit_cell_batch_events": 138,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 1499,
+              "denominator_cell_batch_sum": 38170,
+              "maximum": 314,
+              "final": 5
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 105,
+              "denominator_cell_batch_sum": 26470,
+              "maximum": 21,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 570,
+              "denominator_cell_batch_sum": 360240,
+              "maximum": 73,
+              "final": 62
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 334270,
+              "maximum": 0,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 30
+          },
+          "reference_omitted_cell_batch_sum": 100,
+          "unknown_cell_batch_sum": 336815
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 1435,
+              "denominator_cell_batch_sum": 38170,
+              "maximum": 282,
+              "final": 5
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 105,
+              "denominator_cell_batch_sum": 26470,
+              "maximum": 21,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 640,
+              "denominator_cell_batch_sum": 360240,
+              "maximum": 73,
+              "final": 62
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 334270,
+              "maximum": 0,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 30
+          },
+          "reference_omitted_cell_batch_sum": 100,
+          "unknown_cell_batch_sum": 336815
+        }
+      }
+    },
+    {
+      "phase": "entered",
+      "records": 8,
+      "first_index": 16,
+      "last_index": 23,
+      "source_start": 2991866.852693644,
+      "source_end": 2991873.122691864,
+      "baseline_still_free_direct_hit_cell_batch_events": 21,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 202,
+              "denominator_cell_batch_sum": 40216,
+              "maximum": 46,
+              "final": 5
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 92,
+              "denominator_cell_batch_sum": 28376,
+              "maximum": 23,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 511,
+              "denominator_cell_batch_sum": 278512,
+              "maximum": 67,
+              "final": 67
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 6,
+              "denominator_cell_batch_sum": 255896,
+              "maximum": 2,
+              "final": 2
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 14,
+            "free": 21,
+            "occupied": 21,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 80,
+          "unknown_cell_batch_sum": 286474
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 196,
+              "denominator_cell_batch_sum": 40216,
+              "maximum": 44,
+              "final": 5
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 92,
+              "denominator_cell_batch_sum": 28376,
+              "maximum": 23,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 531,
+              "denominator_cell_batch_sum": 278512,
+              "maximum": 67,
+              "final": 67
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 14,
+              "denominator_cell_batch_sum": 255896,
+              "maximum": 2,
+              "final": 2
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 7,
+            "free": 0,
+            "occupied": 49,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 80,
+          "unknown_cell_batch_sum": 286467
+        }
+      }
+    },
+    {
+      "phase": "temporary_occlusion",
+      "records": 4,
+      "first_index": 24,
+      "last_index": 27,
+      "source_start": 2991874.149071428,
+      "source_end": 2991877.504908957,
+      "baseline_still_free_direct_hit_cell_batch_events": 93,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 659,
+              "denominator_cell_batch_sum": 23452,
+              "maximum": 168,
+              "final": 157
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 20,
+              "denominator_cell_batch_sum": 14336,
+              "maximum": 5,
+              "final": 5
+            },
+            "false_occupied": {
+              "cell_batch_sum": 372,
+              "denominator_cell_batch_sum": 210040,
+              "maximum": 93,
+              "final": 93
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 8,
+              "denominator_cell_batch_sum": 194508,
+              "maximum": 2,
+              "final": 2
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 40,
+          "unknown_cell_batch_sum": 198492
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 626,
+              "denominator_cell_batch_sum": 23452,
+              "maximum": 157,
+              "final": 157
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 20,
+              "denominator_cell_batch_sum": 14336,
+              "maximum": 5,
+              "final": 5
+            },
+            "false_occupied": {
+              "cell_batch_sum": 429,
+              "denominator_cell_batch_sum": 210040,
+              "maximum": 112,
+              "final": 112
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 8,
+              "denominator_cell_batch_sum": 194508,
+              "maximum": 2,
+              "final": 2
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 40,
+          "unknown_cell_batch_sum": 198492
+        }
+      }
+    },
+    {
+      "phase": "moving_with_robot",
+      "records": 14,
+      "first_index": 28,
+      "last_index": 41,
+      "source_start": 2991878.812661493,
+      "source_end": 2991889.933485931,
+      "baseline_still_free_direct_hit_cell_batch_events": 74,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 113,
+              "denominator_cell_batch_sum": 70378,
+              "maximum": 19,
+              "final": 19
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 3,
+              "denominator_cell_batch_sum": 49658,
+              "maximum": 3,
+              "final": 3
+            },
+            "false_occupied": {
+              "cell_batch_sum": 2428,
+              "denominator_cell_batch_sum": 487632,
+              "maximum": 193,
+              "final": 193
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 89,
+              "denominator_cell_batch_sum": 448054,
+              "maximum": 12,
+              "final": 5
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 8,
+            "free": 0,
+            "occupied": 39,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 451682
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 92,
+              "denominator_cell_batch_sum": 70378,
+              "maximum": 17,
+              "final": 17
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 3,
+              "denominator_cell_batch_sum": 49658,
+              "maximum": 3,
+              "final": 3
+            },
+            "false_occupied": {
+              "cell_batch_sum": 2543,
+              "denominator_cell_batch_sum": 487632,
+              "maximum": 205,
+              "final": 205
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 89,
+              "denominator_cell_batch_sum": 448054,
+              "maximum": 12,
+              "final": 5
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 8,
+            "free": 0,
+            "occupied": 39,
+            "out_of_bounds": 0
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 451771
+        }
+      }
+    },
+    {
+      "phase": "removed",
+      "records": 14,
+      "first_index": 42,
+      "last_index": 55,
+      "source_start": 2991891.154640085,
+      "source_end": 2991902.259382287,
+      "baseline_still_free_direct_hit_cell_batch_events": 3,
+      "current_still_free_on_same_events": 0,
+      "policies": {
+        "baseline": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 171,
+              "denominator_cell_batch_sum": 53438,
+              "maximum": 16,
+              "final": 11
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 37058,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 1246,
+              "denominator_cell_batch_sum": 504476,
+              "maximum": 193,
+              "final": 58
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 24,
+              "denominator_cell_batch_sum": 468118,
+              "maximum": 8,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 56
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 476132
+        },
+        "current": {
+          "physical_error_strata": {
+            "false_free": {
+              "cell_batch_sum": 165,
+              "denominator_cell_batch_sum": 53438,
+              "maximum": 14,
+              "final": 11
+            },
+            "false_free_whole_cell": {
+              "cell_batch_sum": 0,
+              "denominator_cell_batch_sum": 37058,
+              "maximum": 0,
+              "final": 0
+            },
+            "false_occupied": {
+              "cell_batch_sum": 1287,
+              "denominator_cell_batch_sum": 504476,
+              "maximum": 205,
+              "final": 58
+            },
+            "definite_occupied_excess": {
+              "cell_batch_sum": 24,
+              "denominator_cell_batch_sum": 468118,
+              "maximum": 8,
+              "final": 0
+            }
+          },
+          "actor_retained_surface_event_states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 56
+          },
+          "reference_omitted_cell_batch_sum": 0,
+          "unknown_cell_batch_sum": 476137
+        }
+      }
+    }
+  ],
+  "actor_entry": [
+    {
+      "index": 16,
+      "ordinal": 0,
+      "source_time": 2991866.852693644,
+      "integration_now": 2991867.142773453,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 7,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.04109127820046501,
+          "probability_min": 0.04109127820046501,
+          "probability_max": 0.04109127820046503
+        },
+        "current": {
+          "states": {
+            "unknown": 7,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.5,
+          "probability_min": 0.5,
+          "probability_max": 0.5
+        }
+      }
+    },
+    {
+      "index": 17,
+      "ordinal": 1,
+      "source_time": 2991867.863920051,
+      "integration_now": 2991868.159806202,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 7,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.09112296101485616,
+          "probability_min": 0.09112296101485616,
+          "probability_max": 0.09112296101485619
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.700567142473973,
+          "probability_min": 0.700567142473973,
+          "probability_max": 0.700567142473973
+        }
+      }
+    },
+    {
+      "index": 18,
+      "ordinal": 2,
+      "source_time": 2991868.706987416,
+      "integration_now": 2991869.010416137,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 7,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.19000156601531304,
+          "probability_min": 0.19000156601531304,
+          "probability_max": 0.1900015660153131
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.8455347349164652,
+          "probability_min": 0.8455347349164652,
+          "probability_max": 0.8455347349164652
+        }
+      }
+    },
+    {
+      "index": 19,
+      "ordinal": 3,
+      "source_time": 2991869.734638147,
+      "integration_now": 2991870.027904643,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 7,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.35434369377420466,
+          "probability_min": 0.35434369377420466,
+          "probability_max": 0.3543436937742047
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9275735146384823,
+          "probability_min": 0.9275735146384823,
+          "probability_max": 0.9275735146384823
+        }
+      }
+    },
+    {
+      "index": 20,
+      "ordinal": 4,
+      "source_time": 2991870.572642352,
+      "integration_now": 2991870.861428982,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 7,
+            "free": 0,
+            "occupied": 0,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.5621765008857982,
+          "probability_min": 0.5621765008857982,
+          "probability_max": 0.5621765008857983
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9677045353015494,
+          "probability_min": 0.9677045353015494,
+          "probability_max": 0.9677045353015494
+        }
+      }
+    },
+    {
+      "index": 21,
+      "ordinal": 5,
+      "source_time": 2991871.449231304,
+      "integration_now": 2991871.738101471,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.7502601055951177,
+          "probability_min": 0.7502601055951177,
+          "probability_max": 0.7502601055951177
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9820137900379085,
+          "probability_min": 0.9820137900379085,
+          "probability_max": 0.9820137900379085
+        }
+      }
+    },
+    {
+      "index": 22,
+      "ordinal": 6,
+      "source_time": 2991872.276412055,
+      "integration_now": 2991872.57891407,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.8754466418125836,
+          "probability_min": 0.8754466418125836,
+          "probability_max": 0.8754466418125837
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9820137900379085,
+          "probability_min": 0.9820137900379085,
+          "probability_max": 0.9820137900379085
+        }
+      }
+    },
+    {
+      "index": 23,
+      "ordinal": 7,
+      "source_time": 2991873.122691864,
+      "integration_now": 2991873.416628343,
+      "unique_retained_actor_cells": 7,
+      "policies": {
+        "baseline": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9426758241011313,
+          "probability_min": 0.9426758241011313,
+          "probability_max": 0.9426758241011313
+        },
+        "current": {
+          "states": {
+            "unknown": 0,
+            "free": 0,
+            "occupied": 7,
+            "out_of_bounds": 0
+          },
+          "probability_median": 0.9820137900379085,
+          "probability_min": 0.9820137900379085,
+          "probability_max": 0.9820137900379085
+        }
+      }
+    }
+  ],
+  "control_ttl": {
+    "cohort": "Unique in-bounds retained control endpoint cells at final visible record5.",
+    "cells": 29,
+    "last_visible": {
+      "index": 5,
+      "source_time": 2991857.700995773,
+      "snapshot_now": 2991858.010168477,
+      "cohorts": {
+        "control": {
+          "baseline": {
+            "states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 29,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          },
+          "current": {
+            "states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 29,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          }
+        },
+        "occluded_actor": {
+          "baseline": {
+            "states": {
+              "unknown": 3,
+              "free": 4,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          },
+          "current": {
+            "states": {
+              "unknown": 3,
+              "free": 4,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          }
+        }
+      }
+    },
+    "first_fully_expired": {
+      "index": 11,
+      "source_time": 2991862.497524435,
+      "snapshot_now": 2991862.797504246,
+      "cohorts": {
+        "control": {
+          "baseline": {
+            "states": {
+              "unknown": 29,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 29,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          },
+          "current": {
+            "states": {
+              "unknown": 29,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 29,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          }
+        },
+        "occluded_actor": {
+          "baseline": {
+            "states": {
+              "unknown": 0,
+              "free": 7,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991862.497524435,
+            "last_observed_max": 2991862.497524435
+          },
+          "current": {
+            "states": {
+              "unknown": 0,
+              "free": 7,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991862.497524435,
+            "last_observed_max": 2991862.497524435
+          }
+        }
+      }
+    }
+  },
+  "actor_temporary_occlusion": {
+    "cohort": "Unique in-bounds retained actor endpoint cells at final visible record23.",
+    "cells": 7,
+    "last_visible": {
+      "index": 23,
+      "source_time": 2991873.122691864,
+      "snapshot_now": 2991873.430969364,
+      "cohorts": {
+        "control": {
+          "baseline": {
+            "states": {
+              "unknown": 29,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 29,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          },
+          "current": {
+            "states": {
+              "unknown": 29,
+              "free": 0,
+              "occupied": 0,
+              "out_of_bounds": 0
+            },
+            "expired": 29,
+            "last_observed_min": 2991857.700995773,
+            "last_observed_max": 2991857.700995773
+          }
+        },
+        "occluded_actor": {
+          "baseline": {
+            "states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 7,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991873.122691864,
+            "last_observed_max": 2991873.122691864
+          },
+          "current": {
+            "states": {
+              "unknown": 0,
+              "free": 0,
+              "occupied": 7,
+              "out_of_bounds": 0
+            },
+            "expired": 0,
+            "last_observed_min": 2991873.122691864,
+            "last_observed_max": 2991873.122691864
+          }
+        }
+      }
+    },
+    "hidden_records": [
+      {
+        "index": 24,
+        "source_time": 2991874.149071428,
+        "snapshot_now": 2991874.45855599,
+        "cohorts": {
+          "control": {
+            "baseline": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            },
+            "current": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            }
+          },
+          "occluded_actor": {
+            "baseline": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            },
+            "current": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            }
+          }
+        }
+      },
+      {
+        "index": 25,
+        "source_time": 2991875.226426693,
+        "snapshot_now": 2991875.52949587,
+        "cohorts": {
+          "control": {
+            "baseline": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            },
+            "current": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            }
+          },
+          "occluded_actor": {
+            "baseline": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            },
+            "current": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            }
+          }
+        }
+      },
+      {
+        "index": 26,
+        "source_time": 2991876.445111145,
+        "snapshot_now": 2991876.759500438,
+        "cohorts": {
+          "control": {
+            "baseline": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            },
+            "current": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            }
+          },
+          "occluded_actor": {
+            "baseline": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            },
+            "current": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            }
+          }
+        }
+      },
+      {
+        "index": 27,
+        "source_time": 2991877.504908957,
+        "snapshot_now": 2991877.808698299,
+        "cohorts": {
+          "control": {
+            "baseline": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            },
+            "current": {
+              "states": {
+                "unknown": 29,
+                "free": 0,
+                "occupied": 0,
+                "out_of_bounds": 0
+              },
+              "expired": 29,
+              "last_observed_min": 2991857.700995773,
+              "last_observed_max": 2991857.700995773
+            }
+          },
+          "occluded_actor": {
+            "baseline": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            },
+            "current": {
+              "states": {
+                "unknown": 0,
+                "free": 0,
+                "occupied": 7,
+                "out_of_bounds": 0
+              },
+              "expired": 0,
+              "last_observed_min": 2991873.122691864,
+              "last_observed_max": 2991873.122691864
+            }
+          }
+        }
+      }
+    ],
+    "actual_last_visible_acquisition_to_final_hidden_snapshot_seconds": 4.68600643472746
+  },
+  "removal_ghosts": {
+    "scope": "Center points inside the old actor cuboids at records23(A)/41(B), tested only where all current exposure references agree FREE and native reference-exclusion cells are omitted.",
+    "frames": [
+      {
+        "index": 42,
+        "source_time": 2991891.154640085,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 1,
+              "current": 1
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 3,
+              "current": 3
+            }
+          }
+        }
+      },
+      {
+        "index": 43,
+        "source_time": 2991892.002535148,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 1,
+              "current": 1
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 3,
+              "current": 3
+            }
+          }
+        }
+      },
+      {
+        "index": 44,
+        "source_time": 2991892.84843995,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 1,
+              "current": 1
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 2,
+              "current": 2
+            }
+          }
+        }
+      },
+      {
+        "index": 45,
+        "source_time": 2991893.673350261,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 46,
+        "source_time": 2991894.523510425,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 47,
+        "source_time": 2991895.403389922,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 48,
+        "source_time": 2991896.250383053,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 49,
+        "source_time": 2991897.087417218,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 50,
+        "source_time": 2991897.918704315,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 51,
+        "source_time": 2991898.770839805,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 52,
+        "source_time": 2991899.613979838,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 53,
+        "source_time": 2991900.48563202,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 54,
+        "source_time": 2991901.340960213,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      },
+      {
+        "index": 55,
+        "source_time": 2991902.259382287,
+        "regions": {
+          "old_A": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          },
+          "old_B": {
+            "input_cells": 1331,
+            "reference_free_nonexcluded_cells": 1331,
+            "occupied_ghost_cells": {
+              "baseline": 0,
+              "current": 0
+            }
+          }
+        }
+      }
+    ]
+  },
+  "whole_clear_false_occupied_top_boundary_cells": [
+    {
+      "index": [
+        92,
+        44,
+        14
+      ],
+      "center": [
+        0.6250000000000001,
+        -0.15499999999999997,
+        0.125
+      ],
+      "endpoint": [
+        0.6224403435102412,
+        -0.15218849482108887,
+        0.12000007716266126
+      ],
+      "camera": "/World/PerceptionCamera",
+      "label": "/World/SpatialMappingV4/temporal/PhysXMovingCube",
+      "nearest_surface_distance_m": 0.005000002384185791,
+      "nearest_shape": "/World/SpatialMappingV4/temporal/PhysXMovingCube",
+      "endpoint_to_cell_center_m": 0.00628137175272648,
+      "cell_lower_z": 0.12000000000000001,
+      "physical_top_z": 0.1199999976158142,
+      "signed_cell_to_top_gap_m": 2.384185807113859e-09,
+      "endpoint_above_top_m": 7.954684705380188e-08,
+      "baseline_first_occupied_index": 21,
+      "current_first_occupied_index": 17,
+      "classification": "Strict whole-cell-clear false OCCUPIED; nominal top-grid-boundary alias."
+    },
+    {
+      "index": [
+        94,
+        41,
+        14
+      ],
+      "center": [
+        0.6450000000000001,
+        -0.18499999999999994,
+        0.125
+      ],
+      "endpoint": [
+        0.6466607410427361,
+        -0.1870900736923793,
+        0.12000001059002441
+      ],
+      "camera": "/World/PerceptionCameraSide",
+      "label": "/World/SpatialMappingV4/temporal/PhysXMovingCube",
+      "nearest_surface_distance_m": 0.005000002384185791,
+      "nearest_shape": "/World/SpatialMappingV4/temporal/PhysXMovingCube",
+      "endpoint_to_cell_center_m": 0.005668012257438403,
+      "cell_lower_z": 0.12000000000000001,
+      "physical_top_z": 0.1199999976158142,
+      "signed_cell_to_top_gap_m": 2.384185807113859e-09,
+      "endpoint_above_top_m": 1.2974210206184722e-08,
+      "baseline_first_occupied_index": 21,
+      "current_first_occupied_index": 17,
+      "classification": "Strict whole-cell-clear false OCCUPIED; nominal top-grid-boundary alias."
+    }
+  ],
+  "interpretation": [
+    "329 direct endpoint cell/batch FREE contradictions become UNKNOWN/OCCUPIED; 21 are the seven actor entry cells repeated over the first three accepted entry batches.",
+    "Current whole-cell false FREE is not eliminated: positive endpoint evidence does not fill or erase hidden prior FREE interiors. Residual boundary and whole-cell strata remain explicit.",
+    "Earlier confidence can transiently increase false OCCUPIED center counts. Strict whole-clear false OCCUPIED includes two pre-existing actor top-boundary cells recognized four records earlier; their physical gap is only about 2.384 nm, with no new spatial footprint.",
+    "Occlusion preserves only previously observed cells until the configured five-second TTL; expiry is UNKNOWN, not FREE. Global fresh observations do not refresh hidden cell history.",
+    "Reference scores are fixture-local, exclude declared incomplete robot/background regions, and require agreement across the two exposure poses; they do not certify unsampled workspace, continuous free volume, or robot motion safety.",
+    "The 56-record data-collection timeline includes scoring and I/O. Its actual intervals are not a clean 2 Hz or latency benchmark; source/integration times are original."
+  ],
+  "aggregate_cell_batch_errors": {
+    "baseline": {
+      "false_free": 2644,
+      "false_free_whole_cell": 220,
+      "false_occupied": 5193,
+      "definite_occupied_excess": 127
+    },
+    "current": {
+      "false_free": 2514,
+      "false_free_whole_cell": 220,
+      "false_occupied": 5496,
+      "definite_occupied_excess": 135
+    }
+  },
+  "capture_timeline": {
+    "records": 56,
+    "all_native_batches_fresh": true,
+    "source_elapsed_seconds": 47.48249668488279,
+    "interval_seconds": {
+      "minimum": 0.5765564367175102,
+      "median": 0.8469931310974061,
+      "maximum": 1.3077525361441076
+    },
+    "purpose": "Original instrumented capture chronology only; use the separate clean benchmark for cadence and latency."
+  },
+  "earlier_occupancy_tradeoff": {
+    "maximum_additional_center_false_occupied": 35,
+    "whole_clear_additional_indices": [
+      17,
+      18,
+      19,
+      20
+    ],
+    "whole_clear_added_spatial_footprint_cells": 0,
+    "explanation": "The same two top-boundary endpoint cells become OCCUPIED at record 17 rather than 21; other transient center/ghost strata are retained in phase totals."
+  },
+  "moving_robot_filter_stratum": {
+    "records": 14,
+    "first_index": 28,
+    "last_index": 41,
+    "robot_prim_path": "/Franka",
+    "reference": "Independent instance IDs on the original selected pixels; labels never enter production.",
+    "totals": {
+      "robot_selected": 2305,
+      "robot_masked": 2303,
+      "robot_retained": 2,
+      "actor_selected": 47,
+      "actor_withheld": 0,
+      "actor_retained": 47
+    },
+    "per_record": [
+      {
+        "index": 28,
+        "robot_selected": 161,
+        "robot_masked": 161,
+        "robot_retained": 0,
+        "actor_selected": 7,
+        "actor_withheld": 0,
+        "actor_retained": 7,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 52,
+            "robot_masked": 52,
+            "robot_retained": 0,
+            "actor_selected": 3,
+            "actor_withheld": 0,
+            "actor_retained": 3
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 109,
+            "robot_masked": 109,
+            "robot_retained": 0,
+            "actor_selected": 4,
+            "actor_withheld": 0,
+            "actor_retained": 4
+          }
+        }
+      },
+      {
+        "index": 29,
+        "robot_selected": 171,
+        "robot_masked": 171,
+        "robot_retained": 0,
+        "actor_selected": 3,
+        "actor_withheld": 0,
+        "actor_retained": 3,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 57,
+            "robot_masked": 57,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 114,
+            "robot_masked": 114,
+            "robot_retained": 0,
+            "actor_selected": 2,
+            "actor_withheld": 0,
+            "actor_retained": 2
+          }
+        }
+      },
+      {
+        "index": 30,
+        "robot_selected": 169,
+        "robot_masked": 169,
+        "robot_retained": 0,
+        "actor_selected": 8,
+        "actor_withheld": 0,
+        "actor_retained": 8,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 60,
+            "robot_masked": 60,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 109,
+            "robot_masked": 109,
+            "robot_retained": 0,
+            "actor_selected": 7,
+            "actor_withheld": 0,
+            "actor_retained": 7
+          }
+        }
+      },
+      {
+        "index": 31,
+        "robot_selected": 171,
+        "robot_masked": 171,
+        "robot_retained": 0,
+        "actor_selected": 7,
+        "actor_withheld": 0,
+        "actor_retained": 7,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 59,
+            "robot_masked": 59,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 112,
+            "robot_masked": 112,
+            "robot_retained": 0,
+            "actor_selected": 6,
+            "actor_withheld": 0,
+            "actor_retained": 6
+          }
+        }
+      },
+      {
+        "index": 32,
+        "robot_selected": 175,
+        "robot_masked": 175,
+        "robot_retained": 0,
+        "actor_selected": 2,
+        "actor_withheld": 0,
+        "actor_retained": 2,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 61,
+            "robot_masked": 61,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 114,
+            "robot_masked": 114,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          }
+        }
+      },
+      {
+        "index": 33,
+        "robot_selected": 171,
+        "robot_masked": 171,
+        "robot_retained": 0,
+        "actor_selected": 3,
+        "actor_withheld": 0,
+        "actor_retained": 3,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 59,
+            "robot_masked": 59,
+            "robot_retained": 0,
+            "actor_selected": 2,
+            "actor_withheld": 0,
+            "actor_retained": 2
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 112,
+            "robot_masked": 112,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          }
+        }
+      },
+      {
+        "index": 34,
+        "robot_selected": 168,
+        "robot_masked": 168,
+        "robot_retained": 0,
+        "actor_selected": 2,
+        "actor_withheld": 0,
+        "actor_retained": 2,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 57,
+            "robot_masked": 57,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 111,
+            "robot_masked": 111,
+            "robot_retained": 0,
+            "actor_selected": 2,
+            "actor_withheld": 0,
+            "actor_retained": 2
+          }
+        }
+      },
+      {
+        "index": 35,
+        "robot_selected": 160,
+        "robot_masked": 159,
+        "robot_retained": 1,
+        "actor_selected": 1,
+        "actor_withheld": 0,
+        "actor_retained": 1,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 51,
+            "robot_masked": 50,
+            "robot_retained": 1,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 109,
+            "robot_masked": 109,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          }
+        }
+      },
+      {
+        "index": 36,
+        "robot_selected": 167,
+        "robot_masked": 166,
+        "robot_retained": 1,
+        "actor_selected": 1,
+        "actor_withheld": 0,
+        "actor_retained": 1,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 55,
+            "robot_masked": 55,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 112,
+            "robot_masked": 111,
+            "robot_retained": 1,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          }
+        }
+      },
+      {
+        "index": 37,
+        "robot_selected": 161,
+        "robot_masked": 161,
+        "robot_retained": 0,
+        "actor_selected": 1,
+        "actor_withheld": 0,
+        "actor_retained": 1,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 54,
+            "robot_masked": 54,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 107,
+            "robot_masked": 107,
+            "robot_retained": 0,
+            "actor_selected": 1,
+            "actor_withheld": 0,
+            "actor_retained": 1
+          }
+        }
+      },
+      {
+        "index": 38,
+        "robot_selected": 155,
+        "robot_masked": 155,
+        "robot_retained": 0,
+        "actor_selected": 3,
+        "actor_withheld": 0,
+        "actor_retained": 3,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 47,
+            "robot_masked": 47,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 108,
+            "robot_masked": 108,
+            "robot_retained": 0,
+            "actor_selected": 3,
+            "actor_withheld": 0,
+            "actor_retained": 3
+          }
+        }
+      },
+      {
+        "index": 39,
+        "robot_selected": 164,
+        "robot_masked": 164,
+        "robot_retained": 0,
+        "actor_selected": 3,
+        "actor_withheld": 0,
+        "actor_retained": 3,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 53,
+            "robot_masked": 53,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 111,
+            "robot_masked": 111,
+            "robot_retained": 0,
+            "actor_selected": 3,
+            "actor_withheld": 0,
+            "actor_retained": 3
+          }
+        }
+      },
+      {
+        "index": 40,
+        "robot_selected": 150,
+        "robot_masked": 150,
+        "robot_retained": 0,
+        "actor_selected": 2,
+        "actor_withheld": 0,
+        "actor_retained": 2,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 41,
+            "robot_masked": 41,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 109,
+            "robot_masked": 109,
+            "robot_retained": 0,
+            "actor_selected": 2,
+            "actor_withheld": 0,
+            "actor_retained": 2
+          }
+        }
+      },
+      {
+        "index": 41,
+        "robot_selected": 162,
+        "robot_masked": 162,
+        "robot_retained": 0,
+        "actor_selected": 4,
+        "actor_withheld": 0,
+        "actor_retained": 4,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "robot_selected": 54,
+            "robot_masked": 54,
+            "robot_retained": 0,
+            "actor_selected": 0,
+            "actor_withheld": 0,
+            "actor_retained": 0
+          },
+          "/World/PerceptionCameraSide": {
+            "robot_selected": 108,
+            "robot_masked": 108,
+            "robot_retained": 0,
+            "actor_selected": 4,
+            "actor_withheld": 0,
+            "actor_retained": 4
+          }
+        }
+      }
+    ],
+    "all_selected_historical_robot_return_cells": {
+      "unique_in_bounds": 1961,
+      "final_environment_states": {
+        "baseline": {
+          "unknown": 1804,
+          "free": 157,
+          "occupied": 0,
+          "out_of_bounds": 0
+        },
+        "current": {
+          "unknown": 1804,
+          "free": 157,
+          "occupied": 0,
+          "out_of_bounds": 0
+        }
+      }
+    },
+    "retained_historical_robot_return_cells": {
+      "unique_in_bounds": 2,
+      "final_environment_states": {
+        "baseline": {
+          "unknown": 2,
+          "free": 0,
+          "occupied": 0,
+          "out_of_bounds": 0
+        },
+        "current": {
+          "unknown": 2,
+          "free": 0,
+          "occupied": 0,
+          "out_of_bounds": 0
+        }
+      }
+    },
+    "limited_final_fixture_domain_subset": {
+      "cells": 0,
+      "final_environment_states": {
+        "baseline": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 0,
+          "out_of_bounds": 0
+        },
+        "current": {
+          "unknown": 0,
+          "free": 0,
+          "occupied": 0,
+          "out_of_bounds": 0
+        }
+      },
+      "definition": "Historical robot-return centers in the final scored fixture domain, outside declared robot exclusions and with no fixture-cell overlap."
+    },
+    "native_final_baseline_fields_equal": {
+      "states": true,
+      "probabilities": true,
+      "observed": true,
+      "last_observed": true,
+      "expired": true
+    },
+    "limitations": [
+      "Historical robot-return occupancy in the environment layer is not automatically a ghost: cells may overlap the current robot, another surface, or an incompletely referenced region.",
+      "Complete exposure robot meshes/bounds were not exported globally. The native robot exclusions are center-based and fixture-local; the limited subset does not certify a whole cell is clear of the current robot.",
+      "Selected-return mask retention does not establish dense silhouette removal or continuous robot clearance. Automatic filtering can intentionally withhold depth-ambiguous external surfaces; actor withheld counts are explicit."
+    ],
+    "provenance": {
+      "script": "outputs/spatial-mapping-v4-temporal-baseline-v2/derive_robot_stratum.py",
+      "script_sha256": "eab46bdeb2789f9f8d2433daa9457fa96a482e50ac0e7d7eaad80baab1d5a6ab",
+      "robot_config_sha256": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "original_timestamps_preserved": true
+    }
+  }
+}

@@ -77,7 +77,10 @@ rays. An all-invalid depth image is a source failure.
 Per batch, each voxel receives at most one hit/miss update, with occupied evidence
 winning conflicts. Default log-odds increments are +0.85/-0.4, bounded to ±4;
 FREE requires probability ≤0.35 and OCCUPIED ≥0.65. Consequently one miss can
-remain uncertain. Repeated valid free observations can clear previous occupied
+remain uncertain. Since V4, a positive endpoint vote that would still classify
+its cell FREE resets that cell to observed UNKNOWN/0.5. A directly contradicted
+free claim is withheld immediately; this does not fill unobserved interiors.
+Repeated valid free observations can clear previous occupied
 evidence; unrefreshed cells expire toward UNKNOWN after five seconds by default.
 Source freshness defaults to one second and is independent of cell expiry.
 
@@ -753,3 +756,263 @@ mapping cost; semantic fitting dominates the other consumer. Larger ray budgets,
 regions, complex scenes and longer observation queues still need measurement.
 The validated subsystem remains independent and explicitly updated; runtime
 integration, motion planning and controller scheduling have not begun.
+
+## V4: practical reliability validation
+
+V4 starts from the published V3 checkpoint `b9afb8e`. The unchanged baseline
+passed all 582 offline tests and the three existing native mapping scenarios
+before new fixtures or production changes. New geometry is authored only into
+temporary USD session layers; saved scenes, perception data and launchers are
+unchanged. Mapping still uses the two calibrated 640×480 cameras, the full-arm
+1,573,200-cell ROI, 1 cm voxels, stride 8, a 1,024-ray global budget and the V3
+batched traversal. The new reliability fixtures use the normal one-second frame
+age/freshness limits and five-second evidence TTL.
+
+### What the measurements mean
+
+The native fixtures use independent instance-ID annotations for evaluation.
+Neither annotations nor geometry references enter RGB-D mapping. Analytic
+boxes, spheres, cylinders and a closed convex wedge supply exact solid
+membership at voxel centers. An L shape is a union of boxes. Visual and physical
+reference geometry coincide for these fixtures; the wedge's convex collision
+hull coincides with its visual solid. The mapper's unsupported-mesh world AABB
+is reported separately as an approximate reference, never as exact occupied
+volume.
+
+False FREE divides FREE states at physically occupied centers by all evaluated
+occupied centers. False OCCUPIED divides OCCUPIED states at physically free
+centers by all evaluated free centers. UNKNOWN coverage includes both
+unobserved and uncertain cells. Observed agreement reports both all active
+observed cells and the subset having a classified state. No single accuracy
+percentage combines these quantities.
+
+Center labels differ from whole-cell labels at thin surfaces and voxel
+boundaries. A conservative whole-cell occupied stratum requires every cell
+corner to lie in the same convex reference solid; a whole-cell clear stratum
+requires conservative overlap tests to reject every reference solid. Other
+cells remain boundary/possible-overlap strata. These are evaluation partitions,
+not obstacle inflation. Free-space evaluation is local, above the ground contact
+band, with explicitly counted omissions where exposure-matched robot bounds
+prevent a complete physical reference. Robot bounds are evaluation exclusions,
+not assertions that their interiors contain robot geometry.
+
+Surface metrics count measured endpoint events and unique in-bounds endpoint
+voxels separately. Selected, retained, dense and out-of-bounds returns have
+different denominators. A visible feature missed by the fixed ray sample is not
+silently counted as detected. Predefined clear-gap samples test geometric
+usability only; they do not generate paths or certify continuous clearance.
+
+Dynamic references match PhysX pose history to each camera's render token.
+Cells whose physical labels disagree between camera exposures form a separate
+motion-boundary stratum. The capture records exact accepted HIT/MISS indices,
+original acquisition timestamps and actual integration times. SDK-free replay
+compares V3 and current policies on these identical observations; checkpoint
+states, probabilities, observation history and expiry must reproduce the native
+V3 capture exactly. Replay does not establish live freshness or native latency.
+Large sensor captures and full-map checkpoints stay under ignored `outputs/`.
+
+### Static scenes and clear-space usability
+
+Eight native episodes cover mixed primitives and a large unclassified box,
+rotated/irregular geometry, a 6 mm upright obstacle, a 12 mm object, a clipped
+workspace-boundary obstacle, clutter, two/one/zero-camera visibility and probes
+10 mm beyond forearm/wrist/gripper visual support planes. Foreground and
+behind-robot probes supplement those close obstacles. No semantic provider is
+constructed. The [static evaluation](assets/spatial_mapping_v4/static_evaluation.json)
+contains per-object visibility, masks, denominators and observed agreement.
+
+The final snapshot of each episode gives these aggregate voxel/episode counts;
+the same physical voxel may occur in multiple independent episodes:
+
+| Reference stratum | False FREE | False OCCUPIED |
+| --- | ---: | ---: |
+| Exact occupied centers | 50 / 30,742 | — |
+| Exact free centers | — | 152 / 66,104 |
+| Conservative whole-cell occupied | 0 / 26,725 | — |
+| Conservative whole-cell clear | — | 0 / 55,057 |
+
+All 50 center false-FREE cells are partial/boundary cells. All 152 center
+false-OCCUPIED cells fall in the conservative possible-overlap stratum; actual
+overlap is not established by that test. None of these findings
+justifies changing the validated ray traversal or inflating geometry. All 349
+retained, in-bounds external surface events were OCCUPIED; 44 out-of-bounds
+events are separate. No selected external event was lost to automatic masking
+in these static fixtures. These surface results do not establish volumetric
+reconstruction: UNKNOWN coverage ranges from 85.9% to 95.1% of the local domains.
+
+The fully hidden target has 1,100/1,100 UNKNOWN centers. The 12 mm object has
+44/55 raw image pixels in the two cameras but zero selected returns and all four
+positive voxel centers UNKNOWN. The fixed sparse ray budget can therefore miss
+small visible obstacles. A 6 mm obstacle also illustrates the distinction
+between surface hits and mixed object/air voxels at 1 cm resolution.
+
+The predefined 20 mm and 30 mm clear corridors each contain 289 conservatively
+whole-cell-clear sampled voxels and zero OCCUPIED cells. All 289 cells in the
+20 mm corridor remain UNKNOWN; the 30 mm corridor has 286 UNKNOWN and three
+FREE cells. The wider sampled sets contain one/two OCCUPIED cells respectively,
+all in the possible-wall-overlap stratum. No OCCUPIED cell appears in the
+conservatively whole-cell-clear sampled subsets; these tests do not establish
+usable continuous clearance. V3 and V4 states, probabilities, observation
+history and expiry arrays are identical on all 32 recorded static updates.
+
+![Static occupancy and exact physical sections](assets/spatial_mapping_v4/static_occupancy.png)
+
+### Correction for a directly contradicted FREE claim
+
+The unchanged V3 dynamic fixture exposed a significant delay: after ten clear
+updates, all seven retained surface cells of the entering cube stayed FREE for
+three direct-hit batches, became UNKNOWN on the fourth/fifth and OCCUPIED on
+the sixth. A saturated prior has log odds −4; three +0.85 votes still classify
+it FREE. This differs from unobserved object interiors, which receive no hit.
+
+V4 changes only `OccupancyMap.integrate`: if a positive vote would still classify
+the cell FREE under the configured threshold, set its log odds to zero. The
+first contradictory hit then produces observed UNKNOWN; the second consistent
+hit produces OCCUPIED under the defaults. Already-uncertain hit updates retain
+their evidence. Miss handling, saturation, occupied-wins conflicts, TTL,
+timestamps, robot filtering and ray traversal are unchanged. A single erroneous
+hit that triggers this reset withholds a free claim rather than declaring
+occupancy. From that zero-log-odds reset state, two default miss votes restore
+FREE. Seven focused regressions cover these rules, including the
+exact configured probability boundary.
+
+On the identical 56-batch native evidence timeline, directly hit cells left
+FREE fall from 329 to zero **unique cell/batch events**. The entering cube's
+seven surface cells change from FREE/FREE/FREE/UNKNOWN/UNKNOWN/OCCUPIED to
+UNKNOWN/OCCUPIED from the first two hits. This does not claim that all 329
+events are distinct obstacles or physical voxel-center false negatives.
+
+The faster response also recognizes existing boundary occupancy earlier. Two
+strictly whole-cell-clear cells above the cube appear OCCUPIED four updates
+earlier; V3 eventually occupies the same cells. Their lower faces are only
+2.384 nm above the exposure-matched physical top, and depth endpoints overshoot
+that top by approximately 13–80 nm. Their voxel centers are 5 mm above it.
+This is a grid-boundary/float-precision alias, not a new spatial inflation
+policy. Strict error counts retain these cells. No snapping tolerance or new
+geometry policy is introduced to improve the reported score.
+
+The [temporal evaluation](assets/spatial_mapping_v4/temporal_evaluation.json)
+keeps the tradeoff explicit. Across the 56 recorded updates, center false-FREE
+cell/batch events decrease from 2,644 to 2,514, while center false-OCCUPIED events
+increase from 5,193 to 5,496 (at most 35 extra in one update). Whole-cell-clear
+false-OCCUPIED events rise from 127 to 135 solely because the two top-boundary
+cells appear four updates earlier. These are repeated cell/batch counts, not
+unique erroneous physical volumes or independent accuracy samples.
+
+### Motion, occlusion and remaining limits
+
+The dynamic cuboid uses actual PhysX velocities while the fixture changes the
+robot's joint configuration. Its physical references match camera exposures,
+rather than the latest pose. The static behind-robot probe has zero pixels in
+one camera and 1,095 in the other; all three selected returns from the second
+camera remain OCCUPIED. The forearm/wrist/gripper probes retain two selected
+returns each and the foreground probe retains three, without mask loss.
+
+All seven previously observed actor surface cells remain OCCUPIED throughout
+the four hidden updates. Their original timestamps do not advance; the last
+hidden snapshot is 4.686 seconds after the last visible acquisition, below the
+five-second TTL. All 29 seeded control surface cells eventually expire to
+UNKNOWN while other observations keep the map globally fresh. The SDK-free
+tests also exercise a two-second occlusion at a 0.5-second update period.
+
+After workspace removal, old-A/old-B physical-center probe regions have
+1/3, 1/3, 1/2 and then 0/0 occupied ghost cells over the first four updates in
+both policies. They finish with zero ghost occupancy. A single contradictory
+miss remains insufficient to clear strong occupancy.
+
+**Unhit prior FREE interiors remain a limitation.** The dynamic whole-cell
+false-FREE count is unchanged at 220 cell/batch events over 171,450 evaluated
+whole-cell occupied events. In particular, 23 whole-cell occupied centers can
+retain old FREE evidence after entry because new surface hits hide them. Their
+history expires at the configured TTL; no object-volume filling is performed.
+A fresh global map timestamp therefore does not prove current clearance of
+every cell. Sparse sampling, occlusion, voxel boundary aliasing and cell age
+must remain visible to a future consumer.
+
+An initial validation attempt also exposed a distinct SDK lifecycle limitation:
+deactivating a USD rigid body invalidated shared PhysX pose views, including
+the robot filter's view. Mapping rejected the update as nonfresh; it did not
+publish cleared space. The complete successful fixture tests an active body's
+exit from the mapped workspace, **not recovery from arbitrary body deletion**.
+Rigid-body topology changes require source/SDK view reinitialization. The failed
+capture is retained in the verification evidence. No controller, launcher or
+automatic reinitialization behavior was changed.
+
+During simultaneous robot/object movement, automatic filtering withholds
+2,303/2,305 selected robot-labelled returns and retains all 47 selected actor
+returns. At the final snapshot, the 1,961 unique historical selected robot-return
+cells have zero OCCUPIED states in both policies (1,804 UNKNOWN, 157 FREE).
+This is an environment-layer endpoint check, not proof of a wholly vacated
+robot volume; complete final robot geometry was not exported globally. The
+unchanged V2 native self-filter regressions also pass.
+
+![Matched-input temporal evidence and tradeoffs](assets/spatial_mapping_v4/temporal_evidence.png)
+
+### Performance and completed validation
+
+The full-arm workload retains V3-level processing cost. Native update times in
+milliseconds are:
+
+| Run | Median | p95 | Maximum |
+| --- | ---: | ---: | ---: |
+| V3, 56 instrumented V4 fixture updates | 297.96 | 312.61 | 326.31 |
+| V4, same fixture/settings with recording | 297.71 | 314.24 | 323.43 |
+| V4, recording/scoring disabled, approximately 2 Hz | 298.86 | 310.52 | 328.82 |
+
+The first two are independent native runs with the same phases/configuration,
+not an identical-input speedup benchmark. Update timers exclude acquisition,
+oracle scoring and artifact writes. The separate timing run publishes 56 fresh
+updates with median acquisition interval 0.500071 seconds, p95 0.500088 seconds
+and maximum 0.500102 seconds. Maximum observation age at completion is 336.55 ms
+under the normal one-second limit. It uses original source times and production
+wall-clock checks, with no explicit `now=` or timestamp rewriting.
+
+This is a serial standalone loop that steps physics between mapping calls;
+it does not establish combined semantic/control/runtime schedulability. The
+[performance record](assets/spatial_mapping_v4/performance.json) retains settings,
+result hashes and timing scopes. The recorded reliability timeline includes
+scoring/I/O overhead and must not be presented as a 2 Hz acquisition benchmark.
+
+All 615 discovered unit tests passed, preserving the 582-test baseline and adding
+33 focused tests. Architecture/syntax checks and eight standalone checks passed.
+The five established groups ran sequentially without competing intensive jobs:
+five spatial mapping, six multi-camera perception, two Isaac
+perception/manipulation and six legacy regressions, for 19 native scenario files.
+All original 17 remain present and passed. No existing assertions were weakened.
+All 19 frozen perception/configuration hashes remain unchanged.
+
+The compact [evaluation](assets/spatial_mapping_v4/evaluation.json) and
+[verification record](assets/spatial_mapping_v4/verification.json) contain exact
+artifact paths, commands, source/result hashes and scope checks. Large captures
+and failed exploratory runs remain in ignored `outputs/`.
+
+V4 is ready to inform the next runtime-integration design as an independent
+occupancy-evidence provider. It is not sufficient by itself to certify collision
+clearance: a future consumer must retain UNKNOWN, source health, individual cell
+age and the distinction between surface evidence and solid volume. Small/thin
+features, old FREE evidence under occlusion and SDK topology changes remain
+material limitations. No runtime integration or motion planning is implemented;
+`main` remains unchanged.
+
+### Reproduction
+
+Run native jobs sequentially through the existing workstation wrapper. The
+standard mapping group discovers the new static and temporal scenarios:
+
+```bash
+./run_isaac_python.sh tests/spatial_mapping/test_reliability.py \
+  --result outputs/spatial-mapping-v4-static/result.json \
+  --artifacts-dir outputs/spatial-mapping-v4-static
+./run_isaac_python.sh tests/spatial_mapping/test_temporal_reliability.py \
+  --result outputs/spatial-mapping-v4-temporal/result.json \
+  --artifacts-dir outputs/spatial-mapping-v4-temporal
+```
+
+An identical-input policy comparison requires a complete **pre-fix V3** temporal
+capture, not a newly recorded post-fix capture:
+
+```bash
+./run_isaac_python.sh scripts/evaluate_spatial_mapping_reliability.py \
+  --capture outputs/spatial-mapping-v4-temporal-baseline-v2 \
+  --output outputs/spatial-mapping-v4-policy-comparison.json
+```

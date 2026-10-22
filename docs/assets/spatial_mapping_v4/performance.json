@@ -1,0 +1,90 @@
+{
+  "scope": "Standalone native mapping on the same full-arm 56-phase fixture and settings. Update timers exclude acquisition, oracle scoring and capture I/O. Independent native runs are not an identical-input speedup benchmark.",
+  "settings": {
+    "bounds_min": [
+      -0.3,
+      -0.6,
+      -0.02
+    ],
+    "bounds_max": [
+      0.85,
+      0.6,
+      1.12
+    ],
+    "voxel_size": 0.01,
+    "stride": 8,
+    "max_rays": 1024,
+    "max_voxel_visits": 500000,
+    "max_depth": 5.0,
+    "max_skew": 0.025,
+    "max_frame_age": 1.0,
+    "stale_after": 1.0,
+    "evidence_ttl": 5.0
+  },
+  "before_instrumented": {
+    "result": "outputs/spatial-mapping-v4-temporal-baseline-v2/result.json",
+    "sha256": "3327cf21c998e6402eafb70bb86c8e7ff9336a548ee6cd63edcca3e83e6b05c9",
+    "update_ms": {
+      "samples": 56,
+      "median": 297.9594760108739,
+      "p95": 312.6116432249546,
+      "maximum": 326.31010795012116,
+      "minimum": 276.2939529493451
+    },
+    "completion_age_ms": {
+      "samples": 56,
+      "median": 303.64199238829315,
+      "p95": 318.08256648946553,
+      "maximum": 331.7762538790703,
+      "minimum": 282.640993129462
+    }
+  },
+  "after_instrumented": {
+    "result": "outputs/spatial-mapping-v4-final-spatial_mapping/run-3snur_xw/spatial_mapping_test_temporal_reliability.json",
+    "sha256": "c7b9049fbf14ed6027c4b319fa715433d955a65aa847ea10668ba8cc837400c3",
+    "update_ms": {
+      "samples": 56,
+      "median": 297.7140359580517,
+      "p95": 314.23806597013026,
+      "maximum": 323.42582009732723,
+      "minimum": 268.29710183665156
+    },
+    "completion_age_ms": {
+      "samples": 56,
+      "median": 303.20985335856676,
+      "p95": 319.3810023367405,
+      "maximum": 328.87732377275825,
+      "minimum": 273.67282612249255
+    }
+  },
+  "live_cadence": {
+    "result": "outputs/spatial-mapping-v4-temporal-timing/result.json",
+    "sha256": "08985a668990df00dcd18c0166e9ba50c1c1387bee1fc308fc085ecf4d14df48",
+    "artifact_capture_and_scoring_disabled": true,
+    "explicit_now": false,
+    "timestamps_rewritten": false,
+    "update_ms": {
+      "samples": 56,
+      "median": 298.8603769335896,
+      "p95": 310.5237022973597,
+      "maximum": 328.8212330080569,
+      "minimum": 269.71918111667037
+    },
+    "completion_age_ms": {
+      "samples": 56,
+      "median": 304.35419315472245,
+      "p95": 317.5038986373693,
+      "maximum": 336.54748601838946,
+      "minimum": 274.75731633603573
+    },
+    "acquisition_interval_seconds": {
+      "samples": 55,
+      "median": 0.5000707460567355,
+      "p95": 0.5000883502885699,
+      "maximum": 0.5001019067130983,
+      "minimum": 0.5000635869801044
+    },
+    "all_56_updates_fresh": true,
+    "limitation": "Serial standalone map loop, not combined semantic/control/runtime scheduling."
+  }
+}
