@@ -298,8 +298,15 @@ class OccupancyMap:
         self.expire(now=now)
         free = np.setdiff1d(free, occupied, assume_unique=True)
         for indices, evidence in ((free, self.miss_log_odds), (occupied, self.hit_log_odds)):
-            self._log_odds.ravel()[indices] = np.clip(self._log_odds.ravel()[indices]+evidence,
+            updated = np.clip(self._log_odds.ravel()[indices]+evidence,
                 -self.log_odds_limit, self.log_odds_limit)
+            if evidence > 0:
+                # A measured endpoint contradicts a FREE claim. Withhold that
+                # claim as UNKNOWN if the positive vote alone cannot overturn
+                # its accumulated prior; subsequent hits establish occupancy.
+                # Miss hysteresis and unobserved cells retain their history.
+                updated[1/(1+np.exp(-updated)) <= self.p_free] = 0.
+            self._log_odds.ravel()[indices] = updated
             self._observed.ravel()[indices] = True
             self._last_observed.ravel()[indices] = timestamp
             self._expired.ravel()[indices] = False
