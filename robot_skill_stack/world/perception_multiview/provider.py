@@ -1,11 +1,14 @@
 """Fuse per-object XYZ surfaces before fitting; no V1 or simulator dependencies."""
 import time
+from copy import deepcopy
+from dataclasses import dataclass
 
 import numpy as np
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
+from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, unknown_fit, orientation_metadata
 from robot_skill_stack.world.perception_multiview.observability import assess
@@ -40,26 +43,41 @@ def _voxel_ids(points, voxel):
     return keys.view(np.dtype((np.void, 3*keys.dtype.itemsize))).ravel()
 
 
-class MultiViewProvider:
-    def __init__(self, rig, scene, *, voxel_size=.002, stride=2, max_points=12000):
-        self.rig, self.scene = rig, scene
-        self.voxel_size, self.stride, self.max_points = voxel_size, stride, max_points
-        self.fitter, self.tracker = SurfaceFitter(), MultiViewTracker()
-        self.diagnostics = {}
-        self._closed = False
+def _immutable_array(value):
+    array = np.ascontiguousarray(value)
+    base = array
+    while isinstance(base, np.ndarray) and base.base is not None:
+        base = base.base
+    if isinstance(base, bytes) and not array.flags.writeable:
+        return array
+    return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
-    def observe(self, context=None):
-        if self._closed:
-            return ObservationBatch()
-        started = time.perf_counter()
-        try:
-            frames = self.rig.capture()
-        except Exception:
-            self.diagnostics['synchronization'] = dict(self.rig.status)
-            raise
-        if frames is None:
-            self.diagnostics['synchronization'] = dict(self.rig.status)
-            return ObservationBatch()
+
+@dataclass(frozen=True)
+class MultiViewInput:
+    frames: tuple
+    timestamp: float
+    acquisition_ms: float
+    synchronization: dict
+
+
+@dataclass(frozen=True)
+class MultiViewResult:
+    timestamp: float
+    detections: tuple
+    camera_count: int
+    diagnostics: dict
+
+
+class MultiViewProcessor:
+    """SDK-free geometry only; persistent identities remain with the provider."""
+    def __init__(self, scene, *, voxel_size=.002, stride=2, max_points=12000):
+        self.scene = deepcopy(scene)
+        self.voxel_size, self.stride, self.max_points = voxel_size, stride, max_points
+        self.fitter = SurfaceFitter()
+
+    def compute(self, prepared):
+        frames = prepared.frames
         acquired = time.perf_counter()
         clouds = [voxelize(crop_workspace(project_depth(frame, stride=self.stride,
                            bounds=(self.scene.workspace_min, self.scene.workspace_max))[0], self.scene),
@@ -128,7 +146,57 @@ class MultiViewProvider:
                 views = tuple(frame.camera_id for frame, cloud in zip(frames, view_clouds) if len(cloud) >= 5)
                 detections.append(Detection(fit, cluster, views))
         fitted = time.perf_counter()
-        timestamp = min(frame.acquired_at for frame in frames)
+        diagnostics = dict(synchronization=deepcopy(prepared.synchronization), workspace_points=len(fused),
+            clusters=len(clusters), split_components=split_components, detections=len(detections), rejected=rejected,
+            numerical_fits=fit_timer.calls, fit_budget=fit_timer.max_calls, fit_budget_exhaustions=fit_timer.exhaustions,
+            acquisition_ms=prepared.acquisition_ms, projection_ms=(projected-acquired)*1000,
+            fusion_ms=(merged-projected)*1000,
+            segmentation_ms=(segmented-merged+refinement_seconds)*1000,
+            fitting_ms=(fitted-segmented-refinement_seconds-observability_seconds)*1000,
+            observability_ms=observability_seconds*1000, processing_ms=(fitted-acquired)*1000)
+        return MultiViewResult(prepared.timestamp, tuple(detections), len(frames), diagnostics)
+
+
+class MultiViewProvider:
+    def __init__(self, rig, scene, *, voxel_size=.002, stride=2, max_points=12000):
+        self.rig, self.scene = rig, scene
+        self.voxel_size, self.stride, self.max_points = voxel_size, stride, max_points
+        self.processor = MultiViewProcessor(scene, voxel_size=voxel_size, stride=stride, max_points=max_points)
+        self.fitter, self.tracker = self.processor.fitter, MultiViewTracker()
+        self.diagnostics = {}
+        self._closed = False
+        self._last_prepared_tokens = None
+
+    def acquire(self, frames=None):
+        """Copy simulator data on its owner, or prepare an already shared batch."""
+        if self._closed:
+            return None
+        started = time.perf_counter()
+        try:
+            frames = self.rig.capture() if frames is None else tuple(frames)
+        except Exception:
+            self.diagnostics['synchronization'] = dict(self.rig.status)
+            raise
+        synchronization = deepcopy(self.rig.status)
+        if frames is None:
+            self.diagnostics['synchronization'] = synchronization
+            return None
+        tokens = tuple(sorted((frame.camera_id, tuple(frame.token)) for frame in frames))
+        if tokens == self._last_prepared_tokens:
+            return None
+        self._last_prepared_tokens = tokens
+        owned = tuple(DepthFrame(frame.camera_id, tuple(frame.token), _immutable_array(frame.depth),
+            _immutable_array(frame.intrinsics), _immutable_array(frame.world_from_camera), frame.acquired_at,
+            None if frame.rgb is None else _immutable_array(frame.rgb)) for frame in frames)
+        return MultiViewInput(owned, min(frame.acquired_at for frame in owned),
+                              (time.perf_counter()-started)*1000, synchronization)
+
+    def associate(self, result, context=None):
+        """Update identities and publish diagnostics on the owning context."""
+        if self._closed or result is None:
+            return ObservationBatch()
+        started = time.perf_counter()
+        timestamp, detections = result.timestamp, result.detections
         tracks = self.tracker.update(detections, timestamp, context)
         observations = []
         for track in tracks:
@@ -145,20 +213,20 @@ class MultiViewProvider:
                 source='multi_view_geometry', timestamp=timestamp,
                 metadata={'class_confidence': geometry.confidence,
                           'contributing_views': list(track.detection.views),
-                          'camera_count': len(frames), 'fused_points': len(track.detection.points),
+                          'camera_count': result.camera_count, 'fused_points': len(track.detection.points),
                           'association_hint_match': track.hint_reason is not None,
                           'association_hint_reason': track.hint_reason}))
-        finished = time.perf_counter()
-        self.diagnostics = dict(synchronization=dict(self.rig.status), workspace_points=len(fused),
-            clusters=len(clusters), split_components=split_components, detections=len(detections), rejected=rejected,
-            numerical_fits=fit_timer.calls, fit_budget=fit_timer.max_calls, fit_budget_exhaustions=fit_timer.exhaustions,
-            acquisition_ms=(acquired-started)*1000, projection_ms=(projected-acquired)*1000,
-            fusion_ms=(merged-projected)*1000,
-            segmentation_ms=(segmented-merged+refinement_seconds)*1000,
-            fitting_ms=(fitted-segmented-refinement_seconds-observability_seconds)*1000,
-            observability_ms=observability_seconds*1000, tracking_ms=(finished-fitted)*1000,
-            total_ms=(finished-started)*1000)
+        tracking_ms = (time.perf_counter()-started)*1000
+        self.diagnostics = deepcopy(result.diagnostics)
+        self.diagnostics.update(tracking_ms=tracking_ms,
+            total_ms=self.diagnostics['acquisition_ms']+self.diagnostics['processing_ms']+tracking_ms)
         return ObservationBatch(observations, timestamp)
+
+    def observe(self, context=None):
+        prepared = self.acquire()
+        if prepared is None:
+            return ObservationBatch()
+        return self.associate(self.processor.compute(prepared), context)
 
     def forget(self, object_id):
         self.tracker.forget(object_id)

@@ -44,15 +44,44 @@ class WorldModelUpdater:
         self.cleanup()
         try:
             batch = self.provider.observe(context=self.world_model.observation_context())
+        except Exception as exc:
+            self.note_failure(exc)
+            self.cleanup()
+            return []
+        return self.publish(batch)
+
+    def accepts(self, timestamp, context_revision=None):
+        """Preflight on the owner, before mutating tracker association state.
+
+        Normal no-frame/stale/repeated/context-invalidated work is skipped.
+        Invalid clock domains remain source errors, as for synchronous update.
+        """
+        if self._closed:
+            return False
+        self.cleanup()
+        return self._accepts(timestamp, context_revision)
+
+    def _accepts(self, timestamp, context_revision):
+        # Publication follows association without awaits. Recheck eligibility,
+        # but do not forget an identity between association and application.
+        if timestamp is None:
+            return False
+        now = time.monotonic()
+        if not math.isfinite(timestamp) or timestamp > now:
+            raise ValueError('Observation timestamp must use the local monotonic clock')
+        if context_revision is not None and context_revision != self.world_model.context_revision:
+            return False
+        if self.health.last_frame_at is not None and timestamp <= self.health.last_frame_at:
+            return False
+        return now-timestamp < self.health.stale_after
+
+    def publish(self, batch, context_revision=None):
+        """Apply a completed batch on the owner without acquiring or computing."""
+        if self._closed:
+            return []
+        try:
             timestamp = batch.timestamp
-            if timestamp is None:
-                return []
-            now = time.monotonic()
-            if not math.isfinite(timestamp) or timestamp > now:
-                raise ValueError('Observation timestamp must use the local monotonic clock')
-            if self.health.last_frame_at is not None and timestamp <= self.health.last_frame_at:
-                return []
-            if now-timestamp >= self.health.stale_after:
+            if not self._accepts(timestamp, context_revision):
                 return []
             for observation in batch.observations:
                 if observation.timestamp is None:
@@ -65,13 +94,18 @@ class WorldModelUpdater:
             self.update_count += 1
             return batch.observations
         except Exception as exc:
-            self.health.error = f'{type(exc).__name__}: {exc}'
-            # Source failure invalidates visibility immediately, retaining IDs.
-            for obj in self.world_model.objects():
-                obj.visible = False
+            self.note_failure(exc)
             return []
         finally:
             self.cleanup()
+
+    def note_failure(self, error):
+        """Publish source/worker failure on the owner, retaining known IDs."""
+        if self._closed:
+            return
+        self.health.error = str(error) if isinstance(error, str) else f'{type(error).__name__}: {error}'
+        for obj in self.world_model.objects():
+            obj.visible = False
 
     def cleanup(self, now=None):
         if self._closed:

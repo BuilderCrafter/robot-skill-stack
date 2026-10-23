@@ -28,6 +28,17 @@ class IsaacRgbdCamera:
             return None
         return (str(number), str(frame.get("rendering_time")))
 
+    def reset_clock(self):
+        """Reset Isaac 5.1 sampling time after Stop/Play, retaining resources.
+
+        Camera.post_reset resets elapsed/previous time; its BaseSensor hook is
+        a no-op. It does not change camera pose, annotators or render products.
+        The runtime separately blocks retained tokens until a new exposure.
+        """
+        if self._closed:
+            raise RuntimeError('RGB-D camera is closed')
+        self.camera.post_reset()
+
     def close(self):
         if self._closed:
             return

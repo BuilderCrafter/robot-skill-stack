@@ -320,6 +320,14 @@ class CameraCleanupTests(unittest.TestCase):
         obj=self.adapter(); obj.camera._fabric_time_annotator=None; obj.close(); obj.close()
         obj.camera.destroy.assert_called_once()
 
+    def test_restart_resets_sampling_clock_without_reinitializing_camera(self):
+        obj=self.adapter()
+        obj.reset_clock()
+        obj.camera.post_reset.assert_called_once()
+        obj.camera.initialize.assert_not_called()
+        obj.camera.set_world_pose.assert_not_called()
+        obj.camera.destroy.assert_not_called()
+
     def test_render_product_destroy_attempted_after_detach_failure(self):
         obj=self.adapter(); obj.camera._fabric_time_annotator.detach.side_effect=ValueError('detaching')
         with self.assertRaisesRegex(RuntimeError,'detaching'): obj.close()

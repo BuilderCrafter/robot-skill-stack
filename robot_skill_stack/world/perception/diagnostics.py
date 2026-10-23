@@ -49,7 +49,8 @@ def save_capture(provider, path):
         'primitives': {'classification_threshold': estimator.threshold, 'ambiguity_margin': estimator.margin,
                        'top_band': estimator.top_band, 'fit_tolerance': estimator.tolerance,
                        'max_fit_points': estimator.max_points},
-        'candidates': provider.diagnostics, 'components': provider.discoverer.diagnostics,
+        'candidates': provider.diagnostics,
+        'components': getattr(provider, 'published_discovery_diagnostics', provider.discoverer.diagnostics),
     }
     path = Path(path)
     if path.suffix != '.npz':

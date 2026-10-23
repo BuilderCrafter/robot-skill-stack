@@ -92,7 +92,8 @@ def boundaries(scene, state=None, view=None, manager=None):
     if state is None:
         state, view, manager = manager_fixture(scene)
     usd, geom, physics, is_a = usd_modules(scene)
-    with patch(ADAPTER+'._usd_modules', return_value=(usd, geom, physics)), \
+    with patch(ADAPTER+'._register_model_notice', return_value=NS(Revoke=Mock())), \
+         patch(ADAPTER+'._usd_modules', return_value=(usd, geom, physics)), \
          patch(ADAPTER+'._simulation_interfaces', return_value=(manager, NS(POST_PHYSICS_STEP='post'))), \
          patch.object(Prim, 'IsA', lambda prim, schema: prim.kind == 'mesh' if schema is geom.Mesh else is_a(prim, schema)):
         yield state, view, manager
