@@ -40,15 +40,30 @@ size = [0.05, 0.05, 0.05]
 | `perception` | Existing camera prim for RGB-D; optional resolution defaults to `[640, 480]` |
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
 | `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
-| `spatial_mapping` | Optional independent occupancy settings; disabled by default, with explicit construction/update and its own source, bounds and voxel budgets |
+| `spatial_mapping` | Optional automatic runtime occupancy service; disabled by default, with its own source, bounds, camera paths and voxel budgets |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both
 need robot and scene settings. Only selected-source prims are validated.
 
-Spatial mapping does not follow `[world].provider` and does not automatically
-start when enabled in TOML. See [spatial mapping](spatial_mapping.md) for explicit
-construction, sharing existing camera frames, evidence aging and source limits.
+Spatial mapping starts automatically when enabled and remains independent of
+`[world].provider`. For example:
+
+```toml
+[spatial_mapping]
+enabled = true
+source = "rgbd"
+update_hz = 2.0
+automatic_robot_filter = true
+```
+
+Omitted mapping camera paths reuse the selected RGB-D semantic cameras. With
+ground-truth semantics, RGB-D mapping requires its own `camera_prim_paths` list;
+one or more cameras are supported. Missing selected mapping prims fail startup.
+Overlapping paths reuse existing camera objects; separately owned mapping
+cameras use 640×480. `source = "ground_truth"` requires no mapping cameras.
+See [spatial mapping](spatial_mapping.md) for bounds, evidence aging, read views
+and source limits. Standalone explicit mapping sessions remain available.
 
 For multi-view, create an ordinary USD Camera prim, set its position and
 orientation, and add its absolute prim path to the list:
@@ -94,7 +109,13 @@ for each configured entry. Omitted size is measured from USD bounds.
 ## Deliberately small tuning surface
 
 `world.update_hz` optionally sets a positive finite sampling rate. Omitted:
-RGB-D runs at 5 Hz, ground truth at every physics callback.
+RGB-D acquisition targets 5 Hz on Kit, with heavy computation in a bounded
+worker; ground truth runs at every physics callback. Runtime mapping defaults
+to 2 Hz when `spatial_mapping.update_hz` is omitted. Shared-camera mapping
+acquisition aligns to the next due semantic batch, with at most one semantic
+period of additional scheduling delay. Workers skip superseded pending input
+instead of accumulating a backlog. All freshness ages use original acquisition
+timestamps.
 `world.stale_object_ttl` optionally sets a positive finite expiry duration
 (default 15 s). The updater's existing freshness budget is 1 s. Resolution must
 contain two positive integers. Invalid references/bounds, unknown selectors,

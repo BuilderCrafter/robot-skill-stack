@@ -37,15 +37,32 @@ grip-loss policy; the backend has no WorldModel dependency.
 `WorldObservationProvider` implements `observe(context) -> ObservationBatch`,
 `forget(id)` and `close()`. A fresh sample, including an empty one, has an
 increasing monotonic timestamp. No new sample has no timestamp; errors raise.
-`WorldModelUpdater` owns sampling rate, health, visibility, expiration and
-coordinated forgetting. Sources own their camera/resources. WorldModel owns
+`WorldModelUpdater` owns health, visibility, expiration and coordinated
+forgetting. In normal RGB-D runtime, `ObservationRuntime` schedules acquisition
+and publication on Kit, while bounded SDK-free workers compute geometry.
+Tracking association and WorldModel mutation stay on the owning thread.
+Synchronous `observe()`/updater diagnostics remain available. Sources own their camera/resources. WorldModel owns
 cached objects, attachment state and placement hints. See [perception](perception.md).
 
 Opt-in [spatial mapping](spatial_mapping.md) is a separate occupancy map, with
 simulator-independent voxel evidence/depth rays and Isaac geometry/camera
-adapters. Callers explicitly update/query it; WorldModel, skills, planners and
-runtime callbacks do not own or consume its grid. Mapping can borrow the same
-acquired RGB-D frames without initializing another camera pipeline.
+adapters. Enabling mapping in the setup starts its independent worker service;
+`bundle.spatial_mapping.snapshot()` returns a lightweight immutable read view.
+Its worker owns the mutable grid. Skills and planners do not consume occupancy.
+Overlapping camera sources share copied frames and render products; mapping-only
+cameras have explicit lifecycle ownership.
+
+Each worker has one running job and one replaceable pending job. Camera and
+exposure-matched PhysX snapshot reads stay on Kit; projection, fitting, ray/mesh
+intersection, occupancy integration and full snapshot copying run in workers.
+The Kit subscription never waits for completion. Generation/failure barriers
+discard obsolete results, and monotonic WorldModel context revisions reject
+geometry captured before held/hint/forget changes before tracker association.
+Normal runtime uses a separate SDK-free Python interpreter for each processor;
+bounded parent I/O threads start it, serialize observations and receive results.
+Children import neither simulator SDKs nor the native application's main module.
+Standalone bounded threads remain available, but the measured combined thread
+prototype failed the unchanged observation freshness/throughput limits.
 
 ## Construction
 
@@ -57,10 +74,12 @@ the robot and selected source's prims, and constructs:
 3. Source factory: ground truth, or camera initialization plus 60 Kit updates.
 4. WorldModel/updater and robot factory's backend plus gripper spec.
 5. Existing grasp/placement planners, four skills, registry and runtime.
-6. Initial observation and the existing owned physics callback, then the bundle.
+6. RGB-D observation coordinator and optional mapping service, then the bundle.
+   Lightweight ground-truth semantics retain their initial synchronous sample
+   and owned physics callback.
 
 `manipulation/factory.py` explicitly selects Franka, the only implemented robot.
-`world/factory.py` explicitly selects RGB-D V1 or ground truth. Unknown selectors
+`world/factory.py` explicitly selects RGB-D V1, multi-view or ground truth. Unknown selectors
 fail; RGB-D does not require oracle objects or wrappers. Native test oracle
 handles belong to `tests/support/isaac_helpers.py`, not the production bundle.
 There is no plugin registry, setup inheritance or live adapter switching.
@@ -101,6 +120,14 @@ close and updater stop own source cleanup. Initialization failure/cancellation
 must close acquired resources, and repeated initialization closes the prior
 bundle. UI window disposal remains deferred. These SDK workarounds are retained,
 covered by doubles and require native revalidation when touched.
+
+Observation restart resets camera sampling clocks and blocks retained exposures.
+After Stop/Play, the owner rebinds cached robot geometry to a validated current
+PhysX view, then waits for newly captured exposure-matched poses. Model/topology
+edits or a broken subprocess transport require clean runtime reinitialization.
+No view or model is rebuilt inside a physics callback. The supported Python
+launchers provide the worker interpreter; an embedded Kit executable is rejected
+with launcher guidance.
 
 The Franka feedback/arm-hold corrections are explained in
 [control diagnostics](control_diagnostic.md). They must not be replaced with raw

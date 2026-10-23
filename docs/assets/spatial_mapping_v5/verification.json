@@ -1,0 +1,681 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Regression result JSONs are authoritative; a process exit code of zero alone is not a passing scenario. The initial two real JSON export failures remain listed. Final evidence combines 14 unchanged native manipulation/perception cases from the complete suite with all seven mapping cases rerun after the narrowly scoped synchronous GT diagnostics compatibility fix.",
+  "initial_complete_suite": {
+    "summary": {
+      "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/summary.json",
+      "sha256": "e0d60c617f655c515a74a2e6da256093da86045e01cf64c9eef88d718c8c9242"
+    },
+    "status": "FAIL",
+    "offline": {
+      "summary": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/summary.json",
+        "sha256": "e0d60c617f655c515a74a2e6da256093da86045e01cf64c9eef88d718c8c9242"
+      },
+      "status": "FAIL",
+      "unit_discovery": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/unit_discovery.log",
+        "sha256": "5d0819f9fe82df7a01875cc7599b129b2473e2da5f03a52f1d0f6f45bd88804e",
+        "tests": 693,
+        "seconds": 35.387,
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "standalone": {
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_perception_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_perception_manipulation": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_benchmark": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_multi_object": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_placement_feasibility": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_close_object_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_geometric_observability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_grasp_planning_readiness": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_robot_occlusion": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_source_contract": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_variable_camera_count": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_ground_truth": {
+          "status": "FAIL",
+          "return_code": 0,
+          "error": "Scenario did not report PASS: /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_ground_truth.json"
+        },
+        "spatial_mapping_test_reliability": {
+          "status": "FAIL",
+          "return_code": 0,
+          "error": "Scenario did not report PASS: /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_reliability.json"
+        },
+        "spatial_mapping_test_rgbd": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_robot_self_filter": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_runtime_integration": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_runtime_sources": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_temporal_reliability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    "native_passed": 19,
+    "native_total": 21,
+    "native": {
+      "isaac_test_perception_discovery": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/isaac_test_perception_discovery.json",
+        "sha256": "fb8a410ac3ad6bc4c929ad7935d93a86b7fca5ef7563278292d951aef28f11a2",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "isaac_test_perception_manipulation": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/isaac_test_perception_manipulation.json",
+        "sha256": "b49f49088996a9f8b7f333d02f355282f20a8c02e765d45310c3d7cbb698e7af",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_benchmark": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_benchmark.json",
+        "sha256": "0a463b37b94b17f85b31ea959372bd9fb246ecd22246427cc2acc2eb535d5754",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_grasp_planning": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_grasp_planning.json",
+        "sha256": "c34a57bf6fc27c908be3939525fc9cc201ec0d92e4edfcb65bf5ce4e078c86c6",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_multi_object": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_multi_object.json",
+        "sha256": "5b84e9555e09bd461dd087d54fd53cd487c285a64cb18e1291dcf35a51da1fa3",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_placement_feasibility": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_placement_feasibility.json",
+        "sha256": "26e04cd6fe1fe0f19be3908c1a9517b631959783af58e45bfaf8e26229954cc1",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_reactive_pick": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_reactive_pick.json",
+        "sha256": "2d68d2d9aa123a907452b7d6f3f68c7c048e70406f816758aa092fc6a913c2c7",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "regression_test_recovery": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/regression_test_recovery.json",
+        "sha256": "9dc2793b744274e0cc3fc44b3f236c9a19314b5bccaae292a06a351fb65bdc78",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_close_object_recovery": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_close_object_recovery.json",
+        "sha256": "f15a95f04641c8bb0678bdb9f0475cac5e46000291d584f912dec62b1a56ead4",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_geometric_observability": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_geometric_observability.json",
+        "sha256": "438823a3cb95673f85a0e08a57dea54a9f1b8c762310675eb5ce0c2aa6dd561c",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_grasp_planning_readiness": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_grasp_planning_readiness.json",
+        "sha256": "86a4d89de70c08ef2a17504ef17fcd60d7491b58d2a27758633a46f72d28f1c2",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_robot_occlusion": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_robot_occlusion.json",
+        "sha256": "c7c1f93737ca67899d2d77a4da00e2cb3016ee96253cc0cf3fc4812565160234",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_source_contract": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_source_contract.json",
+        "sha256": "3b55e3b845fbf0538b2a8daef564725749132b55c084f3c2e9b488fe68264a8b",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "multiview_test_variable_camera_count": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/multiview_test_variable_camera_count.json",
+        "sha256": "20596c35276ddcd047a11f033428555bd05a34993343bdf56e1fe10eac23bd68",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_ground_truth": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_ground_truth.json",
+        "sha256": "430ca962758c3ad89f68188073c618d261adfde1aa991dbf85f080228b2d64a1",
+        "status": "FAIL",
+        "error": "TypeError: Object of type mappingproxy is not JSON serializable",
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "FAIL",
+          "return_code": 0,
+          "error": "Scenario did not report PASS: /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_ground_truth.json"
+        }
+      },
+      "spatial_mapping_test_reliability": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_reliability.json",
+        "sha256": "430ca962758c3ad89f68188073c618d261adfde1aa991dbf85f080228b2d64a1",
+        "status": "FAIL",
+        "error": "TypeError: Object of type mappingproxy is not JSON serializable",
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "FAIL",
+          "return_code": 0,
+          "error": "Scenario did not report PASS: /home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_reliability.json"
+        }
+      },
+      "spatial_mapping_test_rgbd": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_rgbd.json",
+        "sha256": "ad08976113d1c29dd79ccdd30baee3a43f607a5168680d7f059bd4e89c2d0f73",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_robot_self_filter": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_robot_self_filter.json",
+        "sha256": "1d95fdce2e3800aaba9143d610c3e056e1f235c7536a79919f3f1e45d88ef9ba",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_runtime_integration": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_runtime_integration.json",
+        "sha256": "23079c531b67ca2a98493affb0c55b7efec1f38b5d5bdaa0cdc9740176a8e370",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 25,
+        "checks_total": 25,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_runtime_sources": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_runtime_sources.json",
+        "sha256": "27f1b8907cb67448df8c301082013d65147eeefcb7e28cf742a27e29f18434fd",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 3,
+        "checks_total": 3,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_temporal_reliability": {
+        "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_temporal_reliability.json",
+        "sha256": "63e30c17ddbb37636a8906386352667d3db3854c2cd98c674eb434a84a71a041",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    }
+  },
+  "compatibility_correction": {
+    "scope": "Only IsaacGroundTruthMapper.update synchronous diagnostics export converts immutable approximation metadata into JSON-compatible dictionaries/lists. Prepared worker metadata stays immutable. No geometry, mapping evidence, motion, controller, worker scheduling or runtime timing path changed.",
+    "production_file": {
+      "artifact": "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py",
+      "sha256": "88f7c384ea35bfb2db0ff0dd8c10b1a55996ef96588f4621eb6cc645a33fbabd"
+    },
+    "new_regression_test": "Ground-truth mapper diagnostic JSON serialization unit coverage; final discovery increases from 693 to 694 tests."
+  },
+  "postfix_offline": {
+    "summary": {
+      "artifact": "outputs/spatial-mapping-v5-postfix-unit/run-k6g3xzfk/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "status": "PASS",
+    "unit_discovery": {
+      "artifact": "outputs/spatial-mapping-v5-postfix-unit/run-k6g3xzfk/unit_discovery.log",
+      "sha256": "fdcb3bd34f857575b2b94ad0fc428ee26b969c5da67409d395b4518ed3a6d791",
+      "tests": 694,
+      "seconds": 35.445,
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "architecture": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "standalone": {
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    }
+  },
+  "postfix_mapping": {
+    "summary": {
+      "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/summary.json",
+      "sha256": "97c2642f2b18fe7b901a2ff458b12f8a118ff1bc66e6ea61a40a458c7e15cfcc"
+    },
+    "status": "PASS",
+    "native_passed": 7,
+    "native_total": 7,
+    "native": {
+      "spatial_mapping_test_ground_truth": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_ground_truth.json",
+        "sha256": "46cf28567e64aa0661fee02d1e97ecf6f472c2a8cfd0bbcf24be31de304b3886",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_reliability": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_reliability.json",
+        "sha256": "9147801b4a163259bd49c3fc153e0bfce6db1875546cc263de949547a9e41d53",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_rgbd": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_rgbd.json",
+        "sha256": "98694f124bf38b6ad64b95be13243d1677865a0b113085bdfa7958858e88c3ea",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_robot_self_filter": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_robot_self_filter.json",
+        "sha256": "d3100b99491452afb42e6e7e5e1bb1c867a0ebdce66cb337186f263f2285d72f",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_runtime_integration": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_runtime_integration.json",
+        "sha256": "b89a070af2b8778658e28eca49ff1fcd22eb52f4f741e1d2eb4828e1b0491373",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 25,
+        "checks_total": 25,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_runtime_sources": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_runtime_sources.json",
+        "sha256": "8c49e6f252e99cd3d8510a4945e6c46781ffa046691047ea1c3ec0d8186b9ef2",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 3,
+        "checks_total": 3,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "spatial_mapping_test_temporal_reliability": {
+        "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_temporal_reliability.json",
+        "sha256": "7395f970212da8918ba0b6589b4aeea857a1e6c9aa72fe6e00104b77e6fe170a",
+        "status": "PASS",
+        "error": null,
+        "checks_passed": 0,
+        "checks_total": 0,
+        "runner": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    }
+  },
+  "final_selected_native_evidence": {
+    "status": "PASS",
+    "unique_scenarios": 21,
+    "unchanged_old_native_cases": [
+      "isaac_test_perception_discovery",
+      "isaac_test_perception_manipulation",
+      "regression_test_benchmark",
+      "regression_test_grasp_planning",
+      "regression_test_multi_object",
+      "regression_test_placement_feasibility",
+      "regression_test_reactive_pick",
+      "regression_test_recovery",
+      "multiview_test_close_object_recovery",
+      "multiview_test_geometric_observability",
+      "multiview_test_grasp_planning_readiness",
+      "multiview_test_robot_occlusion",
+      "multiview_test_source_contract",
+      "multiview_test_variable_camera_count"
+    ],
+    "postfix_mapping_cases": [
+      "spatial_mapping_test_ground_truth",
+      "spatial_mapping_test_reliability",
+      "spatial_mapping_test_rgbd",
+      "spatial_mapping_test_robot_self_filter",
+      "spatial_mapping_test_runtime_integration",
+      "spatial_mapping_test_runtime_sources",
+      "spatial_mapping_test_temporal_reliability"
+    ],
+    "qualification": "The 14 prior manipulation/perception cases preceded the synchronous GT diagnostics-only fix. All seven mapping cases, including physical runtime acceptance and independent sources, are rerun under that final fix; this is not claimed to be a single all-green 21-case run."
+  },
+  "timing_evidence_qualification": {
+    "asset": {
+      "artifact": "docs/assets/spatial_mapping_v5/evaluation.json",
+      "sha256": "f6dff6634efd27dd562ccf413ffdf1f0c358bc091ddd65a4b70177559c584b1c"
+    },
+    "scope": "The matched four-mode sweep preceded the rejected-future-exposure quarantine guard; an additional combined run confirms that guard. The subsequent synchronous GT diagnostics JSON export fix is outside all four measured RGBD runtime paths. No new timing measurements are inferred from functional reruns."
+  },
+  "related_assets": {
+    "runtime_validation.json": {
+      "artifact": "docs/assets/spatial_mapping_v5/runtime_validation.json",
+      "sha256": "3b1881ef2187f433d7bd3825a4f7abc8c14947258305be2a9af793c5a4ba01b5"
+    },
+    "scope_audit.json": {
+      "artifact": "docs/assets/spatial_mapping_v5/scope_audit.json",
+      "sha256": "464ecd3582de43945c46f53965161db43c7102b00da1d8c1a02b8876bf62d014"
+    },
+    "acceptance_protocol.json": {
+      "artifact": "docs/assets/spatial_mapping_v5/acceptance_protocol.json",
+      "sha256": "6c01e26d8ebcd242c256324dd4b9a42a5b127606750c939d9a6482b1ca6d4b77"
+    }
+  }
+}

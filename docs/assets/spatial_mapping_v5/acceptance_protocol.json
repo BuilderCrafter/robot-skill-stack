@@ -1,0 +1,29 @@
+{
+  "declared_at_utc": "2026-10-23T21:38:58Z",
+  "scope": "Matched stationary and moving phases; ordinary async MoveToPose/Home; unchanged V4 scene, camera geometry and diagnostic motion tolerances.",
+  "baseline_commit": "74169203d2a937c2195089c6f4f2efdd8afd508d",
+  "control_reference": {
+    "stationary_apply_p99_ms": 21.890163500793275,
+    "moving_apply_p99_ms": 18.910690015181903,
+    "controller_waits_over_100_ms": 0
+  },
+  "final_combined_gates_per_phase": {
+    "all_four_skills_succeed": true,
+    "movement_apply_p99_ms_max": 43.7803,
+    "movement_apply_p99_rule": "At most twice the larger validated control-only phase p99, rounded to 0.0001 ms.",
+    "movement_apply_worst_ms_exclusive_max": 100,
+    "controller_wait_worst_ms_exclusive_max": 100,
+    "controller_waits_over_100_ms_max": 0,
+    "movement_apply_p99_reduction_vs_sync_combined_min": 0.8,
+    "semantic_published_hz_min": 4.5,
+    "mapping_published_hz_min": 1.8,
+    "publication_source_age_seconds_exclusive_max": 1.0,
+    "original_timestamps_and_complete_batches": true,
+    "running_jobs_max_per_processor": 1,
+    "pending_jobs_max_per_processor": 1,
+    "diagnostic_position_tolerance_m": 0.025,
+    "diagnostic_orientation_tolerance_rad": 0.10
+  },
+  "interpretation": "These are workstation/workload acceptance gates derived from the validated control baseline and its zero severe pauses, not a universal simulator FPS target. Raw distributions, actual tracking errors, drops and source-age limits remain reported independently. No controller or perception algorithm is changed to satisfy these gates.",
+  "strategy_evaluation": "Bounded threads improved control gaps but failed original freshness and throughput limits. The subprocess pilot passed those limits before the final four-mode sweep; final acceptance requires unchanged-source evidence and lifecycle/manipulation/regression validation."
+}

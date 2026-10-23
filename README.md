@@ -76,12 +76,15 @@ The generic runtime, manipulation, world, presentation and orchestration code
 has no Isaac imports. `integrations/isaac/bootstrap.py` assembles the robot and
 source through explicit factories, using one small TOML per setup. New adapters
 implement these existing contracts; no plugin system is needed.
+RGB-D processing runs in bounded SDK-free workers. Optional spatial mapping
+starts from its TOML section and publishes independent occupancy snapshots;
+skills and motion planning do not consume the map yet.
 
 | Path | Responsibility |
 | --- | --- |
-| `robot_skill_stack/runtime/` | Skill interface, name registry, async command ownership |
+| `robot_skill_stack/runtime/` | Skill interface, registry, async commands, bounded observation workers |
 | `robot_skill_stack/manipulation/` | Skills, held-state policy, grasp/placement feasibility |
-| `robot_skill_stack/world/` | Observations, cached state, source health, V1 geometry/tracking |
+| `robot_skill_stack/world/` | Observations, cached state, perception/tracking, independent occupancy |
 | `robot_skill_stack/orchestration/` | Minimal BT tasks and executor |
 | `robot_skill_stack/presentation/` | Read-only WorldModel display model |
 | `robot_skill_stack/integrations/isaac/` | Composition, Franka backend, camera, ground truth, lifecycle |
@@ -96,6 +99,7 @@ implement these existing contracts; no plugin system is needed.
 - [GUI](docs/gui.md): existing controls and explicit operator recovery.
 - [Manipulation](docs/manipulation.md): skills, Home, Place results and held state.
 - [Perception / WorldModel](docs/perception.md): geometry, observations and identity.
+- [Spatial mapping](docs/spatial_mapping.md): automatic runtime mapping, shared frames and V5 validation.
 - [Validation](docs/validation.md): commands, acceptance gates and release readiness.
 - [Control diagnostics](docs/control_diagnostic.md): instability correction and trace capture.
 - [History](docs/history.md): retired experiments and earlier phase reports.

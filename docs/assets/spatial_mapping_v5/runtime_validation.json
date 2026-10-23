@@ -1,0 +1,3194 @@
+{
+  "schema_version": 1,
+  "scope": "Native automatic runtime validation. Deliberately injected failures are identified by the native test checks; earlier actual Stop/Play failures are retained separately, never removed. Original source timestamps, normal async robot skills, unchanged controls/launchers and session-only fixtures.",
+  "attempts": [
+    {
+      "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_runtime_integration.json",
+      "sha256": "23079c531b67ca2a98493affb0c55b7efec1f38b5d5bdaa0cdc9740176a8e370",
+      "status": "PASS",
+      "checks": {
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "ordinary_released_home_succeeded": true,
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "play_new_generation": true,
+        "close_did_not_wait_for_computation": true,
+        "closed_no_late_publication": true,
+        "closed_workers": true,
+        "closed_service_not_fresh": true,
+        "reinitialized_distinct_owners": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": null,
+      "physical_pick_place": {
+        "object_id": "multiview_1",
+        "initial_center_error_mm": 0.0010082105865455559,
+        "actual_lift_mm": 92.20030345022678,
+        "pick_seconds": 4.379743351135403,
+        "pick_status": "success",
+        "held_after_pick": "multiview_1",
+        "held_home_status": "success",
+        "place_status": "success",
+        "place_seconds": 4.214803996961564,
+        "actual_place_target_error_mm": 21.173848769418836,
+        "released_home_status": "success"
+      },
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3156617.922056169,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3156617.922056169,
+            "age_seconds": 1.5210810443386436,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 27,
+            "published": 25,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156619.8194647,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156619.622131658,
+            "age_seconds": 0.45392408734187484,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 29,
+            "published": 26,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156620.021395008,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3156620.021395008,
+            "age_seconds": 0.6114951339550316,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 29,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156621.43829181,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3156621.019687011,
+            "age_seconds": 0.630665906239301,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 31,
+            "published": 28,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156622.222938569,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156622.222938569,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Waiting for camera exposure in the current simulation generation",
+            "generation": 2,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "restarted": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156623.802361252,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156623.610736851,
+            "age_seconds": 0.41465431079268456,
+            "reason": null,
+            "last_error": null,
+            "generation": 2,
+            "submitted": 33,
+            "published": 30,
+            "rejected": 2,
+            "source_failures": 3,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "reinitialized": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156626.902904599,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156626.298359995,
+            "age_seconds": 0.6887575890868902,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 2,
+            "published": 1,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        }
+      },
+      "close_ms": 24.42749682813883
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-final-regressions/run-c01z7pxn/spatial_mapping_test_runtime_sources.json",
+      "sha256": "27f1b8907cb67448df8c301082013d65147eeefcb7e28cf742a27e29f18434fd",
+      "status": "PASS",
+      "checks": {
+        "all_three_cases_completed": true,
+        "unchanged_source_and_saved_scenes": true,
+        "case_contracts": true
+      },
+      "error": null,
+      "lifecycle": {},
+      "source_cases": [
+        {
+          "case": "gt_gt",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.2921769181266427,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156643.268197268,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1437892,
+                "transport_error": null
+              },
+              "worker_seconds": 0.2861599111929536,
+              "queue_seconds": 4.226900637149811e-05,
+              "completed_at": 3156643.55651564,
+              "worker_to_publication_seconds": 0.001725842710584402,
+              "input_timestamp": 3156643.268197268,
+              "publish_age_seconds": 0.29004421504214406,
+              "filter_seconds": null,
+              "compute_seconds": 0.057243058923631907,
+              "transport_seconds": 0.22891685226932168,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.2861599111929536,
+                "queue_seconds": 4.226900637149811e-05,
+                "completed_at": 3156643.55651564,
+                "worker_to_publication_seconds": 0.001725842710584402,
+                "timestamp": 3156643.268197268,
+                "input_timestamp": 3156643.268197268,
+                "status": "published",
+                "publish_age_seconds": 0.29004421504214406,
+                "filter_seconds": null,
+                "compute_seconds": 0.057243058923631907,
+                "transport_seconds": 0.22891685226932168
+              }
+            },
+            "cameras": null
+          },
+          "cameras": {}
+        },
+        {
+          "case": "gt_rgbd_single",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.4848405793309212,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156645.077596856,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1437941,
+                "transport_error": null
+              },
+              "worker_seconds": 0.4700823286548257,
+              "queue_seconds": 3.322213888168335e-05,
+              "completed_at": 3156645.551062342,
+              "worker_to_publication_seconds": 0.0010135830380022526,
+              "input_timestamp": 3156645.077596856,
+              "publish_age_seconds": 0.4744790690019727,
+              "filter_seconds": 0.11747752409428358,
+              "compute_seconds": 0.22302509006112814,
+              "transport_seconds": 0.24705723859369755,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.4700823286548257,
+                "queue_seconds": 3.322213888168335e-05,
+                "completed_at": 3156645.551062342,
+                "worker_to_publication_seconds": 0.0010135830380022526,
+                "timestamp": 3156645.077596856,
+                "input_timestamp": 3156645.077596856,
+                "status": "published",
+                "publish_age_seconds": 0.4744790690019727,
+                "filter_seconds": 0.11747752409428358,
+                "compute_seconds": 0.22302509006112814,
+                "transport_seconds": 0.24705723859369755
+              }
+            },
+            "cameras": {
+              "acquisitions": 1,
+              "shared_reads": 0,
+              "failures": 0,
+              "consumers": {
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      7.2,
+                      1.5333334133028984
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 137014395782032,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": true
+            }
+          }
+        },
+        {
+          "case": "partial_overlap",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "semantic_cameras_borrowed": true,
+            "overlap_exact_same_frame": true,
+            "camera_c_failure_keeps_semantic_ab_fresh": true,
+            "camera_c_failure_map_not_fresh": true,
+            "camera_c_recovered": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "partial_failure": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 7,
+              "published": 7,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3156649.677989132,
+                "input_timestamp": 3156649.677989132,
+                "completed_at": 3156649.727132195,
+                "worker_seconds": 0.04344269819557667,
+                "queue_seconds": 4.087574779987335e-05,
+                "compute_seconds": 0.037956071086227894,
+                "transport_seconds": 0.005486627109348774,
+                "publish_age_seconds": 0.05274159321561456,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 7,
+                "started": 7,
+                "completed": 7,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 7,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1438044,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "error",
+              "reason": "acquisition_failure",
+              "last_error": "native camera C failure",
+              "age_seconds": 1.2851913799531758,
+              "stale": true,
+              "fresh": false,
+              "timestamp": 3156648.460271266,
+              "submitted": 2,
+              "published": 1,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 2,
+                "started": 2,
+                "completed": 2,
+                "replaced": 0,
+                "discarded": 1,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1438046,
+                "transport_error": null
+              },
+              "worker_seconds": 0.6166593236848712,
+              "queue_seconds": 4.5295339077711105e-05,
+              "completed_at": 3156649.088916063,
+              "worker_to_publication_seconds": 0.008556449320167303,
+              "input_timestamp": 3156648.460271266,
+              "publish_age_seconds": 0.6372012463398278,
+              "filter_seconds": 0.2416743659414351,
+              "compute_seconds": 0.36438941210508347,
+              "transport_seconds": 0.25226991157978773,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.6166593236848712,
+                "queue_seconds": 4.5295339077711105e-05,
+                "completed_at": 3156649.088916063,
+                "worker_to_publication_seconds": 0.008556449320167303,
+                "timestamp": 3156648.460271266,
+                "input_timestamp": 3156648.460271266,
+                "status": "published",
+                "publish_age_seconds": 0.6372012463398278,
+                "filter_seconds": 0.2416743659414351,
+                "compute_seconds": 0.36438941210508347,
+                "transport_seconds": 0.25226991157978773
+              }
+            },
+            "cameras": {
+              "acquisitions": 16,
+              "shared_reads": 3,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      16.733333333333334,
+                      3.7500001955777407
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      16.733333333333334,
+                      3.7500001955777407
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "error",
+                  "reason": "native camera C failure"
+                }
+              }
+            }
+          },
+          "shared_a_frames": [
+            {
+              "token": [
+                14.3,
+                2.5333334654569626
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                15.533333333333333,
+                3.150000164285302
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                17.5,
+                4.133333548903465
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                18.4,
+                4.583333572372794
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            }
+          ],
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 11,
+              "published": 10,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3156650.277384387,
+                "input_timestamp": 3156650.277384387,
+                "completed_at": 3156650.328982795,
+                "worker_seconds": 0.04559975629672408,
+                "queue_seconds": 3.941403701901436e-05,
+                "compute_seconds": 0.04024296207353473,
+                "transport_seconds": 0.005356794223189354,
+                "publish_age_seconds": 0.05657854815945029,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 11,
+                "started": 11,
+                "completed": 10,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 10,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1438044,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.43945613503456116,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156650.071287129,
+              "submitted": 4,
+              "published": 2,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 4,
+                "started": 4,
+                "completed": 3,
+                "replaced": 0,
+                "discarded": 1,
+                "errors": 0,
+                "delivered": 2,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1438046,
+                "transport_error": null
+              },
+              "worker_seconds": 0.4000302287749946,
+              "queue_seconds": 6.541190668940544e-05,
+              "completed_at": 3156650.481568502,
+              "worker_to_publication_seconds": 0.011307456064969301,
+              "input_timestamp": 3156650.071287129,
+              "publish_age_seconds": 0.4215888287872076,
+              "filter_seconds": 0.23058907501399517,
+              "compute_seconds": 0.3048245059326291,
+              "transport_seconds": 0.0952057228423655,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.4000302287749946,
+                "queue_seconds": 6.541190668940544e-05,
+                "completed_at": 3156650.481568502,
+                "worker_to_publication_seconds": 0.011307456064969301,
+                "timestamp": 3156650.071287129,
+                "input_timestamp": 3156650.071287129,
+                "status": "published",
+                "publish_age_seconds": 0.4215888287872076,
+                "filter_seconds": 0.23058907501399517,
+                "compute_seconds": 0.3048245059326291,
+                "transport_seconds": 0.0952057228423655
+              }
+            },
+            "cameras": {
+              "acquisitions": 26,
+              "shared_reads": 5,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      18.4,
+                      4.583333572372794
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      18.4,
+                      4.583333572372794
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      18.4,
+                      4.583333572372794
+                    ],
+                    "/World/V5SourceCamera": [
+                      18.4,
+                      4.583333572372794
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 137073166052048,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": false
+            },
+            "/World/PerceptionCameraSide": {
+              "object_id": 137073131564368,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_01",
+              "owned_by_mapping": false
+            },
+            "/World/V5SourceCamera": {
+              "object_id": 137014396484112,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_02",
+              "owned_by_mapping": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_runtime_integration.json",
+      "sha256": "b89a070af2b8778658e28eca49ff1fcd22eb52f4f741e1d2eb4828e1b0491373",
+      "status": "PASS",
+      "checks": {
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "ordinary_released_home_succeeded": true,
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "play_new_generation": true,
+        "close_did_not_wait_for_computation": true,
+        "closed_no_late_publication": true,
+        "closed_workers": true,
+        "closed_service_not_fresh": true,
+        "reinitialized_distinct_owners": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": null,
+      "physical_pick_place": {
+        "object_id": "multiview_1",
+        "initial_center_error_mm": 0.0010082105865455559,
+        "actual_lift_mm": 92.20030345022678,
+        "pick_seconds": 3.9993318459019065,
+        "pick_status": "success",
+        "held_after_pick": "multiview_1",
+        "held_home_status": "success",
+        "place_status": "success",
+        "place_seconds": 3.842653039842844,
+        "actual_place_target_error_mm": 21.173848769418836,
+        "released_home_status": "success"
+      },
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3156918.670441049,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3156918.670441049,
+            "age_seconds": 1.5216240687295794,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 25,
+            "published": 23,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156920.543307302,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156920.340246584,
+            "age_seconds": 0.4223043671809137,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 27,
+            "published": 24,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156920.743043242,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3156920.743043242,
+            "age_seconds": 0.6070934529416263,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 27,
+            "published": 25,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156922.142458086,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3156921.743139874,
+            "age_seconds": 0.6293219039216638,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 29,
+            "published": 26,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156922.949524912,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 30,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3156922.949524912,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Waiting for camera exposure in the current simulation generation",
+            "generation": 2,
+            "submitted": 30,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "restarted": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156924.53807483,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156924.337630517,
+            "age_seconds": 0.4183235033415258,
+            "reason": null,
+            "last_error": null,
+            "generation": 2,
+            "submitted": 31,
+            "published": 28,
+            "rejected": 2,
+            "source_failures": 3,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "reinitialized": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3156927.217861524,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3156926.808496351,
+            "age_seconds": 0.6224702480249107,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 2,
+            "published": 1,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        }
+      },
+      "close_ms": 33.31047482788563
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-postfix-native/run-gkqzarxr/spatial_mapping_test_runtime_sources.json",
+      "sha256": "8c49e6f252e99cd3d8510a4945e6c46781ffa046691047ea1c3ec0d8186b9ef2",
+      "status": "PASS",
+      "checks": {
+        "all_three_cases_completed": true,
+        "unchanged_source_and_saved_scenes": true,
+        "case_contracts": true
+      },
+      "error": null,
+      "lifecycle": {},
+      "source_cases": [
+        {
+          "case": "gt_gt",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.2897932529449463,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156943.683578136,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1447273,
+                "transport_error": null
+              },
+              "worker_seconds": 0.2843348099850118,
+              "queue_seconds": 3.866199404001236e-05,
+              "completed_at": 3156943.970240202,
+              "worker_to_publication_seconds": 0.000906442292034626,
+              "input_timestamp": 3156943.683578136,
+              "publish_age_seconds": 0.28756850818172097,
+              "filter_seconds": null,
+              "compute_seconds": 0.05773360328748822,
+              "transport_seconds": 0.2266012066975236,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.2843348099850118,
+                "queue_seconds": 3.866199404001236e-05,
+                "completed_at": 3156943.970240202,
+                "worker_to_publication_seconds": 0.000906442292034626,
+                "timestamp": 3156943.683578136,
+                "input_timestamp": 3156943.683578136,
+                "status": "published",
+                "publish_age_seconds": 0.28756850818172097,
+                "filter_seconds": null,
+                "compute_seconds": 0.05773360328748822,
+                "transport_seconds": 0.2266012066975236
+              }
+            },
+            "cameras": null
+          },
+          "cameras": {}
+        },
+        {
+          "case": "gt_rgbd_single",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.47509234119206667,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156945.492948462,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1447321,
+                "transport_error": null
+              },
+              "worker_seconds": 0.45603534393012524,
+              "queue_seconds": 3.2461248338222504e-05,
+              "completed_at": 3156945.952267127,
+              "worker_to_publication_seconds": 0.004021519795060158,
+              "input_timestamp": 3156945.492948462,
+              "publish_age_seconds": 0.4633401851169765,
+              "filter_seconds": 0.12026733811944723,
+              "compute_seconds": 0.22715398017317057,
+              "transport_seconds": 0.22888136375695467,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.45603534393012524,
+                "queue_seconds": 3.2461248338222504e-05,
+                "completed_at": 3156945.952267127,
+                "worker_to_publication_seconds": 0.004021519795060158,
+                "timestamp": 3156945.492948462,
+                "input_timestamp": 3156945.492948462,
+                "status": "published",
+                "publish_age_seconds": 0.4633401851169765,
+                "filter_seconds": 0.12026733811944723,
+                "compute_seconds": 0.22715398017317057,
+                "transport_seconds": 0.22888136375695467
+              }
+            },
+            "cameras": {
+              "acquisitions": 1,
+              "shared_reads": 0,
+              "failures": 0,
+              "consumers": {
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      7.366666666666666,
+                      1.5333334133028984
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 134502219351184,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": true
+            }
+          }
+        },
+        {
+          "case": "partial_overlap",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "semantic_cameras_borrowed": true,
+            "overlap_exact_same_frame": true,
+            "camera_c_failure_keeps_semantic_ab_fresh": true,
+            "camera_c_failure_map_not_fresh": true,
+            "camera_c_recovered": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "partial_failure": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 9,
+              "published": 8,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3156950.380252016,
+                "input_timestamp": 3156950.380252016,
+                "completed_at": 3156950.433708722,
+                "worker_seconds": 0.04766153357923031,
+                "queue_seconds": 5.8008357882499695e-05,
+                "compute_seconds": 0.041972409933805466,
+                "transport_seconds": 0.005689123645424843,
+                "publish_age_seconds": 0.06513191806152463,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 9,
+                "started": 9,
+                "completed": 8,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 8,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1447394,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "error",
+              "reason": "acquisition_failure",
+              "last_error": "native camera C failure",
+              "age_seconds": 0.6207116628065705,
+              "stale": false,
+              "fresh": false,
+              "timestamp": 3156949.978908223,
+              "submitted": 3,
+              "published": 3,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 3,
+                "started": 3,
+                "completed": 3,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 3,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1447395,
+                "transport_error": null
+              },
+              "worker_seconds": 0.3980715018697083,
+              "queue_seconds": 0.04170814622193575,
+              "completed_at": 3156950.430131251,
+              "worker_to_publication_seconds": 0.015414826106280088,
+              "input_timestamp": 3156949.978908223,
+              "publish_age_seconds": 0.46663785399869084,
+              "filter_seconds": 0.23158543510362506,
+              "compute_seconds": 0.30642896797508,
+              "transport_seconds": 0.09164253389462829,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.3980715018697083,
+                "queue_seconds": 0.04170814622193575,
+                "completed_at": 3156950.430131251,
+                "worker_to_publication_seconds": 0.015414826106280088,
+                "timestamp": 3156949.978908223,
+                "input_timestamp": 3156949.978908223,
+                "status": "published",
+                "publish_age_seconds": 0.46663785399869084,
+                "filter_seconds": 0.23158543510362506,
+                "compute_seconds": 0.30642896797508,
+                "transport_seconds": 0.09164253389462829
+              }
+            },
+            "cameras": {
+              "acquisitions": 21,
+              "shared_reads": 4,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      17.533333333333335,
+                      4.066666878759861
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      17.533333333333335,
+                      4.066666878759861
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "error",
+                  "reason": "native camera C failure"
+                }
+              }
+            }
+          },
+          "shared_a_frames": [
+            {
+              "token": [
+                14.466666666666667,
+                2.5333334654569626
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                15.6,
+                3.100000161677599
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                16.3,
+                3.4500001799315214
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                18.266666666666666,
+                4.4333335645496845
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            }
+          ],
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 13,
+              "published": 12,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3156951.181789995,
+                "input_timestamp": 3156951.181789995,
+                "completed_at": 3156951.23222613,
+                "worker_seconds": 0.04232389619573951,
+                "queue_seconds": 3.987504169344902e-05,
+                "compute_seconds": 0.03732925886288285,
+                "transport_seconds": 0.004994637332856655,
+                "publish_age_seconds": 0.0537728457711637,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 13,
+                "started": 13,
+                "completed": 12,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 12,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1447394,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.41456252709031105,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3156950.976385381,
+              "submitted": 4,
+              "published": 4,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 4,
+                "started": 4,
+                "completed": 4,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 4,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1447395,
+                "transport_error": null
+              },
+              "worker_seconds": 0.3777770339511335,
+              "queue_seconds": 3.729993477463722e-05,
+              "completed_at": 3156951.364763151,
+              "worker_to_publication_seconds": 0.01916946703568101,
+              "input_timestamp": 3156950.976385381,
+              "publish_age_seconds": 0.40754723688587546,
+              "filter_seconds": 0.22725814301520586,
+              "compute_seconds": 0.30003141099587083,
+              "transport_seconds": 0.07774562295526266,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.3777770339511335,
+                "queue_seconds": 3.729993477463722e-05,
+                "completed_at": 3156951.364763151,
+                "worker_to_publication_seconds": 0.01916946703568101,
+                "timestamp": 3156950.976385381,
+                "input_timestamp": 3156950.976385381,
+                "status": "published",
+                "publish_age_seconds": 0.40754723688587546,
+                "filter_seconds": 0.22725814301520586,
+                "compute_seconds": 0.30003141099587083,
+                "transport_seconds": 0.07774562295526266
+              }
+            },
+            "cameras": {
+              "acquisitions": 30,
+              "shared_reads": 5,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      19.033333333333335,
+                      4.816666917875409
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      19.033333333333335,
+                      4.816666917875409
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      18.266666666666666,
+                      4.4333335645496845
+                    ],
+                    "/World/V5SourceCamera": [
+                      18.266666666666666,
+                      4.4333335645496845
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 134443751762064,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": false
+            },
+            "/World/PerceptionCameraSide": {
+              "object_id": 134502219361232,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_01",
+              "owned_by_mapping": false
+            },
+            "/World/V5SourceCamera": {
+              "object_id": 134502219357136,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_02",
+              "owned_by_mapping": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-acceptance/result.json",
+      "sha256": "c49909021120f48a41a8e236d8dc67d7070aac3e8b0dd40313fd5db77afbeb37",
+      "status": "FAIL",
+      "checks": {
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "ordinary_released_home_succeeded": true,
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": "Traceback (most recent call last):\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 224, in main\n    run_kit_coroutine(evaluate(args, metrics, checks), simulation_app)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/support/isaac_async.py\", line 11, in run_kit_coroutine\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 165, in evaluate\n    await fresh(bundle)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 59, in fresh\n    await until(lambda: bundle.world_updater.health.status == 'fresh'\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 36, in until\n    raise AssertionError(f'Condition did not recover in {timeout}s')\nAssertionError: Condition did not recover in 12.0s\n",
+      "physical_pick_place": {
+        "object_id": "multiview_1",
+        "initial_center_error_mm": 0.0010082105865455559,
+        "actual_lift_mm": 92.20030345022678,
+        "pick_seconds": 4.020710029173642,
+        "pick_status": "success",
+        "held_after_pick": "multiview_1",
+        "held_home_status": "success",
+        "place_status": "success",
+        "place_seconds": 3.814437777735293,
+        "actual_place_target_error_mm": 21.173848769418836,
+        "released_home_status": "success"
+      },
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3154804.715243195,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3154804.715243195,
+            "age_seconds": 1.5159693066962063,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 25,
+            "published": 23,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3154806.544880778,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3154806.340408326,
+            "age_seconds": 0.4015290290117264,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 26,
+            "published": 24,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154806.544880778,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3154806.340408326,
+            "age_seconds": 0.41450713900849223,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 26,
+            "published": 24,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154807.743865618,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3154807.743865618,
+            "age_seconds": 0.6224051960743964,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 29,
+            "published": 26,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154808.939705836,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 30,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        }
+      }
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-acceptance-final/result.json",
+      "sha256": "3af3caae0bb596ffa5819e010f287abe8f32b969488393791668e6071f9e5da1",
+      "status": "FAIL",
+      "checks": {
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "ordinary_released_home_succeeded": true,
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": "Traceback (most recent call last):\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 251, in main\n    run_kit_coroutine(evaluate(args, metrics, checks), simulation_app)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/support/isaac_async.py\", line 11, in run_kit_coroutine\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 185, in evaluate\n    await fresh(bundle)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 77, in fresh\n    await until(lambda: bundle.world_updater.health.status == 'fresh'\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 36, in until\n    raise AssertionError(f'Condition did not recover in {timeout}s')\nAssertionError: Condition did not recover in 12.0s\n",
+      "physical_pick_place": {
+        "object_id": "multiview_1",
+        "initial_center_error_mm": 0.0010082105865455559,
+        "actual_lift_mm": 92.20030345022678,
+        "pick_seconds": 4.432714121881872,
+        "pick_status": "success",
+        "held_after_pick": "multiview_1",
+        "held_home_status": "success",
+        "place_status": "success",
+        "place_seconds": 4.299368271138519,
+        "actual_place_target_error_mm": 21.173848769418836,
+        "released_home_status": "success"
+      },
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3155317.88473708,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3155317.88473708,
+            "age_seconds": 1.5161209031939507,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 28,
+            "published": 26,
+            "rejected": 1,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155319.96449925,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155319.763529026,
+            "age_seconds": 0.4127988610416651,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 29,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155320.162590855,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155319.763529026,
+            "age_seconds": 0.6082530170679092,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 29,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155321.179504959,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155320.758422228,
+            "age_seconds": 0.6276271720416844,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 31,
+            "published": 28,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155321.965916517,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155321.965916517,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Robot pose history is empty; wait for fresh physics/render snapshots",
+            "generation": 2,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stop_play_failure": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155322.319726107,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Camera render clock regressed; reinitialize the runtime",
+            "generation": 2,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 26,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false,
+          "robot_filter": {
+            "diagnostics": {
+              "state": "error",
+              "reason": "Robot pose history is empty; wait for fresh physics/render snapshots",
+              "robot_prim_path": "/Franka",
+              "history_count": 0,
+              "history_generation": 3,
+              "initialization_seconds": 0.5075749820098281,
+              "pose_capture": {
+                "calls": 1279,
+                "total_seconds": 0.16754013625904918,
+                "mean_seconds": 0.00013099306978815416,
+                "max_seconds": 0.0008002948015928268
+              },
+              "elapsed_seconds": 4.708766937255859e-06
+            },
+            "history_count": 256,
+            "history_generation": 3,
+            "capture_error": null,
+            "history_range": [
+              11.83333395048976,
+              16.083334172144532
+            ],
+            "callback_id": 17,
+            "callback_retained": true,
+            "manager_simulation_time": 16.083334172144532
+          }
+        }
+      }
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-acceptance-v2/result.json",
+      "sha256": "51108005126d999bba6b9f63f543e98649cd6568a58e31439ef4abddbdb986b4",
+      "status": "PASS",
+      "checks": {
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "ordinary_released_home_succeeded": true,
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "play_new_generation": true,
+        "close_did_not_wait_for_computation": true,
+        "closed_no_late_publication": true,
+        "closed_workers": true,
+        "closed_service_not_fresh": true,
+        "reinitialized_distinct_owners": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": null,
+      "physical_pick_place": {
+        "object_id": "multiview_1",
+        "initial_center_error_mm": 0.0010082105865455559,
+        "actual_lift_mm": 92.20030345022678,
+        "pick_seconds": 4.2268482889048755,
+        "pick_status": "success",
+        "held_after_pick": "multiview_1",
+        "held_home_status": "success",
+        "place_status": "success",
+        "place_seconds": 4.147488031070679,
+        "actual_place_target_error_mm": 21.173848769418836,
+        "released_home_status": "success"
+      },
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3155436.987409582,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3155436.987409582,
+            "age_seconds": 1.5152257499285042,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 27,
+            "published": 25,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155439.267624367,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155438.876570902,
+            "age_seconds": 0.4552136389538646,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 29,
+            "published": 26,
+            "rejected": 2,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155439.267624367,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155439.267624367,
+            "age_seconds": 0.6105170231312513,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 29,
+            "published": 27,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155440.674352452,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155440.275944927,
+            "age_seconds": 0.6195592270232737,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 31,
+            "published": 28,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155441.484075028,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155441.484075028,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Waiting for camera exposure in the current simulation generation",
+            "generation": 2,
+            "submitted": 32,
+            "published": 29,
+            "rejected": 2,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "restarted": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155443.072520503,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155442.86636917,
+            "age_seconds": 0.4282537098042667,
+            "reason": null,
+            "last_error": null,
+            "generation": 2,
+            "submitted": 33,
+            "published": 30,
+            "rejected": 2,
+            "source_failures": 3,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "reinitialized": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155445.684118393,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155445.281508491,
+            "age_seconds": 0.6523190611042082,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 2,
+            "published": 1,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        }
+      },
+      "close_ms": 27.468796353787184
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-lifecycle-debug/result.json",
+      "sha256": "071dac01a9c1a3b47f2ad6ac0387e58a3459c7a45fd37609970bdf9b12177d61",
+      "status": "FAIL",
+      "checks": {
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": "Traceback (most recent call last):\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 251, in main\n    run_kit_coroutine(evaluate(args, metrics, checks), simulation_app)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/support/isaac_async.py\", line 11, in run_kit_coroutine\n    return task.result()\n           ^^^^^^^^^^^^^\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 185, in evaluate\n    await fresh(bundle)\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 77, in fresh\n    await until(lambda: bundle.world_updater.health.status == 'fresh'\n  File \"/home/etfrobotics/Projects/ga253315m/robot-skill-stack/tests/spatial_mapping/test_runtime_integration.py\", line 36, in until\n    raise AssertionError(f'Condition did not recover in {timeout}s')\nAssertionError: Condition did not recover in 12.0s\n",
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3154914.432440886,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3154914.432440886,
+            "age_seconds": 1.539556217379868,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 5,
+            "published": 2,
+            "rejected": 3,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3154916.834542721,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3154916.437438208,
+            "age_seconds": 0.47096495795994997,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 7,
+            "published": 3,
+            "rejected": 3,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154916.834542721,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3154916.834542721,
+            "age_seconds": 0.6136180269531906,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 7,
+            "published": 4,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154918.034456796,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3154917.832221449,
+            "age_seconds": 0.6263766372576356,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 9,
+            "published": 5,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154919.040856436,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 10,
+            "published": 6,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3154919.040856436,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Robot pose history is empty; wait for fresh physics/render snapshots",
+            "generation": 2,
+            "submitted": 10,
+            "published": 6,
+            "rejected": 3,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stop_play_failure": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3154931.21790674,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Robot pose capture failed: Failed to get rigid body transforms from backend",
+            "generation": 2,
+            "submitted": 10,
+            "published": 6,
+            "rejected": 3,
+            "source_failures": 14,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false,
+          "robot_filter": {
+            "diagnostics": {
+              "state": "error",
+              "reason": "Robot pose capture failed: Failed to get rigid body transforms from backend",
+              "robot_prim_path": "/Franka",
+              "history_count": 0,
+              "history_generation": 2,
+              "initialization_seconds": 0.5089152711443603,
+              "pose_capture": {
+                "calls": 1337,
+                "total_seconds": 0.0697715375572443,
+                "mean_seconds": 5.218514402187308e-05,
+                "max_seconds": 0.0002681110054254532
+              },
+              "elapsed_seconds": 5.1800161600112915e-06
+            },
+            "history_count": 0,
+            "history_generation": 2,
+            "capture_error": "Failed to get rigid body transforms from backend",
+            "history_range": [],
+            "callback_id": 17,
+            "callback_retained": true,
+            "manager_simulation_time": 15.41666747070849
+          }
+        }
+      }
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-lifecycle-fixed/result.json",
+      "sha256": "25ac872bf6229acf46c7cc4e2c228d25838c17cccccf27944492016b956c84b1",
+      "status": "PASS",
+      "checks": {
+        "frozen_no_timestamp_advance": true,
+        "frozen_not_fresh": true,
+        "frozen_recovered": true,
+        "source_failure_not_fresh": true,
+        "source_failure_recovered": true,
+        "worker_failure_observed": true,
+        "worker_failure_recovered": true,
+        "stop_not_fresh": true,
+        "play_new_generation": true,
+        "close_did_not_wait_for_computation": true,
+        "closed_no_late_publication": true,
+        "closed_workers": true,
+        "closed_service_not_fresh": true,
+        "reinitialized_distinct_owners": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "error": null,
+      "lifecycle": {
+        "frozen": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "stale",
+          "semantic_timestamp": 3155204.323288957,
+          "mapping": {
+            "status": "no_frame",
+            "fresh": false,
+            "stale": true,
+            "timestamp": 3155204.323288957,
+            "age_seconds": 1.5196997737511992,
+            "reason": "no_frame",
+            "last_error": null,
+            "generation": 0,
+            "submitted": 5,
+            "published": 2,
+            "rejected": 3,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "frozen_recovery": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155206.525651914,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155206.324077898,
+            "age_seconds": 0.457540119998157,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 7,
+            "published": 3,
+            "rejected": 3,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "camera_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155206.735898932,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155206.735898932,
+            "age_seconds": 0.6093861139379442,
+            "reason": "acquisition_failure",
+            "last_error": "native injected camera failure",
+            "generation": 0,
+            "submitted": 7,
+            "published": 4,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "worker_failure": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155208.132370569,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": 3155207.725635594,
+            "age_seconds": 0.6240029036998749,
+            "reason": "worker_failure",
+            "last_error": "RuntimeError: native mapping worker failure",
+            "generation": 0,
+            "submitted": 9,
+            "published": 5,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "stopped": {
+          "runtime_state": "stopped",
+          "generation": 1,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155208.928049311,
+          "mapping": {
+            "status": "waiting",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "reset",
+            "last_error": null,
+            "generation": 1,
+            "submitted": 10,
+            "published": 6,
+            "rejected": 3,
+            "source_failures": 1,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "after_play": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "failed",
+          "semantic_timestamp": 3155208.928049311,
+          "mapping": {
+            "status": "error",
+            "fresh": false,
+            "stale": false,
+            "timestamp": null,
+            "age_seconds": null,
+            "reason": "acquisition_failure",
+            "last_error": "Robot pose history is empty; wait for fresh physics/render snapshots",
+            "generation": 2,
+            "submitted": 10,
+            "published": 6,
+            "rejected": 3,
+            "source_failures": 2,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "restarted": {
+          "runtime_state": "running",
+          "generation": 2,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155216.06304263,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155215.86040846,
+            "age_seconds": 0.3702326840721071,
+            "reason": null,
+            "last_error": null,
+            "generation": 2,
+            "submitted": 11,
+            "published": 7,
+            "rejected": 3,
+            "source_failures": 14,
+            "worker_failures": 1,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        },
+        "reinitialized": {
+          "runtime_state": "running",
+          "generation": 0,
+          "semantic_status": "fresh",
+          "semantic_timestamp": 3155218.493170097,
+          "mapping": {
+            "status": "ok",
+            "fresh": true,
+            "stale": false,
+            "timestamp": 3155218.087679414,
+            "age_seconds": 0.6266381558962166,
+            "reason": null,
+            "last_error": null,
+            "generation": 0,
+            "submitted": 2,
+            "published": 1,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "closed": false
+          },
+          "held": null,
+          "held_uncertain": false
+        }
+      },
+      "close_ms": 18.76260992139578
+    },
+    {
+      "artifact": "outputs/spatial-mapping-v5-runtime-sources/result.json",
+      "sha256": "58d69eba801ca5078cc56adbe91af1660656405a80d4c8cd097d2831b3cc9861",
+      "status": "PASS",
+      "checks": {
+        "all_three_cases_completed": true,
+        "unchanged_source_and_saved_scenes": true,
+        "case_contracts": true
+      },
+      "error": null,
+      "lifecycle": {},
+      "source_cases": [
+        {
+          "case": "gt_gt",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.28392000310122967,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3155654.855912794,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1409205,
+                "transport_error": null
+              },
+              "worker_seconds": 0.277961912099272,
+              "queue_seconds": 3.8803089410066605e-05,
+              "completed_at": 3155655.136102518,
+              "worker_to_publication_seconds": 0.001336646731942892,
+              "input_timestamp": 3155654.855912794,
+              "publish_age_seconds": 0.2815263709053397,
+              "filter_seconds": null,
+              "compute_seconds": 0.05482064979150891,
+              "transport_seconds": 0.2231412623077631,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.277961912099272,
+                "queue_seconds": 3.8803089410066605e-05,
+                "completed_at": 3155655.136102518,
+                "worker_to_publication_seconds": 0.001336646731942892,
+                "timestamp": 3155654.855912794,
+                "input_timestamp": 3155654.855912794,
+                "status": "published",
+                "publish_age_seconds": 0.2815263709053397,
+                "filter_seconds": null,
+                "compute_seconds": 0.05482064979150891,
+                "transport_seconds": 0.2231412623077631
+              }
+            },
+            "cameras": null
+          },
+          "cameras": {}
+        },
+        {
+          "case": "gt_rgbd_single",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 0,
+              "published": 0,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": null,
+              "worker": null
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.48068208433687687,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3155656.685989299,
+              "submitted": 1,
+              "published": 1,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 1,
+                "started": 1,
+                "completed": 1,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1409255,
+                "transport_error": null
+              },
+              "worker_seconds": 0.46809416776522994,
+              "queue_seconds": 4.261033609509468e-05,
+              "completed_at": 3155657.157808967,
+              "worker_to_publication_seconds": 0.004401943180710077,
+              "input_timestamp": 3155656.685989299,
+              "publish_age_seconds": 0.4762216112576425,
+              "filter_seconds": 0.1152355121448636,
+              "compute_seconds": 0.22147371480241418,
+              "transport_seconds": 0.24662045296281576,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.46809416776522994,
+                "queue_seconds": 4.261033609509468e-05,
+                "completed_at": 3155657.157808967,
+                "worker_to_publication_seconds": 0.004401943180710077,
+                "timestamp": 3155656.685989299,
+                "input_timestamp": 3155656.685989299,
+                "status": "published",
+                "publish_age_seconds": 0.4762216112576425,
+                "filter_seconds": 0.1152355121448636,
+                "compute_seconds": 0.22147371480241418,
+                "transport_seconds": 0.24662045296281576
+              }
+            },
+            "cameras": {
+              "acquisitions": 1,
+              "shared_reads": 0,
+              "failures": 0,
+              "consumers": {
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      7.2,
+                      1.5333334133028984
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 130592520757200,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": true
+            }
+          }
+        },
+        {
+          "case": "partial_overlap",
+          "checks": {
+            "semantic_provider_unchanged": true,
+            "mapping_source_unchanged": true,
+            "exact_camera_objects": true,
+            "unique_render_products": true,
+            "only_missing_mapping_cameras_owned": true,
+            "semantic_cameras_borrowed": true,
+            "overlap_exact_same_frame": true,
+            "camera_c_failure_keeps_semantic_ab_fresh": true,
+            "camera_c_failure_map_not_fresh": true,
+            "camera_c_recovered": true,
+            "all_camera_resources_closed": true,
+            "service_closed": true
+          },
+          "partial_failure": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 7,
+              "published": 7,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3155661.241633739,
+                "input_timestamp": 3155661.241633739,
+                "completed_at": 3155661.292438317,
+                "worker_seconds": 0.0449703992344439,
+                "queue_seconds": 3.599701449275017e-05,
+                "compute_seconds": 0.03932378068566322,
+                "transport_seconds": 0.00564661854878068,
+                "publish_age_seconds": 0.06040967209264636,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 7,
+                "started": 7,
+                "completed": 7,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 7,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1409328,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "error",
+              "reason": "acquisition_failure",
+              "last_error": "native camera C failure",
+              "age_seconds": 1.2664000387303531,
+              "stale": true,
+              "fresh": false,
+              "timestamp": 3155660.040614548,
+              "submitted": 2,
+              "published": 1,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 2,
+                "started": 2,
+                "completed": 2,
+                "replaced": 0,
+                "discarded": 1,
+                "errors": 0,
+                "delivered": 1,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1409329,
+                "transport_error": null
+              },
+              "worker_seconds": 0.5916173290461302,
+              "queue_seconds": 4.88809309899807e-05,
+              "completed_at": 3155660.64105513,
+              "worker_to_publication_seconds": 0.015195216052234173,
+              "input_timestamp": 3155660.040614548,
+              "publish_age_seconds": 0.6156357978470623,
+              "filter_seconds": 0.23879746720194817,
+              "compute_seconds": 0.3521995139308274,
+              "transport_seconds": 0.2394178151153028,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.5916173290461302,
+                "queue_seconds": 4.88809309899807e-05,
+                "completed_at": 3155660.64105513,
+                "worker_to_publication_seconds": 0.015195216052234173,
+                "timestamp": 3155660.040614548,
+                "input_timestamp": 3155660.040614548,
+                "status": "published",
+                "publish_age_seconds": 0.6156357978470623,
+                "filter_seconds": 0.23879746720194817,
+                "compute_seconds": 0.3521995139308274,
+                "transport_seconds": 0.2394178151153028
+              }
+            },
+            "cameras": {
+              "acquisitions": 16,
+              "shared_reads": 3,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      16.866666666666667,
+                      3.800000198185444
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      16.866666666666667,
+                      3.800000198185444
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "error",
+                  "reason": "native camera C failure"
+                }
+              }
+            }
+          },
+          "shared_a_frames": [
+            {
+              "token": [
+                14.333333333333334,
+                2.5333334654569626
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                15.533333333333333,
+                3.133333496749401
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                17.733333333333334,
+                4.233333554118872
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            },
+            {
+              "token": [
+                18.533333333333335,
+                4.633333574980497
+              ],
+              "same_object": true,
+              "same_acquired_at": true,
+              "immutable": true
+            }
+          ],
+          "health": {
+            "state": "running",
+            "generation": 0,
+            "error": null,
+            "semantic": {
+              "attempts": 11,
+              "published": 10,
+              "no_frame": 0,
+              "rejected": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "last": {
+                "timestamp": 3155661.854871577,
+                "input_timestamp": 3155661.854871577,
+                "completed_at": 3155661.907056173,
+                "worker_seconds": 0.04549515899270773,
+                "queue_seconds": 4.429277032613754e-05,
+                "compute_seconds": 0.03966582007706165,
+                "transport_seconds": 0.005829338915646076,
+                "publish_age_seconds": 0.06723070284351707,
+                "status": "published"
+              },
+              "worker": {
+                "submitted": 11,
+                "started": 11,
+                "completed": 10,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 10,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 1409328,
+                "transport_error": null
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.42285510385409,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3155661.656709251,
+              "submitted": 4,
+              "published": 2,
+              "rejected": 0,
+              "failures": 1,
+              "source_failures": 1,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 4,
+                "started": 4,
+                "completed": 3,
+                "replaced": 0,
+                "discarded": 1,
+                "errors": 0,
+                "delivered": 2,
+                "running": true,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 1,
+                "execution": "process",
+                "pid": 1409329,
+                "transport_error": null
+              },
+              "worker_seconds": 0.3859909879975021,
+              "queue_seconds": 4.846090450882912e-05,
+              "completed_at": 3155662.053384358,
+              "worker_to_publication_seconds": 0.013694723136723042,
+              "input_timestamp": 3155661.656709251,
+              "publish_age_seconds": 0.41036983020603657,
+              "filter_seconds": 0.2319426410831511,
+              "compute_seconds": 0.30827123997732997,
+              "transport_seconds": 0.07771974802017212,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.3859909879975021,
+                "queue_seconds": 4.846090450882912e-05,
+                "completed_at": 3155662.053384358,
+                "worker_to_publication_seconds": 0.013694723136723042,
+                "timestamp": 3155661.656709251,
+                "input_timestamp": 3155661.656709251,
+                "status": "published",
+                "publish_age_seconds": 0.41036983020603657,
+                "filter_seconds": 0.2319426410831511,
+                "compute_seconds": 0.30827123997732997,
+                "transport_seconds": 0.07771974802017212
+              }
+            },
+            "cameras": {
+              "acquisitions": 26,
+              "shared_reads": 5,
+              "failures": 1,
+              "consumers": {
+                "semantic": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      18.533333333333335,
+                      4.633333574980497
+                    ],
+                    "/World/PerceptionCameraSide": [
+                      18.533333333333335,
+                      4.633333574980497
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                },
+                "mapping": {
+                  "state": "synchronized",
+                  "tokens": {
+                    "/World/PerceptionCamera": [
+                      18.533333333333335,
+                      4.633333574980497
+                    ],
+                    "/World/V5SourceCamera": [
+                      18.533333333333335,
+                      4.633333574980497
+                    ]
+                  },
+                  "skew_seconds": 0.0
+                }
+              }
+            }
+          },
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "object_id": 130591839225168,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator",
+              "owned_by_mapping": false
+            },
+            "/World/PerceptionCameraSide": {
+              "object_id": 130591839221200,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_01",
+              "owned_by_mapping": false
+            },
+            "/World/V5SourceCamera": {
+              "object_id": 130651734003664,
+              "render_product": "/Render/OmniverseKit/HydraTextures/Replicator_02",
+              "owned_by_mapping": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "acceptance_protocol": {
+    "artifact": "docs/assets/spatial_mapping_v5/acceptance_protocol.json",
+    "sha256": "6c01e26d8ebcd242c256324dd4b9a42a5b127606750c939d9a6482b1ca6d4b77"
+  }
+}

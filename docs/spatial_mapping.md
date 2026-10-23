@@ -7,9 +7,11 @@ geometry, existing camera access and explicit construction belong under
 `integrations/isaac/spatial_mapping`. Neither source uses object labels, primitive
 fitting, tracked identities or WorldModel to decide occupancy.
 
-Mapping is opt-in and explicitly updated by its caller. Parsing its TOML section
-does not add a runtime callback, initialize cameras or change application
-behavior. No planner, skill, backend or GUI consumes the map in this version.
+Mapping is opt-in. Since V5, normal runtime construction schedules mapping when
+`[spatial_mapping] enabled = true`; the default remains disabled. The explicit
+standalone API remains available. The earlier sections record its V1–V4 contract
+and validation history; see the V5 section for automatic scheduling and camera
+ownership. No planner, skill or backend consumes the map.
 
 ## Common map contract
 
@@ -1016,3 +1018,304 @@ capture, not a newly recorded post-fix capture:
   --capture outputs/spatial-mapping-v4-temporal-baseline-v2 \
   --output outputs/spatial-mapping-v4-policy-comparison.json
 ```
+
+
+## V5: automatic runtime scheduling
+
+Normal runtime construction now separates SDK acquisition, worker computation
+and owner-thread publication. Multi-camera and V1 RGB-D semantic processing no
+longer runs inside `WorldModelUpdater._on_physics`. Their synchronous `observe`
+interfaces remain available for standalone diagnostics. Lightweight semantic
+ground-truth updates retain the existing updater path. This scheduling change
+does not change occupancy evidence, primitive fitting, robot control or skills.
+
+The Kit update subscription reads camera buffers and calibration, and prepares
+immutable robot mesh instances from the existing exposure-matched PhysX history.
+`IsaacRobotSelfFilter.prepare(frames)` performs this preparation without ray/mesh
+intersections. It never substitutes current poses for missing exposure poses.
+Ground-truth mapping likewise collects immutable USD primitive/bounds payloads
+on Kit; the unchanged conservative rasterizer runs independently of the SDK.
+
+The runtime uses a separate SDK-free subprocess for each processor, with a
+parent I/O thread owning serialization and pipe waits. Semantic fitting and cloud
+processing run in the semantic process; robot filtering, depth-ray integration,
+occupancy mutation and full snapshot copying run in the mapping process.
+
+```mermaid
+flowchart LR
+    subgraph owner["Isaac / Kit owner"]
+        sdk["Shared cameras + matched robot poses<br/>or USD geometry preparation"]
+        semantic_pub["Age/context guard<br/>Tracker + WorldModel publication"]
+        map_pub["Generation/age guard<br/>Immutable occupancy publication"]
+        view["O(1) read view + health<br/>Sparse TTL-aware queries"]
+    end
+    semantic_io["Bounded semantic I/O thread"]
+    mapping_io["Bounded mapping I/O thread"]
+    semantic["SDK-free semantic subprocess"]
+    mapping["SDK-free mapping subprocess<br/>Own mutable map"]
+    sdk -->|immutable input| semantic_io
+    sdk -->|immutable input| mapping_io
+    semantic_io <-->|serialize / compute / return| semantic
+    mapping_io <-->|serialize / compute / return| mapping
+    semantic_io -->|nonblocking poll| semantic_pub
+    mapping_io -->|nonblocking poll| map_pub
+    map_pub --> view
+```
+
+Each subprocess starts through a private Python module, without forking Kit or
+reimporting a native SimulationApp launcher. It rejects simulator SDK imports.
+The parent only submits/polls bounded work; it does not serialize full maps or
+wait for subprocess computation on Kit. A broken transport requires clean
+runtime reinitialization rather than silently replacing an established map with
+an empty one.
+
+The measured thread prototype was retained as a failed alternative. Although
+it reduced controller stalls, concurrent computation produced zero fresh map
+publications and semantic throughput below 1 Hz in each 20-second phase. The
+initial process combined run passed all contracts and eight ordinary motions,
+with approximately 5 Hz semantic and 2 Hz mapping publication in both stationary
+and moving-object phases. Its controller-apply interval p99 was 29.28/35.59 ms,
+compared with 333.48/325.75 ms in the synchronous combined baseline. These are
+short-run workstation measurements; they do not establish a universal frame-rate
+guarantee. Final timing and skill/lifecycle/regression evidence is summarized below. The
+raw thread and initial process records remain in ignored
+`outputs/spatial-mapping-v5-thread-combined` and
+`outputs/spatial-mapping-v5-process-combined`.
+
+Each worker has one running computation and at most one replaceable pending
+input. Superseded pending observations are dropped, rather than creating an old-frame backlog.
+No SDK object, camera method, controller or live WorldModel is used by a worker.
+The owner associates semantic results and mutates WorldModel after checking
+source age, runtime generation and current held/hint context revision.
+
+### Configuration, rates and shared cameras
+
+The existing mapping section activates automatic scheduling; no additional
+runtime feature flag is required:
+
+```toml
+[spatial_mapping]
+enabled = true
+source = "rgbd"                       # Or independent USD "ground_truth".
+update_hz = 2.0
+camera_prim_paths = ["/World/PerceptionCamera", "/World/PerceptionCameraSide"]
+automatic_robot_filter = true
+```
+
+The other mapping settings above retain their defaults and meanings. The
+runtime uses 2 Hz when mapping `update_hz` is omitted. RGB-D semantic runtime
+observations use `[world].update_hz`, or 5 Hz when omitted. Lightweight semantic
+ground truth retains the existing updater cadence. Standalone
+`MappingSession.update` still limits explicit attempts without installing a
+scheduler.
+
+Mapping and semantic sources remain independent. RGB-D mapping accepts one or
+more configured camera paths, even when semantic observations use ground truth.
+An empty mapping path list reuses the configured semantic RGB-D camera paths;
+with semantic ground truth, RGB-D mapping requires explicit paths. The runtime
+borrows matching semantic cameras and creates only missing mapping cameras.
+Only the owner closes those additional cameras/render products. A complete
+per-consumer camera batch remains mandatory; no partial-camera fallback is
+introduced. A failed extra mapping camera does not block an unrelated semantic
+camera subset.
+
+The shared frame pool copies a new camera exposure once and retains its original
+ID, render token, calibration and monotonic acquisition time for both consumers.
+For overlapping RGB-D camera sets, a due mapping acquisition waits until the
+next semantic acquisition, adding at most one semantic period of phase delay.
+Both consumers then receive the same overlapping buffers in that Kit tick. At
+5 Hz semantics and 2 Hz mapping, intervals can alternate approximately 0.4/0.6
+seconds while preserving the average mapping cadence. Disjoint camera sets or
+semantic ground truth keep independent deadlines. The scheduler does not burst
+through missed deadlines, and actual throughput remains limited by processing
+cost, source freshness and workstation load.
+
+### Published views, health and lifecycle
+
+Runtime consumers need neither camera access nor worker coordination:
+
+```python
+snapshot = bundle.spatial_mapping.snapshot()  # O(1), fixed read-time view.
+query = snapshot.query((.45, 0., .10))         # Ages only the requested cell.
+health = bundle.spatial_mapping.health
+```
+
+The worker owns the mutable map. A completed immutable snapshot is published
+atomically; owner-thread polling does not scan or copy the grid. A view fixes
+its read time and retains the published source timestamp, revision and runtime
+generation. Old views never change in place. Each sparse query applies TTL to
+its requested cells: expired evidence becomes UNKNOWN/0.5 while preserving
+`observed=True` and the original `last_observed`. Request a new view to advance
+the read time. Source freshness and individual voxel expiry remain distinct.
+Dense `states`, `probabilities`, `expired`, `counts()` and `voxel_centers()` are
+explicit full-grid operations and may allocate; they are not part of recurring
+runtime publication or sparse reads. Read-time expiry does not fabricate an
+integration revision or a new observation timestamp.
+
+Service health separates source failures, worker failures, no new frame and
+stale source evidence, with independent worker running/pending/replacement/drop
+counters. A fresh publication requires a newly accepted integration within its
+original source-age limits; delayed or unsuccessful completions retain the
+prior publication and do not increment the publication count. `health.last`
+records input/source timestamps, worker and queue durations, completion time,
+filter cost and source age at publication. For a subprocess, `worker_seconds`
+is the parent I/O round trip, including serialization, child execution and return.
+`compute_seconds` measures generic algorithm work and immutable snapshot creation;
+`transport_seconds` is the nonnegative remainder, including transport and other
+execution overhead. These are distinct from queue delay and source age. An
+ordinary unchanged camera tick does not cancel valid work already in progress. A later source failure installs
+an immediate barrier so earlier in-flight success cannot clear that failure.
+
+The owner also checks the robot filter's read-only `source_error` before mapping
+publication on every Kit update, independently of the 2 Hz acquisition deadline.
+It reads cached model/pose-capture error text without SDK calls or array work.
+A newly known error invalidates pending/completed publication once, marks the
+source nonfresh, and withholds mapping admission/publication while that error
+persists. Thus an older running job cannot publish in the interval before the
+next scheduled `prepare` discovers a model or pose-history failure. The known
+Stop/Play transition uses the owner rebind path below before ordinary source
+checks resume; it does not turn an invalid old view into fresh evidence.
+
+Stop/Play and detected simulation-clock resets invalidate pending and completed
+work, hide prior map publications, clear cached camera exposures and invalidate
+robot pose history. The next generation reconstructs the map and mapper token
+state in the worker. Old camera buffers cannot become fresh by being relabelled.
+Isaac 5.1 invalidates its simulation view on Stop. After Play, the Kit owner
+waits for the new initialized manager view, then
+`IsaacRobotSelfFilter.rebind_after_play()` creates a view for the original exact
+rigid-body paths and validates its paths/count before swapping it. Meshes and
+BVHs remain cached. A Pause/Play with the same valid manager view requires no
+rebind. The method does not record a current pose as a substitute for an older
+exposure; subsequent post-physics callbacks must populate fresh history. No
+physics callback rebinds or rebuilds views.
+
+Camera restart resets the existing SDK sensor's acquisition timer through its
+public `post_reset()` method. It creates no camera/render product and changes no
+calibration. Cached pre-restart tokens remain blocked until actual new frames
+arrive. This handles the SDK timer retaining a pre-Stop simulation time instead
+of relabelling old buffers as fresh. A renderer can also deliver an in-flight
+pre-Stop exposure after Play whose token differs from the previously cached
+buffer. The pool rejects render simulation timestamps ahead of the current
+simulation clock plus the allowed skew before admitting the token. It retains
+the last rejected future token in a bounded per-camera quarantine, including
+across pool resets. If that exposure remains frozen, clock catch-up cannot make
+it admissible or give it a new acquisition timestamp. A different exposure must
+still pass ordinary admission checks. Only one quarantined token per camera is
+stored; there is no growing rejection history. The rejected token does not
+become the prior accepted token against which the next genuine exposure is
+checked for regression. Native restart validation and focused quarantine tests
+retain original timestamps.
+
+Missing histories and invalid models fail closed. A scoped USD notice listener
+invalidates cached robot geometry on subtree resync, mesh geometry/topology,
+visibility/purpose, static mesh-to-body placement and explicit scale ops;
+ordinary rigid-body pose updates remain allowed. Such model/topology changes, or
+an active-stage change, require clean runtime reinitialization. Scale embedded
+in a rigid body's general transform op is not inspected; arbitrary robot model
+edits require clean reinitialization. Close revokes
+only owned subscriptions, invalidates publication and returns without joining
+a running computation. Owned SDK resources are closed on the owner thread.
+Late worker output cannot publish after reset or close. Native lifecycle
+validation covers source/worker recovery, Stop/Play with a fresh generation,
+nonwaiting close during computation, rejected late output and clean reinit.
+
+The occupancy map remains observational. There is no trajectory consumer,
+collision-aware planning, RMPflow obstacle update or automatic motion response.
+V4's unknown space, voxel aliasing, hidden old FREE interiors and source/model
+limitations remain relevant to any future consumer.
+
+### Validated source combinations
+
+Native source validation passes for semantic ground truth with GT mapping,
+semantic ground truth with one independently configured RGB-D camera, and
+semantic cameras A/B with mapping cameras A/C. The last case verifies that A
+uses the exact same immutable frame in both consumers, B remains borrowed from
+semantics, only missing C is additionally owned, and all render products are
+unique. Injected C failure leaves semantic A/B fresh while mapping A/C becomes
+nonfresh, then mapping recovers when C returns. Resource closure and unchanged
+source selection are checked in every case. The raw source-validation record
+is retained in `outputs/spatial-mapping-v5-runtime-sources/result.json`.
+
+### V5 measurements and verification
+
+The unchanged V4 checkpoint was measured first, before production edits, with
+ordinary asynchronous hover/side/return/Home commands. Semantic-only processing
+occupied the existing physics callback for about 160 ms, dominated by fitting.
+Mapping was absent from V4 bootstrap: its synchronous comparison is an explicit
+diagnostic integration, about 320 ms including about 240 ms filtering. The
+combined pauses reached the controller, rather than merely a research
+`world.step(render=True)` loop. Every baseline motion succeeded, but combined
+four-command wall time rose to 6.163/5.343 seconds from 2.298/2.041 control-only.
+
+The matched four-mode results below report **movement-only controller-apply
+interval p99**, stationary/moving phases in milliseconds. Source rates use the
+entire 20-second phase. The scene, render resources and command tolerances are
+identical across each sweep.
+
+| Mode | Synchronous V4 diagnostic p99, ms | Process runtime p99, ms | Runtime semantic / mapping rate |
+| --- | --- | --- | --- |
+| Control only | 21.890 / 18.911 | 16.985 / 19.762 | disabled / disabled |
+| Semantic only | 177.875 / 179.825 | 19.738 / 19.542 | approximately 5 Hz / disabled |
+| Mapping only | 335.263 / 327.765 | 22.903 / 23.404 | disabled / approximately 2 Hz |
+| Combined | 333.482 / 325.750 | 28.929 / 30.001 | approximately 5 Hz / 2 Hz |
+
+Combined p99 dropped 91.3%/90.8%; worst controller-apply intervals were
+34.264/34.267 ms and there were no controller waits over 100 ms. All 32 motions
+in the runtime sweep succeeded. Combined motion time was 2.380/2.174 seconds;
+final position errors remained at most 24.617 mm under the unchanged 25 mm
+diagnostic tolerance, and orientation error at most 0.02671 rad. These are goal
+and joint-command errors, not a claim of time-parameterized trajectory tracking
+or improved endpoint accuracy. The production backend and skill tolerances are
+unchanged.
+
+The sweep published 100 semantic batches and 40 maps per phase, with zero
+replaced, discarded or rejected jobs and zero source/worker failures. Maximum
+original publication ages were 202.1/212.3 ms for semantics and 491.4/493.4 ms
+for mapping. The owner acquisition/publication callback p99 was 8.43/8.29 ms.
+Mean pure child computation was 148.4/151.4 ms for semantic geometry and
+320.3/322.6 ms for mapping, including full immutable map construction. Parent
+I/O envelopes were 156.0/159.0 ms and 402.7/409.0 ms respectively. Their paired
+differences include serialization/deserialization, process communication and
+scheduling; they are not pipe-only timing. Original source age, queue delay,
+computation, transport envelope and publication latency remain separate metrics.
+
+A final error-path change quarantines the last future-rejected exposure per
+camera even if the restarted clock catches up. The complete four-mode sweep
+precedes that narrow guard; only `shared_frames.py` differs in its captured
+runtime paths. A separate
+combined confirmation on the final source passes the same declared gates:
+p99 31.729/31.239 ms, maximum intervals 35.202/34.616 ms, approximately 5/2 Hz,
+no controller waits over 100 ms, and maximum map publication age below 480 ms.
+Its 100/101 semantic publications reflect normal phase-boundary completion
+spillover. No queued result receives a new acquisition timestamp. A subsequent
+compatibility correction restores JSON-compatible diagnostics for standalone
+synchronous ground-truth mapping; it does not affect this RGB-D workload.
+
+The ordinary physical-cube acceptance also executes Pick, held Home, Place and
+released Home while both services run. It verifies actual lift, held identity,
+release and reacquisition of the same `multiview_1`. The retained full acceptance
+measured about 92.2 mm actual lift and 21.174 mm placement error under existing
+skill verification; it does not claim improved placement accuracy. Frozen input,
+injected camera/worker failures and recovery, Stop/Play, close during deliberately
+blocked computation, late-output rejection and clean reinitialization are tested.
+Two real restart failures led to the view-rebind and exposure-generation guards;
+the failed attempts remain in the compact record. In the complete regression
+run and post-correction mapping rerun, closure returned in 24.4/33.3 ms while
+the deliberately blocked computation remained unfinished.
+
+Compact evidence:
+
+- [Acceptance protocol](assets/spatial_mapping_v5/acceptance_protocol.json): limits declared before the final sweep, derived from the validated control baseline.
+- [Baseline and failed threads](assets/spatial_mapping_v5/scheduling_baseline.json): exact source/artifact hashes and the rejected strategy.
+- [Four-mode evaluation and final confirmation](assets/spatial_mapping_v5/evaluation.json): P50/P95/P99/worst physics, Kit, control and callback distributions, rates, drops, ages, tracking and gate outcomes.
+- [Runtime lifecycle and source validation](assets/spatial_mapping_v5/runtime_validation.json): physical manipulation, retained failures, recovery and camera ownership.
+- [Scope audit](assets/spatial_mapping_v5/scope_audit.json): unchanged algorithms, occupancy thresholds, backend, launchers, scenes and configuration; intentional provider/preparation wrapper extraction.
+- [Final regression verification](assets/spatial_mapping_v5/verification.json): individual suite outcomes, retained export failures and passing post-correction reruns.
+
+The final offline run passes 694 discovered unit tests, all eight standalone
+modules and architecture/syntax checks. All 21 unique native scenarios pass:
+14 manipulation/multi-view cases in the complete suite, plus all seven mapping
+cases in the post-correction rerun. The initial complete suite reported two
+ground-truth diagnostics JSON export failures. Their compatibility correction
+preserves immutable worker input, and the unchanged native assertions pass on
+rerun. The verification record retains both failures and their resolution.

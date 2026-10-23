@@ -1,0 +1,1074 @@
+{
+  "schema_version": 1,
+  "status": "BASELINE_COMPLETE_THREAD_STRATEGY_REJECTED",
+  "scope": {
+    "motion": "Normal bootstrap + asynchronous backend MoveToPose hover/side/return and Home; existing controllers/tolerances. Normal Kit app.update driving; no measured world.step loop or robot joint teleports.",
+    "movement_denominator": "Raw command labels hover, side, return, home; post_motion_observation idle tail excluded from movement distributions. Four motion commands per stationary/moving phase.",
+    "control_wait_denominator": "179 stationary and164 moving await samples/mode; apply intervals182/167 include normal final hold actions.",
+    "phase_denominator": "At least20 actual wall seconds per stationary/moving phase, including idle tail; whole-phase rates use completed phase duration.",
+    "mapping_baseline": "Synchronous mapping callback explicitly injected for diagnosis; mapping was absent from unchanged V4 runtime. Semantic workload is original registered WorldModelUpdater._on_physics callback.",
+    "cadence": "Original synchronous callback admission is by simulation dt (semantic5Hz,mapping2Hz); later automatic worker admission is by wall clock. Actual wall rates are reported.",
+    "geometry": "Full-arm1cm ROI[-.3,-.6,-.02]..[.85,.6,1.12], stride8,max1024rays, automatic exposure-matched robotfilter,max_frame_age/stale_after1s,TTL5s; two640x480 views at V4 eyes.",
+    "moving_objects": "Same PhysX cube .04m, gravity disabled, speed.018m/s and ordinary velocity reversals within X.42..62; actual path/range retained. Other fixture geometry unchanged.",
+    "freshness": "All accepted data preserve source timestamps. Thread source_age_ms is diagnostic poll age; exact publication age is in raw worker metadata and may precede poll by one physics tick.",
+    "accuracy": "Joint command error and final goal error are descriptive; this is not a time-parameterized trajectory-tracking benchmark. Existing skill25mm position tolerance unchanged.",
+    "comparison": "Repeated live scene/protocol across modes; distinct actual camera exposures, not an identical-frame accuracy replay. No occupancy-based trajectory modification."
+  },
+  "synchronous": {
+    "control": {
+      "status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "completed_windows": true,
+        "ordinary_async_motion_only": true,
+        "robot_joint_motion_observed": true,
+        "all_motion_succeeded": true,
+        "moving_actor_moved": true,
+        "semantic_published_each_phase": true,
+        "mapping_accepted_each_phase": true,
+        "semantic_original_timestamps": true,
+        "mapping_original_timestamps": true
+      },
+      "phases": {
+        "stationary": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 2.2980582509189844,
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 12.554669368930243,
+            "p50": 12.999256607145071,
+            "p95": 19.03325086459517,
+            "p99": 21.890163500793275,
+            "worst": 22.772232070565224
+          },
+          "physics_interval_ms": {
+            "count": 178,
+            "mean": 12.752285666680068,
+            "p50": 12.065614573657513,
+            "p95": 21.103240526281297,
+            "p99": 26.151398932561204,
+            "worst": 32.38441236317158
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 11.893122951245175,
+            "p50": 12.313192244619131,
+            "p95": 18.42274679802358,
+            "p99": 21.1535863019526,
+            "worst": 22.169126197695732
+          },
+          "control_pauses_100ms": 0,
+          "control_pauses_300ms": 0,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.102234150428394,
+            "p50": 24.095606721957495,
+            "p95": 24.56129336759844,
+            "p99": 24.60201995744013,
+            "worst": 24.612201604900555
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014888679457215464,
+            "p50": 0.013822688492648706,
+            "p95": 0.025390611364111353,
+            "p99": 0.026439735874491756,
+            "worst": 0.02670201700208686
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "semantic": {
+            "published_batches": 0,
+            "published_hz_wall": 0.0,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 0
+            }
+          },
+          "mapping": {
+            "accepted": 0,
+            "accepted_hz_wall": 0.0,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 0
+            },
+            "update_ms": {
+              "count": 0
+            },
+            "filter_ms": {
+              "count": 0
+            },
+            "acquisition_ms": {
+              "count": 0
+            }
+          }
+        },
+        "moving": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 2.0413320432417095,
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 12.146323013069209,
+            "p50": 12.645602226257324,
+            "p95": 17.17770081013441,
+            "p99": 18.910690015181903,
+            "worst": 21.694420836865902
+          },
+          "physics_interval_ms": {
+            "count": 163,
+            "mean": 12.352920945825204,
+            "p50": 11.478183791041374,
+            "p95": 19.167304784059525,
+            "p99": 28.96680172532795,
+            "worst": 32.08326082676649
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 11.493530987602908,
+            "p50": 11.94414752535522,
+            "p95": 16.765512456186116,
+            "p99": 18.25399012304843,
+            "worst": 21.109971217811108
+          },
+          "control_pauses_100ms": 0,
+          "control_pauses_300ms": 0,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.079154179270585,
+            "p50": 24.059304248049777,
+            "p95": 24.54282961244876,
+            "p99": 24.601503995190907,
+            "worst": 24.616172590876445
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014162760807899803,
+            "p50": 0.013747094154066504,
+            "p95": 0.024181757250285086,
+            "p99": 0.025063947031610054,
+            "worst": 0.025284494476941297
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.0045919881441614805,
+            "p50": 0.003916930846215044,
+            "p95": 0.011817499573683403,
+            "p99": 0.013300387393255876,
+            "worst": 0.013779934720327658
+          },
+          "semantic": {
+            "published_batches": 0,
+            "published_hz_wall": 0.0,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 0
+            }
+          },
+          "mapping": {
+            "accepted": 0,
+            "accepted_hz_wall": 0.0,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 0
+            },
+            "update_ms": {
+              "count": 0
+            },
+            "filter_ms": {
+              "count": 0
+            },
+            "acquisition_ms": {
+              "count": 0
+            }
+          }
+        }
+      }
+    },
+    "semantic": {
+      "status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "completed_windows": true,
+        "ordinary_async_motion_only": true,
+        "robot_joint_motion_observed": true,
+        "all_motion_succeeded": true,
+        "moving_actor_moved": true,
+        "semantic_published_each_phase": true,
+        "mapping_accepted_each_phase": true,
+        "semantic_original_timestamps": true,
+        "mapping_original_timestamps": true
+      },
+      "phases": {
+        "stationary": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 4.604663233738393,
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 25.22963462755657,
+            "p50": 12.140118982642889,
+            "p95": 172.97869832254946,
+            "p99": 177.87478886544704,
+            "worst": 182.6396118849516
+          },
+          "physics_interval_ms": {
+            "count": 178,
+            "mean": 25.722965569329563,
+            "p50": 11.80024491623044,
+            "p95": 173.23278691619635,
+            "p99": 183.53436977136877,
+            "worst": 186.83246802538633
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 24.761857441496417,
+            "p50": 11.333173140883446,
+            "p95": 172.30245736427605,
+            "p99": 177.13414788246155,
+            "worst": 181.85110995545983
+          },
+          "control_pauses_100ms": 15,
+          "control_pauses_300ms": 0,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.102234150428394,
+            "p50": 24.095606721957495,
+            "p95": 24.56129336759844,
+            "p99": 24.60201995744013,
+            "worst": 24.612201604900555
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014888679457215464,
+            "p50": 0.013822688492648706,
+            "p95": 0.025390611364111353,
+            "p99": 0.026439735874491756,
+            "worst": 0.02670201700208686
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "semantic": {
+            "published_batches": 70,
+            "published_hz_wall": 3.475663639741013,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 70,
+              "mean": 160.89589872530527,
+              "p50": 160.0150193553418,
+              "p95": 168.7129852361977,
+              "p99": 174.53885350842032,
+              "worst": 181.05932604521513
+            }
+          },
+          "mapping": {
+            "accepted": 0,
+            "accepted_hz_wall": 0.0,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 0
+            },
+            "update_ms": {
+              "count": 0
+            },
+            "filter_ms": {
+              "count": 0
+            },
+            "acquisition_ms": {
+              "count": 0
+            }
+          }
+        },
+        "moving": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 4.059423060622066,
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 24.229742765069723,
+            "p50": 12.255233712494373,
+            "p95": 171.11442484892902,
+            "p99": 179.8251184914261,
+            "worst": 182.0100611075759
+          },
+          "physics_interval_ms": {
+            "count": 163,
+            "mean": 24.724091674584002,
+            "p50": 11.531914118677378,
+            "p95": 170.37951461970806,
+            "p99": 179.55464949831367,
+            "worst": 192.32823001220822
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 23.784138321899242,
+            "p50": 10.887010488659143,
+            "p95": 170.59527742676437,
+            "p99": 179.0243594488129,
+            "worst": 181.2411961145699
+          },
+          "control_pauses_100ms": 13,
+          "control_pauses_300ms": 0,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.0799154494722,
+            "p50": 24.060804044629734,
+            "p95": 24.54246292936521,
+            "p99": 24.601040869713103,
+            "worst": 24.615685354800075
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014162753505947144,
+            "p50": 0.01374723930476289,
+            "p95": 0.02418299439111587,
+            "p99": 0.025065378290005304,
+            "worst": 0.025285974264727663
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.004592020692252966,
+            "p50": 0.003916937846755964,
+            "p95": 0.01181741233456617,
+            "p99": 0.013300069511050467,
+            "worst": 0.013779733131133062
+          },
+          "semantic": {
+            "published_batches": 70,
+            "published_hz_wall": 3.495368372304238,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 70,
+              "mean": 160.29341030599815,
+              "p50": 159.4970014411956,
+              "p95": 165.53473805543035,
+              "p99": 172.33347202651206,
+              "worst": 177.22924100235105
+            }
+          },
+          "mapping": {
+            "accepted": 0,
+            "accepted_hz_wall": 0.0,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 0
+            },
+            "update_ms": {
+              "count": 0
+            },
+            "filter_ms": {
+              "count": 0
+            },
+            "acquisition_ms": {
+              "count": 0
+            }
+          }
+        }
+      }
+    },
+    "mapping": {
+      "status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "completed_windows": true,
+        "ordinary_async_motion_only": true,
+        "robot_joint_motion_observed": true,
+        "all_motion_succeeded": true,
+        "moving_actor_moved": true,
+        "semantic_published_each_phase": true,
+        "mapping_accepted_each_phase": true,
+        "semantic_original_timestamps": true,
+        "mapping_original_timestamps": true
+      },
+      "phases": {
+        "stationary": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 3.7507758466526866,
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 20.536712946493054,
+            "p50": 11.292102513834834,
+            "p95": 18.02919164765626,
+            "p99": 335.2632094873115,
+            "worst": 346.4341298677027
+          },
+          "physics_interval_ms": {
+            "count": 178,
+            "mean": 20.94376897910254,
+            "p50": 10.052588069811463,
+            "p95": 21.844272501766692,
+            "p99": 337.48350293375535,
+            "worst": 349.0472282283008
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 20.020846199431567,
+            "p50": 10.381598025560379,
+            "p95": 17.48847914859652,
+            "p99": 334.84017331153154,
+            "worst": 345.58286098763347
+          },
+          "control_pauses_100ms": 5,
+          "control_pauses_300ms": 5,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.102234150428394,
+            "p50": 24.095606721957495,
+            "p95": 24.56129336759844,
+            "p99": 24.60201995744013,
+            "worst": 24.612201604900555
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014888679457215464,
+            "p50": 0.013822688492648706,
+            "p95": 0.025390611364111353,
+            "p99": 0.026439735874491756,
+            "worst": 0.02670201700208686
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "semantic": {
+            "published_batches": 0,
+            "published_hz_wall": 0.0,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 0
+            }
+          },
+          "mapping": {
+            "accepted": 30,
+            "accepted_hz_wall": 1.4995826994430093,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 30,
+              "mean": 320.5362766205023,
+              "p50": 318.36220202967525,
+              "p95": 334.58488741889596,
+              "p99": 351.6645728657022,
+              "worst": 358.4973909892142
+            },
+            "update_ms": {
+              "count": 30,
+              "mean": 314.67662324818474,
+              "p50": 312.9015238955617,
+              "p95": 326.18945138528943,
+              "p99": 346.24244896229357,
+              "worst": 352.88279177621007
+            },
+            "filter_ms": {
+              "count": 30,
+              "mean": 241.90557855181396,
+              "p50": 240.3222566936165,
+              "p95": 254.09971361514178,
+              "p99": 273.43443596269935,
+              "worst": 279.88424617797136
+            },
+            "acquisition_ms": {
+              "count": 30,
+              "mean": 5.86795462295413,
+              "p50": 5.243927938863635,
+              "p95": 8.67999952752142,
+              "p99": 14.01897645555437,
+              "worst": 15.559542458504438
+            }
+          }
+        },
+        "moving": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 3.617337475065142,
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 21.57286517768206,
+            "p50": 12.285931967198849,
+            "p95": 20.17703228630123,
+            "p99": 327.7653651498258,
+            "worst": 329.7068648971617
+          },
+          "physics_interval_ms": {
+            "count": 163,
+            "mean": 22.040763404220343,
+            "p50": 11.844579130411148,
+            "p95": 23.166227061301473,
+            "p99": 328.71315587311983,
+            "worst": 333.3725458942354
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 21.04746034970825,
+            "p50": 11.205300455912948,
+            "p95": 19.72091575153171,
+            "p99": 326.92864153999835,
+            "worst": 328.77350272610784
+          },
+          "control_pauses_100ms": 5,
+          "control_pauses_300ms": 5,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.079932313538592,
+            "p50": 24.060883827533875,
+            "p95": 24.542395059706116,
+            "p99": 24.60094414087675,
+            "worst": 24.61558141116941
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.01416345457949151,
+            "p50": 0.013747908960432442,
+            "p95": 0.02418311040870053,
+            "p99": 0.025065506129464586,
+            "worst": 0.025286105059655603
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.004592017554313193,
+            "p50": 0.003916949098370739,
+            "p95": 0.011817453721773577,
+            "p99": 0.013300177122218933,
+            "worst": 0.013779672092616541
+          },
+          "semantic": {
+            "published_batches": 0,
+            "published_hz_wall": 0.0,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 0
+            }
+          },
+          "mapping": {
+            "accepted": 31,
+            "accepted_hz_wall": 1.5364613802302087,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 31,
+              "mean": 318.8077130865666,
+              "p50": 317.70756794139743,
+              "p95": 333.481463836506,
+              "p99": 341.33332879282534,
+              "worst": 341.68989257887006
+            },
+            "update_ms": {
+              "count": 31,
+              "mean": 313.5368565488006,
+              "p50": 312.910133972764,
+              "p95": 327.58580427616835,
+              "p99": 334.44296517409384,
+              "worst": 334.7320258617401
+            },
+            "filter_ms": {
+              "count": 31,
+              "mean": 240.95017806957327,
+              "p50": 240.23268790915608,
+              "p95": 253.08994809165597,
+              "p99": 258.6500612553209,
+              "worst": 259.02782985940576
+            },
+            "acquisition_ms": {
+              "count": 31,
+              "mean": 5.278776685196545,
+              "p50": 5.167054943740368,
+              "p95": 6.477826042100787,
+              "p99": 6.8987317848950624,
+              "worst": 6.9663431495428085
+            }
+          }
+        }
+      }
+    },
+    "combined": {
+      "status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "completed_windows": true,
+        "ordinary_async_motion_only": true,
+        "robot_joint_motion_observed": true,
+        "all_motion_succeeded": true,
+        "moving_actor_moved": true,
+        "semantic_published_each_phase": true,
+        "mapping_accepted_each_phase": true,
+        "semantic_original_timestamps": true,
+        "mapping_original_timestamps": true
+      },
+      "phases": {
+        "stationary": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 6.1631391500122845,
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 33.78881461365701,
+            "p50": 12.775161070749164,
+            "p95": 174.2954924935475,
+            "p99": 333.48170071840286,
+            "worst": 347.3854949697852
+          },
+          "physics_interval_ms": {
+            "count": 178,
+            "mean": 34.493937690773706,
+            "p50": 12.401046929880977,
+            "p95": 177.09784591570497,
+            "p99": 335.5208862246945,
+            "worst": 346.66113276034594
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 33.48979786007181,
+            "p50": 12.10010563954711,
+            "p95": 173.62424568273127,
+            "p99": 332.888321550563,
+            "worst": 346.5542132034898
+          },
+          "control_pauses_100ms": 20,
+          "control_pauses_300ms": 5,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.102234150428394,
+            "p50": 24.095606721957495,
+            "p95": 24.56129336759844,
+            "p99": 24.60201995744013,
+            "worst": 24.612201604900555
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014888679457215464,
+            "p50": 0.013822688492648706,
+            "p95": 0.025390611364111353,
+            "p99": 0.026439735874491756,
+            "worst": 0.02670201700208686
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "semantic": {
+            "published_batches": 49,
+            "published_hz_wall": 2.4466062971025084,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 49,
+              "mean": 159.11025431349265,
+              "p50": 158.31978898495436,
+              "p95": 167.3328795470297,
+              "p99": 177.42492688819763,
+              "worst": 179.88055339083076
+            }
+          },
+          "mapping": {
+            "accepted": 19,
+            "accepted_hz_wall": 0.9486840743866869,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 19,
+              "mean": 512.7306320998622,
+              "p50": 507.77969509363174,
+              "p95": 559.6309226937592,
+              "p99": 575.2907901443541,
+              "worst": 579.2057570070028
+            },
+            "update_ms": {
+              "count": 19,
+              "mean": 314.660077081307,
+              "p50": 313.33493907004595,
+              "p95": 328.2032664399594,
+              "p99": 330.12137747369707,
+              "worst": 330.6009052321315
+            },
+            "filter_ms": {
+              "count": 19,
+              "mean": 240.35457683433043,
+              "p50": 240.24282628670335,
+              "p95": 248.52156816050407,
+              "p99": 253.9770465157926,
+              "worst": 255.34091610461473
+            },
+            "acquisition_ms": {
+              "count": 19,
+              "mean": 0.0042922206615146835,
+              "p50": 0.004238449037075043,
+              "p95": 0.00546220690011978,
+              "p99": 0.0059818848967552185,
+              "worst": 0.006111804395914078
+            }
+          }
+        },
+        "moving": {
+          "motion_count": 4,
+          "motion_successes": 4,
+          "motion_wall_seconds": 5.34274902427569,
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 31.908830834139962,
+            "p50": 9.343159850686789,
+            "p95": 171.0995079483837,
+            "p99": 325.75049365870655,
+            "worst": 331.2221309170127
+          },
+          "physics_interval_ms": {
+            "count": 163,
+            "mean": 32.60475007440049,
+            "p50": 9.298746939748526,
+            "p95": 170.08475442416966,
+            "p99": 324.85749615356326,
+            "worst": 333.60138069838285
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 31.603077676419804,
+            "p50": 8.530828403308988,
+            "p95": 170.32970669679344,
+            "p99": 325.0148483319208,
+            "worst": 330.4481250233948
+          },
+          "control_pauses_100ms": 18,
+          "control_pauses_300ms": 5,
+          "final_goal_position_error_mm": {
+            "count": 4,
+            "mean": 24.07962668996533,
+            "p50": 24.060394536132417,
+            "p95": 24.541741077801184,
+            "p99": 24.60015577489204,
+            "worst": 24.614759449164755
+          },
+          "final_goal_orientation_error_rad": {
+            "count": 4,
+            "mean": 0.014163006020112001,
+            "p50": 0.01374780125534966,
+            "p95": 0.02418123751282992,
+            "p99": 0.0250634008669429,
+            "worst": 0.025283941705471148
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.004592056370827676,
+            "p50": 0.003916930334222297,
+            "p95": 0.011817350990067262,
+            "p99": 0.013299891779216524,
+            "worst": 0.013779386957606906
+          },
+          "semantic": {
+            "published_batches": 50,
+            "published_hz_wall": 2.4821833955572177,
+            "errors": 0,
+            "source_age_ms": {
+              "count": 50,
+              "mean": 158.34000252187252,
+              "p50": 158.07614591903985,
+              "p95": 162.59009991772473,
+              "p99": 168.78094282466915,
+              "worst": 172.5146071985364
+            }
+          },
+          "mapping": {
+            "accepted": 20,
+            "accepted_hz_wall": 0.9928733582228871,
+            "errors": 0,
+            "completion_age_ms": {
+              "count": 20,
+              "mean": 507.49120411928743,
+              "p50": 510.57238411158323,
+              "p95": 538.252891250886,
+              "p99": 554.6941748308018,
+              "worst": 558.8044957257807
+            },
+            "update_ms": {
+              "count": 20,
+              "mean": 311.28473833668977,
+              "p50": 310.5365408118814,
+              "p95": 319.8223076760769,
+              "p99": 329.5408617705107,
+              "worst": 331.9705002941191
+            },
+            "filter_ms": {
+              "count": 20,
+              "mean": 239.0733400825411,
+              "p50": 238.4389063809067,
+              "p95": 246.65338206104934,
+              "p99": 258.55283743701875,
+              "worst": 261.5277012810111
+            },
+            "acquisition_ms": {
+              "count": 20,
+              "mean": 0.003990274854004383,
+              "p50": 0.004213070496916771,
+              "p95": 0.0046791741624474525,
+              "p99": 0.004830998368561268,
+              "worst": 0.004868954420089722
+            }
+          }
+        }
+      }
+    }
+  },
+  "thread_combined": {
+    "status": "FAIL",
+    "contracts": {
+      "source_unchanged": true,
+      "completed_windows": true,
+      "ordinary_async_motion_only": true,
+      "robot_joint_motion_observed": true,
+      "all_motion_succeeded": true,
+      "moving_actor_moved": true,
+      "semantic_published_each_phase": true,
+      "mapping_accepted_each_phase": false,
+      "semantic_original_timestamps": true,
+      "mapping_original_timestamps": true
+    },
+    "phases": {
+      "stationary": {
+        "motion_count": 4,
+        "motion_successes": 4,
+        "motion_wall_seconds": 3.897930675186217,
+        "apply_interval_ms": {
+          "count": 182,
+          "mean": 21.33394482003136,
+          "p50": 19.932496594265103,
+          "p95": 35.114747961051755,
+          "p99": 37.29094393085688,
+          "worst": 47.13047714903951
+        },
+        "physics_interval_ms": {
+          "count": 178,
+          "mean": 21.63834088178498,
+          "p50": 20.317755872383714,
+          "p95": 35.638387012295425,
+          "p99": 42.4405948538333,
+          "worst": 45.22568127140403
+        },
+        "control_wait_duration_ms": {
+          "count": 179,
+          "mean": 18.931188186183157,
+          "p50": 17.375347204506397,
+          "p95": 32.51505154184997,
+          "p99": 34.21481850557029,
+          "worst": 44.49413483962417
+        },
+        "control_pauses_100ms": 0,
+        "control_pauses_300ms": 0,
+        "final_goal_position_error_mm": {
+          "count": 4,
+          "mean": 24.102234150428394,
+          "p50": 24.095606721957495,
+          "p95": 24.56129336759844,
+          "p99": 24.60201995744013,
+          "worst": 24.612201604900555
+        },
+        "final_goal_orientation_error_rad": {
+          "count": 4,
+          "mean": 0.014888679457215464,
+          "p50": 0.013822688492648706,
+          "p95": 0.025390611364111353,
+          "p99": 0.026439735874491756,
+          "worst": 0.02670201700208686
+        },
+        "joint_target_error_rms_rad": {
+          "count": 183,
+          "mean": 0.004553092810040686,
+          "p50": 0.0037944635891066342,
+          "p95": 0.01166455545221872,
+          "p99": 0.013586778940071431,
+          "worst": 0.014308952352993003
+        },
+        "semantic": {
+          "published_batches": 19,
+          "published_hz_wall": 0.9498607250080479,
+          "errors": 0,
+          "source_age_ms": {
+            "count": 19,
+            "mean": 761.4178443082461,
+            "p50": 756.7079239524901,
+            "p95": 970.0365867465733,
+            "p99": 997.6841736584902,
+            "worst": 1004.5960703864694
+          }
+        },
+        "mapping": {
+          "accepted": 0,
+          "accepted_hz_wall": 0.0,
+          "errors": 0,
+          "completion_age_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 0
+          },
+          "filter_ms": {
+            "count": 0
+          },
+          "acquisition_ms": {
+            "count": 0
+          }
+        },
+        "actual_admission_counts": {
+          "semantic": {
+            "attempts": 100,
+            "published": 19,
+            "rejected": 9,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "worker_replaced": 73,
+            "last_worker_seconds": 0.8753555868752301
+          },
+          "mapping": {
+            "submitted": 40,
+            "published": 0,
+            "rejected": 14,
+            "failures": 0,
+            "worker_replaced": 25,
+            "last_worker_seconds": 1.3340608547441661
+          }
+        }
+      },
+      "moving": {
+        "motion_count": 4,
+        "motion_successes": 4,
+        "motion_wall_seconds": 3.3194011356681585,
+        "apply_interval_ms": {
+          "count": 167,
+          "mean": 19.787585917681813,
+          "p50": 18.8080919906497,
+          "p95": 28.86273697949946,
+          "p99": 35.7957290392369,
+          "worst": 38.53723406791687
+        },
+        "physics_interval_ms": {
+          "count": 163,
+          "mean": 20.117887632887058,
+          "p50": 18.992918077856302,
+          "p95": 32.925662118941545,
+          "p99": 41.45338301546872,
+          "worst": 42.61266300454736
+        },
+        "control_wait_duration_ms": {
+          "count": 164,
+          "mean": 17.571528734662003,
+          "p50": 16.852431232109666,
+          "p95": 26.609308551996946,
+          "p99": 32.72215263918042,
+          "worst": 37.258708383888006
+        },
+        "control_pauses_100ms": 0,
+        "control_pauses_300ms": 0,
+        "final_goal_position_error_mm": {
+          "count": 4,
+          "mean": 24.079514084301987,
+          "p50": 24.06001498924679,
+          "p95": 24.542744081704704,
+          "p99": 24.60131378160457,
+          "worst": 24.615956206579536
+        },
+        "final_goal_orientation_error_rad": {
+          "count": 4,
+          "mean": 0.014162923038423796,
+          "p50": 0.013747681959614566,
+          "p95": 0.024181700760011596,
+          "p99": 0.025063910625439067,
+          "worst": 0.025284463091795936
+        },
+        "joint_target_error_rms_rad": {
+          "count": 168,
+          "mean": 0.004591999013453851,
+          "p50": 0.003916925574682462,
+          "p95": 0.011817477439275225,
+          "p99": 0.013300321541106908,
+          "worst": 0.013779821668587634
+        },
+        "semantic": {
+          "published_batches": 18,
+          "published_hz_wall": 0.8991877359275758,
+          "errors": 0,
+          "source_age_ms": {
+            "count": 18,
+            "mean": 740.4866499774572,
+            "p50": 706.3600495457649,
+            "p95": 970.8603678271174,
+            "p99": 982.1795791760087,
+            "worst": 985.0093820132315
+          }
+        },
+        "mapping": {
+          "accepted": 0,
+          "accepted_hz_wall": 0.0,
+          "errors": 0,
+          "completion_age_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 0
+          },
+          "filter_ms": {
+            "count": 0
+          },
+          "acquisition_ms": {
+            "count": 0
+          }
+        },
+        "actual_admission_counts": {
+          "semantic": {
+            "attempts": 100,
+            "published": 18,
+            "rejected": 9,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "worker_replaced": 72,
+            "last_worker_seconds": 0.9081778069958091
+          },
+          "mapping": {
+            "submitted": 40,
+            "published": 0,
+            "rejected": 15,
+            "failures": 0,
+            "worker_replaced": 26,
+            "last_worker_seconds": 1.3441620199009776
+          }
+        }
+      }
+    }
+  },
+  "decision": "Threads reduced long controller stalls but produced no fresh mapping publications during either measured phase. Do not accept strategy merely because control improved. Safe SDK-free child-process evaluation remains pending.",
+  "pending": [
+    "Final process strategy",
+    "All four automatic runtime cases",
+    "PickPlace/lifecycle native acceptance",
+    "Full final regression suites"
+  ],
+  "artifacts": {
+    "outputs/spatial-mapping-v5-sync-script.py": "c8acb0452889a2606ee04fee40334951f2ca007e92d8de45b16c8e5f87f6466f",
+    "outputs/spatial-mapping-v5-sync-summary.json": "c10dcab4e65a9c84daf6f6e729e3bc126aeed433269ad1d45d47bc7e9bb65328",
+    "outputs/spatial-mapping-v5-thread-summary.json": "9e733c9cec8a77ce48edae60d85f77e80430e199839f6bec6fc5e57cd7ee29a0",
+    "outputs/spatial-mapping-v5-sync-control-final/result.json": "4010790928017b4090ffbccc89a3790c7c93c3470c24d35919c4aa2ee5f62ec8",
+    "outputs/spatial-mapping-v5-sync-control-final/trace.json": "a5755a52477c9d843b3a1bede9fc143249089c3ef7cbc0a38d31b10b9b09b339",
+    "outputs/spatial-mapping-v5-sync-semantic-final/result.json": "950563fab91ec4a8b32ca3fb0319da2fbf33ccfe8d20bb3baf4dda56fb6195ea",
+    "outputs/spatial-mapping-v5-sync-semantic-final/trace.json": "310e4a8eaaae3039c6c0e2efaf9e21f00d594243c5bb3cb6e1bd2359c2b66ec5",
+    "outputs/spatial-mapping-v5-sync-mapping-final/result.json": "4912bda9d5f4260b4d259325ebea46877adbb6427825f1cf9917f0ba567a694c",
+    "outputs/spatial-mapping-v5-sync-mapping-final/trace.json": "926f1f9166631db04707c4f4fa82d0808251fd50dffb07bce8266b9b09c13705",
+    "outputs/spatial-mapping-v5-sync-combined-final/result.json": "aed6cd1bc593c4429b5a8d5beb5feca2424bc0b520489438b866d3fb576cb42b",
+    "outputs/spatial-mapping-v5-sync-combined-final/trace.json": "e8a81d8ba4fda004a21ca61e84608c1b551658a6a44409fad813b5c682127a83",
+    "outputs/spatial-mapping-v5-thread-combined/result.json": "0ae982da21976ccf5d98b799b8bd24706ee23fffe1c2a37cb89aa8710e8d1e3a",
+    "outputs/spatial-mapping-v5-thread-combined/trace.json": "30539a97bb2b6fe40484d1c24bdd70b37768904b697141eb2c022028594c0a5d"
+  }
+}

@@ -1,0 +1,627 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "audit_utc": "2026-10-23T22:05:51.797958+00:00",
+  "baseline_ref": "74169203d2a937c2195089c6f4f2efdd8afd508d",
+  "method": "Read-only SHA256 comparison of baseline git blobs and current workspace bytes. No native, CPU-heavy or algorithm tests run for this audit.",
+  "groups": {
+    "existing_perception_modules_excluding_boundary_wrappers": {
+      "count": 16,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/world/perception/__init__.py",
+        "robot_skill_stack/world/perception/discovery.py",
+        "robot_skill_stack/world/perception/factory.py",
+        "robot_skill_stack/world/perception/frame.py",
+        "robot_skill_stack/world/perception/geometry.py",
+        "robot_skill_stack/world/perception/localizer.py",
+        "robot_skill_stack/world/perception/primitive_fits.py",
+        "robot_skill_stack/world/perception/primitives.py",
+        "robot_skill_stack/world/perception/tracker.py",
+        "robot_skill_stack/world/perception_multiview/__init__.py",
+        "robot_skill_stack/world/perception_multiview/acquisition.py",
+        "robot_skill_stack/world/perception_multiview/clouds.py",
+        "robot_skill_stack/world/perception_multiview/fitting.py",
+        "robot_skill_stack/world/perception_multiview/observability.py",
+        "robot_skill_stack/world/perception_multiview/segmentation.py",
+        "robot_skill_stack/world/perception_multiview/tracking.py"
+      ]
+    },
+    "mapping_algorithms": {
+      "count": 3,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/world/spatial_mapping/occupancy.py",
+        "robot_skill_stack/world/spatial_mapping/rgbd.py",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py"
+      ]
+    },
+    "backend_skills_and_orchestration": {
+      "count": 29,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/integrations/isaac/manipulation/__init__.py",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py",
+        "robot_skill_stack/manipulation/__init__.py",
+        "robot_skill_stack/manipulation/backend.py",
+        "robot_skill_stack/manipulation/grasping/__init__.py",
+        "robot_skill_stack/manipulation/grasping/clearance.py",
+        "robot_skill_stack/manipulation/grasping/planner.py",
+        "robot_skill_stack/manipulation/grasping/primitive.py",
+        "robot_skill_stack/manipulation/grasping/types.py",
+        "robot_skill_stack/manipulation/held_state.py",
+        "robot_skill_stack/manipulation/placement/__init__.py",
+        "robot_skill_stack/manipulation/placement/planner.py",
+        "robot_skill_stack/manipulation/placement/simple.py",
+        "robot_skill_stack/manipulation/placement/types.py",
+        "robot_skill_stack/manipulation/skills/__init__.py",
+        "robot_skill_stack/manipulation/skills/home.py",
+        "robot_skill_stack/manipulation/skills/move_to_pose.py",
+        "robot_skill_stack/manipulation/skills/pick.py",
+        "robot_skill_stack/manipulation/skills/place.py",
+        "robot_skill_stack/orchestration/__init__.py",
+        "robot_skill_stack/orchestration/behavior_trees/__init__.py",
+        "robot_skill_stack/orchestration/behavior_trees/executor.py",
+        "robot_skill_stack/orchestration/behavior_trees/nodes/__init__.py",
+        "robot_skill_stack/orchestration/behavior_trees/nodes/skill_node.py",
+        "robot_skill_stack/orchestration/behavior_trees/tasks/__init__.py",
+        "robot_skill_stack/orchestration/behavior_trees/tasks/pick_and_place.py",
+        "robot_skill_stack/orchestration/behavior_trees/tasks/pick_and_place_recovery.py"
+      ]
+    },
+    "launchers": {
+      "count": 2,
+      "all_unchanged": true,
+      "files": [
+        "run_isaac_python.sh",
+        "run_isaac_sim.sh"
+      ]
+    },
+    "scenes_and_configuration": {
+      "count": 6,
+      "all_unchanged": true,
+      "files": [
+        "config/scenes/multiview_perception_final.toml",
+        "config/scenes/multiview_playground.toml",
+        "config/scenes/playground.toml",
+        "scenes/multiview_perception_final.usda",
+        "scenes/multiview_playground.usda",
+        "scenes/playground.usd"
+      ]
+    },
+    "other_protected": {
+      "count": 6,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/common/__init__.py",
+        "robot_skill_stack/common/rotations.py",
+        "robot_skill_stack/common/types.py",
+        "robot_skill_stack/presentation/__init__.py",
+        "robot_skill_stack/presentation/world_model.py",
+        "scripts/run_all_regressions.py"
+      ]
+    }
+  },
+  "previous_frozen_manifest": {
+    "path": "docs/assets/spatial_mapping_v4/verification.json",
+    "sha256": "dadd4e0bbf83bdf3a5f6b4b8664cec9a866898747d563b2f9e2276f899a8fe57",
+    "count": 19,
+    "unchanged_count": 18,
+    "intentional_exceptions": [
+      "robot_skill_stack/world/perception_multiview/provider.py"
+    ],
+    "baseline_hashes_match_manifest": true,
+    "files": [
+      "robot_skill_stack/world/perception_multiview/__init__.py",
+      "robot_skill_stack/world/perception_multiview/acquisition.py",
+      "robot_skill_stack/world/perception_multiview/clouds.py",
+      "robot_skill_stack/world/perception_multiview/fitting.py",
+      "robot_skill_stack/world/perception_multiview/observability.py",
+      "robot_skill_stack/world/perception_multiview/provider.py",
+      "robot_skill_stack/world/perception_multiview/segmentation.py",
+      "robot_skill_stack/world/perception_multiview/tracking.py",
+      "tests/support/multiview_final_research.py",
+      "scripts/benchmark_multiview_final_perception.py",
+      "tests/support/multiview_final_evaluation.py",
+      "scenes/multiview_playground.usda",
+      "config/scenes/multiview_playground.toml",
+      "scenes/multiview_perception_final.usda",
+      "config/scenes/multiview_perception_final.toml",
+      "docs/assets/multiview_final/selected-layout.json",
+      "docs/assets/multiview_final/selection.json",
+      "scripts/create_multiview_final_demo.py",
+      "scripts/verify_multiview_final_scene.py"
+    ]
+  },
+  "intentional_existing_production_changes": {
+    "robot_skill_stack/integrations/isaac/bootstrap.py": {
+      "reason": "Wire bounded workers, shared acquisition, owning-context publication and cleanup; retain backend/controller setup.",
+      "before_sha256": "15c93ac5e6ed5914e04ce61bc4c9417f2815f70e694fd63aa7e55db878e4fa1c",
+      "after_sha256": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/sensors/rgbd_camera.py": {
+      "reason": "Owner-only camera sampling-clock reset after Stop/Play; no rendering or pose change.",
+      "before_sha256": "9a5d0450f9491154e3fe4f216279c1e9c6ef1717e1429cb2be825740399c05fa",
+      "after_sha256": "e352eed0983f117d9f561a468858309f8fd1704445f08a35cca0c738133395bf",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py": {
+      "reason": "Extract unchanged rasterization math behind owner-only USD acquisition and pure prepared geometry; restore original JSON-compatible nested diagnostics only in the synchronous compatibility path.",
+      "before_sha256": "4e60f502c0f210a00d2ffa2e5217766a52e6ffa73e20f7ab174f5f2673b1c127",
+      "after_sha256": "88f7c384ea35bfb2db0ff0dd8c10b1a55996ef96588f4621eb6cc645a33fbabd",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": {
+      "reason": "Extract exposure-matched immutable preparation; owner-only pose-history lifecycle and guarded view rebind.",
+      "before_sha256": "50de707d69822fbdc0c986becf35882483669f7a70014700ade35d63537f9cb0",
+      "after_sha256": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/context.py": {
+      "reason": "Immutable hint position buffers and monotonic context revision field.",
+      "before_sha256": "a50ee26bbbeb66df7dfd094cec5a67e0370688afa5f04d90d11f6df897fdc2ca",
+      "after_sha256": "29bcf71bf351b1afeed677584d0743183c3b4aab96de1bb19d8d4d4681908cd6",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/world_model.py": {
+      "reason": "Increment context revision on identity, held, hint and control-state changes, including ABA transitions.",
+      "before_sha256": "1fbe6c50fbe422a3f0f090e7a2e7830cd9a068f4a357f1d0ccf2508556de9a70",
+      "after_sha256": "db92448f7741899a51830fb47c173fd4c3e95f92a163b49c6476df4b10a442ca",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/updater.py": {
+      "reason": "Separate eligibility, publication and failure reporting while preserving synchronous entry point.",
+      "before_sha256": "2504c4424106bc3139c60509a2065fe8d07da51e4913cd35c4aed7e016441878",
+      "after_sha256": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception/diagnostics.py": {
+      "reason": "Capture completed published discovery diagnostics rather than worker-live discovery state.",
+      "before_sha256": "66ed39e7f14316b10486da32bee063149dfe82558f1d70e39b87823a944adfa8",
+      "after_sha256": "64c05170618349ac1a1b5db808e3066e1ea7772aabff9d502aefcbbabb297f6a",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception/provider.py": {
+      "reason": "Separate owner acquisition, pure processing and owner association/publication; preserve V1 math and held policy.",
+      "before_sha256": "627279ea61239d17276d5cb80c401326edd3d530cc1c8221b2aac8cbf5c6461f",
+      "after_sha256": "2b28cbf8f3f5931e19f9695001c7e9a6378e34baf9305d4f3d8c4f95998fd812",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception_multiview/provider.py": {
+      "reason": "Separate owner acquisition, pure processing and owner association/publication; preserve existing fit/partition/tracker algorithms.",
+      "before_sha256": "77854e22dbb00f0962fe2f73be78c18912ef007feffe854b81bef189e8a67795",
+      "after_sha256": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "unchanged": false
+    }
+  },
+  "new_production_module_sha256": {
+    "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+    "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+    "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+    "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5",
+    "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+    "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff"
+  },
+  "file_hashes": {
+    "robot_skill_stack/world/perception/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/discovery.py": {
+      "before_sha256": "41b3da93a93780d8d9fc0120bbf7fd27aa11bc66fbfdff30705e63a4bdc85073",
+      "after_sha256": "41b3da93a93780d8d9fc0120bbf7fd27aa11bc66fbfdff30705e63a4bdc85073",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/factory.py": {
+      "before_sha256": "22c672f5aba951b21d771c1fe341cd4731c2d0920b9a6fd4d3750dd51d6c99cf",
+      "after_sha256": "22c672f5aba951b21d771c1fe341cd4731c2d0920b9a6fd4d3750dd51d6c99cf",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/frame.py": {
+      "before_sha256": "af7ea71b8820d3a7eb1bc39489db657f8295d94a7e6941a26950088460d8ad71",
+      "after_sha256": "af7ea71b8820d3a7eb1bc39489db657f8295d94a7e6941a26950088460d8ad71",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/geometry.py": {
+      "before_sha256": "5b24ba25486de656b66a0deaeecdf7125a46f654e90109ff32bd11c2d78e9742",
+      "after_sha256": "5b24ba25486de656b66a0deaeecdf7125a46f654e90109ff32bd11c2d78e9742",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/localizer.py": {
+      "before_sha256": "3864f76a9d6a5e5f5dc048853c8bc96367c4f2ee5ab6715e4b193ce001ab4dcf",
+      "after_sha256": "3864f76a9d6a5e5f5dc048853c8bc96367c4f2ee5ab6715e4b193ce001ab4dcf",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/primitive_fits.py": {
+      "before_sha256": "07937e8b5ba7857d61e533e903c60ad26615c4b89f6749268739ab5c2a28c6ef",
+      "after_sha256": "07937e8b5ba7857d61e533e903c60ad26615c4b89f6749268739ab5c2a28c6ef",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/primitives.py": {
+      "before_sha256": "93f3ea83a25183a6422fb5d97f39fb45db14ae5faeccf24387c6575ee7c8a660",
+      "after_sha256": "93f3ea83a25183a6422fb5d97f39fb45db14ae5faeccf24387c6575ee7c8a660",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/tracker.py": {
+      "before_sha256": "9ae9775cc210d3aba000292544fc1df9e3aadb44e8f483cabd6d511ed22f6582",
+      "after_sha256": "9ae9775cc210d3aba000292544fc1df9e3aadb44e8f483cabd6d511ed22f6582",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/__init__.py": {
+      "before_sha256": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "after_sha256": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/acquisition.py": {
+      "before_sha256": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "after_sha256": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/clouds.py": {
+      "before_sha256": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "after_sha256": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/fitting.py": {
+      "before_sha256": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "after_sha256": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/observability.py": {
+      "before_sha256": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "after_sha256": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/segmentation.py": {
+      "before_sha256": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "after_sha256": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/tracking.py": {
+      "before_sha256": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "after_sha256": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": {
+      "before_sha256": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "after_sha256": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": {
+      "before_sha256": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "after_sha256": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/robot_filter.py": {
+      "before_sha256": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+      "after_sha256": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/factory.py": {
+      "before_sha256": "9229c54af5674c655468b87391b84de1327ab755a4a9de50ba3c553a2af00d0e",
+      "after_sha256": "9229c54af5674c655468b87391b84de1327ab755a4a9de50ba3c553a2af00d0e",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": {
+      "before_sha256": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "after_sha256": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": {
+      "before_sha256": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "after_sha256": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/backend.py": {
+      "before_sha256": "50ccd6ded24237d92df06ed0a65db6f1c1172100e1224618f951d6ef7b6fcb72",
+      "after_sha256": "50ccd6ded24237d92df06ed0a65db6f1c1172100e1224618f951d6ef7b6fcb72",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/__init__.py": {
+      "before_sha256": "89e1bffa91c5bae7cbf50b6399958db2eaed69d9b854d7cd3dea5cbffd3a0fd7",
+      "after_sha256": "89e1bffa91c5bae7cbf50b6399958db2eaed69d9b854d7cd3dea5cbffd3a0fd7",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/clearance.py": {
+      "before_sha256": "c3b3ffe79ccff660537c7be6170ef62a25ff3f080fcbe34e873b01dcc39c517c",
+      "after_sha256": "c3b3ffe79ccff660537c7be6170ef62a25ff3f080fcbe34e873b01dcc39c517c",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/planner.py": {
+      "before_sha256": "19e5baa5729ead6c5438aa366e17fdc05d6b50503ba373b378cebb039659bcdb",
+      "after_sha256": "19e5baa5729ead6c5438aa366e17fdc05d6b50503ba373b378cebb039659bcdb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/primitive.py": {
+      "before_sha256": "4b561130e861f68f8d33011b31f5ca133f2da749fe73930351a6f5411c559090",
+      "after_sha256": "4b561130e861f68f8d33011b31f5ca133f2da749fe73930351a6f5411c559090",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/types.py": {
+      "before_sha256": "11d6e2c3cfe3cbcec62f1028b52837412ef1f9a519cfadc108e8f064e7da9e1e",
+      "after_sha256": "11d6e2c3cfe3cbcec62f1028b52837412ef1f9a519cfadc108e8f064e7da9e1e",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/held_state.py": {
+      "before_sha256": "2052a0e82be9fc40a3e960f59b81e471939975b1065964e3435e11ac717fb9eb",
+      "after_sha256": "2052a0e82be9fc40a3e960f59b81e471939975b1065964e3435e11ac717fb9eb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/__init__.py": {
+      "before_sha256": "06988ee50b729065b3fb62e3e36bb573aef1ca36c31c2c13705fc4fd5463e5f4",
+      "after_sha256": "06988ee50b729065b3fb62e3e36bb573aef1ca36c31c2c13705fc4fd5463e5f4",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/planner.py": {
+      "before_sha256": "1275b02132b8b793a900c83fb2981a4446e8dad3da5c69a253abcf37160de928",
+      "after_sha256": "1275b02132b8b793a900c83fb2981a4446e8dad3da5c69a253abcf37160de928",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/simple.py": {
+      "before_sha256": "af25d7de20c9328335c4f433caea39ad7c42327f814d5fe0b36d70b5b63582e7",
+      "after_sha256": "af25d7de20c9328335c4f433caea39ad7c42327f814d5fe0b36d70b5b63582e7",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/types.py": {
+      "before_sha256": "cf6cf07b9eeeafb66bbe436a793c95f0715e1050f9f090c104858b7bda0d3915",
+      "after_sha256": "cf6cf07b9eeeafb66bbe436a793c95f0715e1050f9f090c104858b7bda0d3915",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/home.py": {
+      "before_sha256": "41364b80db1043641d48ab431ba447e434b30d9797a23b197ecf334baff1b6cb",
+      "after_sha256": "41364b80db1043641d48ab431ba447e434b30d9797a23b197ecf334baff1b6cb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/move_to_pose.py": {
+      "before_sha256": "cb32016bb59bbc9a375e46cfcf9cbdf7514e6bb7fab4ad01b6cc228a6bf91acd",
+      "after_sha256": "cb32016bb59bbc9a375e46cfcf9cbdf7514e6bb7fab4ad01b6cc228a6bf91acd",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/pick.py": {
+      "before_sha256": "e9becc0ccc68bbb78cd5b43154ac1c54510cfe699dd52c1e7424c10be4149774",
+      "after_sha256": "e9becc0ccc68bbb78cd5b43154ac1c54510cfe699dd52c1e7424c10be4149774",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/place.py": {
+      "before_sha256": "c7507508ceb47f4c6018a568815e8d5f669afa2a9b1e74dea1e9a279e452f9a2",
+      "after_sha256": "c7507508ceb47f4c6018a568815e8d5f669afa2a9b1e74dea1e9a279e452f9a2",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/executor.py": {
+      "before_sha256": "17090e226ba13c69a25e45e29a2798c1b695e3914f18f093b5eab4f3b7080ab1",
+      "after_sha256": "17090e226ba13c69a25e45e29a2798c1b695e3914f18f093b5eab4f3b7080ab1",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/nodes/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/nodes/skill_node.py": {
+      "before_sha256": "9ffd39adf0e1f3e27c0774d2c536f0b119e66c5cd32c8c38e1dc7e8582702888",
+      "after_sha256": "9ffd39adf0e1f3e27c0774d2c536f0b119e66c5cd32c8c38e1dc7e8582702888",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/tasks/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/tasks/pick_and_place.py": {
+      "before_sha256": "ac32b17aa003c42bca28228178de1a710a9ab41727b0ea021e24849d79af8804",
+      "after_sha256": "ac32b17aa003c42bca28228178de1a710a9ab41727b0ea021e24849d79af8804",
+      "unchanged": true
+    },
+    "robot_skill_stack/orchestration/behavior_trees/tasks/pick_and_place_recovery.py": {
+      "before_sha256": "7f231613659a7b58801cfe49b5771e7ca177c0897c6aec596c2b759c91d240d9",
+      "after_sha256": "7f231613659a7b58801cfe49b5771e7ca177c0897c6aec596c2b759c91d240d9",
+      "unchanged": true
+    },
+    "run_isaac_python.sh": {
+      "before_sha256": "497280b916ee3031e42a48d0c1dcc4c94340b2a5fb25de34046633133b332aef",
+      "after_sha256": "497280b916ee3031e42a48d0c1dcc4c94340b2a5fb25de34046633133b332aef",
+      "unchanged": true
+    },
+    "run_isaac_sim.sh": {
+      "before_sha256": "a353e1ff12b9b933e271d01165e3d2d62acb76747faf0bad096c02870e136f52",
+      "after_sha256": "a353e1ff12b9b933e271d01165e3d2d62acb76747faf0bad096c02870e136f52",
+      "unchanged": true
+    },
+    "config/scenes/multiview_perception_final.toml": {
+      "before_sha256": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "after_sha256": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "unchanged": true
+    },
+    "config/scenes/multiview_playground.toml": {
+      "before_sha256": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "after_sha256": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "unchanged": true
+    },
+    "config/scenes/playground.toml": {
+      "before_sha256": "387c019674ba753cb6fe53a69a94d39c2e5aeaafe9814cb7d96755eef9e73480",
+      "after_sha256": "387c019674ba753cb6fe53a69a94d39c2e5aeaafe9814cb7d96755eef9e73480",
+      "unchanged": true
+    },
+    "scenes/multiview_perception_final.usda": {
+      "before_sha256": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "after_sha256": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "unchanged": true
+    },
+    "scenes/multiview_playground.usda": {
+      "before_sha256": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "after_sha256": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "unchanged": true
+    },
+    "scenes/playground.usd": {
+      "before_sha256": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "after_sha256": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "unchanged": true
+    },
+    "robot_skill_stack/common/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/common/rotations.py": {
+      "before_sha256": "35315ed074f5cd49b16c82cef4e1dfb6762fd05090754890a6e74549c533773a",
+      "after_sha256": "35315ed074f5cd49b16c82cef4e1dfb6762fd05090754890a6e74549c533773a",
+      "unchanged": true
+    },
+    "robot_skill_stack/common/types.py": {
+      "before_sha256": "e58bbda33f688cbe3273d43d9095ae8a140fdd8489d7888a6552312e40bef69f",
+      "after_sha256": "e58bbda33f688cbe3273d43d9095ae8a140fdd8489d7888a6552312e40bef69f",
+      "unchanged": true
+    },
+    "robot_skill_stack/presentation/__init__.py": {
+      "before_sha256": "914b2d0b578bc3930aa99433801855613992182d48f431d82719c0947f768082",
+      "after_sha256": "914b2d0b578bc3930aa99433801855613992182d48f431d82719c0947f768082",
+      "unchanged": true
+    },
+    "robot_skill_stack/presentation/world_model.py": {
+      "before_sha256": "e27a88fcbcd9c915de841530bec4ca65d3b836ef1c5f01b4e1b333b86e2aa262",
+      "after_sha256": "e27a88fcbcd9c915de841530bec4ca65d3b836ef1c5f01b4e1b333b86e2aa262",
+      "unchanged": true
+    },
+    "scripts/run_all_regressions.py": {
+      "before_sha256": "92ab5de13c6a620f85c50cb320f08a77c50513a7becc26bef60ff306c78d0ae9",
+      "after_sha256": "92ab5de13c6a620f85c50cb320f08a77c50513a7becc26bef60ff306c78d0ae9",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/bootstrap.py": {
+      "before_sha256": "15c93ac5e6ed5914e04ce61bc4c9417f2815f70e694fd63aa7e55db878e4fa1c",
+      "after_sha256": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/sensors/rgbd_camera.py": {
+      "before_sha256": "9a5d0450f9491154e3fe4f216279c1e9c6ef1717e1429cb2be825740399c05fa",
+      "after_sha256": "e352eed0983f117d9f561a468858309f8fd1704445f08a35cca0c738133395bf",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py": {
+      "before_sha256": "4e60f502c0f210a00d2ffa2e5217766a52e6ffa73e20f7ab174f5f2673b1c127",
+      "after_sha256": "88f7c384ea35bfb2db0ff0dd8c10b1a55996ef96588f4621eb6cc645a33fbabd",
+      "unchanged": false
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": {
+      "before_sha256": "50de707d69822fbdc0c986becf35882483669f7a70014700ade35d63537f9cb0",
+      "after_sha256": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/context.py": {
+      "before_sha256": "a50ee26bbbeb66df7dfd094cec5a67e0370688afa5f04d90d11f6df897fdc2ca",
+      "after_sha256": "29bcf71bf351b1afeed677584d0743183c3b4aab96de1bb19d8d4d4681908cd6",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/world_model.py": {
+      "before_sha256": "1fbe6c50fbe422a3f0f090e7a2e7830cd9a068f4a357f1d0ccf2508556de9a70",
+      "after_sha256": "db92448f7741899a51830fb47c173fd4c3e95f92a163b49c6476df4b10a442ca",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/model/updater.py": {
+      "before_sha256": "2504c4424106bc3139c60509a2065fe8d07da51e4913cd35c4aed7e016441878",
+      "after_sha256": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception/diagnostics.py": {
+      "before_sha256": "66ed39e7f14316b10486da32bee063149dfe82558f1d70e39b87823a944adfa8",
+      "after_sha256": "64c05170618349ac1a1b5db808e3066e1ea7772aabff9d502aefcbbabb297f6a",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception/provider.py": {
+      "before_sha256": "627279ea61239d17276d5cb80c401326edd3d530cc1c8221b2aac8cbf5c6461f",
+      "after_sha256": "2b28cbf8f3f5931e19f9695001c7e9a6378e34baf9305d4f3d8c4f95998fd812",
+      "unchanged": false
+    },
+    "robot_skill_stack/world/perception_multiview/provider.py": {
+      "before_sha256": "77854e22dbb00f0962fe2f73be78c18912ef007feffe854b81bef189e8a67795",
+      "after_sha256": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "unchanged": false
+    },
+    "tests/support/multiview_final_research.py": {
+      "before_sha256": "8ffcaf5f677327bd9f0a558482da2c3ad95521e2393c9ac33795c2c181d33a2b",
+      "after_sha256": "8ffcaf5f677327bd9f0a558482da2c3ad95521e2393c9ac33795c2c181d33a2b",
+      "unchanged": true
+    },
+    "scripts/benchmark_multiview_final_perception.py": {
+      "before_sha256": "258ca263216efd88541ae472744c0b6b4624aa50b3ccc207306dfdce70151c21",
+      "after_sha256": "258ca263216efd88541ae472744c0b6b4624aa50b3ccc207306dfdce70151c21",
+      "unchanged": true
+    },
+    "tests/support/multiview_final_evaluation.py": {
+      "before_sha256": "f26d460ca843c50e784c38897f51f10e06679236d1d53426935fb3371927ff06",
+      "after_sha256": "f26d460ca843c50e784c38897f51f10e06679236d1d53426935fb3371927ff06",
+      "unchanged": true
+    },
+    "docs/assets/multiview_final/selected-layout.json": {
+      "before_sha256": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+      "after_sha256": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+      "unchanged": true
+    },
+    "docs/assets/multiview_final/selection.json": {
+      "before_sha256": "532cb83a9714034ab948d47852424c52939c5ae178ddb87f0c81232579b6538f",
+      "after_sha256": "532cb83a9714034ab948d47852424c52939c5ae178ddb87f0c81232579b6538f",
+      "unchanged": true
+    },
+    "scripts/create_multiview_final_demo.py": {
+      "before_sha256": "27d0aa035e1051328fadc8f68bbcaaba1c1ea290a0b5ec6f2fd9bba72b30ff2c",
+      "after_sha256": "27d0aa035e1051328fadc8f68bbcaaba1c1ea290a0b5ec6f2fd9bba72b30ff2c",
+      "unchanged": true
+    },
+    "scripts/verify_multiview_final_scene.py": {
+      "before_sha256": "0f9117523f83f0ce4c6e24a778fc25f50a6b629ec96fceed93daa62a5b6c1a95",
+      "after_sha256": "0f9117523f83f0ce4c6e24a778fc25f50a6b629ec96fceed93daa62a5b6c1a95",
+      "unchanged": true
+    }
+  },
+  "findings": [],
+  "limitations": [
+    "Subprocess transport failure is terminal and requires clean runtime/service reinitialization; normal pure computation exceptions may recover in the same child.",
+    "Owner-facing sparse map reads are bounded. Dense states/probabilities/expired exports, counts and voxel_centers explicitly scan/copy the grid and can block their caller.",
+    "Robot filtering assumes supported static visual meshes and static mesh-to-body placement. Detected robot model/topology/visibility changes require reinitialization; deforming models are unsupported.",
+    "Supported repository GUI/native launchers use a Python interpreter. Embedded kit/kit is rejected before starting a worker; use ./run_isaac_sim.sh.",
+    "Cameras must provide exposure-calibrated intrinsics/extrinsics. Native validation uses fixed world cameras; historical extrinsics for moving cameras are not reconstructed.",
+    "No collision-aware controller/planner, certified collision safety, volume completion, or new perception accuracy claim follows from moving unchanged computation to subprocesses."
+  ],
+  "untracked_models": "Preexisting models/ remains outside scope and is not read, modified or included.",
+  "final_source_refresh": {
+    "reason": "Final synchronous GT diagnostics JSON compatibility fix; generic geometry, runtime and measured performance paths unchanged. Baseline/oracle comparisons retained.",
+    "previous_audit_sha256": "12c3d2d72ad6fd6ec09d5ac18feaf057d6b07298e1133184a2737b85d622cc87",
+    "changed_since_previous_audit": [
+      "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py"
+    ],
+    "all_protected_groups_still_unchanged": true,
+    "compatibility_test_file_sha256": {
+      "tests/unit/test_spatial_mapping_prepare.py": "debb2b635e14063d9487ec2b5f248b51091a911149c59b417034ef6cb07ec537"
+    }
+  }
+}

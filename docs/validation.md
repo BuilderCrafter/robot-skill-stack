@@ -8,9 +8,9 @@ repository root:
 
 ```bash
 ./run_isaac_sim.sh
-python3 scripts/run_all_regressions.py --unit-only
-python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
-python3 scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
 ```
 
 The GUI wrapper sets `ISAAC_SIM` (default `/home/etfrobotics/isaacsim`), uses the
@@ -37,6 +37,8 @@ from `1f53ed8:docs/isaac_runner_startup.md` (see [history](history.md)).
 | `unit` / `--unit-only` | Architecture/syntax, unittest discovery and eight standalone offline modules; uses invoking Python 3.11/3.12 with `requirements.txt` |
 | `isaac` | Discovery and perception-manipulation integration scenarios |
 | `regression` | Benchmark, grasp planning, reactive pick, recovery, multi-object and placement feasibility |
+| `multiview` | Source contract, variable camera counts, recovery, occlusion, observability and grasp readiness |
+| `spatial_mapping` | GT/RGB-D occupancy, robot filtering, reliability, automatic runtime manipulation/lifecycle and independent camera sources |
 
 Omit group selection to run all checks. Each selected scenario runs once. Failed
 exit codes, missing result JSON or non-PASS native results fail the run; later
@@ -44,6 +46,24 @@ checks still run. Fresh artifact directories prevent stale PASS reuse. With
 `--artifacts-dir`, inspect logs, scenario JSON and `summary.json` with actual
 exit codes. Without it, native result files are temporary and terminal output
 remains visible. Do not treat an open window or a NumPy line as a test pass.
+
+V5 runtime timing is measured separately in fresh native processes, so offline
+tests and other GPU jobs do not compete with a timed run:
+
+```bash
+./run_isaac_python.sh scripts/diagnose_isaac_runtime.py \
+  --pipeline runtime --mode combined --objects both --seconds 20 \
+  --result outputs/v5-combined/result.json --artifacts-dir outputs/v5-combined
+```
+
+Repeat with `--mode control`, `semantic` and `mapping`, changing output paths.
+All modes keep the same camera/render/filter resources and use ordinary async
+MoveToPose/Home. The compact [V5 protocol](assets/spatial_mapping_v5/acceptance_protocol.json)
+defines workstation-derived acceptance limits. The historical `--pipeline sync`
+path reconstructs synchronous diagnostic scheduling before any measured update;
+its mapping callback is explicitly synthetic because V4 had no runtime mapping.
+Pick/Place and source/lifecycle tests use actual automatic bootstrap services.
+No occupancy information changes a command or trajectory.
 
 Offline doubles cover behavior and boundaries, not real rendering, physics,
 camera timing or SDK compatibility. The cloud `.venv` does not substitute for
