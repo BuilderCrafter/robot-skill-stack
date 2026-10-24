@@ -6,7 +6,7 @@ Isaac ground truth, one cached WorldModel and one cooperative async command path
 
 Capabilities include cube/box, sphere and cylinder fitting; persistent object
 IDs and placement reacquisition; gripper-position grasp verification and loss
-detection; reactive Pick; stable Place or intentional release through the API;
+detection; Pick with object-motion rechecks; stable Place or intentional release through the API;
 target-occupancy rejection; two small Behavior Trees; and an Isaac GUI.
 Only Franka is implemented. YOLO/V2, ROS and additional robot adapters are not
 part of the supported runtime.
@@ -46,8 +46,8 @@ One runner covers all retained checks:
 ```
 
 The first command runs architecture/syntax checks, discovered tests and eight
-standalone offline modules. The other groups require Isaac and contain two
-integration scenarios, direct-strategy acceptance and six regressions. Omit the group to run everything.
+standalone offline modules. The other groups require Isaac and contain
+integration/strategy acceptance and manipulation regressions. Omit the group to run everything.
 Artifacts are written to fresh run directories; a NumPy line or open window is
 not a passing scenario. See [validation](docs/validation.md) for the final
 acceptance checklist, injected-loss diagnostic and native results.
@@ -77,11 +77,15 @@ has no Isaac imports. `integrations/isaac/bootstrap.py` assembles the robot and
 source through explicit factories, using one small TOML per setup. New adapters
 implement these existing contracts; no plugin system is needed.
 RGB-D processing runs in bounded SDK-free workers. Optional spatial mapping
-starts from its TOML section and publishes independent occupancy snapshots;
-skills and motion planning do not consume the map yet.
+starts from its TOML section and publishes independent occupancy snapshots.
 The [motion strategy boundary](docs/motion_planning.md) selects direct RMPflow by
-default, preserving existing skills and exposing optional map access for future
-strategies. Reactive, global and hybrid execution are not implemented.
+default and preserves the working Pick/Place baseline. Opt-in `reactive` uses
+worker-prepared occupancy cuboids with the same controller for free-space
+MoveToPose/Home. It requires fresh mapping, creates no scene proxies, and
+explicitly rejects intended-contact Pick/Place and carrying. Global and hybrid
+planning remain unimplemented. Native ground-truth cases demonstrate avoidance;
+RGB-D obstacle avoidance remains unreliable, with measured contacts and source
+refusals. See the [V2 results](docs/motion_planning.md#v2-native-outcomes-and-runtime-impact).
 
 | Path | Responsibility |
 | --- | --- |
@@ -103,6 +107,7 @@ strategies. Reactive, global and hybrid execution are not implemented.
 - [Manipulation](docs/manipulation.md): skills, Home, Place results and held state.
 - [Perception / WorldModel](docs/perception.md): geometry, observations and identity.
 - [Spatial mapping](docs/spatial_mapping.md): automatic runtime mapping, shared frames and V5 validation.
+- [Motion strategies](docs/motion_planning.md): direct baseline, reactive occupancy integration and collision-model limits.
 - [Validation](docs/validation.md): commands, acceptance gates and release readiness.
 - [Control diagnostics](docs/control_diagnostic.md): instability correction and trace capture.
 - [History](docs/history.md): retired experiments and earlier phase reports.

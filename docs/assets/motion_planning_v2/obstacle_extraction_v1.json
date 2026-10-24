@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "measured_utc": "2026-10-24T16:52:18.958587+00:00",
+  "scope": "SDK-free extraction only on full-arm-sized 1,573,200-cell synthetic occupancy; these are not native avoidance results.",
+  "dimensions": [
+    115,
+    120,
+    114
+  ],
+  "voxel_count": 1573200,
+  "voxel_size": 0.01,
+  "source_sha256": "b82cfb11dc69619e29803a8af3eae37daf0a3afe2ccecde0a04666985d9ae0bc",
+  "cases": {
+    "empty_gt": {
+      "occupied_voxels": 0,
+      "timing_ms": {
+        "samples": [
+          7.9329172149300575,
+          7.466205861419439,
+          7.561333943158388,
+          7.624710910022259,
+          8.432681206613779
+        ],
+        "p50": 7.624710910022259,
+        "p95": 8.332728408277035,
+        "worst": 8.432681206613779
+      },
+      "diagnostics": {
+        "occupied_voxels": 0,
+        "supported_voxels": 0,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 0,
+        "proxy_count": 0,
+        "represented_voxels": 0,
+        "omitted_voxels": 0,
+        "run_budget_omitted_voxels": 0,
+        "truncated": false,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.008423343766480684
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 1.0
+    },
+    "gt_floor_two_boxes": {
+      "occupied_voxels": 37490,
+      "timing_ms": {
+        "samples": [
+          9.596194140613079,
+          8.179177064448595,
+          8.166051935404539,
+          8.599021937698126,
+          8.358072023838758
+        ],
+        "p50": 8.358072023838758,
+        "p95": 9.396759700030088,
+        "worst": 9.596194140613079
+      },
+      "diagnostics": {
+        "occupied_voxels": 37490,
+        "supported_voxels": 37490,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 3,
+        "proxy_count": 3,
+        "represented_voxels": 37490,
+        "omitted_voxels": 0,
+        "run_budget_omitted_voxels": 0,
+        "truncated": false,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.008351108059287071
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 1.0
+    },
+    "gt_irregular_usable_gap": {
+      "occupied_voxels": 6000,
+      "timing_ms": {
+        "samples": [
+          8.403507061302662,
+          7.7682300470769405,
+          7.704250048846006,
+          8.013627957552671,
+          7.754493970423937
+        ],
+        "p50": 7.7682300470769405,
+        "p95": 8.325531240552664,
+        "worst": 8.403507061302662
+      },
+      "diagnostics": {
+        "occupied_voxels": 6000,
+        "supported_voxels": 6000,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 3,
+        "proxy_count": 3,
+        "represented_voxels": 6000,
+        "omitted_voxels": 0,
+        "run_budget_omitted_voxels": 0,
+        "truncated": false,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.007747681811451912
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 1.0
+    },
+    "rgbd_contiguous_thin_surfaces": {
+      "occupied_voxels": 1805,
+      "timing_ms": {
+        "samples": [
+          8.000103291124105,
+          7.58394505828619,
+          7.716292981058359,
+          7.736721076071262,
+          7.792274001985788
+        ],
+        "p50": 7.736721076071262,
+        "p95": 7.958537433296442,
+        "worst": 8.000103291124105
+      },
+      "diagnostics": {
+        "occupied_voxels": 1805,
+        "supported_voxels": 1805,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 2,
+        "proxy_count": 2,
+        "represented_voxels": 1805,
+        "omitted_voxels": 0,
+        "run_budget_omitted_voxels": 0,
+        "truncated": false,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.007786053232848644
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 1.0
+    },
+    "rgbd_sparse_partial_surfaces": {
+      "occupied_voxels": 633,
+      "timing_ms": {
+        "samples": [
+          8.742619771510363,
+          8.668191265314817,
+          8.501729927957058,
+          8.628515992313623,
+          8.740685880184174
+        ],
+        "p50": 8.668191265314817,
+        "p95": 8.742232993245125,
+        "worst": 8.742619771510363
+      },
+      "diagnostics": {
+        "occupied_voxels": 633,
+        "supported_voxels": 458,
+        "rejected_sparse_voxels": 175,
+        "candidate_boxes": 224,
+        "proxy_count": 64,
+        "represented_voxels": 227,
+        "omitted_voxels": 231,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.008728964254260063
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 0.358609794628752
+    },
+    "isolated_noise_500": {
+      "occupied_voxels": 500,
+      "timing_ms": {
+        "samples": [
+          7.912748958915472,
+          7.5258370488882065,
+          7.543489802628756,
+          7.528922986239195,
+          7.46940216049552
+        ],
+        "p50": 7.528922986239195,
+        "p95": 7.838897127658129,
+        "worst": 7.912748958915472
+      },
+      "diagnostics": {
+        "occupied_voxels": 500,
+        "supported_voxels": 0,
+        "rejected_sparse_voxels": 500,
+        "candidate_boxes": 0,
+        "proxy_count": 0,
+        "represented_voxels": 0,
+        "omitted_voxels": 0,
+        "run_budget_omitted_voxels": 0,
+        "truncated": false,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.007462488953024149
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 0.0
+    },
+    "pathological_dense_noise": {
+      "occupied_voxels": 439578,
+      "timing_ms": {
+        "samples": [
+          64.16299473494291,
+          64.03360422700644,
+          65.65201561897993,
+          65.1648361235857,
+          64.05183719471097
+        ],
+        "p50": 64.16299473494291,
+        "p95": 65.55457971990108,
+        "worst": 65.65201561897993
+      },
+      "diagnostics": {
+        "occupied_voxels": 439578,
+        "supported_voxels": 348252,
+        "rejected_sparse_voxels": 91326,
+        "candidate_boxes": 90186,
+        "proxy_count": 64,
+        "represented_voxels": 534,
+        "omitted_voxels": 347718,
+        "run_budget_omitted_voxels": 131231,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "padding_m": 0.0,
+        "extract_seconds": 0.06403359398245811
+      },
+      "false_free_or_unknown_cells": 0,
+      "proxy_overlap_cells": 0,
+      "covered_fraction_of_occupied": 0.0012148014686813261
+    }
+  },
+  "reproduction_script": "outputs/motion-planning-v2-extraction/benchmark.py",
+  "reproduction_script_sha256": "ef034d4c5f5f1b9ae06aa0916c0620dafa16f5e191164252287f831f1fff016d",
+  "method": "Five fresh extractor instances per source; fixture construction and independent cell-union validation excluded from timing. Seed518. Occupied-state evidence only; all other cells are FREE for GT cases and UNKNOWN for RGB-D cases."
+}

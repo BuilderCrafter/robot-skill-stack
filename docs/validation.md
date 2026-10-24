@@ -35,7 +35,7 @@ from `1f53ed8:docs/isaac_runner_startup.md` (see [history](history.md)).
 | Group | Checks |
 | --- | --- |
 | `unit` / `--unit-only` | Architecture/syntax, unittest discovery and eight standalone offline modules; uses invoking Python 3.11/3.12 with `requirements.txt` |
-| `isaac` | Discovery, perception-manipulation and explicit direct-strategy motion/cancellation acceptance |
+| `isaac` | Discovery, perception-manipulation, direct motion/cancellation and reactive motion/lifecycle acceptance |
 | `regression` | Benchmark, grasp planning, reactive pick, recovery, multi-object and placement feasibility |
 | `multiview` | Source contract, variable camera counts, recovery, occlusion, observability and grasp readiness |
 | `spatial_mapping` | GT/RGB-D occupancy, robot filtering, reliability, automatic runtime manipulation/lifecycle and independent camera sources |
@@ -63,7 +63,7 @@ defines workstation-derived acceptance limits. The historical `--pipeline sync`
 path reconstructs synchronous diagnostic scheduling before any measured update;
 its mapping callback is explicitly synthetic because V4 had no runtime mapping.
 Pick/Place and source/lifecycle tests use actual automatic bootstrap services.
-No occupancy information changes a command or trajectory.
+In that V5 diagnostic, no occupancy information changes a command or trajectory.
 
 [Motion V1](motion_planning.md) uses the same unmodified combined diagnostic
 before and after direct-strategy extraction. Its additional native case selects
@@ -83,6 +83,40 @@ The Motion V1 checkpoint passes 721 discovered unit tests, eight standalone
 modules, architecture/syntax checks and all 22 native scenarios. See the
 [verification record](assets/motion_planning_v1/verification.json) and
 [matched motion comparison](assets/motion_planning_v1/evaluation.json).
+
+Motion V2 adds a separately selected `reactive` strategy. Its matched native
+diagnostic uses real physical fixtures and independent PhysX contacts plus
+cooked robot hull clearance. Run one fresh process at a time:
+
+```bash
+./run_isaac_python.sh scripts/diagnose_reactive_motion.py \
+  --strategy reactive --source ground_truth --scenario static --mapping-hz 2 \
+  --result outputs/reactive-static/result.json --artifacts-dir outputs/reactive-static
+```
+
+Repeat with `--strategy direct` and a fresh output path. The complete cases,
+fixed setup settling, source cadences and acceptance rules are declared in the
+[V2 protocol](assets/motion_planning_v2/acceptance_protocol.json). RGB-D matched
+experiments explicitly request `--mapping-hz 2.5`; the library default remains
+2 Hz, with the original one-second freshness budget. `status = PASS` in this
+diagnostic means a valid measurement. Consult `classification` and
+`avoidance_success`: contact, timeout, blocked motion and source failure are
+separate outcomes and never successful avoidance. The ordinary reactive native
+acceptance case also exercises Home, cancellation, source/map/worker failure,
+Stop/Play rejection, clean runtime reinitialization and shutdown cleanup.
+
+V2 keeps direct as the default and preserves direct Pick/Place. Reactive
+Pick/Place and carried-object transport explicitly return unsupported until an
+intended-contact and payload model exists. See the [V2 evaluation](assets/motion_planning_v2/evaluation.json)
+and [verification record](assets/motion_planning_v2/verification.json) for actual
+outcomes, source failures and regression counts.
+
+The final V2 run passes 787 discovered unit tests, all eight standalone modules,
+architecture/syntax and all 23 native scenarios (7 mapping, 6 multi-view, 4 Isaac,
+6 manipulation regressions). Its separate obstacle evaluation remains a partial
+failure: the RGB-D obstacle cases did not establish reliable avoidance, and the
+partial-observation reactive route could not be measured after two setup source
+refusals. Passing preservation regressions do not change those outcomes.
 
 Offline doubles cover behavior and boundaries, not real rendering, physics,
 camera timing or SDK compatibility. The cloud `.venv` does not substitute for

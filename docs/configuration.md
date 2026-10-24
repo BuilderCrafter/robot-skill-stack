@@ -41,7 +41,7 @@ size = [0.05, 0.05, 0.05]
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
 | `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
 | `spatial_mapping` | Optional automatic runtime occupancy service; disabled by default, with its own source, bounds, camera paths and voxel budgets |
-| `motion` | Optional initialization-time strategy selection; omitted or explicit `strategy = "direct"` retains direct RMPflow |
+| `motion` | Optional initialization-time `direct` or `reactive` strategy; omitted defaults to direct; optional bounded `max_obstacles` for reactive |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both
@@ -66,18 +66,48 @@ cameras use 640×480. `source = "ground_truth"` requires no mapping cameras.
 See [spatial mapping](spatial_mapping.md) for bounds, evidence aging, read views
 and source limits. Standalone explicit mapping sessions remain available.
 
-Motion selection is independent of observation and mapping sources:
+Direct motion does not depend on enabled mapping:
 
 ```toml
 [motion]
 strategy = "direct"
 ```
 
-Only direct is implemented. `reactive`, `global` and `hybrid` fail explicitly as
-unsupported; unknown names also fail validation before robot commands. Existing
-profiles need no new section. Selection is fixed for a backend's lifetime;
-see [motion architecture](motion_planning.md) for ownership and future mapping
-access. Direct does not query occupancy or require mapping to be enabled.
+Omitting this section keeps direct. Existing profiles need no new section, and
+direct never queries occupancy. The opt-in reactive strategy requires Spatial
+Mapping and consumes its prepared occupied-cell cuboids:
+
+```toml
+[motion]
+strategy = "reactive"
+max_obstacles = 64 # optional; integer from 1 through 128
+
+[spatial_mapping]
+enabled = true
+source = "ground_truth"
+excluded_prim_paths = ["/Franka"]
+```
+
+Ground-truth mapping must exclude the configured robot prim or an ancestor.
+With RGB-D mapping, set `source = "rgbd"` and
+`automatic_robot_filter = true`; that setting's general mapping default remains
+false. Camera selection/sharing still follows the mapping rules above, and
+semantic provider selection remains independent. Reactive with disabled mapping
+or missing robot exclusion/filtering fails validation. Temporary startup waiting
+or stale/failed observations produce an explicit motion failure, not direct
+fallback or an indefinite wait.
+
+Reactive V2 supports free-space MoveToPose/Home with an empty gripper. Pick,
+Place and carrying are explicitly unsupported for this strategy; direct remains
+the complete manipulation baseline. `global` and `hybrid` are unimplemented,
+and unknown names fail before robot commands. Selection is fixed for a backend's
+lifetime; see [motion architecture](motion_planning.md#v2--obstacle-aware-rmpflow)
+for source freshness, approximation budgets, collision-model coverage and limits.
+The existing `scene.support_plane_z` also supplies a derived budget priority for
+reactive cuboids: above-plane hazards precede floor-only boxes when the proxy
+budget binds. It does not erase floor evidence or introduce a new motion knob.
+Radius-two sparse support retains only original occupied cells, without
+inflating proxies or filling UNKNOWN space.
 
 For multi-view, create an ordinary USD Camera prim, set its position and
 orientation, and add its absolute prim path to the list:

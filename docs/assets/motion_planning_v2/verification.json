@@ -1,0 +1,1185 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL_FAILURE",
+  "regression_status": "PASS",
+  "updated_utc": "2026-10-24T18:38:19.526672+00:00",
+  "scope": "Full V2 offline/native preservation and scope checks plus separately classified motion-matrix acceptance. regression_status identifies the regression outcome independently from the matrix limitation. All old 22 native files remain protected; new lifecycle coverage adds a scenario.",
+  "baseline_checkpoint": "04190a67c262b3cb0c31b86e897c7d5d8c2e5364",
+  "offline": {
+    "artifact": {
+      "path": "outputs/motion-planning-v2-unit-final/run-uir5uu0j/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "groups": [
+      "unit"
+    ],
+    "cases": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    },
+    "status": "PASS",
+    "result_json_checks": {},
+    "modified_at": 1792865184.6577816,
+    "discovered_tests": 787,
+    "discovery_seconds": 34.899,
+    "discovery_log": {
+      "path": "outputs/motion-planning-v2-unit-final/run-uir5uu0j/unit_discovery.log",
+      "sha256": "a0ae1a6f08a9fbc85cb55756ba27ab83c8723f8f3a0bc7c616f79683d0a9c255"
+    },
+    "standalone_modules": 8,
+    "failed_test_headers": []
+  },
+  "expected_native_counts": {
+    "spatial_mapping": 7,
+    "multiview": 6,
+    "isaac": 4,
+    "regression": 6
+  },
+  "expected_unique_native_count": 23,
+  "completed_unique_native_count": 23,
+  "pending_native_cases": [],
+  "selected_native_evidence": {
+    "spatial_mapping_test_ground_truth": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_ground_truth.json",
+          "sha256": "7fe2dbb3f4fc74dcfe8e77fbc993275660cd248cd4a88c3740b97e0e59fe3d89"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_reliability": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_reliability.json",
+          "sha256": "2433d26d3879ea2c9a774b7a5c8bc2edb970142a6ce23178ca7dda6c23ad6987"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_rgbd": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_rgbd.json",
+          "sha256": "e4f0de8ac9262347dcdeba50fad2620149ef41131b027feb07f7a25678f4a9da"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_robot_self_filter": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_robot_self_filter.json",
+          "sha256": "7058076eb405d16d80876d08ccc0007e829543fc1991903ab1c3d577f26d5887"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_runtime_integration": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_runtime_integration.json",
+          "sha256": "455fd474214f71d4a57441ffb5d8f98da6db15032df0a9e48945667668cf562f"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_runtime_sources": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_runtime_sources.json",
+          "sha256": "25d064922b40f58b47f7e0ab8c24084d406c6244fd19cdc0ada5e53b5fc1b328"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "spatial_mapping_test_temporal_reliability": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_temporal_reliability.json",
+          "sha256": "b38100e0b09392d7de8e90ace3e605d622a002de6e0de9cb7d553e4080132bff"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_close_object_recovery": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_close_object_recovery.json",
+          "sha256": "f15a95f04641c8bb0678bdb9f0475cac5e46000291d584f912dec62b1a56ead4"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_geometric_observability": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_geometric_observability.json",
+          "sha256": "438823a3cb95673f85a0e08a57dea54a9f1b8c762310675eb5ce0c2aa6dd561c"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_grasp_planning_readiness": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_grasp_planning_readiness.json",
+          "sha256": "86a4d89de70c08ef2a17504ef17fcd60d7491b58d2a27758633a46f72d28f1c2"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_robot_occlusion": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_robot_occlusion.json",
+          "sha256": "c7c1f93737ca67899d2d77a4da00e2cb3016ee96253cc0cf3fc4812565160234"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_source_contract": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_source_contract.json",
+          "sha256": "6b7c26d0ecd45de737776341a51355ae8873f196916f309328947fa95654b1d3"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "multiview_test_variable_camera_count": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_variable_camera_count.json",
+          "sha256": "20596c35276ddcd047a11f033428555bd05a34993343bdf56e1fe10eac23bd68"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "isaac_test_motion_strategy": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_motion_strategy.json",
+          "sha256": "6ec431f2c3f6cf5fc081bfba670597d7824e54bb4cd4503af95dea73df546ce9"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "isaac_test_perception_discovery": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_perception_discovery.json",
+          "sha256": "fb8a410ac3ad6bc4c929ad7935d93a86b7fca5ef7563278292d951aef28f11a2"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "isaac_test_perception_manipulation": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_perception_manipulation.json",
+          "sha256": "b49f49088996a9f8b7f333d02f355282f20a8c02e765d45310c3d7cbb698e7af"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "isaac_test_reactive_motion": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_reactive_motion.json",
+          "sha256": "623c74a9d5651aa7a7b575b695eae62079d77c4de87ec4f82ee21d8e483fd780"
+        },
+        "status": "PASS",
+        "error": null,
+        "native_acceptance": {
+          "valid_measurement": true,
+          "ordinary_move_reached_without_contact": true,
+          "ordinary_home_succeeded": true,
+          "lifecycle_complete": true,
+          "lifecycle_all_checks_pass": true
+        },
+        "lifecycle_checks": {
+          "pick_place_explicitly_unsupported_without_actuation": true,
+          "competing_motion_rejected_without_action": true,
+          "cancelled_error_propagated": true,
+          "cancellation_final_hold_and_owner_release": true,
+          "cancellation_recovery_home": true,
+          "source_failure_stopped_with_hold": true,
+          "source_failure_recovery_home": true,
+          "map_reset_stopped_with_hold": true,
+          "map_reset_recovery_home": true,
+          "new_generation_observed_after_reset": true,
+          "worker_failure_stopped_with_hold": true,
+          "worker_failure_recovery_home": true,
+          "stop_did_not_continue_motion": true,
+          "play_map_advanced_generation": true,
+          "invalid_sdk_after_play_rejected_explicitly": true,
+          "clean_reinit_has_distinct_strategy_and_service": true,
+          "old_registry_and_source_closed_after_reinit": true,
+          "clean_reinitialization_recovery_home": true,
+          "new_runtime_uses_own_mapping_generation": true,
+          "shutdown_stopped_motion_with_hold": true,
+          "shutdown_closed_registry_without_proxies": true,
+          "shutdown_no_late_mapping_publication": true,
+          "all_lifecycle_steps_completed": true
+        }
+      }
+    },
+    "regression_test_benchmark": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_benchmark.json",
+          "sha256": "c18230454eb88feb5b8f8afec29b61accc664e017f0498ba67d34089c4495f7f"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "regression_test_grasp_planning": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_grasp_planning.json",
+          "sha256": "c34a57bf6fc27c908be3939525fc9cc201ec0d92e4edfcb65bf5ce4e078c86c6"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "regression_test_multi_object": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_multi_object.json",
+          "sha256": "5b84e9555e09bd461dd087d54fd53cd487c285a64cb18e1291dcf35a51da1fa3"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "regression_test_placement_feasibility": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_placement_feasibility.json",
+          "sha256": "26e04cd6fe1fe0f19be3908c1a9517b631959783af58e45bfaf8e26229954cc1"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "regression_test_reactive_pick": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_reactive_pick.json",
+          "sha256": "2d68d2d9aa123a907452b7d6f3f68c7c048e70406f816758aa092fc6a913c2c7"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    },
+    "regression_test_recovery": {
+      "summary": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "result": {
+        "artifact": {
+          "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_recovery.json",
+          "sha256": "b322be78901f5f59160af6b9cef523342c831c37c7fe697f6e5323afaa12a119"
+        },
+        "status": "PASS",
+        "error": null
+      }
+    }
+  },
+  "retained_regression_runs": [
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/summary.json",
+        "sha256": "979ebe8fc0acf0eee8e2b607b6673773a8489117b6c7c8421502104bacd5c956"
+      },
+      "groups": [
+        "isaac"
+      ],
+      "cases": {
+        "isaac_test_motion_strategy": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_perception_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_perception_manipulation": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "isaac_test_reactive_motion": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {
+        "isaac_test_motion_strategy": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_motion_strategy.json",
+            "sha256": "6ec431f2c3f6cf5fc081bfba670597d7824e54bb4cd4503af95dea73df546ce9"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "isaac_test_perception_discovery": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_perception_discovery.json",
+            "sha256": "fb8a410ac3ad6bc4c929ad7935d93a86b7fca5ef7563278292d951aef28f11a2"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "isaac_test_perception_manipulation": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_perception_manipulation.json",
+            "sha256": "b49f49088996a9f8b7f333d02f355282f20a8c02e765d45310c3d7cbb698e7af"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "isaac_test_reactive_motion": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-isaac/run-n34o6fzb/isaac_test_reactive_motion.json",
+            "sha256": "623c74a9d5651aa7a7b575b695eae62079d77c4de87ec4f82ee21d8e483fd780"
+          },
+          "status": "PASS",
+          "error": null,
+          "native_acceptance": {
+            "valid_measurement": true,
+            "ordinary_move_reached_without_contact": true,
+            "ordinary_home_succeeded": true,
+            "lifecycle_complete": true,
+            "lifecycle_all_checks_pass": true
+          },
+          "lifecycle_checks": {
+            "pick_place_explicitly_unsupported_without_actuation": true,
+            "competing_motion_rejected_without_action": true,
+            "cancelled_error_propagated": true,
+            "cancellation_final_hold_and_owner_release": true,
+            "cancellation_recovery_home": true,
+            "source_failure_stopped_with_hold": true,
+            "source_failure_recovery_home": true,
+            "map_reset_stopped_with_hold": true,
+            "map_reset_recovery_home": true,
+            "new_generation_observed_after_reset": true,
+            "worker_failure_stopped_with_hold": true,
+            "worker_failure_recovery_home": true,
+            "stop_did_not_continue_motion": true,
+            "play_map_advanced_generation": true,
+            "invalid_sdk_after_play_rejected_explicitly": true,
+            "clean_reinit_has_distinct_strategy_and_service": true,
+            "old_registry_and_source_closed_after_reinit": true,
+            "clean_reinitialization_recovery_home": true,
+            "new_runtime_uses_own_mapping_generation": true,
+            "shutdown_stopped_motion_with_hold": true,
+            "shutdown_closed_registry_without_proxies": true,
+            "shutdown_no_late_mapping_publication": true,
+            "all_lifecycle_steps_completed": true
+          }
+        }
+      },
+      "modified_at": 1792866861.1801157
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/summary.json",
+        "sha256": "b84bcc0bf5143b673abf1336fb129073d39cc1e7cbfa9a5b26f4788836f445e3"
+      },
+      "groups": [
+        "multiview"
+      ],
+      "cases": {
+        "multiview_test_close_object_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_geometric_observability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_grasp_planning_readiness": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_robot_occlusion": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_source_contract": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "multiview_test_variable_camera_count": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {
+        "multiview_test_close_object_recovery": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_close_object_recovery.json",
+            "sha256": "f15a95f04641c8bb0678bdb9f0475cac5e46000291d584f912dec62b1a56ead4"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "multiview_test_geometric_observability": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_geometric_observability.json",
+            "sha256": "438823a3cb95673f85a0e08a57dea54a9f1b8c762310675eb5ce0c2aa6dd561c"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "multiview_test_grasp_planning_readiness": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_grasp_planning_readiness.json",
+            "sha256": "86a4d89de70c08ef2a17504ef17fcd60d7491b58d2a27758633a46f72d28f1c2"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "multiview_test_robot_occlusion": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_robot_occlusion.json",
+            "sha256": "c7c1f93737ca67899d2d77a4da00e2cb3016ee96253cc0cf3fc4812565160234"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "multiview_test_source_contract": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_source_contract.json",
+            "sha256": "6b7c26d0ecd45de737776341a51355ae8873f196916f309328947fa95654b1d3"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "multiview_test_variable_camera_count": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-multiview/run-g5ksd0m8/multiview_test_variable_camera_count.json",
+            "sha256": "20596c35276ddcd047a11f033428555bd05a34993343bdf56e1fe10eac23bd68"
+          },
+          "status": "PASS",
+          "error": null
+        }
+      },
+      "modified_at": 1792866749.5651543
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/summary.json",
+        "sha256": "0f94932559d12aa2cdbe098b3774e1fdca2f4f6d864a153762d58266aa9e1c4f"
+      },
+      "groups": [
+        "regression"
+      ],
+      "cases": {
+        "regression_test_benchmark": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_multi_object": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_placement_feasibility": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "regression_test_recovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {
+        "regression_test_benchmark": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_benchmark.json",
+            "sha256": "c18230454eb88feb5b8f8afec29b61accc664e017f0498ba67d34089c4495f7f"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "regression_test_grasp_planning": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_grasp_planning.json",
+            "sha256": "c34a57bf6fc27c908be3939525fc9cc201ec0d92e4edfcb65bf5ce4e078c86c6"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "regression_test_multi_object": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_multi_object.json",
+            "sha256": "5b84e9555e09bd461dd087d54fd53cd487c285a64cb18e1291dcf35a51da1fa3"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "regression_test_placement_feasibility": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_placement_feasibility.json",
+            "sha256": "26e04cd6fe1fe0f19be3908c1a9517b631959783af58e45bfaf8e26229954cc1"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "regression_test_reactive_pick": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_reactive_pick.json",
+            "sha256": "2d68d2d9aa123a907452b7d6f3f68c7c048e70406f816758aa092fc6a913c2c7"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "regression_test_recovery": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-regression/run-9qayfev6/regression_test_recovery.json",
+            "sha256": "b322be78901f5f59160af6b9cef523342c831c37c7fe697f6e5323afaa12a119"
+          },
+          "status": "PASS",
+          "error": null
+        }
+      },
+      "modified_at": 1792867033.5565243
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/summary.json",
+        "sha256": "97c2642f2b18fe7b901a2ff458b12f8a118ff1bc66e6ea61a40a458c7e15cfcc"
+      },
+      "groups": [
+        "spatial_mapping"
+      ],
+      "cases": {
+        "spatial_mapping_test_ground_truth": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_reliability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_rgbd": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_robot_self_filter": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_runtime_integration": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_runtime_sources": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "spatial_mapping_test_temporal_reliability": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {
+        "spatial_mapping_test_ground_truth": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_ground_truth.json",
+            "sha256": "7fe2dbb3f4fc74dcfe8e77fbc993275660cd248cd4a88c3740b97e0e59fe3d89"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_reliability": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_reliability.json",
+            "sha256": "2433d26d3879ea2c9a774b7a5c8bc2edb970142a6ce23178ca7dda6c23ad6987"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_rgbd": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_rgbd.json",
+            "sha256": "e4f0de8ac9262347dcdeba50fad2620149ef41131b027feb07f7a25678f4a9da"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_robot_self_filter": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_robot_self_filter.json",
+            "sha256": "7058076eb405d16d80876d08ccc0007e829543fc1991903ab1c3d577f26d5887"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_runtime_integration": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_runtime_integration.json",
+            "sha256": "455fd474214f71d4a57441ffb5d8f98da6db15032df0a9e48945667668cf562f"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_runtime_sources": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_runtime_sources.json",
+            "sha256": "25d064922b40f58b47f7e0ab8c24084d406c6244fd19cdc0ada5e53b5fc1b328"
+          },
+          "status": "PASS",
+          "error": null
+        },
+        "spatial_mapping_test_temporal_reliability": {
+          "artifact": {
+            "path": "outputs/motion-planning-v2-regressions-spatial_mapping/run-5ffc5dtn/spatial_mapping_test_temporal_reliability.json",
+            "sha256": "b38100e0b09392d7de8e90ace3e605d622a002de6e0de9cb7d553e4080132bff"
+          },
+          "status": "PASS",
+          "error": null
+        }
+      },
+      "modified_at": 1792866573.5838099
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-unit-candidate/run-ynv4xbd1/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "groups": [
+        "unit"
+      ],
+      "cases": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {},
+      "modified_at": 1792862648.8717122,
+      "discovered_tests": 782,
+      "discovery_seconds": 34.606,
+      "discovery_log": {
+        "path": "outputs/motion-planning-v2-unit-candidate/run-ynv4xbd1/unit_discovery.log",
+        "sha256": "01ac68a405bbf44ecb029bf5bb3c1e1ee5e4f9181d284540e6e760dd7f76c864"
+      },
+      "standalone_modules": 8,
+      "failed_test_headers": []
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-unit-final/run-hs21l5e0/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "groups": [
+        "unit"
+      ],
+      "cases": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {},
+      "modified_at": 1792864894.7352388,
+      "discovered_tests": 786,
+      "discovery_seconds": 34.674,
+      "discovery_log": {
+        "path": "outputs/motion-planning-v2-unit-final/run-hs21l5e0/unit_discovery.log",
+        "sha256": "cec7f65577cb076e8a45fe024b5e49705d3a74af6cf752e5918c55351a03849f"
+      },
+      "standalone_modules": 8,
+      "failed_test_headers": []
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-unit-final/run-uir5uu0j/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "groups": [
+        "unit"
+      ],
+      "cases": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "PASS",
+      "result_json_checks": {},
+      "modified_at": 1792865184.6577816,
+      "discovered_tests": 787,
+      "discovery_seconds": 34.899,
+      "discovery_log": {
+        "path": "outputs/motion-planning-v2-unit-final/run-uir5uu0j/unit_discovery.log",
+        "sha256": "a0ae1a6f08a9fbc85cb55756ba27ab83c8723f8f3a0bc7c616f79683d0a9c255"
+      },
+      "standalone_modules": 8,
+      "failed_test_headers": []
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v2-unit-initial/run-hts3u5cu/summary.json",
+        "sha256": "4508ee4ffacb494746a3443e12534c3ce088977385a817558a0f249bf9726835"
+      },
+      "groups": [
+        "unit"
+      ],
+      "cases": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "FAIL",
+          "return_code": 1,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "status": "FAIL",
+      "result_json_checks": {},
+      "modified_at": 1792860899.641428,
+      "discovered_tests": 762,
+      "discovery_seconds": 34.569,
+      "discovery_log": {
+        "path": "outputs/motion-planning-v2-unit-initial/run-hts3u5cu/unit_discovery.log",
+        "sha256": "96c9b2d61646330aaedea811ac53de288500d0c26e579f007488d76c4bcbd70c"
+      },
+      "standalone_modules": 8,
+      "failed_test_headers": [
+        "ERROR: test_bad_or_oversized_packet_is_rejected_before_mutating_existing_sdk_state (tests.unit.test_rmpflow_obstacle_registry.RmpflowObstacleRegistryTests.test_bad_or_oversized_packet_is_rejected_before_mutating_existing_sdk_state)"
+      ]
+    }
+  ],
+  "initial_failed_unit_qualification": "The first V2 full discovery reported one error in the new SDK-registry malformed-input fixture: validated ObstacleBox rejected NaN before the intended registry boundary assertion. The fixture uses a boundary double for deliberately malformed packets; production validation is preserved.",
+  "evaluation_status": "PARTIAL_FAILURE",
+  "scope_audit_status": "PASS",
+  "related_assets": {
+    "acceptance_protocol.json": {
+      "path": "docs/assets/motion_planning_v2/acceptance_protocol.json",
+      "sha256": "26f8e50911065097a883b9150a57310cb00854b66ec3eee85c310afe9150b546"
+    },
+    "evaluation.json": {
+      "path": "docs/assets/motion_planning_v2/evaluation.json",
+      "sha256": "ddea836ccb5a07e442fb0438d1701e429cbf8e411f74ed7144254e9111eea1da"
+    },
+    "scope_audit.json": {
+      "path": "docs/assets/motion_planning_v2/scope_audit.json",
+      "sha256": "4babede050408860402b6644ba9e79b2fa410259ece891fafb937369218e09ed"
+    },
+    "sdk_validation.json": {
+      "path": "docs/assets/motion_planning_v2/sdk_validation.json",
+      "sha256": "43daae8602414af2ba478c0d18cdde4c43615fa53f277792e06be7bd212c9783"
+    },
+    "obstacle_extraction.json": {
+      "path": "docs/assets/motion_planning_v2/obstacle_extraction.json",
+      "sha256": "e6f2ddace13d0bba6b6a2c9517500be0f70a6a8a421fc6ae59ae73fb343958d0"
+    },
+    "acceptance_protocol_attempt1.json": {
+      "path": "docs/assets/motion_planning_v2/acceptance_protocol_attempt1.json",
+      "sha256": "6c82a5bd714236ea358923af35b7a59123fe502870f31a2ada3cb0b5c9b3e0e0"
+    },
+    "obstacle_extraction_v1.json": {
+      "path": "docs/assets/motion_planning_v2/obstacle_extraction_v1.json",
+      "sha256": "d64a5b0ce7b8fa9708c691add31ec6844214fba846bffe937ee7beb849038de0"
+    }
+  },
+  "evidence_qualification": "A native exit zero cannot override missing or non-PASS result JSON. Matrix measurement PASS does not imply avoidance; initial contacts, target failures, blocking and source failures retain their own classifications."
+}

@@ -253,6 +253,7 @@ class ProjectRunnerTests(unittest.TestCase):
             'tests/isaac/test_perception_discovery.py',
             'tests/isaac/test_perception_manipulation.py',
             'tests/isaac/test_motion_strategy.py',
+            'tests/isaac/test_reactive_motion.py',
             'tests/regression/test_benchmark.py',
             'tests/regression/test_grasp_planning.py',
             'tests/regression/test_multi_object.py',

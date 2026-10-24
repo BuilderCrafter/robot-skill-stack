@@ -35,12 +35,16 @@ on failure. `HeldState` owns attachment bookkeeping, evidence resolution and
 grip-loss policy; the backend has no WorldModel dependency.
 
 The Franka backend delegates Cartesian motion to one selected SDK-free
-`MotionStrategy` contract. Its Isaac-specific `DirectRmpflowStrategy` borrows the
-existing controller, IK and robot; the backend keeps all SDK resource ownership.
+`MotionStrategy` contract. Its Isaac-specific direct and reactive strategies
+borrow the existing controller, IK and robot; the backend keeps all SDK resource ownership.
 Home uses the same delegation. Selection is validated and injected once during
 construction, and overlapping backend arm requests are rejected. An optional
-late-bound provider exposes V5's read-only mapping service to future strategies;
-direct never queries it. See [motion strategies](motion_planning.md).
+late-bound provider exposes V5's read-only mapping service to reactive; direct
+never queries it. Reactive requires fresh prepared obstacle evidence and returns
+explicit unavailable-world-state failures on staleness or source failure.
+Free-space MoveToPose/Home use the common arm-command guard. A narrow backend
+capability query makes Pick/Place return `MOTION_UNSUPPORTED` before side effects
+for reactive; direct manipulation remains intact. See [motion strategies](motion_planning.md).
 
 `WorldObservationProvider` implements `observe(context) -> ObservationBatch`,
 `forget(id)` and `close()`. A fresh sample, including an empty one, has an
@@ -56,7 +60,17 @@ Opt-in [spatial mapping](spatial_mapping.md) is a separate occupancy map, with
 simulator-independent voxel evidence/depth rays and Isaac geometry/camera
 adapters. Enabling mapping in the setup starts its independent worker service;
 `bundle.spatial_mapping.snapshot()` returns a lightweight immutable read view.
-Its worker owns the mutable grid. Skills and planners do not consume occupancy.
+Its worker owns the mutable grid. Reactive selection enables optional SDK-free
+occupied-cell cuboid extraction in that same worker. Its immutable packet is
+published with the matching map generation, revision and source timestamp;
+direct mapping does not compute this product. The Kit reactive strategy reads
+only the small packet, validates freshness and updates bounded numeric cuboids
+through public RMPflow APIs. These planning objects have no USD prims, colliders
+or rendered geometry. Skills and grasp/placement planners do not inspect voxels.
+Sparse support uses a radius-two neighbor graph without geometric dilation;
+floor-only cuboids follow above-plane hazards within the bounded budget using
+the existing scene support plane. Both filtering and budget omissions remain
+observable instead of being filled with guessed geometry.
 Overlapping camera sources share copied frames and render products; mapping-only
 cameras have explicit lifecycle ownership.
 
@@ -124,7 +138,8 @@ loops inside commands. See [validation](validation.md) for launcher invariants.
 
 Deferred World construction avoids draw/button callback reentrancy. Owned
 physics callback scopes preserve registration/removal across Stop/Play; bundle
-close and updater stop own source cleanup. Initialization failure/cancellation
+close first releases the selected strategy's owned obstacle registrations,
+then observation resources and source cleanup. Initialization failure/cancellation
 must close acquired resources, and repeated initialization closes the prior
 bundle. UI window disposal remains deferred. These SDK workarounds are retained,
 covered by doubles and require native revalidation when touched.

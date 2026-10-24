@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Actual installed Isaac Sim 5.1 public RmpFlow cuboid registration; no arm commands or simulator geometry created.",
+  "native_probe": {
+    "path": "outputs/motion-planning-v2/sdk_proxy_probe.json",
+    "sha256": "1fb2be7ccdbe96e4ab11cb11964f80d949484d4bb39cea5a7bcbad710c586992",
+    "command": "./run_isaac_python.sh outputs/motion-planning-v2/sdk_proxy_probe.py --result outputs/motion-planning-v2/sdk_proxy_probe.json",
+    "script_sha256": "76462b14eaf820cf1e177e7ff27e652fb35436850623cfd59ba84a71a38ddab5",
+    "checks": {
+      "public_add_cuboid_accepts_numeric_proxy": true,
+      "numeric_geometry_in_stage_units": true,
+      "repeated_revision_has_no_registration_or_world_update": true,
+      "moving_grid_identity_reuses_numeric_registration": true,
+      "sdk_world_updates_do_not_mutate_numeric_positions": true,
+      "disable_public_api_succeeds": true,
+      "enable_public_api_succeeds": true,
+      "size_change_readds_only_one_registration": true,
+      "actual_rmpflow_computation_accepts_world": true,
+      "remove_public_api_succeeds_and_is_observable": true,
+      "sdk_reset_then_resync_registers_current_boxes": true,
+      "new_generation_removes_old_handles": true,
+      "close_removes_owned_registrations": true,
+      "stage_prim_paths_unchanged": true,
+      "root_layer_unchanged": true,
+      "session_layer_unchanged": true
+    }
+  },
+  "public_api_findings": {
+    "registration": "RmpFlow.add_cuboid(proxy, static=False) accepts three numeric getters in the installed implementation: get_size, get_local_scale and get_world_pose. The general add_obstacle dispatcher instead checks Isaac wrapper classes.",
+    "no_usd_proxy": "A plain Python numeric cuboid is passed to public add_cuboid. No direct private Lula world insertion, USD prim, render product, collider, visual material or semantic object is created.",
+    "world_updates": "MotionPolicyController.forward calls RmpFlow.update_world each control step. Dynamic numeric getters return copies in stage units; the SDK converts them to meters and robot-base coordinates. Changed descriptor batches also refresh the world once.",
+    "dimension_updates": "The installed update_world refreshes poses, not cuboid dimensions. A resized cuboid is removed and re-added individually; unchanged geometry is not re-registered.",
+    "disable_and_remove": "The public disable_obstacle, enable_obstacle and remove_obstacle APIs all succeeded with the same numeric object in the native probe.",
+    "reset": "RmpFlow.reset replaces its Lula world/policy and clears registrations. The reactive strategy must call registry.reset_tracking after its backend-owned controller reset, then register the current accepted packet.",
+    "ownership": "The registry removes only its owned numeric objects, never resets the controller during cleanup, and asserts its creating thread before every mutation.",
+    "compatibility_limit": "Numeric duck typing is verified against this pinned installed 5.1 implementation. Revalidate these public method expectations before an Isaac SDK upgrade."
+  },
+  "scene_contamination_probe": {
+    "prim_count_before": 11,
+    "prim_count_after": 11,
+    "root_sha256": "bd18530342891c3f3e06a1860c21b71caa9bb7a97dc079e91d7f3fcf422a5141",
+    "session_sha256": "45b0714b2c3346e06221c236e2fb4bef4a556b8910c409e26f9343f65254aca1",
+    "meters_per_unit": 1.0
+  },
+  "registry_probe": {
+    "additions": 4,
+    "removals": 2,
+    "pose_updates": 1,
+    "dimension_updates": 1,
+    "identity_reuses": 1,
+    "world_updates": 6,
+    "resets": 1,
+    "skipped": 1,
+    "registered": 1,
+    "proxy_count": 1,
+    "added": 4,
+    "removed": 2,
+    "updated": 2,
+    "last_update_seconds": 8.798390626907349e-05,
+    "closed": false,
+    "generation": 1,
+    "revision": 1,
+    "timestamp": 3224196.399753816,
+    "apply_seconds": 8.798390626907349e-05,
+    "registrations": {
+      "first": 2
+    }
+  },
+  "robot_collision_model": {
+    "sphere_count": 55,
+    "links": {
+      "panda_link0": {
+        "count": 1,
+        "radii_m": [
+          0.045
+        ]
+      },
+      "panda_link1": {
+        "count": 4,
+        "radii_m": [
+          0.06
+        ]
+      },
+      "panda_link2": {
+        "count": 4,
+        "radii_m": [
+          0.06
+        ]
+      },
+      "panda_link3": {
+        "count": 4,
+        "radii_m": [
+          0.05,
+          0.055,
+          0.06
+        ]
+      },
+      "panda_link4": {
+        "count": 4,
+        "radii_m": [
+          0.055,
+          0.06
+        ]
+      },
+      "panda_link5": {
+        "count": 12,
+        "radii_m": [
+          0.025,
+          0.05,
+          0.06
+        ]
+      },
+      "panda_link6": {
+        "count": 3,
+        "radii_m": [
+          0.06
+        ]
+      },
+      "panda_link7": {
+        "count": 5,
+        "radii_m": [
+          0.02,
+          0.025,
+          0.05
+        ]
+      },
+      "panda_hand": {
+        "count": 18,
+        "radii_m": [
+          0.024,
+          0.026,
+          0.028
+        ]
+      }
+    },
+    "fingers_have_explicit_spheres": false,
+    "carried_objects_modeled": false,
+    "fixed_finger_joint_value_m": 0.025,
+    "debug_geometry_enabled": false
+  },
+  "model_interpretation": {
+    "covered_approximation": "55 environment-avoidance spheres cover panda_link0 through panda_link7 plus panda_hand: base, shoulder/upper arm, elbow/forearm, wrist and palm/gripper-body approximation.",
+    "finger_limit": "The environment sphere list contains no separate finger links. Hand spheres extend only to local z=0.056 m. Finger URDF coordinates are fixed at 0.025 m in the descriptor; actual finger travel is not modeled by updated collision spheres.",
+    "self_collision_distinction": "The RMPflow YAML additionally lists fingertip body_collision_controllers against base body_cylinders. Those anchors are not separate environment collision-sphere coverage.",
+    "carried_object_limit": "No carried-object geometry is attached to this RMPflow model. Carried-object clearance is not claimed; reactive carrying and intended Pick/Place contact remain explicitly unsupported in this stage.",
+    "unchanged_configuration": "No SDK robot descriptor, URDF, RMPflow policy YAML, collision spheres or feedback adapter was modified.",
+    "padding_distinction": "Obstacle descriptors have no geometric padding. Existing collision_rmp influence/damping parameters are unchanged and are not extra cuboid dimensions."
+  },
+  "installed_source_sha256": {
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/world.py": "ca0f48b286c51074f15777aaff9ff5668ce04f780ccfa20dcb8a7d78735c6a1b",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/motion_policies.py": "5a8c8a74c578989f87d02fb986b5308fef554f6de0a854b1b30b7c4d7d14cb64",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/world_interface.py": "43b8e70d87f5f8875c3be63684f51a2482f369929d074958d24393aebe64aa50",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/motion_policy_controller.py": "d306e83edd8404bdf4c6e37c647bdc7b7b077d9a7ef303a97f1af3980d60cc4c",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/./franka/rmpflow/robot_descriptor.yaml": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/./franka/rmpflow/franka_rmpflow_common.yaml": "6c03bd3ba5921b0f2057d917a031f8db55c9f7302585740660490c7d559348cf",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/utils.py": "2b01d774b9a611b01050b9da8e2146490b354aee5c5faea68a1ff22b0e7dc058"
+  },
+  "focused_registry_unit_validation": {
+    "command": "./run_isaac_python.sh -m unittest tests.unit.test_rmpflow_obstacle_registry -q",
+    "tests": 13,
+    "status": "PASS",
+    "seconds": 0.02
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "declared_utc": "2026-10-24T17:10:50.973086+00:00",
+  "scope": "Final matched V2 direct/reactive matrix. Gates are declared after exploratory pilots and before the final source-frozen matrix. PASS measurement is distinct from successful avoidance.",
+  "baseline_checkpoint": "04190a67c262b3cb0c31b86e897c7d5d8c2e5364",
+  "matrix": [
+    {
+      "source": "ground_truth",
+      "scenario": "empty",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": true
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "static",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": true
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "separated",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": true
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "narrow",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "irregular",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "large",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "near",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": true
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "moving",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "rgbd",
+      "scenario": "empty",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": true
+    },
+    {
+      "source": "rgbd",
+      "scenario": "static",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "rgbd",
+      "scenario": "partial",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    },
+    {
+      "source": "rgbd",
+      "scenario": "sparse",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "required_reactive_usable_goal": false
+    }
+  ],
+  "conditional_controls": [
+    {
+      "source": "ground_truth",
+      "scenario": "partial",
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "reason": "Run if RGB-D partial is unsuccessful or ambiguous, to distinguish physical occluder geometry from perception/approximation limitations."
+    }
+  ],
+  "source_freeze_rule": "Root records final diagnostic/helper/production hashes at final-matrix launch. Every valid case must report unchanged before/after hashes, and all final cases must share that frozen implementation. Pilots retain their own earlier manifests and are not relabeled as final-source rows.",
+  "commands": {
+    "template": "./run_isaac_python.sh scripts/diagnose_reactive_motion.py --strategy <direct|reactive> --source <ground_truth|rgbd> --scenario <name> --mapping-hz <2.0forGT|2.5forRGBD> --result <output>/result.json --artifacts-dir <output>",
+    "execution": "Sequential fresh Isaac processes; no simultaneous GPU job, offline suite, extraction benchmark or clearance reduction competing with measured motion.",
+    "source": "The diagnostic computes independent mesh clearance only after runtime closure and before process-terminating SimulationApp.close."
+  },
+  "matched_conditions": {
+    "scene": "scenes/multiview_perception_final.usda",
+    "profile": "config/scenes/multiview_perception_final.toml",
+    "fixture_definition": "scripts/diagnose_reactive_motion.py: fixtures()",
+    "camera_eyes": [
+      [
+        1.2,
+        -0.85,
+        0.95
+      ],
+      [
+        -0.65,
+        0.85,
+        0.85
+      ]
+    ],
+    "camera_target": [
+      0.15,
+      0,
+      0.45
+    ],
+    "start_tcp_m": [
+      0.45,
+      -0.25,
+      0.35
+    ],
+    "goal_tcp_m": [
+      0.45,
+      0.25,
+      0.35
+    ],
+    "orientation_wxyz": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "voxel_size_m": 0.01,
+    "stride": 8,
+    "max_rays": 1024,
+    "automatic_robot_filter": true,
+    "mapping_hz": "Explicit2.0forGTand2.5forRGBD,bothstrategiesmatched;librarydefault2.0unchanged.",
+    "semantic_target_hz": 5,
+    "map_stale_after_seconds": 1,
+    "evidence_ttl_seconds": 5,
+    "maximum_motion_steps": 1000,
+    "skill_position_tolerance_m": 0.025,
+    "skill_orientation_tolerance_rad": 0.1,
+    "comparison_qualification": "Final pairs use the same empty-environment prepositioning and fixture placement sequence. Record actual initial joint/TCP differences rather than assuming bit-identical simulation settling. Earlier pilots used selected-strategy prepositioning with obstacles already in place and remain exploratory; they are not pooled into final comparisons.",
+    "controlled_setup": "All external fixture actors exist far outside the mapping ROI before bootstrap. The selected backend reaches START in an empty environment. Only external actors are relocated before measurement; no robot joint teleport or strategy switching. After relocation AND all collision-reference/instrumentation caching, advance Kit unconditionally5.0seconds for every source/strategy/scenario, then require2DISTINCTnew original-timestamp fresh publications beyond a new barrier. Settling is never conditioned on proxy coverage, clearance or goal success.",
+    "measurement_readiness": "Record requested/actual5.0ssettling, update count, and source health. Then2distinct original publication timestamps beyond preparation barrier. This allows existing probabilistic evidence to settle after obstacle insertion without changing occupancy thresholds/rays/freshness.",
+    "mapping_hz_by_source": {
+      "ground_truth": 2.0,
+      "rgbd": 2.5
+    },
+    "fixture_settling_seconds": 5.0
+  },
+  "measurement_validity_gates": [
+    "Native process completes and result JSON status is PASS, with all diagnostic contracts true.",
+    "Target outcome, contact events and authored collision-mesh clearance are recorded independently of occupancy; buffers are not saturated.",
+    "Ordinary asynchronous backend/controller commands only, fixed SDK parameters, original source timestamps, and no saved-scene modifications.",
+    "Numeric planning proxies add no USD prims, render products, physics colliders or semantic objects; owned registrations are zero after close.",
+    "Final-matrix implementation manifests match across both strategies and all sources/scenarios; raw traces stay ignored."
+  ],
+  "functional_gates": {
+    "mandatory_reactive_successes": [
+      "ground_truth/empty",
+      "ground_truth/static",
+      "ground_truth/separated",
+      "ground_truth/near",
+      "rgbd/empty"
+    ],
+    "successful_avoidance": "Goal result success AND zero PhysX contact points AND no independently measured cooked-reference intersection when external obstacles exist. Initial-state contact/overlap invalidates the comparison. A timeout or collision-free blocked result never counts as successful avoidance.",
+    "static_improvement": "Mandatory GT static reactive success/no contact, while matched direct exhibits contact or materially smaller independently measured link clearance. Report individual forearm, elbow, wrist and gripper clearances.",
+    "empty_usability": {
+      "maximum_path_length_ratio": 1.25,
+      "maximum_duration_ratio": 1.25,
+      "duration_slack_seconds": 0.05,
+      "maximum_added_progress_reversals": 2
+    },
+    "niche_outcomes": "GT narrow/irregular/large/moving and RGB-D static/partial/sparse must produce valid, honestly classified measurements. Success is not forced; contact, blocked timeout, source failure and unsupported setup are separate reported outcomes.",
+    "dynamic_update_evidence": [
+      "Actual obstacle body pose changes during motion.",
+      "Mapping revisions/publications advance.",
+      "Reactive accepts at least two measured-segment packets/revisions.",
+      "Numeric obstacle registry shows meaningful pose/dimension/registration changes while the goal motion is active."
+    ],
+    "contact_policy": "Reactive Pick/Place and carried-object geometry remain explicitly unsupported without an intended-contact model. No nearby-target obstacle removal or obstacle-unaware fallback is allowed.",
+    "false_blockage": "Exact extractor union must contain no source FREE/UNKNOWN cell. A reactive failure in a physically usable scene is a practical blockage outcome; do not infer adapter inflation solely from timeout. Use GT/RGB-D controls, proxy counts/omissions and exact geometry to qualify attribution."
+  },
+  "performance_gates": {
+    "maximum_reactive_apply_p99_ratio_to_matched_direct": 1.5,
+    "maximum_controller_apply_interval_ms_exclusive": 100,
+    "maximum_controller_wait_duration_ms_exclusive": 100,
+    "maximum_controller_waits_over_100_ms": 0,
+    "proxy_count_limit": 64,
+    "maximum_running_jobs_per_worker": 1,
+    "maximum_pending_jobs_per_worker": 1,
+    "owner_hot_path": "No full-grid copy, scan, component extraction or blocking worker wait. Kit only applies prepared bounded numeric descriptors; unchanged revisions do not re-register obstacles.",
+    "freshness": "Reactive accepted packets retain matching map generation/revision/original timestamp. Source failure/reset/staleness stops motion with final hold; no indefinite wait or direct fallback.",
+    "cadence_reporting": "Report exact publication-count deltas/window. Targets5Hzsemantics and2HzGTmapping or2.5HzRGBDmapping, with short-window phase-boundary quantization stated; do not relabel unavailable/stale observations as fresh. Library default remains2Hz.",
+    "additional_timing": "Report SDK registry update distribution/maximum, extractor time, map publication age, observer overhead and oscillation/progress metrics. Empty scenes additionally satisfy the usability gates."
+  },
+  "regression_requirements": {
+    "offline": "Architecture/syntax, all discovered offline tests and eight standalone modules; preserve all V1 direct equivalence tests.",
+    "native_groups": [
+      "spatial_mapping",
+      "multiview",
+      "isaac",
+      "regression"
+    ],
+    "baseline_native_scenarios": 22,
+    "new_lifecycle": "Camera/frame and mapping-worker failure, original source expiry, map generation reset, Stop/Play, cancellation, explicit contact/carry rejection, shutdown and zero leaked numeric registrations."
+  },
+  "retained_exploration": {
+    "pilot_results": {
+      "motion-planning-v2-pilot-empty-v2-direct": {
+        "path": "outputs/motion-planning-v2-pilot-empty-v2-direct/result.json",
+        "sha256": "5cbb7bae4bdcf79fafb4e7dbfde634739776e686b2c264cb96f2fe536902bcf7",
+        "measurement_status": "PASS",
+        "classification": "target_reached_clear",
+        "avoidance_success": true
+      },
+      "motion-planning-v2-pilot-empty-v2-reactive": {
+        "path": "outputs/motion-planning-v2-pilot-empty-v2-reactive/result.json",
+        "sha256": "124143209e8f3dc8749f32cb2ed5b25e8bfcf9e74c880a958cb4c22efd9addaa",
+        "measurement_status": "PASS",
+        "classification": "target_reached_clear",
+        "avoidance_success": true
+      },
+      "motion-planning-v2-pilot-static-v1-direct": {
+        "path": "outputs/motion-planning-v2-pilot-static-v1-direct/result.json",
+        "sha256": "f334e9fc6229ed0edfe7be8cd2bac3b0bf0ab90dd0c838a9270d85140258824f",
+        "measurement_status": "PASS",
+        "classification": "contact_and_target_not_reached",
+        "avoidance_success": false
+      },
+      "motion-planning-v2-pilot-static-v1-reactive": {
+        "path": "outputs/motion-planning-v2-pilot-static-v1-reactive/result.json",
+        "sha256": "6139373fa12190a92122f56d3e94032ec2f84fe42205d2e390da03de712cdff2",
+        "measurement_status": "PASS",
+        "classification": "target_reached_clear",
+        "avoidance_success": true
+      }
+    },
+    "initial_missing_result": {
+      "artifacts_dir": "outputs/motion-planning-v2-pilot-empty-direct",
+      "log_path": "/tmp/motion-planning-v2-pilot-empty-direct.log",
+      "measurement_status": "INVALID_MISSING_RESULT",
+      "process_exit": 0,
+      "reason": "The original harness reached SimulationApp shutdown before postprocessing/result persistence. An open app or exit zero is not PASS; the later harness persists before process close."
+    },
+    "proxy_support_iterations": {
+      "obstacle_extraction_v1.json": {
+        "path": "docs/assets/motion_planning_v2/obstacle_extraction_v1.json",
+        "sha256": "d64a5b0ce7b8fa9708c691add31ec6844214fba846bffe937ee7beb849038de0"
+      },
+      "obstacle_extraction.json": {
+        "path": "docs/assets/motion_planning_v2/obstacle_extraction.json",
+        "sha256": "e6f2ddace13d0bba6b6a2c9517500be0f70a6a8a421fc6ae59ae73fb343958d0"
+      }
+    },
+    "superseded_first_matrix_attempt": {
+      "summary_path": "outputs/motion-planning-v2-final-matrix.json",
+      "protocol_path": "docs/assets/motion_planning_v2/acceptance_protocol_attempt1.json",
+      "protocol_sha256": "6c82a5bd714236ea358923af35b7a59123fe502870f31a2ada3cb0b5c9b3e0e0",
+      "qualification": "Four valid empty/static measurements and one invalid separated-direct contact-filter coverage measurement are retained as superseded exploratory data. All final comparisons use the new uniform final-v2 diagnostic; no final-frozen exception is selected."
+    }
+  },
+  "limitations": [
+    "No global planning, complete carried-object collision geometry, or certified collision-free route is claimed.",
+    "The installed sphere model approximates robot links; independently measured collision meshes and PhysX contacts bound practical claims.",
+    "RGB-D surface-only evidence, sparse-support rejection and the proxy budget can omit true geometry. UNKNOWN remains UNKNOWN and expired evidence is removed using the original V5 TTL."
+  ],
+  "policy_amended_utc": "2026-10-24T17:40:32.769905+00:00",
+  "policy_amendment_scope": "Evidence-driven support-neighborhood/relevance revision after exploratory RGB-D pilots and before final matrix; declared functional/performance gates unchanged.",
+  "obstacle_product_policy": {
+    "minimum_supported_component_voxels": 3,
+    "support_neighborhood": "Chebyshev radius two voxels, using separable five-cell sums/ORs. This neighborhood changes confidence only, not obstacle geometry.",
+    "geometry": "Exact original OCCUPIED-cell run cuboids; no dilation, padding, FREE/UNKNOWN filling or gap joining.",
+    "budget_relevance": "When the proxy budget binds, cuboids entirely at/below scene.support_plane_z plus one voxel follow above-plane hazards. Floor boxes remain if slots are available; support height is derived from existing scene geometry, not a new user control.",
+    "evidence": "The first actual controlled RGB-D static pilot had1125 occupied cells but six-neighbor support retained only3 (the only two proxies were floor). Both old results and the earlier extractor benchmark are preserved. No occupancy thresholds, voxel size, ray allocation or camera acquisition were changed."
+  },
+  "reference_policy_amended_utc": "2026-10-24T17:47:48.970952+00:00",
+  "reference_policy_amendment_scope": "Before the final matrix, strengthen the independent reference to actual installed PhysX-cooked convex hulls and explicit initial-state/intersection validity; preserve functional/performance thresholds.",
+  "independent_collision_reference": {
+    "primary": "Actual PhysX-cooked convex hull geometry requested once before measurement. SDK-guaranteed ordered convex polygons use a checked fan retaining raw float32 coordinates; production robot filtering is unchanged.",
+    "cross_check": "Explicit installed-SDK rigid contact view with all11robot body sensor paths and the full explicit physical obstacle actor list for EVERY sensor row. Assert complete sensor coverage, complete per-row actor/filter coverage and nonsaturated buffers; no wildcard one-to-one matching assumptions.",
+    "coverage": "Independent elbow, forearm, wrist and gripper link groups are asserted present. Any fallback to authored triangles is explicit by path/reference_kind.",
+    "initial_state": "Any initial PhysX contact or initial cooked-reference overlap makes the controlled avoidance comparison invalid, never successful avoidance.",
+    "avoidance_withholding": "Even with zero PhysX contact points, zero cooked-reference clearance withholds avoidance success. Cooked surfaces do not include contact/rest offsets, and conflicting references remain visible."
+  },
+  "final_matrix_amended_utc": "2026-10-24T18:02:30.203703+00:00",
+  "final_matrix_amendment_scope": "Before final matrix launch, fix matched per-source sampling rates, unconditional settling, and an initially nonoverlapping large-wall fixture; no production motion/controller/map-quality tuning.",
+  "rate_experiment_qualification": "Prior2HzRGBDpilots hit the original1second source-age bound. Configuring2.5Hz aligns acquisition to every second5Hzsemanticbatch(.4s), avoiding the2Hz shared-camera .4/.6s interval alternation plus~.4scompute/transport. Both matched RGBDstrategies use2.5Hz. No source-age, ray, resolution, voxel, evidence or controller parameter changed; default source cadence remains2Hz. The initial valid2.5Hzpilot maintained freshness but contacted/timedout; it remains a failed dynamic-insertion/partial-evidence experiment.",
+  "large_fixture_amendment": {
+    "old_center_m": [
+      0.45,
+      0.0,
+      0.35
+    ],
+    "old_dimensions_m": [
+      0.65,
+      0.16,
+      0.65
+    ],
+    "final_center_m": [
+      0.55,
+      0.05,
+      0.35
+    ],
+    "final_dimensions_m": [
+      0.5,
+      0.12,
+      0.6
+    ],
+    "reason": "The old unmeasured wall overlapped the copied cooked START elbow/forearm. Final wall still crosses the route but starts independently clear; this fixes initial-state validity, not goal-conditioned success.",
+    "copied_initial_minimum_clearance_m": 0.046921,
+    "closest_group": "forearm"
+  },
+  "contact_coverage_amended_utc": "2026-10-24T18:07:00.938069+00:00",
+  "contact_coverage_amendment_scope": "Before the restarted uniform final-v2 matrix, correct SDK contact-view wildcard assumptions; no production/controller/geometry-quality change and no gate relaxation.",
+  "final_matrix_prefix": "outputs/motion-planning-v2-final-v2-<source>-<scenario>-<strategy>",
+  "final_matrix_summary": "outputs/motion-planning-v2-final-v2-matrix.json"
+}
