@@ -92,7 +92,8 @@ class MappingProcessor:
             depth_tolerance=cfg.robot_depth_tolerance, pose_tolerance=cfg.robot_pose_tolerance)
         self.generation = generation
         self._extractor = (None if self._obstacle_settings is None else
-                           ObstacleExtractor(self._obstacle_settings))
+                           ObstacleExtractor(self._obstacle_settings,
+                               temporal_probabilities=cfg.source == "rgbd"))
 
     def compute(self, payload):
         if self.map is None or payload.generation != self.generation or payload.reset:

@@ -135,9 +135,17 @@ def _cuboids(mask, *, max_runs=100_000):
 
 
 class ObstacleExtractor:
-    """Worker-only dense extraction; callers publish the small packet in O(1)."""
-    def __init__(self, settings=None):
+    """Worker-only extraction with optional RGB-D temporal probability support.
+
+    Only temporal hit/miss integration gives probabilities repeated-observation
+    meaning. GT replacement leaves this option disabled. Both support paths
+    retain original eligible occupied cells and their existing evidence expiry.
+    """
+    def __init__(self, settings=None, *, temporal_probabilities=False):
+        if type(temporal_probabilities) is not bool:
+            raise ValueError("Temporal probability support must be a boolean")
         self.settings = settings or ObstacleExtractionSettings()
+        self._temporal_probabilities = temporal_probabilities
         self._key, self._packet = None, None
 
     def extract(self, snapshot, *, now, evidence_ttl):
@@ -156,10 +164,20 @@ class ObstacleExtractor:
             (now-observed_at < evidence_ttl))
         occupied_count = int(np.count_nonzero(occupied))
         supported = _supported(occupied)
+        spatial_supported_count = int(np.count_nonzero(supported))
+        strong_sparse_retained = 0
+        if self._temporal_probabilities:
+            # RGB-D integration accumulates repeated hit/miss evidence. Four
+            # positive votes from UNKNOWN exceed p=.95; GT replacement has no
+            # such temporal meaning and never enables this path. Geometry is
+            # still restricted to original eligible OCCUPIED cells.
+            strong = occupied & ~supported & (snapshot.probabilities >= .95)
+            strong_sparse_retained = int(np.count_nonzero(strong))
+            supported |= strong
         supported_count = int(np.count_nonzero(supported))
         bounds, dropped_runs = _cuboids(supported)
         candidate_count = len(bounds)
-        floor_candidates = floor_candidate_voxels = represented_floor = 0
+        floor_candidates = floor_candidate_voxels = represented_floor = selected_floor_boxes = 0
         if len(bounds):
             sizes = bounds[:, [1, 3, 5]]-bounds[:, [0, 2, 4]]
             volumes = np.prod(sizes, axis=1, dtype=np.int64)
@@ -177,6 +195,7 @@ class ObstacleExtractor:
             order = order[:self.settings.max_obstacles]
             bounds, volumes = bounds[order], volumes[order]
             represented_floor = int(volumes[floor[order]].sum())
+            selected_floor_boxes = int(np.count_nonzero(floor[order]))
         else:
             volumes = np.empty(0, dtype=np.int64)
         boxes = []
@@ -191,6 +210,10 @@ class ObstacleExtractor:
                 tuple((minimum+maximum)/2), tuple(maximum-minimum), oldest+evidence_ttl, int(volume)))
         represented = sum(box.voxel_count for box in boxes)
         diagnostics = dict(occupied_voxels=occupied_count, supported_voxels=supported_count,
+            spatial_supported_voxels=spatial_supported_count,
+            strong_sparse_retained=strong_sparse_retained,
+            temporal_probabilities=self._temporal_probabilities,
+            temporal_support_probability=.95 if self._temporal_probabilities else None,
             rejected_sparse_voxels=occupied_count-supported_count, candidate_boxes=candidate_count,
             proxy_count=len(boxes), represented_voxels=represented,
             omitted_voxels=supported_count-represented, run_budget_omitted_voxels=dropped_runs,
@@ -200,6 +223,8 @@ class ObstacleExtractor:
             support_plane_z=self.settings.support_plane_z,
             floor_candidate_boxes=floor_candidates,
             hazard_candidate_boxes=candidate_count-floor_candidates,
+            selected_floor_boxes=selected_floor_boxes,
+            selected_hazard_boxes=len(boxes)-selected_floor_boxes,
             represented_floor_voxels=represented_floor,
             omitted_floor_voxels=floor_candidate_voxels-represented_floor,
             padding_m=0., extract_seconds=time.perf_counter()-started)
