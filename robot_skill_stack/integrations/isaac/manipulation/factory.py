@@ -25,9 +25,17 @@ def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
     if config.backend != 'franka':
         raise ValueError(f'Unsupported robot backend: {config.backend}')
     # Validate before constructing SDK resources, including programmatic callers.
-    MotionConfig(strategy='direct' if motion is None else motion.strategy)
+    selected = MotionConfig(strategy='direct' if motion is None else motion.strategy,
+        max_obstacles=64 if motion is None else getattr(motion, 'max_obstacles', 64))
+    if selected.strategy == 'reactive' and not callable(mapping_source_provider):
+        raise ValueError('Reactive motion requires enabled Spatial Mapping access')
 
     def strategy_factory(backend):
+        if selected.strategy == 'reactive':
+            from .motion.reactive import ReactiveRmpflowStrategy
+            return ReactiveRmpflowStrategy(backend,
+                mapping_source_provider=mapping_source_provider,
+                max_obstacles=selected.max_obstacles)
         from .motion.direct import DirectRmpflowStrategy
         return DirectRmpflowStrategy(backend,
             mapping_source_provider=mapping_source_provider)

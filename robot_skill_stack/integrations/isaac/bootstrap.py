@@ -28,6 +28,19 @@ from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
 
+def _close_components(backend, observation_runtime, updater, world):
+    try:
+        close = getattr(backend, 'close', None)
+        if close is not None:
+            close()
+    finally:
+        try:
+            if observation_runtime is not None:
+                observation_runtime.close()
+        finally:
+            updater.stop(world)
+
+
 @dataclass
 class IsaacRuntimeBundle:
     world: World
@@ -46,11 +59,8 @@ class IsaacRuntimeBundle:
             return
         self._closed = True
         try:
-            try:
-                if self.observation_runtime is not None:
-                    self.observation_runtime.close()
-            finally:
-                self.world_updater.stop(self.world)
+            _close_components(self.backend, self.observation_runtime,
+                              self.world_updater, self.world)
         finally:
             if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
                 self.world._robot_skill_stack_bundle = None
@@ -136,7 +146,7 @@ async def _build_runtime(
     except BaseException:
         provider.close()
         raise
-    observation_runtime = None
+    observation_runtime = backend = None
     try:
         # Keep the V5 startup/Home reference order. Future strategies resolve the
         # public mapping service only when needed, after its later construction.
@@ -183,12 +193,11 @@ async def _build_runtime(
         world._robot_skill_stack_bundle = bundle
         print(f'[robot_skill_stack.runtime] ready: objects={len(model.objects())}', flush=True)
         return bundle
-    except BaseException:
+    except BaseException as exc:
         try:
-            if observation_runtime is not None:
-                observation_runtime.close()
-        finally:
-            updater.stop(world)
+            _close_components(backend, observation_runtime, updater, world)
+        except Exception as cleanup:
+            exc.add_note(f'Runtime cleanup also failed: {cleanup}')
         raise
 
 

@@ -203,6 +203,10 @@ class PlaceSkill(BaseSkill):
         return SkillResult(SkillStatus.SUCCESS, message, details=details)
 
     async def execute_async(self, target: Pose, mode="stable"):
+        if getattr(self.backend, 'supports_contact_motion', True) is False:
+            return SkillResult(SkillStatus.FAILED,
+                'Selected motion strategy does not support intended-contact Place.',
+                FailureCode.MOTION_UNSUPPORTED)
         prepared, target, failure = self._prepare(target, mode)
         if failure:
             return failure

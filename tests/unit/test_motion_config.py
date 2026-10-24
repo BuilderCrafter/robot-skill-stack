@@ -41,7 +41,7 @@ class MotionConfigTests(unittest.TestCase):
                 self.assertEqual(load_scene_config(path).motion.strategy, 'direct')
 
     def test_named_future_strategies_fail_explicitly_without_fallback(self):
-        for name in ('reactive', 'global', 'hybrid'):
+        for name in ('global', 'hybrid'):
             with self.subTest(strategy=name), self.assertRaisesRegex(
                     ValueError, rf'Unsupported motion strategy.*{name}.*not implemented'):
                 self.load(f'[motion]\nstrategy = "{name}"\n')
@@ -71,7 +71,34 @@ class MotionConfigTests(unittest.TestCase):
                     ValueError, r'motion.strategy must be a string'):
                 MotionConfig(value)
         with self.assertRaisesRegex(ValueError, 'Unsupported motion strategy'):
-            replace(config, strategy='reactive')
+            replace(config, strategy='global')
+
+    def test_reactive_requires_mapping_and_accepts_enabled_self_filtered_source(self):
+        with self.assertRaisesRegex(ValueError, 'requires enabled Spatial Mapping'):
+            self.load('[motion]\nstrategy = "reactive"\n')
+        config = self.load('[spatial_mapping]\nenabled = true\nsource = "rgbd"\nautomatic_robot_filter = true\n'
+                           '[motion]\nstrategy = "reactive"\nmax_obstacles = 32\n')
+        self.assertEqual(config.motion.strategy, 'reactive')
+        self.assertEqual(config.motion.max_obstacles, 32)
+
+    def test_reactive_rejects_robot_evidence_and_invalid_proxy_budget(self):
+        with self.assertRaisesRegex(ValueError, 'automatic robot self-filtering'):
+            self.load('[spatial_mapping]\nenabled = true\nsource = "rgbd"\n'
+                'automatic_robot_filter = false\n[motion]\nstrategy = "reactive"\n')
+        with self.assertRaisesRegex(ValueError, 'exclude the robot'):
+            self.load('[spatial_mapping]\nenabled = true\nsource = "ground_truth"\n'
+                'excluded_prim_paths = []\n[motion]\nstrategy = "reactive"\n')
+        for value in (0, 129, True, 2.5, None):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'max_obstacles'):
+                MotionConfig(max_obstacles=value)
+
+    def test_programmatic_reactive_scene_validation_matches_loaded_config(self):
+        config = self.load('')
+        with self.assertRaisesRegex(ValueError, 'requires enabled Spatial Mapping'):
+            replace(config, motion=MotionConfig(strategy='reactive'))
+        enabled = replace(config.spatial_mapping, enabled=True, source='ground_truth')
+        selected = replace(config, motion=MotionConfig(strategy='reactive'), spatial_mapping=enabled)
+        self.assertEqual(selected.motion.strategy, 'reactive')
 
     def test_existing_positional_scene_config_construction_keeps_default(self):
         original = self.load('')

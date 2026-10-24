@@ -103,16 +103,19 @@ class GroundTruthConfig:
 @dataclass(frozen=True)
 class MotionConfig:
     strategy: str = 'direct'
+    max_obstacles: int = 64
 
     def __post_init__(self):
         if not isinstance(self.strategy, str):
             raise ValueError('motion.strategy must be a string')
-        if self.strategy in ('reactive', 'global', 'hybrid'):
+        if self.strategy in ('global', 'hybrid'):
             raise ValueError(f'Unsupported motion strategy {self.strategy!r}: '
                              'not implemented; select \'direct\'')
-        if self.strategy != 'direct':
+        if self.strategy not in ('direct', 'reactive'):
             raise ValueError(f'Unknown motion strategy {self.strategy!r}; '
-                             'supported strategy: direct')
+                             'supported strategies: direct, reactive')
+        if type(self.max_obstacles) is not int or not 1 <= self.max_obstacles <= 128:
+            raise ValueError('motion.max_obstacles must be an integer between 1 and 128')
 
 
 @dataclass(frozen=True)
@@ -125,6 +128,18 @@ class SceneConfig:
     multi_view: MultiViewConfig = field(default_factory=MultiViewConfig)
     spatial_mapping: SpatialMappingConfig = field(default_factory=SpatialMappingConfig)
     motion: MotionConfig = field(default_factory=MotionConfig)
+
+    def __post_init__(self):
+        if self.motion.strategy != 'reactive':
+            return
+        if not self.spatial_mapping.enabled:
+            raise ValueError('Reactive motion requires enabled Spatial Mapping')
+        if self.spatial_mapping.source == 'rgbd' and not self.spatial_mapping.automatic_robot_filter:
+            raise ValueError('Reactive RGB-D motion requires automatic robot self-filtering')
+        if self.spatial_mapping.source == 'ground_truth' and not any(
+                self.robot.prim_path == path or self.robot.prim_path.startswith(path+'/')
+                for path in self.spatial_mapping.excluded_prim_paths):
+            raise ValueError('Reactive ground-truth mapping must exclude the robot subtree')
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:

@@ -337,7 +337,14 @@ async def create_observation_runtime(world, config, updater, app):
         stage = omni.usd.get_context().get_stage()
         if settings.enabled:
             from robot_skill_stack.world.spatial_mapping.runtime import MappingService
-            service = MappingService(settings, worker_factory=ProcessWorker)
+            motion = getattr(config, 'motion', None)
+            if getattr(motion, 'strategy', 'direct') == 'reactive':
+                from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
+                service = MappingService(settings, worker_factory=ProcessWorker,
+                    obstacle_settings=ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,
+                        support_plane_z=config.scene.support_plane_z))
+            else:
+                service = MappingService(settings, worker_factory=ProcessWorker)
             if settings.source == 'rgbd' and settings.automatic_robot_filter:
                 from .spatial_mapping.robot_filter import IsaacRobotSelfFilter
                 robot_filter = IsaacRobotSelfFilter(stage, config.robot.prim_path,

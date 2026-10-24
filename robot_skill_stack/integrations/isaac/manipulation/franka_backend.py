@@ -87,6 +87,15 @@ class IsaacFrankaBackend(ManipulationBackend):
         return self._motion_strategy
 
     @property
+    def supports_contact_motion(self) -> bool:
+        return getattr(self._motion_strategy, 'supports_contact_motion', True)
+
+    def close(self):
+        close = getattr(self._motion_strategy, 'close', None)
+        if close is not None:
+            close()
+
+    @property
     def is_ready(self) -> bool:
         return bool(getattr(self.robot, "handles_initialized", False))
 

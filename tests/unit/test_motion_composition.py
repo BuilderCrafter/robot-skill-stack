@@ -20,6 +20,52 @@ def direct_double():
 
 
 class MotionCompositionTests(unittest.TestCase):
+    def test_reactive_factory_selects_reactive_without_querying_mapping_during_construction(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            module_name = DIRECT_MODULE.replace('.direct', '.reactive')
+            reactive = ModuleType(module_name)
+            reactive.ReactiveRmpflowStrategy = Mock(side_effect=lambda backend, **kwargs:
+                NS(backend=backend, **kwargs))
+            resolver = Mock(side_effect=AssertionError('Source must remain late-bound'))
+            with patch.dict('sys.modules', {module_name: reactive}):
+                backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                    motion=MotionConfig(strategy='reactive', max_obstacles=32),
+                    mapping_source_provider=resolver)
+                selected = env.backend_calls[-1]['strategy_factory'](backend)
+            self.assertIs(selected.backend, backend)
+            self.assertIs(selected.mapping_source_provider, resolver)
+            self.assertEqual(selected.max_obstacles, 32)
+            reactive.ReactiveRmpflowStrategy.assert_called_once()
+            resolver.assert_not_called()
+
+    def test_only_reactive_mapping_enables_worker_obstacle_product(self):
+        async def run():
+            with bootstrap_fixture() as (bootstrap, env):
+                from robot_skill_stack.integrations.isaac.observation_runtime import create_observation_runtime
+                from robot_skill_stack.runtime.process_worker import ProcessWorker
+                config = bootstrap.load_scene_config('profile.toml')
+                mapping = replace(config.spatial_mapping, enabled=True, source='ground_truth')
+                world = NS(is_playing=lambda: True)
+                updater = NS(provider=NS())
+                for name in ('direct', 'reactive'):
+                    selected = replace(config, spatial_mapping=mapping,
+                        motion=MotionConfig(strategy=name, max_obstacles=32))
+                    service = NS(close=Mock())
+                    with patch('robot_skill_stack.world.spatial_mapping.runtime.MappingService',
+                               return_value=service) as build:
+                        coordinator = await create_observation_runtime(world, selected, updater, None)
+                    options = build.call_args.kwargs
+                    self.assertIs(options['worker_factory'], ProcessWorker)
+                    if name == 'reactive':
+                        self.assertEqual(options['obstacle_settings'].max_obstacles, 32)
+                        self.assertEqual(options['obstacle_settings'].support_plane_z, config.scene.support_plane_z)
+                    else:
+                        self.assertNotIn('obstacle_settings', options)
+                    coordinator.close()
+                    service.close.assert_called_once()
+        asyncio.run(run())
+
     def test_factory_injects_direct_with_original_controller_settings(self):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
