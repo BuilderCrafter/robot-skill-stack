@@ -102,7 +102,9 @@ class BootstrapTests(unittest.TestCase):
             self.assertIs(m.create_robot(world,cfg.robot),robot)
             factory.Franka.assert_called_once_with(prim_path='/Franka',name='franka')
             backend,gripper=m.create_backend(world,robot,cfg.robot)
-            self.assertEqual(e.backend_calls[-1],dict(world=world,robot=robot,
+            options = dict(e.backend_calls[-1])
+            self.assertTrue(callable(options.pop('strategy_factory')))
+            self.assertEqual(options,dict(world=world,robot=robot,
                              position_tolerance=.01,orientation_tolerance=.05,max_motion_steps=1000))
             self.assertEqual((gripper.min_width,gripper.max_width,gripper.aperture),(.005,.075,.08))
             self.assertEqual((gripper.tcp_to_palm,gripper.fingertip_offset,gripper.pad_above_tcp,

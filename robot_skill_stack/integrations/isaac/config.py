@@ -101,6 +101,21 @@ class GroundTruthConfig:
 
 
 @dataclass(frozen=True)
+class MotionConfig:
+    strategy: str = 'direct'
+
+    def __post_init__(self):
+        if not isinstance(self.strategy, str):
+            raise ValueError('motion.strategy must be a string')
+        if self.strategy in ('reactive', 'global', 'hybrid'):
+            raise ValueError(f'Unsupported motion strategy {self.strategy!r}: '
+                             'not implemented; select \'direct\'')
+        if self.strategy != 'direct':
+            raise ValueError(f'Unknown motion strategy {self.strategy!r}; '
+                             'supported strategy: direct')
+
+
+@dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
     world: WorldConfig
@@ -109,12 +124,14 @@ class SceneConfig:
     ground_truth: GroundTruthConfig
     multi_view: MultiViewConfig = field(default_factory=MultiViewConfig)
     spatial_mapping: SpatialMappingConfig = field(default_factory=SpatialMappingConfig)
+    motion: MotionConfig = field(default_factory=MotionConfig)
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
     with Path(path).open('rb') as stream:
         data = tomllib.load(stream)
-    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth', 'multi_view', 'spatial_mapping'}
+    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth',
+                        'multi_view', 'spatial_mapping', 'motion'}
     if unknown:
         raise ValueError(f'Unsupported configuration sections: {sorted(unknown)}')
     try:
@@ -126,6 +143,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             GroundTruthConfig(objects=objects, **ground_truth),
             MultiViewConfig(**data.get('multi_view', {})),
             SpatialMappingConfig(**data.get('spatial_mapping', {})),
+            MotionConfig(**data.get('motion', {})),
         )
     except (KeyError, TypeError) as exc:
         raise ValueError(f'Invalid scene configuration: {exc}') from exc

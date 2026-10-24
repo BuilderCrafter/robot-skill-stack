@@ -4,9 +4,9 @@ import numpy as np
 
 from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
 from robot_skill_stack.common.types import Pose, GripperState
+from robot_skill_stack.manipulation.motion import MotionStrategy
 
 from isaacsim.core.utils.numpy.rotations import rot_matrices_to_quats
-from isaacsim.core.utils.types import ArticulationAction
 from isaacsim.robot_motion.motion_generation import (
     ArticulationKinematicsSolver,
     LulaKinematicsSolver,
@@ -16,6 +16,7 @@ from isaacsim.robot_motion.motion_generation import (
 from isaacsim.robot_motion.motion_generation.lula.motion_policies import RmpFlow
 
 from robot_skill_stack.integrations.isaac.manipulation.franka_feedback import FrankaFrameVelocityPolicy
+from robot_skill_stack.integrations.isaac.manipulation.motion.direct import DirectRmpflowStrategy
 
 
 class IsaacFrankaBackend(ManipulationBackend):
@@ -30,6 +31,7 @@ class IsaacFrankaBackend(ManipulationBackend):
         max_motion_steps=1000,
         grasp_min_width=0.005,
         grasp_max_width=0.075,
+        strategy_factory=None,
     ):
         self.world = world
         self.robot = robot
@@ -74,6 +76,15 @@ class IsaacFrankaBackend(ManipulationBackend):
                 home.frame,
             )
         }
+
+        self._motion_active = False
+        self._motion_strategy = (DirectRmpflowStrategy(self) if strategy_factory is None
+                                 else strategy_factory(self))
+
+    @property
+    def motion_strategy(self) -> MotionStrategy:
+        """The strategy selected once at construction; SDK ownership stays here."""
+        return self._motion_strategy
 
     @property
     def is_ready(self) -> bool:
@@ -185,94 +196,20 @@ class IsaacFrankaBackend(ManipulationBackend):
         orientation_tolerance=None,
         grasp_check=None,
     ) -> BackendResult:
-        if target.frame != "world":
-            return BackendResult(False, f"Unsupported frame: {target.frame}")
-        if not self.check_reachability(target):
-            return BackendResult(False, "Target pose has no IK solution.")
-
-        pos_tol = (
-            self.position_tolerance
-            if position_tolerance is None
-            else position_tolerance
-        )
-        ori_tol = (
-            self.orientation_tolerance
-            if orientation_tolerance is None
-            else orientation_tolerance
-        )
-
-        self._reset_motion_controller()
-        last_pos_error = last_ori_error = None
-
-        last_action = None
+        # One arm-command owner on the cooperative Kit loop, including direct
+        # backend callers that do not enter RobotRuntime's skill busy guard.
+        if self._motion_active:
+            return BackendResult(False, "Arm motion is already in progress.")
+        self._motion_active = True
         try:
-            for step in range(self.max_motion_steps):
-                if not self.world.is_playing():
-                    await self._next_update()
-                    continue
-
-                action = self.motion_controller.forward(
-                    target_end_effector_position=target.position,
-                    target_end_effector_orientation=target.orientation,
-                )
-                self.robot.apply_action(action)
-                last_action = action
-                await self._next_update()
-
-                if grasp_check is not None:
-                    grasp_failure = grasp_check()
-                    if grasp_failure is not None:
-                        return grasp_failure
-
-                current = self.get_end_effector_pose()
-                last_pos_error = float(
-                    np.linalg.norm(current.position - target.position)
-                )
-
-                if target.orientation is None:
-                    last_ori_error = None
-                    orientation_ok = True
-                else:
-                    last_ori_error = self._quat_error(
-                        current.orientation,
-                        target.orientation,
-                    )
-                    orientation_ok = last_ori_error <= ori_tol
-
-                if last_pos_error <= pos_tol and orientation_ok:
-                    return BackendResult(
-                        True,
-                        "End effector reached target pose.",
-                        details={
-                            "steps": step + 1,
-                            "position_error_m": last_pos_error,
-                            "orientation_error_rad": last_ori_error,
-                            "position_tolerance_m": pos_tol,
-                            "orientation_tolerance_rad": ori_tol,
-                        },
-                    )
-
-            return BackendResult(
-                False,
-                "Motion timed out before reaching target pose.",
-                timed_out=True,
-                details={
-                    "max_steps": self.max_motion_steps,
-                    "position_error_m": last_pos_error,
-                    "orientation_error_rad": last_ori_error,
-                    "position_tolerance_m": pos_tol,
-                    "orientation_tolerance_rad": ori_tol,
-                },
+            return await self._motion_strategy.move_to_pose_async(
+                target,
+                position_tolerance=position_tolerance,
+                orientation_tolerance=orientation_tolerance,
+                grasp_check=grasp_check,
             )
         finally:
-            if last_action is not None:
-                # Partial finger commands leave arm targets latched. Retain the
-                # final arm position target, but stop requesting continued motion.
-                self.robot.apply_action(ArticulationAction(
-                    joint_positions=last_action.joint_positions,
-                    joint_velocities=np.zeros_like(last_action.joint_positions, dtype=float),
-                    joint_indices=last_action.joint_indices,
-                ))
+            self._motion_active = False
 
     async def open_gripper_async(self) -> BackendResult:
         self._gripper_command = 'open'

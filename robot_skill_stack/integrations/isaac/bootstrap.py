@@ -138,7 +138,12 @@ async def _build_runtime(
         raise
     observation_runtime = None
     try:
-        backend, gripper = create_backend(world, robot, config.robot)
+        # Keep the V5 startup/Home reference order. Future strategies resolve the
+        # public mapping service only when needed, after its later construction.
+        mapping_source_provider = ((lambda: None if observation_runtime is None
+            else observation_runtime.spatial_mapping) if config.spatial_mapping.enabled else None)
+        backend, gripper = create_backend(world, robot, config.robot,
+            motion=config.motion, mapping_source_provider=mapping_source_provider)
         planner = SimplePrimitiveGraspPlanner(
             gripper=gripper,
             support_plane_z=config.scene.support_plane_z,
