@@ -35,7 +35,7 @@ from `1f53ed8:docs/isaac_runner_startup.md` (see [history](history.md)).
 | Group | Checks |
 | --- | --- |
 | `unit` / `--unit-only` | Architecture/syntax, unittest discovery and eight standalone offline modules; uses invoking Python 3.11/3.12 with `requirements.txt` |
-| `isaac` | Discovery and perception-manipulation integration scenarios |
+| `isaac` | Discovery, perception-manipulation and explicit direct-strategy motion/cancellation acceptance |
 | `regression` | Benchmark, grasp planning, reactive pick, recovery, multi-object and placement feasibility |
 | `multiview` | Source contract, variable camera counts, recovery, occlusion, observability and grasp readiness |
 | `spatial_mapping` | GT/RGB-D occupancy, robot filtering, reliability, automatic runtime manipulation/lifecycle and independent camera sources |
@@ -64,6 +64,25 @@ path reconstructs synchronous diagnostic scheduling before any measured update;
 its mapping callback is explicitly synthetic because V4 had no runtime mapping.
 Pick/Place and source/lifecycle tests use actual automatic bootstrap services.
 No occupancy information changes a command or trajectory.
+
+[Motion V1](motion_planning.md) uses the same unmodified combined diagnostic
+before and after direct-strategy extraction. Its additional native case selects
+`[motion] strategy = "direct"`, verifies actual Pick/Home/Place with concurrent
+perception/mapping, and checks arm ownership, cancellation and final hold. Run
+the offline suite and all native groups sequentially, retaining separate artifacts:
+
+```bash
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/motion-v1-unit
+./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping --artifacts-dir outputs/motion-v1-mapping
+./run_isaac_python.sh scripts/run_all_regressions.py --group multiview --artifacts-dir outputs/motion-v1-multiview
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/motion-v1-isaac
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/motion-v1-regression
+```
+
+The Motion V1 checkpoint passes 721 discovered unit tests, eight standalone
+modules, architecture/syntax checks and all 22 native scenarios. See the
+[verification record](assets/motion_planning_v1/verification.json) and
+[matched motion comparison](assets/motion_planning_v1/evaluation.json).
 
 Offline doubles cover behavior and boundaries, not real rendering, physics,
 camera timing or SDK compatibility. The cloud `.venv` does not substitute for

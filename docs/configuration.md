@@ -41,6 +41,7 @@ size = [0.05, 0.05, 0.05]
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
 | `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
 | `spatial_mapping` | Optional automatic runtime occupancy service; disabled by default, with its own source, bounds, camera paths and voxel budgets |
+| `motion` | Optional initialization-time strategy selection; omitted or explicit `strategy = "direct"` retains direct RMPflow |
 
 RGB-D may omit the entire ground-truth section; it needs no oracle object IDs,
 sizes, paths or SDK wrappers. Ground truth may omit the camera section. Both
@@ -64,6 +65,19 @@ Overlapping paths reuse existing camera objects; separately owned mapping
 cameras use 640×480. `source = "ground_truth"` requires no mapping cameras.
 See [spatial mapping](spatial_mapping.md) for bounds, evidence aging, read views
 and source limits. Standalone explicit mapping sessions remain available.
+
+Motion selection is independent of observation and mapping sources:
+
+```toml
+[motion]
+strategy = "direct"
+```
+
+Only direct is implemented. `reactive`, `global` and `hybrid` fail explicitly as
+unsupported; unknown names also fail validation before robot commands. Existing
+profiles need no new section. Selection is fixed for a backend's lifetime;
+see [motion architecture](motion_planning.md) for ownership and future mapping
+access. Direct does not query occupancy or require mapping to be enabled.
 
 For multi-view, create an ordinary USD Camera prim, set its position and
 orientation, and add its absolute prim path to the list:

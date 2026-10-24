@@ -1,0 +1,1186 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "updated_utc": "2026-10-24T16:21:05.435204+00:00",
+  "baseline_commit": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+  "scope": "Motion Planning V1 implements only interchangeable direct RMPflow selection; the prior 21 unique native scenarios remain and a new motion-strategy scenario is added.",
+  "offline": {
+    "status": "PASS",
+    "discovered_tests": 721,
+    "seconds": 34.764,
+    "standalone_modules": 8,
+    "architecture": "PASS",
+    "summary": {
+      "path": "outputs/motion-planning-v1-unit-complete/run-11_q3tnz/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "unit_log": {
+      "path": "outputs/motion-planning-v1-unit-complete/run-11_q3tnz/unit_discovery.log",
+      "sha256": "9963d720f6d78417dab86b48fb3ed504c8db3db1ff740aa68248ea5f0996fa17"
+    },
+    "case_outcomes": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    }
+  },
+  "initial_offline_attempt": {
+    "status": "FAIL",
+    "summary": {
+      "path": "outputs/motion-planning-v1-unit/run-myv299g2/summary.json",
+      "sha256": "4508ee4ffacb494746a3443e12534c3ce088977385a817558a0f249bf9726835"
+    },
+    "reason": "Two runner fixture assertions encoded the old 2 Isaac cases and 8 startup scripts. The new native scenario made these test doubles incomplete; no motion or mapping implementation failure was observed.",
+    "correction": "Derive crash-mock dispatch count and verify every remaining case passes; explicitly assert all 9 startup scripts and test the new inherited V5 NumPy preload guard using its real shared fixture. Retain the original 8 startup log assertions.",
+    "focused_runner_tests": 18,
+    "focused_runner_status": "PASS"
+  },
+  "native": {
+    "status": "PASS",
+    "expected_unique_scenarios": 22,
+    "required_groups": [
+      "spatial_mapping",
+      "multiview",
+      "isaac",
+      "regression"
+    ],
+    "sequential": true,
+    "groups": {
+      "spatial_mapping": {
+        "status": "PASS",
+        "count": 7,
+        "summary": {
+          "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/summary.json",
+          "sha256": "97c2642f2b18fe7b901a2ff458b12f8a118ff1bc66e6ea61a40a458c7e15cfcc"
+        },
+        "cases": {
+          "spatial_mapping_test_ground_truth": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_ground_truth.json",
+              "sha256": "cc6620b38f246bdaabebcb97789412ee473bc1f6bd7858f474787901422285c3"
+            }
+          },
+          "spatial_mapping_test_reliability": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_reliability.json",
+              "sha256": "0ab667af17e7805d836122161b866e6bf84807fd709faf80a82e929d91c486f2"
+            }
+          },
+          "spatial_mapping_test_rgbd": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_rgbd.json",
+              "sha256": "44d0ffdf0cbcd1bacb27ede45f74525d9846c83aa75bdaf5f47ed4e021ea2fff"
+            }
+          },
+          "spatial_mapping_test_robot_self_filter": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_robot_self_filter.json",
+              "sha256": "99cad315cc770b8b2de17ac8e495b0e303526b7d1273c0ecb5da5fb006815eba"
+            }
+          },
+          "spatial_mapping_test_runtime_integration": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_runtime_integration.json",
+              "sha256": "0ffa019cfd7fbcc8ffc4a788cfdaa2e918b859127ceff48809a20dd0b479c2ce"
+            }
+          },
+          "spatial_mapping_test_runtime_sources": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_runtime_sources.json",
+              "sha256": "b3cdb043cbe6b317fe4e02b166fc724f3341989c49bcb0448171a7f539b067b4"
+            }
+          },
+          "spatial_mapping_test_temporal_reliability": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-spatial_mapping/run-uiqek9rk/spatial_mapping_test_temporal_reliability.json",
+              "sha256": "5ef31ca082d97231fbc9375c306ebc925be036aad6bd94015cb0eacf4c572753"
+            }
+          }
+        }
+      },
+      "multiview": {
+        "status": "PASS",
+        "count": 6,
+        "summary": {
+          "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/summary.json",
+          "sha256": "b84bcc0bf5143b673abf1336fb129073d39cc1e7cbfa9a5b26f4788836f445e3"
+        },
+        "cases": {
+          "multiview_test_close_object_recovery": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_close_object_recovery.json",
+              "sha256": "f15a95f04641c8bb0678bdb9f0475cac5e46000291d584f912dec62b1a56ead4"
+            }
+          },
+          "multiview_test_geometric_observability": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_geometric_observability.json",
+              "sha256": "438823a3cb95673f85a0e08a57dea54a9f1b8c762310675eb5ce0c2aa6dd561c"
+            }
+          },
+          "multiview_test_grasp_planning_readiness": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_grasp_planning_readiness.json",
+              "sha256": "86a4d89de70c08ef2a17504ef17fcd60d7491b58d2a27758633a46f72d28f1c2"
+            }
+          },
+          "multiview_test_robot_occlusion": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_robot_occlusion.json",
+              "sha256": "c7c1f93737ca67899d2d77a4da00e2cb3016ee96253cc0cf3fc4812565160234"
+            }
+          },
+          "multiview_test_source_contract": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_source_contract.json",
+              "sha256": "24319cd8cdd0d29c05ae1cb0f70034b008e59a6d08df0556751df167deb8efdc"
+            }
+          },
+          "multiview_test_variable_camera_count": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-multiview/run-3eikzkay/multiview_test_variable_camera_count.json",
+              "sha256": "20596c35276ddcd047a11f033428555bd05a34993343bdf56e1fe10eac23bd68"
+            }
+          }
+        }
+      },
+      "isaac": {
+        "status": "PASS",
+        "count": 3,
+        "summary": {
+          "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/summary.json",
+          "sha256": "ecc4c5ebdd9a9f36d48497bdcbe8118f10e664d077b8a47f7703940837b35305"
+        },
+        "cases": {
+          "isaac_test_motion_strategy": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/isaac_test_motion_strategy.json",
+              "sha256": "8f10e57071fec2338984d1b2ba364a839ca7cdbebe902353b14bf9d9303d9c26"
+            }
+          },
+          "isaac_test_perception_discovery": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/isaac_test_perception_discovery.json",
+              "sha256": "fb8a410ac3ad6bc4c929ad7935d93a86b7fca5ef7563278292d951aef28f11a2"
+            }
+          },
+          "isaac_test_perception_manipulation": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/isaac_test_perception_manipulation.json",
+              "sha256": "b49f49088996a9f8b7f333d02f355282f20a8c02e765d45310c3d7cbb698e7af"
+            }
+          }
+        }
+      },
+      "regression": {
+        "status": "PASS",
+        "count": 6,
+        "summary": {
+          "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/summary.json",
+          "sha256": "0f94932559d12aa2cdbe098b3774e1fdca2f4f6d864a153762d58266aa9e1c4f"
+        },
+        "cases": {
+          "regression_test_benchmark": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_benchmark.json",
+              "sha256": "011a512e0675b1e0fd6b5359a5b74592f6568f86acfd40a99a9089d82e6c5d0a"
+            }
+          },
+          "regression_test_grasp_planning": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_grasp_planning.json",
+              "sha256": "c34a57bf6fc27c908be3939525fc9cc201ec0d92e4edfcb65bf5ce4e078c86c6"
+            }
+          },
+          "regression_test_multi_object": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_multi_object.json",
+              "sha256": "9978f82a74cf8b8e314c2f9dd27a2887b87329dca6218ca7ed218215436a6e70"
+            }
+          },
+          "regression_test_placement_feasibility": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_placement_feasibility.json",
+              "sha256": "26e04cd6fe1fe0f19be3908c1a9517b631959783af58e45bfaf8e26229954cc1"
+            }
+          },
+          "regression_test_reactive_pick": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_reactive_pick.json",
+              "sha256": "2d68d2d9aa123a907452b7d6f3f68c7c048e70406f816758aa092fc6a913c2c7"
+            }
+          },
+          "regression_test_recovery": {
+            "status": "PASS",
+            "return_code": 0,
+            "error": null,
+            "reported_status": "PASS",
+            "result": {
+              "path": "outputs/motion-planning-v1-regression/run-jfddfxlr/regression_test_recovery.json",
+              "sha256": "cb0075618a9a85b88a294a52fb4df8de69ae409f38a049a618da1ec73e9b7a4d"
+            }
+          }
+        }
+      }
+    },
+    "completed_unique_scenarios": 22,
+    "qualification": "All four requested groups completed sequentially with an all-PASS summary and each scenario reported PASS in its own JSON. The 22 cases include every original V5 native scenario plus the new explicit strategy scenario. The standalone strategy acceptance is an additional execution of that same case, not another unique scenario."
+  },
+  "related_assets": [
+    "acceptance_protocol.json",
+    "scope_audit.json",
+    "evaluation.json"
+  ],
+  "intermediate_offline_pass": {
+    "status": "PASS",
+    "discovered_tests": 720,
+    "seconds": 34.499,
+    "standalone_modules": 8,
+    "architecture": "PASS",
+    "summary": {
+      "path": "outputs/motion-planning-v1-unit-final/run-0pov_zoi/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "unit_log": {
+      "path": "outputs/motion-planning-v1-unit-final/run-0pov_zoi/unit_discovery.log",
+      "sha256": "31b1dce8c1a08ce3ee1dbb4deffe0360b993daf0906dc08d5f717c630d0aea11"
+    },
+    "case_outcomes": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    },
+    "qualification": "720 tests passed before adding one additional constructor-injection test; final complete run below includes that test."
+  },
+  "native_strategy_acceptance": {
+    "status": "PASS",
+    "result": {
+      "path": "outputs/motion-planning-v1-native/result.json",
+      "sha256": "516f0fc1f48627862f89048bf900869c3018c816acdab025220e613ee6dcca12"
+    },
+    "raw_arm_actions": {
+      "path": "outputs/motion-planning-v1-native/motion_actions.json",
+      "sha256": "467760604be74dff81a6de174f520c61146d864c10886ac3bef19a3ae86d6453"
+    },
+    "checks": {
+      "explicit_direct_selected": true,
+      "mapping_provider_resolves_current_service": true,
+      "pick_succeeded": true,
+      "actual_lift": true,
+      "held_identity": true,
+      "ordinary_held_home_succeeded": true,
+      "place_succeeded": true,
+      "release_cleared_held": true,
+      "placed_identity_reacquired": true,
+      "unsupported_frame_and_ik_rejected_without_actions": true,
+      "competing_motion_rejected_without_actions": true,
+      "cancellation_propagated": true,
+      "cancelled_motion_applied_final_hold": true,
+      "cancelled_motion_released_ownership": true,
+      "home_after_cancellation_succeeded": true,
+      "ordinary_released_home_succeeded": true,
+      "all_requested_steps_completed": true,
+      "final_service_closed": true,
+      "all_executed_motions_applied_final_hold": true,
+      "held_motion_grasp_checks_preserved": true,
+      "normal_home_routed_through_strategy": true,
+      "source_and_saved_scenes_unchanged": true
+    },
+    "strategy_calls": [
+      {
+        "call": 1,
+        "target": {
+          "position": [
+            0.4465096021993601,
+            -1.7561703719113286e-07,
+            0.12500154643103917
+          ],
+          "orientation": [
+            0.0,
+            9.688523605579533e-19,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.02,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 86,
+            "position_error_m": 0.019037411193610864,
+            "orientation_error_rad": 0.004918785048975591,
+            "position_tolerance_m": 0.02,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 1.0962716909125447,
+        "final_hold": true
+      },
+      {
+        "call": 2,
+        "target": {
+          "position": [
+            0.4465096021993601,
+            -1.7561703719113286e-07,
+            0.02500154643103917
+          ],
+          "orientation": [
+            0.0,
+            9.688523605579533e-19,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.01,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 55,
+            "position_error_m": 0.009955851060593086,
+            "orientation_error_rad": 0.00587173408546847,
+            "position_tolerance_m": 0.01,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 0.689564451109618,
+        "final_hold": true
+      },
+      {
+        "call": 3,
+        "target": {
+          "position": [
+            0.4465096021993601,
+            -1.7561703719113286e-07,
+            0.14500154643103916
+          ],
+          "orientation": [
+            0.0,
+            9.688523605579533e-19,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.02,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": true,
+        "grasp_checks": 40,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 40,
+            "position_error_m": 0.018988111327130207,
+            "orientation_error_rad": 0.006389889206131628,
+            "position_tolerance_m": 0.02,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 0.5151587049476802,
+        "final_hold": true
+      },
+      {
+        "call": 4,
+        "target": {
+          "position": [
+            0.5974912637910632,
+            -0.08603929056981253,
+            0.3644922301295057
+          ],
+          "orientation": [
+            0.20977957952881227,
+            0.1715124171490509,
+            0.955105209887572,
+            -0.11979172267741134
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.025,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": true,
+        "grasp_checks": 91,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 91,
+            "position_error_m": 0.024660290187589737,
+            "orientation_error_rad": 0.02228987233349242,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 1.060115157160908,
+        "final_hold": true
+      },
+      {
+        "call": 5,
+        "target": {
+          "position": [
+            0.44035655098054266,
+            0.25352759294342425,
+            0.1319961616300825
+          ],
+          "orientation": [
+            0.20317953785844992,
+            0.17055127817335575,
+            0.9555438935460216,
+            -0.1287097681451202
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.02,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": true,
+        "grasp_checks": 172,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 172,
+            "position_error_m": 0.01962391990373776,
+            "orientation_error_rad": 0.027182163101880367,
+            "position_tolerance_m": 0.02,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 2.0122241470962763,
+        "final_hold": true
+      },
+      {
+        "call": 6,
+        "target": {
+          "position": [
+            0.44035655098054266,
+            0.25352759294342425,
+            0.031996161630082495
+          ],
+          "orientation": [
+            0.20317953785844992,
+            0.17055127817335575,
+            0.9555438935460216,
+            -0.1287097681451202
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.015,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": true,
+        "grasp_checks": 53,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 53,
+            "position_error_m": 0.014811064777741577,
+            "orientation_error_rad": 0.02926911776928451,
+            "position_tolerance_m": 0.015,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 0.7183900671079755,
+        "final_hold": true
+      },
+      {
+        "call": 7,
+        "target": {
+          "position": [
+            0.44035655098054266,
+            0.25352759294342425,
+            0.1519961616300825
+          ],
+          "orientation": [
+            0.20317953785844992,
+            0.17055127817335575,
+            0.9555438935460216,
+            -0.1287097681451202
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.02,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 40,
+            "position_error_m": 0.01952125423954019,
+            "orientation_error_rad": 0.010146364813372265,
+            "position_tolerance_m": 0.02,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 0.476373337674886,
+        "final_hold": true
+      },
+      {
+        "call": 8,
+        "target": {
+          "position": [
+            0.5974912637910632,
+            -0.08603929056981253,
+            0.3644922301295057
+          ],
+          "orientation": [
+            0.20977957952881227,
+            0.1715124171490509,
+            0.955105209887572,
+            -0.11979172267741134
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.025,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 115,
+            "position_error_m": 0.02498361885744462,
+            "orientation_error_rad": 0.009644859829428263,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 1.3206770769320428,
+        "final_hold": true
+      },
+      {
+        "call": 9,
+        "target": {
+          "position": [
+            0.45,
+            0.0,
+            0.25
+          ],
+          "orientation": null,
+          "frame": "robot"
+        },
+        "position_tolerance": null,
+        "orientation_tolerance": null,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": false,
+          "message": "Unsupported frame: robot",
+          "timed_out": false,
+          "details": {}
+        },
+        "seconds": 4.612607881426811e-05,
+        "final_hold": null
+      },
+      {
+        "call": 10,
+        "target": {
+          "position": [
+            20.0,
+            20.0,
+            20.0
+          ],
+          "orientation": null,
+          "frame": "world"
+        },
+        "position_tolerance": null,
+        "orientation_tolerance": null,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": false,
+          "message": "Target pose has no IK solution.",
+          "timed_out": false,
+          "details": {}
+        },
+        "seconds": 0.0027847811579704285,
+        "final_hold": null
+      },
+      {
+        "call": 11,
+        "target": {
+          "position": [
+            0.45,
+            0.08,
+            0.25
+          ],
+          "orientation": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": null,
+        "orientation_tolerance": null,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "cancelled",
+        "seconds": 0.025231827050447464,
+        "final_hold": true
+      },
+      {
+        "call": 12,
+        "target": {
+          "position": [
+            0.5974912637910632,
+            -0.08603929056981253,
+            0.3644922301295057
+          ],
+          "orientation": [
+            0.20977957952881227,
+            0.1715124171490509,
+            0.955105209887572,
+            -0.11979172267741134
+          ],
+          "frame": "world"
+        },
+        "position_tolerance": 0.025,
+        "orientation_tolerance": 0.1,
+        "had_grasp_check": false,
+        "grasp_checks": 0,
+        "outcome": "result",
+        "result": {
+          "ok": true,
+          "message": "End effector reached target pose.",
+          "timed_out": false,
+          "details": {
+            "steps": 2,
+            "position_error_m": 0.02450036127085345,
+            "orientation_error_rad": 0.02450307559438884,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 0.033887704834342,
+        "final_hold": true
+      }
+    ],
+    "final_holds": [
+      {
+        "call": 1,
+        "actions": 87,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 2,
+        "actions": 56,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 3,
+        "actions": 41,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 4,
+        "actions": 92,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 5,
+        "actions": 173,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 6,
+        "actions": 54,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 7,
+        "actions": 41,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 8,
+        "actions": 116,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 11,
+        "actions": 2,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 12,
+        "actions": 3,
+        "zero_velocity_hold": true
+      }
+    ],
+    "arm_action_count": 875,
+    "controller_interval_ms": {
+      "count": 655,
+      "p50": 10.444477666169405,
+      "p95": 21.479955269023773,
+      "p99": 28.26160582713783,
+      "worst": 37.549063097685575
+    },
+    "target_id": "multiview_1",
+    "initial_center_error_mm": 0.0010082105865455559,
+    "actual_lift_mm": 92.20030345022678,
+    "pick_seconds": 4.221726623829454,
+    "place_seconds": 3.9224581392481923,
+    "actual_place_target_error_mm": 21.173848769418836,
+    "held_id_after_pick": "multiview_1",
+    "held_id_after_place": null,
+    "held_home": {
+      "status": "success",
+      "message": "Robot reached named pose 'home'.",
+      "failure_code": null,
+      "details": {
+        "steps": 91,
+        "position_error_m": 0.024660290187589737,
+        "orientation_error_rad": 0.02228987233349242,
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "pose_name": "home"
+      }
+    },
+    "released_home": {
+      "status": "success",
+      "message": "Robot reached named pose 'home'.",
+      "failure_code": null,
+      "details": {
+        "steps": 115,
+        "position_error_m": 0.02498361885744462,
+        "orientation_error_rad": 0.009644859829428263,
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "pose_name": "home"
+      }
+    },
+    "grasp_verification": {
+      "grasp_planner_details": {
+        "object_bottom_z_m": 0.0,
+        "object_top_z_m": 0.05000154643103917,
+        "tcp_height_interval_m": [
+          0.02500154643103917,
+          0.05200154643103917
+        ],
+        "object_height_m": 0.05000154643103917,
+        "grasp_tcp_z_m": 0.02500154643103917,
+        "palm_clearance_m": 0.0049999999999999975,
+        "fingertip_z_m": 0.013001546431039169,
+        "contact_band_z_m": [
+          0.015001546431039169,
+          0.03500154643103917
+        ],
+        "support_clearance_m": 0.013001546431039169,
+        "strategy": "cube",
+        "required_width_m": 0.05000261641029106,
+        "gripper_max_width_m": 0.075,
+        "open_aperture_m": 0.08,
+        "clearance_m": 0.005,
+        "wrist_yaw_rad": -1.9377047211159066e-18,
+        "grasp_height_shift_m": 7.732155195838697e-07,
+        "support_check": true,
+        "axial_contact_span_m": 0.024,
+        "obstacle_check": "known_object_swept_envelopes",
+        "checked_object_ids": [],
+        "cached_obstacle_ids": [],
+        "uncheckable_object_ids": [],
+        "feasibility_checked": true,
+        "orientation_change_rad": 0.6015632598190308,
+        "rejected_candidates": [],
+        "object_offset_in_ee_m": [
+          -0.003220336328940805,
+          0.00035424129274785643,
+          0.009414749311771567
+        ],
+        "attachment_reference": "pre-close measured TCP / planned object center"
+      },
+      "grasp_at_contact": {
+        "joint_positions": [
+          0.025003552436828613,
+          0.025020621716976166
+        ],
+        "estimated_width_m": 0.05002417415380478,
+        "minimum_grasp_width_m": 0.005,
+        "maximum_grasp_width_m": 0.075,
+        "finger_lower_limits_m": [
+          0.0,
+          0.0
+        ],
+        "finger_upper_limits_m": [
+          0.03999999910593033,
+          0.03999999910593033
+        ],
+        "nominal_open_positions_m": [
+          0.05,
+          0.05
+        ],
+        "grasp_state": "held"
+      },
+      "grasp_after_lift": {
+        "joint_positions": [
+          0.02500201389193535,
+          0.025019917637109756
+        ],
+        "estimated_width_m": 0.050021931529045105,
+        "minimum_grasp_width_m": 0.005,
+        "maximum_grasp_width_m": 0.075,
+        "finger_lower_limits_m": [
+          0.0,
+          0.0
+        ],
+        "finger_upper_limits_m": [
+          0.03999999910593033,
+          0.03999999910593033
+        ],
+        "nominal_open_positions_m": [
+          0.05,
+          0.05
+        ],
+        "grasp_state": "held"
+      }
+    },
+    "after_cancellation": {
+      "semantic_status": "fresh",
+      "semantic_timestamp": 3221711.568292389,
+      "mapping": {
+        "status": "ok",
+        "timestamp": 3221710.969311788,
+        "fresh": true,
+        "generation": 0,
+        "published": 22,
+        "source_failures": 0,
+        "worker_failures": 0
+      },
+      "held": null
+    },
+    "qualification": "Existing V5 physical-cube assertions execute unchanged with explicit direct selection. A competing request is rejected before strategy entry; unsupported frame and IK rejection issue no action. Every executed strategy call, including cancellation, ends with its previous arm target and zero commanded joint velocity. Mapping/perception remain active; no collision checks or map-based path changes are performed."
+  },
+  "post_capture_format_only_cleanup": {
+    "path": "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py",
+    "reason": "Remove one extra trailing blank line after staging exposed a whitespace check; no executable statement or line position changed.",
+    "before_sha256": "8d527068b5434446d456a5cb6f3ca93ddbfca1c4b1d0cdee5f2417a34d1f5aae",
+    "after_sha256": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+    "before_reconstruction_matches_recorded_source": true,
+    "compiled_module_marshal_identical": true
+  },
+  "native_strategy_acceptance_rerun": {
+    "status": "PASS",
+    "result": {
+      "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/isaac_test_motion_strategy.json",
+      "sha256": "8f10e57071fec2338984d1b2ba364a839ca7cdbebe902353b14bf9d9303d9c26"
+    },
+    "raw_arm_actions": {
+      "path": "outputs/motion-planning-v1-isaac/run-32f6sl4c/isaac_test_motion_strategy/motion_actions.json",
+      "sha256": "dce3689696eb547494dc10ab526bbc49c8b83a290f05248f98a2499c1b2ae922"
+    },
+    "checks": {
+      "explicit_direct_selected": true,
+      "mapping_provider_resolves_current_service": true,
+      "pick_succeeded": true,
+      "actual_lift": true,
+      "held_identity": true,
+      "ordinary_held_home_succeeded": true,
+      "place_succeeded": true,
+      "release_cleared_held": true,
+      "placed_identity_reacquired": true,
+      "unsupported_frame_and_ik_rejected_without_actions": true,
+      "competing_motion_rejected_without_actions": true,
+      "cancellation_propagated": true,
+      "cancelled_motion_applied_final_hold": true,
+      "cancelled_motion_released_ownership": true,
+      "home_after_cancellation_succeeded": true,
+      "ordinary_released_home_succeeded": true,
+      "all_requested_steps_completed": true,
+      "final_service_closed": true,
+      "all_executed_motions_applied_final_hold": true,
+      "held_motion_grasp_checks_preserved": true,
+      "normal_home_routed_through_strategy": true,
+      "source_and_saved_scenes_unchanged": true
+    },
+    "strategy_call_count": 12,
+    "final_holds": [
+      {
+        "call": 1,
+        "actions": 87,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 2,
+        "actions": 56,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 3,
+        "actions": 41,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 4,
+        "actions": 92,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 5,
+        "actions": 173,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 6,
+        "actions": 54,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 7,
+        "actions": 41,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 8,
+        "actions": 116,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 11,
+        "actions": 2,
+        "zero_velocity_hold": true
+      },
+      {
+        "call": 12,
+        "actions": 3,
+        "zero_velocity_hold": true
+      }
+    ],
+    "arm_action_count": 875,
+    "controller_interval_ms": {
+      "count": 655,
+      "p50": 12.09323387593031,
+      "p95": 20.183467445895065,
+      "p99": 33.26193173415969,
+      "worst": 42.32212109491229
+    },
+    "target_id": "multiview_1",
+    "actual_lift_mm": 92.20030345022678,
+    "pick_seconds": 4.270878701936454,
+    "place_seconds": 4.1905929814092815,
+    "actual_place_target_error_mm": 21.173848769418836,
+    "held_id_after_pick": "multiview_1",
+    "held_id_after_place": null,
+    "qualification": "Required Isaac group reruns the same new scenario after the format-only source cleanup; all 22 checks remain enforced."
+  },
+  "acceptance_protocol": {
+    "path": "docs/assets/motion_planning_v1/acceptance_protocol.json",
+    "sha256": "267920cd3f3bdb9759f60ba82bffcbb1fdc33d27f6817debd900c212b6e695a2"
+  },
+  "evaluation": {
+    "path": "docs/assets/motion_planning_v1/evaluation.json",
+    "sha256": "d3d4eea635ad844a414c00a66d9ca3537b8343dd828ab39cbea2f1f8aaed5ca8"
+  },
+  "scope_audit": {
+    "path": "docs/assets/motion_planning_v1/scope_audit.json",
+    "sha256": "79fb9dbec44ed0522350c1047fb341c9f4d232aebb98bb3cd115b77f00f2622a"
+  }
+}

@@ -1,0 +1,2699 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "evaluated_utc": "2026-10-24T16:07:41.879778+00:00",
+  "scope": "Same ordinary asynchronous hover/side/return/Home commands under stationary and moving obstacles while both V5 services run. This is direct-extraction nonregression evidence, not obstacle avoidance.",
+  "acceptance_protocol": {
+    "path": "docs/assets/motion_planning_v1/acceptance_protocol.json",
+    "sha256": "267920cd3f3bdb9759f60ba82bffcbb1fdc33d27f6817debd900c212b6e695a2"
+  },
+  "baseline": {
+    "status": "PASS",
+    "result": {
+      "path": "outputs/motion-planning-v1-baseline/result.json",
+      "sha256": "36d107a1f4d1b257c3aea69ddbf19c7d4609be5620851f96eabe71e3b67712b0"
+    },
+    "trace": {
+      "path": "outputs/motion-planning-v1-baseline/trace.json",
+      "sha256": "6af178f69812c8e134f988a630c1856f30dbbd80d33eb8a8f43a5cb12f7b49e0"
+    },
+    "hashes_before": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_isaac_runtime.py": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "robot_skill_stack/world/model/updater.py": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5"
+    },
+    "hashes_after": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_isaac_runtime.py": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "robot_skill_stack/world/model/updater.py": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5"
+    },
+    "contracts": {
+      "source_unchanged": true,
+      "completed_windows": true,
+      "ordinary_async_motion_only": true,
+      "robot_joint_motion_observed": true,
+      "all_motion_succeeded": true,
+      "moving_actor_moved": true,
+      "semantic_published_each_phase": true,
+      "mapping_accepted_each_phase": true,
+      "semantic_original_timestamps": true,
+      "mapping_original_timestamps": true
+    },
+    "cleanup": {
+      "diagnostic_callbacks_removed": true,
+      "bundle": "closed"
+    },
+    "errors": [],
+    "protocol": {
+      "scene": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scenes/multiview_perception_final.usda",
+      "profile": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/config/scenes/multiview_perception_final.toml",
+      "camera_eyes": [
+        [
+          1.2,
+          -0.85,
+          0.95
+        ],
+        [
+          -0.65,
+          0.85,
+          0.85
+        ]
+      ],
+      "camera_target": [
+        0.15,
+        0.0,
+        0.45
+      ],
+      "actual_cameras": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "semantic_configured_hz": 5.0,
+      "mapping_configured_hz": 2.0,
+      "execution": "Normal Kit update loop plus ordinary async MoveToPose/Home skills; no measured world.step calls.",
+      "mapping_scope": "Real automatic runtime mapping service; no injected mapping callback.",
+      "control_scope": "Same runtime profile/resources; coordinator.set_enabled selects workloads.",
+      "interval_scope": "Wall-clock intervals, including compute and rendering; physics dt is separately retained.",
+      "tracking_scope": "Joint command-to-measured error and sampled TCP distance-to-goal, not a time-parameterized trajectory error.",
+      "p99_scope": "Sample counts are explicit; tail estimates from short runs are descriptive.",
+      "moving_object": "Actual gravity-disabled PhysX cuboid, .018m/s; owner-context velocity reversals at X=.42/.62, checked each .1 simulated seconds; no pose teleports.",
+      "freshness_scope": "publish_age_ms is exact owner publication age; source_age_ms/completion_age_ms include the later diagnostic physics poll. All completion timings include rejected jobs; attempts are admission counter deltas. Rejected/stale/no-frame attempts remain in raw rows; accepted rates use wall time.",
+      "initialization_and_io_excluded": true
+    },
+    "phases": {
+      "stationary": {
+        "distributions": {
+          "wall_seconds": 20.01889199297875,
+          "physics_interval_ms": {
+            "count": 1641,
+            "mean": 12.177017664095292,
+            "p50": 10.227552149444818,
+            "p95": 22.734553087502718,
+            "p99": 32.973396684974425,
+            "worst": 45.577687211334705
+          },
+          "kit_interval_ms": {
+            "count": 1641,
+            "mean": 12.172561255212711,
+            "p50": 10.32572379335761,
+            "p95": 23.921173997223377,
+            "p99": 29.95342845097182,
+            "worst": 40.29632778838277
+          },
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 13.21452729158349,
+            "p50": 12.648660456761718,
+            "p95": 23.263090196996895,
+            "p99": 27.593168313615017,
+            "worst": 39.5138100720942
+          },
+          "control_wait_interval_ms": {
+            "count": 178,
+            "mean": 13.381211678340529,
+            "p50": 12.65606447122991,
+            "p95": 23.339903587475423,
+            "p99": 39.57815366331486,
+            "worst": 45.45713122934103
+          },
+          "tcp_interval_ms": {
+            "count": 178,
+            "mean": 13.379840868305457,
+            "p50": 12.662410968914628,
+            "p95": 23.523096833378084,
+            "p99": 39.74735977593807,
+            "worst": 45.69509532302618
+          },
+          "app_update_duration_ms": {
+            "count": 1642,
+            "mean": 12.184423071204092,
+            "p50": 10.843363590538502,
+            "p95": 21.14030492957681,
+            "p99": 31.999349384568596,
+            "worst": 44.838998932391405
+          },
+          "updater_callback_duration_ms": {
+            "count": 0
+          },
+          "semantic_duration_ms": {
+            "count": 100,
+            "mean": 155.85459410678595,
+            "p50": 155.47336172312498,
+            "p95": 166.85366195160896,
+            "p99": 171.97600438259548,
+            "worst": 183.53778310120106
+          },
+          "mapping_duration_ms": {
+            "count": 40,
+            "mean": 403.02050134632736,
+            "p50": 402.08520879969,
+            "p95": 433.809606754221,
+            "p99": 455.66159980837256,
+            "worst": 469.32401694357395
+          },
+          "forward_duration_ms": {
+            "count": 179,
+            "mean": 0.25470598793312826,
+            "p50": 0.2125459723174572,
+            "p95": 0.3951509017497301,
+            "p99": 0.5406614206731318,
+            "worst": 2.480996772646904
+          },
+          "apply_duration_ms": {
+            "count": 183,
+            "mean": 0.1668639282589076,
+            "p50": 0.15329569578170776,
+            "p95": 0.23716683499515057,
+            "p99": 0.29578797519207006,
+            "worst": 0.33401185646653175
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 12.413392296092137,
+            "p50": 11.90077094361186,
+            "p95": 19.87827629782258,
+            "p99": 26.599111687391993,
+            "worst": 38.2442120462656
+          },
+          "callbacks_ms": {
+            "observation_runtime": {
+              "count": 1642,
+              "mean": 0.5398363994613707,
+              "p50": 0.03603799268603325,
+              "p95": 5.779606080614028,
+              "p99": 9.070702642202377,
+              "worst": 19.871083088219166
+            },
+            "v5_diagnostic_physics": {
+              "count": 1642,
+              "mean": 0.5296338108525896,
+              "p50": 0.5067654419690371,
+              "p95": 0.7359893759712577,
+              "p99": 0.8032119786366815,
+              "worst": 1.2932419776916504
+            }
+          },
+          "acquisition_duration_ms": {
+            "count": 140,
+            "mean": 4.4005434128588865,
+            "p50": 5.485347704961896,
+            "p95": 7.424736488610506,
+            "p99": 12.31164316181085,
+            "worst": 14.801569748669863
+          },
+          "association_duration_ms": {
+            "count": 100,
+            "mean": 0.4150113230571151,
+            "p50": 0.3408808261156082,
+            "p95": 0.726321479305625,
+            "p99": 1.6763522289693367,
+            "worst": 1.8803467974066734
+          },
+          "observer_duration_ms": {
+            "count": 1642,
+            "mean": 0.0038073459429151394,
+            "p50": 0.003611436113715172,
+            "p95": 0.0050883041694760305,
+            "p99": 0.007620160467922655,
+            "worst": 0.01782318577170372
+          },
+          "simulation_dt_ms": {
+            "count": 1642,
+            "mean": 16.66666753590107,
+            "p50": 16.66666753590107,
+            "p95": 16.66666753590107,
+            "p99": 16.66666753590107,
+            "worst": 16.66666753590107
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "motion_successes": 4,
+          "motion_attempts": 4
+        },
+        "semantic": {
+          "attempts": 100,
+          "fresh_batches": 100,
+          "published_batches": 100,
+          "errors": 0,
+          "published_hz_wall": 4.9952814588875905,
+          "no_new_frame": 0,
+          "source_age_ms": {
+            "count": 100,
+            "mean": 182.78645481914282,
+            "p50": 181.1585684772581,
+            "p95": 203.19308389443904,
+            "p99": 220.5815426213667,
+            "worst": 228.14699029549956
+          },
+          "publish_age_ms": {
+            "count": 100,
+            "mean": 171.57441434450448,
+            "p50": 170.6815764773637,
+            "p95": 185.23785388097167,
+            "p99": 207.4380205757916,
+            "worst": 209.45165026932955
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "count": 100,
+              "mean": 0.22035532165318727,
+              "p50": 0.20846864208579063,
+              "p95": 0.3013748675584793,
+              "p99": 0.33099320717155944,
+              "worst": 0.34742802381515503
+            },
+            "fitting_ms": {
+              "count": 100,
+              "mean": 127.64304418116808,
+              "p50": 127.4304217658937,
+              "p95": 134.5438995398581,
+              "p99": 136.8147552292794,
+              "worst": 137.71397527307272
+            },
+            "fusion_ms": {
+              "count": 100,
+              "mean": 0.711247599683702,
+              "p50": 0.6602865178138018,
+              "p95": 0.9452713653445244,
+              "p99": 0.9741921816021212,
+              "worst": 1.133413054049015
+            },
+            "observability_ms": {
+              "count": 100,
+              "mean": 7.895212681032717,
+              "p50": 7.530858041718602,
+              "p95": 10.909103602170942,
+              "p99": 11.535654198378328,
+              "worst": 12.332535814493895
+            },
+            "processing_ms": {
+              "count": 100,
+              "mean": 148.08890886139125,
+              "p50": 146.9774313736707,
+              "p95": 156.8777730455622,
+              "p99": 161.5947533166036,
+              "worst": 162.3998680151999
+            },
+            "projection_ms": {
+              "count": 100,
+              "mean": 5.021866271272302,
+              "p50": 4.9160372000187635,
+              "p95": 5.869613913819194,
+              "p99": 6.150441942736508,
+              "worst": 6.467129103839397
+            },
+            "segmentation_ms": {
+              "count": 100,
+              "mean": 6.817538128234446,
+              "p50": 6.606213981285691,
+              "p95": 7.8645639354363075,
+              "p99": 8.365689488127831,
+              "worst": 8.934217970818281
+            },
+            "total_ms": {
+              "count": 100,
+              "mean": 148.6699975747615,
+              "p50": 147.54448900930583,
+              "p95": 157.73297157138586,
+              "p99": 162.08034241572022,
+              "worst": 164.42418238148093
+            },
+            "tracking_ms": {
+              "count": 100,
+              "mean": 0.3607333917170763,
+              "p50": 0.28785131871700287,
+              "p95": 0.675899488851428,
+              "p99": 1.6295770183205613,
+              "worst": 1.8068794161081314
+            }
+          },
+          "admission_counts": {
+            "attempts": 100,
+            "published": 100,
+            "no_frame": 0,
+            "rejected": 1,
+            "source_failures": 0,
+            "worker_failures": 0
+          },
+          "worker_counts": {
+            "submitted": 100,
+            "started": 100,
+            "completed": 100,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 101
+          },
+          "publication_samples": 100,
+          "all_completion_worker_ms": {
+            "count": 100,
+            "mean": 155.7155999355018,
+            "p50": 155.25641245767474,
+            "p95": 165.37483579013497,
+            "p99": 171.97600438259548,
+            "worst": 183.53778310120106
+          },
+          "all_completion_queue_ms": {
+            "count": 100,
+            "mean": 2.529386985115707,
+            "p50": 0.06585801020264626,
+            "p95": 11.380128213204443,
+            "p99": 13.797948751598616,
+            "worst": 17.53011904656887
+          },
+          "all_completion_publish_age_ms": {
+            "count": 100,
+            "mean": 171.26638568472117,
+            "p50": 170.6815764773637,
+            "p95": 184.95419905520976,
+            "p99": 201.1410224856809,
+            "worst": 207.41768088191748
+          }
+        },
+        "mapping": {
+          "attempts": 40,
+          "accepted": 40,
+          "errors": 0,
+          "accepted_hz_wall": 1.9981125835550362,
+          "not_accepted": 0,
+          "completion_age_ms": {
+            "count": 39,
+            "mean": 441.6947686471618,
+            "p50": 444.76214330643415,
+            "p95": 476.27986343577504,
+            "p99": 477.95971097424626,
+            "worst": 478.81735069677234
+          },
+          "acquisition_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 40,
+            "mean": 403.02050134632736,
+            "p50": 402.08520879969,
+            "p95": 433.809606754221,
+            "p99": 455.66159980837256,
+            "worst": 469.32401694357395
+          },
+          "filter_ms": {
+            "count": 40,
+            "mean": 237.79559010872617,
+            "p50": 237.93530091643333,
+            "p95": 250.48771526198834,
+            "p99": 250.81552195828408,
+            "worst": 250.81995083019137
+          },
+          "publish_age_ms": {
+            "count": 40,
+            "mean": 430.6664223782718,
+            "p50": 436.0268800519407,
+            "p95": 460.38113376125693,
+            "p99": 497.5217080442235,
+            "worst": 515.3209450654685
+          },
+          "source_states": {
+            "updated": 40
+          },
+          "admission_counts": {
+            "submitted": 40,
+            "published": 40,
+            "rejected": 0,
+            "failures": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "resets": 0
+          },
+          "worker_counts": {
+            "submitted": 40,
+            "started": 40,
+            "completed": 40,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 40
+          },
+          "publication_samples": 40,
+          "all_completion_worker_ms": {
+            "count": 40,
+            "mean": 403.02050134632736,
+            "p50": 402.08520879969,
+            "p95": 433.809606754221,
+            "p99": 455.66159980837256,
+            "worst": 469.32401694357395
+          },
+          "all_completion_queue_ms": {
+            "count": 40,
+            "mean": 10.78862571157515,
+            "p50": 0.0787519384175539,
+            "p95": 35.75643743388355,
+            "p99": 68.48777879495171,
+            "worst": 88.83894281461835
+          },
+          "all_completion_publish_age_ms": {
+            "count": 40,
+            "mean": 430.6664223782718,
+            "p50": 436.0268800519407,
+            "p95": 460.38113376125693,
+            "p99": 497.5217080442235,
+            "worst": 515.3209450654685
+          }
+        },
+        "motions": [
+          {
+            "at": 3220946.376128669,
+            "phase": "stationary",
+            "command": "hover",
+            "seconds": 0.7990431650541723,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 58,
+                "position_error_m": 0.024272813356219797,
+                "orientation_error_rad": 0.02670201700208686,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220946.77232902,
+            "phase": "stationary",
+            "command": "side",
+            "seconds": 0.3959479499608278,
+            "target": {
+              "position": [
+                0.45,
+                0.08,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 30,
+                "position_error_m": 0.023918400087695194,
+                "orientation_error_rad": 0.005207323841477579,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220947.058785269,
+            "phase": "stationary",
+            "command": "return",
+            "seconds": 0.2861540662124753,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 20,
+                "position_error_m": 0.023605521552898048,
+                "orientation_error_rad": 0.009686064236380588,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220947.99610989,
+            "phase": "stationary",
+            "command": "home",
+            "seconds": 0.9370665601454675,
+            "target": {
+              "position": [
+                0.5974912637910632,
+                -0.08603929056981253,
+                0.3644922301295057
+              ],
+              "orientation": [
+                0.20977957952881227,
+                0.1715124171490509,
+                0.955105209887572,
+                -0.11979172267741134
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "Robot reached named pose 'home'.",
+              "failure_code": null,
+              "details": {
+                "steps": 71,
+                "position_error_m": 0.024612201604900557,
+                "orientation_error_rad": 0.017959312748916822,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1,
+                "pose_name": "home"
+              }
+            },
+            "ok": true
+          }
+        ],
+        "total_motion_seconds": 2.418211741372943,
+        "control_waits_over_100_ms": 0,
+        "max_running_per_worker": 1,
+        "max_pending_per_worker": 0,
+        "maximum_position_error_m": 0.024612201604900557,
+        "maximum_orientation_error_rad": 0.02670201700208686
+      },
+      "moving": {
+        "distributions": {
+          "wall_seconds": 20.01131821796298,
+          "physics_interval_ms": {
+            "count": 1631,
+            "mean": 12.249460789602841,
+            "p50": 10.405414272099733,
+            "p95": 22.75047590956092,
+            "p99": 31.744407350197445,
+            "worst": 39.80734432116151
+          },
+          "kit_interval_ms": {
+            "count": 1631,
+            "mean": 12.24856415836587,
+            "p50": 10.511151980608702,
+            "p95": 23.569117998704314,
+            "p99": 29.240234429016713,
+            "worst": 40.62519781291485
+          },
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 13.041721352983913,
+            "p50": 12.256545946002007,
+            "p95": 21.309045329689976,
+            "p99": 29.30520527064801,
+            "worst": 33.14755391329527
+          },
+          "control_wait_interval_ms": {
+            "count": 163,
+            "mean": 13.230320814699848,
+            "p50": 12.082170229405165,
+            "p95": 21.24753925018013,
+            "p99": 34.02440382167696,
+            "worst": 40.309969801455736
+          },
+          "tcp_interval_ms": {
+            "count": 163,
+            "mean": 13.230189835321319,
+            "p50": 12.078383937478065,
+            "p95": 22.883072355762128,
+            "p99": 33.21138401515782,
+            "worst": 40.27664801105857
+          },
+          "app_update_duration_ms": {
+            "count": 1632,
+            "mean": 12.263223366508278,
+            "p50": 10.769723914563656,
+            "p95": 21.624629897996776,
+            "p99": 30.771164339967093,
+            "worst": 37.503468338400126
+          },
+          "updater_callback_duration_ms": {
+            "count": 0
+          },
+          "semantic_duration_ms": {
+            "count": 100,
+            "mean": 158.2557572843507,
+            "p50": 156.9992599543184,
+            "p95": 169.81484340503812,
+            "p99": 175.52459781989455,
+            "worst": 176.181236281991
+          },
+          "mapping_duration_ms": {
+            "count": 40,
+            "mean": 412.12824604008347,
+            "p50": 411.02321282960474,
+            "p95": 436.3631482468918,
+            "p99": 438.1254309415817,
+            "worst": 438.4930692613125
+          },
+          "forward_duration_ms": {
+            "count": 164,
+            "mean": 0.2914024488546136,
+            "p50": 0.22257468663156033,
+            "p95": 0.3835449460893869,
+            "p99": 1.2600762909278358,
+            "worst": 5.799083970487118
+          },
+          "apply_duration_ms": {
+            "count": 168,
+            "mean": 0.16524926814738483,
+            "p50": 0.15025073662400246,
+            "p95": 0.2429309766739607,
+            "p99": 0.27724748477339783,
+            "worst": 0.30653178691864014
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 12.15778878412959,
+            "p50": 11.262888088822365,
+            "p95": 20.02255548723042,
+            "p99": 26.52553313877436,
+            "worst": 32.20754116773605
+          },
+          "callbacks_ms": {
+            "observation_runtime": {
+              "count": 1632,
+              "mean": 0.5832844783036112,
+              "p50": 0.036392826586961746,
+              "p95": 5.886974767781794,
+              "p99": 9.611414275132127,
+              "worst": 20.632637199014425
+            },
+            "v5_diagnostic_physics": {
+              "count": 1632,
+              "mean": 0.5279400761983376,
+              "p50": 0.4972824826836586,
+              "p95": 0.7383225485682485,
+              "p99": 0.832480574026704,
+              "worst": 1.018758863210678
+            }
+          },
+          "acquisition_duration_ms": {
+            "count": 141,
+            "mean": 4.496927406136871,
+            "p50": 5.428042728453875,
+            "p95": 8.579990826547146,
+            "p99": 10.50362354144454,
+            "worst": 18.6502099968493
+          },
+          "association_duration_ms": {
+            "count": 100,
+            "mean": 0.4210188193246722,
+            "p50": 0.341812614351511,
+            "p95": 0.7775070378556846,
+            "p99": 1.6580373886972686,
+            "worst": 2.047318033874035
+          },
+          "observer_duration_ms": {
+            "count": 1632,
+            "mean": 0.01767595120541313,
+            "p50": 0.004038214683532715,
+            "p95": 0.08731463458389037,
+            "p99": 0.1055829320102931,
+            "worst": 0.2499655820429325
+          },
+          "simulation_dt_ms": {
+            "count": 1632,
+            "mean": 16.66666753590107,
+            "p50": 16.66666753590107,
+            "p95": 16.66666753590107,
+            "p99": 16.66666753590107,
+            "worst": 16.66666753590107
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.0045919868877781255,
+            "p50": 0.0039169323001961255,
+            "p95": 0.01181750560807637,
+            "p99": 0.013300385564271586,
+            "worst": 0.013779933177643502
+          },
+          "motion_successes": 4,
+          "motion_attempts": 4
+        },
+        "semantic": {
+          "attempts": 101,
+          "fresh_batches": 100,
+          "published_batches": 100,
+          "errors": 0,
+          "published_hz_wall": 4.997172045879311,
+          "no_new_frame": 0,
+          "source_age_ms": {
+            "count": 100,
+            "mean": 184.7195515409112,
+            "p50": 183.63012303598225,
+            "p95": 199.56230581738055,
+            "p99": 214.4799301307649,
+            "worst": 223.92000490799546
+          },
+          "publish_age_ms": {
+            "count": 100,
+            "mean": 175.13309471309185,
+            "p50": 173.54797874577343,
+            "p95": 190.19883906003088,
+            "p99": 203.14092719461775,
+            "worst": 213.5850521735847
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "count": 100,
+              "mean": 0.2227386087179184,
+              "p50": 0.2126514445990324,
+              "p95": 0.3127187956124544,
+              "p99": 0.32987883780151617,
+              "worst": 0.3470471128821373
+            },
+            "fitting_ms": {
+              "count": 100,
+              "mean": 128.95309534855187,
+              "p50": 128.21738957427442,
+              "p95": 137.2357209213078,
+              "p99": 140.2010886743665,
+              "worst": 144.321380648762
+            },
+            "fusion_ms": {
+              "count": 100,
+              "mean": 0.6875029997900128,
+              "p50": 0.6265034899115562,
+              "p95": 0.9076922666281462,
+              "p99": 1.0016726283356547,
+              "worst": 1.0100440122187138
+            },
+            "observability_ms": {
+              "count": 100,
+              "mean": 9.292592657729983,
+              "p50": 9.992639301344752,
+              "p95": 11.614994774572551,
+              "p99": 12.103641186840834,
+              "worst": 12.329742312431335
+            },
+            "processing_ms": {
+              "count": 100,
+              "mean": 150.84531900007278,
+              "p50": 149.74918449297547,
+              "p95": 159.94051361922175,
+              "p99": 164.37538793776187,
+              "worst": 169.91513036191463
+            },
+            "projection_ms": {
+              "count": 100,
+              "mean": 4.9851330649107695,
+              "p50": 4.871555371209979,
+              "p95": 5.6551240384578705,
+              "p99": 5.9366844734177,
+              "worst": 6.165196653455496
+            },
+            "segmentation_ms": {
+              "count": 100,
+              "mean": 6.926994929090142,
+              "p50": 6.709592184051871,
+              "p95": 8.117351005785167,
+              "p99": 8.644174723885953,
+              "worst": 8.665421046316624
+            },
+            "total_ms": {
+              "count": 100,
+              "mean": 151.43667412456125,
+              "p50": 150.28557926416397,
+              "p95": 160.94372414518148,
+              "p99": 165.31294545158747,
+              "worst": 170.43397715315223
+            },
+            "tracking_ms": {
+              "count": 100,
+              "mean": 0.36861651577055454,
+              "p50": 0.2919237595051527,
+              "p95": 0.7053453475236892,
+              "p99": 1.6071979561820646,
+              "worst": 1.9940882921218872
+            }
+          },
+          "admission_counts": {
+            "attempts": 101,
+            "published": 100,
+            "no_frame": 0,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0
+          },
+          "worker_counts": {
+            "submitted": 101,
+            "started": 101,
+            "completed": 100,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 100
+          },
+          "publication_samples": 100,
+          "all_completion_worker_ms": {
+            "count": 100,
+            "mean": 158.2557572843507,
+            "p50": 156.9992599543184,
+            "p95": 169.81484340503812,
+            "p99": 175.52459781989455,
+            "worst": 176.181236281991
+          },
+          "all_completion_queue_ms": {
+            "count": 100,
+            "mean": 2.134175500832498,
+            "p50": 0.06184563972055912,
+            "p95": 9.845168096944688,
+            "p99": 13.91865864861757,
+            "worst": 14.466279186308384
+          },
+          "all_completion_publish_age_ms": {
+            "count": 100,
+            "mean": 175.13309471309185,
+            "p50": 173.54797874577343,
+            "p95": 190.19883906003088,
+            "p99": 203.14092719461775,
+            "worst": 213.5850521735847
+          }
+        },
+        "mapping": {
+          "attempts": 40,
+          "accepted": 40,
+          "errors": 0,
+          "accepted_hz_wall": 1.9988688183517245,
+          "not_accepted": 0,
+          "completion_age_ms": {
+            "count": 40,
+            "mean": 451.3580884668045,
+            "p50": 447.7113215252757,
+            "p95": 479.2398904217407,
+            "p99": 494.3301151599735,
+            "worst": 502.9098140075803
+          },
+          "acquisition_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 40,
+            "mean": 412.12824604008347,
+            "p50": 411.02321282960474,
+            "p95": 436.3631482468918,
+            "p99": 438.1254309415817,
+            "worst": 438.4930692613125
+          },
+          "filter_ms": {
+            "count": 40,
+            "mean": 241.68935228371993,
+            "p50": 241.27566465176642,
+            "p95": 252.18907713424412,
+            "p99": 263.5744396643713,
+            "worst": 263.61805479973555
+          },
+          "publish_age_ms": {
+            "count": 40,
+            "mean": 437.1567431255244,
+            "p50": 436.8923786096275,
+            "p95": 462.7398230601102,
+            "p99": 477.23539801780134,
+            "worst": 482.93427377939224
+          },
+          "source_states": {
+            "updated": 40
+          },
+          "admission_counts": {
+            "submitted": 40,
+            "published": 40,
+            "rejected": 0,
+            "failures": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "resets": 0
+          },
+          "worker_counts": {
+            "submitted": 40,
+            "started": 40,
+            "completed": 40,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 40
+          },
+          "publication_samples": 40,
+          "all_completion_worker_ms": {
+            "count": 40,
+            "mean": 412.12824604008347,
+            "p50": 411.02321282960474,
+            "p95": 436.3631482468918,
+            "p99": 438.1254309415817,
+            "worst": 438.4930692613125
+          },
+          "all_completion_queue_ms": {
+            "count": 40,
+            "mean": 7.324815227184445,
+            "p50": 0.06465078331530094,
+            "p95": 30.500848498195396,
+            "p99": 35.36573961842805,
+            "worst": 35.72390181943774
+          },
+          "all_completion_publish_age_ms": {
+            "count": 40,
+            "mean": 437.1567431255244,
+            "p50": 436.8923786096275,
+            "p95": 462.7398230601102,
+            "p99": 477.23539801780134,
+            "worst": 482.93427377939224
+          }
+        },
+        "motions": [
+          {
+            "at": 3220966.230140409,
+            "phase": "moving",
+            "command": "hover",
+            "seconds": 0.6338128889910877,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 47,
+                "position_error_m": 0.02399156902660169,
+                "orientation_error_rad": 0.025284802509581723,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220966.578736308,
+            "phase": "moving",
+            "command": "side",
+            "seconds": 0.34833364002406597,
+            "target": {
+              "position": [
+                0.45,
+                0.08,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 26,
+                "position_error_m": 0.024616197132949137,
+                "orientation_error_rad": 0.003872244266670797,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220966.869870884,
+            "phase": "moving",
+            "command": "return",
+            "seconds": 0.29096079198643565,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 20,
+                "position_error_m": 0.023581835690967005,
+                "orientation_error_rad": 0.009561265321046255,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3220967.787721443,
+            "phase": "moving",
+            "command": "home",
+            "seconds": 0.9176537729799747,
+            "target": {
+              "position": [
+                0.5974912637910632,
+                -0.08603929056981253,
+                0.3644922301295057
+              ],
+              "orientation": [
+                0.20977957952881227,
+                0.1715124171490509,
+                0.955105209887572,
+                -0.11979172267741134
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "Robot reached named pose 'home'.",
+              "failure_code": null,
+              "details": {
+                "steps": 71,
+                "position_error_m": 0.02412732307416491,
+                "orientation_error_rad": 0.01793317315764067,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1,
+                "pose_name": "home"
+              }
+            },
+            "ok": true
+          }
+        ],
+        "total_motion_seconds": 2.190761093981564,
+        "control_waits_over_100_ms": 0,
+        "max_running_per_worker": 1,
+        "max_pending_per_worker": 0,
+        "maximum_position_error_m": 0.024616197132949137,
+        "maximum_orientation_error_rad": 0.025284802509581723
+      }
+    }
+  },
+  "refactored_direct": {
+    "status": "PASS",
+    "result": {
+      "path": "outputs/motion-planning-v1-direct/result.json",
+      "sha256": "ac63fb04a833d4559be772f2bd54963203e917c291f13f91cb39ae44fe93a919"
+    },
+    "trace": {
+      "path": "outputs/motion-planning-v1-direct/trace.json",
+      "sha256": "74c6e15d9e41d0df2c0ce9e57aabb5a32f45bd45591c9423db4455e17ae6990f"
+    },
+    "hashes_before": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_isaac_runtime.py": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "2eeb349f6e80f16bb25ab93d02c1eb67c317136453adc22cf72808f1c9ceff12",
+      "robot_skill_stack/world/model/updater.py": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "8632141e83d63658ac3dbce1dfa3c68ff31a942584978274e00d84811e6e5e42",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5"
+    },
+    "hashes_after": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_isaac_runtime.py": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "2eeb349f6e80f16bb25ab93d02c1eb67c317136453adc22cf72808f1c9ceff12",
+      "robot_skill_stack/world/model/updater.py": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "8632141e83d63658ac3dbce1dfa3c68ff31a942584978274e00d84811e6e5e42",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5"
+    },
+    "contracts": {
+      "source_unchanged": true,
+      "completed_windows": true,
+      "ordinary_async_motion_only": true,
+      "robot_joint_motion_observed": true,
+      "all_motion_succeeded": true,
+      "moving_actor_moved": true,
+      "semantic_published_each_phase": true,
+      "mapping_accepted_each_phase": true,
+      "semantic_original_timestamps": true,
+      "mapping_original_timestamps": true
+    },
+    "cleanup": {
+      "diagnostic_callbacks_removed": true,
+      "bundle": "closed"
+    },
+    "errors": [],
+    "protocol": {
+      "scene": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scenes/multiview_perception_final.usda",
+      "profile": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/config/scenes/multiview_perception_final.toml",
+      "camera_eyes": [
+        [
+          1.2,
+          -0.85,
+          0.95
+        ],
+        [
+          -0.65,
+          0.85,
+          0.85
+        ]
+      ],
+      "camera_target": [
+        0.15,
+        0.0,
+        0.45
+      ],
+      "actual_cameras": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      },
+      "semantic_configured_hz": 5.0,
+      "mapping_configured_hz": 2.0,
+      "execution": "Normal Kit update loop plus ordinary async MoveToPose/Home skills; no measured world.step calls.",
+      "mapping_scope": "Real automatic runtime mapping service; no injected mapping callback.",
+      "control_scope": "Same runtime profile/resources; coordinator.set_enabled selects workloads.",
+      "interval_scope": "Wall-clock intervals, including compute and rendering; physics dt is separately retained.",
+      "tracking_scope": "Joint command-to-measured error and sampled TCP distance-to-goal, not a time-parameterized trajectory error.",
+      "p99_scope": "Sample counts are explicit; tail estimates from short runs are descriptive.",
+      "moving_object": "Actual gravity-disabled PhysX cuboid, .018m/s; owner-context velocity reversals at X=.42/.62, checked each .1 simulated seconds; no pose teleports.",
+      "freshness_scope": "publish_age_ms is exact owner publication age; source_age_ms/completion_age_ms include the later diagnostic physics poll. All completion timings include rejected jobs; attempts are admission counter deltas. Rejected/stale/no-frame attempts remain in raw rows; accepted rates use wall time.",
+      "initialization_and_io_excluded": true
+    },
+    "phases": {
+      "stationary": {
+        "distributions": {
+          "wall_seconds": 20.003193784039468,
+          "physics_interval_ms": {
+            "count": 1636,
+            "mean": 12.212935177333799,
+            "p50": 10.712523246183991,
+            "p95": 23.228464764542878,
+            "p99": 30.69703802466396,
+            "worst": 48.02576778456569
+          },
+          "kit_interval_ms": {
+            "count": 1636,
+            "mean": 12.212183419273469,
+            "p50": 10.796354385092854,
+            "p95": 23.72415002901107,
+            "p99": 29.043059633113472,
+            "worst": 41.78938269615173
+          },
+          "apply_interval_ms": {
+            "count": 182,
+            "mean": 12.924834917002654,
+            "p50": 12.086032889783382,
+            "p95": 21.772679686546315,
+            "p99": 29.42121939267963,
+            "worst": 30.13055119663477
+          },
+          "control_wait_interval_ms": {
+            "count": 178,
+            "mean": 13.120814870122109,
+            "p50": 11.99839380569756,
+            "p95": 23.41163957025856,
+            "p99": 29.522766694426537,
+            "worst": 31.12913714721799
+          },
+          "tcp_interval_ms": {
+            "count": 178,
+            "mean": 13.120399769709518,
+            "p50": 11.967111146077514,
+            "p95": 23.516857344657186,
+            "p99": 29.709616294130683,
+            "worst": 31.25625289976597
+          },
+          "app_update_duration_ms": {
+            "count": 1637,
+            "mean": 12.219731752557603,
+            "p50": 11.493461206555367,
+            "p95": 21.66394647210836,
+            "p99": 28.575972821563454,
+            "worst": 42.788058053702116
+          },
+          "updater_callback_duration_ms": {
+            "count": 0
+          },
+          "semantic_duration_ms": {
+            "count": 100,
+            "mean": 155.6639263033867,
+            "p50": 155.0534605048597,
+            "p95": 166.52105816174299,
+            "p99": 172.1271895011887,
+            "worst": 174.0916147828102
+          },
+          "mapping_duration_ms": {
+            "count": 40,
+            "mean": 404.44506359053776,
+            "p50": 396.9847820699215,
+            "p95": 439.22099997289473,
+            "p99": 452.0589175680652,
+            "worst": 453.19240167737007
+          },
+          "forward_duration_ms": {
+            "count": 179,
+            "mean": 0.2419197588493038,
+            "p50": 0.2174857072532177,
+            "p95": 0.3870682790875434,
+            "p99": 0.4529061168432235,
+            "worst": 0.544076319783926
+          },
+          "apply_duration_ms": {
+            "count": 183,
+            "mean": 0.20599267267382862,
+            "p50": 0.14464976266026497,
+            "p95": 0.24446328170597553,
+            "p99": 0.3181417379528287,
+            "worst": 8.08646995574236
+          },
+          "control_wait_duration_ms": {
+            "count": 179,
+            "mean": 12.145492690485282,
+            "p50": 11.051695793867111,
+            "p95": 20.979308895766735,
+            "p99": 28.072950867936015,
+            "worst": 28.911905828863382
+          },
+          "callbacks_ms": {
+            "observation_runtime": {
+              "count": 1637,
+              "mean": 0.5241811799457798,
+              "p50": 0.034493859857320786,
+              "p95": 5.858974810689686,
+              "p99": 7.97797877341508,
+              "worst": 15.985989943146706
+            },
+            "v5_diagnostic_physics": {
+              "count": 1637,
+              "mean": 0.5114763794795689,
+              "p50": 0.48438413068652153,
+              "p95": 0.7159369997680187,
+              "p99": 0.769704822450876,
+              "worst": 0.9498530998826027
+            }
+          },
+          "acquisition_duration_ms": {
+            "count": 140,
+            "mean": 4.28671818559191,
+            "p50": 5.510373972356319,
+            "p95": 7.136503607034683,
+            "p99": 10.876738014630893,
+            "worst": 13.179840054363012
+          },
+          "association_duration_ms": {
+            "count": 100,
+            "mean": 0.3848114004358649,
+            "p50": 0.3396088723093271,
+            "p95": 0.6460955366492271,
+            "p99": 0.7912021782249251,
+            "worst": 1.539585180580616
+          },
+          "observer_duration_ms": {
+            "count": 1637,
+            "mean": 0.003869010097982684,
+            "p50": 0.0035958364605903625,
+            "p95": 0.005209632217884054,
+            "p99": 0.01119559630751598,
+            "worst": 0.06954977288842201
+          },
+          "simulation_dt_ms": {
+            "count": 1637,
+            "mean": 16.66666753590107,
+            "p50": 16.66666753590107,
+            "p95": 16.66666753590107,
+            "p99": 16.66666753590107,
+            "worst": 16.66666753590107
+          },
+          "joint_target_error_rms_rad": {
+            "count": 183,
+            "mean": 0.004553092810040686,
+            "p50": 0.0037944635891066342,
+            "p95": 0.01166455545221872,
+            "p99": 0.013586778940071431,
+            "worst": 0.014308952352993003
+          },
+          "motion_successes": 4,
+          "motion_attempts": 4
+        },
+        "semantic": {
+          "attempts": 100,
+          "fresh_batches": 100,
+          "published_batches": 100,
+          "errors": 0,
+          "published_hz_wall": 4.999201681472981,
+          "no_new_frame": 0,
+          "source_age_ms": {
+            "count": 100,
+            "mean": 182.0138686755672,
+            "p50": 181.1510573606938,
+            "p95": 197.8369603632018,
+            "p99": 205.49044078681618,
+            "worst": 206.3666912727058
+          },
+          "publish_age_ms": {
+            "count": 100,
+            "mean": 171.74364167731255,
+            "p50": 170.45594123192132,
+            "p95": 188.9479418285191,
+            "p99": 191.42223342787474,
+            "worst": 192.43843294680119
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "count": 100,
+              "mean": 0.21440081764012575,
+              "p50": 0.20626047626137733,
+              "p95": 0.27484875172376627,
+              "p99": 0.36804815288633125,
+              "worst": 0.40379399433732033
+            },
+            "fitting_ms": {
+              "count": 100,
+              "mean": 128.6771027976647,
+              "p50": 128.54467099532485,
+              "p95": 134.8910665838048,
+              "p99": 143.63412791863084,
+              "worst": 145.2886275947094
+            },
+            "fusion_ms": {
+              "count": 100,
+              "mean": 0.693109892308712,
+              "p50": 0.6533898413181305,
+              "p95": 0.9422763483598828,
+              "p99": 1.0091268178075554,
+              "worst": 1.035143155604601
+            },
+            "observability_ms": {
+              "count": 100,
+              "mean": 7.83788010943681,
+              "p50": 7.492246339097619,
+              "p95": 10.6008775299415,
+              "p99": 10.901812789961697,
+              "worst": 11.209842283278704
+            },
+            "processing_ms": {
+              "count": 100,
+              "mean": 148.73629027977586,
+              "p50": 148.684375686571,
+              "p95": 156.46963827311993,
+              "p99": 165.1177321979776,
+              "worst": 165.69688729941845
+            },
+            "projection_ms": {
+              "count": 100,
+              "mean": 4.831923758611083,
+              "p50": 4.682859173044562,
+              "p95": 5.871062376536429,
+              "p99": 6.096796519123019,
+              "worst": 6.236795801669359
+            },
+            "segmentation_ms": {
+              "count": 100,
+              "mean": 6.696273721754551,
+              "p50": 6.503068143501878,
+              "p95": 7.976351142860948,
+              "p99": 8.476646612398326,
+              "worst": 8.569769095629454
+            },
+            "total_ms": {
+              "count": 100,
+              "mean": 149.28308443166316,
+              "p50": 149.1614116821438,
+              "p95": 157.0201443042606,
+              "p99": 165.59111532755196,
+              "worst": 166.19901545345783
+            },
+            "tracking_ms": {
+              "count": 100,
+              "mean": 0.3323933342471719,
+              "p50": 0.2866801805794239,
+              "p95": 0.5940229864791036,
+              "p99": 0.7290494116023223,
+              "worst": 1.4925971627235413
+            }
+          },
+          "admission_counts": {
+            "attempts": 100,
+            "published": 100,
+            "no_frame": 0,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0
+          },
+          "worker_counts": {
+            "submitted": 100,
+            "started": 100,
+            "completed": 100,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 100
+          },
+          "publication_samples": 100,
+          "all_completion_worker_ms": {
+            "count": 100,
+            "mean": 155.6639263033867,
+            "p50": 155.0534605048597,
+            "p95": 166.52105816174299,
+            "p99": 172.1271895011887,
+            "worst": 174.0916147828102
+          },
+          "all_completion_queue_ms": {
+            "count": 100,
+            "mean": 2.0099996868520975,
+            "p50": 0.056110555306077003,
+            "p95": 10.114191914908586,
+            "p99": 11.398879736661952,
+            "worst": 19.462120719254017
+          },
+          "all_completion_publish_age_ms": {
+            "count": 100,
+            "mean": 171.74364167731255,
+            "p50": 170.45594123192132,
+            "p95": 188.9479418285191,
+            "p99": 191.42223342787474,
+            "worst": 192.43843294680119
+          }
+        },
+        "mapping": {
+          "attempts": 40,
+          "accepted": 40,
+          "errors": 0,
+          "accepted_hz_wall": 1.9996806725891927,
+          "not_accepted": 0,
+          "completion_age_ms": {
+            "count": 39,
+            "mean": 440.6812963410257,
+            "p50": 436.24574691057205,
+            "p95": 487.3237155843526,
+            "p99": 497.73355782032013,
+            "worst": 500.02575898543
+          },
+          "acquisition_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 40,
+            "mean": 404.44506359053776,
+            "p50": 396.9847820699215,
+            "p95": 439.22099997289473,
+            "p99": 452.0589175680652,
+            "worst": 453.19240167737007
+          },
+          "filter_ms": {
+            "count": 40,
+            "mean": 238.3379848441109,
+            "p50": 238.015403971076,
+            "p95": 250.51257386803627,
+            "p99": 255.09881183505058,
+            "worst": 256.3068247400224
+          },
+          "publish_age_ms": {
+            "count": 40,
+            "mean": 428.44976322958246,
+            "p50": 418.0979549419135,
+            "p95": 476.07975320424885,
+            "p99": 482.6367780286819,
+            "worst": 484.53471390530467
+          },
+          "source_states": {
+            "updated": 40
+          },
+          "admission_counts": {
+            "submitted": 40,
+            "published": 40,
+            "rejected": 0,
+            "failures": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "resets": 0
+          },
+          "worker_counts": {
+            "submitted": 40,
+            "started": 40,
+            "completed": 40,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 40
+          },
+          "publication_samples": 40,
+          "all_completion_worker_ms": {
+            "count": 40,
+            "mean": 404.44506359053776,
+            "p50": 396.9847820699215,
+            "p95": 439.22099997289473,
+            "p99": 452.0589175680652,
+            "worst": 453.19240167737007
+          },
+          "all_completion_queue_ms": {
+            "count": 40,
+            "mean": 7.323221978731453,
+            "p50": 0.06174994632601738,
+            "p95": 38.3100802078843,
+            "p99": 50.02732806373387,
+            "worst": 54.14246814325452
+          },
+          "all_completion_publish_age_ms": {
+            "count": 40,
+            "mean": 428.44976322958246,
+            "p50": 418.0979549419135,
+            "p95": 476.07975320424885,
+            "p99": 482.6367780286819,
+            "worst": 484.53471390530467
+          }
+        },
+        "motions": [
+          {
+            "at": 3221482.407890761,
+            "phase": "stationary",
+            "command": "hover",
+            "seconds": 0.7405353239737451,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 58,
+                "position_error_m": 0.024272813356219797,
+                "orientation_error_rad": 0.02670201700208686,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221482.79887952,
+            "phase": "stationary",
+            "command": "side",
+            "seconds": 0.39076600270345807,
+            "target": {
+              "position": [
+                0.45,
+                0.08,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 30,
+                "position_error_m": 0.023918400087695194,
+                "orientation_error_rad": 0.005207323841477579,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221483.08719378,
+            "phase": "stationary",
+            "command": "return",
+            "seconds": 0.2881281520240009,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 20,
+                "position_error_m": 0.023605521552898048,
+                "orientation_error_rad": 0.009686064236380588,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221484.03331505,
+            "phase": "stationary",
+            "command": "home",
+            "seconds": 0.9459452121518552,
+            "target": {
+              "position": [
+                0.5974912637910632,
+                -0.08603929056981253,
+                0.3644922301295057
+              ],
+              "orientation": [
+                0.20977957952881227,
+                0.1715124171490509,
+                0.955105209887572,
+                -0.11979172267741134
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "Robot reached named pose 'home'.",
+              "failure_code": null,
+              "details": {
+                "steps": 71,
+                "position_error_m": 0.024612201604900557,
+                "orientation_error_rad": 0.017959312748916822,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1,
+                "pose_name": "home"
+              }
+            },
+            "ok": true
+          }
+        ],
+        "total_motion_seconds": 2.3653746908530593,
+        "control_waits_over_100_ms": 0,
+        "max_running_per_worker": 1,
+        "max_pending_per_worker": 0,
+        "maximum_position_error_m": 0.024612201604900557,
+        "maximum_orientation_error_rad": 0.02670201700208686
+      },
+      "moving": {
+        "distributions": {
+          "wall_seconds": 20.000462169758976,
+          "physics_interval_ms": {
+            "count": 1619,
+            "mean": 12.339496277238187,
+            "p50": 10.717854369431734,
+            "p95": 22.390685742720958,
+            "p99": 30.148008409887538,
+            "worst": 45.46581208705902
+          },
+          "kit_interval_ms": {
+            "count": 1619,
+            "mean": 12.33866766389687,
+            "p50": 10.66979393362999,
+            "p95": 23.23161493986845,
+            "p99": 29.33057139627634,
+            "worst": 37.46466990560293
+          },
+          "apply_interval_ms": {
+            "count": 167,
+            "mean": 12.99706697575525,
+            "p50": 12.138847261667252,
+            "p95": 22.627143748104547,
+            "p99": 28.366125030443072,
+            "worst": 30.380660202354193
+          },
+          "control_wait_interval_ms": {
+            "count": 163,
+            "mean": 13.228597962211795,
+            "p50": 12.089054100215435,
+            "p95": 24.381807865574963,
+            "p99": 28.73357464559376,
+            "worst": 30.38943698629737
+          },
+          "tcp_interval_ms": {
+            "count": 163,
+            "mean": 13.228494085462913,
+            "p50": 12.034572660923004,
+            "p95": 24.465581402182586,
+            "p99": 28.87380566447973,
+            "worst": 30.448436737060547
+          },
+          "app_update_duration_ms": {
+            "count": 1620,
+            "mean": 12.343202387615118,
+            "p50": 11.238871375098825,
+            "p95": 21.04773917235434,
+            "p99": 28.282796731218696,
+            "worst": 42.214659973978996
+          },
+          "updater_callback_duration_ms": {
+            "count": 0
+          },
+          "semantic_duration_ms": {
+            "count": 100,
+            "mean": 158.4626226639375,
+            "p50": 157.70763205364347,
+            "p95": 168.14009468071163,
+            "p99": 169.29005400743335,
+            "worst": 170.16064980998635
+          },
+          "mapping_duration_ms": {
+            "count": 40,
+            "mean": 408.78398186760023,
+            "p50": 406.32789791561663,
+            "p95": 439.3019463168457,
+            "p99": 448.7066056393087,
+            "worst": 449.9264070764184
+          },
+          "forward_duration_ms": {
+            "count": 164,
+            "mean": 0.23936484542834321,
+            "p50": 0.2181120216846466,
+            "p95": 0.3434954443946481,
+            "p99": 0.43535588309168816,
+            "worst": 0.5183178000152111
+          },
+          "apply_duration_ms": {
+            "count": 168,
+            "mean": 0.16277787619314732,
+            "p50": 0.1498446799814701,
+            "p95": 0.23073842748999596,
+            "p99": 0.28542683925479656,
+            "worst": 0.292937271296978
+          },
+          "control_wait_duration_ms": {
+            "count": 164,
+            "mean": 12.267126358205044,
+            "p50": 11.354357469826937,
+            "p95": 21.772264456376423,
+            "p99": 27.269074306823313,
+            "worst": 29.448109213262796
+          },
+          "callbacks_ms": {
+            "observation_runtime": {
+              "count": 1620,
+              "mean": 0.5404484656604903,
+              "p50": 0.03430899232625961,
+              "p95": 6.002739537507294,
+              "p99": 8.433010871522123,
+              "worst": 18.184587359428406
+            },
+            "v5_diagnostic_physics": {
+              "count": 1620,
+              "mean": 0.5230073980918085,
+              "p50": 0.4936722107231617,
+              "p95": 0.7402133429422975,
+              "p99": 0.8073552511632441,
+              "worst": 0.983215868473053
+            }
+          },
+          "acquisition_duration_ms": {
+            "count": 140,
+            "mean": 4.422729967960289,
+            "p50": 5.521956831216812,
+            "p95": 7.327473280020054,
+            "p99": 9.40281523857265,
+            "worst": 16.841288655996323
+          },
+          "association_duration_ms": {
+            "count": 100,
+            "mean": 0.4135440243408084,
+            "p50": 0.33782608807086945,
+            "p95": 0.6450484041124582,
+            "p99": 1.752767385914922,
+            "worst": 1.7819167114794254
+          },
+          "observer_duration_ms": {
+            "count": 1620,
+            "mean": 0.0180257809129946,
+            "p50": 0.003998167812824249,
+            "p95": 0.0898763071745634,
+            "p99": 0.11434098239988076,
+            "worst": 0.21034292876720428
+          },
+          "simulation_dt_ms": {
+            "count": 1620,
+            "mean": 16.66666753590107,
+            "p50": 16.66666753590107,
+            "p95": 16.66666753590107,
+            "p99": 16.66666753590107,
+            "worst": 16.66666753590107
+          },
+          "joint_target_error_rms_rad": {
+            "count": 168,
+            "mean": 0.004591987028275979,
+            "p50": 0.003916931918542116,
+            "p95": 0.011817504585414983,
+            "p99": 0.013300422074592267,
+            "worst": 0.013779933265740783
+          },
+          "motion_successes": 4,
+          "motion_attempts": 4
+        },
+        "semantic": {
+          "attempts": 100,
+          "fresh_batches": 100,
+          "published_batches": 100,
+          "errors": 0,
+          "published_hz_wall": 4.999884460230206,
+          "no_new_frame": 0,
+          "source_age_ms": {
+            "count": 100,
+            "mean": 183.52171340957284,
+            "p50": 184.2120815999806,
+            "p95": 196.8612461350858,
+            "p99": 212.0042509259657,
+            "worst": 228.45945181325078
+          },
+          "publish_age_ms": {
+            "count": 100,
+            "mean": 173.0692866863683,
+            "p50": 171.72475950792432,
+            "p95": 187.3366777319461,
+            "p99": 198.82887708954513,
+            "worst": 200.85187163203955
+          },
+          "stages_ms": {
+            "acquisition_ms": {
+              "count": 100,
+              "mean": 0.2208878332749009,
+              "p50": 0.21048285998404026,
+              "p95": 0.30674387235194445,
+              "p99": 0.3318062936887146,
+              "worst": 0.3582490608096123
+            },
+            "fitting_ms": {
+              "count": 100,
+              "mean": 129.6167435310781,
+              "p50": 129.04332857578993,
+              "p95": 135.29458697885275,
+              "p99": 136.6276726825163,
+              "worst": 140.88495634496212
+            },
+            "fusion_ms": {
+              "count": 100,
+              "mean": 0.7018012646585703,
+              "p50": 0.6641005165874958,
+              "p95": 0.9361371165141463,
+              "p99": 0.9987723454833033,
+              "worst": 1.042165793478489
+            },
+            "observability_ms": {
+              "count": 100,
+              "mean": 9.192817085422575,
+              "p50": 9.7949905321002,
+              "p95": 11.358911171555519,
+              "p99": 12.015643035992984,
+              "worst": 12.73513026535511
+            },
+            "processing_ms": {
+              "count": 100,
+              "mean": 151.25798964872956,
+              "p50": 150.7245183456689,
+              "p95": 158.93251246307045,
+              "p99": 162.32285960111767,
+              "worst": 163.23429765179753
+            },
+            "projection_ms": {
+              "count": 100,
+              "mean": 4.871497279964387,
+              "p50": 4.718686453998089,
+              "p95": 5.580334668047726,
+              "p99": 5.711421943269671,
+              "worst": 5.855865310877562
+            },
+            "segmentation_ms": {
+              "count": 100,
+              "mean": 6.875130487605929,
+              "p50": 6.656603654846549,
+              "p95": 8.28812790568918,
+              "p99": 8.496859995648265,
+              "worst": 8.580481633543968
+            },
+            "total_ms": {
+              "count": 100,
+              "mean": 151.83971187099814,
+              "p50": 151.30778239108622,
+              "p95": 159.46936716791242,
+              "p99": 163.0306612374261,
+              "worst": 163.85780181735754
+            },
+            "tracking_ms": {
+              "count": 100,
+              "mean": 0.3608343889936805,
+              "p50": 0.28677540831267834,
+              "p95": 0.5922175012528896,
+              "p99": 1.6868497524410488,
+              "worst": 1.7185788601636887
+            }
+          },
+          "admission_counts": {
+            "attempts": 100,
+            "published": 100,
+            "no_frame": 0,
+            "rejected": 0,
+            "source_failures": 0,
+            "worker_failures": 0
+          },
+          "worker_counts": {
+            "submitted": 100,
+            "started": 100,
+            "completed": 100,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 100
+          },
+          "publication_samples": 100,
+          "all_completion_worker_ms": {
+            "count": 100,
+            "mean": 158.4626226639375,
+            "p50": 157.70763205364347,
+            "p95": 168.14009468071163,
+            "p99": 169.29005400743335,
+            "worst": 170.16064980998635
+          },
+          "all_completion_queue_ms": {
+            "count": 100,
+            "mean": 1.4211198082193732,
+            "p50": 0.06523705087602139,
+            "p95": 6.511067808605727,
+            "p99": 12.106627589091662,
+            "worst": 12.767191044986248
+          },
+          "all_completion_publish_age_ms": {
+            "count": 100,
+            "mean": 173.0692866863683,
+            "p50": 171.72475950792432,
+            "p95": 187.3366777319461,
+            "p99": 198.82887708954513,
+            "worst": 200.85187163203955
+          }
+        },
+        "mapping": {
+          "attempts": 40,
+          "accepted": 40,
+          "errors": 0,
+          "accepted_hz_wall": 1.9999537840920822,
+          "not_accepted": 0,
+          "completion_age_ms": {
+            "count": 40,
+            "mean": 448.5104615450837,
+            "p50": 449.2185260169208,
+            "p95": 477.5802488904446,
+            "p99": 493.57142474502325,
+            "worst": 494.8510914109647
+          },
+          "acquisition_ms": {
+            "count": 0
+          },
+          "update_ms": {
+            "count": 40,
+            "mean": 408.78398186760023,
+            "p50": 406.32789791561663,
+            "p95": 439.3019463168457,
+            "p99": 448.7066056393087,
+            "worst": 449.9264070764184
+          },
+          "filter_ms": {
+            "count": 40,
+            "mean": 242.39453981863335,
+            "p50": 241.08467833139002,
+            "p95": 258.9901767903939,
+            "p99": 260.9768139803782,
+            "worst": 261.3059733994305
+          },
+          "publish_age_ms": {
+            "count": 40,
+            "mean": 435.95513905165717,
+            "p50": 439.30300744250417,
+            "p95": 465.95083035062993,
+            "p99": 484.2346094036475,
+            "worst": 484.7359941340983
+          },
+          "source_states": {
+            "updated": 40
+          },
+          "admission_counts": {
+            "submitted": 40,
+            "published": 40,
+            "rejected": 0,
+            "failures": 0,
+            "source_failures": 0,
+            "worker_failures": 0,
+            "resets": 0
+          },
+          "worker_counts": {
+            "submitted": 40,
+            "started": 40,
+            "completed": 40,
+            "replaced": 0,
+            "discarded": 0,
+            "errors": 0,
+            "delivered": 40
+          },
+          "publication_samples": 40,
+          "all_completion_worker_ms": {
+            "count": 40,
+            "mean": 408.78398186760023,
+            "p50": 406.32789791561663,
+            "p95": 439.3019463168457,
+            "p99": 448.7066056393087,
+            "worst": 449.9264070764184
+          },
+          "all_completion_queue_ms": {
+            "count": 40,
+            "mean": 9.82244216138497,
+            "p50": 0.07003662176430225,
+            "p95": 44.28423908539116,
+            "p99": 45.7531195320189,
+            "worst": 45.76577106490731
+          },
+          "all_completion_publish_age_ms": {
+            "count": 40,
+            "mean": 435.95513905165717,
+            "p50": 439.30300744250417,
+            "p95": 465.95083035062993,
+            "p99": 484.2346094036475,
+            "worst": 484.7359941340983
+          }
+        },
+        "motions": [
+          {
+            "at": 3221502.278092837,
+            "phase": "moving",
+            "command": "hover",
+            "seconds": 0.6072639753110707,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 47,
+                "position_error_m": 0.02399140077371227,
+                "orientation_error_rad": 0.025284503378318172,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221502.662711302,
+            "phase": "moving",
+            "command": "side",
+            "seconds": 0.3844144339673221,
+            "target": {
+              "position": [
+                0.45,
+                0.08,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 26,
+                "position_error_m": 0.024616169171967496,
+                "orientation_error_rad": 0.003872503385073698,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221502.910154808,
+            "phase": "moving",
+            "command": "return",
+            "seconds": 0.24726443085819483,
+            "target": {
+              "position": [
+                0.45,
+                0.0,
+                0.25
+              ],
+              "orientation": [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "End effector reached target pose.",
+              "failure_code": null,
+              "details": {
+                "steps": 20,
+                "position_error_m": 0.023581812170797162,
+                "orientation_error_rad": 0.009561359827569824,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1
+              }
+            },
+            "ok": true
+          },
+          {
+            "at": 3221503.854675851,
+            "phase": "moving",
+            "command": "home",
+            "seconds": 0.9443585812114179,
+            "target": {
+              "position": [
+                0.5974912637910632,
+                -0.08603929056981253,
+                0.3644922301295057
+              ],
+              "orientation": [
+                0.20977957952881227,
+                0.1715124171490509,
+                0.955105209887572,
+                -0.11979172267741134
+              ],
+              "frame": "world"
+            },
+            "result": {
+              "status": "success",
+              "message": "Robot reached named pose 'home'.",
+              "failure_code": null,
+              "details": {
+                "steps": 71,
+                "position_error_m": 0.0241272174841669,
+                "orientation_error_rad": 0.01793287113514293,
+                "position_tolerance_m": 0.025,
+                "orientation_tolerance_rad": 0.1,
+                "pose_name": "home"
+              }
+            },
+            "ok": true
+          }
+        ],
+        "total_motion_seconds": 2.1833014213480055,
+        "control_waits_over_100_ms": 0,
+        "max_running_per_worker": 1,
+        "max_pending_per_worker": 0,
+        "maximum_position_error_m": 0.024616169171967496,
+        "maximum_orientation_error_rad": 0.025284503378318172
+      }
+    }
+  },
+  "matched_protocol": {
+    "scene": true,
+    "profile": true,
+    "camera_eyes": true,
+    "camera_target": true,
+    "actual_cameras": true,
+    "semantic_configured_hz": true,
+    "mapping_configured_hz": true,
+    "execution": true,
+    "mapping_scope": true,
+    "control_scope": true,
+    "interval_scope": true,
+    "tracking_scope": true,
+    "moving_object": true,
+    "freshness_scope": true
+  },
+  "performance_gates": {
+    "stationary": {
+      "all_four_motions_succeeded": true,
+      "controller_apply_p99_within_declared_relative_bound": true,
+      "controller_apply_worst_under_100_ms": true,
+      "controller_wait_worst_under_100_ms": true,
+      "no_control_waits_over_100_ms": true,
+      "total_motion_duration_within_declared_relative_bound": true,
+      "semantic_rate_at_least_4_5_hz": true,
+      "mapping_rate_at_least_1_8_hz": true,
+      "semantic_original_publication_age_under_one_second": true,
+      "mapping_original_publication_age_under_one_second": true,
+      "max_one_running": true,
+      "max_one_pending": true,
+      "no_source_or_worker_errors": true,
+      "original_timestamps_preserved": true,
+      "unchanged_position_tolerance": true,
+      "unchanged_orientation_tolerance": true
+    },
+    "moving": {
+      "all_four_motions_succeeded": true,
+      "controller_apply_p99_within_declared_relative_bound": true,
+      "controller_apply_worst_under_100_ms": true,
+      "controller_wait_worst_under_100_ms": true,
+      "no_control_waits_over_100_ms": true,
+      "total_motion_duration_within_declared_relative_bound": true,
+      "semantic_rate_at_least_4_5_hz": true,
+      "mapping_rate_at_least_1_8_hz": true,
+      "semantic_original_publication_age_under_one_second": true,
+      "mapping_original_publication_age_under_one_second": true,
+      "max_one_running": true,
+      "max_one_pending": true,
+      "no_source_or_worker_errors": true,
+      "original_timestamps_preserved": true,
+      "unchanged_position_tolerance": true,
+      "unchanged_orientation_tolerance": true
+    }
+  },
+  "qualification": [
+    "The existing diagnostic script is byte-identical in both captures. Both profiles omit [motion], thereby comparing the original V5 implicit path against the new default-direct selector; the separate native strategy scenario tests explicit [motion] strategy=\"direct\".",
+    "Baseline and final source hashes differ only at intended composition/backend boundaries. Frozen SDK-free event/action/result traces and normalized executable-loop AST provide exact algorithm-equivalence evidence.",
+    "Short workstation timing tails vary; these data do not isolate nanosecond-level wrapper overhead or establish a universal frame-rate guarantee.",
+    "Semantic publication-guard rejections are retained in admission counts and never presented as fresh results. There is one during the baseline stationary phase and none in the final capture; neither run reports worker/source failures or work replacements.",
+    "Goal errors are endpoint errors under unchanged existing tolerances, not time-parameterized trajectory tracking errors.",
+    "After the final benchmark and mapping group, one extra terminal blank line was removed from direct.py. Reconstructing the measured source as current bytes plus one newline matches its recorded SHA256; compiled module marshal bytes are identical. This changes no executable behavior. The later Isaac/regression groups use the final formatting."
+  ],
+  "regression_scope": "Native scenarios are executed sequentially; final verification.json records their separate outcomes.",
+  "native_command_equivalence": {
+    "scope": "Compare all eight matched native requests and complete SkillResult payloads, including step counts and all error/tolerance details. Wall-clock timestamps/durations are intentionally excluded.",
+    "all_eight_targets_and_results_identical": false,
+    "all_control_action_counts_identical": true,
+    "counts": {
+      "baseline": {
+        "forward_calls": 343,
+        "arm_actions_including_holds": 351
+      },
+      "refactored_direct": {
+        "forward_calls": 343,
+        "arm_actions_including_holds": 351
+      }
+    },
+    "commands": [
+      {
+        "phase": "stationary",
+        "command": "hover",
+        "target_identical": true,
+        "backend_skill_result_identical": true,
+        "success_identical": true,
+        "baseline_steps": 58,
+        "direct_steps": 58,
+        "baseline_position_error_m": 0.024272813356219797,
+        "direct_position_error_m": 0.024272813356219797,
+        "baseline_orientation_error_rad": 0.02670201700208686,
+        "direct_orientation_error_rad": 0.02670201700208686
+      },
+      {
+        "phase": "stationary",
+        "command": "side",
+        "target_identical": true,
+        "backend_skill_result_identical": true,
+        "success_identical": true,
+        "baseline_steps": 30,
+        "direct_steps": 30,
+        "baseline_position_error_m": 0.023918400087695194,
+        "direct_position_error_m": 0.023918400087695194,
+        "baseline_orientation_error_rad": 0.005207323841477579,
+        "direct_orientation_error_rad": 0.005207323841477579
+      },
+      {
+        "phase": "stationary",
+        "command": "return",
+        "target_identical": true,
+        "backend_skill_result_identical": true,
+        "success_identical": true,
+        "baseline_steps": 20,
+        "direct_steps": 20,
+        "baseline_position_error_m": 0.023605521552898048,
+        "direct_position_error_m": 0.023605521552898048,
+        "baseline_orientation_error_rad": 0.009686064236380588,
+        "direct_orientation_error_rad": 0.009686064236380588
+      },
+      {
+        "phase": "stationary",
+        "command": "home",
+        "target_identical": true,
+        "backend_skill_result_identical": true,
+        "success_identical": true,
+        "baseline_steps": 71,
+        "direct_steps": 71,
+        "baseline_position_error_m": 0.024612201604900557,
+        "direct_position_error_m": 0.024612201604900557,
+        "baseline_orientation_error_rad": 0.017959312748916822,
+        "direct_orientation_error_rad": 0.017959312748916822
+      },
+      {
+        "phase": "moving",
+        "command": "hover",
+        "target_identical": true,
+        "backend_skill_result_identical": false,
+        "success_identical": true,
+        "baseline_steps": 47,
+        "direct_steps": 47,
+        "baseline_position_error_m": 0.02399156902660169,
+        "direct_position_error_m": 0.02399140077371227,
+        "baseline_orientation_error_rad": 0.025284802509581723,
+        "direct_orientation_error_rad": 0.025284503378318172
+      },
+      {
+        "phase": "moving",
+        "command": "side",
+        "target_identical": true,
+        "backend_skill_result_identical": false,
+        "success_identical": true,
+        "baseline_steps": 26,
+        "direct_steps": 26,
+        "baseline_position_error_m": 0.024616197132949137,
+        "direct_position_error_m": 0.024616169171967496,
+        "baseline_orientation_error_rad": 0.003872244266670797,
+        "direct_orientation_error_rad": 0.003872503385073698
+      },
+      {
+        "phase": "moving",
+        "command": "return",
+        "target_identical": true,
+        "backend_skill_result_identical": false,
+        "success_identical": true,
+        "baseline_steps": 20,
+        "direct_steps": 20,
+        "baseline_position_error_m": 0.023581835690967005,
+        "direct_position_error_m": 0.023581812170797162,
+        "baseline_orientation_error_rad": 0.009561265321046255,
+        "direct_orientation_error_rad": 0.009561359827569824
+      },
+      {
+        "phase": "moving",
+        "command": "home",
+        "target_identical": true,
+        "backend_skill_result_identical": false,
+        "success_identical": true,
+        "baseline_steps": 71,
+        "direct_steps": 71,
+        "baseline_position_error_m": 0.02412732307416491,
+        "direct_position_error_m": 0.0241272174841669,
+        "baseline_orientation_error_rad": 0.01793317315764067,
+        "direct_orientation_error_rad": 0.01793287113514293
+      }
+    ],
+    "stationary_four_results_identical": true,
+    "all_eight_step_counts_identical": true,
+    "maximum_position_error_difference_m": 1.6825288941951788e-07,
+    "maximum_orientation_error_difference_rad": 3.0202249774041734e-07,
+    "qualification": "All four stationary result payloads are bit-identical. Moving-phase payloads differ only in tiny endpoint error values, at most 0.0001683 mm and 0.000000303 rad; their step counts, targets, tolerances and success outcomes remain identical. Phase boundaries occur after wall-clock windows, so the number of settling physics updates before the moving phase can vary; these native inputs are not claimed bit-identical. Exact same-input loop behavior is independently established by the frozen SDK-free event/action oracle."
+  },
+  "post_capture_format_only_cleanup": {
+    "path": "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py",
+    "reason": "Remove one extra trailing blank line after staging exposed a whitespace check; no executable statement or line position changed.",
+    "before_sha256": "8d527068b5434446d456a5cb6f3ca93ddbfca1c4b1d0cdee5f2417a34d1f5aae",
+    "after_sha256": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+    "before_reconstruction_matches_recorded_source": true,
+    "compiled_module_marshal_identical": true
+  }
+}

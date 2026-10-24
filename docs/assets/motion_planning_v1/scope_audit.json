@@ -1,0 +1,813 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "audit_utc": "2026-10-24T16:14:01.219975+00:00",
+  "baseline_commit": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+  "method": "Read-only git blob versus current workspace SHA256 comparison, plus AST comparison of all existing Franka test methods. No native execution or altered regression assertions.",
+  "groups": {
+    "v5_world_mapping_and_semantic_algorithms": {
+      "count": 35,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/world/__init__.py",
+        "robot_skill_stack/world/model/__init__.py",
+        "robot_skill_stack/world/model/context.py",
+        "robot_skill_stack/world/model/entities.py",
+        "robot_skill_stack/world/model/observations.py",
+        "robot_skill_stack/world/model/primitives.py",
+        "robot_skill_stack/world/model/provider.py",
+        "robot_skill_stack/world/model/updater.py",
+        "robot_skill_stack/world/model/world_model.py",
+        "robot_skill_stack/world/perception/__init__.py",
+        "robot_skill_stack/world/perception/diagnostics.py",
+        "robot_skill_stack/world/perception/discovery.py",
+        "robot_skill_stack/world/perception/factory.py",
+        "robot_skill_stack/world/perception/frame.py",
+        "robot_skill_stack/world/perception/geometry.py",
+        "robot_skill_stack/world/perception/localizer.py",
+        "robot_skill_stack/world/perception/primitive_fits.py",
+        "robot_skill_stack/world/perception/primitives.py",
+        "robot_skill_stack/world/perception/provider.py",
+        "robot_skill_stack/world/perception/tracker.py",
+        "robot_skill_stack/world/perception_multiview/__init__.py",
+        "robot_skill_stack/world/perception_multiview/acquisition.py",
+        "robot_skill_stack/world/perception_multiview/clouds.py",
+        "robot_skill_stack/world/perception_multiview/fitting.py",
+        "robot_skill_stack/world/perception_multiview/observability.py",
+        "robot_skill_stack/world/perception_multiview/provider.py",
+        "robot_skill_stack/world/perception_multiview/segmentation.py",
+        "robot_skill_stack/world/perception_multiview/shared_frames.py",
+        "robot_skill_stack/world/perception_multiview/tracking.py",
+        "robot_skill_stack/world/spatial_mapping/__init__.py",
+        "robot_skill_stack/world/spatial_mapping/geometry.py",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py",
+        "robot_skill_stack/world/spatial_mapping/rgbd.py",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py",
+        "robot_skill_stack/world/spatial_mapping/runtime.py"
+      ]
+    },
+    "v5_observation_workers": {
+      "count": 8,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/integrations/isaac/observation_runtime.py",
+        "robot_skill_stack/runtime/__init__.py",
+        "robot_skill_stack/runtime/process_worker.py",
+        "robot_skill_stack/runtime/registry.py",
+        "robot_skill_stack/runtime/runtime.py",
+        "robot_skill_stack/runtime/skill.py",
+        "robot_skill_stack/runtime/worker.py",
+        "robot_skill_stack/runtime/worker_process.py"
+      ]
+    },
+    "v5_isaac_mapping_and_camera_adapters": {
+      "count": 13,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/integrations/isaac/runtime_lifecycle.py",
+        "robot_skill_stack/integrations/isaac/sensors/__init__.py",
+        "robot_skill_stack/integrations/isaac/sensors/rgbd_camera.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/__init__.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/config.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/factory.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/frames.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py",
+        "robot_skill_stack/integrations/isaac/world/__init__.py",
+        "robot_skill_stack/integrations/isaac/world/factory.py",
+        "robot_skill_stack/integrations/isaac/world/ground_truth_provider.py",
+        "robot_skill_stack/integrations/isaac/world/multiview.py"
+      ]
+    },
+    "public_backend_skills_grasp_placement_held_state": {
+      "count": 17,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/manipulation/__init__.py",
+        "robot_skill_stack/manipulation/backend.py",
+        "robot_skill_stack/manipulation/grasping/__init__.py",
+        "robot_skill_stack/manipulation/grasping/clearance.py",
+        "robot_skill_stack/manipulation/grasping/planner.py",
+        "robot_skill_stack/manipulation/grasping/primitive.py",
+        "robot_skill_stack/manipulation/grasping/types.py",
+        "robot_skill_stack/manipulation/held_state.py",
+        "robot_skill_stack/manipulation/placement/__init__.py",
+        "robot_skill_stack/manipulation/placement/planner.py",
+        "robot_skill_stack/manipulation/placement/simple.py",
+        "robot_skill_stack/manipulation/placement/types.py",
+        "robot_skill_stack/manipulation/skills/__init__.py",
+        "robot_skill_stack/manipulation/skills/home.py",
+        "robot_skill_stack/manipulation/skills/move_to_pose.py",
+        "robot_skill_stack/manipulation/skills/pick.py",
+        "robot_skill_stack/manipulation/skills/place.py"
+      ]
+    },
+    "franka_feedback_adapter": {
+      "count": 1,
+      "all_unchanged": true,
+      "files": [
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py"
+      ]
+    },
+    "launchers_scenes_and_profiles": {
+      "count": 8,
+      "all_unchanged": true,
+      "files": [
+        "config/scenes/multiview_perception_final.toml",
+        "config/scenes/multiview_playground.toml",
+        "config/scenes/playground.toml",
+        "run_isaac_python.sh",
+        "run_isaac_sim.sh",
+        "scenes/multiview_perception_final.usda",
+        "scenes/multiview_playground.usda",
+        "scenes/playground.usd"
+      ]
+    },
+    "original_native_regressions": {
+      "count": 25,
+      "all_unchanged": true,
+      "files": [
+        "tests/isaac/__init__.py",
+        "tests/isaac/test_perception_discovery.py",
+        "tests/isaac/test_perception_manipulation.py",
+        "tests/multiview/__init__.py",
+        "tests/multiview/test_close_object_recovery.py",
+        "tests/multiview/test_geometric_observability.py",
+        "tests/multiview/test_grasp_planning_readiness.py",
+        "tests/multiview/test_robot_occlusion.py",
+        "tests/multiview/test_source_contract.py",
+        "tests/multiview/test_variable_camera_count.py",
+        "tests/regression/__init__.py",
+        "tests/regression/test_benchmark.py",
+        "tests/regression/test_grasp_planning.py",
+        "tests/regression/test_multi_object.py",
+        "tests/regression/test_placement_feasibility.py",
+        "tests/regression/test_reactive_pick.py",
+        "tests/regression/test_recovery.py",
+        "tests/spatial_mapping/__init__.py",
+        "tests/spatial_mapping/test_ground_truth.py",
+        "tests/spatial_mapping/test_reliability.py",
+        "tests/spatial_mapping/test_rgbd.py",
+        "tests/spatial_mapping/test_robot_self_filter.py",
+        "tests/spatial_mapping/test_runtime_integration.py",
+        "tests/spatial_mapping/test_runtime_sources.py",
+        "tests/spatial_mapping/test_temporal_reliability.py"
+      ]
+    },
+    "v5_evidence_and_matched_diagnostic": {
+      "count": 7,
+      "all_unchanged": true,
+      "files": [
+        "docs/assets/spatial_mapping_v5/acceptance_protocol.json",
+        "docs/assets/spatial_mapping_v5/evaluation.json",
+        "docs/assets/spatial_mapping_v5/runtime_validation.json",
+        "docs/assets/spatial_mapping_v5/scheduling_baseline.json",
+        "docs/assets/spatial_mapping_v5/scope_audit.json",
+        "docs/assets/spatial_mapping_v5/verification.json",
+        "scripts/diagnose_isaac_runtime.py"
+      ]
+    }
+  },
+  "protected_file_hashes": {
+    "robot_skill_stack/world/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/context.py": {
+      "before_sha256": "29bcf71bf351b1afeed677584d0743183c3b4aab96de1bb19d8d4d4681908cd6",
+      "after_sha256": "29bcf71bf351b1afeed677584d0743183c3b4aab96de1bb19d8d4d4681908cd6",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/entities.py": {
+      "before_sha256": "674d8e30c4b779601134187875976e95c2169db9281b586d4fcdddedaffacd20",
+      "after_sha256": "674d8e30c4b779601134187875976e95c2169db9281b586d4fcdddedaffacd20",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/observations.py": {
+      "before_sha256": "10ed559b704cf8b769f8b52d697a656cb811825633eeb40c1650495dd77426a0",
+      "after_sha256": "10ed559b704cf8b769f8b52d697a656cb811825633eeb40c1650495dd77426a0",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/primitives.py": {
+      "before_sha256": "8aeffb173c4c62bd7a13fba74ff5c21fa9cdf690b9e6add4009bdc1cb07a2c69",
+      "after_sha256": "8aeffb173c4c62bd7a13fba74ff5c21fa9cdf690b9e6add4009bdc1cb07a2c69",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/provider.py": {
+      "before_sha256": "d00596484d12aa99097232f20c3bb641820cae80030282e0f4c818bc2f70cc2e",
+      "after_sha256": "d00596484d12aa99097232f20c3bb641820cae80030282e0f4c818bc2f70cc2e",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/updater.py": {
+      "before_sha256": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "after_sha256": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/model/world_model.py": {
+      "before_sha256": "db92448f7741899a51830fb47c173fd4c3e95f92a163b49c6476df4b10a442ca",
+      "after_sha256": "db92448f7741899a51830fb47c173fd4c3e95f92a163b49c6476df4b10a442ca",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/diagnostics.py": {
+      "before_sha256": "64c05170618349ac1a1b5db808e3066e1ea7772aabff9d502aefcbbabb297f6a",
+      "after_sha256": "64c05170618349ac1a1b5db808e3066e1ea7772aabff9d502aefcbbabb297f6a",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/discovery.py": {
+      "before_sha256": "41b3da93a93780d8d9fc0120bbf7fd27aa11bc66fbfdff30705e63a4bdc85073",
+      "after_sha256": "41b3da93a93780d8d9fc0120bbf7fd27aa11bc66fbfdff30705e63a4bdc85073",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/factory.py": {
+      "before_sha256": "22c672f5aba951b21d771c1fe341cd4731c2d0920b9a6fd4d3750dd51d6c99cf",
+      "after_sha256": "22c672f5aba951b21d771c1fe341cd4731c2d0920b9a6fd4d3750dd51d6c99cf",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/frame.py": {
+      "before_sha256": "af7ea71b8820d3a7eb1bc39489db657f8295d94a7e6941a26950088460d8ad71",
+      "after_sha256": "af7ea71b8820d3a7eb1bc39489db657f8295d94a7e6941a26950088460d8ad71",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/geometry.py": {
+      "before_sha256": "5b24ba25486de656b66a0deaeecdf7125a46f654e90109ff32bd11c2d78e9742",
+      "after_sha256": "5b24ba25486de656b66a0deaeecdf7125a46f654e90109ff32bd11c2d78e9742",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/localizer.py": {
+      "before_sha256": "3864f76a9d6a5e5f5dc048853c8bc96367c4f2ee5ab6715e4b193ce001ab4dcf",
+      "after_sha256": "3864f76a9d6a5e5f5dc048853c8bc96367c4f2ee5ab6715e4b193ce001ab4dcf",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/primitive_fits.py": {
+      "before_sha256": "07937e8b5ba7857d61e533e903c60ad26615c4b89f6749268739ab5c2a28c6ef",
+      "after_sha256": "07937e8b5ba7857d61e533e903c60ad26615c4b89f6749268739ab5c2a28c6ef",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/primitives.py": {
+      "before_sha256": "93f3ea83a25183a6422fb5d97f39fb45db14ae5faeccf24387c6575ee7c8a660",
+      "after_sha256": "93f3ea83a25183a6422fb5d97f39fb45db14ae5faeccf24387c6575ee7c8a660",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/provider.py": {
+      "before_sha256": "2b28cbf8f3f5931e19f9695001c7e9a6378e34baf9305d4f3d8c4f95998fd812",
+      "after_sha256": "2b28cbf8f3f5931e19f9695001c7e9a6378e34baf9305d4f3d8c4f95998fd812",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception/tracker.py": {
+      "before_sha256": "9ae9775cc210d3aba000292544fc1df9e3aadb44e8f483cabd6d511ed22f6582",
+      "after_sha256": "9ae9775cc210d3aba000292544fc1df9e3aadb44e8f483cabd6d511ed22f6582",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/__init__.py": {
+      "before_sha256": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "after_sha256": "ef1dc6b7eb67221be9191c61e464685d72779d1f3e32e94a00523048e22d31be",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/acquisition.py": {
+      "before_sha256": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "after_sha256": "903000c78c17aacc38db0219ce1f202dab8ca012157d2f0b0fba4408b695559c",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/clouds.py": {
+      "before_sha256": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "after_sha256": "34cd97153e7a825ab8cb28d852576cbc3346cf78ec493de59d89b07987dfcd93",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/fitting.py": {
+      "before_sha256": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "after_sha256": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/observability.py": {
+      "before_sha256": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "after_sha256": "dc60ec1ae1669922eb016dd09e53d4a681a8fd24515fcb2a19b8fbba07a945e8",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/provider.py": {
+      "before_sha256": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "after_sha256": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/segmentation.py": {
+      "before_sha256": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "after_sha256": "a1010337a5e1d9468b213a00e6c8d797aa96343c71281eb8f91cea289cdb8b25",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/shared_frames.py": {
+      "before_sha256": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5",
+      "after_sha256": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/perception_multiview/tracking.py": {
+      "before_sha256": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "after_sha256": "e06fed8475098243deda86dab878ea3a11c0a04e23fb807a312542fc0efcf56a",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/__init__.py": {
+      "before_sha256": "751385754b70135368bba7e0b1a1310943625086c76aeddfa2cdd469c37589ff",
+      "after_sha256": "751385754b70135368bba7e0b1a1310943625086c76aeddfa2cdd469c37589ff",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/geometry.py": {
+      "before_sha256": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "after_sha256": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": {
+      "before_sha256": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "after_sha256": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": {
+      "before_sha256": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "after_sha256": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/robot_filter.py": {
+      "before_sha256": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+      "after_sha256": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+      "unchanged": true
+    },
+    "robot_skill_stack/world/spatial_mapping/runtime.py": {
+      "before_sha256": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "after_sha256": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/observation_runtime.py": {
+      "before_sha256": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "after_sha256": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/process_worker.py": {
+      "before_sha256": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "after_sha256": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/registry.py": {
+      "before_sha256": "732a111dcb95361ff9f71b0c98ad9529de707cf18404eb345ddbb2277c27baeb",
+      "after_sha256": "732a111dcb95361ff9f71b0c98ad9529de707cf18404eb345ddbb2277c27baeb",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/runtime.py": {
+      "before_sha256": "cbedbf8513b7c9b8fbbd11c1a2ed2470d435ac3f659c9f74a2dccb97ba355843",
+      "after_sha256": "cbedbf8513b7c9b8fbbd11c1a2ed2470d435ac3f659c9f74a2dccb97ba355843",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/skill.py": {
+      "before_sha256": "2677e11e73b5e0f3a14030e7bf558bd59f4ee439b653e86794dfa44c52106a12",
+      "after_sha256": "2677e11e73b5e0f3a14030e7bf558bd59f4ee439b653e86794dfa44c52106a12",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/worker.py": {
+      "before_sha256": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "after_sha256": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "unchanged": true
+    },
+    "robot_skill_stack/runtime/worker_process.py": {
+      "before_sha256": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "after_sha256": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/runtime_lifecycle.py": {
+      "before_sha256": "882bf8ab15559ddefe58594010dd781766f4f0f2c5e68eddc79e3128c8704e21",
+      "after_sha256": "882bf8ab15559ddefe58594010dd781766f4f0f2c5e68eddc79e3128c8704e21",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/sensors/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/sensors/rgbd_camera.py": {
+      "before_sha256": "e352eed0983f117d9f561a468858309f8fd1704445f08a35cca0c738133395bf",
+      "after_sha256": "e352eed0983f117d9f561a468858309f8fd1704445f08a35cca0c738133395bf",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/__init__.py": {
+      "before_sha256": "301d83a88b8fd5efdd18ac8738543e370b9c4e9f6a167acb2633df97b14796d3",
+      "after_sha256": "301d83a88b8fd5efdd18ac8738543e370b9c4e9f6a167acb2633df97b14796d3",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/config.py": {
+      "before_sha256": "2db1bf3256a5c5a080eb0a607a4c31f59c458f8977ab953025931fb061866a92",
+      "after_sha256": "2db1bf3256a5c5a080eb0a607a4c31f59c458f8977ab953025931fb061866a92",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/factory.py": {
+      "before_sha256": "4e1ca96d3eaf862c57af3635c704dd491d6bcb9c527d543d12ef7a70bae64904",
+      "after_sha256": "4e1ca96d3eaf862c57af3635c704dd491d6bcb9c527d543d12ef7a70bae64904",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/frames.py": {
+      "before_sha256": "a94591caa3257a346d5e3c340593949a84c5d3fb7ab9a69486dcca623ff5a637",
+      "after_sha256": "a94591caa3257a346d5e3c340593949a84c5d3fb7ab9a69486dcca623ff5a637",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/ground_truth.py": {
+      "before_sha256": "88f7c384ea35bfb2db0ff0dd8c10b1a55996ef96588f4621eb6cc645a33fbabd",
+      "after_sha256": "88f7c384ea35bfb2db0ff0dd8c10b1a55996ef96588f4621eb6cc645a33fbabd",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": {
+      "before_sha256": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "after_sha256": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/world/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/world/factory.py": {
+      "before_sha256": "7881981849976ef898cb91cab028f8e365ee4ebce0deb3191f09da5901c418dd",
+      "after_sha256": "7881981849976ef898cb91cab028f8e365ee4ebce0deb3191f09da5901c418dd",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/world/ground_truth_provider.py": {
+      "before_sha256": "c7a62d25272b3bb4bde930fcd401619800f58b668fa0e7dff6a5aba31d36e859",
+      "after_sha256": "c7a62d25272b3bb4bde930fcd401619800f58b668fa0e7dff6a5aba31d36e859",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/world/multiview.py": {
+      "before_sha256": "fac3e9dfb54ee9eaa3a3653d0e15029bbeee791b1aa01c9606edb175e52add99",
+      "after_sha256": "fac3e9dfb54ee9eaa3a3653d0e15029bbeee791b1aa01c9606edb175e52add99",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/backend.py": {
+      "before_sha256": "50ccd6ded24237d92df06ed0a65db6f1c1172100e1224618f951d6ef7b6fcb72",
+      "after_sha256": "50ccd6ded24237d92df06ed0a65db6f1c1172100e1224618f951d6ef7b6fcb72",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/__init__.py": {
+      "before_sha256": "89e1bffa91c5bae7cbf50b6399958db2eaed69d9b854d7cd3dea5cbffd3a0fd7",
+      "after_sha256": "89e1bffa91c5bae7cbf50b6399958db2eaed69d9b854d7cd3dea5cbffd3a0fd7",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/clearance.py": {
+      "before_sha256": "c3b3ffe79ccff660537c7be6170ef62a25ff3f080fcbe34e873b01dcc39c517c",
+      "after_sha256": "c3b3ffe79ccff660537c7be6170ef62a25ff3f080fcbe34e873b01dcc39c517c",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/planner.py": {
+      "before_sha256": "19e5baa5729ead6c5438aa366e17fdc05d6b50503ba373b378cebb039659bcdb",
+      "after_sha256": "19e5baa5729ead6c5438aa366e17fdc05d6b50503ba373b378cebb039659bcdb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/primitive.py": {
+      "before_sha256": "4b561130e861f68f8d33011b31f5ca133f2da749fe73930351a6f5411c559090",
+      "after_sha256": "4b561130e861f68f8d33011b31f5ca133f2da749fe73930351a6f5411c559090",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/grasping/types.py": {
+      "before_sha256": "11d6e2c3cfe3cbcec62f1028b52837412ef1f9a519cfadc108e8f064e7da9e1e",
+      "after_sha256": "11d6e2c3cfe3cbcec62f1028b52837412ef1f9a519cfadc108e8f064e7da9e1e",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/held_state.py": {
+      "before_sha256": "2052a0e82be9fc40a3e960f59b81e471939975b1065964e3435e11ac717fb9eb",
+      "after_sha256": "2052a0e82be9fc40a3e960f59b81e471939975b1065964e3435e11ac717fb9eb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/__init__.py": {
+      "before_sha256": "06988ee50b729065b3fb62e3e36bb573aef1ca36c31c2c13705fc4fd5463e5f4",
+      "after_sha256": "06988ee50b729065b3fb62e3e36bb573aef1ca36c31c2c13705fc4fd5463e5f4",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/planner.py": {
+      "before_sha256": "1275b02132b8b793a900c83fb2981a4446e8dad3da5c69a253abcf37160de928",
+      "after_sha256": "1275b02132b8b793a900c83fb2981a4446e8dad3da5c69a253abcf37160de928",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/simple.py": {
+      "before_sha256": "af25d7de20c9328335c4f433caea39ad7c42327f814d5fe0b36d70b5b63582e7",
+      "after_sha256": "af25d7de20c9328335c4f433caea39ad7c42327f814d5fe0b36d70b5b63582e7",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/placement/types.py": {
+      "before_sha256": "cf6cf07b9eeeafb66bbe436a793c95f0715e1050f9f090c104858b7bda0d3915",
+      "after_sha256": "cf6cf07b9eeeafb66bbe436a793c95f0715e1050f9f090c104858b7bda0d3915",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/home.py": {
+      "before_sha256": "41364b80db1043641d48ab431ba447e434b30d9797a23b197ecf334baff1b6cb",
+      "after_sha256": "41364b80db1043641d48ab431ba447e434b30d9797a23b197ecf334baff1b6cb",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/move_to_pose.py": {
+      "before_sha256": "cb32016bb59bbc9a375e46cfcf9cbdf7514e6bb7fab4ad01b6cc228a6bf91acd",
+      "after_sha256": "cb32016bb59bbc9a375e46cfcf9cbdf7514e6bb7fab4ad01b6cc228a6bf91acd",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/pick.py": {
+      "before_sha256": "e9becc0ccc68bbb78cd5b43154ac1c54510cfe699dd52c1e7424c10be4149774",
+      "after_sha256": "e9becc0ccc68bbb78cd5b43154ac1c54510cfe699dd52c1e7424c10be4149774",
+      "unchanged": true
+    },
+    "robot_skill_stack/manipulation/skills/place.py": {
+      "before_sha256": "c7507508ceb47f4c6018a568815e8d5f669afa2a9b1e74dea1e9a279e452f9a2",
+      "after_sha256": "c7507508ceb47f4c6018a568815e8d5f669afa2a9b1e74dea1e9a279e452f9a2",
+      "unchanged": true
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": {
+      "before_sha256": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "after_sha256": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "unchanged": true
+    },
+    "config/scenes/multiview_perception_final.toml": {
+      "before_sha256": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "after_sha256": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "unchanged": true
+    },
+    "config/scenes/multiview_playground.toml": {
+      "before_sha256": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "after_sha256": "a1ec153a1800cfef35046993cc24778c86dfc9602b71342de43bc104334df015",
+      "unchanged": true
+    },
+    "config/scenes/playground.toml": {
+      "before_sha256": "387c019674ba753cb6fe53a69a94d39c2e5aeaafe9814cb7d96755eef9e73480",
+      "after_sha256": "387c019674ba753cb6fe53a69a94d39c2e5aeaafe9814cb7d96755eef9e73480",
+      "unchanged": true
+    },
+    "run_isaac_python.sh": {
+      "before_sha256": "497280b916ee3031e42a48d0c1dcc4c94340b2a5fb25de34046633133b332aef",
+      "after_sha256": "497280b916ee3031e42a48d0c1dcc4c94340b2a5fb25de34046633133b332aef",
+      "unchanged": true
+    },
+    "run_isaac_sim.sh": {
+      "before_sha256": "a353e1ff12b9b933e271d01165e3d2d62acb76747faf0bad096c02870e136f52",
+      "after_sha256": "a353e1ff12b9b933e271d01165e3d2d62acb76747faf0bad096c02870e136f52",
+      "unchanged": true
+    },
+    "scenes/multiview_perception_final.usda": {
+      "before_sha256": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "after_sha256": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "unchanged": true
+    },
+    "scenes/multiview_playground.usda": {
+      "before_sha256": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "after_sha256": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "unchanged": true
+    },
+    "scenes/playground.usd": {
+      "before_sha256": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "after_sha256": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "unchanged": true
+    },
+    "tests/isaac/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "tests/isaac/test_perception_discovery.py": {
+      "before_sha256": "10cef5a87d8acb7a98f6d18ea48b4786b5ba4a781b43d8d8d08b96046c03663f",
+      "after_sha256": "10cef5a87d8acb7a98f6d18ea48b4786b5ba4a781b43d8d8d08b96046c03663f",
+      "unchanged": true
+    },
+    "tests/isaac/test_perception_manipulation.py": {
+      "before_sha256": "059490cc7a1edefbf99fcf548dc331eec24c6106d2eb21da2bed8acb3fa1e794",
+      "after_sha256": "059490cc7a1edefbf99fcf548dc331eec24c6106d2eb21da2bed8acb3fa1e794",
+      "unchanged": true
+    },
+    "tests/multiview/__init__.py": {
+      "before_sha256": "0564e029f01538644c0579554248b08414f638c3a716c9faf0786d10fffa980e",
+      "after_sha256": "0564e029f01538644c0579554248b08414f638c3a716c9faf0786d10fffa980e",
+      "unchanged": true
+    },
+    "tests/multiview/test_close_object_recovery.py": {
+      "before_sha256": "14f7f674f5047a604dadeb4e4ae095673c2b0a1c200a901c72e37898e0c6e462",
+      "after_sha256": "14f7f674f5047a604dadeb4e4ae095673c2b0a1c200a901c72e37898e0c6e462",
+      "unchanged": true
+    },
+    "tests/multiview/test_geometric_observability.py": {
+      "before_sha256": "3ae6da5dbff57cf75c47344e96b75cc46dc583e3384481142a36e6f3a40fea3c",
+      "after_sha256": "3ae6da5dbff57cf75c47344e96b75cc46dc583e3384481142a36e6f3a40fea3c",
+      "unchanged": true
+    },
+    "tests/multiview/test_grasp_planning_readiness.py": {
+      "before_sha256": "124de8cf330db1b2f14c37a0cf4cd2f0e7e55912371d686e64d2057b26c0b25e",
+      "after_sha256": "124de8cf330db1b2f14c37a0cf4cd2f0e7e55912371d686e64d2057b26c0b25e",
+      "unchanged": true
+    },
+    "tests/multiview/test_robot_occlusion.py": {
+      "before_sha256": "c48e2a7268ab5abe34115e6731c9ea556ec4cfa4bcdd1ce222ab89a8cf79040e",
+      "after_sha256": "c48e2a7268ab5abe34115e6731c9ea556ec4cfa4bcdd1ce222ab89a8cf79040e",
+      "unchanged": true
+    },
+    "tests/multiview/test_source_contract.py": {
+      "before_sha256": "7e8403a27d726778f757ca89e514f4f267f9c9bf170476c1d240feb8d13c94f3",
+      "after_sha256": "7e8403a27d726778f757ca89e514f4f267f9c9bf170476c1d240feb8d13c94f3",
+      "unchanged": true
+    },
+    "tests/multiview/test_variable_camera_count.py": {
+      "before_sha256": "4fb6e4de8a7597f20d71f700a052b8e76e730482564d8dd4d1177b73db640f63",
+      "after_sha256": "4fb6e4de8a7597f20d71f700a052b8e76e730482564d8dd4d1177b73db640f63",
+      "unchanged": true
+    },
+    "tests/regression/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "tests/regression/test_benchmark.py": {
+      "before_sha256": "c15cf53a79c512057a15ae213582eed435400fb8864631983f9e57a3dabc56c6",
+      "after_sha256": "c15cf53a79c512057a15ae213582eed435400fb8864631983f9e57a3dabc56c6",
+      "unchanged": true
+    },
+    "tests/regression/test_grasp_planning.py": {
+      "before_sha256": "d7c66f3d62ccb4e443023b2789f771b3c3ffa21ed0dc5b28ce53d11407649719",
+      "after_sha256": "d7c66f3d62ccb4e443023b2789f771b3c3ffa21ed0dc5b28ce53d11407649719",
+      "unchanged": true
+    },
+    "tests/regression/test_multi_object.py": {
+      "before_sha256": "967b4d0f3539665c63867d19cad475213de33c772601ec5e912aea4aaf9570f3",
+      "after_sha256": "967b4d0f3539665c63867d19cad475213de33c772601ec5e912aea4aaf9570f3",
+      "unchanged": true
+    },
+    "tests/regression/test_placement_feasibility.py": {
+      "before_sha256": "299d0fd26694d4a4d1a49ce8e68712d55823d892eaab1d401dcb3533c9a963bc",
+      "after_sha256": "299d0fd26694d4a4d1a49ce8e68712d55823d892eaab1d401dcb3533c9a963bc",
+      "unchanged": true
+    },
+    "tests/regression/test_reactive_pick.py": {
+      "before_sha256": "da46b412c4501f720e03330f8e7f361ffc9344bf2ed9e60af3a9f8e06ea14224",
+      "after_sha256": "da46b412c4501f720e03330f8e7f361ffc9344bf2ed9e60af3a9f8e06ea14224",
+      "unchanged": true
+    },
+    "tests/regression/test_recovery.py": {
+      "before_sha256": "efec742b2c88c4ce1ad70176fdad959d1f4bb80cdaf390e556b521a8ed82616a",
+      "after_sha256": "efec742b2c88c4ce1ad70176fdad959d1f4bb80cdaf390e556b521a8ed82616a",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/__init__.py": {
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_ground_truth.py": {
+      "before_sha256": "bc8b3ba5f79d56882498f96ed0703592237cf48d8b5271e854d6d0439abb151b",
+      "after_sha256": "bc8b3ba5f79d56882498f96ed0703592237cf48d8b5271e854d6d0439abb151b",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_reliability.py": {
+      "before_sha256": "eeb26941f94086755dc623f40aba56ff47710bd5e9266943f3d3316ec97c9e21",
+      "after_sha256": "eeb26941f94086755dc623f40aba56ff47710bd5e9266943f3d3316ec97c9e21",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_rgbd.py": {
+      "before_sha256": "59d54195bdb5b3b82b349ba76610e1aa9a98b4f1d65a708d185556cfe4847af0",
+      "after_sha256": "59d54195bdb5b3b82b349ba76610e1aa9a98b4f1d65a708d185556cfe4847af0",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_robot_self_filter.py": {
+      "before_sha256": "d89d95dfa7ff34d574a4c62724d0ab584a6f51a07a38651851a773ab437e8f75",
+      "after_sha256": "d89d95dfa7ff34d574a4c62724d0ab584a6f51a07a38651851a773ab437e8f75",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_runtime_integration.py": {
+      "before_sha256": "05174e8b993f8a7218c0068776f1edf37c32784cf4ddf7cff8972057eefa2784",
+      "after_sha256": "05174e8b993f8a7218c0068776f1edf37c32784cf4ddf7cff8972057eefa2784",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_runtime_sources.py": {
+      "before_sha256": "1b9d1a60e2858f9c0166ac605223fef66c4018c8b930a29e44a8dceb2877bbb3",
+      "after_sha256": "1b9d1a60e2858f9c0166ac605223fef66c4018c8b930a29e44a8dceb2877bbb3",
+      "unchanged": true
+    },
+    "tests/spatial_mapping/test_temporal_reliability.py": {
+      "before_sha256": "415d939a06573a458e792dcbe7907711b1667c656b34a3967f0914d96bf19c1d",
+      "after_sha256": "415d939a06573a458e792dcbe7907711b1667c656b34a3967f0914d96bf19c1d",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/acceptance_protocol.json": {
+      "before_sha256": "6c01e26d8ebcd242c256324dd4b9a42a5b127606750c939d9a6482b1ca6d4b77",
+      "after_sha256": "6c01e26d8ebcd242c256324dd4b9a42a5b127606750c939d9a6482b1ca6d4b77",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/evaluation.json": {
+      "before_sha256": "f6dff6634efd27dd562ccf413ffdf1f0c358bc091ddd65a4b70177559c584b1c",
+      "after_sha256": "f6dff6634efd27dd562ccf413ffdf1f0c358bc091ddd65a4b70177559c584b1c",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/runtime_validation.json": {
+      "before_sha256": "3b1881ef2187f433d7bd3825a4f7abc8c14947258305be2a9af793c5a4ba01b5",
+      "after_sha256": "3b1881ef2187f433d7bd3825a4f7abc8c14947258305be2a9af793c5a4ba01b5",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/scheduling_baseline.json": {
+      "before_sha256": "329c5fc1ef004284bbb668bd3b41d9fc8b6a5cc04ea8dadf73ee79a5d2839fc7",
+      "after_sha256": "329c5fc1ef004284bbb668bd3b41d9fc8b6a5cc04ea8dadf73ee79a5d2839fc7",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/scope_audit.json": {
+      "before_sha256": "464ecd3582de43945c46f53965161db43c7102b00da1d8c1a02b8876bf62d014",
+      "after_sha256": "464ecd3582de43945c46f53965161db43c7102b00da1d8c1a02b8876bf62d014",
+      "unchanged": true
+    },
+    "docs/assets/spatial_mapping_v5/verification.json": {
+      "before_sha256": "e218b7742fe95833d0e1fe5d697b3b72f4c923692c6adf4b098fc7772b341b42",
+      "after_sha256": "e218b7742fe95833d0e1fe5d697b3b72f4c923692c6adf4b098fc7772b341b42",
+      "unchanged": true
+    },
+    "scripts/diagnose_isaac_runtime.py": {
+      "before_sha256": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "after_sha256": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "unchanged": true
+    }
+  },
+  "intentional_existing_production_changes": {
+    "robot_skill_stack/integrations/isaac/config.py": {
+      "reason": "Optional motion selection defaults and early unknown/unsupported validation.",
+      "before_sha256": "6c657ab653f94a80074a9aba6217b6624d1e42b0ea09087a80ae376996673b65",
+      "after_sha256": "7db776cd85b1f9fe84b71da350804da916efb3c9fc64209b096a4ee935a4cf92"
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/factory.py": {
+      "reason": "Select and inject a supported motion strategy with optional late-bound map provider.",
+      "before_sha256": "9229c54af5674c655468b87391b84de1327ab755a4a9de50ba3c553a2af00d0e",
+      "after_sha256": "c63ff0c024be465bc5b183110a9a2f998f178716b78cf8a314a14d423bc79ed8"
+    },
+    "robot_skill_stack/integrations/isaac/bootstrap.py": {
+      "reason": "Wire the current optional mapping service to initialized strategy without changing V5 workers.",
+      "before_sha256": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "after_sha256": "2eeb349f6e80f16bb25ab93d02c1eb67c317136453adc22cf72808f1c9ceff12"
+    },
+    "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": {
+      "reason": "Delegate to exactly extracted direct loop and serialize arm command ownership; retain SDK/gripper/Home ownership.",
+      "before_sha256": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "after_sha256": "8632141e83d63658ac3dbce1dfa3c68ff31a942584978274e00d84811e6e5e42"
+    }
+  },
+  "new_strategy_module_sha256": {
+    "robot_skill_stack/integrations/isaac/manipulation/motion/__init__.py": "ad8e5716faa52774441179a5dd221cb01ccf9e221e55a2bf21986240a8248fc3",
+    "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+    "robot_skill_stack/manipulation/motion/__init__.py": "0c4153b3d1e29fc281755d5a956e9f5c77ad6a46d265d3606d11f6f40d172bb5",
+    "robot_skill_stack/manipulation/motion/strategy.py": "7ae67bfd6e1e1d82fd92813b67abb116b024e3b2a2e7829cdfa3cbe01ba9eaad"
+  },
+  "existing_franka_unit_assertions": {
+    "path": "tests/unit/test_franka_async_backend.py",
+    "count": 21,
+    "all_test_method_asts_unchanged": true,
+    "helper_change": "Inject extracted strategy into existing __new__ SDK boundary double; retain its SDK import double while sys.modules patch is active."
+  },
+  "unexpected_existing_production_changes": [],
+  "findings": [],
+  "scope_limits": [
+    "Direct RMPflow only; no obstacle conversion, collision/path validation, RRT, trajectories or replanning.",
+    "Mapping is optional and observational; the direct strategy never calls its mapping provider.",
+    "Backend retains robot/controller/IK/gripper/Kit ownership; strategy selection is initialization-only.",
+    "Preexisting untracked models/ is not read, modified or included."
+  ],
+  "direct_loop_extraction": {
+    "method": "AST body comparison after removing the one backend=self._backend binding and renaming backend references to self. Comments/formatting are excluded; every executable statement, literal, branch, loop, exception and finally action remains compared.",
+    "baseline_ast_sha256": "83da9f1b4b5988337c92407bc687940e766631ca62924573a8cf12f32d901020",
+    "normalized_strategy_ast_sha256": "83da9f1b4b5988337c92407bc687940e766631ca62924573a8cf12f32d901020",
+    "all_executable_statements_identical": true
+  },
+  "runner_fixture_maintenance": {
+    "path": "tests/unit/test_project_runners.py",
+    "reason": "One additional native scenario expands the original 8 startup scripts to an explicit 9-script set, and 2 Isaac cases to discovered case count. Preserve original startup assertions and native crash propagation while covering every additional case.",
+    "focused_tests": 18,
+    "focused_status": "PASS"
+  },
+  "final_format_cleanup": {
+    "path": "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py",
+    "reason": "Remove one extra trailing blank line after staging exposed a whitespace check; no executable statement or line position changed.",
+    "before_sha256": "8d527068b5434446d456a5cb6f3ca93ddbfca1c4b1d0cdee5f2417a34d1f5aae",
+    "after_sha256": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+    "before_reconstruction_matches_recorded_source": true,
+    "compiled_module_marshal_identical": true
+  },
+  "focused_test_module_sha256": {
+    "tests/isaac/test_motion_strategy.py": "0afa671d363d7314147141740bc49c297fb9f196fec0f7ad740cc149e9becf3c",
+    "tests/unit/test_franka_async_backend.py": "db6c0530a8907feaef8f04671a4aa906c3dbe9e4ee113a4df994a6663789dc77",
+    "tests/unit/test_motion_composition.py": "c297f18eca2b709254b7090f6aff6f9887cdcb7fda43d1c06786fb3830650d60",
+    "tests/unit/test_motion_config.py": "a111651aaeaadd7d2e99f7680bf67e634cbb514e8c5862b76e7c5fdc1fd76bb8",
+    "tests/unit/test_motion_strategy.py": "62dcddd075432f7d440162c8ff23b6ca7fa1328b19aa7aefc518fd31af1b1c73",
+    "tests/unit/test_project_runners.py": "613fd779dcd2d062fd1ced63245bdfbcb894cd5d43b9f4355b047b4330116fd5"
+  }
+}

@@ -40,17 +40,17 @@ not replace Isaac's `.deps` path.
 One runner covers all retained checks:
 
 ```bash
-python3 scripts/run_all_regressions.py --unit-only
-python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
-python3 scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
+./run_isaac_python.sh scripts/run_all_regressions.py --unit-only
+./run_isaac_python.sh scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/isaac
+./run_isaac_python.sh scripts/run_all_regressions.py --group regression --artifacts-dir outputs/regression
 ```
 
 The first command runs architecture/syntax checks, discovered tests and eight
 standalone offline modules. The other groups require Isaac and contain two
-integration scenarios and six regressions. Omit the group to run everything.
+integration scenarios, direct-strategy acceptance and six regressions. Omit the group to run everything.
 Artifacts are written to fresh run directories; a NumPy line or open window is
 not a passing scenario. See [validation](docs/validation.md) for the final
-acceptance checklist, injected-loss diagnostic and pending native results.
+acceptance checklist, injected-loss diagnostic and native results.
 
 An opt-in [multi-view RGB-D experiment](docs/multiview_rgbd.md) adds a separate
 `multi_view` source and two-camera scene. Its research results, native tests,
@@ -79,11 +79,14 @@ implement these existing contracts; no plugin system is needed.
 RGB-D processing runs in bounded SDK-free workers. Optional spatial mapping
 starts from its TOML section and publishes independent occupancy snapshots;
 skills and motion planning do not consume the map yet.
+The [motion strategy boundary](docs/motion_planning.md) selects direct RMPflow by
+default, preserving existing skills and exposing optional map access for future
+strategies. Reactive, global and hybrid execution are not implemented.
 
 | Path | Responsibility |
 | --- | --- |
 | `robot_skill_stack/runtime/` | Skill interface, registry, async commands, bounded observation workers |
-| `robot_skill_stack/manipulation/` | Skills, held-state policy, grasp/placement feasibility |
+| `robot_skill_stack/manipulation/` | Skills, motion strategy contract, held-state policy, grasp/placement feasibility |
 | `robot_skill_stack/world/` | Observations, cached state, perception/tracking, independent occupancy |
 | `robot_skill_stack/orchestration/` | Minimal BT tasks and executor |
 | `robot_skill_stack/presentation/` | Read-only WorldModel display model |

@@ -97,21 +97,25 @@ class ProjectRunnerTests(unittest.TestCase):
         self.assertIn('cannot execute', self.stdout.getvalue())
 
     def test_native_crash_is_not_hidden_by_pass_json_and_remaining_scenarios_run(self):
+        selected = list(self.all.cases('isaac', self.path, True))
+        self.assertGreaterEqual(len(selected), 2)
         for crash in (-11, 139):  # Native signal vs a shell's encoded exit status.
             with self.subTest(crash=crash):
-                codes = iter((crash, 0))
+                codes = iter([crash]+[0]*(len(selected)-1))
                 def child(command, **kwargs):
                     Path(command[command.index('--result')+1]).write_text('{"status":"PASS"}')
                     return result(next(codes))
                 logs = self.path/f'crash {crash}'
                 with patch.object(self.all.subprocess, 'run', side_effect=child) as run:
                     self.assertEqual(self.all.main(['--group', 'isaac', '--artifacts-dir', str(logs)]), 1)
-                self.assertEqual(run.call_count, 2)
+                self.assertEqual(run.call_count, len(selected))
                 summary = json.loads(next(logs.rglob('summary.json')).read_text())
-                first, second = summary.values()
+                self.assertEqual(list(summary), [name for name, _, _ in selected])
+                first, *remaining = summary.values()
                 self.assertEqual(first['status'], 'FAIL')
                 self.assertEqual(first['return_code'], crash)
-                self.assertEqual(second['status'], 'PASS')
+                self.assertTrue(all(row['status'] == 'PASS' and row['return_code'] == 0
+                                    for row in remaining))
 
     def test_scripts_import_without_numpy_or_isaac(self):
         import builtins
@@ -226,7 +230,7 @@ class ProjectRunnerTests(unittest.TestCase):
             self.assertIn('Test NumPy: 1.26.4', (directory/'isaac_test_sentinel.log').read_text())
             self.assertEqual(json.loads((directory/'summary.json').read_text())['isaac_test_sentinel']['status'], 'PASS')
 
-    def test_all_eight_scripts_preload_numpy_before_simulation_app(self):
+    def test_all_native_scripts_preload_numpy_before_simulation_app(self):
         repo, env = self.sandbox()
         numpy = repo/'.deps/numpy/__init__.py'
         numpy.write_text(numpy.read_text().replace('test-only', '1.26.4'))
@@ -245,7 +249,24 @@ class ProjectRunnerTests(unittest.TestCase):
             "        print(json.dumps(sys.argv))\n"
             "        raise SystemExit(23)\n")
         scripts = [p for folder in ('isaac', 'regression') for p in sorted((ROOT/'tests'/folder).glob('test_*.py'))]
-        self.assertEqual(len(scripts), 8)
+        self.assertEqual({str(path.relative_to(ROOT)) for path in scripts}, {
+            'tests/isaac/test_perception_discovery.py',
+            'tests/isaac/test_perception_manipulation.py',
+            'tests/isaac/test_motion_strategy.py',
+            'tests/regression/test_benchmark.py',
+            'tests/regression/test_grasp_planning.py',
+            'tests/regression/test_multi_object.py',
+            'tests/regression/test_placement_feasibility.py',
+            'tests/regression/test_reactive_pick.py',
+            'tests/regression/test_recovery.py',
+        })
+        # The new motion scenario reuses V5's startup guard and one app owner.
+        # Copy that actual shared fixture into the isolated launcher sandbox.
+        for source_path in ('tests/__init__.py', 'tests/spatial_mapping/__init__.py',
+                            'tests/spatial_mapping/test_runtime_integration.py'):
+            target = repo/source_path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text((ROOT/source_path).read_text())
         for source in scripts:
             with self.subTest(script=source.name):
                 target = repo/source.relative_to(ROOT)
@@ -256,7 +277,10 @@ class ProjectRunnerTests(unittest.TestCase):
                 process = subprocess.run(['bash', str(repo/'run_isaac_python.sh'), str(target), *args],
                                          cwd=self.path, env=env, capture_output=True, text=True, timeout=15)
                 self.assertEqual(process.returncode, 23, process.stdout+process.stderr)
-                self.assertIn('Test NumPy: 1.26.4', process.stdout)
+                if source.name != 'test_motion_strategy.py':
+                    self.assertIn('Test NumPy: 1.26.4', process.stdout)
+                # The shared V5 fixture checks the version without this log;
+                # the strict SimulationApp double above verifies its preload.
                 self.assertEqual(json.loads(process.stdout.splitlines()[-1]), [str(target), *args])
 
     def test_wrong_numpy_is_rejected_before_importing_sdk(self):

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "declared_utc": "2026-10-24T16:00:09.287822+00:00",
+  "scope": "Direct strategy extraction only; workstation-relative nonregression gates declared before the final refactored native benchmark.",
+  "baseline_commit": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+  "baseline": {
+    "result_path": "outputs/motion-planning-v1-baseline/result.json",
+    "result_sha256": "36d107a1f4d1b257c3aea69ddbf19c7d4609be5620851f96eabe71e3b67712b0",
+    "trace_path": "outputs/motion-planning-v1-baseline/trace.json",
+    "trace_sha256": "6af178f69812c8e134f988a630c1856f30dbbd80d33eb8a8f43a5cb12f7b49e0",
+    "status": "PASS",
+    "contracts": {
+      "source_unchanged": true,
+      "completed_windows": true,
+      "ordinary_async_motion_only": true,
+      "robot_joint_motion_observed": true,
+      "all_motion_succeeded": true,
+      "moving_actor_moved": true,
+      "semantic_published_each_phase": true,
+      "mapping_accepted_each_phase": true,
+      "semantic_original_timestamps": true,
+      "mapping_original_timestamps": true
+    }
+  },
+  "benchmark": {
+    "command": "./run_isaac_python.sh scripts/diagnose_isaac_runtime.py --mode combined --pipeline runtime --objects both --seconds 20 --artifacts-dir <output>",
+    "scene": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scenes/multiview_perception_final.usda",
+    "profile": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/config/scenes/multiview_perception_final.toml",
+    "phases": [
+      "stationary",
+      "moving"
+    ],
+    "seconds_per_phase": 20,
+    "motions_per_phase": [
+      "hover",
+      "side",
+      "return",
+      "home"
+    ],
+    "camera_eyes": [
+      [
+        1.2,
+        -0.85,
+        0.95
+      ],
+      [
+        -0.65,
+        0.85,
+        0.85
+      ]
+    ],
+    "camera_target": [
+      0.15,
+      0.0,
+      0.45
+    ],
+    "same_script_sha256": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+    "source_and_scene_hashes": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_isaac_runtime.py": "ed778a4f4e7e6a680a6be7e217f36e4f186d996cea21e7c98cf4c1f0135797a4",
+      "scenes/multiview_playground.usda": "f83051cd77aa1ef1b05a46886d21bd7d9f59ccb6d2fd488034f2726247275f41",
+      "scenes/playground.usd": "9106720370e07be362b91e19cb1b3501ed09d54dcc9b88278679c1b9dac773be",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "6e1cfbbbda0d3fc31fae49e439c51d69a4fc2c36904ed521b96251864594e87b",
+      "robot_skill_stack/world/model/updater.py": "86dfc249f0677f2d09903dbb9212ca49d5d71d1f81710e2b55bde77ea2b21173",
+      "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "87ee360e30b353a83aeae259d692a150cc2b79fbaddcdc42275cc2f7fb494679",
+      "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/integrations/isaac/spatial_mapping/robot_filter.py": "e3f8c110ef24abd314df1358ba37cbd49ac670bec600c79ec0b3a3274902300b",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "253de2fc1a4c3befb2fa3d57e5f0c9e7634da19e6de5c69d7738e5a3e44194ff",
+      "robot_skill_stack/runtime/worker.py": "c7a05af74f51340fbe4ea90b1b15b977c74a37e26376b6a31c38968769c35191",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "bf90586006301589b00641e50a5caf520e49c62fd6eba9f3e5c18bbc41eb04cd",
+      "robot_skill_stack/world/spatial_mapping/geometry.py": "aa1f4b934dc2ed3332239b843370e312631c55f5909eebab1dfda4fcf0138135",
+      "robot_skill_stack/world/perception_multiview/shared_frames.py": "946351847246aa66b4b11b802ba66f8e15d73959a79faaf92772d9ce566c9ba5"
+    }
+  },
+  "exact_behavior_gates": [
+    "Frozen V5 and extracted direct strategy have identical deterministic event/action/result/exception traces for successful motion, optional orientation and explicit tolerances.",
+    "Unsupported frame and IK failure issue no motion or hold; IK exceptions propagate unchanged.",
+    "Paused stepping, timeout budgets, grasp failure, controller/apply/feedback/yield exceptions and actual Task cancellation preserve update order and final arm hold.",
+    "Alternative injected strategy receives original target, tolerances and grasp callback and returns original BackendResult; Home routes through it.",
+    "The backend admits at most one active strategy call and releases ownership on completion, failure and cancellation.",
+    "Direct stores an optional current-mapping provider without invoking it."
+  ],
+  "performance_gates": {
+    "by_phase": {
+      "stationary": {
+        "baseline_apply_p99_ms": 27.593168313615017,
+        "maximum_apply_p99_ms": 34.49146039201877,
+        "baseline_motion_seconds": 2.418211741372943,
+        "maximum_motion_seconds": 2.951854089647531
+      },
+      "moving": {
+        "baseline_apply_p99_ms": 29.30520527064801,
+        "maximum_apply_p99_ms": 36.63150658831001,
+        "baseline_motion_seconds": 2.190761093981564,
+        "maximum_motion_seconds": 2.6789133127778766
+      }
+    },
+    "maximum_apply_interval_ms_exclusive": 100,
+    "maximum_control_wait_duration_ms_exclusive": 100,
+    "maximum_control_waits_over_100_ms": 0,
+    "successful_motions_per_phase": 4,
+    "minimum_semantic_hz_wall": 4.5,
+    "minimum_mapping_hz_wall": 1.8,
+    "maximum_original_publication_age_seconds_exclusive": 1.0,
+    "maximum_running_jobs_per_worker": 1,
+    "maximum_pending_jobs_per_worker": 1,
+    "no_new_source_or_worker_errors": true,
+    "all_original_timestamps_and_complete_batches": true
+  },
+  "rationale": {
+    "p99": "A 25% allowance over each matched V5 phase accommodates short-run tail variation while rejecting meaningful control-loop regression. The unchanged algorithm must also pass exact deterministic traces; passing wall-clock gates alone is insufficient.",
+    "motion_duration": "Twenty percent plus 50 ms over the same four ordinary asynchronous commands permits workstation scheduling variation without changing controller parameters or tolerances.",
+    "freshness": "Rates preserve at least 90% of the established 5 Hz semantic and 2 Hz mapping cadence, with the original one-second freshness limit unchanged.",
+    "limits": "Short workstation measurements are descriptive, not a universal FPS or collision-safety guarantee. Context-revision rejections and bounded skipped work are retained and reported; they must not be relabeled as fresh data."
+  }
+}

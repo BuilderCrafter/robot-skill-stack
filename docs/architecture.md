@@ -34,6 +34,14 @@ the passed grasp guard after updates and stop through their existing hold path
 on failure. `HeldState` owns attachment bookkeeping, evidence resolution and
 grip-loss policy; the backend has no WorldModel dependency.
 
+The Franka backend delegates Cartesian motion to one selected SDK-free
+`MotionStrategy` contract. Its Isaac-specific `DirectRmpflowStrategy` borrows the
+existing controller, IK and robot; the backend keeps all SDK resource ownership.
+Home uses the same delegation. Selection is validated and injected once during
+construction, and overlapping backend arm requests are rejected. An optional
+late-bound provider exposes V5's read-only mapping service to future strategies;
+direct never queries it. See [motion strategies](motion_planning.md).
+
 `WorldObservationProvider` implements `observe(context) -> ObservationBatch`,
 `forget(id)` and `close()`. A fresh sample, including an empty one, has an
 increasing monotonic timestamp. No new sample has no timestamp; errors raise.
@@ -72,7 +80,7 @@ the robot and selected source's prims, and constructs:
 1. Existing/deferred World and physics context, then robot factory's SDK wrapper.
 2. Reset/play and 30 Kit updates.
 3. Source factory: ground truth, or camera initialization plus 60 Kit updates.
-4. WorldModel/updater and robot factory's backend plus gripper spec.
+4. WorldModel/updater and robot factory's backend, selected motion strategy and gripper spec.
 5. Existing grasp/placement planners, four skills, registry and runtime.
 6. RGB-D observation coordinator and optional mapping service, then the bundle.
    Lightweight ground-truth semantics retain their initial synchronous sample
