@@ -1,0 +1,1918 @@
+{
+  "schema_version": 1,
+  "status": "BASELINE_DIAGNOSED",
+  "recorded_utc": "2026-10-24T20:40:59.344380+00:00",
+  "baseline_checkpoint": "a535c6a6fbb99bb511ca2655650ec253d7ebc399",
+  "purpose": "Obtain the depth-to-proxy diagnostic breakdown before any production algorithm changes. Captured physical geometry is evaluation-only.",
+  "production_algorithms_changed": false,
+  "required_reports_read": [
+    "docs/assets/motion_planning_v2/evaluation.json",
+    "docs/assets/motion_planning_v2/obstacle_extraction.json",
+    "docs/assets/motion_planning_v2/verification.json",
+    "docs/motion_planning.md"
+  ],
+  "root_causes": [
+    "Stable real post evidence reaches the map but radius2 sparse-support filtering discards most or all of it: initial static33 occupied\u21924 retained, thin13\u21923, partially visible post23\u21920. Their existing probabilities are saturated at0.98201379 despite repeated observations.",
+    "The first post-insertion hit contradicts accumulated FREE prior and becomes UNKNOWN; the next hit establishes occupancy. That transient does not explain disappearance after many stable updates.",
+    "The actual selected-pixel pattern repeats while camera/depth-validity geometry is unchanged; waiting longer reinforces probabilities without increasing spatial neighbor density.",
+    "Selected physical post rays are not removed by automatic robot filtering in these settled snapshots. Camera occlusion reduces the partial post observation, but does not eliminate its23 selected physical rays.",
+    "Nominal empty-scene V2 registrations are fragmented support-plane evidence: first32 and last64 are all floor-only, with no external hazards. Ground truth uses one exact contiguous floor box.",
+    "Partial-scene budget saturation is separate from support rejection: the baseline retains Occluder59cells but Post0; a confidence-only replay retains Post23 while the unchanged64 budget explicitly omits more occluder detail.",
+    "Original V2 partial reactive attempts failed during empty START setup, before actor insertion, and recorded no raw depth or measured route. Those failures establish source-availability problems, not evidence that the physical post was invisible."
+  ],
+  "confidence_retention_proposal": {
+    "status": "COUNTERFACTUAL_ONLY_NOT_IMPLEMENTED",
+    "source_scope": "RGB-D temporal occupancy only; generic/ground-truth default remains unchanged",
+    "rule": "Retain original eligible OCCUPIED cells with probability>=0.95 in addition to existing radius2 support.",
+    "threshold_interpretation": {
+      "probability": 0.95,
+      "log_odds_threshold": 2.9444389791664403,
+      "positive_log_odds_per_hit": 0.85,
+      "minimum_positive_updates_from_unknown": 4,
+      "free_prior_qualification": "A contradictory first hit may first withhold the previous FREE claim as UNKNOWN."
+    },
+    "observed_initial_threshold_sensitivity": "0.9,0.95,0.98 produce identical settled selected-object counts in all four captures.",
+    "geometry_constraints": "No cell-state changes, padding, unknown/free filling, mesh completion, new dense history or higher proxy budget. Each retained box remains an exact union of original occupied cells and retains its original evidence expiry.",
+    "empty_counterfactual": "Across all24 captured empty jobs, none of the three thresholds adds an above-plane occupied cell. They retain more repeated floor cells, still bounded by64 proxies.",
+    "unresolved": "The confidence rule does not compact a sparse surface or solve all64-budget omissions. Native physical response and matched source timing remain to be measured."
+  },
+  "qualifications": [
+    "All full captures add worker serialization/disk overhead and are excluded from source/control latency claims. Static is the retained compressed first capture; other three are uncompressed. Compare exact per-update evidence and probabilities, not their wall-time publication rates.",
+    "Full capture Direct has no runtime obstacle product; the original V2 adapter is replayed offline on actual captured snapshots. Physical boxes never augment the RGB-D map or runtime product.",
+    "Counts outside strict fixture AABB bins include voxel-boundary aliases of measured surfaces and are not automatically false hazards. The follow-up exact selected-endpoint audit is now recorded below and explains all initial above-plane cells.",
+    "AABB voxel counts describe partial occupied evidence, not complete object reconstruction. Missing depth, filtered rays, unknown interior and explicit budget omissions remain distinct.",
+    "The original V2 failed records remain unchanged. The four new captures are forensic baselines, not successful reactive avoidance experiments."
+  ],
+  "legacy_v2_registration_inventory": [
+    {
+      "source": "rgbd",
+      "scenario": "empty",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-rgbd-empty-reactive/result.json",
+        "sha256": "1e3e0498d225126e666d5b716f158f49bdfdc9237fb88c92009d7531204c0397"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 28,
+          "registered_proxies": 32,
+          "floor_only_proxies": 32,
+          "above_plane_proxies": 0
+        },
+        {
+          "revision": 32,
+          "registered_proxies": 64,
+          "floor_only_proxies": 64,
+          "above_plane_proxies": 0
+        }
+      ]
+    },
+    {
+      "source": "rgbd",
+      "scenario": "static",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-rgbd-static-reactive-retry1/result.json",
+        "sha256": "9bef2cd544ff142a28487a8cefb43406a5af1dca3b27dca625fb1f0f2fc1020d"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 32,
+          "registered_proxies": 32,
+          "floor_only_proxies": 32,
+          "above_plane_proxies": 0
+        },
+        {
+          "revision": 50,
+          "registered_proxies": 55,
+          "floor_only_proxies": 0,
+          "above_plane_proxies": 55
+        }
+      ]
+    },
+    {
+      "source": "rgbd",
+      "scenario": "sparse",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-rgbd-sparse-reactive/result.json",
+        "sha256": "58e253a2ff05002021295593c970fde8da1806c4afaf54ec4227f16024b1debd"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 32,
+          "registered_proxies": 32,
+          "floor_only_proxies": 32,
+          "above_plane_proxies": 0
+        },
+        {
+          "revision": 36,
+          "registered_proxies": 64,
+          "floor_only_proxies": 23,
+          "above_plane_proxies": 41
+        }
+      ]
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "empty",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-ground_truth-empty-reactive/result.json",
+        "sha256": "10a30bc6ef28d46fe0e8cececf24b61d3b329adc0180165d4d57a945c8c0641f"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 18,
+          "registered_proxies": 1,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 0
+        },
+        {
+          "revision": 21,
+          "registered_proxies": 1,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 0
+        }
+      ]
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "static",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-ground_truth-static-reactive/result.json",
+        "sha256": "01615ca3ef3b40d01259f287f9a7541bb0e350f2a88df00ac48eebdf4251291f"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 20,
+          "registered_proxies": 2,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 1
+        },
+        {
+          "revision": 25,
+          "registered_proxies": 2,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 1
+        }
+      ]
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "partial",
+      "artifact": {
+        "path": "outputs/motion-planning-v2-final-v2-ground_truth-partial-reactive/result.json",
+        "sha256": "e6f99cab18bccd1daff9debe37e550e564d055f0ddd8aa1dfb58c199e969d314"
+      },
+      "first_last_registrations": [
+        {
+          "revision": 20,
+          "registered_proxies": 3,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 2
+        },
+        {
+          "revision": 25,
+          "registered_proxies": 3,
+          "floor_only_proxies": 1,
+          "above_plane_proxies": 2
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "scenario": "empty",
+      "source": "rgbd",
+      "strategy": "direct",
+      "capture_artifacts_dir": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "capture_format": "uncompressed",
+      "capture_result_sha256": "1c1810006861c59ef5e9402ffda93394b9d8bd291164027b908d8a49008a9244",
+      "full_breakdown": {
+        "path": "outputs/motion-planning-v2b-evidence-audit/empty.json",
+        "sha256": "fd01fba81c9c47b28d21e1d2b6cab26bef9ad10f0ce9b2ea760af07f98742822"
+      },
+      "analyzed_jobs": 24,
+      "initial_map_timestamp_matches_capture": true,
+      "first_post_insertion_job": null,
+      "initial_published_job": {
+        "job": 19,
+        "source_timestamp": 3237625.37662458,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": null,
+        "evidence_classes": {
+          "occupied_floor_cells": 325,
+          "occupied_above_plane_cells": 0,
+          "occupied_above_plane_outside_fixture_aabbs": 0,
+          "supported_above_plane_outside_fixture_aabbs": 0
+        },
+        "objects": {},
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237625.37662458,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 50,
+            "retained_rays": 462,
+            "objects": {}
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237625.37662458,
+            "valid_depth_pixels": 272000,
+            "stride_pixels": 4800,
+            "candidate_rays": 3648,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 107,
+            "retained_rays": 405,
+            "objects": {}
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 325,
+          "supported_voxels": 49,
+          "rejected_sparse_voxels": 276,
+          "candidate_boxes": 49,
+          "proxy_count": 49,
+          "represented_voxels": 49,
+          "omitted_voxels": 0,
+          "run_budget_omitted_voxels": 0,
+          "truncated": false,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 49,
+          "hazard_candidate_boxes": 0,
+          "represented_floor_voxels": 49,
+          "omitted_floor_voxels": 0,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 314,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {}
+          },
+          "0.95": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 314,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {}
+          },
+          "0.98": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 314,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {}
+          }
+        }
+      },
+      "maximum_new_above_plane_cells_in_empty_counterfactual": 0
+    },
+    {
+      "scenario": "static",
+      "source": "rgbd",
+      "strategy": "direct",
+      "capture_artifacts_dir": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "capture_format": "compressed",
+      "capture_result_sha256": "d662d5d639dc37491b55cd99284d267d703aca98aa818a853649e4fd493015c8",
+      "full_breakdown": {
+        "path": "outputs/motion-planning-v2b-evidence-audit/static.json",
+        "sha256": "ca48c38e1b6a8284a3aa83902055e8b0d59743d499a629971e0289343480db42"
+      },
+      "analyzed_jobs": 34,
+      "initial_map_timestamp_matches_capture": true,
+      "first_post_insertion_job": {
+        "job": 15,
+        "source_timestamp": 3237212.49343786,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 0.6858732122927904,
+        "evidence_classes": {
+          "occupied_floor_cells": 327,
+          "occupied_above_plane_cells": 0,
+          "occupied_above_plane_outside_fixture_aabbs": 0,
+          "supported_above_plane_outside_fixture_aabbs": 0
+        },
+        "objects": {
+          "Post": {
+            "current_endpoint_hit_cells": 33,
+            "current_free_traversal_cells": 21,
+            "current_hits_with_previous_free_prior": 33,
+            "current_hits_previous_free_to_unknown": 33,
+            "current_hit_cells_now_occupied": 0,
+            "occupied_cells": 0,
+            "supported_cells": 0,
+            "rejected_support_cells": 0,
+            "candidate_boxes_intersecting_fixture": 0,
+            "selected_boxes_intersecting_fixture": 0,
+            "selected_represented_cells": 0,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 0
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 0,
+              "nearest_chebyshev_voxels": {
+                "count": 0
+              },
+              "nearest_euclidean_m": {
+                "count": 0
+              }
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237212.49343786,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 50,
+            "retained_rays": 462,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 7715,
+                  "visible": 7715,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 117,
+                  "visible": 117,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 117,
+                  "visible": 117,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 20,
+                  "visible": 20,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 20
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237212.49343786,
+            "valid_depth_pixels": 272000,
+            "stride_pixels": 4800,
+            "candidate_rays": 3648,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 107,
+            "retained_rays": 405,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 10280,
+                  "visible": 10280,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 24,
+                  "visible": 24,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 24
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 327,
+          "supported_voxels": 50,
+          "rejected_sparse_voxels": 277,
+          "candidate_boxes": 50,
+          "proxy_count": 50,
+          "represented_voxels": 50,
+          "omitted_voxels": 0,
+          "run_budget_omitted_voxels": 0,
+          "truncated": false,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 50,
+          "hazard_candidate_boxes": 0,
+          "represented_floor_voxels": 50,
+          "omitted_floor_voxels": 0,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 315,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 315,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 276,
+            "rescued_floor_cells": 276,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 315,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 64,
+            "selected_above_plane_proxies": 0,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          }
+        }
+      },
+      "initial_published_job": {
+        "job": 32,
+        "source_timestamp": 3237226.491468933,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 14.683904285077006,
+        "evidence_classes": {
+          "occupied_floor_cells": 311,
+          "occupied_above_plane_cells": 44,
+          "occupied_above_plane_outside_fixture_aabbs": 11,
+          "supported_above_plane_outside_fixture_aabbs": 2
+        },
+        "objects": {
+          "Post": {
+            "current_endpoint_hit_cells": 33,
+            "current_free_traversal_cells": 21,
+            "current_hits_with_previous_free_prior": 0,
+            "current_hits_previous_free_to_unknown": 0,
+            "current_hit_cells_now_occupied": 33,
+            "occupied_cells": 33,
+            "supported_cells": 4,
+            "rejected_support_cells": 29,
+            "candidate_boxes_intersecting_fixture": 4,
+            "selected_boxes_intersecting_fixture": 4,
+            "selected_represented_cells": 4,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 33,
+              "minimum": 0.9820137900379085,
+              "p50": 0.9820137900379085,
+              "p95": 0.9820137900379085,
+              "maximum": 0.9820137900379085
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 33,
+              "nearest_chebyshev_voxels": {
+                "count": 33,
+                "minimum": 1.0,
+                "p50": 3.0,
+                "p95": 5.0,
+                "maximum": 5.0
+              },
+              "nearest_euclidean_m": {
+                "count": 33,
+                "minimum": 0.017320508075688773,
+                "p50": 0.03741657386773942,
+                "p95": 0.053851648071345036,
+                "maximum": 0.05830951894845301
+              },
+              "nearest_neighbor_beyond_support_radius_2": 21
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237226.491468933,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 50,
+            "retained_rays": 462,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 7715,
+                  "visible": 7715,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 117,
+                  "visible": 117,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 117,
+                  "visible": 117,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 20,
+                  "visible": 20,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 20
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237226.491468933,
+            "valid_depth_pixels": 272000,
+            "stride_pixels": 4800,
+            "candidate_rays": 3648,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 107,
+            "retained_rays": 405,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 10280,
+                  "visible": 10280,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 24,
+                  "visible": 24,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 24
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 355,
+          "supported_voxels": 58,
+          "rejected_sparse_voxels": 297,
+          "candidate_boxes": 57,
+          "proxy_count": 57,
+          "represented_voxels": 58,
+          "omitted_voxels": 0,
+          "run_budget_omitted_voxels": 0,
+          "truncated": false,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 51,
+          "hazard_candidate_boxes": 6,
+          "represented_floor_voxels": 52,
+          "omitted_floor_voxels": 0,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 297,
+            "rescued_floor_cells": 259,
+            "rescued_above_plane_cells": 38,
+            "rescued_above_plane_outside_fixture_aabbs": 9,
+            "candidate_boxes": 343,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 20,
+            "selected_above_plane_proxies": 44,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 29,
+                "selected_boxes_intersecting_fixture": 33,
+                "selected_represented_cells": 33
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 297,
+            "rescued_floor_cells": 259,
+            "rescued_above_plane_cells": 38,
+            "rescued_above_plane_outside_fixture_aabbs": 9,
+            "candidate_boxes": 343,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 20,
+            "selected_above_plane_proxies": 44,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 29,
+                "selected_boxes_intersecting_fixture": 33,
+                "selected_represented_cells": 33
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 297,
+            "rescued_floor_cells": 259,
+            "rescued_above_plane_cells": 38,
+            "rescued_above_plane_outside_fixture_aabbs": 9,
+            "candidate_boxes": 343,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 20,
+            "selected_above_plane_proxies": 44,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 29,
+                "selected_boxes_intersecting_fixture": 33,
+                "selected_represented_cells": 33
+              }
+            }
+          }
+        }
+      },
+      "maximum_new_above_plane_cells_in_empty_counterfactual": null
+    },
+    {
+      "scenario": "sparse",
+      "source": "rgbd",
+      "strategy": "direct",
+      "capture_artifacts_dir": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "capture_format": "uncompressed",
+      "capture_result_sha256": "c30f79c64f59480f531c341ca73031c313acb3932ab0b4c7ab31f0df141f4cf5",
+      "full_breakdown": {
+        "path": "outputs/motion-planning-v2b-evidence-audit/sparse.json",
+        "sha256": "db13d805bc2cdecb7b1826107ef3ba248432f5cca248c414114eb52d5f100f1f"
+      },
+      "analyzed_jobs": 24,
+      "initial_map_timestamp_matches_capture": true,
+      "first_post_insertion_job": {
+        "job": 8,
+        "source_timestamp": 3237650.907034082,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 0.4877181560732424,
+        "evidence_classes": {
+          "occupied_floor_cells": 757,
+          "occupied_above_plane_cells": 303,
+          "occupied_above_plane_outside_fixture_aabbs": 300,
+          "supported_above_plane_outside_fixture_aabbs": 16
+        },
+        "objects": {
+          "ThinPost": {
+            "current_endpoint_hit_cells": 13,
+            "current_free_traversal_cells": 16,
+            "current_hits_with_previous_free_prior": 7,
+            "current_hits_previous_free_to_unknown": 7,
+            "current_hit_cells_now_occupied": 3,
+            "occupied_cells": 3,
+            "supported_cells": 0,
+            "rejected_support_cells": 3,
+            "candidate_boxes_intersecting_fixture": 0,
+            "selected_boxes_intersecting_fixture": 0,
+            "selected_represented_cells": 0,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 3,
+              "minimum": 0.700567142473973,
+              "p50": 0.700567142473973,
+              "p95": 0.700567142473973,
+              "maximum": 0.700567142473973
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 3,
+              "nearest_chebyshev_voxels": {
+                "count": 3,
+                "minimum": 2.0,
+                "p50": 2.0,
+                "p95": 12.799999999999999,
+                "maximum": 14.0
+              },
+              "nearest_euclidean_m": {
+                "count": 3,
+                "minimum": 0.022360679774997897,
+                "p50": 0.022360679774997897,
+                "p95": 0.12855708760606357,
+                "maximum": 0.140356688476182
+              },
+              "nearest_neighbor_beyond_support_radius_2": 1
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237650.907034082,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 50,
+            "retained_rays": 462,
+            "objects": {
+              "ThinPost": {
+                "raw_depth": {
+                  "potential": 2511,
+                  "visible": 2511,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 40,
+                  "visible": 40,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 40,
+                  "visible": 40,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 7,
+                  "visible": 7,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 7
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237650.907034082,
+            "valid_depth_pixels": 272000,
+            "stride_pixels": 4800,
+            "candidate_rays": 3648,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 107,
+            "retained_rays": 405,
+            "objects": {
+              "ThinPost": {
+                "raw_depth": {
+                  "potential": 3485,
+                  "visible": 3485,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 55,
+                  "visible": 55,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 55,
+                  "visible": 55,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 7,
+                  "visible": 7,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 7
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 1060,
+          "supported_voxels": 474,
+          "rejected_sparse_voxels": 586,
+          "candidate_boxes": 447,
+          "proxy_count": 64,
+          "represented_voxels": 91,
+          "omitted_voxels": 383,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 431,
+          "hazard_candidate_boxes": 16,
+          "represented_floor_voxels": 75,
+          "omitted_floor_voxels": 383,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 176,
+            "rescued_floor_cells": 176,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 623,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 48,
+            "selected_above_plane_proxies": 16,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 126,
+            "rescued_floor_cells": 126,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 573,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 48,
+            "selected_above_plane_proxies": 16,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 20,
+            "rescued_floor_cells": 20,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 467,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 48,
+            "selected_above_plane_proxies": 16,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              }
+            }
+          }
+        }
+      },
+      "initial_published_job": {
+        "job": 21,
+        "source_timestamp": 3237657.310545511,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 6.891229585278779,
+        "evidence_classes": {
+          "occupied_floor_cells": 320,
+          "occupied_above_plane_cells": 14,
+          "occupied_above_plane_outside_fixture_aabbs": 1,
+          "supported_above_plane_outside_fixture_aabbs": 0
+        },
+        "objects": {
+          "ThinPost": {
+            "current_endpoint_hit_cells": 13,
+            "current_free_traversal_cells": 16,
+            "current_hits_with_previous_free_prior": 0,
+            "current_hits_previous_free_to_unknown": 0,
+            "current_hit_cells_now_occupied": 13,
+            "occupied_cells": 13,
+            "supported_cells": 3,
+            "rejected_support_cells": 10,
+            "candidate_boxes_intersecting_fixture": 3,
+            "selected_boxes_intersecting_fixture": 3,
+            "selected_represented_cells": 3,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 13,
+              "minimum": 0.9820137900379085,
+              "p50": 0.9820137900379085,
+              "p95": 0.9820137900379085,
+              "maximum": 0.9820137900379085
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 13,
+              "nearest_chebyshev_voxels": {
+                "count": 13,
+                "minimum": 2.0,
+                "p50": 3.0,
+                "p95": 3.0,
+                "maximum": 3.0
+              },
+              "nearest_euclidean_m": {
+                "count": 13,
+                "minimum": 0.022360679774997897,
+                "p50": 0.033166247903554,
+                "p95": 0.03741657386773942,
+                "maximum": 0.03741657386773942
+              },
+              "nearest_neighbor_beyond_support_radius_2": 8
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237657.310545511,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 50,
+            "retained_rays": 462,
+            "objects": {
+              "ThinPost": {
+                "raw_depth": {
+                  "potential": 2511,
+                  "visible": 2511,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 40,
+                  "visible": 40,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 40,
+                  "visible": 40,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 7,
+                  "visible": 7,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 7
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237657.310545511,
+            "valid_depth_pixels": 272000,
+            "stride_pixels": 4800,
+            "candidate_rays": 3648,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 107,
+            "retained_rays": 405,
+            "objects": {
+              "ThinPost": {
+                "raw_depth": {
+                  "potential": 3485,
+                  "visible": 3485,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 55,
+                  "visible": 55,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 55,
+                  "visible": 55,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 7,
+                  "visible": 7,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 7
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 334,
+          "supported_voxels": 52,
+          "rejected_sparse_voxels": 282,
+          "candidate_boxes": 52,
+          "proxy_count": 52,
+          "represented_voxels": 52,
+          "omitted_voxels": 0,
+          "run_budget_omitted_voxels": 0,
+          "truncated": false,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 49,
+          "hazard_candidate_boxes": 3,
+          "represented_floor_voxels": 49,
+          "omitted_floor_voxels": 0,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 282,
+            "rescued_floor_cells": 271,
+            "rescued_above_plane_cells": 11,
+            "rescued_above_plane_outside_fixture_aabbs": 1,
+            "candidate_boxes": 323,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 50,
+            "selected_above_plane_proxies": 14,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 10,
+                "selected_boxes_intersecting_fixture": 13,
+                "selected_represented_cells": 13
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 282,
+            "rescued_floor_cells": 271,
+            "rescued_above_plane_cells": 11,
+            "rescued_above_plane_outside_fixture_aabbs": 1,
+            "candidate_boxes": 323,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 50,
+            "selected_above_plane_proxies": 14,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 10,
+                "selected_boxes_intersecting_fixture": 13,
+                "selected_represented_cells": 13
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 282,
+            "rescued_floor_cells": 271,
+            "rescued_above_plane_cells": 11,
+            "rescued_above_plane_outside_fixture_aabbs": 1,
+            "candidate_boxes": 323,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 50,
+            "selected_above_plane_proxies": 14,
+            "objects": {
+              "ThinPost": {
+                "rescued_observed_cells": 10,
+                "selected_boxes_intersecting_fixture": 13,
+                "selected_represented_cells": 13
+              }
+            }
+          }
+        }
+      },
+      "maximum_new_above_plane_cells_in_empty_counterfactual": null
+    },
+    {
+      "scenario": "partial",
+      "source": "rgbd",
+      "strategy": "direct",
+      "capture_artifacts_dir": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "capture_format": "uncompressed",
+      "capture_result_sha256": "ebee83a39397ebe0e9decf8c7bc9e0382db5d18ace04d7a9c505a53a5c3b0f4e",
+      "full_breakdown": {
+        "path": "outputs/motion-planning-v2b-evidence-audit/partial.json",
+        "sha256": "705c62b6d8122e4e5eb17def0e5483799f4685e453faf210227ed078b55520b9"
+      },
+      "analyzed_jobs": 25,
+      "initial_map_timestamp_matches_capture": true,
+      "first_post_insertion_job": {
+        "job": 8,
+        "source_timestamp": 3237684.584732335,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 0.4658548440784216,
+        "evidence_classes": {
+          "occupied_floor_cells": 803,
+          "occupied_above_plane_cells": 348,
+          "occupied_above_plane_outside_fixture_aabbs": 282,
+          "supported_above_plane_outside_fixture_aabbs": 9
+        },
+        "objects": {
+          "Post": {
+            "current_endpoint_hit_cells": 23,
+            "current_free_traversal_cells": 10,
+            "current_hits_with_previous_free_prior": 9,
+            "current_hits_previous_free_to_unknown": 9,
+            "current_hit_cells_now_occupied": 10,
+            "occupied_cells": 10,
+            "supported_cells": 0,
+            "rejected_support_cells": 10,
+            "candidate_boxes_intersecting_fixture": 0,
+            "selected_boxes_intersecting_fixture": 0,
+            "selected_represented_cells": 0,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 10,
+              "minimum": 0.700567142473973,
+              "p50": 0.700567142473973,
+              "p95": 0.700567142473973,
+              "maximum": 0.700567142473973
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 10,
+              "nearest_chebyshev_voxels": {
+                "count": 10,
+                "minimum": 4.0,
+                "p50": 4.0,
+                "p95": 6.0,
+                "maximum": 6.0
+              },
+              "nearest_euclidean_m": {
+                "count": 10,
+                "minimum": 0.044721359549995794,
+                "p50": 0.044721359549995794,
+                "p95": 0.06463498464210692,
+                "maximum": 0.0670820393249937
+              },
+              "nearest_neighbor_beyond_support_radius_2": 10
+            }
+          },
+          "Occluder": {
+            "current_endpoint_hit_cells": 161,
+            "current_free_traversal_cells": 53,
+            "current_hits_with_previous_free_prior": 94,
+            "current_hits_previous_free_to_unknown": 94,
+            "current_hit_cells_now_occupied": 55,
+            "occupied_cells": 56,
+            "supported_cells": 8,
+            "rejected_support_cells": 48,
+            "candidate_boxes_intersecting_fixture": 8,
+            "selected_boxes_intersecting_fixture": 8,
+            "selected_represented_cells": 8,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 56,
+              "minimum": 0.700567142473973,
+              "p50": 0.700567142473973,
+              "p95": 0.700567142473973,
+              "maximum": 0.700567142473973
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 56,
+              "nearest_chebyshev_voxels": {
+                "count": 56,
+                "minimum": 1.0,
+                "p50": 3.0,
+                "p95": 7.0,
+                "maximum": 8.0
+              },
+              "nearest_euclidean_m": {
+                "count": 56,
+                "minimum": 0.014142135623730952,
+                "p50": 0.03605551275463989,
+                "p95": 0.08420726415926282,
+                "maximum": 0.1044030650891055
+              },
+              "nearest_neighbor_beyond_support_radius_2": 36
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237684.584732335,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 38,
+            "retained_rays": 474,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 7715,
+                  "visible": 0,
+                  "occluded": 7715,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 117,
+                  "visible": 0,
+                  "occluded": 117,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 117,
+                  "visible": 0,
+                  "occluded": 117,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 20,
+                  "visible": 0,
+                  "occluded": 20,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 0
+              },
+              "Occluder": {
+                "raw_depth": {
+                  "potential": 60399,
+                  "visible": 60399,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 945,
+                  "visible": 945,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 945,
+                  "visible": 945,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 148,
+                  "visible": 148,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 148
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237684.584732335,
+            "valid_depth_pixels": 274192,
+            "stride_pixels": 4800,
+            "candidate_rays": 3845,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 99,
+            "retained_rays": 413,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 10280,
+                  "visible": 10280,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 23,
+                  "visible": 23,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 23
+              },
+              "Occluder": {
+                "raw_depth": {
+                  "potential": 24570,
+                  "visible": 20541,
+                  "occluded": 4028,
+                  "behind_expected_surface": 0,
+                  "invalid": 1
+                },
+                "stride_grid": {
+                  "potential": 386,
+                  "visible": 321,
+                  "occluded": 65,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 386,
+                  "visible": 321,
+                  "occluded": 65,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 49,
+                  "visible": 40,
+                  "occluded": 9,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 40
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 1151,
+          "supported_voxels": 556,
+          "rejected_sparse_voxels": 595,
+          "candidate_boxes": 526,
+          "proxy_count": 64,
+          "represented_voxels": 94,
+          "omitted_voxels": 462,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 509,
+          "hazard_candidate_boxes": 17,
+          "represented_floor_voxels": 77,
+          "omitted_floor_voxels": 462,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 135,
+            "rescued_floor_cells": 135,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 661,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 47,
+            "selected_above_plane_proxies": 17,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              },
+              "Occluder": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 8,
+                "selected_represented_cells": 8
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 110,
+            "rescued_floor_cells": 110,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 636,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 47,
+            "selected_above_plane_proxies": 17,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              },
+              "Occluder": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 8,
+                "selected_represented_cells": 8
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 16,
+            "rescued_floor_cells": 16,
+            "rescued_above_plane_cells": 0,
+            "rescued_above_plane_outside_fixture_aabbs": 0,
+            "candidate_boxes": 542,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 47,
+            "selected_above_plane_proxies": 17,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 0,
+                "selected_represented_cells": 0
+              },
+              "Occluder": {
+                "rescued_observed_cells": 0,
+                "selected_boxes_intersecting_fixture": 8,
+                "selected_represented_cells": 8
+              }
+            }
+          }
+        }
+      },
+      "initial_published_job": {
+        "job": 21,
+        "source_timestamp": 3237690.984057301,
+        "phase": "after_insertion_before_route",
+        "seconds_after_actor_insertion": 6.865179810207337,
+        "evidence_classes": {
+          "occupied_floor_cells": 241,
+          "occupied_above_plane_cells": 211,
+          "occupied_above_plane_outside_fixture_aabbs": 27,
+          "supported_above_plane_outside_fixture_aabbs": 2
+        },
+        "objects": {
+          "Post": {
+            "current_endpoint_hit_cells": 23,
+            "current_free_traversal_cells": 10,
+            "current_hits_with_previous_free_prior": 0,
+            "current_hits_previous_free_to_unknown": 0,
+            "current_hit_cells_now_occupied": 23,
+            "occupied_cells": 23,
+            "supported_cells": 0,
+            "rejected_support_cells": 23,
+            "candidate_boxes_intersecting_fixture": 0,
+            "selected_boxes_intersecting_fixture": 0,
+            "selected_represented_cells": 0,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 23,
+              "minimum": 0.9820137900379085,
+              "p50": 0.9820137900379085,
+              "p95": 0.9820137900379085,
+              "maximum": 0.9820137900379085
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 23,
+              "nearest_chebyshev_voxels": {
+                "count": 23,
+                "minimum": 3.0,
+                "p50": 4.0,
+                "p95": 5.0,
+                "maximum": 7.0
+              },
+              "nearest_euclidean_m": {
+                "count": 23,
+                "minimum": 0.033166247903554,
+                "p50": 0.044721359549995794,
+                "p95": 0.053565502777803316,
+                "maximum": 0.07
+              },
+              "nearest_neighbor_beyond_support_radius_2": 23
+            }
+          },
+          "Occluder": {
+            "current_endpoint_hit_cells": 161,
+            "current_free_traversal_cells": 53,
+            "current_hits_with_previous_free_prior": 0,
+            "current_hits_previous_free_to_unknown": 0,
+            "current_hit_cells_now_occupied": 161,
+            "occupied_cells": 161,
+            "supported_cells": 59,
+            "rejected_support_cells": 102,
+            "candidate_boxes_intersecting_fixture": 59,
+            "selected_boxes_intersecting_fixture": 59,
+            "selected_represented_cells": 59,
+            "supported_cells_omitted_by_budget": 0,
+            "occupied_probability_distribution": {
+              "count": 161,
+              "minimum": 0.9820137900379085,
+              "p50": 0.9820137900379085,
+              "p95": 0.9820137900379085,
+              "maximum": 0.9820137900379085
+            },
+            "nearest_neighbor_spacing": {
+              "voxels": 161,
+              "nearest_chebyshev_voxels": {
+                "count": 161,
+                "minimum": 1.0,
+                "p50": 2.0,
+                "p95": 5.0,
+                "maximum": 7.0
+              },
+              "nearest_euclidean_m": {
+                "count": 161,
+                "minimum": 0.014142135623730952,
+                "p50": 0.03,
+                "p95": 0.05099019513592785,
+                "maximum": 0.07280109889280519
+              },
+              "nearest_neighbor_beyond_support_radius_2": 80
+            }
+          }
+        },
+        "cameras": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3237690.984057301,
+            "valid_depth_pixels": 271773,
+            "stride_pixels": 4800,
+            "candidate_rays": 3303,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 38,
+            "retained_rays": 474,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 7715,
+                  "visible": 0,
+                  "occluded": 7715,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 117,
+                  "visible": 0,
+                  "occluded": 117,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 117,
+                  "visible": 0,
+                  "occluded": 117,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 20,
+                  "visible": 0,
+                  "occluded": 20,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 0
+              },
+              "Occluder": {
+                "raw_depth": {
+                  "potential": 60399,
+                  "visible": 60399,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 945,
+                  "visible": 945,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 945,
+                  "visible": 945,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 148,
+                  "visible": 148,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 148
+              }
+            }
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3237690.984057301,
+            "valid_depth_pixels": 274192,
+            "stride_pixels": 4800,
+            "candidate_rays": 3845,
+            "allocated_rays": 512,
+            "automatic_masked_rays": 99,
+            "retained_rays": 413,
+            "objects": {
+              "Post": {
+                "raw_depth": {
+                  "potential": 10280,
+                  "visible": 10280,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "stride_grid": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 159,
+                  "visible": 159,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 23,
+                  "visible": 23,
+                  "occluded": 0,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 23
+              },
+              "Occluder": {
+                "raw_depth": {
+                  "potential": 24570,
+                  "visible": 20541,
+                  "occluded": 4028,
+                  "behind_expected_surface": 0,
+                  "invalid": 1
+                },
+                "stride_grid": {
+                  "potential": 386,
+                  "visible": 321,
+                  "occluded": 65,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "candidates": {
+                  "potential": 386,
+                  "visible": 321,
+                  "occluded": 65,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "allocated": {
+                  "potential": 49,
+                  "visible": 40,
+                  "occluded": 9,
+                  "behind_expected_surface": 0,
+                  "invalid": 0
+                },
+                "physically_matching_rays_masked": 0,
+                "physically_matching_rays_retained": 40
+              }
+            }
+          }
+        ],
+        "baseline_extractor": {
+          "occupied_voxels": 452,
+          "supported_voxels": 70,
+          "rejected_sparse_voxels": 382,
+          "candidate_boxes": 70,
+          "proxy_count": 64,
+          "represented_voxels": 64,
+          "omitted_voxels": 6,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 9,
+          "hazard_candidate_boxes": 61,
+          "represented_floor_voxels": 3,
+          "omitted_floor_voxels": 6,
+          "padding_m": 0.0
+        },
+        "confidence_counterfactuals": {
+          "0.9": {
+            "rescued_cells": 382,
+            "rescued_floor_cells": 232,
+            "rescued_above_plane_cells": 150,
+            "rescued_above_plane_outside_fixture_aabbs": 25,
+            "candidate_boxes": 448,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 0,
+            "selected_above_plane_proxies": 64,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 23,
+                "selected_boxes_intersecting_fixture": 23,
+                "selected_represented_cells": 23
+              },
+              "Occluder": {
+                "rescued_observed_cells": 102,
+                "selected_boxes_intersecting_fixture": 24,
+                "selected_represented_cells": 24
+              }
+            }
+          },
+          "0.95": {
+            "rescued_cells": 382,
+            "rescued_floor_cells": 232,
+            "rescued_above_plane_cells": 150,
+            "rescued_above_plane_outside_fixture_aabbs": 25,
+            "candidate_boxes": 448,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 0,
+            "selected_above_plane_proxies": 64,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 23,
+                "selected_boxes_intersecting_fixture": 23,
+                "selected_represented_cells": 23
+              },
+              "Occluder": {
+                "rescued_observed_cells": 102,
+                "selected_boxes_intersecting_fixture": 24,
+                "selected_represented_cells": 24
+              }
+            }
+          },
+          "0.98": {
+            "rescued_cells": 382,
+            "rescued_floor_cells": 232,
+            "rescued_above_plane_cells": 150,
+            "rescued_above_plane_outside_fixture_aabbs": 25,
+            "candidate_boxes": 448,
+            "selected_proxies": 64,
+            "selected_floor_proxies": 0,
+            "selected_above_plane_proxies": 64,
+            "objects": {
+              "Post": {
+                "rescued_observed_cells": 23,
+                "selected_boxes_intersecting_fixture": 23,
+                "selected_represented_cells": 23
+              },
+              "Occluder": {
+                "rescued_observed_cells": 102,
+                "selected_boxes_intersecting_fixture": 24,
+                "selected_represented_cells": 24
+              }
+            }
+          }
+        }
+      },
+      "maximum_new_above_plane_cells_in_empty_counterfactual": null
+    }
+  ],
+  "boundary_alias_verification": {
+    "status": "PASS",
+    "asset": {
+      "path": "docs/assets/motion_planning_v2b/retention_validation.json",
+      "sha256": "8b28a7fd92bd038f5b2513627b0ec6fdd7f29796aaec9ed1445e72b58b875faf"
+    },
+    "method": "Compare above-plane captured OCCUPIED voxel IDs with actual selected, unmasked rays matching independent physical fixture surfaces. All initial above-plane cells are explained by those physical endpoints; strict AABB bin misses are voxel-boundary aliases.",
+    "initial_above_plane_cells_without_physical_endpoint_attribution": {
+      "empty": 0,
+      "static": 0,
+      "sparse": 0,
+      "partial": 0
+    },
+    "exact_physical_endpoint_coverage_before_after": {
+      "empty": {
+        "observed": {},
+        "baseline": {},
+        "temporal_counterfactual": {}
+      },
+      "static": {
+        "observed": {
+          "Post": 44
+        },
+        "baseline": {
+          "Post": 6
+        },
+        "temporal_counterfactual": {
+          "Post": 44
+        }
+      },
+      "sparse": {
+        "observed": {
+          "ThinPost": 14
+        },
+        "baseline": {
+          "ThinPost": 3
+        },
+        "temporal_counterfactual": {
+          "ThinPost": 14
+        }
+      },
+      "partial": {
+        "observed": {
+          "Post": 23,
+          "Occluder": 188
+        },
+        "baseline": {
+          "Post": 0,
+          "Occluder": 61
+        },
+        "temporal_counterfactual": {
+          "Post": 23,
+          "Occluder": 41
+        }
+      }
+    }
+  }
+}

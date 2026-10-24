@@ -83,9 +83,11 @@ default and preserves the working Pick/Place baseline. Opt-in `reactive` uses
 worker-prepared occupancy cuboids with the same controller for free-space
 MoveToPose/Home. It requires fresh mapping, creates no scene proxies, and
 explicitly rejects intended-contact Pick/Place and carrying. Global and hybrid
-planning remain unimplemented. Native ground-truth cases demonstrate avoidance;
-RGB-D obstacle avoidance remains unreliable, with measured contacts and source
-refusals. See the [V2 results](docs/motion_planning.md#v2-native-outcomes-and-runtime-impact).
+planning remain unimplemented. Native ground-truth cases demonstrate avoidance.
+V2b improves RGB-D source latency and observed-obstacle retention. RGB-D
+avoidance is demonstrated in partial-visibility and separated-obstacle scenes;
+blocked goals and contacts remain in other cases.
+See the [motion results](docs/motion_planning.md).
 
 | Path | Responsibility |
 | --- | --- |

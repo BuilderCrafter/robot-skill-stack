@@ -1,0 +1,1117 @@
+{
+  "schema_version": 1,
+  "status": "NOT_ADOPTED_OFFLINE",
+  "recorded_utc": "2026-10-24T21:15:30.246104+00:00",
+  "decision": "Retain fixed midpoint sampling for this candidate. Cycling exposes more observed cells but creates more candidate cuboids and increases budget omission. No native motion experiment establishes practical benefit for the phase-cycle variants.",
+  "scope": "One captured static-post sequence through its original pre-motion initial map. Offline ignored-copy selection override only; no production/helper/controller/camera/occupancy-probability changes.",
+  "input_capture": {
+    "result": {
+      "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/result.json",
+      "sha256": "d662d5d639dc37491b55cd99284d267d703aca98aa818a853649e4fd493015c8"
+    },
+    "initial_timestamp": 3237226.491468933,
+    "jobs": 32,
+    "payloads": [
+      {
+        "job": 1,
+        "input_timestamp": 3237201.877553975,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00001-input.pkl",
+          "sha256": "82062c6b29112fc8fccc3855b1df9e5400d39a594bb1fb20a840270593510c72"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00001.json",
+          "sha256": "cce845daf23a72e29450f50c40f0310d5de565407ffd931a005d2748d1cc2acd"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237202.090235335
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237202.324233788
+          },
+          {
+            "phase": "processor",
+            "value": 3237202.352855152
+          }
+        ]
+      },
+      {
+        "job": 2,
+        "input_timestamp": 3237202.480642451,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00002-input.pkl",
+          "sha256": "be299b69262ae6b3ed9b1078d15bdf55f6cd850613ca1c02f4a6dd9decbf8cdc"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00002.json",
+          "sha256": "5da2538490d72b845d76321b0415c34a3aa790ac166c3f82322382b8687f42df"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237202.707423334
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237202.991184314
+          },
+          {
+            "phase": "processor",
+            "value": 3237203.000966039
+          }
+        ]
+      },
+      {
+        "job": 3,
+        "input_timestamp": 3237202.883508347,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00003-input.pkl",
+          "sha256": "a636a28e8fdc7ff666fdb8d16f066500cf8fd46c97a8916933791ec58124c1f3"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00003.json",
+          "sha256": "b48a7c7f8b7f864d30df9c8f5075f9e2307a3a736a721dcccb975c34ff622a87"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237203.423279308
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237203.699614661
+          },
+          {
+            "phase": "processor",
+            "value": 3237203.71071684
+          }
+        ]
+      },
+      {
+        "job": 4,
+        "input_timestamp": 3237203.888864953,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00004-input.pkl",
+          "sha256": "5c44956ac1988b9db14eda6d8a4e45b46cd2a54395d30e0944ad2d0480aef793"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00004.json",
+          "sha256": "b1a589a7e4207467f7b8b66c4e34b6bdd1085769295f51f333b18c24a2027f63"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237204.098289586
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237204.377531482
+          },
+          {
+            "phase": "processor",
+            "value": 3237204.387762436
+          }
+        ]
+      },
+      {
+        "job": 5,
+        "input_timestamp": 3237204.483068898,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00005-input.pkl",
+          "sha256": "d17e3b2457779e15ec4969330ccc3ef6ee0a69fb75cd921a040e13b16d93cd85"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00005.json",
+          "sha256": "5680fd17a656df6a3cc3cdf83e1e0037eb126695048bf710c5f8a35bc22ea934"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237204.800719625
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237205.086689477
+          },
+          {
+            "phase": "processor",
+            "value": 3237205.098190631
+          }
+        ]
+      },
+      {
+        "job": 6,
+        "input_timestamp": 3237205.484698761,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00006-input.pkl",
+          "sha256": "9ae44802e4add7ddf20f6c4e2b231861e88d12851839ad2690c4b917d28d247d"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00006.json",
+          "sha256": "0a61d61f00970c180fcb312ed54d9c0b52c44d19cecc868d7a33ee7deba0aa0c"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237205.513512283
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237205.797206779
+          },
+          {
+            "phase": "processor",
+            "value": 3237205.807132593
+          }
+        ]
+      },
+      {
+        "job": 7,
+        "input_timestamp": 3237205.883233153,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00007-input.pkl",
+          "sha256": "d092f8c22671b8ff21b2e7df3c40ed2ba32cd4e1f9387637c10e549d96420c9c"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00007.json",
+          "sha256": "71a29f36b4fae957c5567105e8c893c6cc15bbc37ec2336c411e9f763ad8a337"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237206.213090961
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237206.501236173
+          },
+          {
+            "phase": "processor",
+            "value": 3237206.512100799
+          }
+        ]
+      },
+      {
+        "job": 8,
+        "input_timestamp": 3237206.485529411,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00008-input.pkl",
+          "sha256": "25d68b344234f9c62b8009fca85a857126c6114bfb5bee4e14a5fdf7556bf25f"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00008.json",
+          "sha256": "e7ae90c396cf6f00c0a67dc0ef60e741470e7e314a6f58ea6d9a88d4ac6fdad6"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237206.901454309
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237207.201549763
+          },
+          {
+            "phase": "processor",
+            "value": 3237207.213370143
+          }
+        ]
+      },
+      {
+        "job": 9,
+        "input_timestamp": 3237207.477655407,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00009-input.pkl",
+          "sha256": "1e77241ce5f0c076d55a8e25afd0a2b3fdb17c365574fc49c336e2de98fde990"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00009.json",
+          "sha256": "6feaf3e5f017734e7235c90e0922cc3cb34c1ede51cdad549022ececf4bc167f"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237207.690726004
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237207.970190357
+          },
+          {
+            "phase": "processor",
+            "value": 3237207.980193094
+          }
+        ]
+      },
+      {
+        "job": 10,
+        "input_timestamp": 3237207.879005285,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00010-input.pkl",
+          "sha256": "4b829d8de3753840f21595eb1b18f60245870320d8497800a082456ec4d2b5a8"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00010.json",
+          "sha256": "68312ecb8d8d4dba3fe958cedea08aa26700885674b8b25c0eb5419d8c00e818"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237208.492758554
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237208.782407503
+          },
+          {
+            "phase": "processor",
+            "value": 3237208.792801331
+          }
+        ]
+      },
+      {
+        "job": 11,
+        "input_timestamp": 3237208.881460017,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00011-input.pkl",
+          "sha256": "ea440e7417b3e45d7cfa227a3b7cfbe27cd4ba029f5b276c3727abe216cc06dd"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00011.json",
+          "sha256": "24a626932ee8f246043e09e68e62db5e08008aa539c5099c53a70fbaf2cb0916"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237209.346703595
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237209.618765813
+          },
+          {
+            "phase": "processor",
+            "value": 3237209.629129204
+          }
+        ]
+      },
+      {
+        "job": 12,
+        "input_timestamp": 3237209.886229199,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00012-input.pkl",
+          "sha256": "1c9a6fd14e1e8158ef4d927221528c9c0efd403b17cb8159bb761931e50bc11d"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00012.json",
+          "sha256": "5a6a89e8200d3eb9e4694a2b0a9d1d019dbe1b492c7112bfc85ba6415ee914dc"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237210.161713384
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237210.431323396
+          },
+          {
+            "phase": "processor",
+            "value": 3237210.441803003
+          }
+        ]
+      },
+      {
+        "job": 13,
+        "input_timestamp": 3237210.880390475,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00013-input.pkl",
+          "sha256": "cafc5d3c997cecde194f1c8284aa47fa20915a09972c77ffa13ba2e52131444a"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00013.json",
+          "sha256": "da0d217793cafe9b8687b7740cd2fd2280112e77d6b86813a27a46e0ad11220b"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237210.992830513
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237211.269659237
+          },
+          {
+            "phase": "processor",
+            "value": 3237211.28174425
+          }
+        ]
+      },
+      {
+        "job": 14,
+        "input_timestamp": 3237211.477830701,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00014-input.pkl",
+          "sha256": "388cde6e61944b8359bff7cc3dd65f947dedc1c466b017db2957a856f435ddec"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00014.json",
+          "sha256": "a042602419fa887e5ca9681924deaf75754d44c982fada3e3e0fe875b4f77006"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237211.811649451
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237212.090848449
+          },
+          {
+            "phase": "processor",
+            "value": 3237212.104816576
+          }
+        ]
+      },
+      {
+        "job": 15,
+        "input_timestamp": 3237212.49343786,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00015-input.pkl",
+          "sha256": "7b1488374077a0567605129d5cf35029c56de20417d20e67d58b4341be233f44"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00015.json",
+          "sha256": "b02dedf8317662a1f81a6cbc88db8da8f9f17bcc2806e3e304d26327f4b89adf"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237212.634363459
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237212.906255941
+          },
+          {
+            "phase": "processor",
+            "value": 3237212.917850619
+          }
+        ]
+      },
+      {
+        "job": 16,
+        "input_timestamp": 3237212.890522018,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00016-input.pkl",
+          "sha256": "c7d49001592e55b07ac0693830c2ccb979a800874a4fd1341bbbcf0535f7c0c3"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00016.json",
+          "sha256": "a3c4bb13f56a355ca6e651c91d4a6de32987d9070a929eb79ecc3b5c8f4ed475"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237213.485301819
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237213.772356748
+          },
+          {
+            "phase": "processor",
+            "value": 3237213.782719467
+          }
+        ]
+      },
+      {
+        "job": 17,
+        "input_timestamp": 3237213.886456173,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00017-input.pkl",
+          "sha256": "4a48f4d9bf6436839be8d644f7e3bfe63250062ea6d10f50ee8d1ca23478c130"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00017.json",
+          "sha256": "9fb280a15534761668d81ae199846d889e1d5c03b792a7c325daea120d0a9edc"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237214.305788911
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237214.581095134
+          },
+          {
+            "phase": "processor",
+            "value": 3237214.592063694
+          }
+        ]
+      },
+      {
+        "job": 18,
+        "input_timestamp": 3237214.884623676,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00018-input.pkl",
+          "sha256": "8bbd351bb4d4974504ddfb3d8dee1c5619095fc67ca482dd894c54641e2df48d"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00018.json",
+          "sha256": "bd596c248b108cbbabc533013640d5320fd1dd56c4443b9153ff0ce8595d7b3f"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237215.092732233
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237215.383869781
+          },
+          {
+            "phase": "processor",
+            "value": 3237215.393705376
+          }
+        ]
+      },
+      {
+        "job": 19,
+        "input_timestamp": 3237215.477970444,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00019-input.pkl",
+          "sha256": "9952525a64798a3864dc6173808bf995df41dc92f9fb2d720c8e10b8b18ee474"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00019.json",
+          "sha256": "f0e5dbbc96f36787a0e0c8e6a8695762bf438e20e7c61c4e8e8a6bf6de1d1460"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237215.891380479
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237216.165548218
+          },
+          {
+            "phase": "processor",
+            "value": 3237216.174896133
+          }
+        ]
+      },
+      {
+        "job": 20,
+        "input_timestamp": 3237216.47930083,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00020-input.pkl",
+          "sha256": "a5db528774b81310f46a128399fc93c04f3e49c0a54eefc284048efc75799c09"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00020.json",
+          "sha256": "689822634a570612bf91c4eb920f594f6221570fc289abb6b4e023034003ee6e"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237216.682755662
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237216.956835547
+          },
+          {
+            "phase": "processor",
+            "value": 3237216.966591043
+          }
+        ]
+      },
+      {
+        "job": 21,
+        "input_timestamp": 3237217.481462528,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00021-input.pkl",
+          "sha256": "9ccc86b0ab60f9c678692fe47b0a3ce33cdf0f8f5cda5201f38805b1065b8934"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00021.json",
+          "sha256": "12de13724e7507054fcdef9bc3776b047ac8f862bf523063463e6f51beda1648"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237217.526780131
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237217.798012652
+          },
+          {
+            "phase": "processor",
+            "value": 3237217.808410998
+          }
+        ]
+      },
+      {
+        "job": 22,
+        "input_timestamp": 3237217.884521166,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00022-input.pkl",
+          "sha256": "62b37bf63a4f71b712342f9b15b81716f2e4c9249f6a6dc344b43da9870e6475"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00022.json",
+          "sha256": "5cbce7031b002a854ed9b2740bcbefb6ba996e41e7ff287f63def0d5a868f603"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237218.335757444
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237218.611930295
+          },
+          {
+            "phase": "processor",
+            "value": 3237218.621095419
+          }
+        ]
+      },
+      {
+        "job": 23,
+        "input_timestamp": 3237218.884852168,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00023-input.pkl",
+          "sha256": "f77129f5624df0f86f2a2c24f314a7e2f392701721f3655371e6d483c355aaea"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00023.json",
+          "sha256": "c46b651bd14b58ea39189c3d583f471f93a734380709e94e5c9c54d938a73e04"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237219.141399353
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237219.412987507
+          },
+          {
+            "phase": "processor",
+            "value": 3237219.422859862
+          }
+        ]
+      },
+      {
+        "job": 24,
+        "input_timestamp": 3237219.885868981,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00024-input.pkl",
+          "sha256": "c9772099121bd0b8bd7f2e19adc5d25f76e859e5097e039a173405abab886477"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00024.json",
+          "sha256": "fe03623efb17ff399fecd0fce173f9d0d6f390fe416aa53eba76a203c2692c0d"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237219.958927043
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237220.22828181
+          },
+          {
+            "phase": "processor",
+            "value": 3237220.237419914
+          }
+        ]
+      },
+      {
+        "job": 25,
+        "input_timestamp": 3237220.478353861,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00025-input.pkl",
+          "sha256": "353b148d8f8f0783531474aacc5a97b61c4ad2e5a290c919e4c1eb9933baedd9"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00025.json",
+          "sha256": "290b7c42f0e5ed724a1550bfb01910a7fe3b26d849a9fc56aa22833ff4f64985"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237220.79486925
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237221.071037792
+          },
+          {
+            "phase": "processor",
+            "value": 3237221.080823204
+          }
+        ]
+      },
+      {
+        "job": 26,
+        "input_timestamp": 3237221.479601424,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00026-input.pkl",
+          "sha256": "72db8ecbe34ea2202a1c9d881cb9ed8c5fd5b34cea002f24a77c3127bff0bab1"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00026.json",
+          "sha256": "74373b2e6e5f6cf5981b37cc7da309471e65e0d3f0125dcfd80ad4726163528f"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237221.62700905
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237221.895871117
+          },
+          {
+            "phase": "processor",
+            "value": 3237221.907636234
+          }
+        ]
+      },
+      {
+        "job": 27,
+        "input_timestamp": 3237221.889759231,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00027-input.pkl",
+          "sha256": "f1b8f73a568a84a05707417ce2fbfd0fab6876d14f8fca26e43861594c156cf2"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00027.json",
+          "sha256": "26165764738ad2fb17bf6624f4dc360f6fd9d9e470e9932adb6f755c7efca0a4"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237222.438346679
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237222.716589062
+          },
+          {
+            "phase": "processor",
+            "value": 3237222.728204549
+          }
+        ]
+      },
+      {
+        "job": 28,
+        "input_timestamp": 3237222.886833637,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00028-input.pkl",
+          "sha256": "b20d621d1e76ffaad15029ccf60a8fea4da74240666c9621a4221d004b911d8d"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00028.json",
+          "sha256": "9a7f3044ecc1dca1befba9476ee3002c68b7db335fc6d70225844f8b92cbddf5"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237223.239687151
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237223.511793633
+          },
+          {
+            "phase": "processor",
+            "value": 3237223.521879646
+          }
+        ]
+      },
+      {
+        "job": 29,
+        "input_timestamp": 3237223.888524438,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00029-input.pkl",
+          "sha256": "b7941c7c4fcb90e0a5c55781cbdedeeff7845d1de263f1c3dbdc9fa2f0ab10e2"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00029.json",
+          "sha256": "dac705422c5bc9b6fab0f5d39d56a911206a9fa8bedc1ed50163bd821495201c"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237224.098118679
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237224.384361352
+          },
+          {
+            "phase": "processor",
+            "value": 3237224.393166234
+          }
+        ]
+      },
+      {
+        "job": 30,
+        "input_timestamp": 3237224.878588141,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00030-input.pkl",
+          "sha256": "af1474848902aa63d63fe748094e6533e8aeec8bfde63b35f66b097cccbe4c5f"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00030.json",
+          "sha256": "746f5929601954461d17f71f8133372859d5a3819ca15e0277d7201980770998"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237224.921675642
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237225.192724571
+          },
+          {
+            "phase": "processor",
+            "value": 3237225.201949176
+          }
+        ]
+      },
+      {
+        "job": 31,
+        "input_timestamp": 3237225.482145145,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00031-input.pkl",
+          "sha256": "6bc929dfdabd6ee08087a8dba2c723b7cd95c6a092a31f806008f266ea87ebc9"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00031.json",
+          "sha256": "c34b6ccf494dca38ae2ea4cbdd883e015b239a01927293fc768d6c007796c3d4"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237225.73661284
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237226.018642531
+          },
+          {
+            "phase": "processor",
+            "value": 3237226.02873737
+          }
+        ]
+      },
+      {
+        "job": 32,
+        "input_timestamp": 3237226.491468933,
+        "input": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00032-input.pkl",
+          "sha256": "f689e28e8de9d8dcfd081128d604992f921e1de5c7fd9ac207e96f59050ed958"
+        },
+        "metadata": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00032.json",
+          "sha256": "123a8cd9247048cf821f9d89e6aa3ef94ba041b29a9fa83fc6f3e3c52b514a77"
+        },
+        "clock_reads": [
+          {
+            "phase": "rgbd_update",
+            "value": 3237226.571272784
+          },
+          {
+            "phase": "rgbd_update",
+            "value": 3237226.842293932
+          },
+          {
+            "phase": "processor",
+            "value": 3237226.851858681
+          }
+        ]
+      }
+    ]
+  },
+  "candidate_sources": {
+    "contemporaneous_native_pilot": {
+      "path": "outputs/motion-planning-v2b-pilot-rgbd-static-reactive/result.json",
+      "sha256": "9a7ef0578e5709dc697c46be0ae5033831cbfec339ada556cdf3181e34e02202"
+    },
+    "manifest": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+      "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+      "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+      "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+      "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+      "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+      "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+      "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+    },
+    "qualification": "Candidate production source hashes are retained from the contemporaneous frozen static pilot. The offline prototype did not separately capture its own source manifest; it used those candidate exact-filter/strong-retention implementations. No map-replay runtime or native avoidance claim follows.",
+    "rgbd_source": {
+      "path": "robot_skill_stack/world/spatial_mapping/rgbd.py",
+      "sha256": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b"
+    },
+    "rgbd_source_matches_v2_baseline": true
+  },
+  "reproduction": {
+    "ignored_script": {
+      "path": "outputs/motion-planning-v2b-phase-replay.py",
+      "sha256": "25f059104327949847f77bac6df49aaa957b36ec9ecc7866a9c3520c2887a93d"
+    },
+    "raw_result": {
+      "path": "outputs/motion-planning-v2b-phase-replay.json",
+      "sha256": "9403b18ef7e8891236865b104457b93e6972195fff2c26f34e2a20cee7547482"
+    },
+    "command": "./run_isaac_python.sh outputs/motion-planning-v2b-phase-replay.py",
+    "qualification": "Replay original MappingInput pickles and every recorded clock read; recompute masks from exposure-matched copied robot geometry with the current exact fast filter. Known post geometry scores results only and is never an input to ray selection."
+  },
+  "selection": {
+    "maximum_total_rays_per_update": 1024,
+    "cameras": 2,
+    "maximum_per_camera": 512,
+    "stride": 8,
+    "phase_schedules": {
+      "fixed": [
+        0.5
+      ],
+      "cycle2": [
+        0.5,
+        0.0
+      ],
+      "cycle4": [
+        0.5,
+        0.25,
+        0.75,
+        0.0
+      ]
+    },
+    "first_phase_matches_original_midpoint": true,
+    "rule": "floor((arange(allocated_count)+phase)*valid_candidate_count/allocated_count), applied identically to each camera allocation. Cycle after each replayed update; all32 were accepted. No backfilling masked rays.",
+    "token_validation_and_fair_allocation_unchanged": true,
+    "canonical_hit_miss_odds_and_ttl_unchanged": true,
+    "ground_truth_used_in_selection": false
+  },
+  "counts": {
+    "fixed": {
+      "occupied_voxels": 355,
+      "free_voxels": 123595,
+      "unknown_voxels": 1449250,
+      "post_roi_occupied": 44,
+      "post_roi_supported": 6,
+      "post_roi_strong_retained": 38,
+      "post_roi_eligible": 44,
+      "post_roi_candidate_cuboids": 44,
+      "post_roi_selected_cuboids": 44,
+      "post_selected_cuboid_voxels": 44,
+      "all_extraction": {
+        "occupied_voxels": 355,
+        "supported_voxels": 355,
+        "spatial_supported_voxels": 58,
+        "strong_sparse_retained": 297,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 343,
+        "proxy_count": 64,
+        "represented_voxels": 76,
+        "omitted_voxels": 279,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 299,
+        "hazard_candidate_boxes": 44,
+        "selected_floor_boxes": 20,
+        "selected_hazard_boxes": 44,
+        "represented_floor_voxels": 32,
+        "omitted_floor_voxels": 279,
+        "padding_m": 0.0,
+        "extract_seconds": 0.016064816154539585
+      },
+      "selected_post_rays_total": 792,
+      "selected_rays_total": 27736,
+      "unique_observed_post_pixels": 44,
+      "free_coverage_ratio_to_fixed": 1.0
+    },
+    "cycle2": {
+      "occupied_voxels": 711,
+      "free_voxels": 238999,
+      "unknown_voxels": 1333490,
+      "post_roi_occupied": 84,
+      "post_roi_supported": 49,
+      "post_roi_strong_retained": 35,
+      "post_roi_eligible": 84,
+      "post_roi_candidate_cuboids": 84,
+      "post_roi_selected_cuboids": 64,
+      "post_selected_cuboid_voxels": 64,
+      "all_extraction": {
+        "occupied_voxels": 711,
+        "supported_voxels": 711,
+        "spatial_supported_voxels": 328,
+        "strong_sparse_retained": 383,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 677,
+        "proxy_count": 64,
+        "represented_voxels": 64,
+        "omitted_voxels": 647,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 593,
+        "hazard_candidate_boxes": 84,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 627,
+        "padding_m": 0.0,
+        "extract_seconds": 0.010845421813428402
+      },
+      "selected_post_rays_total": 756,
+      "selected_rays_total": 27740,
+      "unique_observed_post_pixels": 84,
+      "free_coverage_ratio_to_fixed": 1.933727092519924
+    },
+    "cycle4": {
+      "occupied_voxels": 1409,
+      "free_voxels": 422779,
+      "unknown_voxels": 1149012,
+      "post_roi_occupied": 162,
+      "post_roi_supported": 152,
+      "post_roi_strong_retained": 5,
+      "post_roi_eligible": 157,
+      "post_roi_candidate_cuboids": 139,
+      "post_roi_selected_cuboids": 64,
+      "post_selected_cuboid_voxels": 82,
+      "all_extraction": {
+        "occupied_voxels": 1409,
+        "supported_voxels": 1402,
+        "spatial_supported_voxels": 1088,
+        "strong_sparse_retained": 314,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 7,
+        "candidate_boxes": 1270,
+        "proxy_count": 64,
+        "represented_voxels": 82,
+        "omitted_voxels": 1320,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 1131,
+        "hazard_candidate_boxes": 139,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 1245,
+        "padding_m": 0.0,
+        "extract_seconds": 0.01616593636572361
+      },
+      "selected_post_rays_total": 736,
+      "selected_rays_total": 27726,
+      "unique_observed_post_pixels": 164,
+      "free_coverage_ratio_to_fixed": 3.420680448238197
+    }
+  },
+  "state_artifacts": {
+    "fixed": {
+      "path": "outputs/motion-planning-v2b-phase-fixed-initial.npz",
+      "sha256": "0583ea07717510049e1a4f9d5ba54f37a67c38ffe99468bad2deddb196c98f9c",
+      "contains": [
+        "states"
+      ],
+      "omitted": [
+        "probabilities",
+        "observed",
+        "last_observed"
+      ]
+    },
+    "cycle2": {
+      "path": "outputs/motion-planning-v2b-phase-cycle2-initial.npz",
+      "sha256": "32bcb0a2352b7ad32f03de16378d068baf9776a5788e7f87e05759f17a05bc88",
+      "contains": [
+        "states"
+      ],
+      "omitted": [
+        "probabilities",
+        "observed",
+        "last_observed"
+      ]
+    },
+    "cycle4": {
+      "path": "outputs/motion-planning-v2b-phase-cycle4-initial.npz",
+      "sha256": "192b122e07d685a137205b350e22b669369f6490bc0e7b6f18a44cf7be3ceba0",
+      "contains": [
+        "states"
+      ],
+      "omitted": [
+        "probabilities",
+        "observed",
+        "last_observed"
+      ]
+    }
+  },
+  "evaluation_definition": {
+    "post_roi": "Known physical post AABB expanded by one voxel in index space for scoring occupied/support/cuboid counts. It is not used by the sampler, mapper or robot mask.",
+    "post_pixel_count": "Unique camera-id/y/x pixels whose retained depth endpoints lie in the known post bounds within1e-5m; truth is scoring only.",
+    "free_coverage": "Count of OccupancyMap cells classified FREE from ordinary observed rays, not independent physical free-space certification.",
+    "cuboid_reference": "Current candidate exact occupied-cell extractor including temporally strong sparse retention,64proxy budget and hazard priority. No invented solid completion used in this replay."
+  },
+  "findings": [
+    "Fixed midpoint selects44 unique post pixels; two phases select84 and four phases164 without adding rays.",
+    "Post occupied/support: fixed44occupied/6spatial; cycle2 84/49; cycle4 162/152. Four-phase temporal sparse retention adds5more eligible post cells.",
+    "Known FREE label counts increase123595\u2192238999\u2192422779, demonstrating greater ray diversity from the same per-update budget, not a claim about unseen geometry.",
+    "Post exact-cuboid candidates increase44\u219284\u2192139. Budget selection retains44\u219264\u219264post cuboids representing44\u219264\u219282post cells. Greater evidence coverage alone therefore does not solve compact bounded representation.",
+    "No native physical avoidance, latency benchmark, moving-scene behavior or reliable per-cell confidence maintenance was measured for cycling. More diverse rays can reduce per-cell revisit frequency and affect confidence/TTL under unchanged odds."
+  ],
+  "physical_avoidance_inference": false,
+  "production_adopted": false,
+  "prototype_runtime_edits": false,
+  "limitations": [
+    "One static captured sequence, no randomized scenes or camera configurations.",
+    "Elapsed replay wall time is not a controlled performance benchmark.",
+    "First-phase midpoint equivalence follows the selection formula; no existing regression test was changed.",
+    "Original full captures include diagnostic disk/serialization overhead; original timestamps are retained rather than retimed."
+  ]
+}

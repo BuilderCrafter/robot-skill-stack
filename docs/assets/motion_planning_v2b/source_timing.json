@@ -1,0 +1,4131 @@
+{
+  "schema_version": 1,
+  "source_availability_status": "PASS",
+  "physical_assessment_status": "PARTIAL_FAILURE",
+  "scope": "All40 final native attempts; separate matched four-scene2Hz/2.5Hz reactive source comparison and full eight-scene default2Hz RGBD outcomes.",
+  "matrix": {
+    "path": "outputs/motion-planning-v2b-final-matrix.json",
+    "sha256": "8a9667bbabbf0e89ab12a88fb7e29957f784a254d8943180cc19ed759c11932e",
+    "attempts": 40,
+    "source_manifests": [
+      "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    ]
+  },
+  "baseline": {
+    "path": "docs/assets/motion_planning_v2b/baseline_timing.json",
+    "sha256": "fc98878edf2070dda118ef1e93343e3aaf8fbcbe182ab517f0cb5e1b739dafa8",
+    "attempts": 8,
+    "setup_source_failures": 8,
+    "measured_routes": 0
+  },
+  "reactive_attempts": 22,
+  "reactive_source_failures": 0,
+  "reactive_owned_proxies_after_close": 0,
+  "matched_rate_comparison": {
+    "2.0": {
+      "cases": [
+        "partial",
+        "static",
+        "sparse",
+        "empty"
+      ],
+      "source_availability": "PASS",
+      "source_failures": 0,
+      "classifications": {
+        "partial": "target_reached_clear",
+        "static": "blocked_timeout",
+        "sparse": "blocked_timeout",
+        "empty": "target_reached_clear"
+      },
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 149,
+          "mean": 0.01772719389140206,
+          "p50": 0.01726661203429103,
+          "p99": 0.024757884293794635,
+          "worst": 0.025092073250561953
+        },
+        "processor_compute_seconds": {
+          "count": 149,
+          "mean": 0.11290432682460887,
+          "p50": 0.11184050934389234,
+          "p99": 0.14187721764668826,
+          "worst": 0.1511071277782321
+        },
+        "ray_traversal_seconds": {
+          "count": 149,
+          "mean": 0.053392156127265236,
+          "p50": 0.05360128777101636,
+          "p99": 0.06210428623482587,
+          "worst": 0.06440328527241945
+        },
+        "obstacle_extract_seconds": {
+          "count": 149,
+          "mean": 0.01175357680142726,
+          "p50": 0.011647877283394337,
+          "p99": 0.013152623362839224,
+          "worst": 0.01336870202794671
+        }
+      },
+      "worst_applied_original_acquisition_age_ms": 850.4003491252661
+    },
+    "2.5": {
+      "cases": [
+        "empty",
+        "static",
+        "sparse",
+        "partial"
+      ],
+      "source_availability": "PASS",
+      "source_failures": 0,
+      "classifications": {
+        "empty": "target_reached_clear",
+        "static": "blocked_timeout",
+        "sparse": "blocked_timeout",
+        "partial": "target_reached_clear"
+      },
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 181,
+          "mean": 0.017544581153486644,
+          "p50": 0.01706307101994753,
+          "p99": 0.023266088031232358,
+          "worst": 0.025563409086316824
+        },
+        "processor_compute_seconds": {
+          "count": 181,
+          "mean": 0.11195916266988407,
+          "p50": 0.11130421236157417,
+          "p99": 0.13852794170379634,
+          "worst": 0.1519173257984221
+        },
+        "ray_traversal_seconds": {
+          "count": 181,
+          "mean": 0.05306314590556845,
+          "p50": 0.05306355282664299,
+          "p99": 0.061161820124834745,
+          "worst": 0.06312767276540399
+        },
+        "obstacle_extract_seconds": {
+          "count": 181,
+          "mean": 0.011726598898514858,
+          "p50": 0.011607722379267216,
+          "p99": 0.013178054243326187,
+          "worst": 0.014070811681449413
+        }
+      },
+      "worst_applied_original_acquisition_age_ms": 657.3602431453764
+    }
+  },
+  "default_rgbd_summary": {
+    "attempts": 8,
+    "source_availability": "PASS",
+    "source_failures": 0,
+    "strict_clear": [
+      "partial",
+      "separated",
+      "empty"
+    ],
+    "classifications": {
+      "partial": "target_reached_clear",
+      "moving": "target_reached_with_contact",
+      "separated": "target_reached_clear",
+      "narrow": "contact_and_target_not_reached",
+      "static": "blocked_timeout",
+      "sparse": "blocked_timeout",
+      "empty": "target_reached_clear",
+      "large": "blocked_timeout"
+    },
+    "strict_clear_count": 3,
+    "worst_applied_original_acquisition_age_ms": 850.4003491252661
+  },
+  "rows": [
+    {
+      "source": "rgbd",
+      "scenario": "partial",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.1503707338124514,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 24,
+          "mean": 0.01747944060480222,
+          "p50": 0.017089978558942676,
+          "p99": 0.02165527695789933,
+          "worst": 0.022117112763226032
+        },
+        "ray_traversal_seconds": {
+          "count": 24,
+          "mean": 0.05096939660143107,
+          "p50": 0.05043517053127289,
+          "p99": 0.05531439878512174,
+          "worst": 0.05537690967321396
+        },
+        "occupancy_integrate_seconds": {
+          "count": 24,
+          "mean": 0.009812120231799781,
+          "p50": 0.009136023931205273,
+          "p99": 0.023593243574723595,
+          "worst": 0.02741815010085702
+        },
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007466132888415207,
+          "p50": 0.006622265791520476,
+          "p99": 0.01706901557743549,
+          "worst": 0.017504513263702393
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.0967774423964632,
+          "p50": 0.09360907948575914,
+          "p99": 0.12342686751391738,
+          "worst": 0.12770980782806873
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.00040720760201414424,
+          "p50": 5.045393481850624e-05,
+          "p99": 0.0011037276219576597,
+          "worst": 0.0011252230033278465
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.16742564675708613,
+          "p50": 0.1778283310122788,
+          "p99": 0.1863910114765167,
+          "worst": 0.18656576005741954
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07114419263477127,
+          "p50": 0.0772132077254355,
+          "p99": 0.08761925370432436,
+          "worst": 0.08783162198960781
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.010443827292571465,
+          "p50": 0.00934505369514227,
+          "p99": 0.014098685877397656,
+          "worst": 0.014195698779076338
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.18529887543991208,
+          "p50": 0.19218085333704948,
+          "p99": 0.20897300899028778,
+          "worst": 0.2093157060444355
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-direct/result.json",
+        "sha256": "2b94371d1189c5bacc6f9e907b2afa7dd5ca06dbffe8385511f54e95d1d63e28"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-direct/mapping-audit/jobs.jsonl",
+        "sha256": "12967419fd697e9c60f964eede29d35d39c19a41fd8aaa272ece1e159e318c50"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "partial",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 3.874752371571958,
+      "applied_original_acquisition_age_ms": {
+        "count": 296,
+        "mean": 458.82357393762703,
+        "p50": 447.86328123882413,
+        "p95": 738.4397778660059,
+        "p99": 787.6147038536147,
+        "worst": 821.3697429746389
+      },
+      "worker_job_count": 28,
+      "worker_accepted_jobs": 28,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 28,
+          "mean": 0.018406170935902213,
+          "p50": 0.01741077215410769,
+          "p99": 0.02505485395435244,
+          "worst": 0.025092073250561953
+        },
+        "ray_traversal_seconds": {
+          "count": 28,
+          "mean": 0.05089107155799866,
+          "p50": 0.0504359295591712,
+          "p99": 0.056829800722189246,
+          "worst": 0.05718305381014943
+        },
+        "occupancy_integrate_seconds": {
+          "count": 28,
+          "mean": 0.009417215445345002,
+          "p50": 0.008462624857202172,
+          "p99": 0.02200910458806903,
+          "worst": 0.026171118952333927
+        },
+        "snapshot_seconds": {
+          "count": 28,
+          "mean": 0.007323739651058402,
+          "p50": 0.00670253112912178,
+          "p99": 0.016522819893434643,
+          "worst": 0.016880265902727842
+        },
+        "obstacle_extract_seconds": {
+          "count": 28,
+          "mean": 0.011769323809338468,
+          "p50": 0.011623130878433585,
+          "p99": 0.013001358169130981,
+          "worst": 0.013013749849051237
+        },
+        "processor_compute_seconds": {
+          "count": 28,
+          "mean": 0.1087882421478363,
+          "p50": 0.10612485208548605,
+          "p99": 0.13503674633335322,
+          "worst": 0.14019843516871333
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0008239365803698698,
+          "p50": 0.000990510918200016,
+          "p99": 0.0014285963866859674,
+          "worst": 0.0014375369064509869
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1795288616170486,
+          "p50": 0.18368629505857825,
+          "p99": 0.18950916398316622,
+          "worst": 0.1896279980428517
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07513903686776757,
+          "p50": 0.07733892230316997,
+          "p99": 0.08526955431327224,
+          "worst": 0.08543140394613147
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.004528292765220006,
+          "p50": 0.002321719191968441,
+          "p99": 0.008817842975258828,
+          "worst": 0.008950416930019855
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.19216836600874862,
+          "p50": 0.19880744302645326,
+          "p99": 0.20260823460295796,
+          "worst": 0.20268580177798867
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-reactive/result.json",
+        "sha256": "c5ebce69fb2e45167856132b8d19265493aeaec1016811afd2cdb3fa776a281e"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "327720a40bda880b7c484f49d9811c0502d5185a4c172c5ff99ccad159433306"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "moving",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.6633222079835832,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 23,
+          "mean": 0.017179427142052547,
+          "p50": 0.016917675267904997,
+          "p99": 0.021429305318742993,
+          "worst": 0.022109306883066893
+        },
+        "ray_traversal_seconds": {
+          "count": 23,
+          "mean": 0.05354179433830406,
+          "p50": 0.05355935078114271,
+          "p99": 0.0605736621003598,
+          "worst": 0.06101171765476465
+        },
+        "occupancy_integrate_seconds": {
+          "count": 23,
+          "mean": 0.010381777386140564,
+          "p50": 0.009432617109268904,
+          "p99": 0.023220170177519338,
+          "worst": 0.026318422984331846
+        },
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.008052020070507475,
+          "p50": 0.0067548928782343864,
+          "p99": 0.018594972286373378,
+          "worst": 0.01888115517795086
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.10149516549933216,
+          "p50": 0.09920196793973446,
+          "p99": 0.12112465716898443,
+          "worst": 0.12417099019512534
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0008101741162439188,
+          "p50": 0.001141894143074751,
+          "p99": 0.0012358849588781596,
+          "worst": 0.0012378031387925148
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.15693119168281555,
+          "p50": 0.15262313093990088,
+          "p99": 0.16779050586745142,
+          "worst": 0.168100044131279
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05909261557584008,
+          "p50": 0.05509458063170314,
+          "p99": 0.06762808522209525,
+          "worst": 0.06788387103006244
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.0080274255014956,
+          "p50": 0.007752438075840473,
+          "p99": 0.012196409804746507,
+          "worst": 0.012287103105336428
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.17252897409101328,
+          "p50": 0.16880960017442703,
+          "p99": 0.18775996590964497,
+          "worst": 0.18814670806750655
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-moving-direct/result.json",
+        "sha256": "9302b5b4c652c2ff1a59090cab0fe3f51d81d6e9aad1f359fd0cd8596664f258"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-moving-direct/mapping-audit/jobs.jsonl",
+        "sha256": "05c3804b422f53ebda8cbdf84081bff1e84fff8386a3ee420793e0cbe96f480d"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "moving",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 10.777735007926822,
+      "applied_original_acquisition_age_ms": {
+        "count": 799,
+        "mean": 458.5336310245815,
+        "p50": 448.8896452821791,
+        "p95": 743.8760207965967,
+        "p99": 791.345162373036,
+        "worst": 839.6497676149011
+      },
+      "worker_job_count": 42,
+      "worker_accepted_jobs": 42,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 42,
+          "mean": 0.017355474554711862,
+          "p50": 0.01682558679021895,
+          "p99": 0.021440410241484634,
+          "worst": 0.022334085311740637
+        },
+        "ray_traversal_seconds": {
+          "count": 42,
+          "mean": 0.05313031523976298,
+          "p50": 0.05289394920691848,
+          "p99": 0.058681119885295625,
+          "worst": 0.05889507755637169
+        },
+        "occupancy_integrate_seconds": {
+          "count": 42,
+          "mean": 0.01029280958963292,
+          "p50": 0.009668462444096804,
+          "p99": 0.020408734343945925,
+          "worst": 0.026429086923599243
+        },
+        "snapshot_seconds": {
+          "count": 42,
+          "mean": 0.0075624969211362655,
+          "p50": 0.007237148936837912,
+          "p99": 0.01674294807948171,
+          "worst": 0.017849900759756565
+        },
+        "obstacle_extract_seconds": {
+          "count": 42,
+          "mean": 0.011853380439182123,
+          "p50": 0.011737515451386571,
+          "p99": 0.013934089387767015,
+          "worst": 0.014241153374314308
+        },
+        "processor_compute_seconds": {
+          "count": 42,
+          "mean": 0.1124668581566463,
+          "p50": 0.1103992136195302,
+          "p99": 0.13015670716762537,
+          "worst": 0.13666638219729066
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 5.0791228810946144e-05,
+          "p50": 5.3779687732458115e-05,
+          "p99": 5.37810567766428e-05,
+          "worst": 5.378108471632004e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.188012998085469,
+          "p50": 0.18248715810477734,
+          "p99": 0.2014769249316305,
+          "worst": 0.201864471193403
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07435825870682795,
+          "p50": 0.07078339997678995,
+          "p99": 0.08215961272828282,
+          "worst": 0.08239178033545613
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.005932651925832033,
+          "p50": 0.0059312498196959496,
+          "p99": 0.01112841261550784,
+          "worst": 0.011234477162361145
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.20143101007367173,
+          "p50": 0.20041496492922306,
+          "p99": 0.21528826095163822,
+          "worst": 0.2155917976051569
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-moving-reactive/result.json",
+        "sha256": "78acc759849293799ff65463418ecbc77bbca541d779b8635429b65609b3ad94"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-moving-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "08d0f7d15e24f4257405e270d4428a836d38e2ce6ad14946d9ebc91864542dd7"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "separated",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.602554801851511,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 23,
+          "mean": 0.017314365093150864,
+          "p50": 0.01690178969874978,
+          "p99": 0.02102126322686672,
+          "worst": 0.021196631249040365
+        },
+        "ray_traversal_seconds": {
+          "count": 23,
+          "mean": 0.052738760537265436,
+          "p50": 0.052358333952724934,
+          "p99": 0.05858286060392857,
+          "worst": 0.05881910398602486
+        },
+        "occupancy_integrate_seconds": {
+          "count": 23,
+          "mean": 0.010338005204887493,
+          "p50": 0.009296988137066364,
+          "p99": 0.023079510387033243,
+          "worst": 0.026336024049669504
+        },
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.007590267989460541,
+          "p50": 0.006730091292411089,
+          "p99": 0.016961861709132792,
+          "worst": 0.017211807891726494
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.10003887003530627,
+          "p50": 0.09827086795121431,
+          "p99": 0.12000650625675918,
+          "worst": 0.123244549613446
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0003583684253195922,
+          "p50": 5.018431693315506e-05,
+          "p99": 0.0009618527442216873,
+          "worst": 0.0009804582223296165
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1536295679397881,
+          "p50": 0.14794323965907097,
+          "p99": 0.16619905414059757,
+          "worst": 0.16657162178307772
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05893226573243737,
+          "p50": 0.054904484655708075,
+          "p99": 0.06847849340178072,
+          "worst": 0.06875551398843527
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.004836910404264927,
+          "p50": 0.0056381747126579285,
+          "p99": 0.00586034320294857,
+          "worst": 0.005864877253770828
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.16535766997064152,
+          "p50": 0.16042074002325535,
+          "p99": 0.17664093274623155,
+          "worst": 0.17697195708751678
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-separated-direct/result.json",
+        "sha256": "cc925030cdd4fbf3081777bbb9143ee9447881c25df64de3ca7f4ebee7398a61"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-separated-direct/mapping-audit/jobs.jsonl",
+        "sha256": "07a0b0feaf92d3fa12647351118482c4f06d53b168226dfa84c2f1b5646e5157"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "separated",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.859171108342707,
+      "applied_original_acquisition_age_ms": {
+        "count": 219,
+        "mean": 456.53224470025805,
+        "p50": 439.9281139485538,
+        "p95": 744.3223782349378,
+        "p99": 788.7791753653437,
+        "worst": 826.322756242007
+      },
+      "worker_job_count": 26,
+      "worker_accepted_jobs": 26,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 26,
+          "mean": 0.018460934730963066,
+          "p50": 0.01747480290941894,
+          "p99": 0.024413883686065674,
+          "worst": 0.024555450305342674
+        },
+        "ray_traversal_seconds": {
+          "count": 26,
+          "mean": 0.05226528965151654,
+          "p50": 0.05197405978105962,
+          "p99": 0.056404312956146896,
+          "worst": 0.05641259578987956
+        },
+        "occupancy_integrate_seconds": {
+          "count": 26,
+          "mean": 0.010270106731555782,
+          "p50": 0.00961645576171577,
+          "p99": 0.022670377744361758,
+          "worst": 0.026627453044056892
+        },
+        "snapshot_seconds": {
+          "count": 26,
+          "mean": 0.0075025803839358,
+          "p50": 0.006806830409914255,
+          "p99": 0.01685668237041682,
+          "worst": 0.0172522678039968
+        },
+        "obstacle_extract_seconds": {
+          "count": 26,
+          "mean": 0.011720054782927036,
+          "p50": 0.011616426520049572,
+          "p99": 0.014528860687278211,
+          "worst": 0.015088742133229971
+        },
+        "processor_compute_seconds": {
+          "count": 26,
+          "mean": 0.11229885879975672,
+          "p50": 0.10949757718481123,
+          "p99": 0.13493681198451668,
+          "worst": 0.13934841006994247
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.002782699652016163,
+          "p50": 5.0995033234357834e-05,
+          "p99": 0.008087136084213853,
+          "worst": 0.008251138962805271
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.19128283547858396,
+          "p50": 0.1843137489631772,
+          "p99": 0.21607406399212778,
+          "worst": 0.21672223368659616
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08313376052925985,
+          "p50": 0.07796659180894494,
+          "p99": 0.10697569526731968,
+          "worst": 0.10756771778687835
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.007505595994492372,
+          "p50": 0.004240209236741066,
+          "p99": 0.014326630402356386,
+          "worst": 0.014532475732266903
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.2086993333262702,
+          "p50": 0.205352489836514,
+          "p99": 0.23525645487941801,
+          "worst": 0.2358667398802936
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-separated-reactive/result.json",
+        "sha256": "cb6bf4f5fd47f4792a6e81d3e9f7ad67b94e09d219fdeea06c59dc95d5eac6d7"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-separated-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "46da8fdbd0273a0e97fe8f82e287bd3117b3df2f47c25ed9f82b2ff51d37c43c"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "narrow",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.3089390778914094,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 24,
+          "mean": 0.017551790942282725,
+          "p50": 0.016725654946640134,
+          "p99": 0.02379702609963715,
+          "worst": 0.024284249171614647
+        },
+        "ray_traversal_seconds": {
+          "count": 24,
+          "mean": 0.05219271833387514,
+          "p50": 0.051786307245492935,
+          "p99": 0.057271226812154054,
+          "worst": 0.05733350710943341
+        },
+        "occupancy_integrate_seconds": {
+          "count": 24,
+          "mean": 0.010536223029096922,
+          "p50": 0.00968939415179193,
+          "p99": 0.02368519840296357,
+          "worst": 0.027182804886251688
+        },
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007946041917117933,
+          "p50": 0.006966650253161788,
+          "p99": 0.020692257336340843,
+          "worst": 0.021439032163470984
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.1005299639267226,
+          "p50": 0.09770017839036882,
+          "p99": 0.124782222234644,
+          "worst": 0.12666012393310666
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004251998228331407,
+          "p50": 4.770886152982712e-05,
+          "p99": 0.0011585339717566966,
+          "worst": 0.0011812038719654083
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1801424470419685,
+          "p50": 0.18146606488153338,
+          "p99": 0.19158689377829433,
+          "worst": 0.19179344130679965
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08295734040439129,
+          "p50": 0.08720199577510357,
+          "p99": 0.09404827816411852,
+          "worst": 0.09418799821287394
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.010881678511699041,
+          "p50": 0.010509994812309742,
+          "p99": 0.016755798449739814,
+          "worst": 0.01688326383009553
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.19939536089077592,
+          "p50": 0.1986702368594706,
+          "p99": 0.21733091877773403,
+          "worst": 0.2177117490209639
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-narrow-direct/result.json",
+        "sha256": "7938e342a000ec9d7abf6225a842cface2970caaef7ad8df1b41ad2efeaae81c"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-narrow-direct/mapping-audit/jobs.jsonl",
+        "sha256": "f1015a1139262b1b04e3971a50e69fb246de4b94504d0059e38104908fa9c6ed"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "narrow",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "contact_and_target_not_reached",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 13.65089750988409,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 466.1904003270902,
+        "p50": 459.0528158005327,
+        "p95": 745.4311253968626,
+        "p99": 790.9891671361402,
+        "worst": 833.9328500442207
+      },
+      "worker_job_count": 48,
+      "worker_accepted_jobs": 48,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 48,
+          "mean": 0.01708272785375205,
+          "p50": 0.016762505983933806,
+          "p99": 0.019605794339440763,
+          "worst": 0.019945198204368353
+        },
+        "ray_traversal_seconds": {
+          "count": 48,
+          "mean": 0.052939982483318694,
+          "p50": 0.05297760642133653,
+          "p99": 0.05752966494299472,
+          "worst": 0.05808055028319359
+        },
+        "occupancy_integrate_seconds": {
+          "count": 48,
+          "mean": 0.010102237924002111,
+          "p50": 0.009641266893595457,
+          "p99": 0.019205279969610294,
+          "worst": 0.026298158802092075
+        },
+        "snapshot_seconds": {
+          "count": 48,
+          "mean": 0.007494209169332559,
+          "p50": 0.007087372010573745,
+          "p99": 0.016615814017131927,
+          "worst": 0.017274525947868824
+        },
+        "obstacle_extract_seconds": {
+          "count": 48,
+          "mean": 0.0117150511747847,
+          "p50": 0.011543741216883063,
+          "p99": 0.01288838277105242,
+          "worst": 0.012920845299959183
+        },
+        "processor_compute_seconds": {
+          "count": 48,
+          "mean": 0.11127269911230542,
+          "p50": 0.1097750635817647,
+          "p99": 0.12941907897591592,
+          "worst": 0.13817146001383662
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0026134423290689788,
+          "p50": 0.001068584155291319,
+          "p99": 0.00660440512932837,
+          "worst": 0.006717381067574024
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.19122492770353952,
+          "p50": 0.19743044208735228,
+          "p99": 0.2095461773686111,
+          "worst": 0.20979343727231026
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08261915870631735,
+          "p50": 0.08657656144350767,
+          "p99": 0.09900840491987764,
+          "worst": 0.09926211601123214
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.014891207062949737,
+          "p50": 0.013170890044420958,
+          "p99": 0.01974012124352157,
+          "worst": 0.01987418718636036
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.2161019976871709,
+          "p50": 0.2236983748152852,
+          "p99": 0.2299332950077951,
+          "worst": 0.23006053827703
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-narrow-reactive/result.json",
+        "sha256": "94244ff9967dfdede06c61da680786e4bd555716cbe4144ff2fed65e62ac4b28"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-narrow-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "7f292d862813adfeafa5963dd0678bfd59ea9df416f5358f67934bf2c72810b4"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "static",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.1077011097222567,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 24,
+          "mean": 0.01746761571848765,
+          "p50": 0.017078317468985915,
+          "p99": 0.02193028694950044,
+          "worst": 0.022343401797115803
+        },
+        "ray_traversal_seconds": {
+          "count": 24,
+          "mean": 0.054086673558534436,
+          "p50": 0.053793932776898146,
+          "p99": 0.05858446916565299,
+          "worst": 0.05887316586449742
+        },
+        "occupancy_integrate_seconds": {
+          "count": 24,
+          "mean": 0.01049319936040168,
+          "p50": 0.009600529447197914,
+          "p99": 0.022723563038744024,
+          "worst": 0.026060967706143856
+        },
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007904160942416638,
+          "p50": 0.0065802885219454765,
+          "p99": 0.018159721442498264,
+          "worst": 0.01888518873602152
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.10237156370809923,
+          "p50": 0.10070856753736734,
+          "p99": 0.12350594842806457,
+          "worst": 0.12615357479080558
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004459923754135768,
+          "p50": 5.484279245138168e-05,
+          "p99": 0.001210841340944171,
+          "worst": 0.0012344331480562687
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.18218512274324894,
+          "p50": 0.18692668620496988,
+          "p99": 0.19352378931827843,
+          "worst": 0.1936584240756929
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08290739015986522,
+          "p50": 0.08477344317361712,
+          "p99": 0.09456285248510539,
+          "worst": 0.09476263634860516
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.009709834276388088,
+          "p50": 0.011440447065979242,
+          "p99": 0.011551000578328967,
+          "worst": 0.011553256772458553
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.19939151871949434,
+          "p50": 0.20630732784047723,
+          "p99": 0.21306683792732656,
+          "worst": 0.21320478711277246
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-direct/result.json",
+        "sha256": "26372309b1af6308683a6b73c0967ea32716be62e509961313d35187f6b9a1bd"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-direct/mapping-audit/jobs.jsonl",
+        "sha256": "6672287fd12a5cd3a39cbed57d26594cd365cffe87682d01c890b29383480ce8"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "static",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 13.356861924752593,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 468.4307357617654,
+        "p50": 459.2651843558997,
+        "p95": 754.0789068909362,
+        "p99": 810.8986561466008,
+        "worst": 844.5817409083247
+      },
+      "worker_job_count": 47,
+      "worker_accepted_jobs": 47,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 47,
+          "mean": 0.017474981114030518,
+          "p50": 0.0169889940880239,
+          "p99": 0.022074521305039525,
+          "worst": 0.02209316799417138
+        },
+        "ray_traversal_seconds": {
+          "count": 47,
+          "mean": 0.053254425000557874,
+          "p50": 0.05276696104556322,
+          "p99": 0.06266753322444855,
+          "worst": 0.06440328527241945
+        },
+        "occupancy_integrate_seconds": {
+          "count": 47,
+          "mean": 0.010328910610777266,
+          "p50": 0.009736820124089718,
+          "p99": 0.019978618789464223,
+          "worst": 0.02677339082583785
+        },
+        "snapshot_seconds": {
+          "count": 47,
+          "mean": 0.00757047966954873,
+          "p50": 0.007383117917925119,
+          "p99": 0.016763777034357188,
+          "worst": 0.01758335204795003
+        },
+        "obstacle_extract_seconds": {
+          "count": 47,
+          "mean": 0.011750601529282458,
+          "p50": 0.011608732864260674,
+          "p99": 0.013025682475417851,
+          "worst": 0.013240438885986805
+        },
+        "processor_compute_seconds": {
+          "count": 47,
+          "mean": 0.11237538708968366,
+          "p50": 0.11086982488632202,
+          "p99": 0.13150920902378857,
+          "worst": 0.13535364111885428
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004260449980696042,
+          "p50": 5.098525434732437e-05,
+          "p99": 0.001156694246456027,
+          "worst": 0.0011792597360908985
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.18797634619598588,
+          "p50": 0.18782007787376642,
+          "p99": 0.18893952887505294,
+          "worst": 0.1889623748138547
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07947319963326056,
+          "p50": 0.07885927800089121,
+          "p99": 0.08115807294845581,
+          "worst": 0.08120498713105917
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.011617055783669153,
+          "p50": 0.011008323170244694,
+          "p99": 0.01432803581468761,
+          "worst": 0.014395785052329302
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.2066408001507322,
+          "p50": 0.206435973290354,
+          "p99": 0.2082611309736967,
+          "worst": 0.2082983790896833
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-reactive/result.json",
+        "sha256": "b31b8e0a1063645bc5b2f5864d90f54847e91b1692551e6daf88dfe5a9dc4eb7"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "9da656dcbe007565482b51037348c8885aad59c5481aaa74e9dc3c07b9b14653"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "sparse",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.00008674710989,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 24,
+          "mean": 0.017352363152895123,
+          "p50": 0.017005813540890813,
+          "p99": 0.021760451537556947,
+          "worst": 0.022216514218598604
+        },
+        "ray_traversal_seconds": {
+          "count": 24,
+          "mean": 0.05354475794592872,
+          "p50": 0.05401673819869757,
+          "p99": 0.05942834520712495,
+          "worst": 0.06020504189655185
+        },
+        "occupancy_integrate_seconds": {
+          "count": 24,
+          "mean": 0.010609941925698271,
+          "p50": 0.009757701307535172,
+          "p99": 0.023285810900852077,
+          "worst": 0.026659974828362465
+        },
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007406114251352847,
+          "p50": 0.0065827155485749245,
+          "p99": 0.01701494195498526,
+          "worst": 0.01755947107449174
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.10143948934273794,
+          "p50": 0.09971562796272337,
+          "p99": 0.11846234032418579,
+          "worst": 0.12075789971277118
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.8403628170490265e-05,
+          "p50": 4.8961956053972244e-05,
+          "p99": 5.087587982416153e-05,
+          "worst": 5.09149394929409e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.18919424541915456,
+          "p50": 0.1792862880975008,
+          "p99": 0.2239254979416728,
+          "worst": 0.22483650222420692
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.09174695393691461,
+          "p50": 0.08089836314320564,
+          "p99": 0.12638827194459737,
+          "worst": 0.12731663743034005
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.018308703632404406,
+          "p50": 0.006807004101574421,
+          "p99": 0.042919046487659214,
+          "worst": 0.04365602694451809
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.21475465968251228,
+          "p50": 0.229841411113739,
+          "p99": 0.2359337024576962,
+          "worst": 0.2360580349341035
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-direct/result.json",
+        "sha256": "8acee732033866bfa7e2c7862995122675de98a8e7a25255d11abd64a335386e"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-direct/mapping-audit/jobs.jsonl",
+        "sha256": "05cb653f56341e43f7546073b4ae3c979b33b627541ae91434cae87b3541fe71"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "sparse",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 14.283702075015754,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 473.83830322977155,
+        "p50": 463.1553306244314,
+        "p95": 766.0165891051292,
+        "p99": 820.5155733134598,
+        "worst": 850.4003491252661
+      },
+      "worker_job_count": 49,
+      "worker_accepted_jobs": 49,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 49,
+          "mean": 0.01777772774577749,
+          "p50": 0.017384747974574566,
+          "p99": 0.023402911480516184,
+          "worst": 0.024545182939618826
+        },
+        "ray_traversal_seconds": {
+          "count": 49,
+          "mean": 0.05481524677110874,
+          "p50": 0.054220641031861305,
+          "p99": 0.06018973609432577,
+          "worst": 0.06118326587602496
+        },
+        "occupancy_integrate_seconds": {
+          "count": 49,
+          "mean": 0.01060228222715003,
+          "p50": 0.010169261135160923,
+          "p99": 0.019958600644022162,
+          "worst": 0.02747872704640031
+        },
+        "snapshot_seconds": {
+          "count": 49,
+          "mean": 0.007817236431019038,
+          "p50": 0.007415029685944319,
+          "p99": 0.01695654280483722,
+          "worst": 0.017953909933567047
+        },
+        "obstacle_extract_seconds": {
+          "count": 49,
+          "mean": 0.011815740042651186,
+          "p50": 0.011714343912899494,
+          "p99": 0.013219320196658372,
+          "worst": 0.01336870202794671
+        },
+        "processor_compute_seconds": {
+          "count": 49,
+          "mean": 0.1153608388837655,
+          "p50": 0.11380386585369706,
+          "p99": 0.1373796908929943,
+          "worst": 0.1511071277782321
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 5.933425078789393e-05,
+          "p50": 5.532335489988327e-05,
+          "p99": 7.136672735214234e-05,
+          "worst": 7.169414311647415e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.20215111474196115,
+          "p50": 0.19470189465209842,
+          "p99": 0.22241459449753165,
+          "worst": 0.22298015980049968
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.09171960953002174,
+          "p50": 0.08569218683987856,
+          "p99": 0.11003136604093015,
+          "worst": 0.11052808398380876
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.007725853938609362,
+          "p50": 0.009383965283632278,
+          "p99": 0.011761963544413447,
+          "worst": 0.011810494121164083
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.21685984808330735,
+          "p50": 0.2142571029253304,
+          "p99": 0.23136252691969275,
+          "worst": 0.231711617205292
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-reactive/result.json",
+        "sha256": "19bccddcd30af805668608f3c8fe1139b0cf23465d13890361883085a3a49c19"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "b56dd42e074e3cca7aa76ce38f364727fc94c17978239da7a9bbb2a08c87f07f"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "empty",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.759285428095609,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 24,
+          "mean": 0.017166991621100653,
+          "p50": 0.016591494670137763,
+          "p99": 0.020965480329468846,
+          "worst": 0.021567569114267826
+        },
+        "ray_traversal_seconds": {
+          "count": 24,
+          "mean": 0.05470037072276076,
+          "p50": 0.054952294332906604,
+          "p99": 0.060908138644881545,
+          "worst": 0.061770182102918625
+        },
+        "occupancy_integrate_seconds": {
+          "count": 24,
+          "mean": 0.010779623019819459,
+          "p50": 0.009692191611975431,
+          "p99": 0.023983211354352527,
+          "worst": 0.027659048791974783
+        },
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007828127243556082,
+          "p50": 0.0071060743648558855,
+          "p99": 0.018228697599843142,
+          "worst": 0.018538503907620907
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.1032030700201479,
+          "p50": 0.10165597824379802,
+          "p99": 0.12434486532583831,
+          "worst": 0.1290922942571342
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004432940234740575,
+          "p50": 5.7927798479795456e-05,
+          "p99": 0.0011988472379744052,
+          "worst": 0.0012221313081681728
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1849048544342319,
+          "p50": 0.18460987834259868,
+          "p99": 0.18551067610271274,
+          "worst": 0.18552905973047018
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08338556236897905,
+          "p50": 0.08698027767241001,
+          "p99": 0.08701353449374437,
+          "worst": 0.08701421320438385
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.012148019392043352,
+          "p50": 0.01187981478869915,
+          "p99": 0.013121539689600469,
+          "worst": 0.013146881014108658
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.20424164567763606,
+          "p50": 0.2044512159191072,
+          "p99": 0.2050811149738729,
+          "worst": 0.20509397005662322
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-direct/result.json",
+        "sha256": "13e99d11cd868c17b087d5e821ce2e0d8522906ae23a3e45ae5b356484b56c8d"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-direct/mapping-audit/jobs.jsonl",
+        "sha256": "7940ab1571d1486d822d5d6c5527b5a012f2c35970bda476335bef91747e96d9"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "empty",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 1.9182644970715046,
+      "applied_original_acquisition_age_ms": {
+        "count": 140,
+        "mean": 480.0672265834042,
+        "p50": 459.97858489863575,
+        "p95": 773.5222314717247,
+        "p99": 823.4723483864217,
+        "worst": 840.3301872313023
+      },
+      "worker_job_count": 25,
+      "worker_accepted_jobs": 25,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 25,
+          "mean": 0.017341853268444538,
+          "p50": 0.017070334870368242,
+          "p99": 0.021696085464209317,
+          "worst": 0.021817586850374937
+        },
+        "ray_traversal_seconds": {
+          "count": 25,
+          "mean": 0.053663047701120375,
+          "p50": 0.05369523447006941,
+          "p99": 0.06146846557036041,
+          "worst": 0.06295445887371898
+        },
+        "occupancy_integrate_seconds": {
+          "count": 25,
+          "mean": 0.010709681045264006,
+          "p50": 0.009667756035923958,
+          "p99": 0.02314402000978586,
+          "worst": 0.026536916848272085
+        },
+        "snapshot_seconds": {
+          "count": 25,
+          "mean": 0.007799878362566233,
+          "p50": 0.007114891894161701,
+          "p99": 0.017222838625311848,
+          "worst": 0.017600324004888535
+        },
+        "obstacle_extract_seconds": {
+          "count": 25,
+          "mean": 0.011619693711400031,
+          "p50": 0.011629680171608925,
+          "p99": 0.01285373443737626,
+          "worst": 0.012904598843306303
+        },
+        "processor_compute_seconds": {
+          "count": 25,
+          "mean": 0.11369398472830654,
+          "p50": 0.11195474676787853,
+          "p99": 0.13954474521800872,
+          "worst": 0.14342686301097274
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.00039167112360397976,
+          "p50": 4.800921306014061e-05,
+          "p99": 0.0010595425684005021,
+          "worst": 0.0010801861062645912
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.2025266649822394,
+          "p50": 0.20171824004501104,
+          "p99": 0.2077833659015596,
+          "worst": 0.20790714398026466
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.09329836396500468,
+          "p50": 0.09223464503884315,
+          "p99": 0.09736555659212172,
+          "worst": 0.09747026907280087
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.009648934938013554,
+          "p50": 0.00934714823961258,
+          "p99": 0.014531962256878615,
+          "worst": 0.014637774787843227
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.21899458238234124,
+          "p50": 0.2175960293971002,
+          "p99": 0.22845825276337564,
+          "worst": 0.2286799307912588
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-reactive/result.json",
+        "sha256": "6e0415dee7e114127264548372176a768e2b329a2cba08e7c409a87babec7320"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "8a435872fdd72522b1d1ebdad28ef9fd0dacbb49874d0e8a0e2dfab6e977bbb4"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "large",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "contact_and_target_not_reached",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 12.751979602966458,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 46,
+      "worker_accepted_jobs": 46,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 46,
+          "mean": 0.018389618408906717,
+          "p50": 0.017584978137165308,
+          "p99": 0.024970188201405105,
+          "worst": 0.025480035692453384
+        },
+        "ray_traversal_seconds": {
+          "count": 46,
+          "mean": 0.0518473815780295,
+          "p50": 0.051636338932439685,
+          "p99": 0.056735276430845256,
+          "worst": 0.05689509166404605
+        },
+        "occupancy_integrate_seconds": {
+          "count": 46,
+          "mean": 0.009350184877605541,
+          "p50": 0.009009884903207421,
+          "p99": 0.019442485016770615,
+          "worst": 0.02693444024771452
+        },
+        "snapshot_seconds": {
+          "count": 46,
+          "mean": 0.008250722276937702,
+          "p50": 0.007385111879557371,
+          "p99": 0.018786385888233774,
+          "worst": 0.019901642110198736
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 46,
+          "mean": 0.09869425983735076,
+          "p50": 0.09791117045097053,
+          "p99": 0.11927231356967234,
+          "worst": 0.12849209504202008
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0003978496727844079,
+          "p50": 5.1176175475120544e-05,
+          "p99": 0.0010704359598457812,
+          "worst": 0.0010912371799349785
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.19065338807801405,
+          "p50": 0.19647611677646637,
+          "p99": 0.20815574942156673,
+          "worst": 0.20839410927146673
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.09219427111869057,
+          "p50": 0.09471769677475095,
+          "p99": 0.10936319844797254,
+          "worst": 0.10966208623722196
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.003852732169131438,
+          "p50": 0.0023217140696942806,
+          "p99": 0.008655360601842403,
+          "worst": 0.008784618694335222
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.20259688748046756,
+          "p50": 0.20767688564956188,
+          "p99": 0.21532872687093912,
+          "worst": 0.2154848868958652
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-large-direct/result.json",
+        "sha256": "8023d7ab04ec478cd5ad969ed68d58bc83a485541fe9fdeeec5e13b3793d6cba"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-large-direct/mapping-audit/jobs.jsonl",
+        "sha256": "6336adb41fd2f32e1dab360f10e9bff6a5d37dcc3158b74144585e9f6f5b4377"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "large",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 14.753370506223291,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 459.4800805337727,
+        "p50": 450.3395236097276,
+        "p95": 744.0656733699142,
+        "p99": 787.0922524435446,
+        "worst": 814.2927060835063
+      },
+      "worker_job_count": 50,
+      "worker_accepted_jobs": 50,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 50,
+          "mean": 0.01714506055228412,
+          "p50": 0.017035078024491668,
+          "p99": 0.020766554069705307,
+          "worst": 0.021072119940072298
+        },
+        "ray_traversal_seconds": {
+          "count": 50,
+          "mean": 0.05184318739920855,
+          "p50": 0.051595569821074605,
+          "p99": 0.05846869009081274,
+          "worst": 0.05884199170395732
+        },
+        "occupancy_integrate_seconds": {
+          "count": 50,
+          "mean": 0.009262175932526588,
+          "p50": 0.008769436972215772,
+          "p99": 0.01969760829582807,
+          "worst": 0.02779428893700242
+        },
+        "snapshot_seconds": {
+          "count": 50,
+          "mean": 0.007539929179474711,
+          "p50": 0.0067471766378730536,
+          "p99": 0.01855491366703063,
+          "worst": 0.019250940065830946
+        },
+        "obstacle_extract_seconds": {
+          "count": 50,
+          "mean": 0.011906524673104286,
+          "p50": 0.011910971952602267,
+          "p99": 0.013098953189328313,
+          "worst": 0.013120464980602264
+        },
+        "processor_compute_seconds": {
+          "count": 50,
+          "mean": 0.10847212720662355,
+          "p50": 0.1070916464086622,
+          "p99": 0.13478162320796397,
+          "worst": 0.1446642829105258
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004117116332054138,
+          "p50": 4.993285983800888e-05,
+          "p99": 0.001120759518817067,
+          "worst": 0.001142613124102354
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.18347286246716976,
+          "p50": 0.18519128719344735,
+          "p99": 0.19353849288076164,
+          "worst": 0.19370884401723742
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07715872954577208,
+          "p50": 0.08302639424800873,
+          "p99": 0.0848749963566661,
+          "worst": 0.08491272293031216
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.013909454612682262,
+          "p50": 0.011897551827132702,
+          "p99": 0.020376779465004803,
+          "worst": 0.02054982492700219
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.2052332068172594,
+          "p50": 0.20235402788966894,
+          "p99": 0.21366553459316492,
+          "worst": 0.21389638166874647
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-large-reactive/result.json",
+        "sha256": "949e8b8e64b60509ca64938b317e979f529ef552bb9c486d036b868f1923c697"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-large-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "447982a0efe6257188a3ba4ebf0dfc8b4db77dab106226fb5ec0d2bad830f945"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "empty",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.7165644019842148,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.006854655473337819,
+          "p50": 0.0056065774988383055,
+          "p99": 0.023037511110305782,
+          "worst": 0.026050006039440632
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.017777829605620354,
+          "p50": 0.015478238696232438,
+          "p99": 0.052574824867770056,
+          "worst": 0.06177053693681955
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.203834881385168e-05,
+          "p50": 3.5325996577739716e-05,
+          "p99": 5.874212831258774e-05,
+          "worst": 5.922000855207443e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.0703594599229594,
+          "p50": 0.06378123071044683,
+          "p99": 0.08383687236346304,
+          "worst": 0.08424617117270827
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05472707065443198,
+          "p50": 0.04803534271195531,
+          "p99": 0.06806821624748409,
+          "worst": 0.06847705040127039
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006674558389931917,
+          "p50": 0.004741822835057974,
+          "p99": 0.012079927045851944,
+          "worst": 0.01222968427464366
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.07958276026571791,
+          "p50": 0.07734645903110504,
+          "p99": 0.09212368465960026,
+          "worst": 0.09242526069283485
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-empty-direct/result.json",
+        "sha256": "499db095fe213f0e42d3cc85bd917d520ecc731aeb7885bdf81618b111325649"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-empty-direct/mapping-audit/jobs.jsonl",
+        "sha256": "762ca1a10cf21b8fb017d2bfa0641372d6449adc9715d5c8588a836e379b6c73"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "empty",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 1.6981314262375236,
+      "applied_original_acquisition_age_ms": {
+        "count": 139,
+        "mean": 315.607442403306,
+        "p50": 295.9378343075514,
+        "p95": 554.0869552176446,
+        "p99": 577.6635021157563,
+        "worst": 586.0569146461785
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.006900412263348699,
+          "p50": 0.005670055979862809,
+          "p99": 0.02382034797687083,
+          "worst": 0.026534422300755978
+        },
+        "obstacle_extract_seconds": {
+          "count": 24,
+          "mean": 0.010742917559885731,
+          "p50": 0.010512763634324074,
+          "p99": 0.013087453753687441,
+          "worst": 0.013289031572639942
+        },
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.027949761036628235,
+          "p50": 0.025356343016028404,
+          "p99": 0.06466222567483781,
+          "worst": 0.07369058579206467
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.2700053503115974e-05,
+          "p50": 4.082685336470604e-05,
+          "p99": 4.796459339559078e-05,
+          "worst": 4.811026155948639e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.07762997845808665,
+          "p50": 0.07566365087404847,
+          "p99": 0.08826409442350268,
+          "worst": 0.08852124633267522
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05272113795702656,
+          "p50": 0.050388408824801445,
+          "p99": 0.06304701758548617,
+          "worst": 0.06330535653978586
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.007244983687996864,
+          "p50": 0.006070394068956375,
+          "p99": 0.009670716961845755,
+          "worst": 0.009744192939251661
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.08739788628493746,
+          "p50": 0.0849425857886672,
+          "p99": 0.10005583464168012,
+          "worst": 0.10036426829174161
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-empty-reactive/result.json",
+        "sha256": "94cbd6f72d961bbd3b457e86b7b567276fd0c2d011349c07671959bd98f19dd9"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-empty-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "2e77bad00241e286ab4f9ff631a5666c9f6e2b1905b928d847a6dce4dbfe200e"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "static",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.2441496741957963,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.0077022317952166,
+          "p50": 0.005762539571151137,
+          "p99": 0.022677643517963586,
+          "worst": 0.025100294966250658
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.01997585326898843,
+          "p50": 0.015977452276274562,
+          "p99": 0.0555092579545453,
+          "worst": 0.06316942488774657
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.253272588054339e-05,
+          "p50": 4.1496939957141876e-05,
+          "p99": 4.669200628995896e-05,
+          "worst": 4.679802805185318e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.06331062332416575,
+          "p50": 0.05202891584485769,
+          "p99": 0.08884520642459393,
+          "worst": 0.08959655929356813
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.04156201255197326,
+          "p50": 0.032679627649486065,
+          "p99": 0.05950727785006166,
+          "worst": 0.060054780915379524
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006774078278491895,
+          "p50": 0.006903539877384901,
+          "p99": 0.008448738977313042,
+          "worst": 0.00848027365282178
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.07246207104374965,
+          "p50": 0.06147303991019726,
+          "p99": 0.09960063660517335,
+          "worst": 0.10037875082343817
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-static-direct/result.json",
+        "sha256": "7423d250796f36740ede663251f525ea580cbc895cf88a6ee660cd9cd1c3ade5"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-static-direct/mapping-audit/jobs.jsonl",
+        "sha256": "18ab2636985f45d93a4d18d32de8ff7f251febb7ca3095320f303e84f9474cc4"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "static",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.77344032516703,
+      "applied_original_acquisition_age_ms": {
+        "count": 228,
+        "mean": 321.68406081434927,
+        "p50": 315.432790433988,
+        "p95": 555.0415195524693,
+        "p99": 588.6412659659981,
+        "worst": 607.1437657810748
+      },
+      "worker_job_count": 25,
+      "worker_accepted_jobs": 25,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 25,
+          "mean": 0.007546983733773232,
+          "p50": 0.005530426278710365,
+          "p99": 0.02439610593020914,
+          "worst": 0.026683754287660122
+        },
+        "obstacle_extract_seconds": {
+          "count": 25,
+          "mean": 0.011074402220547199,
+          "p50": 0.010680893901735544,
+          "p99": 0.013176669143140314,
+          "worst": 0.013341289944946766
+        },
+        "processor_compute_seconds": {
+          "count": 25,
+          "mean": 0.030611823312938213,
+          "p50": 0.02691469620913267,
+          "p99": 0.06695400919765229,
+          "worst": 0.07351232226938009
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.5662124951680504e-05,
+          "p50": 4.259031265974045e-05,
+          "p99": 5.521563813090324e-05,
+          "worst": 5.547329783439636e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09150523909678061,
+          "p50": 0.08077618665993214,
+          "p99": 0.12076050024479627,
+          "worst": 0.12157650664448738
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.059254256232331194,
+          "p50": 0.05265583051368594,
+          "p99": 0.07883563577197492,
+          "worst": 0.07936991751194
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.005027250076333682,
+          "p50": 0.005080446135252714,
+          "p99": 0.007618622565641999,
+          "worst": 0.007670422084629536
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.09956760285422206,
+          "p50": 0.09193001268431544,
+          "p99": 0.12620342462323605,
+          "worst": 0.12690288200974464
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-static-reactive/result.json",
+        "sha256": "e7377c5f0248e2cc38f8129e0723b69f388507125619219fa47a46d3b77fae21"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-static-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "d9b8119fd87ff233a31a7f15a83452845c023bfcd0a99b62663ab7def6b43bdf"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "sparse",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.748793131671846,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.007802837305580792,
+          "p50": 0.005834023933857679,
+          "p99": 0.023776523638516678,
+          "worst": 0.02636110270395875
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.01994090270170051,
+          "p50": 0.015642568934708834,
+          "p99": 0.05613771299831573,
+          "worst": 0.06224911520257592
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.2770213137070336e-05,
+          "p50": 4.252977669239044e-05,
+          "p99": 4.56913560628891e-05,
+          "worst": 4.575587809085846e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.08432633973037203,
+          "p50": 0.07154677715152502,
+          "p99": 0.11133380508050322,
+          "worst": 0.11214578524231911
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.06358083259935181,
+          "p50": 0.055776549968868494,
+          "p99": 0.08023097394034266,
+          "worst": 0.08073004381731153
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.00388560863211751,
+          "p50": 0.004413270857185125,
+          "p99": 0.00511758841574192,
+          "worst": 0.005131962243467569
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.0912344423122704,
+          "p50": 0.07896010996773839,
+          "p99": 0.11585442100651562,
+          "worst": 0.11660736612975597
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-sparse-direct/result.json",
+        "sha256": "965510695d0e267738724796de743e18f4c2c09b6625d7c9ca006c47bdbc5750"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-sparse-direct/mapping-audit/jobs.jsonl",
+        "sha256": "052ae9c840f998fde24229529da86a2785068105a9cb5b9a59297e5b1b29084b"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "sparse",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.2123517328873277,
+      "applied_original_acquisition_age_ms": {
+        "count": 178,
+        "mean": 305.72750683863427,
+        "p50": 289.667648030445,
+        "p95": 538.2668680278584,
+        "p99": 568.4819946438074,
+        "worst": 582.7421471476555
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007865925979179641,
+          "p50": 0.0060316326562315226,
+          "p99": 0.023140663802623744,
+          "worst": 0.025668311398476362
+        },
+        "obstacle_extract_seconds": {
+          "count": 24,
+          "mean": 0.011284222263687601,
+          "p50": 0.01088236109353602,
+          "p99": 0.01427150152157992,
+          "worst": 0.014507029205560684
+        },
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.03128968509069333,
+          "p50": 0.02787024201825261,
+          "p99": 0.06682814653497188,
+          "worst": 0.0738331787288189
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 3.9019777129093804e-05,
+          "p50": 3.8131605833768845e-05,
+          "p99": 4.474865272641182e-05,
+          "worst": 4.4883694499731064e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.07842943243061502,
+          "p50": 0.059968100395053625,
+          "p99": 0.11649802987463773,
+          "worst": 0.11765170190483332
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.04720445582643151,
+          "p50": 0.03286085231229663,
+          "p99": 0.07580076526850463,
+          "worst": 0.07667709002271295
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.003888968533525864,
+          "p50": 0.004272387363016605,
+          "p99": 0.006754747405648231,
+          "worst": 0.00680540781468153
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.08473230882858236,
+          "p50": 0.06901387218385935,
+          "p99": 0.12317171128466725,
+          "worst": 0.12427697330713272
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-sparse-reactive/result.json",
+        "sha256": "a40dd0a9d89394cb6e42e5fc8dfac630bc5b560c41f7868e7bd82cc9c32eda04"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-sparse-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "f0d9c53c2878b200c56bd4e7a183eac704595426d40a980d1334af2ee05daf2c"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "partial",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.2332799430005252,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007618752482812852,
+          "p50": 0.005719320150092244,
+          "p99": 0.02359602309763431,
+          "worst": 0.026259575970470905
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.02091928953692938,
+          "p50": 0.017675410956144333,
+          "p99": 0.055930422716774036,
+          "worst": 0.06322049535810947
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.39352976779143e-05,
+          "p50": 4.397192969918251e-05,
+          "p99": 4.6072956174612044e-05,
+          "worst": 4.611583426594734e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09425649791955948,
+          "p50": 0.08993457118049264,
+          "p99": 0.11191535637713969,
+          "worst": 0.11236394383013248
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07169659699623783,
+          "p50": 0.0724173104390502,
+          "p99": 0.08069442015141248,
+          "worst": 0.08086334075778723
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.007736667525023222,
+          "p50": 0.009846307337284088,
+          "p99": 0.012821595845744015,
+          "worst": 0.012882316019386053
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.10492894751951098,
+          "p50": 0.1052608210593462,
+          "p99": 0.12514487127773463,
+          "worst": 0.12555066822096705
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-partial-direct/result.json",
+        "sha256": "30e5dd5c8e26e5686391dc1a9d269b4d30ea95937abaaac4be982391f641fc43"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-partial-direct/mapping-audit/jobs.jsonl",
+        "sha256": "be8beecf910023df92da6291f1304208111c675fbe7e67fe011f324d0140d9da"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "partial",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.8535477030090988,
+      "applied_original_acquisition_age_ms": {
+        "count": 228,
+        "mean": 343.2627869769931,
+        "p50": 340.1380395516753,
+        "p95": 569.7495490778238,
+        "p99": 594.4438003515825,
+        "worst": 608.4526749327779
+      },
+      "worker_job_count": 26,
+      "worker_accepted_jobs": 26,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 26,
+          "mean": 0.00751913829634969,
+          "p50": 0.005696497391909361,
+          "p99": 0.025104693020693958,
+          "worst": 0.028647766914218664
+        },
+        "obstacle_extract_seconds": {
+          "count": 26,
+          "mean": 0.011013201939371916,
+          "p50": 0.010924881557002664,
+          "p99": 0.012819141731597483,
+          "worst": 0.013014433905482292
+        },
+        "processor_compute_seconds": {
+          "count": 26,
+          "mean": 0.03183716573179341,
+          "p50": 0.028374537592753768,
+          "p99": 0.06905305257532746,
+          "worst": 0.07794559607282281
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.710458839933077e-05,
+          "p50": 4.617590457201004e-05,
+          "p99": 5.001561716198921e-05,
+          "worst": 5.009397864341736e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.10604239162057638,
+          "p50": 0.10203047376126051,
+          "p99": 0.12018650773912667,
+          "worst": 0.12055703904479742
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07214856784169872,
+          "p50": 0.07303125970065594,
+          "p99": 0.07809906151145697,
+          "worst": 0.07820248603820801
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.011638093118866285,
+          "p50": 0.012124561239033937,
+          "p99": 0.018517348198220134,
+          "worst": 0.018647813238203526
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.1207392062060535,
+          "p50": 0.11704844795167446,
+          "p99": 0.14118225729092956,
+          "worst": 0.14167478401213884
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-partial-reactive/result.json",
+        "sha256": "650b7491e4c540528fa40e966e81390081740b088b028b22055824efd31fdee9"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-partial-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "8c673f06090aa5a9bdf2e01de92a54a10b417c56c78ee3714ea7c45aab16b5d4"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "separated",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.7234876276925206,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.007626615889856349,
+          "p50": 0.005627257749438286,
+          "p99": 0.022872923454269778,
+          "worst": 0.02529193228110671
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.020191929627047932,
+          "p50": 0.016491857822984457,
+          "p99": 0.05624136312864725,
+          "worst": 0.06311499373987317
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 5.60112918416659e-05,
+          "p50": 5.273893475532532e-05,
+          "p99": 7.125617004930973e-05,
+          "worst": 7.163407281041145e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.0949186699775358,
+          "p50": 0.0888237850740552,
+          "p99": 0.1135043500456959,
+          "worst": 0.11400803504511714
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07364342967048287,
+          "p50": 0.07100775511935353,
+          "p99": 0.08511321632191539,
+          "worst": 0.08540108287706971
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.004092061736931403,
+          "p50": 0.004047658760100603,
+          "p99": 0.005550168780609965,
+          "worst": 0.005580832250416279
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.10225867371385296,
+          "p50": 0.09672741498798132,
+          "p99": 0.12162247085012495,
+          "worst": 0.1221305332146585
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-separated-direct/result.json",
+        "sha256": "dd1129b41211bedb880c242cef2323e3f7abe310237c3a2c21ce70f10744d675"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-separated-direct/mapping-audit/jobs.jsonl",
+        "sha256": "12b714e860b7ef5f0b2b6ec61830511ee585610dd845a576493daa70839b564c"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "separated",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 1.8028680779971182,
+      "applied_original_acquisition_age_ms": {
+        "count": 146,
+        "mean": 317.8149805984728,
+        "p50": 312.70029302686453,
+        "p95": 552.0085716852918,
+        "p99": 581.2478069914505,
+        "worst": 595.5880712717772
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.007470974253247614,
+          "p50": 0.005465677008032799,
+          "p99": 0.023242541402578365,
+          "worst": 0.02554041612893343
+        },
+        "obstacle_extract_seconds": {
+          "count": 23,
+          "mean": 0.011246850410395342,
+          "p50": 0.010946603026241064,
+          "p99": 0.013072334872558712,
+          "worst": 0.013116434682160616
+        },
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.031366946783078754,
+          "p50": 0.027041180059313774,
+          "p99": 0.06816766788251702,
+          "worst": 0.07472842466086149
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.403541485468546e-05,
+          "p50": 3.911321982741356e-05,
+          "p99": 5.531311966478824e-05,
+          "worst": 5.5643729865550995e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.08798000899453957,
+          "p50": 0.0763463070616126,
+          "p99": 0.11612205315381288,
+          "worst": 0.11693380307406187
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05618286800260345,
+          "p50": 0.04997413605451584,
+          "p99": 0.0745940263569355,
+          "worst": 0.07509647309780121
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006904347644497951,
+          "p50": 0.005556326825171709,
+          "p99": 0.010063149090856312,
+          "worst": 0.010155125055462122
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.09787821769714355,
+          "p50": 0.09050039993599057,
+          "p99": 0.12423710365779697,
+          "worst": 0.12492560781538486
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-separated-reactive/result.json",
+        "sha256": "dab620ff23e9814289c743e9d761d8d754cf5e20d2dbc75cfdcb10e640013e37"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-separated-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "a58e30e67d4d40845ab04cb9109b16e154d65124ffa15534f41b9e545469be71"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "narrow",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 3.257751351688057,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 26,
+      "worker_accepted_jobs": 26,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 26,
+          "mean": 0.007520460075913713,
+          "p50": 0.005702469497919083,
+          "p99": 0.02341973956208676,
+          "worst": 0.026315465103834867
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 26,
+          "mean": 0.020296203581473,
+          "p50": 0.016721893567591906,
+          "p99": 0.056823705905117095,
+          "worst": 0.06516153225675225
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.349121203025182e-05,
+          "p50": 4.5324210077524185e-05,
+          "p99": 4.865326918661595e-05,
+          "worst": 4.872120916843414e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09972573490813375,
+          "p50": 0.09596688207238913,
+          "p99": 0.11475831227377056,
+          "worst": 0.11514181084930897
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07740082886690895,
+          "p50": 0.07629186799749732,
+          "p99": 0.08416586766950786,
+          "worst": 0.08432656154036522
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.005120118614286184,
+          "p50": 0.005729098804295063,
+          "p99": 0.006429598098620772,
+          "worst": 0.006443894002586603
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.10741637057314317,
+          "p50": 0.10187388397753239,
+          "p99": 0.12361256146803498,
+          "worst": 0.124056207947433
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-narrow-direct/result.json",
+        "sha256": "4ba2213aeb21564f15db861da44e9808faca3ef9b31bb36e03e96cfb616ec46e"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-narrow-direct/mapping-audit/jobs.jsonl",
+        "sha256": "f80c8b30dedb5024306effaa9bff31da44f060f5f1a4929fac2dd8c3406ec7fa"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "narrow",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.2034312169998884,
+      "applied_original_acquisition_age_ms": {
+        "count": 179,
+        "mean": 341.91986598469856,
+        "p50": 330.3039069287479,
+        "p95": 574.1308660246432,
+        "p99": 598.8499412499368,
+        "worst": 615.0308069773018
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007814195841395607,
+          "p50": 0.005958943627774715,
+          "p99": 0.02369843293447047,
+          "worst": 0.026428997982293367
+        },
+        "obstacle_extract_seconds": {
+          "count": 24,
+          "mean": 0.010948520464201769,
+          "p50": 0.010768722044304013,
+          "p99": 0.012289409316144884,
+          "worst": 0.01233892422169447
+        },
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.031795069943958275,
+          "p50": 0.02852163603529334,
+          "p99": 0.06797636518254875,
+          "worst": 0.07590135093778372
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.422944039106369e-05,
+          "p50": 4.584621638059616e-05,
+          "p99": 4.614968784153461e-05,
+          "worst": 4.615588113665581e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.10319625322396557,
+          "p50": 0.09645584924146533,
+          "p99": 0.11981271687895059,
+          "worst": 0.12028938764706254
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07099470123648643,
+          "p50": 0.06790310423821211,
+          "p99": 0.07923672328703105,
+          "worst": 0.07946802163496614
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.008520392856250206,
+          "p50": 0.005062615033239126,
+          "p99": 0.017209861148148774,
+          "worst": 0.017457764130085707
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.11451832468931873,
+          "p50": 0.11631381511688232,
+          "p99": 0.12649662657640875,
+          "worst": 0.1267044390551746
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-narrow-reactive/result.json",
+        "sha256": "f325542b2834b7b914cfeb371d46943db1d15551a84ffbb9902df948aa50e4d9"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-narrow-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "45ca89d0bca7cab6807403a132f520549b31eb72b7d8b7d121d4c3268959062e"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "moving",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.7279539750888944,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.00774262707842433,
+          "p50": 0.005643029231578112,
+          "p99": 0.024261781508103028,
+          "worst": 0.026726515032351017
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.02021528608368143,
+          "p50": 0.01581699028611183,
+          "p99": 0.05673360829241577,
+          "worst": 0.063224988989532
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.4937090327342354e-05,
+          "p50": 4.513422027230263e-05,
+          "p99": 5.093668587505817e-05,
+          "worst": 5.105510354042053e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.06944468229388197,
+          "p50": 0.06035400787368417,
+          "p99": 0.09259959476068616,
+          "worst": 0.09325766796246171
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.04728373745456338,
+          "p50": 0.04097935277968645,
+          "p99": 0.06152018688619137,
+          "worst": 0.06193938758224249
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006567885943998893,
+          "p50": 0.006380314938724041,
+          "p99": 0.008295893426984549,
+          "worst": 0.008334986865520477
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.07878087864567836,
+          "p50": 0.06795568484812975,
+          "p99": 0.1031449868902564,
+          "worst": 0.1038631359115243
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-moving-direct/result.json",
+        "sha256": "47a0ce70bb52537b93296c83b1cac705dbc179282b3854ef9f16b47dce3731bd"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-moving-direct/mapping-audit/jobs.jsonl",
+        "sha256": "36f19093246d3670a0bae923886c66769403ea5541ec21d3dec53d38ce560de2"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "moving",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 2.0637356764636934,
+      "applied_original_acquisition_age_ms": {
+        "count": 168,
+        "mean": 336.3891121864851,
+        "p50": 332.01057091355324,
+        "p95": 564.6013451041654,
+        "p99": 589.0256416611373,
+        "worst": 593.7071307562292
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.007423915240603189,
+          "p50": 0.0055896141566336155,
+          "p99": 0.023065948225557797,
+          "worst": 0.025484284851700068
+        },
+        "obstacle_extract_seconds": {
+          "count": 24,
+          "mean": 0.011095873060791442,
+          "p50": 0.010889322031289339,
+          "p99": 0.012695312965661287,
+          "worst": 0.012739331927150488
+        },
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.030707515368703753,
+          "p50": 0.026703978655859828,
+          "p99": 0.06939821221865712,
+          "worst": 0.07648431416600943
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.149802650014559e-05,
+          "p50": 4.009483382105827e-05,
+          "p99": 4.5466506853699685e-05,
+          "worst": 4.557613283395767e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09739199265216787,
+          "p50": 0.09581897500902414,
+          "p99": 0.11866782457567751,
+          "worst": 0.1191341276280582
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.06610560075690348,
+          "p50": 0.06988958781585097,
+          "p99": 0.07769450734369457,
+          "worst": 0.07785379141569138
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.010373714379966259,
+          "p50": 0.012918136082589626,
+          "p99": 0.015087478775531054,
+          "worst": 0.015131751075387001
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.11037005484104156,
+          "p50": 0.11106724338606,
+          "p99": 0.13627396808937192,
+          "worst": 0.13678839104250073
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-moving-reactive/result.json",
+        "sha256": "a3579f0e274bca0c8188038c6fbaae4a259631e6ebf208fb4a303b579e15653f"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-moving-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "cfb92629e63c255cfbd6f661b8fd23bf7d7fc55617858b80ef4d86e568c153ee"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "large",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "contact_and_target_not_reached",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 12.758322529029101,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 45,
+      "worker_accepted_jobs": 45,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 45,
+          "mean": 0.008611925846586625,
+          "p50": 0.006779121235013008,
+          "p99": 0.02519227789714933,
+          "worst": 0.02635570289567113
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 45,
+          "mean": 0.028608634622974527,
+          "p50": 0.027243953198194504,
+          "p99": 0.05617882024496797,
+          "worst": 0.061997700948268175
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.4195602337519326e-05,
+          "p50": 4.282034933567047e-05,
+          "p99": 5.371839739382267e-05,
+          "worst": 5.394080653786659e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.10737584639961521,
+          "p50": 0.10678087221458554,
+          "p99": 0.10912651083432139,
+          "worst": 0.10917438101023436
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07839683645094435,
+          "p50": 0.07946647703647614,
+          "p99": 0.08129039071500302,
+          "worst": 0.08132761344313622
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006058328008900086,
+          "p50": 0.002754203975200653,
+          "p99": 0.01276082720607519,
+          "worst": 0.012965044006705284
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.11634920195986827,
+          "p50": 0.11422883113846183,
+          "p99": 0.12186096907593309,
+          "worst": 0.12201672699302435
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-large-direct/result.json",
+        "sha256": "d0072b67c403c47b96b374f1f57973ec2529777146c03a196cb9f2cf5b886795"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-large-direct/mapping-audit/jobs.jsonl",
+        "sha256": "afe5962b50f1cb6d96b95d07ad30e7f512a0de8c8e8a8fb1ff00b6f4b4fd86db"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "large",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 12.647688530385494,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 329.25779633643106,
+        "p50": 327.15416117571294,
+        "p95": 563.6205318849534,
+        "p99": 586.515866057016,
+        "worst": 601.5401240438223
+      },
+      "worker_job_count": 45,
+      "worker_accepted_jobs": 45,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 45,
+          "mean": 0.008479948859247896,
+          "p50": 0.007052311208099127,
+          "p99": 0.023326464984565993,
+          "worst": 0.027287724893540144
+        },
+        "obstacle_extract_seconds": {
+          "count": 45,
+          "mean": 0.013973245717999008,
+          "p50": 0.01369374617934227,
+          "p99": 0.02235007215291263,
+          "worst": 0.024467668030411005
+        },
+        "processor_compute_seconds": {
+          "count": 45,
+          "mean": 0.0417132463099228,
+          "p50": 0.04086278984323144,
+          "p99": 0.06639807358384137,
+          "worst": 0.07510610623285174
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.384852945804596e-05,
+          "p50": 4.072627052664757e-05,
+          "p99": 5.5620102211833e-05,
+          "worst": 5.5924057960510254e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09432732655356328,
+          "p50": 0.08975480683147907,
+          "p99": 0.1168622056953609,
+          "worst": 0.11741541791707277
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.05023579035575191,
+          "p50": 0.03916775528341532,
+          "p99": 0.07631548507139087,
+          "worst": 0.07707360200583935
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.009313674798856178,
+          "p50": 0.006947025191038847,
+          "p99": 0.01612414591945708,
+          "worst": 0.016311434097588062
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.10639865851650636,
+          "p50": 0.10037107532843947,
+          "p99": 0.13530104663223028,
+          "worst": 0.1360139031894505
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-large-reactive/result.json",
+        "sha256": "ae50f66dcb676db2b1b9c44ecbb7dedfdf914dfeaac4b8d7c96da04e933fe835"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-large-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "f774db7d663d5e8259a87ae5724f5c086d09d33ba207f857d8949956391b5637"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "near",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 1.727876193355769,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.007794240287140659,
+          "p50": 0.005733537953346968,
+          "p99": 0.0240068408008665,
+          "worst": 0.026429674122482538
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.01994475637279127,
+          "p50": 0.01593396021053195,
+          "p99": 0.056624755887314714,
+          "worst": 0.06350124534219503
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.660710692405701e-05,
+          "p50": 4.49642539024353e-05,
+          "p99": 5.8975052088499065e-05,
+          "worst": 5.9260986745357513e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09299496887251735,
+          "p50": 0.08355092303827405,
+          "p99": 0.11131854848004877,
+          "worst": 0.11188523471355438
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07224443818752964,
+          "p50": 0.06809896184131503,
+          "p99": 0.08219964736141264,
+          "worst": 0.08248741645365953
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.003003690236558517,
+          "p50": 0.003521086648106575,
+          "p99": 0.005029438380151987,
+          "worst": 0.005060221068561077
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.09876321923608582,
+          "p50": 0.08953437907621264,
+          "p99": 0.11882898072712123,
+          "worst": 0.11942682974040508
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-near-direct/result.json",
+        "sha256": "3ac85a2d17d9da7ce49032149d9c3b6618fe055c48849bbdfa4300fda5154af0"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-near-direct/mapping-audit/jobs.jsonl",
+        "sha256": "262e6d657e7ce955541e01e02d45f1de66d663a30beee184e7bdddaa415e00ca"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "near",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 1.6002239482477307,
+      "applied_original_acquisition_age_ms": {
+        "count": 139,
+        "mean": 318.3090093230708,
+        "p50": 316.8562180362642,
+        "p95": 554.6752389520407,
+        "p99": 577.3462943825871,
+        "worst": 584.6053548157215
+      },
+      "worker_job_count": 23,
+      "worker_accepted_jobs": 23,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 23,
+          "mean": 0.00772454773845232,
+          "p50": 0.005867590196430683,
+          "p99": 0.022978348657488837,
+          "worst": 0.025341130793094635
+        },
+        "obstacle_extract_seconds": {
+          "count": 23,
+          "mean": 0.010867638817137999,
+          "p50": 0.010573920328170061,
+          "p99": 0.01312026819214225,
+          "worst": 0.013460671994835138
+        },
+        "processor_compute_seconds": {
+          "count": 23,
+          "mean": 0.030711926985532045,
+          "p50": 0.026540510822087526,
+          "p99": 0.06649440030567352,
+          "worst": 0.07342749601230025
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.293381546934446e-05,
+          "p50": 3.631832078099251e-05,
+          "p99": 5.6337397545576095e-05,
+          "worst": 5.6745950132608414e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.08920220037301381,
+          "p50": 0.07784330518916249,
+          "p99": 0.11876741512678562,
+          "worst": 0.11960260104387999
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.058982076278577246,
+          "p50": 0.05173295736312866,
+          "p99": 0.0787747717089951,
+          "worst": 0.07932664547115564
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.005594021640717983,
+          "p50": 0.005906281992793083,
+          "p99": 0.00655658938921988,
+          "worst": 0.006569860968738794
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.09764412759492795,
+          "p50": 0.08780792588368058,
+          "p99": 0.12755261885933578,
+          "worst": 0.12836373504251242
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-near-reactive/result.json",
+        "sha256": "13e0e8f705cc3877d7af4082480c8505043c5cd6d21424b4ddf6b078eb71b72f"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-near-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "a05d1c9bfa85f4bbe887f41a3054a4fd70e1ad5492571e2d6a503812f3383021"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "irregular",
+      "strategy": "direct",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_with_contact",
+      "strict_avoidance_success": false,
+      "source_failures": null,
+      "owned_proxies_after_close": null,
+      "motion_seconds": 2.1503688348457217,
+      "applied_original_acquisition_age_ms": {
+        "count": 0
+      },
+      "worker_job_count": 24,
+      "worker_accepted_jobs": 24,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 24,
+          "mean": 0.00755887886043638,
+          "p50": 0.005564393475651741,
+          "p99": 0.022931723142974075,
+          "worst": 0.024970359168946743
+        },
+        "obstacle_extract_seconds": null,
+        "processor_compute_seconds": {
+          "count": 24,
+          "mean": 0.01981018588412553,
+          "p50": 0.016004729084670544,
+          "p99": 0.05400497331283985,
+          "worst": 0.06047316128388047
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 3.933347761631012e-05,
+          "p50": 3.9643608033657074e-05,
+          "p99": 3.9929281920194624e-05,
+          "worst": 3.993511199951172e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.0961926318705082,
+          "p50": 0.08790727332234383,
+          "p99": 0.11294542076997459,
+          "worst": 0.11345640337094665
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07633145215610664,
+          "p50": 0.07261272612959146,
+          "p99": 0.0848060031607747,
+          "worst": 0.0850548455491662
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.008114228956401348,
+          "p50": 0.010512004140764475,
+          "p99": 0.01207431811839342,
+          "worst": 0.012106202077120543
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.1069468183753391,
+          "p50": 0.1029510023072362,
+          "p99": 0.11729782234877348,
+          "worst": 0.11759061459451914
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-irregular-direct/result.json",
+        "sha256": "d42528d41dba8e56898487dad4b96ddc505c4f622176bd4a846e5b68cac6be52"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-irregular-direct/mapping-audit/jobs.jsonl",
+        "sha256": "627b4db643a2a097dd73eb9c4c5a3d62c8fc6914f48b9dd38d7c8173c52ccf26"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "ground_truth",
+      "scenario": "irregular",
+      "strategy": "reactive",
+      "mapping_hz": 2.0,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 3.514991879928857,
+      "applied_original_acquisition_age_ms": {
+        "count": 309,
+        "mean": 335.4611012897783,
+        "p50": 335.3867707774043,
+        "p95": 563.5899069719017,
+        "p99": 585.5804024450481,
+        "worst": 594.9381049722433
+      },
+      "worker_job_count": 27,
+      "worker_accepted_jobs": 27,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": null,
+        "ray_traversal_seconds": null,
+        "occupancy_integrate_seconds": null,
+        "snapshot_seconds": {
+          "count": 27,
+          "mean": 0.00698510747126959,
+          "p50": 0.005329124163836241,
+          "p99": 0.02253461231477557,
+          "worst": 0.025261924602091312
+        },
+        "obstacle_extract_seconds": {
+          "count": 27,
+          "mean": 0.010733220364070602,
+          "p50": 0.010568760801106691,
+          "p99": 0.01173567248508334,
+          "worst": 0.011768691707402468
+        },
+        "processor_compute_seconds": {
+          "count": 27,
+          "mean": 0.02952168457623985,
+          "p50": 0.02617608103901148,
+          "p99": 0.06553339938633139,
+          "worst": 0.07378123933449388
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 4.723109304904938e-05,
+          "p50": 4.681665450334549e-05,
+          "p99": 5.706760101020336e-05,
+          "worst": 5.7276804000139236e-05
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.09462750687574346,
+          "p50": 0.08630776731297374,
+          "p99": 0.1173241058550775,
+          "worst": 0.11795709235593677
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.06370200061549743,
+          "p50": 0.060377915389835835,
+          "p99": 0.07774612513370813,
+          "worst": 0.07810057839378715
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006834972649812698,
+          "p50": 0.0060051558539271355,
+          "p99": 0.012181598236784339,
+          "worst": 0.012307648081332445
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.10480884012455742,
+          "p50": 0.1018432043492794,
+          "p99": 0.12673511779867114,
+          "worst": 0.12724311603233218
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-irregular-reactive/result.json",
+        "sha256": "200d4fb9bdd34f40203ce7c3efd7dad48012eed5bea12b2006c0451bb52f9cc4"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-ground_truth-irregular-reactive/mapping-audit/jobs.jsonl",
+        "sha256": "3e8bd099f92b3ede5ed82fbc3fb91ccc78b5661c638a0bf03e658c4045f138ef"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "empty",
+      "strategy": "reactive",
+      "mapping_hz": 2.5,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 1.8193377847783267,
+      "applied_original_acquisition_age_ms": {
+        "count": 140,
+        "mean": 399.678812435429,
+        "p50": 377.84161139279604,
+        "p95": 583.0660387175157,
+        "p99": 612.6314967963845,
+        "worst": 617.3224081285298
+      },
+      "worker_job_count": 30,
+      "worker_accepted_jobs": 30,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 30,
+          "mean": 0.01756836047085623,
+          "p50": 0.01698229997418821,
+          "p99": 0.02278733601793647,
+          "worst": 0.02314416877925396
+        },
+        "ray_traversal_seconds": {
+          "count": 30,
+          "mean": 0.05475202674667041,
+          "p50": 0.054427266120910645,
+          "p99": 0.058206269633956254,
+          "worst": 0.058242849074304104
+        },
+        "occupancy_integrate_seconds": {
+          "count": 30,
+          "mean": 0.010596841930722196,
+          "p50": 0.009870470967143774,
+          "p99": 0.02243565941695125,
+          "worst": 0.026626513805240393
+        },
+        "snapshot_seconds": {
+          "count": 30,
+          "mean": 0.007565195827434461,
+          "p50": 0.007159978384152055,
+          "p99": 0.01699607589747757,
+          "worst": 0.017725047189742327
+        },
+        "obstacle_extract_seconds": {
+          "count": 30,
+          "mean": 0.01161114388766388,
+          "p50": 0.011526258895173669,
+          "p99": 0.012637496450915933,
+          "worst": 0.012748721987009048
+        },
+        "processor_compute_seconds": {
+          "count": 30,
+          "mean": 0.11457512779161334,
+          "p50": 0.112581267952919,
+          "p99": 0.1429860349511728,
+          "worst": 0.1519173257984221
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0003816996080180009,
+          "p50": 5.37908636033535e-05,
+          "p99": 0.0010185695346444845,
+          "worst": 0.001038258895277977
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1877068386723598,
+          "p50": 0.17987840296700597,
+          "p99": 0.20761378787457943,
+          "worst": 0.2081798161379993
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07769439633314808,
+          "p50": 0.06945175398141146,
+          "p99": 0.09968136900104582,
+          "worst": 0.10029829991981387
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.008998581829170385,
+          "p50": 0.007956983055919409,
+          "p99": 0.014528161492198707,
+          "worst": 0.014662267174571753
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.20411992942293486,
+          "p50": 0.20115163829177618,
+          "p99": 0.22359647014178335,
+          "worst": 0.22405452793464065
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-reactive-2.5hz/result.json",
+        "sha256": "307c3ce61406ebf40b84d3adbfb94c076dedc891c873f3502dc677983ee1918d"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-empty-reactive-2.5hz/mapping-audit/jobs.jsonl",
+        "sha256": "c0f22b4e6e1451d9fe06798913fcaa5987c7c4405c80d951703f4f5491223662"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "static",
+      "strategy": "reactive",
+      "mapping_hz": 2.5,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 13.464274051133543,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 418.2632289007306,
+        "p50": 417.88146062754095,
+        "p95": 595.0332529377192,
+        "p99": 642.2969461465254,
+        "worst": 657.3602431453764
+      },
+      "worker_job_count": 58,
+      "worker_accepted_jobs": 58,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 58,
+          "mean": 0.01773663171856054,
+          "p50": 0.017252935795113444,
+          "p99": 0.024257841682992876,
+          "worst": 0.025563409086316824
+        },
+        "ray_traversal_seconds": {
+          "count": 58,
+          "mean": 0.053196330900014986,
+          "p50": 0.05266079236753285,
+          "p99": 0.06309796034358442,
+          "worst": 0.06312767276540399
+        },
+        "occupancy_integrate_seconds": {
+          "count": 58,
+          "mean": 0.010192213475639963,
+          "p50": 0.009679464623332024,
+          "p99": 0.018915801234543318,
+          "worst": 0.02689548721536994
+        },
+        "snapshot_seconds": {
+          "count": 58,
+          "mean": 0.007853750548935655,
+          "p50": 0.007468530209735036,
+          "p99": 0.016213009022176265,
+          "worst": 0.01758201001212001
+        },
+        "obstacle_extract_seconds": {
+          "count": 58,
+          "mean": 0.011747498498779946,
+          "p50": 0.011702268151566386,
+          "p99": 0.013106188387610018,
+          "worst": 0.013175829779356718
+        },
+        "processor_compute_seconds": {
+          "count": 58,
+          "mean": 0.11275603636649661,
+          "p50": 0.11099724099040031,
+          "p99": 0.13126062099821864,
+          "worst": 0.13759900396689773
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.00039902857194344204,
+          "p50": 5.28283417224884e-05,
+          "p99": 0.0010767145827412605,
+          "worst": 0.0010976102203130722
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.1842846261958281,
+          "p50": 0.17482290277257562,
+          "p99": 0.21005328435450793,
+          "worst": 0.21077227173373103
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.0739873304652671,
+          "p50": 0.06729146977886558,
+          "p99": 0.09247329202480614,
+          "worst": 0.09298720676451921
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.006492179663230975,
+          "p50": 0.005492959637194872,
+          "p99": 0.009403752088546753,
+          "worst": 0.009483564179390669
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.19849062726522484,
+          "p50": 0.18693210976198316,
+          "p99": 0.22651889079250395,
+          "worst": 0.22732678428292274
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-reactive-2.5hz/result.json",
+        "sha256": "052ca1017924c51612f3a0a4ae83f0f24c88a61f5c13f3d36c0c89e36e5428d0"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-static-reactive-2.5hz/mapping-audit/jobs.jsonl",
+        "sha256": "f972e710f891420368010fdf1ae53204b74e58c8787e58e336ea47fc44c4f5ac"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "sparse",
+      "strategy": "reactive",
+      "mapping_hz": 2.5,
+      "measurement_status": "PASS",
+      "classification": "blocked_timeout",
+      "strict_avoidance_success": false,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 13.430465726181865,
+      "applied_original_acquisition_age_ms": {
+        "count": 1000,
+        "mean": 409.3845524438657,
+        "p50": 394.35258647426963,
+        "p95": 587.1231043245643,
+        "p99": 616.4412897266448,
+        "worst": 642.1894934028387
+      },
+      "worker_job_count": 58,
+      "worker_accepted_jobs": 58,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 58,
+          "mean": 0.017337451921775937,
+          "p50": 0.017020922852680087,
+          "p99": 0.021340040299110113,
+          "worst": 0.021707606967538595
+        },
+        "ray_traversal_seconds": {
+          "count": 58,
+          "mean": 0.053717375403783955,
+          "p50": 0.05329727218486369,
+          "p99": 0.05951600869186222,
+          "worst": 0.060683388728648424
+        },
+        "occupancy_integrate_seconds": {
+          "count": 58,
+          "mean": 0.01024176791342425,
+          "p50": 0.009795201243832707,
+          "p99": 0.018199137779884036,
+          "worst": 0.026707306038588285
+        },
+        "snapshot_seconds": {
+          "count": 58,
+          "mean": 0.007542073317193265,
+          "p50": 0.0073931843508034945,
+          "p99": 0.01620348723605275,
+          "worst": 0.017384561710059643
+        },
+        "obstacle_extract_seconds": {
+          "count": 58,
+          "mean": 0.01175924070211577,
+          "p50": 0.011674696812406182,
+          "p99": 0.013454094589687883,
+          "worst": 0.014070811681449413
+        },
+        "processor_compute_seconds": {
+          "count": 58,
+          "mean": 0.1127837930067346,
+          "p50": 0.11188454646617174,
+          "p99": 0.1299382000695914,
+          "worst": 0.14224369265139103
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0007299234469731649,
+          "p50": 0.0010485081002116203,
+          "p99": 0.0010819889884442092,
+          "worst": 0.0010826722718775272
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.20009597452978292,
+          "p50": 0.19929529959335923,
+          "p99": 0.23187428707256913,
+          "worst": 0.2325391643680632
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.08836916942770283,
+          "p50": 0.0869287122040987,
+          "p99": 0.1162818555533886,
+          "worst": 0.11688089929521084
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.002536230720579624,
+          "p50": 0.0026698666624724865,
+          "p99": 0.0036585246585309505,
+          "worst": 0.003678701352328062
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.21029943336422244,
+          "p50": 0.2103470633737743,
+          "p99": 0.24246739595197142,
+          "worst": 0.2431229129433632
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-reactive-2.5hz/result.json",
+        "sha256": "33d03a4101421a1d5d7e2c9b5dd2622aceca47b02e71b5b2a1f0363629662c47"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-sparse-reactive-2.5hz/mapping-audit/jobs.jsonl",
+        "sha256": "64fe38c35dde256dade904980be29345ed0076fafc8adc066f193ddb65ed0870"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    },
+    {
+      "source": "rgbd",
+      "scenario": "partial",
+      "strategy": "reactive",
+      "mapping_hz": 2.5,
+      "measurement_status": "PASS",
+      "classification": "target_reached_clear",
+      "strict_avoidance_success": true,
+      "source_failures": 0,
+      "owned_proxies_after_close": 0,
+      "motion_seconds": 4.070946770254523,
+      "applied_original_acquisition_age_ms": {
+        "count": 305,
+        "mean": 393.9807927129088,
+        "p50": 382.33134569600224,
+        "p95": 573.2979008927941,
+        "p99": 593.312406297773,
+        "worst": 601.7723479308188
+      },
+      "worker_job_count": 35,
+      "worker_accepted_jobs": 35,
+      "full_capture_enabled": false,
+      "worker_stages_seconds": {
+        "robot_filter_seconds": {
+          "count": 35,
+          "mean": 0.017549186386168,
+          "p50": 0.017232627607882023,
+          "p99": 0.02080938496626913,
+          "worst": 0.021244090981781483
+        },
+        "ray_traversal_seconds": {
+          "count": 35,
+          "mean": 0.05031067545392683,
+          "p50": 0.0498707527294755,
+          "p99": 0.05690661537460981,
+          "worst": 0.058464144356548786
+        },
+        "occupancy_integrate_seconds": {
+          "count": 35,
+          "mean": 0.009195368324539491,
+          "p50": 0.008360275998711586,
+          "p99": 0.02102625123225147,
+          "worst": 0.02637702040374279
+        },
+        "snapshot_seconds": {
+          "count": 35,
+          "mean": 0.007275834812649659,
+          "p50": 0.006733688060194254,
+          "p99": 0.017018585801124562,
+          "worst": 0.018024137243628502
+        },
+        "obstacle_extract_seconds": {
+          "count": 35,
+          "mean": 0.011736834581409181,
+          "p50": 0.011562787927687168,
+          "p99": 0.01315223779529333,
+          "worst": 0.013186952099204063
+        },
+        "processor_compute_seconds": {
+          "count": 35,
+          "mean": 0.1070298430243773,
+          "p50": 0.10495347203686833,
+          "p99": 0.13036358638666565,
+          "worst": 0.13601932022720575
+        }
+      },
+      "sampled_parent_completion_envelopes_seconds": {
+        "queue_seconds": {
+          "count": 3,
+          "mean": 0.0004242793656885624,
+          "p50": 5.2067916840314865e-05,
+          "p99": 0.0011482743732631206,
+          "worst": 0.00117064593359828
+        },
+        "worker_seconds": {
+          "count": 3,
+          "mean": 0.183533471232901,
+          "p50": 0.18220971897244453,
+          "p99": 0.2058092469535768,
+          "worst": 0.2062908699735999
+        },
+        "transport_seconds": {
+          "count": 3,
+          "mean": 0.07859194139018655,
+          "p50": 0.07723334385082126,
+          "p99": 0.09903893383219839,
+          "worst": 0.09948394587263465
+        },
+        "worker_to_publication_seconds": {
+          "count": 3,
+          "mean": 0.008100824275364479,
+          "p50": 0.004869414959102869,
+          "p99": 0.015238288193941116,
+          "worst": 0.015449897851794958
+        },
+        "publish_age_seconds": {
+          "count": 3,
+          "mean": 0.20027634827420115,
+          "p50": 0.20492275385186076,
+          "p99": 0.22151330360211433,
+          "worst": 0.22185188625007868
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-reactive-2.5hz/result.json",
+        "sha256": "9ac709c3cb6f419cda44edf90210d66d85026f8b2c65dbf8a1b0bd274a1b07ed"
+      },
+      "worker_artifact": {
+        "path": "outputs/motion-planning-v2b-final-rgbd-partial-reactive-2.5hz/mapping-audit/jobs.jsonl",
+        "sha256": "14eade50f499c393f3f4c370f083d30fb2a7abf4909952262639e2edb06b9100"
+      },
+      "source_manifest_sha256": "b225a9aad9b94c184f111a11a2b419d688f2287db35b6d7b4f762dbdb0b656da"
+    }
+  ],
+  "qualifications": [
+    "Original acquisition age is time since the first owner-context monotonic acquired_at, not true GPU exposure wall-clock age. No timestamps or freshness limits changed.",
+    "The existing1s source policy,5Hz semantics,2Hz library/default mapping and all ray/geometry/controller limits remain unchanged. Extra2.5Hz runs are diagnostic only.",
+    "All worker job rows are summarized, including warmup/setup/settling/motion. Different route durations produce different sample counts; these are workload diagnostics, not independent steady-state repetitions.",
+    "Parent queue/worker/transport/publication envelopes retain only distinct sampled health completions, not all publications. transport_seconds includes serialization/IPC/startup/scheduling beyond compute, not pure pipe time.",
+    "Full dense capture is disabled for final timing evidence. Small diagnostic JSON writes remain overhead.",
+    "The four-scene rate comparison reuses final default2Hz empty/static/sparse/partial and the four extra2.5Hz attempts; full eight-scene default results are reported separately. Both baseline rates failed4/4 setup; neither candidate rate supplies a causal reliability estimate from one attempt per case.",
+    "Availability PASS does not imply goal completion, zero contact or harmless contact. All blocked/time-out/contact outcomes remain failures under the strict avoidance criterion."
+  ],
+  "final_control_summary": {
+    "maximum_reactive_direct_apply_p99_ratio": 1.381,
+    "maximum_apply_ms": 56.879,
+    "maximum_wait_ms": 55.278,
+    "waits_over_100_ms": 0,
+    "maximum_applied_original_acquisition_age_ms": 850.4003491252661,
+    "maximum_proxy_count": 64,
+    "meaning": "Frozen final matrix aggregate; responsiveness is separate from source availability and physical goal/contact outcomes."
+  },
+  "preservation": {
+    "offline_discovered_tests": 811,
+    "standalone_modules": 8,
+    "native_scenarios": 23,
+    "status": "PASS",
+    "verification": "docs/assets/motion_planning_v2b/verification.json"
+  }
+}

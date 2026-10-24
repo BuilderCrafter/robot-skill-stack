@@ -67,10 +67,15 @@ direct mapping does not compute this product. The Kit reactive strategy reads
 only the small packet, validates freshness and updates bounded numeric cuboids
 through public RMPflow APIs. These planning objects have no USD prims, colliders
 or rendered geometry. Skills and grasp/placement planners do not inspect voxels.
-Sparse support uses a radius-two neighbor graph without geometric dilation;
-floor-only cuboids follow above-plane hazards within the bounded budget using
-the existing scene support plane. Both filtering and budget omissions remain
-observable instead of being filled with guessed geometry.
+Sparse support uses a radius-two neighborhood without geometric dilation.
+RGB-D additionally retains already OCCUPIED, unexpired cells with temporal
+probability at least 0.95; ground-truth extraction keeps the previous rule.
+Floor-only cuboids follow above-plane hazards within the bounded budget using
+the existing scene support plane. Filtering and budget omissions stay visible;
+no FREE or UNKNOWN geometry is filled. Robot self-filter ray intersections use
+bounded batches over the same mesh BVHs and exact intersection tests, with the
+previous traversal retained as a fallback. This changes computation cost, not
+the selected rays, robot masks, timestamps or occupancy probability model.
 Overlapping camera sources share copied frames and render products; mapping-only
 cameras have explicit lifecycle ownership.
 

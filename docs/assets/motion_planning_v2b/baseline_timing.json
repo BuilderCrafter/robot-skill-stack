@@ -1,0 +1,1840 @@
+{
+  "schema_version": 1,
+  "status": "FAIL",
+  "baseline": "a535c6a6fbb99bb511ca2655650ec253d7ebc399",
+  "scope": "Eight identical-source, metadata-only native reactive setup availability attempts, before V2b algorithm changes.",
+  "driver": {
+    "path": "outputs/motion-planning-v2b-baseline-timings.json",
+    "sha256": "bde9ec669bd7e7254d54bccd88d66a414a5df2fda838dfa2a77204438519ca7b"
+  },
+  "attempted": 8,
+  "setup_source_failures": 8,
+  "measured_routes": 0,
+  "source_manifest_count": 1,
+  "source_manifests": {
+    "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66": {
+      "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+      "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+      "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+      "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+      "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+      "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+      "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+      "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+      "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+      "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+      "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+      "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+      "robot_skill_stack/world/spatial_mapping/obstacles.py": "de88595d10825944d356916b1a3ddfb66c777ed93d0f84c7fd5176bf807d69a2",
+      "robot_skill_stack/world/spatial_mapping/runtime.py": "a2b479d781d696328b122e2fd207c1e2fad530dcf6a31bdbd8881ac2b1ef422c",
+      "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+      "robot_skill_stack/world/spatial_mapping/robot_filter.py": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+      "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+      "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+      "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+    }
+  },
+  "rows": [
+    {
+      "scenario": "empty",
+      "mapping_hz": 2.0,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3237953.467819062,
+          "map_age_seconds": 0.9808040191419423,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.9871415970847011,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.4305319208651781,
+        "last_publication": 0.39141250075772405,
+        "last_applied": 0.9808040191419423,
+        "final_refusal": 1.0090636811219156
+      },
+      "applied_age_summary_ms": {
+        "count": 74,
+        "mean": 666.5095305070281,
+        "p50": 661.4061675500125,
+        "p95": 931.6398030612617,
+        "p99": 970.8146852860227,
+        "worst": 980.8040191419423
+      },
+      "control_apply_interval_ms": {
+        "count": 74,
+        "mean": 13.08882555521622,
+        "p50": 12.102161766961217,
+        "p95": 18.838689755648367,
+        "p99": 30.520780924707644,
+        "worst": 31.956231221556664
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 6,
+          "completed": 5,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": true,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2592936,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.2134701122995466,
+          "p50": 0.21582462801598012,
+          "p95": 0.23026944743469357,
+          "p99": 0.2311159753240645,
+          "minimum": 0.1810351237654686,
+          "worst": 0.23132760729640722
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.05321105848997831,
+          "p50": 0.05449769622646272,
+          "p95": 0.05676843482069671,
+          "p99": 0.05727129741571844,
+          "minimum": 0.04520357493311167,
+          "worst": 0.05739701306447387
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.012430258948976794,
+          "p50": 0.009872159454971552,
+          "p95": 0.02214118291158229,
+          "p99": 0.025361617305316032,
+          "minimum": 0.009196783881634474,
+          "worst": 0.026166725903749466
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.29186488726797205,
+          "p50": 0.29184360546059906,
+          "p95": 0.30761691951192915,
+          "p99": 0.30808746968396006,
+          "minimum": 0.26733433827757835,
+          "worst": 0.3082051072269678
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.009389235405251384,
+          "p50": 0.006218465976417065,
+          "p95": 0.01666331966407597,
+          "p99": 0.017238328838720916,
+          "minimum": 0.005906714126467705,
+          "worst": 0.017382081132382154
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.010982699071367582,
+          "p50": 0.011022156104445457,
+          "p95": 0.011719527770765126,
+          "p99": 0.011818668828345836,
+          "minimum": 0.010109828319400549,
+          "worst": 0.011843454092741013
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.3135384108560781,
+          "p50": 0.30873437505215406,
+          "p95": 0.33171044616028666,
+          "p99": 0.3334230343811214,
+          "minimum": 0.3011990711092949,
+          "worst": 0.3338511814363301
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.07415829847256343,
+          "p50": 0.042979610385373235,
+          "p95": 0.17867175047285855,
+          "p99": 0.19985990473069254,
+          "minimum": 0.02676839893683791,
+          "worst": 0.205156943295151
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.38121541449800134,
+          "p50": 0.38121541449800134,
+          "p95": 0.38277663784101607,
+          "p99": 0.382915413249284,
+          "minimum": 0.37948072189465165,
+          "worst": 0.382950107101351
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.0007121637463569641,
+          "p50": 0.0007121637463569641,
+          "p95": 0.001239129388704896,
+          "p99": 0.0012859707791358233,
+          "minimum": 0.00012664636597037315,
+          "worst": 0.001297681126743555
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.07568790996447206,
+          "p50": 0.07568790996447206,
+          "p95": 0.07917178766801954,
+          "p99": 0.07948146568611264,
+          "minimum": 0.07181693473830819,
+          "worst": 0.07955888519063592
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.01581649878062308,
+          "p50": 0.01581649878062308,
+          "p95": 0.027142032259143887,
+          "p99": 0.028148746346123518,
+          "minimum": 0.0032325726933777332,
+          "worst": 0.028400424867868423
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.4052313663996756,
+          "p50": 0.4052313663996756,
+          "p95": 0.41766834547743203,
+          "p99": 0.41877385472878814,
+          "minimum": 0.39141250075772405,
+          "worst": 0.41905023204162717
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-reactive-2hz-timing/result.json",
+        "sha256": "177d1c5b27f20a6018d9e3383d1e46fa6aa81a7d73741759046ceef850da5ec3"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-reactive-2hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "110e619b73317b5349c528198b3620658d5ad83a5a7f83de7277dc839df89483"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "static",
+      "mapping_hz": 2.0,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3237974.118252688,
+          "map_age_seconds": 0.9975871536880732,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.9897404280491173,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.42419938324019313,
+        "last_publication": 0.4028318440541625,
+        "last_applied": 0.9975871536880732,
+        "final_refusal": 1.0261002690531313
+      },
+      "applied_age_summary_ms": {
+        "count": 74,
+        "mean": 671.9474284154539,
+        "p50": 662.8275408875197,
+        "p95": 948.8694925792514,
+        "p99": 988.9926274307072,
+        "worst": 997.5871536880732
+      },
+      "control_apply_interval_ms": {
+        "count": 74,
+        "mean": 13.069536071270704,
+        "p50": 12.756012147292495,
+        "p95": 20.311370189301662,
+        "p99": 25.67364393733441,
+        "worst": 26.790459640324116
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 6,
+          "completed": 5,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": true,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2593704,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.21300337618837753,
+          "p50": 0.21704539214260876,
+          "p95": 0.22437235352117568,
+          "p99": 0.2253068514401093,
+          "minimum": 0.18491003569215536,
+          "worst": 0.22554047591984272
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.051505283219739795,
+          "p50": 0.05272371578030288,
+          "p95": 0.05472530599217862,
+          "p99": 0.054917785129509865,
+          "minimum": 0.04229933489114046,
+          "worst": 0.05496590491384268
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.012453830024848381,
+          "p50": 0.009638258488848805,
+          "p95": 0.022431113990023732,
+          "p99": 0.025799881154671314,
+          "minimum": 0.009474754333496094,
+          "worst": 0.026642072945833206
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.2896081725290666,
+          "p50": 0.29190373863093555,
+          "p95": 0.29822327790316194,
+          "p99": 0.2991546642733738,
+          "minimum": 0.2701529790647328,
+          "worst": 0.29938751086592674
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.00986691665214797,
+          "p50": 0.006986889988183975,
+          "p95": 0.016986806062050164,
+          "p99": 0.017637554951943458,
+          "minimum": 0.006371771916747093,
+          "worst": 0.01780024217441678
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.011065730825066566,
+          "p50": 0.010957650374621153,
+          "p95": 0.011805177899077535,
+          "p99": 0.011998630920425057,
+          "minimum": 0.010616383980959654,
+          "worst": 0.012046994175761938
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.31186525826342404,
+          "p50": 0.3098399634473026,
+          "p95": 0.3218027922557667,
+          "p99": 0.32303907743189486,
+          "minimum": 0.3043476580642164,
+          "worst": 0.3233481487259269
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.07442646760803957,
+          "p50": 0.047286513494327664,
+          "p95": 0.17486593301873654,
+          "p99": 0.19770217535551637,
+          "minimum": 0.02736764820292592,
+          "worst": 0.20341123593971133
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.38466570945456624,
+          "p50": 0.38466570945456624,
+          "p95": 0.39908937979489567,
+          "p99": 0.40037148382514715,
+          "minimum": 0.36863940907642245,
+          "worst": 0.40069200983271
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.0005930820479989052,
+          "p50": 0.0005930820479989052,
+          "p95": 0.0010540720541030169,
+          "p99": 0.0010950489435344935,
+          "minimum": 8.087093010544777e-05,
+          "worst": 0.0011052931658923626
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.07739527663215995,
+          "p50": 0.07739527663215995,
+          "p95": 0.09241687087342143,
+          "p99": 0.09375212369486689,
+          "minimum": 0.060704616364091635,
+          "worst": 0.09408593690022826
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.0076768777798861265,
+          "p50": 0.0076768777798861265,
+          "p95": 0.012783865141682326,
+          "p99": 0.01323781957384199,
+          "minimum": 0.0020024473778903484,
+          "worst": 0.013351308181881905
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.40659119514748454,
+          "p50": 0.40659119514748454,
+          "p95": 0.4099746111314744,
+          "p99": 0.41027535921894015,
+          "minimum": 0.4028318440541625,
+          "worst": 0.4103505462408066
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-static-reactive-2hz-timing/result.json",
+        "sha256": "bbc5f4fcd92a906fcc88122dee600df99e232359c4ff3d5258dfcb705dca7dd6"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-static-reactive-2hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "a20aa479b0579508090bbe47c338e3a0eeada1ba3cbfa46676c8f66f8dcf29f4"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "sparse",
+      "mapping_hz": 2.0,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3237994.835729711,
+          "map_age_seconds": 0.9916231227107346,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.9755184268578887,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.4300354761071503,
+        "last_publication": 0.41293266555294394,
+        "last_applied": 0.9916231227107346,
+        "final_refusal": 1.0186578696593642
+      },
+      "applied_age_summary_ms": {
+        "count": 70,
+        "mean": 675.5002961693598,
+        "p50": 669.6578338742256,
+        "p95": 942.3796463059261,
+        "p99": 981.7693686159328,
+        "worst": 991.6231227107346
+      },
+      "control_apply_interval_ms": {
+        "count": 70,
+        "mean": 13.63307004129248,
+        "p50": 12.932331068441272,
+        "p95": 20.065851556137204,
+        "p99": 34.081925880163915,
+        "worst": 36.810841877013445
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 6,
+          "completed": 5,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": true,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2594476,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.2166332396833847,
+          "p50": 0.21832704404368997,
+          "p95": 0.23581441189162433,
+          "p99": 0.23913977830670774,
+          "minimum": 0.18867099611088634,
+          "worst": 0.2399711199104786
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.05203685016992191,
+          "p50": 0.05209413543343544,
+          "p95": 0.05607466236688197,
+          "p99": 0.056161498697474596,
+          "minimum": 0.044893535785377026,
+          "worst": 0.05618320778012276
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.01240498541543881,
+          "p50": 0.009513766039162874,
+          "p95": 0.022799201542511582,
+          "p99": 0.026336996303871277,
+          "minimum": 0.009185953997075558,
+          "worst": 0.027221444994211197
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.293549086432904,
+          "p50": 0.29381125909276307,
+          "p95": 0.3106496128020808,
+          "p99": 0.3132167298113927,
+          "minimum": 0.2754238466732204,
+          "worst": 0.3138585090637207
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.00956602666216592,
+          "p50": 0.006523630348965526,
+          "p95": 0.016647328971885145,
+          "p99": 0.01710902254562825,
+          "minimum": 0.005989869125187397,
+          "worst": 0.017224445939064026
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.01112131456223627,
+          "p50": 0.010989956557750702,
+          "p95": 0.011836796533316374,
+          "p99": 0.01202472737058997,
+          "minimum": 0.010728833265602589,
+          "worst": 0.012071710079908371
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.315429579699412,
+          "p50": 0.31147969444282353,
+          "p95": 0.3305092758964747,
+          "p99": 0.3307964281644672,
+          "minimum": 0.3003077288158238,
+          "worst": 0.33086821623146534
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.07668025023303926,
+          "p50": 0.049425615929067135,
+          "p95": 0.17948574747424573,
+          "p99": 0.2022637270158157,
+          "minimum": 0.028134097810834646,
+          "worst": 0.20795822190120816
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.39115400426089764,
+          "p50": 0.39115400426089764,
+          "p95": 0.3951363089028746,
+          "p99": 0.395490291537717,
+          "minimum": 0.3867292213253677,
+          "worst": 0.3955787871964276
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.0025112973526120186,
+          "p50": 0.0025112973526120186,
+          "p95": 0.00471876123920083,
+          "p99": 0.0049149802513420585,
+          "minimum": 5.855970084667206e-05,
+          "worst": 0.004964035004377365
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.07981736678630114,
+          "p50": 0.07981736678630114,
+          "p95": 0.08592267925851046,
+          "p99": 0.08646537370048463,
+          "minimum": 0.0730336862616241,
+          "worst": 0.08660104731097817
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.012696215882897377,
+          "p50": 0.012696215882897377,
+          "p95": 0.012845372268930077,
+          "p99": 0.012858630614355207,
+          "minimum": 0.012530486565083265,
+          "worst": 0.012861945200711489
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.4146700033452362,
+          "p50": 0.4146700033452362,
+          "p95": 0.4162336073582992,
+          "p99": 0.41637259438168256,
+          "minimum": 0.41293266555294394,
+          "worst": 0.4164073411375284
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-reactive-2hz-timing/result.json",
+        "sha256": "2e4296949ab6e80b600014072a7699bbb08ec36ae856ce9f62e5d62a4aac27bc"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-reactive-2hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "3af3a95d4ef3bd453b515e2ed6858b50cd874e72418c6c76b980493ec441fb16"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "partial",
+      "mapping_hz": 2.0,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3238015.470166753,
+          "map_age_seconds": 0.9907696819864213,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.9192231609486043,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.47210557386279106,
+        "last_publication": 0.452632209751755,
+        "last_applied": 0.9907696819864213,
+        "final_refusal": 1.0068450649268925
+      },
+      "applied_age_summary_ms": {
+        "count": 68,
+        "mean": 700.8401393232976,
+        "p50": 698.8464812748134,
+        "p95": 946.1474763695151,
+        "p99": 982.3332831868902,
+        "worst": 990.7696819864213
+      },
+      "control_apply_interval_ms": {
+        "count": 68,
+        "mean": 13.222959837602343,
+        "p50": 12.616587337106466,
+        "p95": 18.525121523998678,
+        "p99": 30.90862230863419,
+        "worst": 43.136848136782646
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 6,
+          "started": 6,
+          "completed": 5,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": false,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2595295,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.22043769209024808,
+          "p50": 0.22264752257615328,
+          "p95": 0.23618692776653916,
+          "p99": 0.23801345687825232,
+          "minimum": 0.1962520550005138,
+          "worst": 0.23847008915618062
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.05179329736468693,
+          "p50": 0.053803336108103395,
+          "p95": 0.054422879009507596,
+          "p99": 0.05442348222713918,
+          "minimum": 0.043147817719727755,
+          "worst": 0.05442363303154707
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.012799725557367006,
+          "p50": 0.010025130584836006,
+          "p95": 0.022947721066884696,
+          "p99": 0.026274263462983075,
+          "minimum": 0.009437534026801586,
+          "worst": 0.027105899062007666
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.2976868827827275,
+          "p50": 0.2983325228560716,
+          "p95": 0.3129843710921705,
+          "p99": 0.31497125355526806,
+          "minimum": 0.28175601502880454,
+          "worst": 0.31546797417104244
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.00965620189284285,
+          "p50": 0.0067384312860667706,
+          "p95": 0.016433233045972884,
+          "p99": 0.01687226661015302,
+          "minimum": 0.006263940595090389,
+          "worst": 0.016982025001198053
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.011123053031042218,
+          "p50": 0.01102802692912519,
+          "p95": 0.01179488399066031,
+          "p99": 0.011915252776816487,
+          "minimum": 0.010672539006918669,
+          "worst": 0.011945344973355532
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.3198663593114664,
+          "p50": 0.31979962321929634,
+          "p95": 0.331859600963071,
+          "p99": 0.3327842185739428,
+          "minimum": 0.30417825328186154,
+          "worst": 0.33301537297666073
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.09175562780971329,
+          "p50": 0.07681395160034299,
+          "p95": 0.18579149164725095,
+          "p99": 0.20718809722457082,
+          "minimum": 0.03331719106063247,
+          "worst": 0.21253724861890078
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.41068433108739555,
+          "p50": 0.41068433108739555,
+          "p95": 0.43371201267000287,
+          "p99": 0.435758917699568,
+          "minimum": 0.38509801821783185,
+          "worst": 0.43627064395695925
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.024275796487927437,
+          "p50": 0.024275796487927437,
+          "p95": 0.04529990293085575,
+          "p99": 0.04716871239244938,
+          "minimum": 0.0009156782180070877,
+          "worst": 0.047635914757847786
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.09218776575289667,
+          "p50": 0.09218776575289667,
+          "p95": 0.11115334823261946,
+          "p99": 0.1128391777863726,
+          "minimum": 0.07111489633098245,
+          "worst": 0.11326063517481089
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.015835138270631433,
+          "p50": 0.015835138270631433,
+          "p95": 0.02146066075656563,
+          "p99": 0.02196070719975978,
+          "minimum": 0.009584557730704546,
+          "worst": 0.02208571881055832
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.45927773229777813,
+          "p50": 0.45927773229777813,
+          "p95": 0.46525870258919894,
+          "p99": 0.4657903443928808,
+          "minimum": 0.452632209751755,
+          "worst": 0.46592325484380126
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-reactive-2hz-timing/result.json",
+        "sha256": "53de8577c48af2ff22ea8aa671a47c7b19c1a91e40d8898aff4daa55632f14ce"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-reactive-2hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "6dbf2fa8145a163a4d5a7b7274a0edfbfcf897206788c128227c2c221974ace8"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "empty",
+      "mapping_hz": 2.5,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3238035.735691641,
+          "map_age_seconds": 0.9909339500591159,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.785332455765456,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.6317595150321722,
+        "last_publication": 0.6070854337885976,
+        "last_applied": 0.9909339500591159,
+        "final_refusal": 1.021379531826824
+      },
+      "applied_age_summary_ms": {
+        "count": 59,
+        "mean": 806.2532874992338,
+        "p50": 800.6598721258342,
+        "p95": 966.2718610372393,
+        "p99": 984.8494431003928,
+        "worst": 990.9339500591159
+      },
+      "control_apply_interval_ms": {
+        "count": 59,
+        "mean": 12.961846949943041,
+        "p50": 11.795244179666042,
+        "p95": 20.582364546135064,
+        "p99": 27.675131689757116,
+        "worst": 30.20796924829483
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 7,
+          "completed": 6,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": false,
+          "result_ready": true,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2596078,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.21672515206349394,
+          "p50": 0.2251137460116297,
+          "p95": 0.22854730242397636,
+          "p99": 0.22869397427421062,
+          "minimum": 0.17896721605211496,
+          "worst": 0.2287306422367692
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.05161730720040699,
+          "p50": 0.053294344805181026,
+          "p95": 0.05502618581522256,
+          "p99": 0.055282794893719255,
+          "minimum": 0.040961377788335085,
+          "worst": 0.05534694716334343
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.012973246009399494,
+          "p50": 0.01025328622199595,
+          "p95": 0.023967699147760868,
+          "p99": 0.027598116733133796,
+          "minimum": 0.009116915985941887,
+          "worst": 0.028505721129477024
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.2938890850637108,
+          "p50": 0.3021324451547116,
+          "p95": 0.30343123886268586,
+          "p99": 0.30357713510747997,
+          "minimum": 0.26303003588691354,
+          "worst": 0.3036136091686785
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.009744538770367702,
+          "p50": 0.006647562142461538,
+          "p95": 0.01682658214122057,
+          "p99": 0.017387462966144084,
+          "minimum": 0.006436984054744244,
+          "worst": 0.017527683172374964
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.011211875282848874,
+          "p50": 0.011161791393533349,
+          "p95": 0.011783587513491511,
+          "p99": 0.011917473515495658,
+          "minimum": 0.010704428888857365,
+          "worst": 0.011950945015996695
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.31603970704600215,
+          "p50": 0.31962061836384237,
+          "p95": 0.32910393562633544,
+          "p99": 0.3311416328186169,
+          "minimum": 0.2965600141324103,
+          "worst": 0.3316510571166873
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.2359346537074695,
+          "p50": 0.2383447401225567,
+          "p95": 0.27129442570731044,
+          "p99": 0.2756008110009134,
+          "minimum": 0.2020007148385048,
+          "worst": 0.2766774073243141
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.37303819437511265,
+          "p50": 0.37303819437511265,
+          "p95": 0.37444751102011653,
+          "p99": 0.3745727836107835,
+          "minimum": 0.37147228699177504,
+          "worst": 0.37460410175845027
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.21749925008043647,
+          "p50": 0.21749925008043647,
+          "p95": 0.22772633535787462,
+          "p99": 0.22863540960475803,
+          "minimum": 0.20613582199439406,
+          "worst": 0.22886267816647887
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.05979444202966988,
+          "p50": 0.05979444202966988,
+          "p95": 0.06656178298871965,
+          "p99": 0.06716332440730184,
+          "minimum": 0.05227517429739237,
+          "worst": 0.0673137097619474
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.015212040860205889,
+          "p50": 0.015212040860205889,
+          "p95": 0.020037774927914143,
+          "p99": 0.020466729067265987,
+          "minimum": 0.009850114118307829,
+          "worst": 0.02057396760210395
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.6145785588305444,
+          "p50": 0.6145785588305444,
+          "p95": 0.6213223713682965,
+          "p99": 0.6219218213716522,
+          "minimum": 0.6070854337885976,
+          "worst": 0.6220716838724911
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-reactive-2.5hz-timing/result.json",
+        "sha256": "312e33b73f5ed2b27476b8411deb547095a281b6943971de3eb4c54d0c96dd0f"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-reactive-2.5hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "35b64c51c94192449fbde977c0ab0e260d943e17d7190bc0760d6e3e088a8e38"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "static",
+      "mapping_hz": 2.5,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3238056.439224532,
+          "map_age_seconds": 0.9826816902495921,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.7581280339509249,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.6384351151064038,
+        "last_publication": 0.6108425469137728,
+        "last_applied": 0.9826816902495921,
+        "final_refusal": 1.0023110853508115
+      },
+      "applied_age_summary_ms": {
+        "count": 56,
+        "mean": 808.8213842212489,
+        "p50": 807.4338410515338,
+        "p95": 969.9469950282946,
+        "p99": 986.6817986825481,
+        "worst": 991.5708201006055
+      },
+      "control_apply_interval_ms": {
+        "count": 56,
+        "mean": 13.174206625470626,
+        "p50": 12.910695979371667,
+        "p95": 19.846525508910418,
+        "p99": 23.611603188328463,
+        "worst": 27.096792124211788
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 7,
+          "completed": 6,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": false,
+          "result_ready": true,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2596850,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.21169003138008216,
+          "p50": 0.21697473106905818,
+          "p95": 0.2230258370982483,
+          "p99": 0.2237307025352493,
+          "minimum": 0.18266923539340496,
+          "worst": 0.22390691889449954
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.05221338003563384,
+          "p50": 0.05344703560695052,
+          "p95": 0.05612526915501803,
+          "p99": 0.05644956247415393,
+          "minimum": 0.04280078085139394,
+          "worst": 0.05653063580393791
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.0127667219688495,
+          "p50": 0.010062254499644041,
+          "p95": 0.02295347210019827,
+          "p99": 0.026187722571194175,
+          "minimum": 0.0091416509822011,
+          "worst": 0.026996285188943148
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.2894284688712408,
+          "p50": 0.29331647721119225,
+          "p95": 0.29908797098323703,
+          "p99": 0.299240433704108,
+          "minimum": 0.26701001496985555,
+          "worst": 0.29927854938432574
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.009809088970844945,
+          "p50": 0.006933430442586541,
+          "p95": 0.016850837506353855,
+          "p99": 0.01738405879586935,
+          "minimum": 0.0061833602376282215,
+          "worst": 0.017517364118248224
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.010956702288240194,
+          "p50": 0.010760943638160825,
+          "p95": 0.011824598885141313,
+          "p99": 0.01200818947982043,
+          "minimum": 0.010513591580092907,
+          "worst": 0.01205408712849021
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.31140099714199704,
+          "p50": 0.31113100051879883,
+          "p95": 0.3244817142840475,
+          "p99": 0.32680568578653035,
+          "minimum": 0.30083547392860055,
+          "worst": 0.3273866786621511
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.23833414368952313,
+          "p50": 0.24723357963375747,
+          "p95": 0.27506144146900624,
+          "p99": 0.281279157823883,
+          "minimum": 0.19607002567499876,
+          "worst": 0.2828335869126022
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.3736721940804273,
+          "p50": 0.3736721940804273,
+          "p95": 0.3881257829954848,
+          "p99": 0.389410546454601,
+          "minimum": 0.35761265084147453,
+          "worst": 0.38973173731938004
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.22363017755560577,
+          "p50": 0.22363017755560577,
+          "p95": 0.2257238443242386,
+          "p99": 0.22590994803700595,
+          "minimum": 0.22130388114601374,
+          "worst": 0.2259564739651978
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.06734308111481369,
+          "p50": 0.06734308111481369,
+          "p95": 0.07801301523577422,
+          "p99": 0.07896145382430404,
+          "minimum": 0.05548759875819087,
+          "worst": 0.0791985634714365
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.017063000239431858,
+          "p50": 0.017063000239431858,
+          "p95": 0.02448278162628412,
+          "p99": 0.02514231774955988,
+          "minimum": 0.008818798698484898,
+          "worst": 0.02530720178037882
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.621592259965837,
+          "p50": 0.621592259965837,
+          "p95": 0.6312670017126948,
+          "p99": 0.6321269787568599,
+          "minimum": 0.6108425469137728,
+          "worst": 0.6323419730179012
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-static-reactive-2.5hz-timing/result.json",
+        "sha256": "9693fe7888acd7cef428d9d3b50993fb05c75ff88fe15116e8869baa0975710d"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-static-reactive-2.5hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "3bf454a2bd476b5925f5039d3e3f9657b0897b774d456a5726c93e450cedc30f"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "sparse",
+      "mapping_hz": 2.5,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 6,
+          "map_timestamp": 3238077.632634993,
+          "map_age_seconds": 0.9958258126862347,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 1.1809743349440396,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.6431885766796768,
+        "last_publication": 0.6059435536153615,
+        "last_applied": 0.9958258126862347,
+        "final_refusal": 1.0196243589743972
+      },
+      "applied_age_summary_ms": {
+        "count": 86,
+        "mean": 810.5261906450831,
+        "p50": 810.0366196595132,
+        "p95": 976.3766289688647,
+        "p99": 996.059640054591,
+        "worst": 997.38466180861
+      },
+      "control_apply_interval_ms": {
+        "count": 86,
+        "mean": 13.495423733581637,
+        "p50": 12.634315062314272,
+        "p95": 21.472454885952175,
+        "p99": 28.330578701570683,
+        "worst": 36.28279594704509
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 6,
+        "rejected": 0,
+        "worker": {
+          "submitted": 8,
+          "started": 7,
+          "completed": 6,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 6,
+          "running": true,
+          "pending": true,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2597625,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 7,
+      "worker_accepted_jobs": 7,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 7,
+          "mean": 0.2150137001382453,
+          "p50": 0.2166354488581419,
+          "p95": 0.22786652562208473,
+          "p99": 0.23032294527627528,
+          "minimum": 0.18872804287821054,
+          "worst": 0.2309370501898229
+        },
+        "ray_traversal_seconds": {
+          "count": 7,
+          "mean": 0.05263339541852474,
+          "p50": 0.053434227127581835,
+          "p95": 0.057561905169859526,
+          "p99": 0.058643191130831836,
+          "minimum": 0.04238179884850979,
+          "worst": 0.058913512621074915
+        },
+        "occupancy_integrate_seconds": {
+          "count": 7,
+          "mean": 0.012334185785480909,
+          "p50": 0.009969045873731375,
+          "p95": 0.02187663875520228,
+          "p99": 0.02576473653316497,
+          "minimum": 0.009568698704242706,
+          "worst": 0.02673676097765565
+        },
+        "rgbd_update_seconds": {
+          "count": 7,
+          "mean": 0.29249578614586164,
+          "p50": 0.29351642495021224,
+          "p95": 0.3043403751216829,
+          "p99": 0.30693102804943917,
+          "minimum": 0.27244927594438195,
+          "worst": 0.30757869128137827
+        },
+        "snapshot_seconds": {
+          "count": 7,
+          "mean": 0.009251828571515424,
+          "p50": 0.006457202136516571,
+          "p95": 0.017081410950049756,
+          "p99": 0.017771891010925172,
+          "minimum": 0.006090627051889896,
+          "worst": 0.017944511026144028
+        },
+        "obstacle_extract_seconds": {
+          "count": 7,
+          "mean": 0.011229096047048057,
+          "p50": 0.011081703007221222,
+          "p95": 0.0121370664332062,
+          "p99": 0.012373769255355,
+          "minimum": 0.010377348400652409,
+          "worst": 0.0124329449608922
+        },
+        "baseline_compute_seconds": {
+          "count": 7,
+          "mean": 0.31400972438443986,
+          "p50": 0.3110647266730666,
+          "p95": 0.3253767470363528,
+          "p99": 0.32543199506588283,
+          "minimum": 0.30679976707324386,
+          "worst": 0.3254458070732653
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 7,
+          "mean": 0.23996314905317767,
+          "p50": 0.24521158216521144,
+          "p95": 0.2768310094252229,
+          "p99": 0.28143212888389824,
+          "minimum": 0.20234590861946344,
+          "worst": 0.2825824087485671
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.39206909388303757,
+          "p50": 0.39206909388303757,
+          "p95": 0.4005379291251302,
+          "p99": 0.4012907144799829,
+          "minimum": 0.3826592769473791,
+          "worst": 0.401478910818696
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.2085424738470465,
+          "p50": 0.2085424738470465,
+          "p95": 0.23597514687571675,
+          "p99": 0.23841360670048745,
+          "minimum": 0.17806172603741288,
+          "worst": 0.2390232216566801
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.08438449027016759,
+          "p50": 0.08438449027016759,
+          "p95": 0.09228982315398752,
+          "p99": 0.09299251941032707,
+          "minimum": 0.07560078706592321,
+          "worst": 0.09316819347441196
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.014001040486618876,
+          "p50": 0.014001040486618876,
+          "p95": 0.01779868530575186,
+          "p99": 0.018136253734119236,
+          "minimum": 0.009781435132026672,
+          "worst": 0.01822064584121108
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.6219452687073499,
+          "p50": 0.6219452687073499,
+          "p95": 0.6363468122901395,
+          "p99": 0.6376269494974985,
+          "minimum": 0.6059435536153615,
+          "worst": 0.6379469837993383
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-reactive-2.5hz-timing/result.json",
+        "sha256": "6f3e2d3b14886cae3ed7a0864070bc31231cab702f0fdd9141e83dfafabc84b4"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-reactive-2.5hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "0ad1cafa8467e317cf2fbb84bb3a444589648fbafaa670947805fc6d2e761e45"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    },
+    {
+      "scenario": "partial",
+      "mapping_hz": 2.5,
+      "strategy": "reactive",
+      "process_exit": 0,
+      "measurement_status": "FAIL",
+      "classification": "setup_failed",
+      "route_measured": false,
+      "setup_result": {
+        "status": "failed",
+        "message": "Spatial Mapping is waiting, stale or has an invalid timestamp",
+        "failure_code": "world_state_unavailable",
+        "details": {
+          "map_generation": 0,
+          "map_revision": 5,
+          "map_timestamp": 3238097.967097629,
+          "map_age_seconds": 0.9941482632420957,
+          "world_state_unavailable": true,
+          "motion_strategy": "reactive"
+        }
+      },
+      "setup_seconds": 0.7773260450921953,
+      "original_acquisition_ages_seconds": {
+        "pre_setup_warmup": 0.6298203780315816,
+        "last_publication": 0.5910379262641072,
+        "last_applied": 0.9941482632420957,
+        "final_refusal": 1.0197938061319292
+      },
+      "applied_age_summary_ms": {
+        "count": 57,
+        "mean": 801.8495256506037,
+        "p50": 793.5113729909062,
+        "p95": 966.7691961862147,
+        "p99": 987.1476964838803,
+        "worst": 994.1482632420957
+      },
+      "control_apply_interval_ms": {
+        "count": 57,
+        "mean": 13.276994497956414,
+        "p50": 12.66300305724144,
+        "p95": 21.013318747282028,
+        "p99": 23.249294403940436,
+        "worst": 23.774081375449896
+      },
+      "source_failure_count": 1,
+      "map_health": {
+        "status": "stale",
+        "reason": null,
+        "published": 5,
+        "rejected": 0,
+        "worker": {
+          "submitted": 7,
+          "started": 6,
+          "completed": 5,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 5,
+          "running": true,
+          "pending": true,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2598399,
+          "transport_error": null
+        }
+      },
+      "worker_job_count": 6,
+      "worker_accepted_jobs": 6,
+      "worker_stages": {
+        "robot_filter_seconds": {
+          "count": 6,
+          "mean": 0.2148292757725964,
+          "p50": 0.2160117239691317,
+          "p95": 0.23292337520979345,
+          "p99": 0.23586349631659687,
+          "minimum": 0.18679519603028893,
+          "worst": 0.23659852659329772
+        },
+        "ray_traversal_seconds": {
+          "count": 6,
+          "mean": 0.053692746364201106,
+          "p50": 0.054417071864008904,
+          "p95": 0.06049978593364358,
+          "p99": 0.061720502097159624,
+          "minimum": 0.043619951233267784,
+          "worst": 0.062025681138038635
+        },
+        "occupancy_integrate_seconds": {
+          "count": 6,
+          "mean": 0.012836844737951955,
+          "p50": 0.010056649334728718,
+          "p95": 0.022857334464788437,
+          "p99": 0.026057406887412073,
+          "minimum": 0.009405994787812233,
+          "worst": 0.02685742499306798
+        },
+        "rgbd_update_seconds": {
+          "count": 6,
+          "mean": 0.29411751792455715,
+          "p50": 0.29319512099027634,
+          "p95": 0.3156042972113937,
+          "p99": 0.3202926571946591,
+          "minimum": 0.27260326500982046,
+          "worst": 0.32146474719047546
+        },
+        "snapshot_seconds": {
+          "count": 6,
+          "mean": 0.009888844331726432,
+          "p50": 0.006851783022284508,
+          "p95": 0.017303974833339453,
+          "p99": 0.017892625462263823,
+          "minimum": 0.006107088178396225,
+          "worst": 0.018039788119494915
+        },
+        "obstacle_extract_seconds": {
+          "count": 6,
+          "mean": 0.011145646761481961,
+          "p50": 0.010874941479414701,
+          "p95": 0.012360145803540945,
+          "p99": 0.012729941960424184,
+          "minimum": 0.010638164822012186,
+          "worst": 0.012822390999644995
+        },
+        "baseline_compute_seconds": {
+          "count": 6,
+          "mean": 0.3162980608952542,
+          "p50": 0.3141351619269699,
+          "p95": 0.3335056524956599,
+          "p99": 0.338364767213352,
+          "minimum": 0.3070660540834069,
+          "worst": 0.33957954589277506
+        },
+        "capture_write_seconds": null,
+        "original_acquisition_to_worker_start_seconds": {
+          "count": 6,
+          "mean": 0.23028867171766856,
+          "p50": 0.23538365424610674,
+          "p95": 0.26089027349371463,
+          "p99": 0.26355143229011446,
+          "minimum": 0.192726856097579,
+          "worst": 0.2642167219892144
+        }
+      },
+      "retained_parent_completion_envelopes": {
+        "worker_seconds": {
+          "count": 2,
+          "mean": 0.3772242683917284,
+          "p50": 0.3772242683917284,
+          "p95": 0.3931122228503227,
+          "p99": 0.3945244854688644,
+          "minimum": 0.35957098565995693,
+          "worst": 0.39487755112349987
+        },
+        "queue_seconds": {
+          "count": 2,
+          "mean": 0.2100398689508438,
+          "p50": 0.2100398689508438,
+          "p95": 0.2116861346643418,
+          "p99": 0.2118324693944305,
+          "minimum": 0.20821068482473493,
+          "worst": 0.2118690530769527
+        },
+        "transport_seconds": {
+          "count": 2,
+          "mean": 0.06582959089428186,
+          "p50": 0.06582959089428186,
+          "p95": 0.0782613631337881,
+          "p99": 0.07936640955507755,
+          "minimum": 0.052016510628163815,
+          "worst": 0.07964267116039991
+        },
+        "worker_to_publication_seconds": {
+          "count": 2,
+          "mean": 0.012295162072405219,
+          "p50": 0.012295162072405219,
+          "p95": 0.013529317476786673,
+          "p99": 0.013639020179398357,
+          "minimum": 0.010923878289759159,
+          "worst": 0.013666445855051279
+        },
+        "publish_age_seconds": {
+          "count": 2,
+          "mean": 0.6074571202043444,
+          "p50": 0.6074571202043444,
+          "p95": 0.6222343947505579,
+          "p99": 0.6235479302657768,
+          "minimum": 0.5910379262641072,
+          "worst": 0.6238763141445816
+        }
+      },
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-reactive-2.5hz-timing/result.json",
+        "sha256": "d06352a5d1f452583102bbec1f1792da6841ba29aeb2748ea9fede559ef17eeb"
+      },
+      "worker_jobs": {
+        "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-reactive-2.5hz-timing/mapping-audit/jobs.jsonl",
+        "sha256": "ee69a10699c3578577414e3faaccadf5324fe64a5dfe92a2a1b2cbf7963fbe5a"
+      },
+      "source_manifest_sha256": "421c050a7a2a007c10a0194d7989077d5dd663390c28aa88cffa4320c3aa4f66",
+      "audit_helper_sha256": [
+        "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72"
+      ]
+    }
+  ],
+  "worker_stage_aggregate_by_requested_hz": {
+    "2.0": {
+      "robot_filter_seconds": {
+        "count": 24,
+        "mean": 0.21588610506538922,
+        "p50": 0.21832704404368997,
+        "p95": 0.2373987168772146,
+        "p99": 0.23962588283699005,
+        "minimum": 0.1810351237654686,
+        "worst": 0.2399711199104786
+      },
+      "ray_traversal_seconds": {
+        "count": 24,
+        "mean": 0.05213662231108174,
+        "p50": 0.0532546523027122,
+        "p95": 0.05611808053217828,
+        "p99": 0.05711783784907311,
+        "minimum": 0.04229933489114046,
+        "worst": 0.05739701306447387
+      },
+      "occupancy_integrate_seconds": {
+        "count": 24,
+        "mean": 0.012522199986657748,
+        "p50": 0.00970836915075779,
+        "p95": 0.027036325144581496,
+        "p99": 0.027194869429804383,
+        "minimum": 0.009185953997075558,
+        "worst": 0.027221444994211197
+      },
+      "rgbd_update_seconds": {
+        "count": 24,
+        "mean": 0.2931772572531675,
+        "p50": 0.29378206841647625,
+        "p95": 0.31301049878820775,
+        "p99": 0.31509779719635844,
+        "minimum": 0.26733433827757835,
+        "worst": 0.31546797417104244
+      },
+      "snapshot_seconds": {
+        "count": 24,
+        "mean": 0.009619595153102031,
+        "p50": 0.006664062384516001,
+        "p95": 0.017358435853384434,
+        "p99": 0.017704065134748818,
+        "minimum": 0.005906714126467705,
+        "worst": 0.01780024217441678
+      },
+      "obstacle_extract_seconds": {
+        "count": 24,
+        "mean": 0.011073199372428158,
+        "p50": 0.010957650374621153,
+        "p95": 0.012031746795400977,
+        "p99": 0.012066025421954691,
+        "minimum": 0.010109828319400549,
+        "worst": 0.012071710079908371
+      },
+      "baseline_compute_seconds": {
+        "count": 24,
+        "mean": 0.31517490203259513,
+        "p50": 0.31271676253527403,
+        "p95": 0.3326932994648814,
+        "p99": 0.33365894549060615,
+        "minimum": 0.3003077288158238,
+        "worst": 0.3338511814363301
+      },
+      "capture_write_seconds": null
+    },
+    "2.5": {
+      "robot_filter_seconds": {
+        "count": 25,
+        "mean": 0.21458250625059008,
+        "p50": 0.2180991997011006,
+        "p95": 0.23049576859921217,
+        "p99": 0.23523977225646375,
+        "minimum": 0.17896721605211496,
+        "worst": 0.23659852659329772
+      },
+      "ray_traversal_seconds": {
+        "count": 25,
+        "mean": 0.05254297478124499,
+        "p50": 0.053434227127581835,
+        "p95": 0.05843693725764751,
+        "p99": 0.06127876069396734,
+        "minimum": 0.040961377788335085,
+        "worst": 0.062025681138038635
+      },
+      "occupancy_integrate_seconds": {
+        "count": 25,
+        "mean": 0.012712007071822882,
+        "p50": 0.010080954991281033,
+        "p95": 0.026968513149768114,
+        "p99": 0.02814345650374889,
+        "minimum": 0.009116915985941887,
+        "worst": 0.028505721129477024
+      },
+      "rgbd_update_seconds": {
+        "count": 25,
+        "mean": 0.29248323736712334,
+        "p50": 0.2944598561152816,
+        "p95": 0.3067856748588383,
+        "p99": 0.3181320937722921,
+        "minimum": 0.26303003588691354,
+        "worst": 0.32146474719047546
+      },
+      "snapshot_seconds": {
+        "count": 25,
+        "mean": 0.009656705297529697,
+        "p50": 0.0066545503214001656,
+        "p95": 0.017861145455390214,
+        "p99": 0.018016921617090703,
+        "minimum": 0.006090627051889896,
+        "worst": 0.018039788119494915
+      },
+      "obstacle_extract_seconds": {
+        "count": 25,
+        "mean": 0.011139560732990503,
+        "p50": 0.01101077999919653,
+        "p95": 0.012357173394411801,
+        "p99": 0.012728923950344324,
+        "minimum": 0.010377348400652409,
+        "worst": 0.012822390999644995
+      },
+      "baseline_compute_seconds": {
+        "count": 25,
+        "mean": 0.31442002644762396,
+        "p50": 0.3129961509257555,
+        "p95": 0.33079818142578005,
+        "p99": 0.337676708586514,
+        "minimum": 0.2965600141324103,
+        "worst": 0.33957954589277506
+      },
+      "capture_write_seconds": null
+    }
+  },
+  "pipeline": [
+    "Camera token identifies render reference and simulation timestamp; no GPU wall-clock exposure timestamp is available.",
+    "SharedFramePool assigns the first owning-context monotonic acquired_at before copying/semantic preparation and preserves it for reused buffers.",
+    "Owner assembles exposure-matched immutable robot poses and submits to one-running/one-replaceable-pending mapping I/O worker.",
+    "Background I/O thread serializes calibrated frames and immutable robot mesh instances to the existing SDK-free subprocess.",
+    "Worker validates original timestamps/tokens, allocates1024rays, masks selected robot rays, traverses rays, integrates temporal occupancy, snapshots and extracts exact occupied cuboids.",
+    "Full immutable snapshot plus obstacle packet returns through IPC; owner observation callback checks age/generation before atomic publication.",
+    "Reactive checks the actual published original acquisition age before each action and after each Kit yield; only accepted packet sync updates last_applied diagnostics."
+  ],
+  "interpretation": [
+    "All four2Hz and all four2.5Hz attempts failed for unavailable/stale mapping during empty-workspace setup, before requested external actors were placed for a measured route.",
+    "The rate change alone did not cure availability. These eight attempts do not establish a reliable or causal rate advantage; they are not route-avoidance comparisons.",
+    "The dominant worker span is exact robot self-filter intersection work. Packet BVH was selected for an exact optimization after all baseline evidence had been obtained.",
+    "Source freshness remains1s. No timestamp is rewritten, failure bypassed or direct fallback used."
+  ],
+  "qualifications": [
+    "All stage values are seconds unless a field is explicitly suffixed_ms. Original acquisition age is not true GPU exposure age.",
+    "Worker stage samples include initial and setup jobs. Counts vary with the setup failure time, so rates are compared as workload diagnostics rather than steady-state throughput estimates.",
+    "Only the warmup/failure parent completion records are retained for these failed setups; parent queue/worker/transport/publication distributions therefore have at most2distinct observations per attempt.",
+    "worker_seconds includes child startup, both-way serialization/IPC, compute and scheduling. transport_seconds=worker_seconds-compute_seconds is an envelope, not measured pipe-only latency.",
+    "Metadata-only auditing writes small JSON files in the worker and is diagnostic overhead. Full NPZ/pickle capture is disabled in all8attempts.",
+    "Missing route contact/clearance/duration figures are unavailable, never zero. Process exit0 does not override result statusFAIL.",
+    "Applied age diagnostics describe the last accepted evidence; final refusal age may exceed the unchanged limit."
+  ]
+}

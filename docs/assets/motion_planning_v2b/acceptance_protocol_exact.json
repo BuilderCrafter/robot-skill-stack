@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "declared_utc": "2026-10-24T20:44:41.417465+00:00",
+  "baseline": "a535c6a6fbb99bb511ca2655650ec253d7ebc399",
+  "scope": "No RRT/hybrid, probability-model redesign, fitting/grasp-planner/WorldModel redesign, GUI controls, additional controllers, force-controlled pushing, carried-object or intended-contact exemptions. Commit/push feature/motion-planning; do not merge main.",
+  "baseline_evidence": {
+    "geometry": "baseline_diagnosis.json",
+    "source_timings": "baseline_timing.json",
+    "full_capture_qualification": "Full worker input/state captures add disk/serialization latency and are excluded from availability/performance claims. Timings-only native cohorts are reported separately."
+  },
+  "planned_changes": [
+    "Exact bounded packet BVH traversal over unchanged robot meshes, ray selections, depth/pose tolerances and original intersection arithmetic; original traversal retained as fallback/reference.",
+    "RGB-D-only admission of already OCCUPIED, observed, unexpired sparse cells with existing temporal occupancy probability at least0.95, in addition to unchanged spatial support. GT/default extractor remains unchanged. No extra cells, padding, completion, UNKNOWN fill or occupancy-model change."
+  ],
+  "matched_conditions": {
+    "scene": "scenes/multiview_perception_final.usda",
+    "profile": "config/scenes/multiview_perception_final.toml",
+    "start_tcp_m": [
+      0.45,
+      -0.25,
+      0.35
+    ],
+    "goal_tcp_m": [
+      0.45,
+      0.25,
+      0.35
+    ],
+    "orientation_wxyz": [
+      0,
+      0,
+      1,
+      0
+    ],
+    "position_tolerance_m": 0.025,
+    "orientation_tolerance_rad": 0.1,
+    "fixed_fixture_settle_seconds": 5,
+    "new_publications_after_preparation": 2,
+    "voxel_size_m": 0.01,
+    "stride": 8,
+    "max_rays": 1024,
+    "semantic_hz": 5,
+    "final_mapping_hz": 2,
+    "comparison_mapping_hz": [
+      2,
+      2.5
+    ],
+    "stale_after_seconds": 1,
+    "evidence_ttl_seconds": 5,
+    "max_proxies": 64,
+    "controller_steps": 1000,
+    "unchanged": "Scene geometry, actual physical fixture definitions, camera extrinsics/intrinsics, targets, controller and feedback/tolerances remain the V2 definitions. All cases use the selected strategy for empty-environment setup; no hidden direct fallback."
+  },
+  "matrix": {
+    "ground_truth": [
+      "empty",
+      "static",
+      "sparse",
+      "partial",
+      "separated",
+      "narrow",
+      "moving",
+      "large",
+      "near",
+      "irregular"
+    ],
+    "rgbd": [
+      "empty",
+      "static",
+      "sparse",
+      "partial",
+      "separated",
+      "narrow",
+      "moving",
+      "large"
+    ],
+    "strategies": [
+      "direct",
+      "reactive"
+    ],
+    "execution": "One fresh Isaac process per case, strictly sequential. No competing GPU/CPU profiling. All attempts retained, including setup refusals; no success-only selection."
+  },
+  "source_comparison": {
+    "baseline": "Eight unchanged-source reactive timings-only attempts: four RGB-D scenarios at2Hz, the same four at2.5Hz.",
+    "candidate": "Repeat the identical workloads/rates with both narrow production changes; report original acquisition age, queue/filter/integration/extraction/worker/publication/first-use and reused ages, counts and errors.",
+    "policy": "No stale_after increase, timestamp rewriting, additional last-known-evidence policy, or collision-unaware fallback. Known failures/reset/closure remain explicit failure and hold."
+  },
+  "geometry_gates": {
+    "strict_source_cells": "Every emitted cuboid contains only current eligible OCCUPIED source cells. Independently check zero FREE/UNKNOWN inclusion and unchanged canonical map classifications.",
+    "retention": "Quantify observed physical endpoints, temporal evidence, support loss, candidate/selected physical cells, floor occupancy and budget omissions at matched stages. Expect settled strong post cells to survive instead of being discarded by radius-two support.",
+    "ground_truth": "Preserve V2 clear goals in usable GT scenes; preserve broad-wall timeout as a failure, not forced completion.",
+    "unknown_traversal": "At least one reactive empty-scene successful contact-free route with a majority of actual TCP samples classified UNKNOWN. Sparse point queries are not a swept-volume proof."
+  },
+  "contact_assessment": {
+    "strict_v2_success": "Goal reached AND zero reported PhysX contact points AND positive independent cooked-hull clearance when an external object exists. Retain separately.",
+    "proximity": "Nonpenetrating zero-normal-impulse reports with positive independent clearance are contact-offset proximity, not demonstrated solid penetration.",
+    "physical_contact": "Report penetration distribution, normal point/pair impulses, observed duration, SDK COM-correct point speed, relative/normal speed and independent displacement speed. Do not infer pre-impact speed from post-solver spikes.",
+    "force": "Normal step-average force only when impulse and consecutive physics-step dt are verified; never divide by wall time. Tangential friction and calibrated peak force are not inferred.",
+    "severity_acceptance_thresholds": null,
+    "qualification": "No validated universal harmless-contact force/depth threshold is available. Physical contacts stay ungraded with raw measurements; practical improvements use paired continuous reductions and goal behavior, not arbitrary binary low-severity PASS claims. No contact signal controls motion or implements pushing."
+  },
+  "performance_gates": {
+    "maximum_reactive_to_matched_direct_apply_p99_ratio": 1.5,
+    "maximum_apply_or_wait_ms_exclusive": 100,
+    "waits_over_100_ms": 0,
+    "maximum_proxies": 64,
+    "hot_path": "No full-grid operation or worker wait on Kit; only prepared descriptors and bounded telemetry.",
+    "source": "Actually applied evidence must remain below the original1s budget; refused stale input is not counted as stale application. Availability failures stay visible.",
+    "cadence": "Report exact counts/windows; short motions permit phase-boundary quantization. Report bounded queues, replacement/rejection/error counts and resource growth."
+  },
+  "regressions": {
+    "baseline_units": 787,
+    "baseline_native": 23,
+    "commands": [
+      "--unit-only",
+      "--group spatial_mapping",
+      "--group multiview",
+      "--group isaac",
+      "--group regression"
+    ],
+    "launcher": "./run_isaac_python.sh scripts/run_all_regressions.py",
+    "sequential": true,
+    "preserve": "No weakened assertions or removed baseline tests, no direct-strategy edits, no existing scene-profile/controller/SDK changes."
+  }
+}

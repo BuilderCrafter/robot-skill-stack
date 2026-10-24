@@ -1,0 +1,363 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "scope": "Static public Lula CPU policy evaluation; no Kit/GPU/stage/physics/articulation/motion.",
+  "meaning": "PASS verifies public Lula numeric composition checks. This is not a motion, avoidance, contact-severity or safety pass.",
+  "units": "Natural-policy force/metric norms are RMP terms, not Newtons, measured joint torque or physical inertia. Canonical accelerations use rad/s\u00b2.",
+  "reproduction": {
+    "command": "./run_isaac_python.sh scripts/probe_rmpflow_obstacle_composition.py --result outputs/obstacle-composition/result.json",
+    "script": {
+      "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/probe_rmpflow_obstacle_composition.py",
+      "sha256": "5a3bd6706aa4e00bcdba09a42cfc283107f12d2dc22c735b6d29af3745d22a4e"
+    },
+    "result": {
+      "path": "outputs/motion-planning-v2b-forensics/lula_obstacle_composition_repro.json",
+      "sha256": "95bb21e8dc9467fe85d2e89baf4a5559c8279087a689f5e94fafa0e9aafe4ade"
+    },
+    "numpy_version": "1.26.4",
+    "original_numbers_reproduced_exactly": true
+  },
+  "original_probe": {
+    "artifact": {
+      "path": "outputs/motion-planning-v2b-forensics/lula_obstacle_composition.json",
+      "sha256": "26bac382fff98fa4f77be7badf898f1895c73e2f82260797915ed05cf07dc6a5"
+    },
+    "source_hashes": {
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/robot_descriptor.yaml": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/franka_rmpflow_common.yaml": "6c03bd3ba5921b0f2057d917a031f8db55c9f7302585740660490c7d559348cf",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.lula/pip_prebundle/lula.cpython-311-x86_64-linux-gnu.so": "27a658bf5529aa9d63083724314c1993c46beb71956fa7392d2de6a9b39f9fdc",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.lula/pip_prebundle/_lula_libs/liblula_rmpflow.so": "d59fe438d2b94f245b14fbfcf860c251a084c019cba5bac2ae4e4682e6affd2c",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v2b-forensics/lula_obstacle_composition_probe.py": "2953bd51a8d4a872d42bb9c7d74075cc9b0a2d124b67cbb0f0d24e9103b5e6a2"
+    }
+  },
+  "installed_sources": {
+    "robot_descriptor": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/robot_descriptor.yaml",
+      "sha256": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59"
+    },
+    "robot_urdf": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf",
+      "sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6"
+    },
+    "policy_config": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/franka_rmpflow_common.yaml",
+      "sha256": "6c03bd3ba5921b0f2057d917a031f8db55c9f7302585740660490c7d559348cf"
+    },
+    "integration_config": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/config.json",
+      "sha256": "fec8f4cdb186630c00685a7293e2527449bf1f8609f0084fe64fdf3403473b6e"
+    },
+    "lula_binding": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.lula/pip_prebundle/lula.cpython-311-x86_64-linux-gnu.so",
+      "sha256": "27a658bf5529aa9d63083724314c1993c46beb71956fa7392d2de6a9b39f9fdc"
+    },
+    "lula_rmpflow": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.lula/pip_prebundle/_lula_libs/liblula_rmpflow.so",
+      "sha256": "d59fe438d2b94f245b14fbfcf860c251a084c019cba5bac2ae4e4682e6affd2c"
+    },
+    "probe": {
+      "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/probe_rmpflow_obstacle_composition.py",
+      "sha256": "5a3bd6706aa4e00bcdba09a42cfc283107f12d2dc22c735b6d29af3745d22a4e"
+    }
+  },
+  "fixture": {
+    "recorded_fixture_source": {
+      "path": "outputs/motion-planning-v2b-pilot-rgbd-static-reactive/result.json",
+      "sha256": "9a7ef0578e5709dc697c46be0ae5033831cbfec339ada556cdf3181e34e02202",
+      "meaning": "Initial arm joint positions are embedded; this retained artifact is not required to run the probe."
+    },
+    "end_effector_frame": "right_gripper",
+    "q": [
+      -0.17791271209716797,
+      -0.16587994992733002,
+      -0.30747929215431213,
+      -2.2318549156188965,
+      -0.06004467234015465,
+      2.0644288063049316,
+      0.34545713663101196
+    ],
+    "qdot": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "position_target": [
+      0.45,
+      0.25,
+      0.35
+    ],
+    "orientation_wxyz": [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "post": {
+      "center": [
+        0.45,
+        0.0,
+        0.35
+      ],
+      "dimensions": [
+        0.09,
+        0.12,
+        0.26
+      ]
+    }
+  },
+  "unchanged_collision_rmp_parameters": {
+    "damping_gain": 50.0,
+    "damping_std_dev": 0.04,
+    "damping_robustness_eps": 0.01,
+    "damping_velocity_gate_length_scale": 0.01,
+    "repulsion_gain": 800.0,
+    "repulsion_std_dev": 0.01,
+    "metric_modulation_radius": 0.5,
+    "metric_scalar": 10000.0,
+    "metric_exploder_std_dev": 0.02,
+    "metric_exploder_eps": 0.001
+  },
+  "findings": [
+    "Subtracting the empty-world force/metric isolates collision-policy increments. Coincident1/2/4/8/16/64post registrations produce proportional1/2/4/8/16/64increments while the geometric union is identical.",
+    "Splitting the same90x120x260mm post into2/4/8/16adjacent Z-slices preserves the exact union yet increases the collision-metric norm by1.607866/2.674761/4.800329/9.060459relative to one post.",
+    "This installed build accumulates per-obstacle influence rather than reducing the entire obstacle union to one nearest-distance contribution per collision sphere.",
+    "Canonical acceleration changes with primitive count but does not scale64-fold. Other RMPs and the unchanged canonical acceleration cap participate in resolution.",
+    "The public installed obstacle types are CUBE,CYLINDER(capsule),SPHERE; no supported public compound/mesh/union-SDF obstacle was found."
+  ],
+  "rows": [
+    {
+      "kind": "coincident_equal_union",
+      "count": 1,
+      "enabled_obstacles": 1,
+      "collision_force_norm": 31023.901899901302,
+      "collision_metric_norm": 5647.2918692837675,
+      "collision_metric_trace": 6655.1484249152045,
+      "collision_metric_ratio_to_single": 1.0,
+      "force_linear_duplicate_residual_norm": 0.0,
+      "metric_linear_duplicate_residual_norm": 0.0,
+      "canonical_acceleration_rad_s2": [
+        3.0178696370112696,
+        -6.774408372821677,
+        -2.100104577702651,
+        4.047136063731715,
+        44.23621548164301,
+        -21.422163458896403,
+        2.8421570466137354
+      ]
+    },
+    {
+      "kind": "coincident_equal_union",
+      "count": 2,
+      "enabled_obstacles": 2,
+      "collision_force_norm": 62047.803799802605,
+      "collision_metric_norm": 11294.583738567533,
+      "collision_metric_trace": 13310.296849830407,
+      "collision_metric_ratio_to_single": 1.9999999999999998,
+      "force_linear_duplicate_residual_norm": 5.458152320060346e-12,
+      "metric_linear_duplicate_residual_norm": 2.053021349191839e-12,
+      "canonical_acceleration_rad_s2": [
+        1.799677802278369,
+        -0.3882576186961231,
+        -3.3526659358938837,
+        11.019631428968852,
+        42.703458939410154,
+        -23.182267494315433,
+        1.7806006941916532
+      ]
+    },
+    {
+      "kind": "coincident_equal_union",
+      "count": 4,
+      "enabled_obstacles": 4,
+      "collision_force_norm": 124095.60759960522,
+      "collision_metric_norm": 22589.167477135066,
+      "collision_metric_trace": 26620.593699660818,
+      "collision_metric_ratio_to_single": 3.9999999999999996,
+      "force_linear_duplicate_residual_norm": 1.927318847063438e-11,
+      "metric_linear_duplicate_residual_norm": 3.201787566117014e-12,
+      "canonical_acceleration_rad_s2": [
+        1.545974272906026,
+        4.544422228996712,
+        -3.1641012000994566,
+        18.495526365924512,
+        39.18236953190717,
+        -24.228288321111155,
+        1.347092479205441
+      ]
+    },
+    {
+      "kind": "coincident_equal_union",
+      "count": 8,
+      "enabled_obstacles": 8,
+      "collision_force_norm": 248191.21519921042,
+      "collision_metric_norm": 45178.33495427013,
+      "collision_metric_trace": 53241.18739932164,
+      "collision_metric_ratio_to_single": 7.999999999999999,
+      "force_linear_duplicate_residual_norm": 3.001677001649887e-11,
+      "metric_linear_duplicate_residual_norm": 6.574202393480401e-12,
+      "canonical_acceleration_rad_s2": [
+        1.8889329526161673,
+        8.066665102368585,
+        -2.2024962841175277,
+        25.45401350500381,
+        34.715442378686525,
+        -23.918078376049422,
+        1.031723288256129
+      ]
+    },
+    {
+      "kind": "coincident_equal_union",
+      "count": 16,
+      "enabled_obstacles": 16,
+      "collision_force_norm": 496382.4303984209,
+      "collision_metric_norm": 90356.66990854028,
+      "collision_metric_trace": 106482.37479864327,
+      "collision_metric_ratio_to_single": 16.0,
+      "force_linear_duplicate_residual_norm": 1.1109903343441027e-10,
+      "metric_linear_duplicate_residual_norm": 1.8801263821506575e-11,
+      "canonical_acceleration_rad_s2": [
+        2.3878170396845957,
+        10.246096597927709,
+        -1.1523078120982095,
+        30.693683186739698,
+        30.64403689873592,
+        -22.508785155968738,
+        0.6785864174233305
+      ]
+    },
+    {
+      "kind": "coincident_equal_union",
+      "count": 64,
+      "enabled_obstacles": 64,
+      "collision_force_norm": 1985529.7215936847,
+      "collision_metric_norm": 361426.67963416124,
+      "collision_metric_trace": 425929.49919457326,
+      "collision_metric_ratio_to_single": 64.00000000000001,
+      "force_linear_duplicate_residual_norm": 1.846439797134268e-09,
+      "metric_linear_duplicate_residual_norm": 1.423479409927175e-10,
+      "canonical_acceleration_rad_s2": [
+        3.007835544062809,
+        11.985679260718712,
+        0.07257961506764854,
+        35.68480088862313,
+        26.067354633390693,
+        -19.849511993564814,
+        0.16874030623252556
+      ]
+    },
+    {
+      "kind": "adjacent_z_slices_equal_union",
+      "count": 2,
+      "enabled_obstacles": 2,
+      "collision_force_norm": 31182.27982113508,
+      "collision_metric_norm": 9080.088980915818,
+      "collision_metric_trace": 10487.48712896731,
+      "collision_metric_ratio_to_single": 1.6078660694524054,
+      "force_linear_duplicate_residual_norm": 30865.5897584645,
+      "metric_linear_duplicate_residual_norm": 2516.628397643496,
+      "canonical_acceleration_rad_s2": [
+        1.932460765792916,
+        -4.111096978962955,
+        -3.2905727177147863,
+        3.0067812105566922,
+        45.757087107676654,
+        -18.965025609823208,
+        2.5348677316257033
+      ]
+    },
+    {
+      "kind": "adjacent_z_slices_equal_union",
+      "count": 4,
+      "enabled_obstacles": 4,
+      "collision_force_norm": 31796.683221731582,
+      "collision_metric_norm": 15105.155725887014,
+      "collision_metric_trace": 17771.556889787276,
+      "collision_metric_ratio_to_single": 2.6747609430363593,
+      "force_linear_duplicate_residual_norm": 92302.89077476725,
+      "metric_linear_duplicate_residual_norm": 7905.859747790452,
+      "canonical_acceleration_rad_s2": [
+        0.3172045147638922,
+        -1.5262183552470852,
+        -5.306738243159343,
+        -1.0854225682433043,
+        44.06977137376709,
+        -14.15478407359106,
+        2.0115047529768364
+      ]
+    },
+    {
+      "kind": "adjacent_z_slices_equal_union",
+      "count": 8,
+      "enabled_obstacles": 8,
+      "collision_force_norm": 34067.58402213392,
+      "collision_metric_norm": 27108.859442096345,
+      "collision_metric_trace": 32336.156090364544,
+      "collision_metric_ratio_to_single": 4.800329090398952,
+      "force_linear_duplicate_residual_norm": 214131.23987144,
+      "metric_linear_duplicate_residual_norm": 18963.87622668042,
+      "canonical_acceleration_rad_s2": [
+        -0.4661599429058647,
+        0.2732358028815316,
+        -4.874302909995713,
+        -1.6001494159625382,
+        37.48424084464016,
+        -8.897779129712847,
+        2.68723982204991
+      ]
+    },
+    {
+      "kind": "adjacent_z_slices_equal_union",
+      "count": 16,
+      "enabled_obstacles": 16,
+      "collision_force_norm": 42976.076158996344,
+      "collision_metric_norm": 51167.05400855158,
+      "collision_metric_trace": 61509.12333800219,
+      "collision_metric_ratio_to_single": 9.060458568974402,
+      "force_linear_duplicate_residual_norm": 453416.8521400612,
+      "metric_linear_duplicate_residual_norm": 41083.25613882345,
+      "canonical_acceleration_rad_s2": [
+        -0.7616164172254098,
+        1.4795096476888565,
+        -3.91979093360127,
+        -0.7755841530763221,
+        30.488216470908032,
+        -5.38389984486287,
+        3.5991968693391057
+      ]
+    }
+  ],
+  "linear_duplicate_checks": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "primary_documentation": [
+    {
+      "title": "Isaac Sim5.1 RMPflow collision RMP",
+      "url": "https://docs.isaacsim.omniverse.nvidia.com/5.1.0/manipulators/concepts/rmpflow.html#collision-avoidance-rmp-collision-rmp",
+      "supports": "Defines sphere-to-obstacle distance RMP and metric support; exact accumulation claim comes from the installed-build probe."
+    },
+    {
+      "title": "Isaac Sim5.1 RMPflow tuning guide",
+      "url": "https://docs.isaacsim.omniverse.nvidia.com/5.1.0/manipulators/concepts/rmpflow_tuning_guide.html",
+      "supports": "Describes competition and drag between target and collision policies."
+    }
+  ],
+  "limitations": [
+    "Natural RMP force and metric are policy terms, not measured contact force, torque, Newtons or physical inertia.",
+    "Linear collision-only natural force/metric increments do not imply linear canonical acceleration; other RMPs and canonical limits participate in resolution.",
+    "Coincident duplicates are diagnostic only; the production extractor never emits overlapping duplicate geometry.",
+    "Adjacent slices preserve exactly the same post union but are not the original sparse RGBD observations.",
+    "This static zero-velocity experiment establishes representation sensitivity, not the complete dynamic pilot stall cause.",
+    "Installed robot geometry, controller configuration and RMPflow parameters are read without modification.",
+    "PASS verifies the declared numeric composition checks and is not an avoidance or physical-robot safety result."
+  ]
+}

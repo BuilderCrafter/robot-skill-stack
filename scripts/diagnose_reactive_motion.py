@@ -8,9 +8,11 @@ no further Kit stepping, before SimulationApp's process-terminating close.
 """
 import argparse
 import asyncio
+from contextlib import ExitStack
 from dataclasses import dataclass,fields,is_dataclass
 from enum import Enum
 import hashlib
+from functools import partial
 import json
 import math
 from pathlib import Path
@@ -124,7 +126,9 @@ def fixtures(name):
 
 def source_hashes():
     paths = [SCENE,PROFILE,Path(__file__),ROOT/'tests/support/reactive_geometry.py',
-             ROOT/'tests/isaac/test_reactive_motion.py']
+             ROOT/'tests/isaac/test_reactive_motion.py',
+             ROOT/'tests/support/mapping_evidence_audit.py',
+             ROOT/'tests/support/reactive_contact_metrics.py']
     paths += [ROOT/path for path in (
         'robot_skill_stack/integrations/isaac/config.py',
         'robot_skill_stack/integrations/isaac/bootstrap.py',
@@ -136,7 +140,11 @@ def source_hashes():
         'robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py',
         'robot_skill_stack/world/spatial_mapping/obstacles.py',
         'robot_skill_stack/world/spatial_mapping/runtime.py',
-        'robot_skill_stack/world/spatial_mapping/occupancy.py')]
+        'robot_skill_stack/world/spatial_mapping/occupancy.py',
+        'robot_skill_stack/world/spatial_mapping/robot_filter.py',
+        'robot_skill_stack/runtime/process_worker.py',
+        'robot_skill_stack/runtime/worker_process.py',
+        'robot_skill_stack/integrations/isaac/observation_runtime.py')]
     return {str(path.relative_to(ROOT)):hashlib.sha256(path.read_bytes()).hexdigest()
             for path in paths if path.exists()}
 
@@ -394,6 +402,7 @@ def run_native(args, app, result):
             body_paths = tuple(view.prim_paths)
             assert set(body_paths) == set(rigid_paths+obstacle_paths)
             if objects:
+                result['fixture_placement_started_at'] = time.monotonic()
                 placement_view = sim.create_rigid_body_view(obstacle_paths)
                 by_path = dict(zip(obstacle_paths,objects))
                 desired = np.array([[*by_path[path].center,0.,0.,0.,1.]
@@ -435,6 +444,15 @@ def run_native(args, app, result):
                 # the fixture's initial state; topology was prepared earlier.
                 for _ in range(2):
                     await omni.kit.app.get_app().next_update_async()
+
+            contact_metrics_enabled = bool(getattr(args,'contact_metrics',False))
+            local_com_poses = None
+            if contact_metrics_enabled:
+                local_com_poses = np.asarray(view.get_coms()).copy()
+                result['contact_measurement'] = dict(
+                    enabled=True,local_com_poses=serial(local_com_poses),
+                    physics_dt_s=float(bundle.world.get_physics_dt()),
+                    policy='Observational only; strict V2 success is unchanged; no acceptable-force threshold or pushing.')
 
             units = float(UsdGeom.GetStageMetersPerUnit(stage))
             cache = UsdGeom.XformCache(Usd.TimeCode.Default())
@@ -510,16 +528,31 @@ def run_native(args, app, result):
                 started = time.monotonic()
                 item = dict(at=started,phase=state['phase'],simulation_time=float(bundle.world.current_time),
                     poses=np.asarray(view.get_transforms()).copy(),contacts=[])
+                if contact_metrics_enabled:
+                    item.update(body_velocities=np.asarray(view.get_velocities()).copy(),
+                        physics_step=int(bundle.world.current_time_step_index),
+                        physics_dt_s=float(bundle.world.get_physics_dt()))
                 if contact is not None:
                     forces,points,normals,separations,counts,starts = contact.get_contact_data(1.)
                     counts,starts = np.asarray(counts),np.asarray(starts)
                     for sensor,filtered in np.argwhere(counts > 0):
                         begin,count = int(starts[sensor,filtered]),int(counts[sensor,filtered])
-                        item['contacts'].append(dict(sensor=str(contact.sensor_paths[sensor]),
+                        pair = dict(sensor=str(contact.sensor_paths[sensor]),
                             filter_index=int(filtered),count=count,
                             minimum_separation_m=float(np.min(np.asarray(separations)[begin:begin+count])),
-                            impulse_magnitude=float(np.abs(np.asarray(forces)[begin:begin+count]).sum())))
+                            impulse_magnitude=float(np.abs(np.asarray(forces)[begin:begin+count]).sum()))
+                        if contact_metrics_enabled:
+                            pair.update(obstacle=str(contact.filter_paths[sensor][filtered]),
+                                normal_impulses_ns=np.asarray(forces)[begin:begin+count].copy().reshape(-1),
+                                points_world_m=np.asarray(points)[begin:begin+count].copy()*units,
+                                normals_world=np.asarray(normals)[begin:begin+count].copy(),
+                                separations_m=np.asarray(separations)[begin:begin+count].copy().reshape(-1)*units)
+                        item['contacts'].append(pair)
                     item['contact_buffer_full'] = int(counts.sum()) >= 1024
+                if contact_metrics_enabled:
+                    from tests.support.reactive_contact_metrics import capture_joint_feedback
+                    item['joint_feedback'] = capture_joint_feedback(
+                        bundle.backend.robot,state.get('last_action'))
                 item['observer_seconds'] = time.monotonic()-started
                 raw['samples'].append(item)
                 health = bundle.spatial_mapping.health
@@ -529,6 +562,7 @@ def run_native(args, app, result):
                     raw['runtime'].append(current_runtime())
 
             def apply(action,*positional,**keywords):
+                state['last_action'] = action
                 row = dict(at=time.monotonic(),phase=state['phase'],measured=state['active'],
                     indices=serial(getattr(action,'joint_indices',None)),
                     positions=serial(getattr(action,'joint_positions',None)),
@@ -545,8 +579,13 @@ def run_native(args, app, result):
             def pose():
                 current = original_pose()
                 if state['active']:
-                    raw['tcp'].append(dict(at=time.monotonic(),position=current.position.copy(),
-                                           orientation=current.orientation.copy()))
+                    row = dict(at=time.monotonic(),position=current.position.copy(),
+                               orientation=current.orientation.copy())
+                    if contact_metrics_enabled:
+                        map_view = bundle.spatial_mapping.snapshot()
+                        row.update(occupancy_state=int(map_view.query_many([current.position]).states[0]),
+                            map_timestamp=map_view.timestamp,map_fresh=map_view.health['fresh'])
+                    raw['tcp'].append(row)
                 return current
 
             async def next_update():
@@ -651,6 +690,13 @@ def run_native(args, app, result):
             initial = current_runtime()
             result['initial'] = initial
             result['initial_joints'] = serial(bundle.backend.robot.get_joint_positions())
+            if contact_metrics_enabled:
+                route = bundle.spatial_mapping.snapshot().query_many(np.linspace(START,GOAL,51))
+                result['initial_straight_route_occupancy'] = dict(
+                    samples=51,unknown=int(np.count_nonzero(route.states==0)),
+                    free=int(np.count_nonzero(route.states==1)),
+                    occupied=int(np.count_nonzero(route.states==2)),
+                    meaning='Diagnostic point queries only; UNKNOWN is not a planning obstacle or clearance certificate.')
             state.update(active=True,phase='move')
             sample()
             moving = [i for i,box in enumerate(objects) if box.moving]
@@ -659,6 +705,7 @@ def run_native(args, app, result):
                 moving_view.set_velocities(np.array([[-.04,0.,0.,0.,0.,0.]],dtype=np.float32),
                     np.arange(len(moving),dtype=np.uint32))
             started = time.monotonic()
+            result['measurement_started_at'] = started
             movement = await bundle.runtime.execute_async('move_to_pose',target=Pose(GOAL,ORIENTATION))
             result['motion'] = dict(result=serial(movement),seconds=time.monotonic()-started)
             sample()
@@ -911,6 +958,13 @@ def finish(args,result,capture):
         maximum_x_detour_m=None if not len(positions) else float(np.max(np.abs(positions[:,0]-.45))),
         maximum_z_detour_m=None if not len(positions) else float(np.max(np.abs(positions[:,2]-.35))),
         progress_reversals=int(np.count_nonzero(np.diff(errors) > .001)))
+    observed_path_states = [row['occupancy_state'] for row in raw['tcp'] if 'occupancy_state' in row]
+    if observed_path_states:
+        result['path_occupancy'] = dict(samples=len(observed_path_states),
+            unknown=observed_path_states.count(0),free=observed_path_states.count(1),
+            occupied=observed_path_states.count(2),
+            unknown_fraction=observed_path_states.count(0)/len(observed_path_states),
+            meaning='Sparse TCP point queries at observation time; these are not swept-volume clearance tests.')
     initial,final = result['initial'],result['final']
     seconds = result['motion']['seconds']
     result['observation_rates'] = dict(
@@ -945,6 +999,13 @@ def finish(args,result,capture):
     else:
         result['classification'] = 'motion_failed'
     result['avoidance_success'] = success and not contact and not reference_intersection
+    if getattr(args,'contact_metrics',False):
+        from tests.support.reactive_contact_metrics import analyze_contact_samples
+        result['contact_severity'] = analyze_contact_samples(raw['samples'],paths,
+            result['contact_measurement']['local_com_poses'],meters_per_unit=capture['units'],
+            goal_status=motion['status'],failure_code=motion.get('failure_code'),
+            minimum_clearance_m=result['clearance']['minimum_m'],
+            strict_v2_success=result['avoidance_success'])
     if result.get('final_mapping_view') is not None:
         view = result.pop('final_mapping_view')
         states = view.states
@@ -963,7 +1024,19 @@ def execute_case(args,app):
     before = source_hashes()
     result,capture,error = {},None,None
     try:
-        capture = run_native(args,app,result)
+        with ExitStack() as diagnostic_context:
+            audit_dir = getattr(args,'mapping_audit_dir',None)
+            if audit_dir:
+                from tests.support.mapping_evidence_audit import AuditedMappingProcessor
+                diagnostic_context.enter_context(patch(
+                    'robot_skill_stack.world.spatial_mapping.runtime.MappingProcessor',
+                    partial(AuditedMappingProcessor,audit_dir=str(Path(audit_dir).resolve()),
+                        capture_inputs=bool(getattr(args,'audit_capture_inputs',False)),
+                        max_captures=getattr(args,'audit_max_captures',80))))
+                result['mapping_audit'] = dict(directory=str(Path(audit_dir).resolve()),
+                    captures_enabled=bool(getattr(args,'audit_capture_inputs',False)),
+                    full_capture_excluded_from_performance_claims=bool(getattr(args,'audit_capture_inputs',False)))
+            capture = run_native(args,app,result)
     except Exception:
         error = traceback.format_exc()
     if error is None:
@@ -996,6 +1069,10 @@ def main(argv=None):
     parser.add_argument('--mapping-hz',type=float,default=2.,help='Explicit experiment cadence; library/default remains 2 Hz')
     parser.add_argument('--scenario',choices=SCENARIOS,default='static')
     parser.add_argument('--lifecycle',action='store_true',help='Inject controlled reactive free-space lifecycle faults')
+    parser.add_argument('--mapping-audit-dir',help='Diagnostic-only worker timing/capture directory')
+    parser.add_argument('--audit-capture-inputs',action='store_true',help='Bounded full worker captures; excluded from performance claims')
+    parser.add_argument('--audit-max-captures',type=int,default=80)
+    parser.add_argument('--contact-metrics',action='store_true',help='Observe contact speed, impulse and joint feedback without changing control')
     parser.add_argument('--result',required=True)
     parser.add_argument('--artifacts-dir',required=True)
     args = parser.parse_args(argv)

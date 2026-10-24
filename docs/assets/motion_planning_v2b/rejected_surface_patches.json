@@ -1,0 +1,803 @@
+{
+  "schema_version": 1,
+  "status": "REJECTED_NOT_ADOPTED",
+  "reason": "Both predeclared sparse/static native trials failed to reach their targets. Contact-free timeout is not practical goal completion, so the bounded-completion candidate is removed from the active runtime.",
+  "no_further_parameter_search": true,
+  "candidate_constraints": {
+    "only_rgbd": true,
+    "max_tangential_extent_m": 0.06,
+    "normal_extent": "one voxel",
+    "max_added_unknown_chebyshev_voxels": 2,
+    "max_added_unknown_distance_m": 0.02,
+    "min_local_strong_cells": 2,
+    "min_global_plane_strong_cells": 3,
+    "source_free_cells_added": 0,
+    "floor_completion": false,
+    "disjoint_geometry": true,
+    "retains_all_supported_source_cells_before_proxy_budget": true,
+    "expiry": "Oldest contributing original observed support; includes the third global plane supporter.",
+    "point_budget": 512,
+    "candidate_budget": 2048,
+    "proxy_budget": 64
+  },
+  "offline_validation": {
+    "path": "docs/assets/motion_planning_v2b/surface_patch_validation.json",
+    "sha256": "78e55ec630b3cd69f2cbf26f89d584d361628825bedf54dd9fa3d7ddd526b1dc"
+  },
+  "software_verification": "All819 discovered offline tests, architecture and8standalone modules passed for this candidate; physical goal completion still failed.",
+  "candidate_source_sha256": {
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "708c63911148a5a09f8e26fc1ef1b81f98991899aabacdbb01cadd29f2377f64",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "978b9ac536d92f5adc806ab4d34ea74a1916b96606bbdbfff46dc33c32f63b9a",
+    "tests/unit/test_occupancy_temporal_support.py": "6b465420ef8cd3679ee7fe413e42205a04ae39c391a8f03088ee6793a06e54bd",
+    "tests/unit/test_occupancy_surface_patches.py": "b3d7050248dd5d650d749b953b652052caf449ee1092252b726541fbaf382e92"
+  },
+  "archive": {
+    "directory": "outputs/motion-planning-v2b-rejected-surface-patches",
+    "forward_patch": {
+      "path": "outputs/motion-planning-v2b-rejected-surface-patches/implementation.patch",
+      "sha256": "c6a7eb417897efd4c9e1dc47c4df2f687f1ec69ae7bed9413af2c8b8a9857c4a"
+    },
+    "rollback_patch": {
+      "path": "outputs/motion-planning-v2b-rejected-surface-patches/rollback.patch",
+      "sha256": "8e3c353115ab905fad3afd9b7efd85030e8d56a41f1a5dc992509e422dc4685a"
+    },
+    "raw_eight_test_module": {
+      "path": "outputs/motion-planning-v2b-rejected-surface-patches/tests/unit/test_occupancy_surface_patches.py",
+      "sha256": "b3d7050248dd5d650d749b953b652052caf449ee1092252b726541fbaf382e92"
+    }
+  },
+  "restored_exact_source_sha256": {
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c"
+  },
+  "final_runtime_policy": "RGB-D retains original eligible OCCUPIED cells with existing spatial support or p>=0.95 temporal confidence. No UNKNOWN completion remains. GT/default extractor behavior stays spatial-only.",
+  "trials": [
+    {
+      "scenario": "sparse",
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-patch-pilot-rgbd-sparse-reactive/result.json",
+        "sha256": "2531699d18aaeda20d848d80c75b389029d0ca306e295248e5f133d8e0586587"
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "classification": "blocked_timeout",
+      "motion": {
+        "result": {
+          "status": "timeout",
+          "message": "Reactive motion timed out before reaching target pose.",
+          "failure_code": "timeout",
+          "details": {
+            "map_generation": 0,
+            "map_revision": 75,
+            "map_timestamp": 3240509.106283557,
+            "map_age_seconds": 0.45275410264730453,
+            "motion_strategy": "reactive",
+            "max_steps": 1000,
+            "position_error_m": 0.20859475060780105,
+            "orientation_error_rad": 0.06580847604934534,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 14.850051509216428
+      },
+      "contacts": {
+        "frames": 0,
+        "initial_reported_points": 0,
+        "reported_points": 0,
+        "penetrating_pairs": 0,
+        "minimum_reported_separation_m": null,
+        "maximum_pair_impulse": 0.0,
+        "links": [],
+        "buffer_saturated": false
+      },
+      "contact_severity": {
+        "strict_v2_success": false,
+        "strict_zero_reported_contacts": true,
+        "goal_status": "timeout",
+        "failure_code": "timeout",
+        "physical_classification": "no_physical_contact_observed",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 0,
+        "reported_physics_steps": 0,
+        "observed_physical_contact_steps": 0,
+        "pair_contact_episodes": 0,
+        "pair_contact_samples": 0,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 1001,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 0.0,
+        "sampled_physical_contact_duration_s": 0.0,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": null,
+        "sum_observed_pair_normal_impulses_ns": 0.0,
+        "depth_m": {
+          "count": 0
+        },
+        "normal_pair_impulse_ns": {
+          "count": 0
+        },
+        "normal_point_impulse_ns": {
+          "count": 0
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 0
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 0
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 0
+        },
+        "contact_points_with_kinematics": 0,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {},
+        "points_by_pair": [],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 1001,
+            "velocities": 1001,
+            "measured_efforts": 1001,
+            "explicit_applied_efforts": 1001,
+            "incoming_joint_wrenches": 1001
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 7007,
+            "minimum": 7.3933954514160405e-09,
+            "mean": 0.00018418808792673594,
+            "p50": 8.620358842503784e-05,
+            "p95": 0.000884585942478222,
+            "p99": 0.0010423544602852575,
+            "maximum": 0.002518683671951294
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 7007,
+            "minimum": 9.313225746154785e-10,
+            "mean": 5.793237450694622,
+            "p50": 0.8466449975967407,
+            "p95": 20.59542465209961,
+            "p99": 21.52946662902832,
+            "maximum": 27.765644073486328
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 11011,
+            "minimum": 0.0,
+            "mean": 49.133660898146395,
+            "p50": 20.809417656921195,
+            "p95": 148.9845203650112,
+            "p99": 149.0680877309707,
+            "maximum": 154.48139737310782
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "path": {
+        "length_m": 0.9662505659074991,
+        "straight_distance_m": 0.5,
+        "maximum_x_detour_m": 0.18407557179658307,
+        "maximum_z_detour_m": 0.12488925483634128,
+        "progress_reversals": 0
+      },
+      "controller": {
+        "apply_interval_ms": {
+          "count": 1000,
+          "mean": 14.826907648239285,
+          "p50": 13.326330110430717,
+          "p95": 27.610399713739746,
+          "p99": 37.26313283201306,
+          "worst": 56.17268895730376
+        },
+        "wait_duration_ms": {
+          "count": 1000,
+          "mean": 11.189623206388205,
+          "p50": 10.148048400878906,
+          "p95": 21.175819425843653,
+          "p99": 26.580640841275446,
+          "worst": 35.36178870126605
+        },
+        "kit_interval_ms": {
+          "count": 999,
+          "mean": 14.828767413525162,
+          "p50": 13.342651072889566,
+          "p95": 24.293700000271198,
+          "p99": 33.620898900553584,
+          "worst": 52.60424967855215
+        },
+        "forward_ms": {
+          "count": 1000,
+          "mean": 2.3913022885099053,
+          "p50": 2.27354490198195,
+          "p95": 3.325772657990455,
+          "p99": 3.839553291909396,
+          "worst": 13.05070472881198
+        },
+        "owner_callback_ms": {
+          "count": 1000,
+          "mean": 0.5574800646863878,
+          "p50": 0.0350454356521368,
+          "p95": 6.4049127977341405,
+          "p99": 7.948658922687172,
+          "worst": 10.58014715090394
+        },
+        "sdk_world_update_ms": {
+          "count": 1049,
+          "mean": 1.5137113037708263,
+          "p50": 1.4000567607581615,
+          "p95": 2.4329517967998977,
+          "p99": 3.014648407697677,
+          "worst": 11.842475738376379
+        },
+        "reference_observer_ms": {
+          "count": 1002,
+          "mean": 0.22562023367502257,
+          "p50": 0.20599504932761192,
+          "p95": 0.36012735217809677,
+          "p99": 0.4613903909921647,
+          "worst": 0.7455525919795036
+        },
+        "waits_over_100_ms": 0
+      },
+      "obstacle_updates": {
+        "maximum_proxy_count": 64,
+        "accepted_revisions": 30,
+        "kit_sync_ms": {
+          "count": 1000,
+          "mean": 0.3142427448183298,
+          "p50": 0.007784925401210785,
+          "p95": 0.023928005248307887,
+          "p99": 6.913351733237505,
+          "worst": 23.266741074621677
+        },
+        "map_age_ms": {
+          "count": 1000,
+          "mean": 478.6123254490085,
+          "p50": 468.2915732264519,
+          "p95": 766.0267958650365,
+          "p99": 823.9901963900775,
+          "worst": 862.1673439629376
+        },
+        "extraction": {
+          "occupied_voxels": 980,
+          "supported_voxels": 927,
+          "spatial_supported_voxels": 832,
+          "strong_sparse_retained": 95,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "bounded_surface_patches": true,
+          "surface_observed_retained": 0,
+          "surface_patch_candidates": 5,
+          "selected_surface_patches": 5,
+          "candidate_added_unknown_voxels": 39,
+          "added_unknown_voxels": 39,
+          "added_unknown_volume_m3_upper_bound": 3.9000000000000006e-05,
+          "represented_geometry_voxels": 149,
+          "rejected_sparse_voxels": 53,
+          "candidate_boxes": 865,
+          "proxy_count": 64,
+          "represented_voxels": 110,
+          "omitted_voxels": 817,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 828,
+          "hazard_candidate_boxes": 37,
+          "selected_floor_boxes": 27,
+          "selected_hazard_boxes": 37,
+          "represented_floor_voxels": 54,
+          "omitted_floor_voxels": 817,
+          "padding_m": 0.0,
+          "extract_seconds": 0.027315139304846525,
+          "surface_points_available": 25,
+          "surface_points_considered": 25,
+          "surface_point_budget": 512,
+          "surface_points_unprocessed": 0,
+          "surface_candidate_budget": 2048,
+          "surface_candidates_considered": 70,
+          "surface_candidate_budget_reached": false,
+          "surface_max_tangent_cells": 6,
+          "surface_max_unknown_distance_cells": 2
+        }
+      },
+      "mapping_health": {
+        "status": "ok",
+        "reason": null,
+        "last_error": null,
+        "age_seconds": 0.4711974677629769,
+        "stale": false,
+        "fresh": true,
+        "timestamp": 3240509.106283557,
+        "submitted": 51,
+        "published": 50,
+        "rejected": 0,
+        "failures": 0,
+        "source_failures": 0,
+        "worker_failures": 0,
+        "processing_failures": 0,
+        "resets": 0,
+        "generation": 0,
+        "closed": false,
+        "worker": {
+          "submitted": 51,
+          "started": 51,
+          "completed": 50,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 50,
+          "running": true,
+          "pending": false,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2644477,
+          "transport_error": null
+        },
+        "worker_seconds": 0.25701224571093917,
+        "queue_seconds": 6.263703107833862e-05,
+        "completed_at": 3240509.372247906,
+        "worker_to_publication_seconds": 0.007720070891082287,
+        "input_timestamp": 3240509.106283557,
+        "publish_age_seconds": 0.27368441969156265,
+        "filter_seconds": 0.021267885342240334,
+        "compute_seconds": 0.14461777498945594,
+        "transport_seconds": 0.11239447072148323,
+        "completion_status": "published",
+        "last": {
+          "worker_seconds": 0.25701224571093917,
+          "queue_seconds": 6.263703107833862e-05,
+          "completed_at": 3240509.372247906,
+          "worker_to_publication_seconds": 0.007720070891082287,
+          "timestamp": 3240509.106283557,
+          "input_timestamp": 3240509.106283557,
+          "status": "published",
+          "publish_age_seconds": 0.27368441969156265,
+          "filter_seconds": 0.021267885342240334,
+          "compute_seconds": 0.14461777498945594,
+          "transport_seconds": 0.11239447072148323
+        }
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+        "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "708c63911148a5a09f8e26fc1ef1b81f98991899aabacdbb01cadd29f2377f64",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "978b9ac536d92f5adc806ab4d34ea74a1916b96606bbdbfff46dc33c32f63b9a",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+        "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+        "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+        "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+      }
+    },
+    {
+      "scenario": "static",
+      "artifact": {
+        "path": "outputs/motion-planning-v2b-patch-pilot-rgbd-static-reactive/result.json",
+        "sha256": "d126ca7e19896baff2c5b7a9dd582bd47fe30634cebabe43ef0ff47763ab2ce7"
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "classification": "blocked_timeout",
+      "motion": {
+        "result": {
+          "status": "timeout",
+          "message": "Reactive motion timed out before reaching target pose.",
+          "failure_code": "timeout",
+          "details": {
+            "map_generation": 0,
+            "map_revision": 75,
+            "map_timestamp": 3240573.69284789,
+            "map_age_seconds": 0.4990341500379145,
+            "motion_strategy": "reactive",
+            "max_steps": 1000,
+            "position_error_m": 0.26066709971176805,
+            "orientation_error_rad": 0.09575832115529075,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1
+          }
+        },
+        "seconds": 14.894197546876967
+      },
+      "contacts": {
+        "frames": 0,
+        "initial_reported_points": 0,
+        "reported_points": 0,
+        "penetrating_pairs": 0,
+        "minimum_reported_separation_m": null,
+        "maximum_pair_impulse": 0.0,
+        "links": [],
+        "buffer_saturated": false
+      },
+      "contact_severity": {
+        "strict_v2_success": false,
+        "strict_zero_reported_contacts": true,
+        "goal_status": "timeout",
+        "failure_code": "timeout",
+        "physical_classification": "no_physical_contact_observed",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 0,
+        "reported_physics_steps": 0,
+        "observed_physical_contact_steps": 0,
+        "pair_contact_episodes": 0,
+        "pair_contact_samples": 0,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 1001,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 0.0,
+        "sampled_physical_contact_duration_s": 0.0,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": null,
+        "sum_observed_pair_normal_impulses_ns": 0.0,
+        "depth_m": {
+          "count": 0
+        },
+        "normal_pair_impulse_ns": {
+          "count": 0
+        },
+        "normal_point_impulse_ns": {
+          "count": 0
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 0
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 0
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 0
+        },
+        "contact_points_with_kinematics": 0,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {},
+        "points_by_pair": [],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 1001,
+            "velocities": 1001,
+            "measured_efforts": 1001,
+            "explicit_applied_efforts": 1001,
+            "incoming_joint_wrenches": 1001
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 7007,
+            "minimum": 3.584205010565e-08,
+            "mean": 0.0001941970986164341,
+            "p50": 6.703314168010621e-05,
+            "p95": 0.0009881821688516586,
+            "p99": 0.0016895304888830934,
+            "maximum": 0.002541869878768921
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 7007,
+            "minimum": 4.656612873077393e-10,
+            "mean": 5.412894200111681,
+            "p50": 0.8470344543457031,
+            "p95": 20.40858097076416,
+            "p99": 20.82974853515625,
+            "maximum": 21.57058334350586
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 11011,
+            "minimum": 0.0,
+            "mean": 49.12759237240731,
+            "p50": 20.809370197264776,
+            "p95": 148.98328846560577,
+            "p99": 149.33635239470962,
+            "maximum": 151.77696109497268
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "path": {
+        "length_m": 1.0099675371628463,
+        "straight_distance_m": 0.5,
+        "maximum_x_detour_m": 0.19942664579554364,
+        "maximum_z_detour_m": 0.06527535546553115,
+        "progress_reversals": 68
+      },
+      "controller": {
+        "apply_interval_ms": {
+          "count": 1000,
+          "mean": 14.87090758420527,
+          "p50": 13.345374958589673,
+          "p95": 27.03498476184904,
+          "p99": 36.44674909766763,
+          "worst": 53.01882093772292
+        },
+        "wait_duration_ms": {
+          "count": 1000,
+          "mean": 11.08789663715288,
+          "p50": 10.019117500633001,
+          "p95": 20.80656895413994,
+          "p99": 26.695208824239657,
+          "worst": 39.42126501351595
+        },
+        "kit_interval_ms": {
+          "count": 999,
+          "mean": 14.872003537327707,
+          "p50": 13.345395214855671,
+          "p95": 24.32076055556533,
+          "p99": 33.77174839377403,
+          "worst": 65.36448700353503
+        },
+        "forward_ms": {
+          "count": 1000,
+          "mean": 2.5142337954603136,
+          "p50": 2.3965847212821245,
+          "p95": 3.6927175940945745,
+          "p99": 4.380793767049909,
+          "worst": 12.871087994426489
+        },
+        "owner_callback_ms": {
+          "count": 1000,
+          "mean": 0.5523488656617701,
+          "p50": 0.03475509583950043,
+          "p95": 6.295001110993325,
+          "p99": 7.749601793475449,
+          "worst": 14.459087047725916
+        },
+        "sdk_world_update_ms": {
+          "count": 1048,
+          "mean": 1.5891722926891316,
+          "p50": 1.4502000994980335,
+          "p95": 2.7332532918080688,
+          "p99": 3.2961627747863527,
+          "worst": 11.913277674466372
+        },
+        "reference_observer_ms": {
+          "count": 1002,
+          "mean": 0.2701366668801286,
+          "p50": 0.20328001119196415,
+          "p95": 0.369826448149979,
+          "p99": 0.49045486375689507,
+          "worst": 35.31276620924473
+        },
+        "waits_over_100_ms": 0
+      },
+      "obstacle_updates": {
+        "maximum_proxy_count": 64,
+        "accepted_revisions": 30,
+        "kit_sync_ms": {
+          "count": 1000,
+          "mean": 0.3141896603628993,
+          "p50": 0.007488997653126717,
+          "p95": 0.02815166953951104,
+          "p99": 7.439649836160241,
+          "worst": 10.86188293993473
+        },
+        "map_age_ms": {
+          "count": 1000,
+          "mean": 480.6937817186117,
+          "p50": 471.9441086053848,
+          "p95": 763.6224794434382,
+          "p99": 820.3060121880844,
+          "worst": 853.3149198628962
+        },
+        "extraction": {
+          "occupied_voxels": 1070,
+          "supported_voxels": 1016,
+          "spatial_supported_voxels": 918,
+          "strong_sparse_retained": 98,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "bounded_surface_patches": true,
+          "surface_observed_retained": 0,
+          "surface_patch_candidates": 13,
+          "selected_surface_patches": 13,
+          "candidate_added_unknown_voxels": 85,
+          "added_unknown_voxels": 85,
+          "added_unknown_volume_m3_upper_bound": 8.500000000000002e-05,
+          "represented_geometry_voxels": 205,
+          "rejected_sparse_voxels": 54,
+          "candidate_boxes": 923,
+          "proxy_count": 64,
+          "represented_voxels": 120,
+          "omitted_voxels": 896,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 785,
+          "hazard_candidate_boxes": 138,
+          "selected_floor_boxes": 0,
+          "selected_hazard_boxes": 64,
+          "represented_floor_voxels": 0,
+          "omitted_floor_voxels": 822,
+          "padding_m": 0.0,
+          "extract_seconds": 0.039178750943392515,
+          "surface_points_available": 72,
+          "surface_points_considered": 72,
+          "surface_point_budget": 512,
+          "surface_points_unprocessed": 0,
+          "surface_candidate_budget": 2048,
+          "surface_candidates_considered": 204,
+          "surface_candidate_budget_reached": false,
+          "surface_max_tangent_cells": 6,
+          "surface_max_unknown_distance_cells": 2
+        }
+      },
+      "mapping_health": {
+        "status": "ok",
+        "reason": null,
+        "last_error": null,
+        "age_seconds": 0.5179173862561584,
+        "stale": false,
+        "fresh": true,
+        "timestamp": 3240573.69284789,
+        "submitted": 51,
+        "published": 50,
+        "rejected": 0,
+        "failures": 0,
+        "source_failures": 0,
+        "worker_failures": 0,
+        "processing_failures": 0,
+        "resets": 0,
+        "generation": 0,
+        "closed": false,
+        "worker": {
+          "submitted": 51,
+          "started": 51,
+          "completed": 50,
+          "replaced": 0,
+          "discarded": 0,
+          "errors": 0,
+          "delivered": 50,
+          "running": true,
+          "pending": false,
+          "result_ready": false,
+          "closed": false,
+          "epoch": 0,
+          "execution": "process",
+          "pid": 2646079,
+          "transport_error": null
+        },
+        "worker_seconds": 0.20382295595481992,
+        "queue_seconds": 4.912074655294418e-05,
+        "completed_at": 3240573.904615976,
+        "worker_to_publication_seconds": 0.015680980868637562,
+        "input_timestamp": 3240573.69284789,
+        "publish_age_seconds": 0.22744906693696976,
+        "filter_seconds": 0.018348146229982376,
+        "compute_seconds": 0.14091364899650216,
+        "transport_seconds": 0.06290930695831776,
+        "completion_status": "published",
+        "last": {
+          "worker_seconds": 0.20382295595481992,
+          "queue_seconds": 4.912074655294418e-05,
+          "completed_at": 3240573.904615976,
+          "worker_to_publication_seconds": 0.015680980868637562,
+          "timestamp": 3240573.69284789,
+          "input_timestamp": 3240573.69284789,
+          "status": "published",
+          "publish_age_seconds": 0.22744906693696976,
+          "filter_seconds": 0.018348146229982376,
+          "compute_seconds": 0.14091364899650216,
+          "transport_seconds": 0.06290930695831776
+        }
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+        "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "708c63911148a5a09f8e26fc1ef1b81f98991899aabacdbb01cadd29f2377f64",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "978b9ac536d92f5adc806ab4d34ea74a1916b96606bbdbfff46dc33c32f63b9a",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+        "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+        "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+        "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+      }
+    }
+  ],
+  "interpretation": "The experiments improved source availability and retained meaningful observed evidence, but many independently registered cuboids still produce additive collision-policy fields. Bounded coalescing under the tested geometry limits did not restore these goals. No scene/target/controller change, obstacle erasure or direct fallback was used to manufacture success."
+}

@@ -107,7 +107,11 @@ The existing `scene.support_plane_z` also supplies a derived budget priority for
 reactive cuboids: above-plane hazards precede floor-only boxes when the proxy
 budget binds. It does not erase floor evidence or introduce a new motion knob.
 Radius-two sparse support retains only original occupied cells, without
-inflating proxies or filling UNKNOWN space.
+inflating proxies or filling UNKNOWN space. V2b also retains strongly accumulated
+RGB-D OCCUPIED evidence (probability at least 0.95) that lacks nearby occupied
+neighbors. This fixed worker policy adds no configuration knob; ground-truth
+extraction is unchanged. Mapping still defaults to 2 Hz with the original
+one-second freshness limit. No degraded stale-map policy is enabled.
 
 For multi-view, create an ordinary USD Camera prim, set its position and
 orientation, and add its absolute prim path to the list:

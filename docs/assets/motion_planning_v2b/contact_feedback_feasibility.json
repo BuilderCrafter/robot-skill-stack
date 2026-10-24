@@ -1,0 +1,2475 @@
+{
+  "schema_version": 1,
+  "status": "OBSERVATIONAL_ONLY_NO_VALIDATED_CONTACT_DETECTOR",
+  "measured_utc": "2026-10-24T20:45:09.474425+00:00",
+  "scope": "Four diagnostic full captures using unchanged direct control, original V2 RGB-D occupancy/extraction and 2Hz mapping. These identify signal feasibility; they do not validate pushing, a controller change, a severity pass threshold or a physical-robot contact detector.",
+  "sdk": {
+    "isaacsim_version": "5.1.0-rc.19+release.26219.9c81211b.gl",
+    "sources": {
+      "single_articulation": {
+        "path": "/home/etfrobotics/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/single_articulation.py",
+        "sha256": "086c94ac60aa4f8f1ffac0c921fe8eb4a5b118604d4e108b891d827635382234",
+        "method_line_numbers": {
+          "get_measured_joint_efforts": 610,
+          "get_applied_joint_efforts": 645,
+          "get_measured_joint_forces": 679
+        }
+      },
+      "articulation": {
+        "path": "/home/etfrobotics/isaacsim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/articulation.py",
+        "sha256": "65901a45bd1852c0e126581ed2bb75105b6e221128e24f2202d138c822b119a5",
+        "method_line_numbers": {
+          "get_measured_joint_efforts": 1285
+        }
+      },
+      "physics_tensors": {
+        "path": "/home/etfrobotics/isaacsim/extscache/omni.physics.tensors-107.3.26+107.3.3.lx64.r.cp311.u353/omni/physics/tensors/impl/api.py",
+        "sha256": "5dd16f8a37eccc94ac82338d6c1127e785cccf761cae1f6f18ef03d55b0f325f",
+        "method_line_numbers": {
+          "get_link_velocities": 1539,
+          "get_link_incoming_joint_force": 2376,
+          "get_velocities": 3374,
+          "get_contact_data": 5877
+        }
+      }
+    }
+  },
+  "analysis": {
+    "script": {
+      "path": "outputs/motion-planning-v2b-contact-feedback-analysis.py",
+      "sha256": "efb625c457dbb0b9f966c6afc0baffce7050480ac2f57566094ea3b40490047f"
+    },
+    "helper": {
+      "path": "tests/support/reactive_contact_metrics.py",
+      "sha256": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad"
+    },
+    "numerical_contact_cohorts": {
+      "no_sdk_contact_report": "No points in the explicit robot/actor contact view.",
+      "nonpenetrating_zero_impulse_reports": "Every reported separation >=0 and normal impulse exactly0; descriptive proximity, not a severity PASS.",
+      "physical_contact_observed": "At least one reported negative separation or nonzero normal impulse; no acceptability threshold."
+    },
+    "units": "Arm joints0..6:rad/rad_s/Nm. Body COM speeds:m_s. Incoming joint reaction force norms:N in child-joint frames, pooled by maximum norm. Contact impulse:N_s. SDK step-average normal force:N.",
+    "feature_aggregation": "Each distribution contains one maximum over the named arm joints or actual robot bodies per unique observed physics step. Arm target error uses latest applied position target with explicit joint indices. Frame velocities use consecutive measured joint positions or world COM displacement and simulation dt, never wall time.",
+    "contact_velocity_aggregation": "contact_severity point-speed distributions are per reported contact point. SDK COM+angular instantaneous values and frame-displacement values are distinct; neither is asserted to be pre-impact velocity.",
+    "static_pilot_qualification": "Static capture preceded the source-hash expansion. Its instrumentation_manifest.json separately records helper hashes; the other three captures contain helper hashes in result.json. All use the same direct/feedback/occupancy/extraction production sources."
+  },
+  "cases": {
+    "empty": {
+      "artifacts": {
+        "result.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/result.json",
+          "sha256": "1c1810006861c59ef5e9402ffda93394b9d8bd291164027b908d8a49008a9244"
+        },
+        "trace.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/trace.json",
+          "sha256": "af7b36cc7dc4cfcef13ab57b9205a96cf665084840954f4939d8c3de2f4099e8"
+        },
+        "runtime_profile.toml": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/runtime_profile.toml",
+          "sha256": "91c877ad6cbc6bcd9b155c89d91d5e16d2a0f23f0130c475f2eb733788399b16"
+        }
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+        "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "de88595d10825944d356916b1a3ddfb66c777ed93d0f84c7fd5176bf807d69a2",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "a2b479d781d696328b122e2fd207c1e2fad530dcf6a31bdbd8881ac2b1ef422c",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+        "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+        "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+        "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+      },
+      "configuration": {
+        "strategy": "direct",
+        "mapping_source": "rgbd",
+        "mapping_hz": 2.0,
+        "voxel_size": 0.01,
+        "fixture_settle_seconds": 5.0,
+        "objects": [],
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "unique_physics_samples": 140,
+      "duplicate_final_hold_samples_removed": 1,
+      "cohorts": {
+        "no_sdk_contact_report": {
+          "physics_samples": 140,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 140,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 139,
+              "minimum": 0.2717846490257044,
+              "p50": 0.46986577444478556,
+              "p95": 0.671714866891473,
+              "p99": 0.6792262676761757,
+              "maximum": 0.6798827293576367
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 140,
+              "minimum": 0.0,
+              "p50": 0.47394442558288574,
+              "p95": 0.6716515421867371,
+              "p99": 0.6792170703411102,
+              "maximum": 0.6798512935638428
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 140,
+              "minimum": 19.462932586669922,
+              "p50": 19.757686614990234,
+              "p95": 20.301244068145753,
+              "p99": 25.10561027526849,
+              "maximum": 38.95497131347656
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 139,
+              "minimum": 0.0080918224986882,
+              "p50": 0.009891367985567279,
+              "p95": 0.014156052137539583,
+              "p99": 0.029573471737207535,
+              "maximum": 0.0576773302550245
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 140,
+              "minimum": 6.298885515804153e-05,
+              "p50": 0.0001442882842772053,
+              "p95": 0.00035936458020242016,
+              "p99": 0.0019030413917720378,
+              "maximum": 0.0035643999822364547
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 140,
+              "minimum": 147.94763070622102,
+              "p50": 148.75574959940843,
+              "p95": 150.82117205473517,
+              "p99": 153.29208281768945,
+              "maximum": 171.67192819895322
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 139,
+              "minimum": 0.08771089253112911,
+              "p50": 0.26541628801803063,
+              "p95": 0.2984838357828161,
+              "p99": 0.29857455491770046,
+              "maximum": 0.29859626213279766
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 139,
+              "minimum": 0.006661062471785854,
+              "p50": 0.007694807010336084,
+              "p95": 0.010341039207314228,
+              "p99": 0.02371474564674756,
+              "maximum": 0.03932240629809174
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 140,
+              "minimum": 0.0,
+              "p50": 0.2658221711465164,
+              "p95": 0.3010753791755918,
+              "p99": 0.3012644815456933,
+              "maximum": 0.3012739525813672
+            }
+          }
+        },
+        "nonpenetrating_zero_impulse_reports": {
+          "physics_samples": 0,
+          "features": {}
+        },
+        "physical_contact_observed": {
+          "physics_samples": 0,
+          "features": {}
+        }
+      },
+      "contact_severity": {
+        "strict_v2_success": true,
+        "strict_zero_reported_contacts": true,
+        "goal_status": "success",
+        "failure_code": null,
+        "physical_classification": "no_physical_contact_observed",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 0,
+        "reported_physics_steps": 0,
+        "observed_physical_contact_steps": 0,
+        "pair_contact_episodes": 0,
+        "pair_contact_samples": 0,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 140,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 0.0,
+        "sampled_physical_contact_duration_s": 0.0,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": null,
+        "sum_observed_pair_normal_impulses_ns": 0.0,
+        "depth_m": {
+          "count": 0
+        },
+        "normal_pair_impulse_ns": {
+          "count": 0
+        },
+        "normal_point_impulse_ns": {
+          "count": 0
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 0
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 0
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 0
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 0
+        },
+        "contact_points_with_kinematics": 0,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {},
+        "points_by_pair": [],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 140,
+            "velocities": 140,
+            "measured_efforts": 140,
+            "explicit_applied_efforts": 140,
+            "incoming_joint_wrenches": 140
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 980,
+            "minimum": 1.8075715058074593e-07,
+            "mean": 8.194616673303201e-05,
+            "p50": 3.772418249603504e-05,
+            "p95": 0.00019969302245042005,
+            "p99": 0.0010035652022210378,
+            "maximum": 0.0035643999822364547
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 980,
+            "minimum": 1.3969838619232178e-09,
+            "mean": 5.038266350333407,
+            "p50": 0.856988936662674,
+            "p95": 19.823883628845213,
+            "p99": 20.253846511840823,
+            "maximum": 38.95497131347656
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 1540,
+            "minimum": 0.0,
+            "mean": 49.19823239792326,
+            "p50": 20.819429784229406,
+            "p95": 148.73814153535056,
+            "p99": 150.03162721607336,
+            "maximum": 171.67192819895322
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "reference_observer_ms": {
+        "count": 141,
+        "mean": 0.1871910091515974,
+        "p50": 0.17026811838150024,
+        "p95": 0.28238724917173386,
+        "p99": 0.3826959989964957,
+        "worst": 0.619926955550909
+      }
+    },
+    "static": {
+      "artifacts": {
+        "result.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/result.json",
+          "sha256": "d662d5d639dc37491b55cd99284d267d703aca98aa818a853649e4fd493015c8"
+        },
+        "trace.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/trace.json",
+          "sha256": "ef3598ae7029c0d022acbaa364773634f20177623116a104e938a991ed139ed3"
+        },
+        "runtime_profile.toml": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/runtime_profile.toml",
+          "sha256": "91c877ad6cbc6bcd9b155c89d91d5e16d2a0f23f0130c475f2eb733788399b16"
+        },
+        "instrumentation_manifest.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/instrumentation_manifest.json",
+          "sha256": "21864c63f483cdf1927c3efdfc4c9a3a3c90e319a792bcd033da3774f59f04b9"
+        }
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "4cf79c4c2f9e4f9d17c53df9c074562bf5b82e97a38ec4d574de009766d0495a",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "de88595d10825944d356916b1a3ddfb66c777ed93d0f84c7fd5176bf807d69a2",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "a2b479d781d696328b122e2fd207c1e2fad530dcf6a31bdbd8881ac2b1ef422c",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0"
+      },
+      "configuration": {
+        "strategy": "direct",
+        "mapping_source": "rgbd",
+        "mapping_hz": 2.0,
+        "voxel_size": 0.01,
+        "fixture_settle_seconds": 5.0,
+        "objects": [
+          {
+            "name": "Post",
+            "center": [
+              0.45,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.09,
+              0.12,
+              0.26
+            ],
+            "moving": false
+          }
+        ],
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "unique_physics_samples": 182,
+      "duplicate_final_hold_samples_removed": 1,
+      "cohorts": {
+        "no_sdk_contact_report": {
+          "physics_samples": 72,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 72,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 71,
+              "minimum": 0.2830785365287233,
+              "p50": 1.4912795242744932,
+              "p95": 2.5840543352933203,
+              "p99": 2.610129697092564,
+              "maximum": 2.610139710672364
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 72,
+              "minimum": 0.0,
+              "p50": 1.4521376490592957,
+              "p95": 2.581450855731964,
+              "p99": 2.6099993562698365,
+              "maximum": 2.6100003719329834
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 72,
+              "minimum": 17.747488021850586,
+              "p50": 19.568588256835938,
+              "p95": 19.96625623703003,
+              "p99": 30.350112991333084,
+              "maximum": 38.973602294921875
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 71,
+              "minimum": 0.006554167137511446,
+              "p50": 0.012768419535762576,
+              "p95": 0.02051887139048946,
+              "p99": 0.45479657128877915,
+              "maximum": 1.3813796836636636
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 72,
+              "minimum": 0.0001038539769633029,
+              "p50": 0.0005562489470925039,
+              "p95": 0.0032291327182421233,
+              "p99": 0.009516426192508629,
+              "maximum": 0.018328102404012725
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 72,
+              "minimum": 146.24052302308746,
+              "p50": 148.7044470740338,
+              "p95": 151.6025931491677,
+              "p99": 159.52993119065812,
+              "maximum": 171.70107455812453
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 71,
+              "minimum": 0.07875228796069471,
+              "p50": 0.17431358991837184,
+              "p95": 0.3666212882448562,
+              "p99": 0.37568580850097977,
+              "maximum": 0.37605744248482337
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 71,
+              "minimum": 0.006619038282249502,
+              "p50": 0.009804111163131544,
+              "p95": 0.014290952803396168,
+              "p99": 0.03001973220394679,
+              "maximum": 0.03933645580862612
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 72,
+              "minimum": 0.0,
+              "p50": 0.16824545042647607,
+              "p95": 0.3642890102431862,
+              "p99": 0.374813663309236,
+              "maximum": 0.37488222518202985
+            }
+          }
+        },
+        "nonpenetrating_zero_impulse_reports": {
+          "physics_samples": 12,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 12,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 12,
+              "minimum": 0.513739559082859,
+              "p50": 2.6100359985958637,
+              "p95": 2.610117537745664,
+              "p99": 2.610123831995824,
+              "maximum": 2.610125405558364
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 12,
+              "minimum": 0.5251901745796204,
+              "p50": 2.6099817752838135,
+              "p95": 2.610000216960907,
+              "p99": 2.6100005316734314,
+              "maximum": 2.6100006103515625
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 12,
+              "minimum": 18.55874252319336,
+              "p50": 19.297245025634766,
+              "p95": 25.310864543914793,
+              "p99": 27.311763973236086,
+              "maximum": 27.811988830566406
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 12,
+              "minimum": 0.006480708130118751,
+              "p50": 0.011494514371821807,
+              "p95": 0.021046492717400188,
+              "p99": 0.027495192253460646,
+              "maximum": 0.029107367137475748
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 12,
+              "minimum": 0.0001099558211695717,
+              "p50": 0.003907081509142429,
+              "p95": 0.03258552582247751,
+              "p99": 0.03848349146759052,
+              "maximum": 0.03995798287886876
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 12,
+              "minimum": 148.31245271445826,
+              "p50": 150.63634916914128,
+              "p95": 154.96556565596077,
+              "p99": 155.61163645156248,
+              "maximum": 155.7731541504629
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 12,
+              "minimum": 0.21851371033614733,
+              "p50": 0.3228927883426478,
+              "p95": 0.36715036619990776,
+              "p99": 0.3791856424833017,
+              "maximum": 0.3821944615541502
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 12,
+              "minimum": 0.006400938779533545,
+              "p50": 0.008684432040188747,
+              "p95": 0.01242989380799392,
+              "p99": 0.012557886257853229,
+              "maximum": 0.012589884370318057
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 12,
+              "minimum": 0.22651512224609152,
+              "p50": 0.327523423706895,
+              "p95": 0.3665649072792753,
+              "p99": 0.3780243341641752,
+              "maximum": 0.38088919088540013
+            }
+          }
+        },
+        "physical_contact_observed": {
+          "physics_samples": 98,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 98,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 98,
+              "minimum": 0.5764478144412137,
+              "p50": 1.466055137944326,
+              "p95": 7.2507040295382685,
+              "p99": 8.54489155550122,
+              "maximum": 11.778566223010692
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 98,
+              "minimum": 0.57121342420578,
+              "p50": 1.939992070198059,
+              "p95": 19.641157913207977,
+              "p99": 40.936521492004445,
+              "maximum": 86.04961395263672
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 98,
+              "minimum": 16.535049438476562,
+              "p50": 26.63665199279785,
+              "p95": 87.00003051757812,
+              "p99": 87.02248100280762,
+              "maximum": 87.03743743896484
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 98,
+              "minimum": 0.06851605960866264,
+              "p50": 0.7741863350289659,
+              "p95": 21.58128957495012,
+              "p99": 47.21340420345382,
+              "maximum": 93.66902550059646
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 98,
+              "minimum": 0.00010487203042774951,
+              "p50": 0.005735214449573922,
+              "p95": 0.06605386553473237,
+              "p99": 0.1292170666474161,
+              "maximum": 0.15637557427146698
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 98,
+              "minimum": 139.8425847239172,
+              "p50": 156.88207332586438,
+              "p95": 281.93524336718485,
+              "p99": 290.42795248974636,
+              "maximum": 292.78406552085005
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 98,
+              "minimum": 0.08604523036551391,
+              "p50": 0.29851439424880694,
+              "p95": 0.3763374870426237,
+              "p99": 0.4287211199993506,
+              "maximum": 0.44233791676898565
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 98,
+              "minimum": 0.0060291594488157425,
+              "p50": 0.03863878894100104,
+              "p95": 0.09810726022412111,
+              "p99": 0.2464606956815005,
+              "maximum": 0.34060811256769036
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 98,
+              "minimum": 0.08230543176045255,
+              "p50": 0.3005479515001993,
+              "p95": 0.4290011882381638,
+              "p99": 0.47400446327880846,
+              "maximum": 0.48104528468372887
+            }
+          }
+        }
+      },
+      "contact_severity": {
+        "strict_v2_success": false,
+        "strict_zero_reported_contacts": false,
+        "goal_status": "success",
+        "failure_code": null,
+        "physical_classification": "measured_physical_contact_ungraded",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 839,
+        "reported_physics_steps": 110,
+        "observed_physical_contact_steps": 98,
+        "pair_contact_episodes": 4,
+        "pair_contact_samples": 259,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 182,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 1.8333333333333317,
+        "sampled_physical_contact_duration_s": 1.6333333333333324,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": -0.01186465471982956,
+        "sum_observed_pair_normal_impulses_ns": 139.2209068463635,
+        "depth_m": {
+          "count": 839,
+          "minimum": 0.0,
+          "mean": 0.00011693238636290213,
+          "p50": 0.0,
+          "p95": 0.000439480715431266,
+          "p99": 0.002836524993181229,
+          "maximum": 0.01186465471982956
+        },
+        "normal_pair_impulse_ns": {
+          "count": 259,
+          "minimum": 0.0,
+          "mean": 0.5375324588662683,
+          "p50": 0.0,
+          "p95": 3.1996033668518065,
+          "p99": 3.4077577304840085,
+          "maximum": 3.6692326068878174
+        },
+        "normal_point_impulse_ns": {
+          "count": 839,
+          "minimum": 0.0,
+          "mean": 0.16593671852963468,
+          "p50": 0.0,
+          "p95": 1.529367792606338,
+          "p99": 3.2227151775360108,
+          "maximum": 3.6692326068878174
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 259,
+          "minimum": 0.0,
+          "mean": 32.2519475319761,
+          "p50": 0.0,
+          "p95": 191.9762020111084,
+          "p99": 204.46546382904052,
+          "maximum": 220.15395641326904
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 839,
+          "minimum": 0.009417584267847817,
+          "mean": 0.3835643721149305,
+          "p50": 0.31467292906641103,
+          "p95": 0.7890640567084094,
+          "p99": 3.4525493110700745,
+          "maximum": 8.832403385341728
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 839,
+          "minimum": 0.009417584267847817,
+          "mean": 0.3835643721149305,
+          "p50": 0.31467292906641103,
+          "p95": 0.7890640567084094,
+          "p99": 3.4525493110700745,
+          "maximum": 8.832403385341728
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 839,
+          "minimum": 2.6321392245115704e-06,
+          "mean": 0.11574363592852653,
+          "p50": 0.03173697413286846,
+          "p95": 0.36297730528211447,
+          "p99": 1.8523166745976898,
+          "maximum": 6.501380111733646
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 839,
+          "minimum": 0.004419111704254,
+          "mean": 0.19710162345060434,
+          "p50": 0.17241504954974535,
+          "p95": 0.40547454631152247,
+          "p99": 0.6336759489194989,
+          "maximum": 0.9449229578072369
+        },
+        "contact_points_with_kinematics": 839,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {
+          "/Franka/panda_hand": 297,
+          "/Franka/panda_link6": 272,
+          "/Franka/panda_link7": 270
+        },
+        "points_by_pair": [
+          {
+            "sensor": "/Franka/panda_hand",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 297
+          },
+          {
+            "sensor": "/Franka/panda_link6",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 272
+          },
+          {
+            "sensor": "/Franka/panda_link7",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 270
+          }
+        ],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 182,
+            "velocities": 182,
+            "measured_efforts": 182,
+            "explicit_applied_efforts": 182,
+            "incoming_joint_wrenches": 182
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 1274,
+            "minimum": 1.0629826185937219e-07,
+            "mean": 0.0017017228077078703,
+            "p50": 0.00018194017711906096,
+            "p95": 0.00546226975902193,
+            "p99": 0.028358683389218698,
+            "maximum": 0.15637557427146698
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 1274,
+            "minimum": 4.423782229423523e-08,
+            "mean": 11.785698246281175,
+            "p50": 1.6802656650543213,
+            "p95": 79.59788398742675,
+            "p99": 87.00000762939453,
+            "maximum": 87.03743743896484
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 2002,
+            "minimum": 0.0,
+            "mean": 69.01522917361852,
+            "p50": 24.09635477884894,
+            "p95": 236.93571986856986,
+            "p99": 268.94066373729794,
+            "maximum": 292.78406552085005
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "reference_observer_ms": {
+        "count": 183,
+        "mean": 0.25950206056888636,
+        "p50": 0.24600978940725327,
+        "p95": 0.39957603439688694,
+        "p99": 0.489133568480611,
+        "worst": 0.792299397289753
+      }
+    },
+    "sparse": {
+      "artifacts": {
+        "result.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/result.json",
+          "sha256": "c30f79c64f59480f531c341ca73031c313acb3932ab0b4c7ab31f0df141f4cf5"
+        },
+        "trace.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/trace.json",
+          "sha256": "2a756b748219d6b62f76dbdd7bd2f1bffa7350d5fa00bb6ebc47b01934110730"
+        },
+        "runtime_profile.toml": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/runtime_profile.toml",
+          "sha256": "91c877ad6cbc6bcd9b155c89d91d5e16d2a0f23f0130c475f2eb733788399b16"
+        }
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+        "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "de88595d10825944d356916b1a3ddfb66c777ed93d0f84c7fd5176bf807d69a2",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "a2b479d781d696328b122e2fd207c1e2fad530dcf6a31bdbd8881ac2b1ef422c",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+        "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+        "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+        "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+      },
+      "configuration": {
+        "strategy": "direct",
+        "mapping_source": "rgbd",
+        "mapping_hz": 2.0,
+        "voxel_size": 0.01,
+        "fixture_settle_seconds": 5.0,
+        "objects": [
+          {
+            "name": "ThinPost",
+            "center": [
+              0.45,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.035,
+              0.06,
+              0.2
+            ],
+            "moving": false
+          }
+        ],
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "unique_physics_samples": 141,
+      "duplicate_final_hold_samples_removed": 1,
+      "cohorts": {
+        "no_sdk_contact_report": {
+          "physics_samples": 103,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 103,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 102,
+              "minimum": 0.27429609060233356,
+              "p50": 0.435466445622853,
+              "p95": 0.665778244581463,
+              "p99": 0.684222257215114,
+              "maximum": 0.6873213886376491
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 103,
+              "minimum": 0.0,
+              "p50": 0.4256584048271179,
+              "p95": 0.66548912525177,
+              "p99": 0.6841981232166291,
+              "maximum": 0.687294065952301
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 103,
+              "minimum": 19.4627742767334,
+              "p50": 19.728313446044922,
+              "p95": 20.33675880432129,
+              "p99": 26.747244186401385,
+              "maximum": 38.95984649658203
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 102,
+              "minimum": 0.008075441216672169,
+              "p50": 0.010249174787245352,
+              "p95": 0.014575714204274334,
+              "p99": 0.03371339723566986,
+              "maximum": 0.05768072026872981
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 103,
+              "minimum": 6.290308566880842e-05,
+              "p50": 0.00012738922418842336,
+              "p95": 0.00037536491331525697,
+              "p99": 0.002384418457065995,
+              "maximum": 0.003564902212188914
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 103,
+              "minimum": 148.29549008037398,
+              "p50": 148.7799510200186,
+              "p95": 151.0725304096092,
+              "p99": 154.50299466024103,
+              "maximum": 171.67950288642402
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 102,
+              "minimum": 0.08836739300064507,
+              "p50": 0.16760372450060151,
+              "p95": 0.2977605282826021,
+              "p99": 0.29848482714790014,
+              "maximum": 0.29852471262990565
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 102,
+              "minimum": 0.006640975657635238,
+              "p50": 0.008344979702545493,
+              "p95": 0.011289536435572543,
+              "p99": 0.02597410528978298,
+              "maximum": 0.0393309520864823
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 103,
+              "minimum": 0.0,
+              "p50": 0.1629516624796428,
+              "p95": 0.3008949839138574,
+              "p99": 0.3012666246703072,
+              "maximum": 0.30127408423445096
+            }
+          }
+        },
+        "nonpenetrating_zero_impulse_reports": {
+          "physics_samples": 34,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 34,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 34,
+              "minimum": 0.44400212833274233,
+              "p50": 0.5063608024677215,
+              "p95": 0.6896826265172781,
+              "p99": 0.6903645155388742,
+              "maximum": 0.6904542086036544
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 34,
+              "minimum": 0.44523346424102783,
+              "p50": 0.517133891582489,
+              "p95": 0.6896936565637588,
+              "p99": 0.6903741216659546,
+              "maximum": 0.6904690861701965
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 34,
+              "minimum": 19.679197311401367,
+              "p50": 19.799078941345215,
+              "p95": 20.059816455841066,
+              "p99": 20.087215538024903,
+              "maximum": 20.093332290649414
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 34,
+              "minimum": 0.00858860863510752,
+              "p50": 0.009254819048589963,
+              "p95": 0.011037647147968243,
+              "p99": 0.011153476422646467,
+              "maximum": 0.011182036624491243
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 34,
+              "minimum": 0.00010952606978864576,
+              "p50": 0.0001725610425437063,
+              "p95": 0.0006896958355951653,
+              "p99": 0.002090487657764475,
+              "maximum": 0.0025838301295777466
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 34,
+              "minimum": 147.96431268455743,
+              "p50": 148.31998523882626,
+              "p95": 148.93775925855041,
+              "p99": 149.0245811050229,
+              "maximum": 149.04534399194804
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 34,
+              "minimum": 0.2898571005200864,
+              "p50": 0.29497098574026787,
+              "p95": 0.2985747814982731,
+              "p99": 0.29858944705806484,
+              "maximum": 0.2985922165946219
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 34,
+              "minimum": 0.006812971099173685,
+              "p50": 0.007114372363605785,
+              "p95": 0.008363562523715003,
+              "p99": 0.008532957492465085,
+              "maximum": 0.008578040527245812
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 34,
+              "minimum": 0.29108978869087326,
+              "p50": 0.29502328217599477,
+              "p95": 0.30110180572630507,
+              "p99": 0.30119701536344556,
+              "maximum": 0.30121771425976107
+            }
+          }
+        },
+        "physical_contact_observed": {
+          "physics_samples": 4,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 4,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 4,
+              "minimum": 0.482665275196307,
+              "p50": 0.6655695687309877,
+              "p95": 1.1118994073324213,
+              "p99": 1.1573907427360473,
+              "maximum": 1.168763576586954
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 4,
+              "minimum": 0.4929119050502777,
+              "p50": 10.771689355373383,
+              "p95": 20.743679237365722,
+              "p99": 20.751517524719237,
+              "maximum": 20.753477096557617
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 4,
+              "minimum": 19.349515914916992,
+              "p50": 29.240488052368164,
+              "p95": 38.88920631408691,
+              "p99": 38.912490921020506,
+              "maximum": 38.918312072753906
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 4,
+              "minimum": 0.010246629853970735,
+              "p50": 10.61480165516459,
+              "p95": 20.062391838796053,
+              "p99": 20.129828777924345,
+              "maximum": 20.146688012706417
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 4,
+              "minimum": 0.005932769101251512,
+              "p50": 0.0099388872117879,
+              "p95": 0.020110711983903233,
+              "p99": 0.021056415794308232,
+              "maximum": 0.021292841746909486
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 4,
+              "minimum": 147.19690275437216,
+              "p50": 163.20097390624127,
+              "p95": 181.056879061947,
+              "p99": 181.58118247458734,
+              "maximum": 181.71225832774743
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 4,
+              "minimum": 0.23746551773159544,
+              "p50": 0.2606745827004098,
+              "p95": 0.2943011335811137,
+              "p99": 0.29634093505645226,
+              "maximum": 0.2968508854252869
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 4,
+              "minimum": 0.007594884901906012,
+              "p50": 0.06797134357658159,
+              "p95": 0.07459063230930092,
+              "p99": 0.0747689728632198,
+              "maximum": 0.07481355800169952
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 4,
+              "minimum": 0.282696923611722,
+              "p50": 0.29049547512990137,
+              "p95": 0.2993466206407894,
+              "p99": 0.3002983426875072,
+              "maximum": 0.3005362731991867
+            }
+          }
+        }
+      },
+      "contact_severity": {
+        "strict_v2_success": false,
+        "strict_zero_reported_contacts": false,
+        "goal_status": "success",
+        "failure_code": null,
+        "physical_classification": "measured_physical_contact_ungraded",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 139,
+        "reported_physics_steps": 38,
+        "observed_physical_contact_steps": 4,
+        "pair_contact_episodes": 1,
+        "pair_contact_samples": 38,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 141,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 0.6333333333333336,
+        "sampled_physical_contact_duration_s": 0.06666666666666667,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": -0.002606574445962906,
+        "sum_observed_pair_normal_impulses_ns": 0.3682910902716685,
+        "depth_m": {
+          "count": 139,
+          "minimum": 0.0,
+          "mean": 0.00010838902223748054,
+          "p50": 0.0,
+          "p95": 0.00025622633984311754,
+          "p99": 0.0023383786762133244,
+          "maximum": 0.002606574445962906
+        },
+        "normal_pair_impulse_ns": {
+          "count": 38,
+          "minimum": 0.0,
+          "mean": 0.009691870796622856,
+          "p50": 0.0,
+          "p95": 0.018758521637937346,
+          "p99": 0.19972616688581213,
+          "maximum": 0.24443811806850135
+        },
+        "normal_point_impulse_ns": {
+          "count": 139,
+          "minimum": 0.0,
+          "mean": 0.0026495761890048095,
+          "p50": 0.0,
+          "p95": 2.579654392320516e-05,
+          "p99": 0.06119928948581235,
+          "maximum": 0.2285042405128479
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 38,
+          "minimum": 0.0,
+          "mean": 0.5815122477973713,
+          "p50": 0.0,
+          "p95": 1.1255112982762407,
+          "p99": 11.983570013148729,
+          "maximum": 14.666287084110081
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 139,
+          "minimum": 0.26317893725799274,
+          "mean": 0.37388572630042793,
+          "p50": 0.29639944022731285,
+          "p95": 0.45905918974611504,
+          "p99": 1.8643483115023496,
+          "maximum": 1.8679793321228384
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 139,
+          "minimum": 0.26317893725799274,
+          "mean": 0.37388572630042793,
+          "p50": 0.29639944022731285,
+          "p95": 0.45905918974611504,
+          "p99": 1.8643483115023496,
+          "maximum": 1.8679793321228384
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 139,
+          "minimum": 0.0047325738435742585,
+          "mean": 0.09487655311232655,
+          "p50": 0.05789831622088529,
+          "p95": 0.2789220456463959,
+          "p99": 0.4395527065228012,
+          "maximum": 0.44408813153626325
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 139,
+          "minimum": 0.1953203654631631,
+          "mean": 0.2921777529213766,
+          "p50": 0.29356273889025447,
+          "p95": 0.3034911176341271,
+          "p99": 0.3046236788298938,
+          "maximum": 0.3049365957492733
+        },
+        "contact_points_with_kinematics": 139,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {
+          "/Franka/panda_hand": 139
+        },
+        "points_by_pair": [
+          {
+            "sensor": "/Franka/panda_hand",
+            "obstacle": "/World/ReactiveEvaluation/ThinPost",
+            "points": 139
+          }
+        ],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 141,
+            "velocities": 141,
+            "measured_efforts": 141,
+            "explicit_applied_efforts": 141,
+            "incoming_joint_wrenches": 141
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 987,
+            "minimum": 1.2748506605930743e-07,
+            "mean": 0.0001496946079974901,
+            "p50": 4.145529379533108e-05,
+            "p95": 0.0002412754013465988,
+            "p99": 0.0022616210579872106,
+            "maximum": 0.021292841746909486
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 987,
+            "minimum": 6.05359673500061e-09,
+            "mean": 5.181787500678312,
+            "p50": 0.8576174974441528,
+            "p95": 19.916897010803222,
+            "p99": 20.34437210083008,
+            "maximum": 38.95984649658203
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 1551,
+            "minimum": 0.0,
+            "mean": 49.52522841286693,
+            "p50": 20.82058964138373,
+            "p95": 148.75128817826334,
+            "p99": 150.31618738018165,
+            "maximum": 181.71225832774743
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "reference_observer_ms": {
+        "count": 142,
+        "mean": 0.2328859458506947,
+        "p50": 0.2130270004272461,
+        "p95": 0.35296808928251266,
+        "p99": 0.48052812460809996,
+        "worst": 0.7234201766550541
+      }
+    },
+    "partial": {
+      "artifacts": {
+        "result.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/result.json",
+          "sha256": "ebee83a39397ebe0e9decf8c7bc9e0382db5d18ace04d7a9c505a53a5c3b0f4e"
+        },
+        "trace.json": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/trace.json",
+          "sha256": "d85e18482d6106f22931f45fc689c81e38d444d2f583a9916ad19a2fdace3df6"
+        },
+        "runtime_profile.toml": {
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/runtime_profile.toml",
+          "sha256": "91c877ad6cbc6bcd9b155c89d91d5e16d2a0f23f0130c475f2eb733788399b16"
+        }
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "source_hashes": {
+        "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+        "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7",
+        "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+        "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+        "tests/isaac/test_reactive_motion.py": "6a6a5bd3c3b19da66fdc6edf4a4acb1fe9c3da027a7309c59a33d6799dad3f89",
+        "tests/support/mapping_evidence_audit.py": "15470426110ec23b3c0800df777df86dff877bb182c25fc2250a0290ca591f72",
+        "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad",
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/bootstrap.py": "dec753c6778365c86581852ceb47da30a0b6f57e8edde4ec402027c122bcdf6d",
+        "robot_skill_stack/integrations/isaac/manipulation/factory.py": "3bac19fa8c067a3e36a95198f0f4c32ae1445ae5169f86b7d5fa9c199cb9080b",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py": "1cd12bf744bcb00e26960f0b1a891d0ba18cf2e6869298f339057e56303b1393",
+        "robot_skill_stack/integrations/isaac/manipulation/franka_feedback.py": "45705c10851ab77bc8e0325bf35373681191ea7025794e6bcc65ef1c4d2d1f76",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/direct.py": "f8ef240616c1e8acb39a9b0a1b96c8d3dd5b67906de2c93fcd1530dcf0e098ee",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/reactive.py": "11fbfce736ee63c4917c896663c6c364906a90081c949208347ae7673c2f2bb0",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5",
+        "robot_skill_stack/world/spatial_mapping/obstacles.py": "de88595d10825944d356916b1a3ddfb66c777ed93d0f84c7fd5176bf807d69a2",
+        "robot_skill_stack/world/spatial_mapping/runtime.py": "a2b479d781d696328b122e2fd207c1e2fad530dcf6a31bdbd8881ac2b1ef422c",
+        "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+        "robot_skill_stack/world/spatial_mapping/robot_filter.py": "3124306fb240b40bdd54727691e4d55ef132234c2738e0f66787579c8127db07",
+        "robot_skill_stack/runtime/process_worker.py": "42ab1c61a135b6923d4029246ecf8c318dca197a0829410f7090ecf1217c315b",
+        "robot_skill_stack/runtime/worker_process.py": "4ac1d67a575f2a58482479f95a09c3cdb8146a12c345cc8475b26cae6625ee22",
+        "robot_skill_stack/integrations/isaac/observation_runtime.py": "8259ce2fa9f6a8a2dc1de7671a7ea34b28e19b7fa2258c5802f40cf89dafa775"
+      },
+      "configuration": {
+        "strategy": "direct",
+        "mapping_source": "rgbd",
+        "mapping_hz": 2.0,
+        "voxel_size": 0.01,
+        "fixture_settle_seconds": 5.0,
+        "objects": [
+          {
+            "name": "Post",
+            "center": [
+              0.45,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.09,
+              0.12,
+              0.26
+            ],
+            "moving": false
+          },
+          {
+            "name": "Occluder",
+            "center": [
+              0.79,
+              -0.3,
+              0.53
+            ],
+            "dimensions": [
+              0.08,
+              0.4,
+              0.4
+            ],
+            "moving": false
+          }
+        ],
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "unique_physics_samples": 182,
+      "duplicate_final_hold_samples_removed": 1,
+      "cohorts": {
+        "no_sdk_contact_report": {
+          "physics_samples": 73,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 73,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 72,
+              "minimum": 0.282896146325223,
+              "p50": 1.5320240652250612,
+              "p95": 2.610117537745664,
+              "p99": 2.610129554041424,
+              "maximum": 2.610139710672364
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 73,
+              "minimum": 0.0,
+              "p50": 1.4914567470550537,
+              "p95": 2.6099967479705812,
+              "p99": 2.6100000286102296,
+              "maximum": 2.6100003719329834
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 73,
+              "minimum": 17.663347244262695,
+              "p50": 19.56804847717285,
+              "p95": 19.938070297241207,
+              "p99": 30.230731964111342,
+              "maximum": 38.95964431762695
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 72,
+              "minimum": 0.006524247393417504,
+              "p50": 0.012707710082277002,
+              "p95": 0.020282063749839634,
+              "p99": 0.4240777481293344,
+              "maximum": 1.321123280281551
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 73,
+              "minimum": 0.0001038660200429753,
+              "p50": 0.00055728924145107,
+              "p95": 0.0034564421225810145,
+              "p99": 0.009947298210500326,
+              "maximum": 0.019364083706831625
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 73,
+              "minimum": 146.24197746269732,
+              "p50": 148.70604788096787,
+              "p95": 151.5806933410857,
+              "p99": 159.35965811824022,
+              "maximum": 171.67915916097363
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 72,
+              "minimum": 0.07880968493772972,
+              "p50": 0.17429722443733037,
+              "p95": 0.36645846395397863,
+              "p99": 0.3758279588864999,
+              "maximum": 0.37598409164713087
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 72,
+              "minimum": 0.006436888732947069,
+              "p50": 0.009808846491856704,
+              "p95": 0.014150542745659118,
+              "p99": 0.029891134410675937,
+              "maximum": 0.039330186787154095
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 73,
+              "minimum": 0.0,
+              "p50": 0.170428102082927,
+              "p95": 0.36442812615786435,
+              "p99": 0.3748854513566529,
+              "maximum": 0.3750101245852376
+            }
+          }
+        },
+        "nonpenetrating_zero_impulse_reports": {
+          "physics_samples": 11,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 11,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 11,
+              "minimum": 0.513743135361359,
+              "p50": 2.6100109646463636,
+              "p95": 2.610111100444364,
+              "p99": 2.610111100444364,
+              "maximum": 2.610111100444364
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 11,
+              "minimum": 0.5251930356025696,
+              "p50": 2.609978437423706,
+              "p95": 2.6099995374679565,
+              "p99": 2.610000395774841,
+              "maximum": 2.6100006103515625
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 11,
+              "minimum": 18.572782516479492,
+              "p50": 19.689285278320312,
+              "p95": 25.5623779296875,
+              "p99": 27.398757934570312,
+              "maximum": 27.857852935791016
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 11,
+              "minimum": 0.006417161042162195,
+              "p50": 0.011538770874937376,
+              "p95": 0.021822333909697456,
+              "p99": 0.027631239327098638,
+              "maximum": 0.029083465681448928
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 11,
+              "minimum": 0.00010995238732203205,
+              "p50": 0.004052472722571032,
+              "p95": 0.03321405839154923,
+              "p99": 0.038553575007993286,
+              "maximum": 0.03988845416210429
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 11,
+              "minimum": 148.3124068643235,
+              "p50": 150.68310173479074,
+              "p95": 155.0800829415303,
+              "p99": 155.66021981829408,
+              "maximum": 155.805254037485
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 11,
+              "minimum": 0.21844798878755836,
+              "p50": 0.31641807132686056,
+              "p95": 0.3646884832495542,
+              "p99": 0.3800823280509856,
+              "maximum": 0.3839307892513434
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 11,
+              "minimum": 0.006411711450484635,
+              "p50": 0.00874556918134881,
+              "p95": 0.012447127816767569,
+              "p99": 0.012533027023005959,
+              "maximum": 0.012554501824565556
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 11,
+              "minimum": 0.22648024627927132,
+              "p50": 0.3266240218574169,
+              "p95": 0.36402340373097775,
+              "p99": 0.3788664630472807,
+              "maximum": 0.38257722787635645
+            }
+          }
+        },
+        "physical_contact_observed": {
+          "physics_samples": 98,
+          "features": {
+            "max_arm_abs_explicit_effort_command_nm": {
+              "count": 98,
+              "minimum": 0.0,
+              "p50": 0.0,
+              "p95": 0.0,
+              "p99": 0.0,
+              "maximum": 0.0
+            },
+            "max_arm_abs_frame_joint_velocity_rad_s": {
+              "count": 98,
+              "minimum": 0.5810379678959714,
+              "p50": 1.4650582503124494,
+              "p95": 7.277091958078413,
+              "p99": 8.569240218515091,
+              "maximum": 11.758324486700658
+            },
+            "max_arm_abs_sdk_joint_velocity_rad_s": {
+              "count": 98,
+              "minimum": 0.5758001804351807,
+              "p50": 2.0542907118797302,
+              "p95": 19.641813182830777,
+              "p99": 41.071661949157765,
+              "maximum": 86.04985046386719
+            },
+            "max_arm_abs_solver_effort_nm": {
+              "count": 98,
+              "minimum": 16.520708084106445,
+              "p50": 26.290841102600098,
+              "p95": 87.00003166198731,
+              "p99": 87.02200996398926,
+              "maximum": 87.03727722167969
+            },
+            "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+              "count": 98,
+              "minimum": 0.07345665852751976,
+              "p50": 0.7602518426053326,
+              "p95": 21.58078008638031,
+              "p99": 47.308543448047104,
+              "maximum": 93.66868980726693
+            },
+            "max_arm_tracking_error_rad": {
+              "count": 98,
+              "minimum": 0.0001046931785257943,
+              "p50": 0.005628571140591898,
+              "p95": 0.06610908762765652,
+              "p99": 0.12887890756840176,
+              "maximum": 0.15602641419796015
+            },
+            "max_incoming_joint_reaction_force_norm_n": {
+              "count": 98,
+              "minimum": 139.77048110279637,
+              "p50": 156.25888806482533,
+              "p95": 281.91839592569136,
+              "p99": 290.51564783149746,
+              "maximum": 292.7223819472648
+            },
+            "max_robot_frame_com_speed_m_s": {
+              "count": 98,
+              "minimum": 0.08605672568438892,
+              "p50": 0.29927952875761094,
+              "p95": 0.37771492981703964,
+              "p99": 0.4285140627745485,
+              "maximum": 0.44232669368722366
+            },
+            "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+              "count": 98,
+              "minimum": 0.005980184739407796,
+              "p50": 0.038663658590614866,
+              "p95": 0.09819244359588335,
+              "p99": 0.2466865942280249,
+              "maximum": 0.34079160252640106
+            },
+            "max_robot_sdk_com_speed_m_s": {
+              "count": 98,
+              "minimum": 0.08236481449935458,
+              "p50": 0.3013780403957378,
+              "p95": 0.42891544213156285,
+              "p99": 0.4739946255497113,
+              "maximum": 0.4809456102051917
+            }
+          }
+        }
+      },
+      "contact_severity": {
+        "strict_v2_success": false,
+        "strict_zero_reported_contacts": false,
+        "goal_status": "success",
+        "failure_code": null,
+        "physical_classification": "measured_physical_contact_ungraded",
+        "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+        "severity_pass": null,
+        "reported_points": 839,
+        "reported_physics_steps": 109,
+        "observed_physical_contact_steps": 98,
+        "pair_contact_episodes": 4,
+        "pair_contact_samples": 258,
+        "pairs_missing_physics_step_index": 0,
+        "unique_physics_samples": 182,
+        "duplicate_samples_removed": 1,
+        "sampled_reported_contact_duration_s": 1.816666666666665,
+        "sampled_physical_contact_duration_s": 1.6333333333333324,
+        "reported_steps_with_unverified_duration": 0,
+        "physical_steps_with_unverified_duration": 0,
+        "minimum_reported_separation_m": -0.011872548609972,
+        "sum_observed_pair_normal_impulses_ns": 139.22308838760364,
+        "depth_m": {
+          "count": 839,
+          "minimum": 0.0,
+          "mean": 0.00011717194283478199,
+          "p50": 0.0,
+          "p95": 0.00044012833386658935,
+          "p99": 0.002838684916496277,
+          "maximum": 0.011872548609972
+        },
+        "normal_pair_impulse_ns": {
+          "count": 258,
+          "minimum": 0.0,
+          "mean": 0.539624373595363,
+          "p50": 0.0,
+          "p95": 3.200188541412353,
+          "p99": 3.4083930158615114,
+          "maximum": 3.668360471725464
+        },
+        "normal_point_impulse_ns": {
+          "count": 839,
+          "minimum": 0.0,
+          "mean": 0.16593931869797812,
+          "p50": 0.0,
+          "p95": 1.5253088831901396,
+          "p99": 3.2224676990509034,
+          "maximum": 3.668360471725464
+        },
+        "normal_pair_step_average_force_n": {
+          "count": 258,
+          "minimum": 0.0,
+          "mean": 32.37746241572177,
+          "p50": 0.0,
+          "p95": 192.01131248474118,
+          "p99": 204.50358095169068,
+          "maximum": 220.10162830352783
+        },
+        "force_unavailable_reasons": {},
+        "robot_contact_point_speed_m_s": {
+          "count": 839,
+          "minimum": 0.005821626116588496,
+          "mean": 0.38357999847181296,
+          "p50": 0.31722329816934397,
+          "p95": 0.7879000627134163,
+          "p99": 3.452136000271113,
+          "maximum": 8.832288091380354
+        },
+        "relative_contact_point_speed_m_s": {
+          "count": 839,
+          "minimum": 0.005821626116588496,
+          "mean": 0.38357999847181296,
+          "p50": 0.31722329816934397,
+          "p95": 0.7879000627134163,
+          "p99": 3.452136000271113,
+          "maximum": 8.832288091380354
+        },
+        "absolute_normal_relative_speed_m_s": {
+          "count": 839,
+          "minimum": 1.681070295695445e-05,
+          "mean": 0.11506170187946863,
+          "p50": 0.03130149589235938,
+          "p95": 0.3632514859717094,
+          "p99": 1.856018508119928,
+          "maximum": 6.502537266036591
+        },
+        "robot_contact_point_displacement_speed_m_s": {
+          "count": 839,
+          "minimum": 0.00426756375429847,
+          "mean": 0.1974212462284481,
+          "p50": 0.1730851916151019,
+          "p95": 0.4078654513017217,
+          "p99": 0.6275119593716256,
+          "maximum": 0.9429483285125261
+        },
+        "contact_points_with_kinematics": 839,
+        "contact_points_without_kinematics": 0,
+        "invalid_buffer_fields": {},
+        "points_by_robot_link": {
+          "/Franka/panda_hand": 297,
+          "/Franka/panda_link6": 270,
+          "/Franka/panda_link7": 272
+        },
+        "points_by_pair": [
+          {
+            "sensor": "/Franka/panda_hand",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 297
+          },
+          {
+            "sensor": "/Franka/panda_link6",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 270
+          },
+          {
+            "sensor": "/Franka/panda_link7",
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "points": 272
+          }
+        ],
+        "joint_feedback": {
+          "available_samples": {
+            "positions": 182,
+            "velocities": 182,
+            "measured_efforts": 182,
+            "explicit_applied_efforts": 182,
+            "incoming_joint_wrenches": 182
+          },
+          "unavailable_samples": {},
+          "arm_position_tracking_error_rad": {
+            "count": 1274,
+            "minimum": 5.530850067936299e-07,
+            "mean": 0.0017056136869380524,
+            "p50": 0.00018166658922572076,
+            "p95": 0.0054584503429971004,
+            "p99": 0.028348560729983645,
+            "maximum": 0.15602641419796015
+          },
+          "raw_vs_controller_arm_velocity_error_rad_s": {
+            "count": 0
+          },
+          "arm_solver_projected_effort_abs_nm": {
+            "count": 1274,
+            "minimum": 4.423782229423523e-08,
+            "mean": 11.785375025668884,
+            "p50": 1.6807705760002136,
+            "p95": 79.67470054626463,
+            "p99": 87.00000762939453,
+            "maximum": 87.03727722167969
+          },
+          "incoming_joint_reaction_force_norm_n": {
+            "count": 2002,
+            "minimum": 0.0,
+            "mean": 69.01183113293301,
+            "p50": 24.246067294530814,
+            "p95": 236.9392579695394,
+            "p99": 268.9698861344075,
+            "maximum": 292.7223819472648
+          },
+          "contact_detector_validated": false,
+          "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+        },
+        "contact_buffer_saturated": false,
+        "methods": {
+          "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+          "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+          "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+          "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+          "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+          "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+        },
+        "limitations": [
+          "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+          "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+          "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+          "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+          "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+        ]
+      },
+      "reference_observer_ms": {
+        "count": 183,
+        "mean": 0.26094898724002263,
+        "p50": 0.24666031822562218,
+        "p95": 0.4314286634325982,
+        "p99": 0.6046095117926599,
+        "worst": 0.8595450781285763
+      }
+    }
+  },
+  "empirical_empty_control_range_overlap": {
+    "static": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.0,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 98,
+        "fraction_inside_empty_control_range": 1.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.2717846490257044,
+        "empty_control_observed_maximum": 0.6798827293576367,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 18,
+        "fraction_inside_empty_control_range": 0.1836734693877551,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.6798512935638428,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 20,
+        "fraction_inside_empty_control_range": 0.20408163265306123,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "empty_control_observed_minimum": 19.462932586669922,
+        "empty_control_observed_maximum": 38.95497131347656,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 19,
+        "fraction_inside_empty_control_range": 0.19387755102040816,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "empty_control_observed_minimum": 0.0080918224986882,
+        "empty_control_observed_maximum": 0.0576773302550245,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 0,
+        "fraction_inside_empty_control_range": 0.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_tracking_error_rad": {
+        "empty_control_observed_minimum": 6.298885515804153e-05,
+        "empty_control_observed_maximum": 0.0035643999822364547,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 21,
+        "fraction_inside_empty_control_range": 0.21428571428571427,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "empty_control_observed_minimum": 147.94763070622102,
+        "empty_control_observed_maximum": 171.67192819895322,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 45,
+        "fraction_inside_empty_control_range": 0.45918367346938777,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.08771089253112911,
+        "empty_control_observed_maximum": 0.29859626213279766,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 48,
+        "fraction_inside_empty_control_range": 0.4897959183673469,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "empty_control_observed_minimum": 0.006661062471785854,
+        "empty_control_observed_maximum": 0.03932240629809174,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 29,
+        "fraction_inside_empty_control_range": 0.29591836734693877,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.3012739525813672,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 49,
+        "fraction_inside_empty_control_range": 0.5,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      }
+    },
+    "sparse": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.0,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 4,
+        "fraction_inside_empty_control_range": 1.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.2717846490257044,
+        "empty_control_observed_maximum": 0.6798827293576367,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 2,
+        "fraction_inside_empty_control_range": 0.5,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.6798512935638428,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 1,
+        "fraction_inside_empty_control_range": 0.25,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "empty_control_observed_minimum": 19.462932586669922,
+        "empty_control_observed_maximum": 38.95497131347656,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 3,
+        "fraction_inside_empty_control_range": 0.75,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "empty_control_observed_minimum": 0.0080918224986882,
+        "empty_control_observed_maximum": 0.0576773302550245,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 1,
+        "fraction_inside_empty_control_range": 0.25,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_tracking_error_rad": {
+        "empty_control_observed_minimum": 6.298885515804153e-05,
+        "empty_control_observed_maximum": 0.0035643999822364547,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 0,
+        "fraction_inside_empty_control_range": 0.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "empty_control_observed_minimum": 147.94763070622102,
+        "empty_control_observed_maximum": 171.67192819895322,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 1,
+        "fraction_inside_empty_control_range": 0.25,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.08771089253112911,
+        "empty_control_observed_maximum": 0.29859626213279766,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 4,
+        "fraction_inside_empty_control_range": 1.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "empty_control_observed_minimum": 0.006661062471785854,
+        "empty_control_observed_maximum": 0.03932240629809174,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 1,
+        "fraction_inside_empty_control_range": 0.25,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.3012739525813672,
+        "physical_contact_samples": 4,
+        "contact_samples_inside_empty_control_range": 4,
+        "fraction_inside_empty_control_range": 1.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      }
+    },
+    "partial": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.0,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 98,
+        "fraction_inside_empty_control_range": 1.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.2717846490257044,
+        "empty_control_observed_maximum": 0.6798827293576367,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 18,
+        "fraction_inside_empty_control_range": 0.1836734693877551,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.6798512935638428,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 19,
+        "fraction_inside_empty_control_range": 0.19387755102040816,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "empty_control_observed_minimum": 19.462932586669922,
+        "empty_control_observed_maximum": 38.95497131347656,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 19,
+        "fraction_inside_empty_control_range": 0.19387755102040816,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "empty_control_observed_minimum": 0.0080918224986882,
+        "empty_control_observed_maximum": 0.0576773302550245,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 0,
+        "fraction_inside_empty_control_range": 0.0,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_arm_tracking_error_rad": {
+        "empty_control_observed_minimum": 6.298885515804153e-05,
+        "empty_control_observed_maximum": 0.0035643999822364547,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 20,
+        "fraction_inside_empty_control_range": 0.20408163265306123,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "empty_control_observed_minimum": 147.94763070622102,
+        "empty_control_observed_maximum": 171.67192819895322,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 45,
+        "fraction_inside_empty_control_range": 0.45918367346938777,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.08771089253112911,
+        "empty_control_observed_maximum": 0.29859626213279766,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 47,
+        "fraction_inside_empty_control_range": 0.47959183673469385,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "empty_control_observed_minimum": 0.006661062471785854,
+        "empty_control_observed_maximum": 0.03932240629809174,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 27,
+        "fraction_inside_empty_control_range": 0.2755102040816326,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "empty_control_observed_minimum": 0.0,
+        "empty_control_observed_maximum": 0.3012739525813672,
+        "physical_contact_samples": 98,
+        "contact_samples_inside_empty_control_range": 49,
+        "fraction_inside_empty_control_range": 0.5,
+        "interpretation": "Empirical range overlap only; the empty-control extrema were not selected or validated as detector thresholds."
+      }
+    }
+  },
+  "within_run_signal_range_overlap": {
+    "static": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "physical_contact_observed_minimum": 0.0,
+        "physical_contact_observed_maximum": 0.0,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 72,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.5764478144412137,
+        "physical_contact_observed_maximum": 11.778566223010692,
+        "no_sdk_report_samples": 71,
+        "no_sdk_report_samples_inside_contact_range": 53,
+        "fraction_inside_contact_range": 0.7464788732394366,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.57121342420578,
+        "physical_contact_observed_maximum": 86.04961395263672,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 53,
+        "fraction_inside_contact_range": 0.7361111111111112,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "physical_contact_observed_minimum": 16.535049438476562,
+        "physical_contact_observed_maximum": 87.03743743896484,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 72,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "physical_contact_observed_minimum": 0.06851605960866264,
+        "physical_contact_observed_maximum": 93.66902550059646,
+        "no_sdk_report_samples": 71,
+        "no_sdk_report_samples_inside_contact_range": 1,
+        "fraction_inside_contact_range": 0.014084507042253521,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_tracking_error_rad": {
+        "physical_contact_observed_minimum": 0.00010487203042774951,
+        "physical_contact_observed_maximum": 0.15637557427146698,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 71,
+        "fraction_inside_contact_range": 0.9861111111111112,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "physical_contact_observed_minimum": 139.8425847239172,
+        "physical_contact_observed_maximum": 292.78406552085005,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 72,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.08604523036551391,
+        "physical_contact_observed_maximum": 0.44233791676898565,
+        "no_sdk_report_samples": 71,
+        "no_sdk_report_samples_inside_contact_range": 69,
+        "fraction_inside_contact_range": 0.971830985915493,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "physical_contact_observed_minimum": 0.0060291594488157425,
+        "physical_contact_observed_maximum": 0.34060811256769036,
+        "no_sdk_report_samples": 71,
+        "no_sdk_report_samples_inside_contact_range": 71,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.08230543176045255,
+        "physical_contact_observed_maximum": 0.48104528468372887,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 70,
+        "fraction_inside_contact_range": 0.9722222222222222,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      }
+    },
+    "sparse": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "physical_contact_observed_minimum": 0.0,
+        "physical_contact_observed_maximum": 0.0,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 103,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.482665275196307,
+        "physical_contact_observed_maximum": 1.168763576586954,
+        "no_sdk_report_samples": 102,
+        "no_sdk_report_samples_inside_contact_range": 38,
+        "fraction_inside_contact_range": 0.37254901960784315,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.4929119050502777,
+        "physical_contact_observed_maximum": 20.753477096557617,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 39,
+        "fraction_inside_contact_range": 0.3786407766990291,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "physical_contact_observed_minimum": 19.349515914916992,
+        "physical_contact_observed_maximum": 38.918312072753906,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 102,
+        "fraction_inside_contact_range": 0.9902912621359223,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "physical_contact_observed_minimum": 0.010246629853970735,
+        "physical_contact_observed_maximum": 20.146688012706417,
+        "no_sdk_report_samples": 102,
+        "no_sdk_report_samples_inside_contact_range": 51,
+        "fraction_inside_contact_range": 0.5,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_tracking_error_rad": {
+        "physical_contact_observed_minimum": 0.005932769101251512,
+        "physical_contact_observed_maximum": 0.021292841746909486,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 0,
+        "fraction_inside_contact_range": 0.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "physical_contact_observed_minimum": 147.19690275437216,
+        "physical_contact_observed_maximum": 181.71225832774743,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 103,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.23746551773159544,
+        "physical_contact_observed_maximum": 0.2968508854252869,
+        "no_sdk_report_samples": 102,
+        "no_sdk_report_samples_inside_contact_range": 31,
+        "fraction_inside_contact_range": 0.30392156862745096,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "physical_contact_observed_minimum": 0.007594884901906012,
+        "physical_contact_observed_maximum": 0.07481355800169952,
+        "no_sdk_report_samples": 102,
+        "no_sdk_report_samples_inside_contact_range": 60,
+        "fraction_inside_contact_range": 0.5882352941176471,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.282696923611722,
+        "physical_contact_observed_maximum": 0.3005362731991867,
+        "no_sdk_report_samples": 103,
+        "no_sdk_report_samples_inside_contact_range": 20,
+        "fraction_inside_contact_range": 0.1941747572815534,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      }
+    },
+    "partial": {
+      "max_arm_abs_explicit_effort_command_nm": {
+        "physical_contact_observed_minimum": 0.0,
+        "physical_contact_observed_maximum": 0.0,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 73,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_frame_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.5810379678959714,
+        "physical_contact_observed_maximum": 11.758324486700658,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 54,
+        "fraction_inside_contact_range": 0.75,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_sdk_joint_velocity_rad_s": {
+        "physical_contact_observed_minimum": 0.5758001804351807,
+        "physical_contact_observed_maximum": 86.04985046386719,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 54,
+        "fraction_inside_contact_range": 0.7397260273972602,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_abs_solver_effort_nm": {
+        "physical_contact_observed_minimum": 16.520708084106445,
+        "physical_contact_observed_maximum": 87.03727722167969,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 73,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_raw_vs_frame_joint_velocity_difference_rad_s": {
+        "physical_contact_observed_minimum": 0.07345665852751976,
+        "physical_contact_observed_maximum": 93.66868980726693,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 1,
+        "fraction_inside_contact_range": 0.013888888888888888,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_arm_tracking_error_rad": {
+        "physical_contact_observed_minimum": 0.0001046931785257943,
+        "physical_contact_observed_maximum": 0.15602641419796015,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 72,
+        "fraction_inside_contact_range": 0.9863013698630136,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_incoming_joint_reaction_force_norm_n": {
+        "physical_contact_observed_minimum": 139.77048110279637,
+        "physical_contact_observed_maximum": 292.7223819472648,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 73,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_frame_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.08605672568438892,
+        "physical_contact_observed_maximum": 0.44232669368722366,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 70,
+        "fraction_inside_contact_range": 0.9722222222222222,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_raw_vs_frame_com_velocity_difference_m_s": {
+        "physical_contact_observed_minimum": 0.005980184739407796,
+        "physical_contact_observed_maximum": 0.34079160252640106,
+        "no_sdk_report_samples": 72,
+        "no_sdk_report_samples_inside_contact_range": 72,
+        "fraction_inside_contact_range": 1.0,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      },
+      "max_robot_sdk_com_speed_m_s": {
+        "physical_contact_observed_minimum": 0.08236481449935458,
+        "physical_contact_observed_maximum": 0.4809456102051917,
+        "no_sdk_report_samples": 73,
+        "no_sdk_report_samples_inside_contact_range": 71,
+        "fraction_inside_contact_range": 0.9726027397260274,
+        "interpretation": "Overlapping observed signal magnitudes while current explicit contact view reports no point. This includes post-contact dynamics/recovery; it is not proof that earlier contacts had no effect and not a deployed-detector false-positive rate."
+      }
+    }
+  },
+  "conclusions": [
+    "Joint tracking error, solver effort and link reaction force are nonzero without external contacts. Gravity, inertia, drive feedback and friction are confounds; nonzero resistance is not an unexpected-contact detector.",
+    "Sparse/thin-object contact is confirmed independently by negative separation/normal impulse, yet whole-command solver-effort distribution overlaps the empty scene closely. A generic effort threshold is unsupported by these captures.",
+    "Large static/partial contacts generate larger effort/tracking deviations, but substantial within-contact/noncontact overlap remains. Four scripted traces do not establish sensitivity, specificity, hysteresis, timing guarantees or generalization.",
+    "Explicit applied effort commands are zero under this position/velocity-driven path while solver effort is nonzero. Reading applied effort is not measuring actual drive torque or external force.",
+    "Incoming6D joint wrench is a solver reaction load in each child joint frame. No gravity/inertia compensation, joint-name mapping to a calibrated wrist sensor, external wrench observer or independent force/torque transducer is validated.",
+    "SDK instantaneous velocities during contact can be much larger than frame displacement estimates. Preserve both rather than interpreting solver/depenetration spikes as verified approach speed or changing the established controller feedback.",
+    "Explicit PhysX external-actor contact views reliably label these simulated observations, including positive-separation zero-impulse proximity versus negative separation/normal impulse. That instrumentation does not transfer directly to physical hardware."
+  ],
+  "decisions": {
+    "contact_detector_implemented": false,
+    "pushing_implemented": false,
+    "control_changed": false,
+    "strict_v2_zero_contact_metric_preserved": true,
+    "acceptable_force_threshold": null,
+    "acceptable_penetration_threshold": null,
+    "severity_pass": null,
+    "hardware_safety_claim": false
+  },
+  "limitations": [
+    "One direct run per scene; no repeated randomized trajectories, friction variations, payload variations or physical-robot validation. Empirical range overlap is descriptive and not detector calibration.",
+    "Incoming wrenches include gravity/dynamics/active/passive loads. A real contact observer would require model compensation, baseline conditioning and independently validated discrimination.",
+    "SDK contact forces represent last-step normal impulse divided by verified1/60s physics dt; tangential friction and substep peak force are not measured by this statistic.",
+    "Reported contact frequency is based on sampled physics steps/points, not unique impact events; contact buffer completeness is checked. No threshold reclassifies contact as harmless.",
+    "Raw-vs-controller velocity feedback is unavailable in these captures. Frame-displacement joint velocity is an offline comparison, not an asserted exact copy of the policy feedback state."
+  ]
+}

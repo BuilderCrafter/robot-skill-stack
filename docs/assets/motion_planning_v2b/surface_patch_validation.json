@@ -1,0 +1,619 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_SURFACE_CANDIDATE",
+  "source_sha256": {
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "708c63911148a5a09f8e26fc1ef1b81f98991899aabacdbb01cadd29f2377f64",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "978b9ac536d92f5adc806ab4d34ea74a1916b96606bbdbfff46dc33c32f63b9a"
+  },
+  "protocol": "Five fresh extractors for each mode on the same actual captured1,573,200-cell snapshot, alternating execution order. Source captures only select immutable inputs; full-capture cadence is not used for latency claims.",
+  "focused_units": {
+    "command": "./run_isaac_python.sh -m unittest tests.unit.test_occupancy_obstacles tests.unit.test_mapping_obstacle_product tests.unit.test_spatial_mapping_runtime tests.unit.test_occupancy_temporal_support tests.unit.test_mapping_evidence_audit",
+    "tests": 59,
+    "status": "PASS",
+    "seconds": 0.171
+  },
+  "observations": [
+    {
+      "scenario": "empty",
+      "capture_job": 19,
+      "original_timestamp": 3237625.37662458,
+      "full_capture_format": "uncompressed",
+      "observed_above_plane_cells": 0,
+      "observed_above_plane_cells_matching_actual_physical_endpoint_ids": 0,
+      "observed_above_plane_cells_without_physical_endpoint_attribution": 0,
+      "selected_endpoint_surface_error_m": {},
+      "physical_selected_endpoint_cells": {},
+      "modes": {
+        "exact_temporal": {
+          "diagnostics": {
+            "occupied_voxels": 325,
+            "supported_voxels": 325,
+            "spatial_supported_voxels": 49,
+            "strong_sparse_retained": 276,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": false,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 0,
+            "selected_surface_patches": 0,
+            "candidate_added_unknown_voxels": 0,
+            "added_unknown_voxels": 0,
+            "added_unknown_volume_m3_upper_bound": 0.0,
+            "represented_geometry_voxels": 75,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 314,
+            "proxy_count": 64,
+            "represented_voxels": 75,
+            "omitted_voxels": 250,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 314,
+            "hazard_candidate_boxes": 0,
+            "selected_floor_boxes": 64,
+            "selected_hazard_boxes": 0,
+            "represented_floor_voxels": 75,
+            "omitted_floor_voxels": 250,
+            "padding_m": 0.0
+          },
+          "latency_ms": {
+            "samples": [
+              17.461947165429592,
+              11.427164077758789,
+              10.084404144436121,
+              10.674386750906706,
+              10.520399082452059
+            ],
+            "count": 5,
+            "minimum": 10.084404144436121,
+            "p50": 10.674386750906706,
+            "p95": 16.25499054789543,
+            "maximum": 17.461947165429592
+          },
+          "represented_source_cells": 75,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 0,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {},
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        },
+        "bounded_surface": {
+          "diagnostics": {
+            "occupied_voxels": 325,
+            "supported_voxels": 325,
+            "spatial_supported_voxels": 49,
+            "strong_sparse_retained": 276,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": true,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 0,
+            "selected_surface_patches": 0,
+            "candidate_added_unknown_voxels": 0,
+            "added_unknown_voxels": 0,
+            "added_unknown_volume_m3_upper_bound": 0.0,
+            "represented_geometry_voxels": 75,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 314,
+            "proxy_count": 64,
+            "represented_voxels": 75,
+            "omitted_voxels": 250,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 314,
+            "hazard_candidate_boxes": 0,
+            "selected_floor_boxes": 64,
+            "selected_hazard_boxes": 0,
+            "represented_floor_voxels": 75,
+            "omitted_floor_voxels": 250,
+            "padding_m": 0.0,
+            "surface_points_available": 0,
+            "surface_points_considered": 0,
+            "surface_point_budget": 512,
+            "surface_points_unprocessed": 0,
+            "surface_candidate_budget": 2048,
+            "surface_candidates_considered": 0,
+            "surface_candidate_budget_reached": false,
+            "surface_max_tangent_cells": 6,
+            "surface_max_unknown_distance_cells": 2
+          },
+          "latency_ms": {
+            "samples": [
+              16.004731878638268,
+              12.347844894975424,
+              12.829625979065895,
+              12.283664662390947,
+              12.48604292050004
+            ],
+            "count": 5,
+            "minimum": 12.283664662390947,
+            "p50": 12.48604292050004,
+            "p95": 15.369710698723793,
+            "maximum": 16.004731878638268
+          },
+          "represented_source_cells": 75,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 0,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {},
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        }
+      }
+    },
+    {
+      "scenario": "static",
+      "capture_job": 32,
+      "original_timestamp": 3237226.491468933,
+      "full_capture_format": "compressed",
+      "observed_above_plane_cells": 44,
+      "observed_above_plane_cells_matching_actual_physical_endpoint_ids": 44,
+      "observed_above_plane_cells_without_physical_endpoint_attribution": 0,
+      "selected_endpoint_surface_error_m": {
+        "Post": {
+          "count": 44,
+          "minimum": 1.0547868689592121e-08,
+          "p50": 1.9194380315723514e-07,
+          "p95": 6.565176072004242e-07,
+          "maximum": 7.222327308986642e-07
+        }
+      },
+      "physical_selected_endpoint_cells": {
+        "Post": 44
+      },
+      "modes": {
+        "exact_temporal": {
+          "diagnostics": {
+            "occupied_voxels": 355,
+            "supported_voxels": 355,
+            "spatial_supported_voxels": 58,
+            "strong_sparse_retained": 297,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": false,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 0,
+            "selected_surface_patches": 0,
+            "candidate_added_unknown_voxels": 0,
+            "added_unknown_voxels": 0,
+            "added_unknown_volume_m3_upper_bound": 0.0,
+            "represented_geometry_voxels": 76,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 343,
+            "proxy_count": 64,
+            "represented_voxels": 76,
+            "omitted_voxels": 279,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 299,
+            "hazard_candidate_boxes": 44,
+            "selected_floor_boxes": 20,
+            "selected_hazard_boxes": 44,
+            "represented_floor_voxels": 32,
+            "omitted_floor_voxels": 279,
+            "padding_m": 0.0
+          },
+          "latency_ms": {
+            "samples": [
+              11.161777190864086,
+              10.114999953657389,
+              10.109320282936096,
+              10.699273087084293,
+              10.643908753991127
+            ],
+            "count": 5,
+            "minimum": 10.109320282936096,
+            "p50": 10.643908753991127,
+            "p95": 11.069276370108128,
+            "maximum": 11.161777190864086
+          },
+          "represented_source_cells": 76,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 0,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "Post": 44
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        },
+        "bounded_surface": {
+          "diagnostics": {
+            "occupied_voxels": 355,
+            "supported_voxels": 355,
+            "spatial_supported_voxels": 58,
+            "strong_sparse_retained": 297,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": true,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 11,
+            "selected_surface_patches": 11,
+            "candidate_added_unknown_voxels": 66,
+            "added_unknown_voxels": 66,
+            "added_unknown_volume_m3_upper_bound": 6.6e-05,
+            "represented_geometry_voxels": 153,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 332,
+            "proxy_count": 64,
+            "represented_voxels": 87,
+            "omitted_voxels": 268,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 299,
+            "hazard_candidate_boxes": 33,
+            "selected_floor_boxes": 31,
+            "selected_hazard_boxes": 33,
+            "represented_floor_voxels": 43,
+            "omitted_floor_voxels": 268,
+            "padding_m": 0.0,
+            "surface_points_available": 44,
+            "surface_points_considered": 44,
+            "surface_point_budget": 512,
+            "surface_points_unprocessed": 0,
+            "surface_candidate_budget": 2048,
+            "surface_candidates_considered": 46,
+            "surface_candidate_budget_reached": false,
+            "surface_max_tangent_cells": 6,
+            "surface_max_unknown_distance_cells": 2
+          },
+          "latency_ms": {
+            "samples": [
+              23.507078178226948,
+              23.729504086077213,
+              23.27786898240447,
+              23.354793898761272,
+              23.81935203447938
+            ],
+            "count": 5,
+            "minimum": 23.27786898240447,
+            "p50": 23.507078178226948,
+            "p95": 23.801382444798946,
+            "maximum": 23.81935203447938
+          },
+          "represented_source_cells": 153,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 66,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "Post": 44
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        }
+      }
+    },
+    {
+      "scenario": "sparse",
+      "capture_job": 21,
+      "original_timestamp": 3237657.310545511,
+      "full_capture_format": "uncompressed",
+      "observed_above_plane_cells": 14,
+      "observed_above_plane_cells_matching_actual_physical_endpoint_ids": 14,
+      "observed_above_plane_cells_without_physical_endpoint_attribution": 0,
+      "selected_endpoint_surface_error_m": {
+        "ThinPost": {
+          "count": 14,
+          "minimum": 3.7077070885738195e-08,
+          "p50": 6.075434884067477e-07,
+          "p95": 7.737033268506721e-07,
+          "maximum": 7.830504765715673e-07
+        }
+      },
+      "physical_selected_endpoint_cells": {
+        "ThinPost": 14
+      },
+      "modes": {
+        "exact_temporal": {
+          "diagnostics": {
+            "occupied_voxels": 334,
+            "supported_voxels": 334,
+            "spatial_supported_voxels": 52,
+            "strong_sparse_retained": 282,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": false,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 0,
+            "selected_surface_patches": 0,
+            "candidate_added_unknown_voxels": 0,
+            "added_unknown_voxels": 0,
+            "added_unknown_volume_m3_upper_bound": 0.0,
+            "represented_geometry_voxels": 75,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 323,
+            "proxy_count": 64,
+            "represented_voxels": 75,
+            "omitted_voxels": 259,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 309,
+            "hazard_candidate_boxes": 14,
+            "selected_floor_boxes": 50,
+            "selected_hazard_boxes": 14,
+            "represented_floor_voxels": 61,
+            "omitted_floor_voxels": 259,
+            "padding_m": 0.0
+          },
+          "latency_ms": {
+            "samples": [
+              10.476646944880486,
+              10.427203960716724,
+              10.342837311327457,
+              10.225878097116947,
+              10.512283071875572
+            ],
+            "count": 5,
+            "minimum": 10.225878097116947,
+            "p50": 10.427203960716724,
+            "p95": 10.505155846476555,
+            "maximum": 10.512283071875572
+          },
+          "represented_source_cells": 75,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 0,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "ThinPost": 14
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        },
+        "bounded_surface": {
+          "diagnostics": {
+            "occupied_voxels": 334,
+            "supported_voxels": 334,
+            "spatial_supported_voxels": 52,
+            "strong_sparse_retained": 282,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": true,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 5,
+            "selected_surface_patches": 5,
+            "candidate_added_unknown_voxels": 41,
+            "added_unknown_voxels": 41,
+            "added_unknown_volume_m3_upper_bound": 4.100000000000001e-05,
+            "represented_geometry_voxels": 121,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 318,
+            "proxy_count": 64,
+            "represented_voxels": 80,
+            "omitted_voxels": 254,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 309,
+            "hazard_candidate_boxes": 9,
+            "selected_floor_boxes": 55,
+            "selected_hazard_boxes": 9,
+            "represented_floor_voxels": 66,
+            "omitted_floor_voxels": 254,
+            "padding_m": 0.0,
+            "surface_points_available": 14,
+            "surface_points_considered": 14,
+            "surface_point_budget": 512,
+            "surface_points_unprocessed": 0,
+            "surface_candidate_budget": 2048,
+            "surface_candidates_considered": 15,
+            "surface_candidate_budget_reached": false,
+            "surface_max_tangent_cells": 6,
+            "surface_max_unknown_distance_cells": 2
+          },
+          "latency_ms": {
+            "samples": [
+              20.301334094256163,
+              19.618768710643053,
+              19.816146697849035,
+              20.097993779927492,
+              19.810998812317848
+            ],
+            "count": 5,
+            "minimum": 19.618768710643053,
+            "p50": 19.816146697849035,
+            "p95": 20.26066603139043,
+            "maximum": 20.301334094256163
+          },
+          "represented_source_cells": 121,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 41,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "ThinPost": 14
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        }
+      }
+    },
+    {
+      "scenario": "partial",
+      "capture_job": 21,
+      "original_timestamp": 3237690.984057301,
+      "full_capture_format": "uncompressed",
+      "observed_above_plane_cells": 211,
+      "observed_above_plane_cells_matching_actual_physical_endpoint_ids": 211,
+      "observed_above_plane_cells_without_physical_endpoint_attribution": 0,
+      "selected_endpoint_surface_error_m": {
+        "Post": {
+          "count": 23,
+          "minimum": 5.14025799702722e-09,
+          "p50": 2.4782084456775877e-07,
+          "p95": 5.030155243224143e-07,
+          "maximum": 5.754333390339816e-07
+        },
+        "Occluder": {
+          "count": 188,
+          "minimum": 7.413343272588691e-10,
+          "p50": 2.1784214310205385e-07,
+          "p95": 5.890143688125349e-07,
+          "maximum": 1.039328194618605e-06
+        }
+      },
+      "physical_selected_endpoint_cells": {
+        "Post": 23,
+        "Occluder": 188
+      },
+      "modes": {
+        "exact_temporal": {
+          "diagnostics": {
+            "occupied_voxels": 452,
+            "supported_voxels": 452,
+            "spatial_supported_voxels": 70,
+            "strong_sparse_retained": 382,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": false,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 0,
+            "selected_surface_patches": 0,
+            "candidate_added_unknown_voxels": 0,
+            "added_unknown_voxels": 0,
+            "added_unknown_volume_m3_upper_bound": 0.0,
+            "represented_geometry_voxels": 64,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 448,
+            "proxy_count": 64,
+            "represented_voxels": 64,
+            "omitted_voxels": 388,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 237,
+            "hazard_candidate_boxes": 211,
+            "selected_floor_boxes": 0,
+            "selected_hazard_boxes": 64,
+            "represented_floor_voxels": 0,
+            "omitted_floor_voxels": 241,
+            "padding_m": 0.0
+          },
+          "latency_ms": {
+            "samples": [
+              10.622639674693346,
+              11.329492088407278,
+              10.55263914167881,
+              11.130238883197308,
+              10.937909130007029
+            ],
+            "count": 5,
+            "minimum": 10.55263914167881,
+            "p50": 10.937909130007029,
+            "p95": 11.289641447365284,
+            "maximum": 11.329492088407278
+          },
+          "represented_source_cells": 64,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 0,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "Post": 23,
+            "Occluder": 41
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        },
+        "bounded_surface": {
+          "diagnostics": {
+            "occupied_voxels": 452,
+            "supported_voxels": 452,
+            "spatial_supported_voxels": 70,
+            "strong_sparse_retained": 382,
+            "temporal_probabilities": true,
+            "temporal_support_probability": 0.95,
+            "bounded_surface_patches": true,
+            "surface_observed_retained": 0,
+            "surface_patch_candidates": 57,
+            "selected_surface_patches": 57,
+            "candidate_added_unknown_voxels": 562,
+            "added_unknown_voxels": 562,
+            "added_unknown_volume_m3_upper_bound": 0.0005620000000000001,
+            "represented_geometry_voxels": 717,
+            "rejected_sparse_voxels": 0,
+            "candidate_boxes": 357,
+            "proxy_count": 64,
+            "represented_voxels": 155,
+            "omitted_voxels": 297,
+            "run_budget_omitted_voxels": 0,
+            "truncated": true,
+            "max_obstacles": 64,
+            "minimum_component_voxels": 3,
+            "support_radius_voxels": 2,
+            "support_neighborhood": "Chebyshev",
+            "support_plane_z": 0.0,
+            "floor_candidate_boxes": 237,
+            "hazard_candidate_boxes": 120,
+            "selected_floor_boxes": 0,
+            "selected_hazard_boxes": 64,
+            "represented_floor_voxels": 0,
+            "omitted_floor_voxels": 241,
+            "padding_m": 0.0,
+            "surface_points_available": 211,
+            "surface_points_considered": 211,
+            "surface_point_budget": 512,
+            "surface_points_unprocessed": 0,
+            "surface_candidate_budget": 2048,
+            "surface_candidates_considered": 686,
+            "surface_candidate_budget_reached": false,
+            "surface_max_tangent_cells": 6,
+            "surface_max_unknown_distance_cells": 2
+          },
+          "latency_ms": {
+            "samples": [
+              73.02926294505596,
+              75.58992970734835,
+              73.41141672804952,
+              73.9174927584827,
+              73.90383817255497
+            ],
+            "count": 5,
+            "minimum": 73.02926294505596,
+            "p50": 73.90383817255497,
+            "p95": 75.25544231757522,
+            "maximum": 75.58992970734835
+          },
+          "represented_source_cells": 717,
+          "forbidden_free_or_expired_cells": 0,
+          "added_unknown_cells": 562,
+          "incorrect_original_evidence_expiries": 0,
+          "represented_physical_endpoint_cells": {
+            "Post": 22,
+            "Occluder": 133
+          },
+          "represented_above_plane_cells_without_physical_endpoint_attribution": 0
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "This validates occupancy evidence retention and exact-cell geometry, not native physical avoidance.",
+    "Fullcapture I/O changes scheduling and update cadence; use separate timing-only native runs for availability.",
+    "Physical endpoint attribution is evaluation-only and is never an input to runtime selection.",
+    "Sparse observed surfaces remain partial and the64-proxy budget can omit confirmed cells; no completion of unseen object interiors is claimed."
+  ]
+}

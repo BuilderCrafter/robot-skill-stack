@@ -118,6 +118,56 @@ failure: the RGB-D obstacle cases did not establish reliable avoidance, and the
 partial-observation reactive route could not be measured after two setup source
 refusals. Passing preservation regressions do not change those outcomes.
 
+Motion V2b retains those records and adds worker-stage evidence, contact severity
+and source-availability comparisons. For an ordinary measured run:
+
+```bash
+./run_isaac_python.sh scripts/diagnose_reactive_motion.py \
+  --strategy reactive --source rgbd --scenario partial --mapping-hz 2 \
+  --contact-metrics --mapping-audit-dir outputs/v2b-partial/mapping-audit \
+  --result outputs/v2b-partial/result.json --artifacts-dir outputs/v2b-partial
+```
+
+`--contact-metrics` observes contact impulses, physics-step timing, COM-correct
+body velocity and joint feedback without commanding the robot. Strict V2
+zero-contact success remains separate from goal completion and raw severity.
+No harmless-contact threshold or force-controlled pushing is enabled.
+The audit directory records small worker-stage timing rows. Adding
+`--audit-capture-inputs` records bounded original worker inputs and dense arrays
+for offline evidence analysis, and adds substantial disk/serialization work;
+those full-capture runs are excluded from timing and availability claims.
+Keep fresh output paths and one native process at a time.
+
+Offline analysis and the installed-policy composition probe use the same wrapper:
+
+```bash
+./run_isaac_python.sh scripts/audit_rgbd_obstacle_evidence.py \
+  --capture-dir outputs/v2b-partial --result outputs/v2b-partial/evidence.json
+./run_isaac_python.sh scripts/summarize_reactive_proxy_coverage.py \
+  --case-dir outputs/v2b-partial --result outputs/v2b-partial/coverage.json
+./run_isaac_python.sh scripts/probe_rmpflow_obstacle_composition.py \
+  --result outputs/v2b-composition.json
+```
+
+The first command requires a full worker-input capture. The second uses copied
+physical actor poses and actual numeric registration IDs independently of source
+occupancy. The third uses public Lula APIs on CPU without starting Kit or moving
+the robot; its natural-policy force/metric terms are not physical contact forces.
+See the [V2b protocol](assets/motion_planning_v2b/acceptance_protocol.json),
+[physical evaluation](assets/motion_planning_v2b/evaluation.json) and
+[source timing](assets/motion_planning_v2b/source_timing.json) for the complete
+comparison, failed experiments and remaining limitations.
+
+The final V2b preservation run passes **811 discovered unit tests**, all eight
+standalone modules, architecture/syntax, and **23 native scenarios**: seven
+spatial-mapping, six multi-view, four Isaac acceptance and six manipulation
+regressions. The 40 separate comparison attempts are valid measurements, not
+40 avoidance successes. All 22 reactive attempts had zero source failures; the
+physical evaluation remains `PARTIAL_FAILURE` because some goals stayed blocked
+and the moving case still had impact. Narrow-passage reactive reports were
+contact-offset proximity with positive clearance and zero normal impulse,
+while its goal still timed out.
+
 Offline doubles cover behavior and boundaries, not real rendering, physics,
 camera timing or SDK compatibility. The cloud `.venv` does not substitute for
 Isaac's `.deps` launch environment. Unit discovery alone omits eight standalone

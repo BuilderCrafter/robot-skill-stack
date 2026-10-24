@@ -617,3 +617,156 @@ separates these passing regression results from the obstacle evaluation's
 **partial failure**, including RGB-D collisions, source refusals and the missing
 reactive partial-observation route measurement. The [scope audit](assets/motion_planning_v2/scope_audit.json)
 lists all 39 changed files and protected baseline hashes.
+
+
+## V2b — RGB-D source recovery and evidence retention
+
+V2b improves source availability and retains repeatedly observed sparse hazards,
+but the physical assessment remains **PARTIAL_FAILURE**. Source availability is
+**PASS**: all 22 final reactive attempts completed their source checks with zero
+source failures and zero owned proxies after close. This is separate from goal
+completion and contact outcomes. The final comparison contains 40 valid
+measurements under one frozen source manifest: eight RGB-D and ten GT scenes
+with both strategies at the default 2 Hz, plus four reactive RGB-D checks at
+2.5 Hz. See [source timing](assets/motion_planning_v2b/source_timing.json).
+
+### Changes and preserved boundaries
+
+The first change batches the existing robot self-filter BVH intersections. It
+retains the original nearest-depth arithmetic, ray selection, model geometry,
+mask tolerances and timestamps. Root packets contain at most 64 rays; node and
+triangle batches contain at most 1,024 pairs. A bounded pending frontier falls
+back to the original traversal. Twelve recorded jobs preserved exact depths for
+264 mesh calls and 135,168 ray queries, and complete masks; their paired median
+filter time fell from 178.8 to 14.0 ms offline. These replay timings exclude Kit
+and are distinct from the native measurements below.
+
+The second change applies only to RGB-D obstacle extraction: an already
+OCCUPIED cell may retain support when its existing accumulated probability is
+at least 0.95, even if sparse spatial neighbors are missing. Existing spatial
+support remains available. The map classifications, original cell timestamps,
+TTL and GT/default spatial-only behavior are unchanged. No FREE or UNKNOWN cell
+is converted to an obstacle. The default 64-proxy budget, maximum 128, support
+plane priority, exact occupied-cell cuboids, public numeric registry and
+controller parameters remain unchanged.
+
+The [baseline diagnosis](assets/motion_planning_v2b/baseline_diagnosis.json)
+traced actual raw depth, sampled rays, masks, temporal evidence and selected
+proxies before either change. In the static capture, repeated post observations
+reached high occupancy confidence but sparse support discarded 29 of 33 post
+cells. The [retention study](assets/motion_planning_v2b/retention_validation.json)
+checks recovery from that loss. Independent scene geometry is evaluation input
+only. Full captures disturb cadence and are excluded from timing claims.
+
+### Source timing and the unchanged failure policy
+
+All eight matched baseline attempts—four scenes at each of 2 and 2.5 Hz—failed
+for stale mapping during setup, before a measured obstacle route. V2b's matched
+eight attempts have zero source failures at both rates. The 2 Hz cases are the
+final empty/static/sparse/partial runs; the extra four 2.5 Hz runs are reported
+separately from the full eight-scene default workload.
+
+Across the matched 2 Hz worker jobs, median self-filter time changed from
+218.3 to 17.3 ms; total processor time changed from
+312.7 to 111.8 ms. The matched candidate 2.5 Hz filter/processor medians
+were 17.1/111.3 ms. Maximum actually applied original-acquisition ages
+were 850.4 ms at 2 Hz and 657.4 ms at 2.5 Hz.
+
+These ages use the first owning-context monotonic acquisition timestamp, not
+a measured GPU exposure wall time. Worker spans include all completed jobs;
+parent queue/IPC/publication envelopes have fewer sampled records. IPC envelope
+means round-trip worker time minus compute, including serialization and
+scheduling. Different route durations and one attempt per scene/rate do not
+establish a causal rate advantage or statistical reliability.
+
+The existing one-second freshness policy remains intact. New motion requires a
+fresh publication; active motion may reuse accepted `no_frame` evidence only
+within its original budget. Errors, staleness, resets and invalid robot handles
+still stop progress. No degraded-mode bypass, timestamp rewrite, worker wait or
+silent direct fallback was introduced. Mapping defaults remain 2 Hz and
+semantics remain 5 Hz; 2.5 Hz is an explicit diagnostic workload.
+
+### Final physical outcomes
+
+D/R denotes direct/reactive. Contacts are reported points / penetrating pair
+samples, not unique impacts. Clearances are sampled cooked-hull distances in
+millimeters; durations are seconds. A measurement PASS is not an avoidance PASS.
+
+| Source / scene | Direct | Reactive | Contacts D/R | Clearance D/R, mm | Duration D/R, s |
+| --- | --- | --- | --- | ---: | ---: |
+| RGB-D / partial | Reached with contact | Reached, clear | 837/58 ; 0/0 | 0.0 / 42.6 | 2.15 / 3.87 |
+| RGB-D / moving | Reached with contact | Reached with contact | 156/4 ; 1614/5 | 0.0 / 0.0 | 1.66 / 10.78 |
+| RGB-D / separated | Reached, contact-offset proximity | Reached, clear | 79/0 ; 0/0 | 15.8 / 57.9 | 1.60 / 2.86 |
+| RGB-D / narrow | Reached with contact | Proximity; timeout | 890/71 ; 257/0 | 0.0 / 6.3 | 2.31 / 13.65 |
+| RGB-D / static | Reached with contact | Blocked timeout, no contact | 837/58 ; 0/0 | 0.0 / 42.6 | 2.11 / 13.36 |
+| RGB-D / sparse | Reached with contact | Blocked timeout, no contact | 139/3 ; 0/0 | 0.0 / 79.0 | 2.00 / 14.28 |
+| RGB-D / empty | Reached, clear | Reached, clear | 0/0 ; 0/0 | — / — | 1.76 / 1.92 |
+| RGB-D / large | Contact; no goal | Blocked timeout, no contact | 6381/517 ; 0/0 | 0.0 / 46.2 | 12.75 / 14.75 |
+| GT / empty | Reached, clear | Reached, clear | 0/0 ; 0/0 | — / — | 1.72 / 1.70 |
+| GT / static | Reached with contact | Reached, clear | 839/58 ; 0/0 | 0.0 / 40.6 | 2.24 / 2.77 |
+| GT / sparse | Reached with contact | Reached, clear | 139/3 ; 0/0 | 0.0 / 58.0 | 1.75 / 2.21 |
+| GT / partial | Reached with contact | Reached, clear | 835/58 ; 0/0 | 0.0 / 40.5 | 2.23 / 2.85 |
+| GT / separated | Reached, contact-offset proximity | Reached, clear | 79/0 ; 0/0 | 15.8 / 58.9 | 1.72 / 1.80 |
+| GT / narrow | Reached with contact | Reached, clear | 1740/139 ; 0/0 | 0.0 / 43.9 | 3.26 / 2.20 |
+| GT / moving | Reached with contact | Reached, clear | 156/4 ; 0/0 | 0.0 / 48.4 | 1.73 / 2.06 |
+| GT / large | Contact; no goal | Blocked timeout, no contact | 7732/603 ; 0/0 | 0.0 / 37.4 | 12.76 / 12.65 |
+| GT / near | Reached, clear | Reached, clear | 0/0 ; 0/0 | 194.4 / 194.7 | 1.73 / 1.60 |
+| GT / irregular | Reached with contact | Reached, clear | 1051/49 ; 0/0 | 0.0 / 34.0 | 2.15 / 3.51 |
+
+At default 2 Hz, RGB-D reactive reached clear goals in **empty, partial and
+separated** scenes (3/8 strict successes). Partial observation therefore now has
+a measured clear goal where the baseline source failed during setup. This does
+not establish the cause of its favorable route. Static, sparse and large scenes
+remained contact-free local blockages. The RGB-D narrow passage timed out with
+contact-offset proximity: 257 reported points, zero penetration and impulse,
+and positive 6.271 mm cooked clearance. The separated direct runs likewise
+reported offset proximity, not solid penetration. These reports fail the strict
+zero-reported-contact criterion; the narrow timeout also fails goal completion.
+The moving case reached with contact. GT retained clear goals in all nine usable
+scenes, while the large obstruction remained a known contact-free local timeout.
+The additional 2.5 Hz empty/partial cases reached clear goals, while static and
+sparse remained blocked: faster cadence alone did not resolve those goals.
+
+In the moving RGB-D comparison, maximum reported penetration decreased from
+3.793 to 0.975 mm and maximum normal pair impulse from 2.342 to 1.408 N·s, but
+reported points increased from 156 to 1,614 and duration from 1.66 to 10.78 s.
+These tradeoffs are not a harmless-contact or successful-avoidance claim. The
+[contact-feedback study](assets/motion_planning_v2b/contact_feedback_feasibility.json)
+reports depth, impulse, verified step-average force, velocity and duration
+separately. Joint tracking error, measured efforts and incoming joint reactions
+are observable, but also reflect gravity, inertia and drives; they are not a
+validated unexpected-contact detector or calibrated external wrench. No
+permissive severity threshold, automatic pushing or intended-contact behavior
+was added. Pick/Place and carrying retain their explicit unsupported result.
+
+### Fragmentation and rejected geometry completion
+
+The public CPU-only [Lula composition probe](assets/motion_planning_v2b/obstacle_composition.json)
+shows that primitive count changes the installed collision policy even when
+the geometric union is unchanged. Coincident duplicates give proportional
+collision-only natural force/metric increments. Splitting one post into
+2/4/8/16 adjacent boxes increases collision-metric norm by
+1.61/2.67/4.80/9.06 times. These are natural policy terms, not Newtons or
+physical inertia; canonical acceleration does not scale in the same proportion.
+The probe establishes accumulation, not the complete dynamic stall cause. The
+installed public Lula interface offers no compound/mesh/union-SDF obstacle
+under one distance term. Controller gains and collision spheres were not tuned.
+
+A predeclared bounded thin-surface coalescing experiment was
+[rejected](assets/motion_planning_v2b/rejected_surface_patches.json): both static
+and sparse trials still timed out without contact. Its code/tests are archived
+and inactive. Final runtime extraction fills **zero UNKNOWN or FREE cells**.
+The [registered-proxy audit](assets/motion_planning_v2b/proxy_coverage.json)
+retains selected geometry, omissions and physical coverage independently from
+map confidence. Source recovery and improved retention do not repair all sparse
+surface fragmentation, missing observations, proxy-budget loss or local minima.
+
+The final offline suite passed **811 discovered tests**, architecture checks and
+all eight standalone modules. All **23 native preservation scenarios** passed;
+see [V2b verification](assets/motion_planning_v2b/verification.json). Across the
+final comparisons, maximum reactive/direct apply-p99 ratio was 1.381, maximum
+apply/wait intervals were 56.879/55.278 ms, and no wait exceeded 100 ms. Maximum
+actually applied source age was 850.40 ms; the proxy budget remained 64. These
+responsiveness and preservation results do not override the mixed physical
+outcomes above. No physical-robot safety
+guarantee, global route search or complete RGB-D reconstruction is claimed.
