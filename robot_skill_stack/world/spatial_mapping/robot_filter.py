@@ -122,7 +122,7 @@ def _box_hits(origin, directions, lower, upper, limit):
     return ~parallel_outside & (far >= np.maximum(near, 0.)) & (near <= limit)
 
 
-def _mesh_depth(mesh, origin, directions, limit):
+def _mesh_depth_bvh(mesh, origin, directions, limit):
     """Nearest positive triangle parameter for each unnormalized local ray."""
     best = np.asarray(limit, float).copy()
     stack = [(0, np.arange(len(directions)))]
@@ -158,6 +158,80 @@ def _mesh_depth(mesh, origin, directions, limit):
             depth = np.einsum('tk,tk->t', edge2, other)[None]*inverse
             hit = usable & (u >= -1e-10) & (v >= -1e-10) & (u+v <= 1+1e-10) & (depth > 0)
             best[ids] = np.minimum(best[ids], np.where(hit, depth, np.inf).min(1))
+    return best
+
+
+_MAX_PENDING_NODE_PAIRS = 65_536
+
+
+def _mesh_depth(mesh, origin, directions, limit):
+    """Exact nearest depth with bounded packets of existing BVH ray/node pairs.
+
+    Small NumPy operations at every visited node dominate scalar BVH traversal.
+    Packets share those operations while retaining its slab, triangle and
+    positive-depth rules. Root packets contain at most64 rays, processed node
+    and triangle packets at most1024 pairs. The pending integer frontier has a
+    fixed limit; pathological geometry falls back to the original traversal.
+    """
+    best = np.asarray(limit, float).copy()
+    selected = np.flatnonzero(_box_hits(origin, directions,
+        mesh._lower[0], mesh._upper[0], best))
+    tolerance = 32*np.finfo(float).eps
+    for start in range(0, len(selected), 64):
+        ray_ids = selected[start:start+64]
+        stack = [(np.zeros(len(ray_ids), dtype=np.int64), ray_ids)]
+        pending_pairs = len(ray_ids)
+        while stack:
+            nodes, ray_ids = stack.pop()
+            pending_pairs -= len(nodes)
+            rays = directions[ray_ids]
+            lower, upper = mesh._lower[nodes], mesh._upper[nodes]
+            moving = rays != 0
+            first, second = np.full(rays.shape, -np.inf), np.full(rays.shape, np.inf)
+            np.divide(lower-origin, rays, out=first, where=moving)
+            np.divide(upper-origin, rays, out=second, where=moving)
+            near, far = np.minimum(first, second).max(1), np.maximum(first, second).min(1)
+            parallel_outside = (~moving & ((origin < lower) | (origin > upper))).any(1)
+            hit = ~parallel_outside & (far >= np.maximum(near, 0.)) & (near <= best[ray_ids])
+            nodes, ray_ids = nodes[hit], ray_ids[hit]
+            if not len(nodes):
+                continue
+            children = mesh._children[nodes]
+            leaf = children[:, 0] < 0
+            if np.any(leaf):
+                ranges = mesh._ranges[nodes[leaf]]
+                # TriangleMesh builds leaves with at most eight triangles.
+                offsets = ranges[:, 0, None]+np.arange(8)[None]
+                valid = offsets < ranges[:, 1, None]
+                triangles = mesh._permutation[offsets[valid]]
+                pair_rays = np.broadcast_to(ray_ids[leaf, None], offsets.shape)[valid]
+                for begin in range(0, len(triangles), 1024):
+                    tri, ids = triangles[begin:begin+1024], pair_rays[begin:begin+1024]
+                    rays = directions[ids]
+                    first, edge1, edge2 = mesh._first[tri], mesh._edge1[tri], mesh._edge2[tri]
+                    cross = np.cross(rays, edge2)
+                    determinant = np.einsum('nk,nk->n', cross, edge1)
+                    scale = np.linalg.norm(rays, axis=1)*(
+                        np.linalg.norm(edge1, axis=1)*np.linalg.norm(edge2, axis=1))
+                    usable = abs(determinant) > tolerance*scale
+                    inverse = np.zeros_like(determinant)
+                    np.divide(1., determinant, out=inverse, where=usable)
+                    offset = origin-first
+                    u = np.einsum('nk,nk->n', cross, offset)*inverse
+                    other = np.cross(offset, edge1)
+                    v = np.einsum('nk,nk->n', rays, other)*inverse
+                    depth = np.einsum('nk,nk->n', edge2, other)*inverse
+                    usable &= (u >= -1e-10) & (v >= -1e-10) & (u+v <= 1+1e-10) & (depth > 0)
+                    np.minimum.at(best, ids, np.where(usable, depth, np.inf))
+            branch = ~leaf
+            if np.any(branch):
+                next_nodes, next_rays = children[branch].ravel(), np.repeat(ray_ids[branch], 2)
+                if pending_pairs+len(next_nodes) > _MAX_PENDING_NODE_PAIRS:
+                    return _mesh_depth_bvh(mesh, origin, directions, limit)
+                for begin in range(0, len(next_nodes), 1024):
+                    node_packet, ray_packet = next_nodes[begin:begin+1024], next_rays[begin:begin+1024]
+                    stack.append((node_packet, ray_packet))
+                    pending_pairs += len(node_packet)
     return best
 
 
