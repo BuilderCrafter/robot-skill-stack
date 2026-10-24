@@ -1,7 +1,8 @@
 """SDK-free worker-owned mapping and constant-time immutable publications.
 
-Only explicit dense exports scan the grid. Snapshot construction on the owner
-thread fixes the read time; sparse queries age just the requested cells.
+Dense processing and optional obstacle extraction run in the worker. Snapshot
+construction on the owner thread fixes the read time without a grid scan;
+sparse queries age just the requested cells.
 """
 from dataclasses import dataclass, replace
 import time
@@ -15,6 +16,7 @@ from .geometry import freeze, rasterize_ground_truth
 from .occupancy import (OccupancyMap, OccupancyState, OccupancyBatch, _readonly, _single)
 from .rgbd import RgbdMapper
 from .robot_filter import RobotSelfFilter
+from .obstacles import ObstacleExtractor
 
 
 def _owned(array):
@@ -66,14 +68,16 @@ class MappingCompleted:
     accepted: bool
     generation: int
     input_timestamp: float | None = None
+    obstacles: object = None
 
 
 class MappingProcessor:
     """One mutable map, touched only by the single computation worker."""
-    def __init__(self, settings, *, clock=time.monotonic):
+    def __init__(self, settings, *, clock=time.monotonic, obstacle_settings=None):
         self.settings, self.clock = settings, clock
         self.map = self.mapper = self.filter = None
         self.generation = None
+        self._obstacle_settings, self._extractor = obstacle_settings, None
 
     def _reset(self, generation):
         cfg = self.settings
@@ -87,6 +91,8 @@ class MappingProcessor:
         self.filter = RobotSelfFilter(stride=cfg.stride,
             depth_tolerance=cfg.robot_depth_tolerance, pose_tolerance=cfg.robot_pose_tolerance)
         self.generation = generation
+        self._extractor = (None if self._obstacle_settings is None else
+                           ObstacleExtractor(self._obstacle_settings))
 
     def compute(self, payload):
         if self.map is None or payload.generation != self.generation or payload.reset:
@@ -114,22 +120,26 @@ class MappingProcessor:
             if provider is not None:
                 diagnostics['robot_filter'] = dict(self.filter.diagnostics)
         snapshot = self.map.snapshot(now=self.clock())
+        obstacles = (None if self._extractor is None else self._extractor.extract(
+            snapshot, now=self.clock(), evidence_ttl=self.settings.evidence_ttl))
+        if obstacles is not None:
+            diagnostics['obstacle_extraction'] = dict(obstacles.diagnostics)
         diagnostics.update(accepted=accepted, compute_seconds=time.perf_counter()-started)
         return MappingCompleted(snapshot, freeze(diagnostics), accepted, payload.generation,
-                                _input_timestamp(payload))
+                                _input_timestamp(payload), obstacles)
 
 
 @dataclass(frozen=True, init=False, eq=False)
 class MappingReadView:
     """Immutable fixed-time facade over an already immutable worker snapshot."""
-    def __init__(self, snapshot, *, now, evidence_ttl, stale_after, health=None):
+    def __init__(self, snapshot, *, now, evidence_ttl, stale_after, health=None, obstacles=None):
         now = float(now)
         if not np.isfinite(now) or now < 0:
             raise ValueError('Read time must be finite and nonnegative')
         for key, value in dict(_snapshot=snapshot, evaluated_at=now,
                 evidence_ttl=evidence_ttl, stale_after=stale_after, spec=snapshot.spec,
                 timestamp=snapshot.timestamp, revision=snapshot.revision,
-                generation=snapshot.generation).items():
+                generation=snapshot.generation, obstacles=obstacles).items():
             object.__setattr__(self, key, value)
         values = dict(snapshot.health if health is None else health)
         age = None if self.timestamp is None else max(0., now-self.timestamp)
@@ -191,14 +201,16 @@ class MappingReadView:
 
 class MappingService:
     """Owner-thread admission/publication; no SDK calls and no map access on poll."""
-    def __init__(self, settings, *, worker_factory=BoundedWorker, clock=time.monotonic):
+    def __init__(self, settings, *, worker_factory=BoundedWorker, clock=time.monotonic,
+                 obstacle_settings=None):
         self.settings, self.clock = settings, clock
-        self._processor = MappingProcessor(settings, clock=clock)
+        self._processor = MappingProcessor(settings, clock=clock, obstacle_settings=obstacle_settings)
         self._worker = worker_factory(self._processor.compute, name='spatial-mapping')
         # Allocate the empty publication once at construction, never on reads.
         self._empty = OccupancyMap(settings.grid_spec(), clock=clock,
             stale_after=settings.stale_after, evidence_ttl=settings.evidence_ttl).snapshot(now=clock())
         self._published = None
+        self._published_obstacles = None
         self.generation, self._barrier, self._closed = 0, 0, False
         self._status, self._reason, self._last_error = 'waiting', None, None
         self.last_result, self.diagnostics = None, MappingProxyType({})
@@ -264,6 +276,7 @@ class MappingService:
         self.diagnostics = completed.diagnostics
         if fresh:
             self._published = completed.snapshot
+            self._published_obstacles = completed.obstacles
             self._status, self._reason, self._last_error = 'ok', None, None
             self._counts['published'] += 1
         else:
@@ -303,6 +316,7 @@ class MappingService:
         self._barrier += 1
         self._worker.invalidate()
         self._published, self.last_result = None, None
+        self._published_obstacles = None
         self.diagnostics = MappingProxyType({})
         self._completion = {}
         self._status, self._reason, self._last_error = 'waiting', 'reset', None
@@ -314,7 +328,8 @@ class MappingService:
             base = replace(base, generation=self.generation)
         return MappingReadView(base, now=self.clock() if now is None else now,
             evidence_ttl=self.settings.evidence_ttl, stale_after=self.settings.stale_after,
-            health=dict(status=self._status, reason=self._reason, last_error=self._last_error))
+            health=dict(status=self._status, reason=self._reason, last_error=self._last_error),
+            obstacles=self._published_obstacles)
 
     @property
     def health(self):
