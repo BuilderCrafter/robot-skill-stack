@@ -1,0 +1,1006 @@
+{
+  "added_sphere_count": 47,
+  "base_aabb_certificate": "Every cooked vertex lies in these coordinate bounds; convexity contains the whole solid. Bounds are uninflated and conditional on the captured mounted-base frame alignment; no penetration allowance is introduced below the support plane.",
+  "base_aabb_corners_m": [
+    [
+      -0.1540856040846048,
+      -0.09459595468798376,
+      0.0
+    ],
+    [
+      -0.1540856040846048,
+      -0.09459595468798376,
+      0.13999999687075615
+    ],
+    [
+      -0.1540856040846048,
+      0.09453880098747902,
+      0.0
+    ],
+    [
+      -0.1540856040846048,
+      0.09453880098747902,
+      0.13999999687075615
+    ],
+    [
+      0.07154427845304578,
+      -0.09459595468798376,
+      0.0
+    ],
+    [
+      0.07154427845304578,
+      -0.09459595468798376,
+      0.13999999687075615
+    ],
+    [
+      0.07154427845304578,
+      0.09453880098747902,
+      0.0
+    ],
+    [
+      0.07154427845304578,
+      0.09453880098747902,
+      0.13999999687075615
+    ]
+  ],
+  "base_aabb_maximum_m": [
+    0.07154427845304578,
+    0.09453880098747902,
+    0.13999999687075615
+  ],
+  "base_aabb_minimum_m": [
+    -0.1540856040846048,
+    -0.09459595468798376,
+    0.0
+  ],
+  "base_convex_volume_m3": 0.002938554442576414,
+  "base_enclosing_sphere": {
+    "center": [
+      -0.0429375080019756,
+      0.000256082772529616,
+      0.05800442764555259
+    ],
+    "radius": 0.1277438596962907
+  },
+  "base_link": "panda_link0",
+  "base_sphere_certificate": {
+    "maximum_vertex_distance_m": 0.1277338596962907,
+    "minimum_containment_margin_m": 1.0000000000010001e-05,
+    "radius_m": 0.1277438596962907,
+    "vertices": 40,
+    "vertices_sha256": "a6fc077d739d95260a7ffa2bec4ff81c9a01127717c47f2b6bf4109b22b3e5e9"
+  },
+  "certified_self_collision_exclusions": [
+    {
+      "cooked_finger_vertices_sha256": {
+        "panda_leftfinger": "46acb75db6e4ab037c280af1cdb84d3a8e6d132906caeee4e021b65b4d1100ce",
+        "panda_rightfinger": "9552303e6c397af8179c6ed00c4c905e6215d3fb3f1b957288307a84b2f5cad9"
+      },
+      "finger_range_m": [
+        0.001,
+        0.005
+      ],
+      "frames": [
+        "panda_leftfinger",
+        "panda_rightfinger"
+      ],
+      "minimum_separating_projection_m": 0.0019205377986222004,
+      "numerical_tolerance_m": 1e-09,
+      "proof": "The left cooked solid projects above the right cooked solid along hand Y over all independent finger positions in the declared interval. Common arm/hand rigid transforms preserve this separation. The conservative sphere overlap is therefore an approximation artifact.",
+      "urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6"
+    }
+  ],
+  "descriptor_fixed_finger_m": 0.003,
+  "descriptor_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+  "finger_hand_y_intervals_m": {
+    "panda_leftfinger": [
+      0.0009602688988670327,
+      0.03130412101745603
+    ],
+    "panda_rightfinger": [
+      -0.03130412042951316,
+      -0.0009602688997551677
+    ]
+  },
+  "finger_joint_names": [
+    "panda_finger_joint1",
+    "panda_finger_joint2"
+  ],
+  "finger_range_m": [
+    0.001,
+    0.005
+  ],
+  "finger_separation_scope": "Positive separation of both cooked finger solids along hand Y for every independent joint position in the declared range; excludes contact offsets.",
+  "finger_sweep_padding_m": 0.002,
+  "generator_sha256": "0983ba57b1dab55f590095d8228ec11aabdd4052212e7ca9cdbed6fd198243b0",
+  "limitations": [
+    "Native Lula retains its original base sphere; the conservative base bound requires a separate frozen-base world preflight.",
+    "Only the mutually overlapping finger-sphere pair receives an extra self exclusion, justified by the positive full-range cooked-solid separation certificate. Existing URDF fixed/adjacent exclusions remain.",
+    "Added spheres include a 10 micrometre measured-frame/numerical allowance. The mounted-base AABB remains uninflated; its exact-corner support-plane check is conditional on the captured frame alignment.",
+    "Certificates cover the captured cooked convex solids in aligned link frames, not visuals, contact/rest offsets, future asset revisions, tracking error or continuous swept trajectories."
+  ],
+  "measured_frame_and_numerical_allowance_m": 1e-05,
+  "minimum_physical_finger_separating_projection_m": 0.0019205377986222004,
+  "model": "franka_enhanced_v4_2",
+  "numerical_containment_margin_m": 1e-05,
+  "schema_version": 1,
+  "solid_coverage": {
+    "certificates": [
+      {
+        "added_spheres": 8,
+        "body": "panda_hand",
+        "cell_volume_sum_m3": 0.0006719097725103436,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.03529563206834066,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.03530563206834066,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 18,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 35,
+            "vertices_sha256": "8ef07d79ecad3770fb7ffc5cd1774ec0e57535d19e3b453af5d42b2176c765b0"
+          },
+          {
+            "maximum_vertex_distance_m": 0.0358635405500017,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.035873540550001706,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 19,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 37,
+            "vertices_sha256": "753791406bead17f59dd61f0d7cc47e78f249cc7566fc967a072afb9348f1836"
+          },
+          {
+            "maximum_vertex_distance_m": 0.0399208569790789,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.0399308569790789,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 20,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 55,
+            "vertices_sha256": "bad836e8ef4595996fc76d18d65c143378e2c48df756cec078a15960a9dcccf8"
+          },
+          {
+            "maximum_vertex_distance_m": 0.04037258755768763,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.04038258755768763,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 21,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 48,
+            "vertices_sha256": "b4c122c89f6458af73e611e6442984f1fa7ce5ded00cb04453112d382abfbfe7"
+          },
+          {
+            "maximum_vertex_distance_m": 0.04037784145854968,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.040387841458549685,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 22,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 48,
+            "vertices_sha256": "359fad1583f6117673f20f8e7fbe4a8c761f99f2f82a28200e54b695781852ad"
+          },
+          {
+            "maximum_vertex_distance_m": 0.03923750157429804,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.039247501574298044,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 23,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 39,
+            "vertices_sha256": "3e87575004c348a9238b94edc8f2a32d0b7cb157d17761b9ae9e384417ddde70"
+          },
+          {
+            "maximum_vertex_distance_m": 0.03704395159879141,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.037053951598791414,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 24,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 35,
+            "vertices_sha256": "ea94ee1a1a629a7c718f7bc6660c1cd055af09e57fcb6087734ecaf6542c3349"
+          },
+          {
+            "maximum_vertex_distance_m": 0.03556796667251437,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.03557796667251437,
+            "sphere_frame": "panda_hand",
+            "sphere_index_on_frame": 25,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 36,
+            "vertices_sha256": "5b13e160c2a610bc302f87a386ab4c54f337de4901722a94efd192277be63afc"
+          }
+        ],
+        "convex_cells": 8,
+        "original_convex_volume_m3": 0.0006719097725103437,
+        "partition_relative_volume_error": 1.6136127451082932e-16,
+        "partition_widths_m": [
+          0.06,
+          0.05
+        ],
+        "principal_axes": [
+          [
+            -0.003173796664635,
+            -0.014636893768754199,
+            0.9998878378875973
+          ],
+          [
+            0.9984636992412042,
+            -0.055359524178918096,
+            0.002358893862433797
+          ],
+          [
+            0.05531878805886834,
+            0.9983591960930127,
+            0.014790106970945674
+          ]
+        ],
+        "source_body_vertices_sha256": "b9125a6d7f207ce0332c4301d49f30b929b2fadb503995ff395234786e556816",
+        "source_hull_index": 0
+      },
+      {
+        "added_spheres": 3,
+        "body": "panda_rightfinger",
+        "cell_volume_sum_m3": 2.2157937223112674e-05,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.018251700184740108,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.018261700184740104,
+            "sphere_frame": "panda_rightfinger",
+            "sphere_index_on_frame": 0,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 30,
+            "vertices_sha256": "57c47c977028e1a1ab4978ce6593861c2a3649f66936e179f0921535dbcde744"
+          },
+          {
+            "maximum_vertex_distance_m": 0.01800391907187244,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.018013919071872435,
+            "sphere_frame": "panda_rightfinger",
+            "sphere_index_on_frame": 1,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 55,
+            "vertices_sha256": "ee505caa19b4c2dce0e1515b381fed55e6291e69e50d579a46a03771e0f9bf29"
+          },
+          {
+            "maximum_vertex_distance_m": 0.014744854977099518,
+            "minimum_containment_margin_m": 1.0000000000001327e-05,
+            "radius_m": 0.014754854977099519,
+            "sphere_frame": "panda_rightfinger",
+            "sphere_index_on_frame": 2,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 42,
+            "vertices_sha256": "77c5113aba9181991a3ee2674459e81429b999154d5ae9a14d1f4be24e5c7735"
+          }
+        ],
+        "convex_cells": 3,
+        "original_convex_volume_m3": 2.215793722311266e-05,
+        "partition_relative_volume_error": 6.116330694326699e-16,
+        "partition_widths_m": [
+          0.02
+        ],
+        "principal_axes": [
+          [
+            0.02634461321538854,
+            0.9368712824469553,
+            0.3486806009526898
+          ],
+          [
+            0.25886932146741526,
+            -0.34329715514990666,
+            0.9028475716692053
+          ],
+          [
+            0.9655530206868658,
+            0.06647754050939551,
+            -0.251571263959718
+          ]
+        ],
+        "source_body_vertices_sha256": "9552303e6c397af8179c6ed00c4c905e6215d3fb3f1b957288307a84b2f5cad9",
+        "source_hull_index": 1
+      },
+      {
+        "added_spheres": 3,
+        "body": "panda_leftfinger",
+        "cell_volume_sum_m3": 2.2157938708918212e-05,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.01825170059269848,
+            "minimum_containment_margin_m": 9.999999999999593e-06,
+            "radius_m": 0.01826170059269848,
+            "sphere_frame": "panda_leftfinger",
+            "sphere_index_on_frame": 0,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 30,
+            "vertices_sha256": "c1e9ff8b4e20613768172a88628307cff0e35988b4a02498ed4742543330e04c"
+          },
+          {
+            "maximum_vertex_distance_m": 0.018003919474287672,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.018013919474287668,
+            "sphere_frame": "panda_leftfinger",
+            "sphere_index_on_frame": 1,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 55,
+            "vertices_sha256": "d7a08709230c93111499fbbce2416380e7eb79194ca8c33821890fc159310954"
+          },
+          {
+            "maximum_vertex_distance_m": 0.014744855306671223,
+            "minimum_containment_margin_m": 9.999999999999593e-06,
+            "radius_m": 0.014754855306671222,
+            "sphere_frame": "panda_leftfinger",
+            "sphere_index_on_frame": 2,
+            "swept_axis_padding_m": 0.002,
+            "vertices": 42,
+            "vertices_sha256": "89b59bd0e6aa062e09ff6e3463d359e45cb29136ebf5f659de2a7da799b41f30"
+          }
+        ],
+        "convex_cells": 3,
+        "original_convex_volume_m3": 2.2157938708918202e-05,
+        "partition_relative_volume_error": 4.58724771314608e-16,
+        "partition_widths_m": [
+          0.02
+        ],
+        "principal_axes": [
+          [
+            0.026344613215388564,
+            0.9368712824469558,
+            -0.34868060095268827
+          ],
+          [
+            -0.2588693214674155,
+            0.34329715514990505,
+            0.9028475716692064
+          ],
+          [
+            0.9655530206868664,
+            0.06647754050939515,
+            0.25157126395971874
+          ]
+        ],
+        "source_body_vertices_sha256": "46acb75db6e4ab037c280af1cdb84d3a8e6d132906caeee4e021b65b4d1100ce",
+        "source_hull_index": 2
+      },
+      {
+        "added_spheres": 5,
+        "body": "panda_link1",
+        "cell_volume_sum_m3": 0.002788261405947295,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.06335626458595935,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06336626458595934,
+            "sphere_frame": "panda_link1",
+            "sphere_index_on_frame": 4,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 30,
+            "vertices_sha256": "db774ff4a1bb979d60a2750c4ab6c75ddf922413d9568137c5c56a643a236fdb"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07401152766197784,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07402152766197784,
+            "sphere_frame": "panda_link1",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 56,
+            "vertices_sha256": "326bc9ba4bed91a411688f8c5c969cbb023ad20c9c6d0796cf2e83e2704472a6"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07847255315512643,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07848255315512642,
+            "sphere_frame": "panda_link1",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 56,
+            "vertices_sha256": "3e2644e8bd26f81efa999b208575fb377dffdd7139d97c99930a573d946125c6"
+          },
+          {
+            "maximum_vertex_distance_m": 0.080725962736235,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.080735962736235,
+            "sphere_frame": "panda_link1",
+            "sphere_index_on_frame": 7,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 57,
+            "vertices_sha256": "d9cc2a95293c9f3f6455c0a406ef10c6a4c1bf821e12c6e74ce4c473f8a5d93a"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07460072860136098,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07461072860136098,
+            "sphere_frame": "panda_link1",
+            "sphere_index_on_frame": 8,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 43,
+            "vertices_sha256": "3e33d1ed1ebf0dc68cde10656c5de81f94fd2f42505b4aa3d91d8c7c37256509"
+          }
+        ],
+        "convex_cells": 5,
+        "original_convex_volume_m3": 0.0027882614059472955,
+        "partition_relative_volume_error": 1.5553809555631002e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            0.02017055205887166,
+            -0.06144619154520042,
+            0.9979065659540629
+          ],
+          [
+            -0.4317219530380819,
+            0.8997243408773158,
+            0.0641269498562303
+          ],
+          [
+            0.9017811841542408,
+            0.43211164758366516,
+            0.008379733164346105
+          ]
+        ],
+        "source_body_vertices_sha256": "0ac4ad66ff731278f01caa0d8466075c05e141f8e3fa3f7b32f54800ebfb3939",
+        "source_hull_index": 4
+      },
+      {
+        "added_spheres": 5,
+        "body": "panda_link2",
+        "cell_volume_sum_m3": 0.002812211867913455,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.0634065850861178,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06341658508611779,
+            "sphere_frame": "panda_link2",
+            "sphere_index_on_frame": 4,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 30,
+            "vertices_sha256": "c62b927b464da6352f52b7f21ae28a25f6d87e69208eb2c3800ca26f41e2e2f0"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07414225716956661,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07415225716956661,
+            "sphere_frame": "panda_link2",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 56,
+            "vertices_sha256": "f434a5122fa5469ecb682755580fe9e78f4d800d4064d8f072a0208291e7fb64"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07852233921756331,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07853233921756331,
+            "sphere_frame": "panda_link2",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 56,
+            "vertices_sha256": "db50563761c9cbd4df3f31027fdefc2226ab6445ae40700f1d89ca6277ac59b1"
+          },
+          {
+            "maximum_vertex_distance_m": 0.08075900562526743,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.08076900562526743,
+            "sphere_frame": "panda_link2",
+            "sphere_index_on_frame": 7,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 55,
+            "vertices_sha256": "348d48f6c1b2569628ad597c53e84f83cf3fc7913295871d35efe9b740c24dfa"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07461153128616284,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07462153128616283,
+            "sphere_frame": "panda_link2",
+            "sphere_index_on_frame": 8,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 43,
+            "vertices_sha256": "6f113e5dfd7f10d44e54bfbd27059f2dd50494de6d3334663a167900fa3503ce"
+          }
+        ],
+        "convex_cells": 5,
+        "original_convex_volume_m3": 0.0028122118679134544,
+        "partition_relative_volume_error": 1.54213441007905e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            0.020072373589635116,
+            0.06071444557981819,
+            0.9979533335364003
+          ],
+          [
+            0.9037502701679319,
+            -0.4279879182679273,
+            0.007860724398960316
+          ],
+          [
+            0.4275892292725212,
+            0.9017428114016885,
+            -0.06346142998318095
+          ]
+        ],
+        "source_body_vertices_sha256": "91b3cb55d2c0e17f4564fa88c88aca7990b062449c3cd51d6d5caf078ead53a2",
+        "source_hull_index": 5
+      },
+      {
+        "added_spheres": 5,
+        "body": "panda_link3",
+        "cell_volume_sum_m3": 0.002153013486505232,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.06023839446173336,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.060248394461733364,
+            "sphere_frame": "panda_link3",
+            "sphere_index_on_frame": 4,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 29,
+            "vertices_sha256": "7aaa358b23e1eada055b2b2e8d42bb6a516bf102f5798173130195217a6bd82a"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07039415944374018,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07040415944374018,
+            "sphere_frame": "panda_link3",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 52,
+            "vertices_sha256": "63b895c78e7b0e577f3cc9720a49aae3e2bb895af5043e9c422813b642aa4081"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07374398267495684,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07375398267495684,
+            "sphere_frame": "panda_link3",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 53,
+            "vertices_sha256": "4b1b1a2300ef698e6794db2a2e7b5c16aca36c51e76e7d31290692cc11d21d7b"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07324461526048753,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07325461526048753,
+            "sphere_frame": "panda_link3",
+            "sphere_index_on_frame": 7,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 54,
+            "vertices_sha256": "469838587cc3c4d90d7f2901ac61bd785e1e239bf1f99f8c6f004b9a710a62cc"
+          },
+          {
+            "maximum_vertex_distance_m": 0.06705629549438923,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06706629549438922,
+            "sphere_frame": "panda_link3",
+            "sphere_index_on_frame": 8,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 37,
+            "vertices_sha256": "06a9d43ae62a3722fa87abc6c7ed9d8823c3ee13ba58d1782bae4243ac9c4964"
+          }
+        ],
+        "convex_cells": 5,
+        "original_convex_volume_m3": 0.0021530134865052307,
+        "partition_relative_volume_error": 6.042891115812081e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            0.6523099149860375,
+            -0.09231190712085134,
+            0.7523099671110441
+          ],
+          [
+            0.4208224299873602,
+            0.8696279532523067,
+            -0.25817766236012196
+          ],
+          [
+            0.630396904521621,
+            -0.48500075744880594,
+            -0.606113857326858
+          ]
+        ],
+        "source_body_vertices_sha256": "e7be0a6f844bb8f1f26b9b82211bad54db4602d7963d61a0fb81c4cc1916e179",
+        "source_hull_index": 6
+      },
+      {
+        "added_spheres": 5,
+        "body": "panda_link4",
+        "cell_volume_sum_m3": 0.002198874078823357,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.0679922349249977,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.0680022349249977,
+            "sphere_frame": "panda_link4",
+            "sphere_index_on_frame": 4,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 37,
+            "vertices_sha256": "07943c644ef642ec5f86744b9dd3b26b0c43a6433707f64de555b239bbe09579"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07342688018230231,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07343688018230231,
+            "sphere_frame": "panda_link4",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 52,
+            "vertices_sha256": "72ae40bfa7f793b483e0162c3b7f471a0890bd5382ef15e52762b4cb47eb2eb0"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07369244091765043,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07370244091765042,
+            "sphere_frame": "panda_link4",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 52,
+            "vertices_sha256": "11e2afedc3b91aeeea0371a26e383c18fff0da29c6c96718795970a9956983c6"
+          },
+          {
+            "maximum_vertex_distance_m": 0.0714601295025124,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.0714701295025124,
+            "sphere_frame": "panda_link4",
+            "sphere_index_on_frame": 7,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 52,
+            "vertices_sha256": "67004fc81ed3f5ef5fd60e3a77f118f44dbade36c8207c18223350c7d81803b6"
+          },
+          {
+            "maximum_vertex_distance_m": 0.05968841841773243,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.059698418417732435,
+            "sphere_frame": "panda_link4",
+            "sphere_index_on_frame": 8,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 28,
+            "vertices_sha256": "72a6bcb1f7f96810794d63989aa8bc8495febeca6d23a4a32611db136106767b"
+          }
+        ],
+        "convex_cells": 5,
+        "original_convex_volume_m3": 0.002198874078823358,
+        "partition_relative_volume_error": 3.94457211689238e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            -0.6329837266290064,
+            -0.058440950576022714,
+            0.7719561238299921
+          ],
+          [
+            0.657980488561427,
+            0.48479182426675727,
+            0.5762278748868157
+          ],
+          [
+            -0.4079133222822236,
+            0.8726749351390131,
+            -0.2684123303516408
+          ]
+        ],
+        "source_body_vertices_sha256": "c85e18e4ac2a47f13ea4f86095241968f8696588eef5a42b0d572d596496055c",
+        "source_hull_index": 7
+      },
+      {
+        "added_spheres": 6,
+        "body": "panda_link5",
+        "cell_volume_sum_m3": 0.0032502068603069718,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.061578305948410024,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.06158830594841003,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 12,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 36,
+            "vertices_sha256": "4183a3f8c00a4a8716844a662c3ec6259a658f657f1d52fae9363fcfc46ac623"
+          },
+          {
+            "maximum_vertex_distance_m": 0.06969369375514378,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06970369375514378,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 13,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 53,
+            "vertices_sha256": "018a8b60f30f33b6d098e77c37ba7eaeee1e95b6f75c31b735053db41297450e"
+          },
+          {
+            "maximum_vertex_distance_m": 0.0752704166215425,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.0752804166215425,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 14,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 56,
+            "vertices_sha256": "54847daf410ab1ef9b694115479f73d57e1b2cfc97c9c5aa06ee6abbf6825c48"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07614655398901218,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07615655398901218,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 15,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 57,
+            "vertices_sha256": "e2f4b88108d1fc73ac8b7120198ef2176f60c1a062e12a54f33ad835790fb035"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07586617794592126,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07587617794592126,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 16,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 57,
+            "vertices_sha256": "5971487d5984b29a240fc9f5e36539eaa172674a3ee2b65865ca56d0f937fbd4"
+          },
+          {
+            "maximum_vertex_distance_m": 0.06671047146471482,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06672047146471481,
+            "sphere_frame": "panda_link5",
+            "sphere_index_on_frame": 17,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 39,
+            "vertices_sha256": "d4d8297cfeb7771170ec0c6c59c2bce33f9f9ae3c7a8339f299ec17709763f0b"
+          }
+        ],
+        "convex_cells": 6,
+        "original_convex_volume_m3": 0.0032502068603069718,
+        "partition_relative_volume_error": 0.0,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            -0.0014102445694835675,
+            0.029023517286912073,
+            0.999577734173061
+          ],
+          [
+            0.35050513797790456,
+            0.9361804778279587,
+            -0.026688221838564136
+          ],
+          [
+            0.9365597468722131,
+            -0.3503194947160529,
+            0.011493135366166626
+          ]
+        ],
+        "source_body_vertices_sha256": "8b87849d9662ec1e1b3f96998b4f3c3674021252d2a3fab975dd26b9b6efa615",
+        "source_hull_index": 8
+      },
+      {
+        "added_spheres": 4,
+        "body": "panda_link6",
+        "cell_volume_sum_m3": 0.0013178608185334135,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.05429234470737387,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.05430234470737387,
+            "sphere_frame": "panda_link6",
+            "sphere_index_on_frame": 3,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 32,
+            "vertices_sha256": "a017a48b0bf11dd1390780841b028eec3a0efa6f971ce5fd6e9b397c320ad872"
+          },
+          {
+            "maximum_vertex_distance_m": 0.06755046715187286,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.06756046715187286,
+            "sphere_frame": "panda_link6",
+            "sphere_index_on_frame": 4,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 44,
+            "vertices_sha256": "9e80abe3e903970e3283e6fa485a8b056f20f7c96d301a17bdc46650bce01234"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07634981190681449,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07635981190681448,
+            "sphere_frame": "panda_link6",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 43,
+            "vertices_sha256": "c2537ffebe3733885ef625f7d8ac9f243a344ea650a2e6a2b2c99679b33ca4f5"
+          },
+          {
+            "maximum_vertex_distance_m": 0.07442526209648334,
+            "minimum_containment_margin_m": 9.999999999996123e-06,
+            "radius_m": 0.07443526209648334,
+            "sphere_frame": "panda_link6",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 32,
+            "vertices_sha256": "843ac52580ecd8877dd4d352165d2a7fe16bdf05e897f59ee250833e5b3d79c5"
+          }
+        ],
+        "convex_cells": 4,
+        "original_convex_volume_m3": 0.0013178608185334126,
+        "partition_relative_volume_error": 6.581588327010518e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            0.9581678139405722,
+            -0.24417397149337475,
+            0.1493101201308789
+          ],
+          [
+            0.24778411523434368,
+            0.968798010735519,
+            -0.005783306358338014
+          ],
+          [
+            -0.14323921448359855,
+            0.04253805402288095,
+            0.9887735035861691
+          ]
+        ],
+        "source_body_vertices_sha256": "9a802b2023befda7eee5ae510957805e7f5d4133be1efa2962501f4920022be2",
+        "source_hull_index": 9
+      },
+      {
+        "added_spheres": 3,
+        "body": "panda_link7",
+        "cell_volume_sum_m3": 0.0004275045560400066,
+        "cells": [
+          {
+            "maximum_vertex_distance_m": 0.04820980341082656,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.048219803410826566,
+            "sphere_frame": "panda_link7",
+            "sphere_index_on_frame": 5,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 32,
+            "vertices_sha256": "8d23b5aaf963b7c41c0bf6afd1675821359ea1aa7005bce3700bdee79530002f"
+          },
+          {
+            "maximum_vertex_distance_m": 0.051597301998942115,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.05160730199894212,
+            "sphere_frame": "panda_link7",
+            "sphere_index_on_frame": 6,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 42,
+            "vertices_sha256": "e78d81765fa46e51c6bf77e826793d68890c4583606d955a7bee91d66c5e1d5a"
+          },
+          {
+            "maximum_vertex_distance_m": 0.043163285899483275,
+            "minimum_containment_margin_m": 1.0000000000003062e-05,
+            "radius_m": 0.04317328589948328,
+            "sphere_frame": "panda_link7",
+            "sphere_index_on_frame": 7,
+            "swept_axis_padding_m": 0.0,
+            "vertices": 27,
+            "vertices_sha256": "b20daa81f7253590dd9de7763f31752b1386e601b69d813ed5aa09d9c7b72318"
+          }
+        ],
+        "convex_cells": 3,
+        "original_convex_volume_m3": 0.0004275045560400068,
+        "partition_relative_volume_error": 3.804177606416114e-16,
+        "partition_widths_m": [
+          0.06
+        ],
+        "principal_axes": [
+          [
+            0.7264251137248243,
+            -0.6868227926816152,
+            -0.02410405780989259
+          ],
+          [
+            0.6861259156792063,
+            0.7267966593990306,
+            -0.03158866441905178
+          ],
+          [
+            0.03921456340756655,
+            0.006408380406627893,
+            0.9992102634967868
+          ]
+        ],
+        "source_body_vertices_sha256": "b98ba7f83d9fbe6916f537e8f0ecab223304f4a1d82fc15e9e3b1614e8e12eae",
+        "source_hull_index": 10
+      }
+    ],
+    "convex_cell_count": 47,
+    "maximum_partition_relative_volume_error": 6.581588327010518e-16,
+    "method": "Each closed convex grid cell has every vertex inside one assigned sphere. Sphere convexity contains the entire cell; cells partition the source convex solid. Finger range follows the triangle inequality.",
+    "moving_body_count": 10,
+    "numerical_scope": "Floating-point certificate conditional on the copied cooked vertex solids, unchanged source URDF, and the measured link-frame alignment remaining within the explicit allowance. This is not a formal all-world physical safety guarantee.",
+    "status": "FINITE_CONVEX_CELL_CONTAINMENT"
+  },
+  "source_artifacts": {
+    "geometry_path": "outputs/motion-planning-v4-1/native/global-static-seed123456/geometry_reference.npz",
+    "geometry_reference_sha256": "b8ad9ab95d800e31b22b67b09788da6a3893264ccdfcaa73d080cc682a1f4878",
+    "result_path": "outputs/motion-planning-v4-1/native/global-static-seed123456/result.json",
+    "result_sha256": "6da1563cd6450e31f4322a02eb0132cab7e4b9e434618ec39174bf9ea45834e5"
+  },
+  "sphere_count": 102,
+  "sphere_groups": [
+    {
+      "certified_added_spheres": 0,
+      "frame": "panda_link0",
+      "role": "mounted_base",
+      "stock_spheres": 1
+    },
+    {
+      "certified_added_spheres": 5,
+      "frame": "panda_link1",
+      "role": "arm",
+      "stock_spheres": 4
+    },
+    {
+      "certified_added_spheres": 5,
+      "frame": "panda_link2",
+      "role": "arm",
+      "stock_spheres": 4
+    },
+    {
+      "certified_added_spheres": 5,
+      "frame": "panda_link3",
+      "role": "arm",
+      "stock_spheres": 4
+    },
+    {
+      "certified_added_spheres": 5,
+      "frame": "panda_link4",
+      "role": "arm",
+      "stock_spheres": 4
+    },
+    {
+      "certified_added_spheres": 6,
+      "frame": "panda_link5",
+      "role": "arm",
+      "stock_spheres": 12
+    },
+    {
+      "certified_added_spheres": 4,
+      "frame": "panda_link6",
+      "role": "arm",
+      "stock_spheres": 3
+    },
+    {
+      "certified_added_spheres": 3,
+      "frame": "panda_link7",
+      "role": "arm",
+      "stock_spheres": 5
+    },
+    {
+      "certified_added_spheres": 8,
+      "frame": "panda_hand",
+      "role": "hand",
+      "stock_spheres": 18
+    },
+    {
+      "certified_added_spheres": 3,
+      "frame": "panda_rightfinger",
+      "role": "finger",
+      "stock_spheres": 0
+    },
+    {
+      "certified_added_spheres": 3,
+      "frame": "panda_leftfinger",
+      "role": "finger",
+      "stock_spheres": 0
+    }
+  ],
+  "stock_descriptor_sha256": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+  "stock_sphere_count": 55,
+  "urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6"
+}

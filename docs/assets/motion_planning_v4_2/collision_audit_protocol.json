@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "DECLARED_BEFORE_NEW_POSTURE_CAPTURE",
+  "enhanced_descriptor_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+  "geometry_frozen": {
+    "stock_spheres": 55,
+    "enhanced_spheres": 102,
+    "added_certified_cells": 47,
+    "finger_range_m": [0.001, 0.005],
+    "measured_frame_and_numerical_allowance_m": 0.00001,
+    "geometry_parameters_changed_based_on_audit_outcomes": false
+  },
+  "reference": "Independent copied PhysX-cooked vertices/triangles, mesh-to-body transforms, actual nine-DOF feedback and actual rigid-body poses. Preserve all eleven bodies including mounted base, hand and both fingers.",
+  "requested_posture_capture": {
+    "script": "scripts/capture_collision_postures_v4_2.py",
+    "sequence": [
+      {"phase": "Home", "target": "Unchanged recorded startup Home"},
+      {"phase": "Extended", "tcp_position_m": [0.65, 0.0, 0.35]},
+      {"phase": "Raised", "tcp_position_m": [0.45, -0.1, 0.65]},
+      {"phase": "Low", "tcp_position_m": [0.45, -0.1, 0.20]},
+      {"phase": "Home_return", "target": "Unchanged recorded startup Home"}
+    ],
+    "orientation_wxyz": [0.0, 0.0, 1.0, 0.0],
+    "motion_strategy": "Existing direct strategy; original tolerances and physical parameters",
+    "gripper_commands": false,
+    "failure_policy": "Retain failures and measured states. A phase declares the requested target; actual TCP and operation outcomes determine whether it was achieved. Do not retune a failed target or invent a low-reaching state from old higher configurations."
+  },
+  "other_recorded_inputs": [
+    "Historical V4.1 acceptance cycles generation0, including actual startup Home",
+    "Historical V4.1 static/narrow/large seed123456 actual near-obstacle routes",
+    "New frozen HomeDetour outward/return native trajectories when available"
+  ],
+  "selection": "First, middle and last distinct physics-step/time observations within each declared phase; phase-free historical routes use the same deterministic selection. Keep original indices, q, TCP, physics time and source artifact hashes.",
+  "surface_measurement": {
+    "quadrature": "64 equal-area triangle-subdivision centroids per copied cooked triangle",
+    "coverage": "Area-weighted fraction of actual surface samples inside the full native planning-sphere union",
+    "maximum_gap": "Maximum positive sample-to-sphere-union distance, reported per body and across selected actual postures",
+    "interpretation": "Sampled surface coverage and sampled maximum outside gaps are numerical estimates, separate from the source-bound finite convex-cell solid-containment certificate."
+  },
+  "frame_measurement": "Compare native URDF FK with actual body poses. For fingers report nominal fixed-descriptor mismatch separately, then correct FK using measured independent finger positions and URDF prismatic axes before measuring alignment.",
+  "configuration_measurement": "Check stock/enhanced external collision and existing URDF fixed/adjacent self exclusions. Enhanced additionally permits only the analytically separated finger pair. Retain finger/link6 checks. Compare obstructed configurations with independently measured actual cooked-solid box/plane clearance before calling them conservative false obstructions.",
+  "base_interpretation": "Native base sphere-union gaps remain visible. Separately report the conservative frozen-base enclosing-sphere/AABB preflight; its containment is source/frame conditional, and its exact support-plane AABB is not inflated below the nominal mount.",
+  "cpu_query_timing": {
+    "default": "NOT_MEASURED until explicitly run on a quiescent machine",
+    "batches": 11,
+    "queries_per_batch": 128,
+    "warmup_calls_per_query_and_state": 1,
+    "query_types": ["external collision", "self collision pairs", "sphere positions", "combined external+self", "combined external+self+sphere positions"],
+    "interpretation": "Repeated same-q native CPU query timings include Python/caching overhead and exclude RRT, trajectory generation and Kit stalls. Native planner/execution timing is measured separately."
+  },
+  "claims": "Missing captures and timings remain unmeasured. No future execution, tracking-error, contact-offset, continuous-motion or all-world safety guarantee follows from this audit."
+}

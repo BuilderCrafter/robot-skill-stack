@@ -14,6 +14,7 @@ from robot_skill_stack.manipulation.motion.joint_route import (
     PlanningFailure, map_arm_joints, simulation_progress,
 )
 from .global_solver import execution_solver_scope
+from .collision_model import load_enhanced_collision_model, validate_model_selection
 
 
 def _action(**kwargs):
@@ -55,11 +56,13 @@ class GlobalRrtStrategy:
     terminal_settle_seconds = .25
 
     def __init__(self, backend, *, seed=123456, max_iterations=10000,
+                 collision_model='stock',
                  planner_factory=_planner, world_capture=_snapshot,
                  action_factory=_action, clock=time.perf_counter,
                  solver_scope_factory=execution_solver_scope):
         self._backend = backend
         self.seed, self.max_iterations = seed, max_iterations
+        self.collision_model = validate_model_selection(collision_model)
         self._planner_factory, self._world_capture = planner_factory, world_capture
         self._action, self._clock = action_factory, clock
         self._solver_scope_factory, self._solver_scope = solver_scope_factory, None
@@ -71,7 +74,8 @@ class GlobalRrtStrategy:
     @property
     def diagnostics(self):
         return dict(self._details, state=self._state, closed=self._closed,
-                    motion_strategy="global", seed=self.seed, max_iterations=self.max_iterations)
+                    motion_strategy="global", seed=self.seed, max_iterations=self.max_iterations,
+                    global_collision_model=self.collision_model)
 
     def _assert_owner(self):
         if threading.get_ident() != self._owner:
@@ -102,7 +106,8 @@ class GlobalRrtStrategy:
         backend = self._backend
         self._details, self.last_plan_trace = {}, {}
         epoch, planner, last_action, primary = self._epoch, None, None, None
-        solver_scope = None
+        solver_scope = model = None
+        stop_at_measured_configuration = False
         result, wall_start = None, None
         intervals, tracking, elapsed = [], [], 0.
         initial_time = initial_index = None
@@ -127,12 +132,17 @@ class GlobalRrtStrategy:
             if feedback.state != GripperState.FREE:
                 raise PlanningFailure("unsupported_payload", "Global carrying is unsupported: payload collision geometry is not modeled.",
                                       {"grasp_state": feedback.state.value})
+            if self.collision_model == 'enhanced':
+                model = load_enhanced_collision_model()
+                self._details['gripper_contract'] = model.check_gripper(backend.robot)
             self._state = "capturing_world"
             started = self._clock()
             snapshot = self._world_capture(backend)
             self._details["snapshot_seconds"] = self._clock()-started
             self.last_plan_trace["snapshot"] = snapshot
-            planner = self._planner_factory(backend, seed=self.seed, max_iterations=self.max_iterations)
+            model_options = {} if model is None else dict(collision_model=self.collision_model)
+            planner = self._planner_factory(backend, seed=self.seed, max_iterations=self.max_iterations,
+                **model_options)
             self._active_planner = planner
             names = tuple(planner.joint_names)
             indices = np.asarray(map_arm_joints(names, backend.robot.dof_names), dtype=int)
@@ -151,6 +161,14 @@ class GlobalRrtStrategy:
                 self._details["planning_and_validation_wall_seconds"] = self._clock()-started
             self._details.update(plan.diagnostics)
             self._live(epoch)
+            if model is not None:
+                planned_hash = plan.diagnostics.get('sdk_configuration_sha256', {}).get('robot_description_path')
+                if planned_hash != model.descriptor_sha256:
+                    raise PlanningFailure('collision_model_invalid',
+                        'Planned collision description differs from the enforced gripper contract',
+                        dict(expected_collision_model_sha256=model.descriptor_sha256,
+                            planned_collision_model_sha256=planned_hash))
+                self._details['gripper_contract'] = model.check_gripper(backend.robot)
             if tuple(plan.joint_names) != names:
                 raise PlanningFailure("joint_mapping_failure", "Planner changed joint order during the request.")
             if (abs(float(backend.world.current_time)-initial_time) > 1e-9
@@ -203,6 +221,8 @@ class GlobalRrtStrategy:
             exhausted_updates = True
             for step in range(backend.max_motion_steps):
                 self._live(epoch)
+                if model is not None:
+                    self._details['gripper_contract'] = model.check_gripper(backend.robot)
                 sim_time, sim_index = float(backend.world.current_time), int(backend.world.current_time_step_index)
                 advanced = simulation_progress(previous_time, sim_time, previous_index, sim_index,
                     maximum_pause_seconds=self.physics_stall_seconds,
@@ -293,6 +313,7 @@ class GlobalRrtStrategy:
             result = BackendResult(True, "Global joint trajectory reached the requested pose.", details=self.diagnostics)
             return result
         except PlanningFailure as error:
+            stop_at_measured_configuration = error.code == 'unsupported_gripper_configuration'
             result = self._failure(error)
             return result
         except asyncio.CancelledError as error:
@@ -317,6 +338,13 @@ class GlobalRrtStrategy:
                 can_hold = False
             if can_hold:
                 try:
+                    if stop_at_measured_configuration:
+                        indices = np.asarray(last_action.joint_indices)
+                        measured = np.asarray(backend.robot.get_joint_positions(), dtype=float)[indices]
+                        if measured.shape != (7,) or not np.isfinite(measured).all():
+                            raise RuntimeError('Cannot hold invalid measured arm state after gripper rejection')
+                        last_action = self._action(joint_positions=measured, joint_indices=indices)
+                        self._details['final_hold_mode'] = 'measured arm configuration after gripper rejection'
                     self._hold(last_action)
                     self._details["final_hold"] = True
                 except Exception as error:

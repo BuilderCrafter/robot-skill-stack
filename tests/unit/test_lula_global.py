@@ -1,8 +1,11 @@
 """Pre-execution failures and actual joint-space contracts without Isaac imports."""
 from pathlib import Path
+from dataclasses import replace
+import hashlib
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace as NS
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -11,6 +14,7 @@ from robot_skill_stack.integrations.isaac.manipulation.motion.lula_global import
     LulaGlobalPlanner, adjacent_self_collision_pairs, orientation_error, quaternion_matrix,
 )
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
+from robot_skill_stack.integrations.isaac.manipulation.motion.collision_model import load_enhanced_collision_model
 
 
 NAMES = tuple(f'panda_joint{i}' for i in range(1, 8))
@@ -37,6 +41,7 @@ class PlannerFixture:
 
         class RRT:
             def __init__(self, **config):
+                events.append(('rrt_config', config))
                 self._world, self._robot_description = World(), model
                 self._rrt = NS(set_param=lambda name,value: events.append(('native_param',name,value)) or True,
                     update_world_view=lambda: events.append(('world_update',)))
@@ -50,7 +55,7 @@ class PlannerFixture:
                 return np.array([q,self.goal]) if search_success else None
 
         class Kinematics:
-            def __init__(self, **config):pass
+            def __init__(self, **config):events.append(('kinematics_config', config))
             def get_joint_names(self):return tuple(reversed(NAMES)) if wrong_order else NAMES
             def set_robot_base_pose(self, *args):pass
             def get_cspace_position_limits(self):return np.full(7,-1.),np.full(7,1.)
@@ -61,6 +66,7 @@ class PlannerFixture:
             def compute_inverse_kinematics(self, frame, p, orientation, **kwargs):
                 events.append(('ik',frame,p.copy(),orientation.copy(),kwargs));return target_q.copy(),ik_success
             def compute_forward_kinematics(self, frame, q):
+                if frame == 'panda_link0': return np.zeros(3), np.eye(3)
                 return np.array([.3+q[0],0,.4]), np.eye(3) if orientation_ok else quaternion_matrix([0,1,0,0])
 
         class Trajectory:
@@ -74,7 +80,7 @@ class PlannerFixture:
             def eval(self,t,derivative):return np.zeros(7)
 
         class Generator:
-            def __init__(self, **kwargs):pass
+            def __init__(self, **kwargs):events.append(('generator_config', kwargs))
             def get_active_joints(self):return NAMES
             def compute_c_space_trajectory(self,route):
                 events.append(('trajectory',route.copy()))
@@ -118,6 +124,74 @@ class LulaGlobalTests(unittest.TestCase):
         self.addCleanup(planner.close)
         return planner,planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1)
 
+    def enhanced(self, fixture):
+        model = replace(load_enhanced_collision_model(),
+            urdf_sha256=hashlib.sha256(fixture.urdf.read_bytes()).hexdigest())
+        fixture.backend.robot.dof_names = (*NAMES, 'panda_finger_joint1', 'panda_finger_joint2')
+        fixture.backend.robot.get_joint_positions = lambda: np.array([0.]*7+[.003, .003])
+        return model
+
+    def test_enhanced_description_is_shared_by_search_ik_and_trajectory_validator(self):
+        fixture = self.fixture(); model = self.enhanced(fixture)
+        with patch('robot_skill_stack.integrations.isaac.manipulation.motion.lula_global.load_enhanced_collision_model',
+                return_value=model):
+            planner = LulaGlobalPlanner(fixture.backend, collision_model='enhanced', _sdk=fixture.sdk)
+            self.addCleanup(planner.close)
+            result = planner.plan(fixture.target, np.zeros(7), fixture.snapshot, .025, .1)
+        configs = [row[1] for row in fixture.events if row[0] in ('rrt_config', 'kinematics_config', 'generator_config')]
+        self.assertEqual(len(configs), 3)
+        for config in configs:
+            self.assertEqual(config['robot_description_path'], str(model.descriptor_path))
+            self.assertEqual(config['urdf_path'], str(fixture.urdf))
+        self.assertEqual(result.diagnostics['global_collision_model'], 'enhanced')
+        self.assertTrue(result.diagnostics['base_geometry_preflight']['all_configurations'])
+
+    def test_changed_urdf_cannot_silently_fall_back_to_stock_on_retry(self):
+        fixture = self.fixture(); model = self.enhanced(fixture)
+        fixture.urdf.write_text('changed asset')
+        with patch('robot_skill_stack.integrations.isaac.manipulation.motion.lula_global.load_enhanced_collision_model',
+                return_value=model):
+            planner = LulaGlobalPlanner(fixture.backend, collision_model='enhanced', _sdk=fixture.sdk)
+            self.addCleanup(planner.close)
+            for _ in range(2):
+                with self.assertRaises(PlanningFailure) as caught: _ = planner.joint_names
+                self.assertEqual(caught.exception.code, 'collision_model_invalid')
+        self.assertFalse(any(row[0] == 'rrt_config' for row in fixture.events))
+
+    def test_base_preflight_rejects_possible_collision_before_ik_or_search(self):
+        from robot_skill_stack.integrations.isaac.manipulation.motion.static_world import StaticObstacle
+        fixture = self.fixture(); model = self.enhanced(fixture)
+        fixture.snapshot.obstacles = (StaticObstacle('/BaseBall', 'sphere', model.base_center, radius=.01),)
+        with patch('robot_skill_stack.integrations.isaac.manipulation.motion.lula_global.load_enhanced_collision_model',
+                return_value=model):
+            planner = LulaGlobalPlanner(fixture.backend, collision_model='enhanced', _sdk=fixture.sdk)
+            self.addCleanup(planner.close)
+            with self.assertRaises(PlanningFailure) as caught:
+                planner.plan(fixture.target, np.zeros(7), fixture.snapshot, .025, .1)
+        self.assertEqual(caught.exception.code, 'base_geometry_rejected')
+        self.assertFalse(any(row[0] in ('ik', 'rrt_call', 'trajectory') for row in fixture.events))
+
+    def test_enhanced_pair_certificate_never_excludes_finger_against_link6(self):
+        for extra in ((), (('panda_leftfinger', 'panda_link6'),)):
+            with self.subTest(extra=extra):
+                fixture = self.fixture(self_pairs=(('panda_leftfinger', 'panda_rightfinger'), *extra))
+                model = self.enhanced(fixture)
+                with patch('robot_skill_stack.integrations.isaac.manipulation.motion.lula_global.load_enhanced_collision_model',
+                        return_value=model):
+                    planner = LulaGlobalPlanner(fixture.backend, collision_model='enhanced', _sdk=fixture.sdk)
+                    self.addCleanup(planner.close)
+                    if extra:
+                        with self.assertRaises(PlanningFailure) as caught:
+                            planner.plan(fixture.target, np.zeros(7), fixture.snapshot, .025, .1)
+                        self.assertEqual(caught.exception.code, 'invalid_start')
+                        self.assertFalse(any(row[0] == 'rrt_call' for row in fixture.events))
+                    else:
+                        result = planner.plan(fixture.target, np.zeros(7), fixture.snapshot, .025, .1)
+                        self.assertEqual(result.diagnostics['certified_self_collision_exclusions'],
+                            [['panda_leftfinger', 'panda_rightfinger']])
+        stock = self.fixture(self_pairs=(('panda_leftfinger', 'panda_rightfinger'),))
+        with self.assertRaises(PlanningFailure): self.plan(stock)
+
     def test_preserves_joint_route_full_pose_and_native_seed(self):
         fixture=self.fixture();planner,result=self.plan(fixture)
         self.assertEqual(result.joint_names,NAMES)
@@ -127,6 +201,11 @@ class LulaGlobalTests(unittest.TestCase):
         np.testing.assert_array_equal(ik[3],[1,0,0,0])
         self.assertEqual(result.diagnostics['trajectory_validation']['collision_validation'],'PASS_SAMPLED_SDK_MODEL')
         self.assertEqual(result.diagnostics['ik_candidates_attempted'],1)
+        self.assertGreater(result.diagnostics['configuration_validation_calls'], 0)
+        self.assertGreaterEqual(result.diagnostics['configuration_validation_wall_seconds'], 0.)
+        self.assertEqual(result.diagnostics['route_validation_seconds'],
+            sum(row.get('route_validation_seconds', 0.) for row in result.diagnostics['ik_attempts']))
+        self.assertIsNone(result.diagnostics['native_rrt_collision_query_count'])
 
     def test_colliding_start_never_searches_or_generates_trajectory(self):
         fixture=self.fixture(collision=lambda q:True)
@@ -153,6 +232,7 @@ class LulaGlobalTests(unittest.TestCase):
         fixture=self.fixture(collision=lambda q:q[0]>.15)
         with self.assertRaises(PlanningFailure) as caught:self.plan(fixture)
         self.assertEqual(caught.exception.code,'invalid_goal')
+        self.assertEqual(caught.exception.details['ik_attempts'][0]['ik_q'], [.2, 0., 0., 0., 0., 0., 0.])
         self.assertFalse(any(row[0]=='rrt_call' for row in fixture.events))
 
     def test_exhausted_search_has_no_direct_or_trajectory_fallback(self):
@@ -183,6 +263,8 @@ class LulaGlobalTests(unittest.TestCase):
         fixture=self.fixture(trajectory_collision=True)
         with self.assertRaises(PlanningFailure) as caught:self.plan(fixture)
         self.assertEqual(caught.exception.code,'route_invalid')
+        self.assertIn('route_validation_seconds', caught.exception.details['ik_attempts'][0])
+        self.assertGreater(caught.exception.details['configuration_validation_calls'], 0)
         self.assertFalse(any(row[0]=='trajectory' for row in fixture.events))
 
     def test_safe_rrt_waypoints_do_not_authorize_colliding_smoothed_trajectory(self):

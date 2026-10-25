@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN_BEFORE_ANY_V4_2_CANDIDATE_RRT",
+  "frozen_at_utc": "2026-10-25T19:12:24.544258+00:00",
+  "scenario": "v4_2_home_start_detour",
+  "fixture": {
+    "name": "HomeDetour",
+    "prim_path": "/World/ReactiveEvaluation/HomeDetour",
+    "kind": "cuboid",
+    "position_m": [
+      0.55,
+      -0.05,
+      0.25
+    ],
+    "dimensions_m": [
+      0.04,
+      0.04,
+      0.12
+    ],
+    "orientation_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "stationary": true
+  },
+  "initial_home": {
+    "position": [
+      0.5974912637910632,
+      -0.08603929056981253,
+      0.3644922301295057
+    ],
+    "orientation": [
+      0.20977957952881227,
+      0.1715124171490509,
+      0.955105209887572,
+      -0.11979172267741134
+    ],
+    "frame": "world"
+  },
+  "initial_joint_positions": [
+    -0.16536663472652435,
+    -0.029043084010481834,
+    0.06232651323080063,
+    -2.1479387283325195,
+    -0.441255122423172,
+    2.485304832458496,
+    1.340412974357605,
+    0.0022974847815930843,
+    0.0022974845487624407
+  ],
+  "outward_target": {
+    "position": [
+      0.45,
+      -0.25,
+      0.35
+    ],
+    "orientation": [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "frame": "world"
+  },
+  "outward_target_tolerances": {
+    "position_m": 0.025,
+    "orientation_rad": 0.1
+  },
+  "return_target": "Unchanged startup named Home captured by runtime; retain the same obstacle physical geometry and pose throughout both directions.",
+  "acceptance_seeds": [
+    123456,
+    234567,
+    345678
+  ],
+  "fresh_primary_seed_repetitions": 3,
+  "primary_seed": 123456,
+  "minimum_actual_movement_both_directions_rad": 0.02,
+  "fixture_revision_after_candidate_RRT_allowed": false,
+  "candidate_RRT_calls_before_freeze": 0,
+  "independent_initial_home_obstacle_clearance_m": 0.04955403300506476,
+  "independent_target_obstacle_clearance_m": 0.12557944291858913,
+  "independent_sampled_witness_clearance_m": 0.040596401621161626,
+  "independent_continuous_witness_clearance_lower_bound_m": 0.0266799983511602,
+  "ordinary_direct_obstruction": {
+    "direct_sample": 7,
+    "robot_link": "/Franka/panda_rightfinger",
+    "intersection_inradius_m": 0.0050681990224803845,
+    "intersection_ball_center_m": [
+      0.5649318009775195,
+      -0.0649318009775196,
+      0.3049318009775196
+    ],
+    "physics_step": 39,
+    "simulation_time": 0.6500000339001417,
+    "reference": "Actual ordinary direct Home-to-START setup, unchanged historical V4.1 cycles/r1. Counterfactual fixture intersection computed offline; no physical impact is required or claimed."
+  },
+  "witness": "Stored captured 9-DOF polyline: initial startup Home to recorded settledHome bridge, reversed recorded global Home-return, reversed recorded empty global START-to-GOAL. Explicitly independent of any V4.2 candidate route.",
+  "all_11_cooked_bodies_included": true,
+  "mounted_base_obstacle_clearance_m": 0.47844114236850493,
+  "finger_range_m": {
+    "minimum": [
+      0.0021396533120423555,
+      0.002139510354027152
+    ],
+    "maximum": [
+      0.002297553699463606,
+      0.0022975571919232607
+    ]
+  },
+  "native_round_trip_status": "NOT_RUN",
+  "claims_limit": "This freezes a geometrically feasible fixture and independent constructed witness, not a promise that RRT will discover it or future physical execution will remain clear. Native actual outward/return tracking, all-scene contacts including mount, settling and lifecycle still require measurement.",
+  "source_artifact_sha256": {
+    "predeclared-search.json": "125845790b2c1693e6cbec9cb350a431fa79759b13a890dc0215e179c1598d9f",
+    "search-result.json": "f1667884fd2cf3a0bc3b994533b65d7bfa61c14728e33e8df3337fc55d927cab",
+    "witness-certificate.json": "1a45348e9b8758b196328535e75121288f5f5ff6bd04e93d36b0f44e100c3514",
+    "witness_captured_polyline_q.npy": "20375e6b68aafa11a98b38e9a294ead08c5d255aeef14996a187b200306094de"
+  }
+}

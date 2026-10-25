@@ -106,6 +106,7 @@ class MotionConfig:
     max_obstacles: int = 64
     rrt_seed: int = 123456
     rrt_max_iterations: int = 10000
+    global_collision_model: str = 'stock'
 
     def __post_init__(self):
         if not isinstance(self.strategy, str):
@@ -122,6 +123,9 @@ class MotionConfig:
             raise ValueError('motion.rrt_seed must be an integer between 1 and 2147483647')
         if type(self.rrt_max_iterations) is not int or not 1 <= self.rrt_max_iterations <= 50000:
             raise ValueError('motion.rrt_max_iterations must be an integer between 1 and 50000')
+        if (not isinstance(self.global_collision_model, str)
+                or self.global_collision_model not in ('stock', 'enhanced')):
+            raise ValueError("motion.global_collision_model must be 'stock' or 'enhanced'")
 
 
 @dataclass(frozen=True)

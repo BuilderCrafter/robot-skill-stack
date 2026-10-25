@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "protocol": "Frozen before first V4.2 SimulationApp run; fresh processes; unchanged launcher; no fixture adaptation; retain every outcome.",
+  "jobs": [
+    {
+      "label": "lifecycle/enhanced/cycles/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1",
+      "result": "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "cycles",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1"
+      ]
+    },
+    {
+      "label": "lifecycle/enhanced/cancel/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1",
+      "result": "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "cancel",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1"
+      ]
+    },
+    {
+      "label": "lifecycle/enhanced/stop/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1",
+      "result": "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "stop",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1"
+      ]
+    },
+    {
+      "label": "lifecycle/enhanced/reset/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1",
+      "result": "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "reset",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1"
+      ]
+    },
+    {
+      "label": "lifecycle/enhanced/close/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1",
+      "result": "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "close",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1"
+      ]
+    }
+  ]
+}

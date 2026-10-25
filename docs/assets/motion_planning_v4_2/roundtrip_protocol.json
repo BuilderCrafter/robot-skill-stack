@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN_PROTOCOL_NATIVE_NOT_RUN",
+  "fixture_file": "roundtrip_fixture.json",
+  "fixture_sha256": "79270a3d691451d631830bc9d130945d58d1ebc44a14ec7630d6a86ea7b0f54b",
+  "design_artifact_directory": "outputs/motion-planning-v4-2/fixture-design/proposal-20261025-a",
+  "design_artifact_sha256": {
+    "predeclared-search.json": "125845790b2c1693e6cbec9cb350a431fa79759b13a890dc0215e179c1598d9f",
+    "search-result.json": "f1667884fd2cf3a0bc3b994533b65d7bfa61c14728e33e8df3337fc55d927cab",
+    "witness-certificate.json": "1a45348e9b8758b196328535e75121288f5f5ff6bd04e93d36b0f44e100c3514",
+    "actual-and-interval-audit.json": "7be0cc8bda3bab126a0a3a76ce42a786d814aea237b53539c87be7b99932f064",
+    "witness_captured_polyline_q.npy": "20375e6b68aafa11a98b38e9a294ead08c5d255aeef14996a187b200306094de",
+    "witness_geometry_bounds.npz": "6b4240258b4382d913de1fd7b75f12bdf90278e3cb62806a0a601b65428f6c2f"
+  },
+  "raw_recorded_source_directory": "outputs/motion-planning-v4-1/acceptance/cycles/r1",
+  "recorded_source_sha256": {
+    "acceptance_trace.json": "1599f4662719abfe27d773ee4ba4d940f31459db599441df8aa8b5ccc24bdf57",
+    "acceptance_geometry_0.npz": "32b3539ef0eb9c692194141ad6a23b49339e9050fc5400e5d7da21d3a65628d9"
+  },
+  "startup_match": {
+    "maximum_joint_difference_rad_or_m": 0.001,
+    "maximum_tcp_position_difference_m": 0.0001,
+    "maximum_tcp_orientation_difference_rad": 0.001
+  },
+  "models": [
+    "stock",
+    "enhanced"
+  ],
+  "seeds": [
+    123456,
+    234567,
+    345678
+  ],
+  "primary_seed": 123456,
+  "fresh_primary_repetitions": 3,
+  "total_roundtrip_processes_per_model": 5,
+  "modes": {
+    "roundtrip": "Create the frozen box at its final pose before normal bootstrap. Start at recorded named Home; no setup arm command. Independently check fresh actual Home and retained target/witness geometry before first RRT. Execute global move_to_pose to historical START then runtime Home with the box unchanged. Both directions require >.02rad measured arm displacement.",
+    "direct_reference": "Create no physical external box. Start at the same measured Home and issue existing direct move_to_pose to the same target. Independently intersect its captured cooked solid poses with the frozen counterfactual box offline; no actual impact required."
+  },
+  "preflight": [
+    "Frozen declaration and exact source artifact SHA256 chain match",
+    "Fresh cooked vertices, triangles and mesh-to-body transforms equal the independent design reference for all11 bodies",
+    "Measured fresh initial9DOF joints and TCP match recorded startup Home; named Home equals the recorded destination",
+    "Fresh actual Home, retained actual target and independent declared witness have positive cooked-solid clearance to frozen obstacle",
+    "Independent witness numeric interval certificate is positive and explicitly separate from candidate trajectories",
+    "Actual finger positions and latched joint targets are recorded without assuming descriptor25mm opening"
+  ],
+  "invariants": [
+    "Original targets, tolerances, joint limits, RRT limits, tracking, TGS scope and terminal settling remain unchanged",
+    "All11 robot bodies including mounted base, hand and both fingers remain in independent measurement",
+    "Obstacle pose, dimensions, collider status and world geometry remain unchanged on all observed physics steps and before/after both operations",
+    "No fixture revision based on candidate RRT outcomes; retain every failed attempt",
+    "Strict zero reports and physical contact-free completion remain separate; no harmless-contact threshold",
+    "Native measurement validity, motion acceptance and continuous witness feasibility are separate statuses"
+  ],
+  "measurement": [
+    "Per physics-step q,qd,applied targets,TCP,body poses,velocities and contact points/impulses/separations",
+    "Both operation RRT/route/trajectory planning diagnostics, simulation/wall execution duration and final pose errors",
+    "All-scene and fixture-only per-link clearance and closest pair, per-step fixture clearance curve",
+    "Strict reports, positive-separation proximity,physical-contact steps,maximum penetration and normal impulses",
+    "Kit and controller wait quantiles plus RSS before/after operations; no leak claim inferred from retained traces"
+  ],
+  "native_status": "NOT_RUN"
+}

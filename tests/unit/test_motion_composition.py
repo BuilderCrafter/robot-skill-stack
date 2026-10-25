@@ -20,6 +20,25 @@ def direct_double():
 
 
 class MotionCompositionTests(unittest.TestCase):
+    def test_enhanced_model_is_passed_only_to_selected_global_strategy(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            module_name = DIRECT_MODULE.replace('.direct', '.global_rrt')
+            global_motion = ModuleType(module_name)
+            global_motion.GlobalRrtStrategy = Mock(return_value=object())
+            direct = direct_double()
+            with patch.dict('sys.modules', {module_name: global_motion, DIRECT_MODULE: direct}):
+                backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                    motion=MotionConfig(strategy='global', global_collision_model='enhanced'))
+                env.backend_calls[-1]['strategy_factory'](backend)
+                global_motion.GlobalRrtStrategy.assert_called_once_with(backend,
+                    seed=123456, max_iterations=10000, collision_model='enhanced')
+                direct_backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                    motion=MotionConfig(strategy='direct', global_collision_model='enhanced'))
+                env.backend_calls[-1]['strategy_factory'](direct_backend)
+                direct.DirectRmpflowStrategy.assert_called_once_with(direct_backend,
+                    mapping_source_provider=None)
+
     def test_global_factory_preserves_seed_and_iteration_bound_without_mapping_access(self):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
@@ -61,7 +80,8 @@ class MotionCompositionTests(unittest.TestCase):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
             for options in (dict(rrt_seed=True), dict(rrt_seed=-1),
-                            dict(rrt_max_iterations=0), dict(rrt_max_iterations=1.5)):
+                            dict(rrt_max_iterations=0), dict(rrt_max_iterations=1.5),
+                            dict(global_collision_model='bad')):
                 with self.subTest(options=options), self.assertRaises(ValueError):
                     bootstrap.create_backend(None, None, config.robot,
                         motion=NS(strategy='global', **options))

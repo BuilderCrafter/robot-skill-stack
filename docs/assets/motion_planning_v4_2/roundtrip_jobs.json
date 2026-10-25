@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "protocol": "Frozen before first V4.2 SimulationApp run; fresh processes; unchanged launcher; no fixture adaptation; retain every outcome.",
+  "jobs": [
+    {
+      "label": "roundtrip/enhanced/seed-123456/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-123456/r2",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-123456/r3",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-234567/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-345678/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1"
+      ]
+    },
+    {
+      "label": "roundtrip/stock/seed-123456/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "stock",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1"
+      ]
+    },
+    {
+      "label": "roundtrip/stock/seed-123456/r2",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2",
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "stock",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2"
+      ]
+    },
+    {
+      "label": "roundtrip/stock/seed-123456/r3",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3",
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "stock",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3"
+      ]
+    },
+    {
+      "label": "roundtrip/stock/seed-234567/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "stock",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1"
+      ]
+    },
+    {
+      "label": "roundtrip/stock/seed-345678/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1",
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "stock",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1"
+      ]
+    }
+  ]
+}

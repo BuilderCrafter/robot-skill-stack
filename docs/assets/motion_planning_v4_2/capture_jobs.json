@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "protocol": "Frozen before first V4.2 SimulationApp run; fresh processes; unchanged launcher; no fixture adaptation; retain every outcome.",
+  "jobs": [
+    {
+      "label": "postures/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/postures/r1",
+      "result": "outputs/motion-planning-v4-2/postures/r1/result.json",
+      "arguments": [
+        "scripts/capture_collision_postures_v4_2.py",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/postures/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/postures/r1"
+      ]
+    }
+  ]
+}

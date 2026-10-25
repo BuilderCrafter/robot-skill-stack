@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "protocol": "Frozen before first V4.2 SimulationApp run; fresh processes; unchanged launcher; no fixture adaptation; retain every outcome.",
+  "jobs": [
+    {
+      "label": "regression/direct",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/regression/direct",
+      "result": "outputs/motion-planning-v4-2/regression/direct/result.json",
+      "arguments": [
+        "tests/isaac/test_motion_strategy.py",
+        "--result",
+        "outputs/motion-planning-v4-2/regression/direct/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/regression/direct"
+      ]
+    }
+  ]
+}

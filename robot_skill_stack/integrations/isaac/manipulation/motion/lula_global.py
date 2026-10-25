@@ -19,6 +19,7 @@ import numpy as np
 from robot_skill_stack.manipulation.motion.joint_route import (
     PlanningFailure, check_joint_limits, interpolate_route, route_array,
 )
+from .collision_model import load_enhanced_collision_model, validate_model_selection
 
 
 def quaternion_matrix(quaternion):
@@ -93,17 +94,19 @@ def _load_sdk():
 class LulaGlobalPlanner:
     """One bounded IK/RRT/trajectory transaction against a frozen scene.
 
-    The stock external collision model has 55 arm/hand spheres and assumes
-    fixed fingers at .025 m. It is not a complete physical mesh certificate.
-    Dense SDK-model checks precede execution; independent native measurements
-    assess the actual articulated meshes, including fingers.
+    Stock retains 55 arm/hand spheres and nominal .025 m fingers. The opt-in
+    project description includes a guarded finger-range envelope. Dense model
+    checks precede execution; independent measurements assess physical meshes.
     """
-    def __init__(self, backend, *, seed=123456, max_iterations=10000, _sdk=None):
+    def __init__(self, backend, *, seed=123456, max_iterations=10000,
+                 collision_model='stock', _sdk=None):
         if type(seed) is not int or seed <= 0:
             raise ValueError('RRT seed must be a positive integer')
         if type(max_iterations) is not int or not 1 <= max_iterations <= 50000:
             raise ValueError('RRT max_iterations must be from 1 through 50000')
         self.backend, self.seed, self.max_iterations = backend, seed, max_iterations
+        self.collision_model = validate_model_selection(collision_model)
+        self._collision_model = None
         self._sdk, self._owner, self._closed = _sdk, threading.get_ident(), False
         self._planner = self._inspector = self._generator = None
         self._handles = []
@@ -126,7 +129,13 @@ class LulaGlobalPlanner:
         self._assert_owner()
         self._sdk = self._sdk or _load_sdk()
         if self._config is None:
-            self._config = dict(self._sdk.load_config('Franka', 'RRT'))
+            config = dict(self._sdk.load_config('Franka', 'RRT'))
+            if self.collision_model == 'enhanced':
+                self._collision_model = load_enhanced_collision_model()
+                if hashlib.sha256(Path(config['urdf_path']).read_bytes()).hexdigest() != self._collision_model.urdf_sha256:
+                    raise PlanningFailure('collision_model_invalid', 'Installed URDF differs from enhanced-model certification')
+                config['robot_description_path'] = str(self._collision_model.descriptor_path)
+            self._config = config
         if self._planner is None:
             self._planner = self._sdk.RRT(**self._config)
         names = tuple(self._planner.get_active_joints())
@@ -183,18 +192,24 @@ class LulaGlobalPlanner:
         return time.perf_counter()-started
 
     def _configuration(self, q, *, label, snapshot, base_position, base_rotation, excluded_pairs):
-        if self._inspector.in_collision_with_obstacle(q):
-            raise PlanningFailure(label, 'Configuration intersects the frozen planning world')
-        pairs = self._inspector.frames_in_self_collision(q)
-        unmasked = [tuple(pair) for pair in pairs if frozenset(pair) not in excluded_pairs]
-        if unmasked:
-            raise PlanningFailure(label, 'Configuration has non-adjacent self collision', {'pairs': unmasked})
-        positions = np.asarray(self._inspector.collision_sphere_positions(q))
-        world_positions = positions @ base_rotation.T + base_position
+        started = time.perf_counter()
         try:
-            snapshot.assert_within_domains(world_positions, self._inspector.collision_sphere_radii())
-        except ValueError as error:
-            raise PlanningFailure('unsupported_geometry', str(error)) from error
+            if self._inspector.in_collision_with_obstacle(q):
+                raise PlanningFailure(label, 'Configuration intersects the frozen planning world')
+            pairs = self._inspector.frames_in_self_collision(q)
+            unmasked = [tuple(pair) for pair in pairs if frozenset(pair) not in excluded_pairs]
+            if unmasked:
+                raise PlanningFailure(label, 'Configuration has non-adjacent self collision', {'pairs': unmasked})
+            positions = np.asarray(self._inspector.collision_sphere_positions(q))
+            world_positions = positions @ base_rotation.T + base_position
+            try:
+                snapshot.assert_within_domains(world_positions, self._inspector.collision_sphere_radii())
+            except ValueError as error:
+                raise PlanningFailure('unsupported_geometry', str(error)) from error
+        finally:
+            self._last_diagnostics['configuration_validation_calls'] = self._last_diagnostics.get('configuration_validation_calls', 0)+1
+            self._last_diagnostics['configuration_validation_wall_seconds'] = (
+                self._last_diagnostics.get('configuration_validation_wall_seconds', 0.)+time.perf_counter()-started)
 
     def _validate_route(self, route, snapshot, base_position, base_rotation, excluded_pairs, limits):
         check_joint_limits(route, *limits)
@@ -252,6 +267,7 @@ class LulaGlobalPlanner:
             self._last_diagnostics.update(ik_candidates_attempted=len(attempts),
                 ik_seconds=sum(row.get('ik_seconds', 0.) for row in attempts),
                 rrt_seconds=sum(row.get('rrt_seconds', 0.) for row in attempts),
+                route_validation_seconds=sum(row.get('route_validation_seconds', 0.) for row in attempts),
                 trajectory_generation_seconds=sum(row.get('trajectory_generation_seconds', 0.) for row in attempts),
                 trajectory_validation_seconds=sum(row.get('trajectory_validation_seconds', 0.) for row in attempts))
             if result is not None:
@@ -263,8 +279,13 @@ class LulaGlobalPlanner:
         self._assert_owner()
         self.clear()
         self._last_diagnostics = dict(seed=self.seed, max_iterations=self.max_iterations,
+            global_collision_model=self.collision_model,
             rrt_step_size_rad=.05, state='initializing', ik_candidates_attempted=0,
             ik_seconds=0., rrt_seconds=0., rrt_waypoints=0,
+            route_validation_seconds=0., configuration_validation_calls=0,
+            configuration_validation_wall_seconds=0.,
+            configuration_validation_scope='Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries',
+            native_rrt_collision_query_count=None, native_rrt_collision_query_seconds=None,
             trajectory_generation_seconds=0., trajectory_validation_seconds=0.)
         if target.orientation is None:
             raise PlanningFailure('ik_failed', 'Global planning requires a full end-effector orientation')
@@ -287,6 +308,8 @@ class LulaGlobalPlanner:
         self._last_diagnostics.update(static_obstacles=len(snapshot.obstacles),
             world_update_seconds=update_seconds, active_joint_names=list(names))
         excluded_pairs = adjacent_self_collision_pairs(cfg['urdf_path'])
+        if self._collision_model is not None:
+            excluded_pairs |= self._collision_model.certified_self_collision_exclusions
         lower, upper = (np.asarray(value, float) for value in solver.get_cspace_position_limits())
         velocity = np.asarray(solver.get_cspace_velocity_limits(), float)
         acceleration = np.asarray(solver.get_cspace_acceleration_limits(), float)
@@ -295,6 +318,12 @@ class LulaGlobalPlanner:
                (lower, upper, velocity, acceleration, jerk)) or np.any(np.minimum.reduce((velocity, acceleration, jerk)) <= 0):
             raise PlanningFailure('planner_unavailable', 'Installed Franka limits are incomplete')
         start_q = np.asarray(start_q, float)
+        if self._collision_model is not None:
+            self._last_diagnostics['enhanced_model_metadata_sha256'] = self._collision_model.metadata_sha256
+            self._last_diagnostics['collision_model_fingers'] = self._collision_model.check_gripper(self.backend.robot)
+            fixed_position, fixed_rotation = solver.compute_forward_kinematics(self._collision_model.base_link, start_q)
+            self._last_diagnostics['base_geometry_preflight'] = self._collision_model.preflight_base(snapshot,
+                np.asarray(fixed_position)*float(snapshot.meters_per_unit), fixed_rotation)
         try:
             check_joint_limits(start_q[None, :], lower, upper)
             self._configuration(start_q, label='invalid_start', snapshot=snapshot,
@@ -312,7 +341,14 @@ class LulaGlobalPlanner:
         self._last_diagnostics.update(ik_attempts=attempts, self_collision_mask='URDF rigid/adjacent links only',
             sdk_configuration_sha256={key: hashlib.sha256(Path(cfg[key]).read_bytes()).hexdigest()
                 for key in ('robot_description_path', 'urdf_path', 'rrt_config_path')},
-            collision_model='Installed 55 arm/hand spheres; fixed fingers .025m; sampled validation, not a mesh/continuous guarantee')
+            collision_model=('Installed 55 arm/hand spheres; fixed fingers .025m; sampled validation, not a mesh/continuous guarantee'
+                if self._collision_model is None else
+                'Project Franka V4.2 spheres with validated finger-range envelope and separate frozen-base enclosure; sampled trajectory validation'))
+        if self._collision_model is not None:
+            self._last_diagnostics.update(
+                self_collision_mask='URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range',
+                rrt_self_collision_policy='Native RRT internal policy; explicit route/trajectory inspector applies the documented mask',
+                certified_self_collision_exclusions=[sorted(pair) for pair in self._collision_model.certified_self_collision_exclusions])
         current_position, current_rotation = solver.compute_forward_kinematics(
             self.backend.end_effector_frame, start_q)
         if (np.linalg.norm(np.asarray(current_position)-target.position) <= float(position_tolerance)
@@ -343,6 +379,7 @@ class LulaGlobalPlanner:
             try:
                 q = np.asarray(q, float)
                 check_joint_limits(q[None, :], lower, upper)
+                entry['ik_q'] = q.tolist()
                 fk_position, fk_rotation = solver.compute_forward_kinematics(self.backend.end_effector_frame, q)
                 p_error = float(np.linalg.norm(np.asarray(fk_position)-target.position))
                 r_error = orientation_error(fk_rotation, target_rotation)
@@ -368,8 +405,12 @@ class LulaGlobalPlanner:
                 self._last_diagnostics['rrt_waypoints'] = len(route)
                 if np.max(np.abs(route[0]-start_q)) > 1e-6 or np.max(np.abs(route[-1]-q)) > 1e-6:
                     raise PlanningFailure('route_invalid', 'RRT route endpoints differ from the validated joint states')
-                entry['route_validation_samples'] = self._validate_route(route, snapshot,
-                    base_position, base_rotation, excluded_pairs, (lower, upper))
+                started = time.perf_counter()
+                try:
+                    entry['route_validation_samples'] = self._validate_route(route, snapshot,
+                        base_position, base_rotation, excluded_pairs, (lower, upper))
+                finally:
+                    entry['route_validation_seconds'] = time.perf_counter()-started
                 self._generator = self._sdk.Generator(robot_description_path=cfg['robot_description_path'], urdf_path=cfg['urdf_path'])
                 if tuple(self._generator.get_active_joints()) != names:
                     raise PlanningFailure('joint_mapping_failed', 'Trajectory and RRT joint orders differ')

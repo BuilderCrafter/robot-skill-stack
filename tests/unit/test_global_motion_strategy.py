@@ -8,6 +8,7 @@ import numpy as np
 from robot_skill_stack.common.types import GripperState, Pose
 from robot_skill_stack.integrations.isaac.manipulation.motion.global_rrt import GlobalRrtStrategy
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
+from robot_skill_stack.integrations.isaac.manipulation.motion.collision_model import load_enhanced_collision_model
 
 
 ARM = tuple(f"panda_joint{i}" for i in range(1, 8))
@@ -127,6 +128,101 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
             world_capture=snapshot, action_factory=lambda **kwargs: SimpleNamespace(**kwargs),
             solver_scope_factory=scope)
         self.target = Pose([.1, 0, 0], [1., 0, 0, 0])
+
+    def enhanced(self):
+        self.strategy.collision_model = 'enhanced'
+        self.backend.robot.q[[0, 8]] = .003
+        self.planner.diagnostics['sdk_configuration_sha256'] = dict(
+            robot_description_path=load_enhanced_collision_model().descriptor_sha256)
+
+    async def test_enhanced_plan_model_must_match_the_preloaded_finger_contract(self):
+        for observed in (None, 'wrong-model'):
+            with self.subTest(observed=observed):
+                self.setUp(); self.enhanced()
+                self.planner.diagnostics['sdk_configuration_sha256'] = dict(robot_description_path=observed)
+                result = await self.strategy.move_to_pose_async(self.target)
+                self.assertEqual(result.details['failure_code'], 'collision_model_invalid')
+                self.assertEqual(self.backend.robot.actions, [])
+                self.assertEqual(self.solver_scopes, [])
+                self.assertTrue(self.planner.closed)
+
+    async def test_enhanced_range_is_checked_before_capture_and_stock_stays_available(self):
+        self.enhanced()
+        self.backend.robot.q[0] = .04
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'unsupported_gripper_configuration')
+        self.assertEqual(self.snapshot_calls, 0)
+        self.assertEqual(self.factory_calls, [])
+        self.assertEqual(self.backend.robot.actions, [])
+
+    async def test_enhanced_model_selection_preserves_motion_and_original_settling(self):
+        self.enhanced()
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertTrue(result.ok, result.message)
+        self.assertEqual(self.factory_calls, [dict(seed=123456, max_iterations=10000,
+            collision_model='enhanced')])
+        np.testing.assert_array_equal(self.backend.robot.q[[0, 8]], [.003, .003])
+        self.assertEqual(result.details['terminal_velocity_limit_rad_s'], .01)
+        self.assertEqual(result.details['terminal_settle_seconds'], .25)
+        self.assertTrue(self.solver_scopes[0].closed)
+
+    async def test_enhanced_fingers_changed_during_planning_reject_before_commands(self):
+        self.enhanced()
+        original = self.planner.plan
+        def changed(*args, **kwargs):
+            plan = original(*args, **kwargs)
+            self.backend.robot.q[8] = .006
+            return plan
+        self.planner.plan = changed
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'unsupported_gripper_configuration')
+        self.assertEqual(self.backend.robot.actions, [])
+        self.assertEqual(self.solver_scopes, [])
+        self.assertTrue(self.planner.closed)
+
+    async def test_enhanced_changed_fingers_cannot_report_zero_motion_success(self):
+        self.enhanced()
+        self.planner.no_motion = True
+        original = self.planner.plan
+        def changed(*args, **kwargs):
+            plan = original(*args, **kwargs)
+            self.backend.robot.q[0] = .0005
+            return plan
+        self.planner.plan = changed
+        result = await self.strategy.move_to_pose_async(Pose([0., 0., 0.], [1., 0, 0, 0]))
+        self.assertEqual(result.details['failure_code'], 'unsupported_gripper_configuration')
+        self.assertFalse(result.ok)
+        self.assertEqual(self.backend.robot.actions, [])
+
+    async def test_gripper_change_during_execution_stops_at_measured_arm_and_restores_solver(self):
+        for stalled in (False, True):
+            with self.subTest(stalled=stalled):
+                self.setUp(); self.enhanced()
+                self.backend.freeze = stalled
+                measured = []
+                def changed(backend):
+                    backend.robot.q[0] = .007
+                    backend.robot.q[1:8] += .007
+                    measured.append(backend.robot.q[list(reversed(range(1, 8)))].copy())
+                self.backend.on_update = changed
+                result = await self.strategy.move_to_pose_async(self.target)
+                self.assertEqual(result.details['failure_code'], 'unsupported_gripper_configuration')
+                self.assertEqual(len(self.backend.robot.actions), 2)
+                np.testing.assert_array_equal(self.backend.robot.actions[-1].joint_positions, measured[0])
+                self.assertTrue(np.all(self.backend.robot.actions[-1].joint_velocities == 0.))
+                self.assertTrue(self.solver_scopes[0].closed)
+                self.assertTrue(self.planner.closed)
+                self.assertIn('measured arm', result.details['final_hold_mode'])
+
+    async def test_native_opening_target_rejects_before_out_of_range_measured_motion(self):
+        self.enhanced()
+        targets = self.backend.robot.q.copy(); targets[8] = .04
+        self.backend.robot.get_applied_action = lambda: SimpleNamespace(joint_positions=targets,
+            joint_indices=None)
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'unsupported_gripper_configuration')
+        self.assertEqual(self.backend.robot.actions, [])
+        self.assertEqual(self.snapshot_calls, 0)
 
     async def test_joint_execution_uses_physics_time_and_preserves_gripper(self):
         result = await self.strategy.move_to_pose_async(self.target)

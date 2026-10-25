@@ -54,6 +54,14 @@ class MotionConfigTests(unittest.TestCase):
         config = self.load('[motion]\nstrategy = "global"\nrrt_seed = 7\nrrt_max_iterations = 2000\n')
         self.assertEqual((config.motion.rrt_seed, config.motion.rrt_max_iterations), (7, 2000))
 
+    def test_global_collision_model_is_explicit_and_stock_remains_default(self):
+        self.assertEqual(MotionConfig(strategy='global').global_collision_model, 'stock')
+        selected = self.load('[motion]\nstrategy = "global"\nglobal_collision_model = "enhanced"\n')
+        self.assertEqual(selected.motion.global_collision_model, 'enhanced')
+        for value in ('unknown', 'Enhanced', '', None, True, 1):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'global_collision_model'):
+                MotionConfig(global_collision_model=value)
+
     def test_global_search_settings_reject_invalid_programmatic_values(self):
         for value in (0, -1, 2**31, True, 1.5, None, '4'):
             with self.subTest(seed=value), self.assertRaisesRegex(ValueError, 'rrt_seed'):

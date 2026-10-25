@@ -1,0 +1,526 @@
+{
+  "schema_version": 1,
+  "protocol": "Frozen before first V4.2 SimulationApp run; fresh processes; unchanged launcher; no fixture adaptation; retain every outcome.",
+  "jobs": [
+    {
+      "label": "static/stock/empty/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/empty/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/empty/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "empty",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/empty/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/empty/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/near/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/near/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/near/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "near",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/near/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/near/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/static/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/static/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "static",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/static/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/static/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "static",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-234567"
+      ]
+    },
+    {
+      "label": "static/stock/static/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/static/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "static",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/static/seed-345678"
+      ]
+    },
+    {
+      "label": "static/stock/narrow/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/narrow/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567"
+      ]
+    },
+    {
+      "label": "static/stock/narrow/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678"
+      ]
+    },
+    {
+      "label": "static/stock/large/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/large/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "large",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/large/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/large/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "large",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-234567"
+      ]
+    },
+    {
+      "label": "static/stock/large/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/large/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "large",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/large/seed-345678"
+      ]
+    },
+    {
+      "label": "static/stock/blocked/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "blocked",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456"
+      ]
+    },
+    {
+      "label": "static/stock/unreachable/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "stock",
+        "--scenario",
+        "unreachable",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/empty/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "empty",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/near/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "near",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/static/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "static",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/static/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "static",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567"
+      ]
+    },
+    {
+      "label": "static/enhanced/static/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "static",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678"
+      ]
+    },
+    {
+      "label": "static/enhanced/narrow/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/narrow/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567"
+      ]
+    },
+    {
+      "label": "static/enhanced/narrow/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "narrow",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678"
+      ]
+    },
+    {
+      "label": "static/enhanced/large/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "large",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/large/seed-234567",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "large",
+        "--seed",
+        "234567",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567"
+      ]
+    },
+    {
+      "label": "static/enhanced/large/seed-345678",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "large",
+        "--seed",
+        "345678",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678"
+      ]
+    },
+    {
+      "label": "static/enhanced/blocked/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "blocked",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456"
+      ]
+    },
+    {
+      "label": "static/enhanced/unreachable/seed-123456",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456",
+      "result": "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456/result.json",
+      "arguments": [
+        "scripts/benchmark_global_models_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--scenario",
+        "unreachable",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456"
+      ]
+    }
+  ]
+}
