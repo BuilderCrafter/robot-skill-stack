@@ -11,6 +11,17 @@ from scripts import diagnose_global_solver_velocity_v4_1 as probe
 
 
 class SolverVelocityProbeTests(unittest.TestCase):
+    def test_probe_requires_the_entire_unchanged_reference_source_manifest(self):
+        original = {'global_rrt.py':'before', 'backend.py':'same'}
+        probe.require_matching_probe_baseline(dict(hashes=original), dict(original))
+        for current in ({**original, 'global_rrt.py':'production-fix'},
+                {**original, 'global_solver.py':'new-production-scope'},
+                {'backend.py':'same'}, {}):
+            with self.subTest(current=current), self.assertRaisesRegex(ValueError, 'unchanged source baseline'):
+                probe.require_matching_probe_baseline(dict(hashes=original), current)
+        with self.assertRaisesRegex(ValueError, 'validate_global_stabilization_v4_1.py'):
+            probe.require_matching_probe_baseline({}, original)
+
     def test_zero_velocity_requires_all_arm_targets_and_accepts_full_dof_buffers(self):
         self.assertTrue(probe.zero_arm_velocity(dict(joint_velocities=[0.]*9, joint_indices=None), range(7)))
         self.assertTrue(probe.zero_arm_velocity(dict(joint_velocities=[0.]*7, joint_indices=list(range(7))), range(7)))

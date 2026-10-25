@@ -25,6 +25,13 @@ VELOCITY = 'physxArticulation:solverVelocityIterationCount'
 POSITION = 'physxArticulation:solverPositionIterationCount'
 
 
+def require_matching_probe_baseline(reference, current_hashes):
+    """Reject a confounded intervention before starting SimulationApp."""
+    if not reference.get('hashes') or reference['hashes'] != current_hashes:
+        raise ValueError('Solver probes require an unchanged source baseline and a source-matching reference. '
+            'Use scripts/validate_global_stabilization_v4_1.py to validate the final production strategy.')
+
+
 def attribute_opinions(session, paths, name):
     rows = []
     for path in paths:
@@ -335,6 +342,7 @@ def main(argv=None):
                 del arguments[index]
                 break
     reference = json.loads(Path(known.reference_result).read_text())
+    require_matching_probe_baseline(reference, controlled.fixture.source_hashes())
     trace = reference['controlled']['raw_trace']
     raw = Path(trace['path']).read_bytes()
     if hashlib.sha256(raw).hexdigest() != trace['sha256']:
