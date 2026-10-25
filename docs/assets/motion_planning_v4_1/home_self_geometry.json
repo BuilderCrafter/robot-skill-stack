@@ -1,0 +1,736 @@
+{
+  "schema_version": 1,
+  "status": "MEASURED_BOUNDED_ACTUAL_SELF_GEOMETRY",
+  "cases": [
+    {
+      "case": "B",
+      "states": 6,
+      "nonadjacent_pairs": 42,
+      "physical_self_collision_feedback": {
+        "available": true,
+        "value": [
+          0
+        ]
+      },
+      "physical_self_collision_feedback_provenance": "Installed articulation-view public getter reads the USD-authored self-collision setting; not independently verified through a native PhysX getter or collision response.",
+      "minimum_cooked_solid_distance_m": 0.0042008089331612136,
+      "zero_clearance_pairs": [],
+      "pair_minima": [
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link0"
+          ],
+          "distance_m": 0.4747866910226384,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link1"
+          ],
+          "distance_m": 0.421553929037644,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link2"
+          ],
+          "distance_m": 0.3640722399059547,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link3"
+          ],
+          "distance_m": 0.4087399564118193,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link4"
+          ],
+          "distance_m": 0.33973121800831085,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link5"
+          ],
+          "distance_m": 0.06986341464790022,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link0"
+          ],
+          "distance_m": 0.4869736447712576,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link1"
+          ],
+          "distance_m": 0.4561577135225691,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link2"
+          ],
+          "distance_m": 0.3863189889244736,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link3"
+          ],
+          "distance_m": 0.46451226583788713,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link4"
+          ],
+          "distance_m": 0.39945565036128444,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link5"
+          ],
+          "distance_m": 0.13500592665167202,
+          "physics_step": 230
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link6"
+          ],
+          "distance_m": 0.11436151649075899,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.0042008089331612136,
+          "physics_step": 241
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link2"
+          ],
+          "distance_m": 0.1381659295141253,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link3"
+          ],
+          "distance_m": 0.3782254982998658,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link4"
+          ],
+          "distance_m": 0.4573941974151281,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link5"
+          ],
+          "distance_m": 0.4555353959495707,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link6"
+          ],
+          "distance_m": 0.4960070496595157,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link7"
+          ],
+          "distance_m": 0.5110611317991368,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.49562405757158695,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link3"
+          ],
+          "distance_m": 0.14008151654629794,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link4"
+          ],
+          "distance_m": 0.22037087457255794,
+          "physics_step": 230
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link5"
+          ],
+          "distance_m": 0.2864794708718777,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link6"
+          ],
+          "distance_m": 0.38017590386620337,
+          "physics_step": 261
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link7"
+          ],
+          "distance_m": 0.4313571799835326,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.46781127843758896,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link4"
+          ],
+          "distance_m": 0.07332537043035932,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link5"
+          ],
+          "distance_m": 0.16652484188688793,
+          "physics_step": 220
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link6"
+          ],
+          "distance_m": 0.3283186306074287,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link7"
+          ],
+          "distance_m": 0.3723812842748335,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.39779136065783727,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link5"
+          ],
+          "distance_m": 0.07476601560475452,
+          "physics_step": 230
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link6"
+          ],
+          "distance_m": 0.29069473645858923,
+          "physics_step": 241
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link7"
+          ],
+          "distance_m": 0.392400021392129,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.47597107623952645,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_link6"
+          ],
+          "distance_m": 0.21215434403614802,
+          "physics_step": 220
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_link7"
+          ],
+          "distance_m": 0.32088248160498534,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.4101613187744235,
+          "physics_step": 210
+        },
+        {
+          "pair": [
+            "panda_link5",
+            "panda_link7"
+          ],
+          "distance_m": 0.022860836882024543,
+          "physics_step": 241
+        },
+        {
+          "pair": [
+            "panda_link5",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.13648457115628881,
+          "physics_step": 220
+        },
+        {
+          "pair": [
+            "panda_link6",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.11433377629303507,
+          "physics_step": 251
+        }
+      ],
+      "convex_distance_queries": 216,
+      "maximum_numerical_certificate_width_m": 1.6653345369377348e-16,
+      "arm_hand_fk_translation_error_max_m": 4.013614990411955e-07,
+      "arm_hand_fk_rotation_matrix_error_max": 4.847198830093546e-07,
+      "source_artifacts": {
+        "outputs/motion-planning-v4-1/reproduction/B/r1/controlled_trace.json": "0a7405502a3790cf39bfac550a0076bc734cc6facdb122d4d9506a19f7ba4c60",
+        "outputs/motion-planning-v4-1/reproduction/B/r1/result.json": "7db4102d47534e2e332b3752d427cfd81a017037aa444012e784edb74b23f15a"
+      }
+    },
+    {
+      "case": "C",
+      "states": 6,
+      "nonadjacent_pairs": 42,
+      "physical_self_collision_feedback": {
+        "available": true,
+        "value": [
+          0
+        ]
+      },
+      "physical_self_collision_feedback_provenance": "Installed articulation-view public getter reads the USD-authored self-collision setting; not independently verified through a native PhysX getter or collision response.",
+      "minimum_cooked_solid_distance_m": 0.0041998910598627015,
+      "zero_clearance_pairs": [],
+      "pair_minima": [
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link0"
+          ],
+          "distance_m": 0.47470613068574086,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link1"
+          ],
+          "distance_m": 0.4215414558304703,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link2"
+          ],
+          "distance_m": 0.36399706237368784,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link3"
+          ],
+          "distance_m": 0.40873958954493067,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link4"
+          ],
+          "distance_m": 0.3397310560239293,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_hand",
+            "panda_link5"
+          ],
+          "distance_m": 0.06986056449524114,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link0"
+          ],
+          "distance_m": 0.4868886734628965,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link1"
+          ],
+          "distance_m": 0.4561315298800898,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link2"
+          ],
+          "distance_m": 0.3862549955334801,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link3"
+          ],
+          "distance_m": 0.46451259410378276,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link4"
+          ],
+          "distance_m": 0.3994555233687779,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link5"
+          ],
+          "distance_m": 0.13500494624633877,
+          "physics_step": 231
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_link6"
+          ],
+          "distance_m": 0.11436148225180279,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_leftfinger",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.0041998910598627015,
+          "physics_step": 242
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link2"
+          ],
+          "distance_m": 0.13816586892415106,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link3"
+          ],
+          "distance_m": 0.3782330584222006,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link4"
+          ],
+          "distance_m": 0.4573929254060551,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link5"
+          ],
+          "distance_m": 0.4555824098164341,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link6"
+          ],
+          "distance_m": 0.4960392034208762,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_link7"
+          ],
+          "distance_m": 0.5109858870273236,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link0",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.4955381298924458,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link3"
+          ],
+          "distance_m": 0.1400812428566633,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link4"
+          ],
+          "distance_m": 0.22037235083597914,
+          "physics_step": 231
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link5"
+          ],
+          "distance_m": 0.2865054502291233,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link6"
+          ],
+          "distance_m": 0.38021743925349866,
+          "physics_step": 262
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_link7"
+          ],
+          "distance_m": 0.4313452725826095,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link1",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.46777027268756305,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link4"
+          ],
+          "distance_m": 0.07332289970186096,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link5"
+          ],
+          "distance_m": 0.16651508575634194,
+          "physics_step": 221
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link6"
+          ],
+          "distance_m": 0.32827236915178404,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_link7"
+          ],
+          "distance_m": 0.3723089520400463,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link2",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.3977325461873355,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link5"
+          ],
+          "distance_m": 0.07476578853295088,
+          "physics_step": 231
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link6"
+          ],
+          "distance_m": 0.290696121747139,
+          "physics_step": 242
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_link7"
+          ],
+          "distance_m": 0.3923993469424489,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link3",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.47597075019680757,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_link6"
+          ],
+          "distance_m": 0.21215433810362178,
+          "physics_step": 221
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_link7"
+          ],
+          "distance_m": 0.3208823912315931,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link4",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.41016045606714996,
+          "physics_step": 211
+        },
+        {
+          "pair": [
+            "panda_link5",
+            "panda_link7"
+          ],
+          "distance_m": 0.022859225386852897,
+          "physics_step": 242
+        },
+        {
+          "pair": [
+            "panda_link5",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.1364846197014644,
+          "physics_step": 221
+        },
+        {
+          "pair": [
+            "panda_link6",
+            "panda_rightfinger"
+          ],
+          "distance_m": 0.11433378890959199,
+          "physics_step": 211
+        }
+      ],
+      "convex_distance_queries": 216,
+      "maximum_numerical_certificate_width_m": 1.6653345369377348e-16,
+      "arm_hand_fk_translation_error_max_m": 2.6485203111349257e-07,
+      "arm_hand_fk_rotation_matrix_error_max": 4.857521445633672e-07,
+      "source_artifacts": {
+        "outputs/motion-planning-v4-1/reproduction/C/r1/controlled_trace.json": "163eb5249afc053bac07ab6da0aead616607dadc8fc0b84b91b5e698c1b01388",
+        "outputs/motion-planning-v4-1/reproduction/C/r1/result.json": "a14ec80725e3fca3e1cb37b54043ee7f288fb7eca90f9e834bb3b32574c8a234"
+      }
+    }
+  ],
+  "cooked_reference": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/geometry_reference.npz",
+    "sha256": "8e0c4b069ee7e23734a0ef2a9d5c977c56217d1db6b817f9f10904a3de30c260",
+    "result_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+    "result_sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479"
+  },
+  "urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+  "producer_sha256": "68ee114a6396aedcd0b598cc8a5663dd6cd1576c099370bbfb60681805067e9c",
+  "exclusion_policy": "The same URDF-derived rigid/adjacent-frame mask as the planner; no exclusions learned from these poses.",
+  "limitation": "Actual copied cooked convex solids and physical body poses; six finite Home states per case, not a continuous sweep or contact-force measurement. Zero clearance does not distinguish touching from penetration. These distances do not alter self-collision filtering or the physical simulation."
+}

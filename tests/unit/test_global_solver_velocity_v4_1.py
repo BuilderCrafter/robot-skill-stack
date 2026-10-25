@@ -60,9 +60,10 @@ class SolverVelocityProbeTests(unittest.TestCase):
                 row.update(last_sample=len(self.samples), last_action=len(self.actions),
                     after=dict(simulation_time=world.current_time))
         observer = Observer()
-        asyncio.run(probe.observe_post_home_hold(observer, 1.))
+        asyncio.run(probe.observe_post_home_hold(observer, 5.))
         report = observer.operations[-1]['post_home_hold']
-        self.assertEqual(world.current_time, 6.)
+        self.assertEqual(world.current_time, 10.)
+        self.assertEqual(report['observed_simulation_seconds'], 5.)
         self.assertEqual(report['additional_arm_commands'], 0)
         self.assertTrue(report['kinematic_stability_passed'])
         self.assertEqual(home['duration'], 1.05)

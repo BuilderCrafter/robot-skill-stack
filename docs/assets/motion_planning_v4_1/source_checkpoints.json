@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "baseline": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+  "method": "Connected GitHub Git-data APIs reproduce each local commit tree exactly. Author/committer metadata differs, so local measured commit IDs map to published equivalents. Per-artifact source SHA256 bindings remain authoritative.",
+  "tree_equality_verified": true,
+  "checkpoints": [
+    {
+      "local": "cb1a47c7a7d37265c072ab2c5ed47d4b4a22d57e",
+      "published": "24328ba8ae11ee4e602a32e2174fb29c2b68155f",
+      "tree": "cb013fe4df6a5a42b6627de467b71637313c8be2",
+      "message": "test(motion): add controlled V4.1 Home execution reproductions"
+    },
+    {
+      "local": "daeabe68685185036e21fbe4ae8acea3e38fe877",
+      "published": "4a76487a928cc23f9d7d4366a79cc79c9d5d0b33",
+      "tree": "1922a3eb40b11f3d4d9bfa7484b33eb36bb0be02",
+      "message": "fix(motion): settle global trajectories with scoped TGS accuracy"
+    },
+    {
+      "local": "5fdb3e61390f386cc5297ff5f162532411feb481",
+      "published": "d8f275681d8cda59cf0c9b18a16f18eaaf1a61c0",
+      "tree": "c65cc889d1a7e76e9d6e82d6af54dd488287401b",
+      "message": "test(motion): reject solver probes against changed execution sources"
+    },
+    {
+      "local": "77dc3827d29fc7b138b275841a10b46b5d2b81d0",
+      "published": "a6274d9a408bad86708dea64f603aa50a45bdb59",
+      "tree": "b273c175a59e110020391b663841492e6e29d0a5",
+      "message": "test(motion): await native frames in lifecycle acceptance fixtures"
+    },
+    {
+      "local": "62540432befa83baa87d822fba11c2b9bb0ec297",
+      "published": "b1099f08063629d884d7a9b4a0de0e3f13fc8b6c",
+      "tree": "73eabbb37da01286ae21e5db65ba007451d73848",
+      "message": "test(motion): summarize stabilization evidence without raw captures"
+    },
+    {
+      "local": "2a3ace5fb837a58619948215259767546db84af1",
+      "published": "834ac71ca74a463ae876ffae8d03bbadc804661c",
+      "tree": "ff9c8ce709e6f0c8bff84600b50a68c3ae56d77a",
+      "message": "test(motion): validate five-second nominal-solver final holds"
+    }
+  ]
+}

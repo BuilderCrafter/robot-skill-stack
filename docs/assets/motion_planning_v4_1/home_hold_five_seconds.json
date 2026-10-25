@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/plot_global_stabilization_v4_1.py",
+    "sha256": "5f1fad8a18b43a99e51d4ea3cc7b120ae8d41521fa439faabd65fad2cfa241ea"
+  },
+  "figure": {
+    "path": "docs/assets/motion_planning_v4_1/home_hold_five_seconds.png",
+    "sha256": "371fe09d77fc5f91d7d7d27da0ccf410032e4692656b2bbdbbfcb7f4832312a1"
+  },
+  "cases": [
+    {
+      "result_path": "outputs/motion-planning-v4-1/stabilized/B-long32/r1/result.json",
+      "result_sha256": "7fc915843df83f8380f664c58fd3771ad48a5648dccc5865a1aac6178d2df678",
+      "trace_path": "outputs/motion-planning-v4-1/stabilized/B-long32/r1/controlled_trace.json",
+      "trace_sha256": "7875f469bdab5d5df5d950c328f1861a2ff6f22fc726ffcb7a32cf4ef906da4a",
+      "mode": "B",
+      "strategy": "global",
+      "origin_simulation_time": 6.08333365060389,
+      "windows": [
+        {
+          "label": "post_home_hold",
+          "first_time": 0.0,
+          "last_time": 5.000000260770321,
+          "additional_actions": 0
+        }
+      ],
+      "thresholds": {
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4
+      },
+      "label": "Production B: five-second hold at nominal 32"
+    },
+    {
+      "result_path": "outputs/motion-planning-v4-1/stabilized/C-long32/r1/result.json",
+      "result_sha256": "a524c9abb2d4a9ead1263ced7fa7763e66163a8aa293299b228f838b1b2952a2",
+      "trace_path": "outputs/motion-planning-v4-1/stabilized/C-long32/r1/controlled_trace.json",
+      "trace_sha256": "6995167fe162be18f89529059364189fbae36b28ff021b0a3d1832938cb89856",
+      "mode": "C",
+      "strategy": "global",
+      "origin_simulation_time": 6.1000003181397915,
+      "windows": [
+        {
+          "label": "post_home_hold",
+          "first_time": 0.0,
+          "last_time": 5.000000260770321,
+          "additional_actions": 0
+        }
+      ],
+      "thresholds": {
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4
+      },
+      "label": "Production C: five-second hold at nominal 32"
+    }
+  ],
+  "method": "Existing recorded zero-velocity target hold windows; native measured feedback and actor iteration requests. No extra commands or simulated after-data are introduced by this analysis. The 0.01 rad/s line is a proposed stricter completion criterion, not an original V4 acceptance threshold."
+}

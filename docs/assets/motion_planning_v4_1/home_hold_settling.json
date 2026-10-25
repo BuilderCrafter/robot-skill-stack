@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/plot_global_stabilization_v4_1.py",
+    "sha256": "5f1fad8a18b43a99e51d4ea3cc7b120ae8d41521fa439faabd65fad2cfa241ea"
+  },
+  "figure": {
+    "path": "docs/assets/motion_planning_v4_1/home_hold_settling.png",
+    "sha256": "3ae0e45f0dd1a8190ad72f0ab7deb4da9ed05c0bf3b84b13c758736c9a1b466a"
+  },
+  "cases": [
+    {
+      "result_path": "outputs/motion-planning-v4-1/solver-probe/Cpos255hold/r1/result.json",
+      "result_sha256": "bfb53118829949086fc78607060c0a701ad0fcf438c722fd4526bed6ee12ce2d",
+      "trace_path": "outputs/motion-planning-v4-1/solver-probe/Cpos255hold/r1/controlled_trace.json",
+      "trace_sha256": "fd13c0524c49c85debc2e65f48be65766d158662278d2dcd9547178685632509",
+      "mode": "C",
+      "strategy": "global",
+      "origin_simulation_time": 4.566666904836893,
+      "windows": [
+        {
+          "label": "post_home_hold",
+          "first_time": 0.0,
+          "last_time": 1.0000000521540642,
+          "additional_actions": 0
+        }
+      ],
+      "thresholds": {
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4
+      },
+      "label": "Restore 32 immediately after Home"
+    },
+    {
+      "result_path": "outputs/motion-planning-v4-1/solver-probe/Ctwohold/r1/result.json",
+      "result_sha256": "bb7c6ada6d64e7034acf336f3ec55ff396cd4480d44e7c03cd8276ca7306cd3f",
+      "trace_path": "outputs/motion-planning-v4-1/solver-probe/Ctwohold/r1/controlled_trace.json",
+      "trace_sha256": "ed6d1ed192b780014b6371fc39d08f4687f44250919a8a7ac412d9155dbae403",
+      "mode": "C",
+      "strategy": "global",
+      "origin_simulation_time": 4.566666904836893,
+      "windows": [
+        {
+          "label": "retained_home_hold",
+          "first_time": 0.0,
+          "last_time": 1.0000000521540642,
+          "additional_actions": 0
+        },
+        {
+          "label": "post_home_hold",
+          "first_time": 1.0000000521540642,
+          "last_time": 2.0000001043081284,
+          "additional_actions": 0
+        }
+      ],
+      "thresholds": {
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4
+      },
+      "label": "Hold 255 for 1 s, then restore 32"
+    }
+  ],
+  "method": "Existing recorded zero-velocity target hold windows; native measured feedback and actor iteration requests. No extra commands or simulated after-data are introduced by this analysis. The 0.01 rad/s line is a proposed stricter completion criterion, not an original V4 acceptance threshold."
+}

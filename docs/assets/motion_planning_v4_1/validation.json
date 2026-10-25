@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "overall_acceptance": "PARTIAL_STATIC_ACCEPTANCE_HOME_EXECUTION_STABILIZED",
+  "default_strategy": "direct",
+  "merged": false,
+  "branch": "feature/global-motion-planning-v4-1",
+  "baseline_commit": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+  "implementation_local_commit": "daeabe68685185036e21fbe4ae8acea3e38fe877",
+  "implementation_published_equivalent": "4a76487a928cc23f9d7d4366a79cc79c9d5d0b33",
+  "unit_release": {
+    "artifact": {
+      "path": "outputs/motion-planning-v4-1/unit-release/run-wb6rzcys/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "tests": 1133,
+    "seconds": 34.721,
+    "all_components_passed": true,
+    "components": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    }
+  },
+  "native_regressions": [
+    {
+      "name": "direct",
+      "artifact": {
+        "path": "outputs/motion-planning-v4-1/regressions/direct/result.json",
+        "sha256": "059b1a15b3cdf32add6db47d84102b11a382f1a2c5f72164bce4552409acd480"
+      },
+      "status": "PASS",
+      "checks": {
+        "explicit_direct_selected": true,
+        "mapping_provider_resolves_current_service": true,
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "unsupported_frame_and_ik_rejected_without_actions": true,
+        "competing_motion_rejected_without_actions": true,
+        "cancellation_propagated": true,
+        "cancelled_motion_applied_final_hold": true,
+        "cancelled_motion_released_ownership": true,
+        "home_after_cancellation_succeeded": true,
+        "ordinary_released_home_succeeded": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "all_executed_motions_applied_final_hold": true,
+        "held_motion_grasp_checks_preserved": true,
+        "normal_home_routed_through_strategy": true,
+        "source_and_saved_scenes_unchanged": true
+      }
+    },
+    {
+      "name": "reactive",
+      "artifact": {
+        "path": "outputs/motion-planning-v4-1/regressions/reactive/result.json",
+        "sha256": "50d1ec2e63b7ee959e262b8b4742f1c2dbf97e36b1a0c466e40c145cb2b78dfd"
+      },
+      "status": "PASS",
+      "checks": {
+        "valid_measurement": true,
+        "ordinary_move_reached_without_contact": true,
+        "ordinary_home_succeeded": true,
+        "lifecycle_complete": true,
+        "lifecycle_all_checks_pass": true
+      }
+    }
+  ],
+  "evidence_section_counts": {
+    "baseline": {
+      "records": 6,
+      "valid": 6,
+      "behavior_pass": 4,
+      "post_hold_pass": 0
+    },
+    "probes": {
+      "records": 7,
+      "valid": 7,
+      "behavior_pass": 4,
+      "post_hold_pass": 1
+    },
+    "stabilized": {
+      "records": 8,
+      "valid": 8,
+      "behavior_pass": 8,
+      "post_hold_pass": 8
+    },
+    "acceptance": {
+      "records": 11,
+      "valid": 7,
+      "behavior_pass": 6,
+      "post_hold_pass": 0
+    }
+  },
+  "static": {
+    "attempts": 13,
+    "valid": 13,
+    "reachable": 11,
+    "reached": 11,
+    "strict_reachable": 3,
+    "large_obstruction_reached": 3,
+    "large_obstruction_attempts": 3,
+    "clean_goal_rejections": 2,
+    "observed_physical_contact_steps": 0,
+    "maximum_penetration_m": 0.0,
+    "maximum_normal_impulse_ns": 0.0,
+    "fixture_comparisons_equal": 13,
+    "actual_initial_joint_difference_rad": 0.0
+  },
+  "home": {
+    "ordinary_sequence_passed": true,
+    "cancelled_sequence_fresh_passed": 5,
+    "cancelled_sequence_fresh_attempts": 5,
+    "post_completion_one_second_holds_passed": 6,
+    "long_hold_additional_attempts": 2,
+    "long_hold_additional_passed": 2,
+    "long_hold_seconds": 5.0,
+    "long_hold_maximum_position_error_m": 0.022167052537309776,
+    "long_hold_worst_remaining_position_margin_m": 0.0028329474626902253,
+    "long_hold_final_measured_arm_velocity_max_rad_s": 0.0,
+    "maximum_home_tracking_error_rad": 0.09028595652895322,
+    "counts": "Native actor requested32->255->32; nominal32 during post holds",
+    "hold_limit": "Bounded five-second observation; no indefinite stability or 1.46mm stationary accuracy claim"
+  },
+  "lifecycle": {
+    "corrected_valid_interruptions_passed": [
+      "cancel",
+      "stop",
+      "reset",
+      "close"
+    ],
+    "first_attempt_invalid_captures_retained": 4,
+    "cycles_in_one_process": 3,
+    "cycles_passed": true,
+    "off_route_obstacle_home_passed": true,
+    "static_post_home": "Four checked IK candidates rejected invalid_goal with zero requested Home movement; positive Home-after-detour acceptance remains unproven"
+  },
+  "collision_model": {
+    "spheres": 55,
+    "conservative_whole_robot_coverage": false,
+    "explicit_finger_spheres": 0,
+    "physical_self_collision_flag_provenance": "USD authored disabled setting; no independent native response verification",
+    "no_model_change": true
+  },
+  "source_preservation": {
+    "artifact": {
+      "path": "outputs/motion-planning-v4-1/preservation-release.json",
+      "sha256": "f4b6b12bb14b1ab41bce597510a771567c3bad2c0c83d3fccd3d3d008c2114d7"
+    },
+    "baseline_files": 547,
+    "identical": 545,
+    "permitted_existing_changes": [
+      "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py",
+      "tests/unit/test_global_motion_strategy.py"
+    ],
+    "protected_refs_checked": 38,
+    "protected_refs_unchanged": true,
+    "sdk_files": 9,
+    "sdk_files_unchanged": true,
+    "models_staged_or_tracked": false
+  },
+  "artifact_binding_audit": {
+    "artifact": {
+      "path": "outputs/motion-planning-v4-1/final_binding_audit.json",
+      "sha256": "1c463e3249ca124a37f4d5ead49dcf7843580d2d99c553e0a76a2f8dcdfe560a"
+    },
+    "references_checked": 232,
+    "unique_files": 144,
+    "all_matching": true
+  },
+  "original_failure_artifacts": [
+    {
+      "path": "outputs/motion-planning-v4-1/reproduction/original-C/r1/home_diagnostic.json",
+      "sha256": "b1df41282139e732aaf32a2f7d8e6ce14ef1c740a71c062259d335dd3f518c78"
+    },
+    {
+      "path": "outputs/motion-planning-v4-1/reproduction/original-C/r1/result.json",
+      "sha256": "91729918c4f21025a19d9105caebe07e8db86b6d64c6d85bbc91ecb6f8c5e64d"
+    }
+  ],
+  "report": {
+    "path": "docs/motion_planning_v4_1_stabilization.md",
+    "sha256": "1e318022a74a0fda491ebf7da2feaf636c981ecc6b0ee23d93b28158620fb8ee"
+  },
+  "assets": {
+    "acceptance_jobs.json": {
+      "bytes": 3944,
+      "sha256": "5a158e7d9dd83b2992b14888266d878bbd1afbd0dc450195db6111f089b90273"
+    },
+    "acceptance_jobs_r2.json": {
+      "bytes": 3573,
+      "sha256": "10d45fd6a30c4edc95bdd3891c9e9b235e7e658d30a36a40d3618658850367f7"
+    },
+    "collision_coverage.json": {
+      "bytes": 60301,
+      "sha256": "05cc35840032bb1129f5d7c03e3abbc0cfe1a0eb735febc34bdf4d7d6da68af5"
+    },
+    "collision_coverage.png": {
+      "bytes": 619627,
+      "sha256": "2c0b307c9760395296a53db46a567bc7f679fffb4ce100f1d350d55675a12444"
+    },
+    "controlled_jobs.json": {
+      "bytes": 4457,
+      "sha256": "45d69fb4f31f1a54ff34313d4ba4396dab995a5a39dd129ce9edc804476babe5"
+    },
+    "home_fixture_clearance.json": {
+      "bytes": 4100,
+      "sha256": "69edc7d0c03c65710fffe24f92a9821c711203f29f96336ccddc9f08621c661c"
+    },
+    "home_hold_five_seconds.json": {
+      "bytes": 2558,
+      "sha256": "1263c372f1ae17dbf7aa9ba55e633511f122dc531d71f7c11d682907eba665af"
+    },
+    "home_hold_five_seconds.png": {
+      "bytes": 233225,
+      "sha256": "371fe09d77fc5f91d7d7d27da0ccf410032e4692656b2bbdbbfcb7f4832312a1"
+    },
+    "home_hold_settling.json": {
+      "bytes": 2731,
+      "sha256": "80c8392799be2944fd333a3acefff828d7c87839690581d306ceab10e2506337"
+    },
+    "home_hold_settling.png": {
+      "bytes": 271373,
+      "sha256": "3ae0e45f0dd1a8190ad72f0ab7deb4da9ed05c0bf3b84b13c758736c9a1b466a"
+    },
+    "home_self_geometry.json": {
+      "bytes": 18890,
+      "sha256": "ddb98665f492b5b6b135f51716a296d2137cc4cbab76d7b79e8992b63c8f64ef"
+    },
+    "home_tracking_baseline_vs_solver_probes.json": {
+      "bytes": 3373,
+      "sha256": "b05ea8e20e579f957ef17f285269bee4e2fa0744b766ac6a760134afc41e54fc"
+    },
+    "home_tracking_baseline_vs_solver_probes.png": {
+      "bytes": 577914,
+      "sha256": "835596878c9dfcc1c16b465c02f55511ea8f2ed71a4e9f4f72db910e66ed34e7"
+    },
+    "home_tracking_before_after.json": {
+      "bytes": 2513,
+      "sha256": "3ff09da9ed93662bbc4aedd34299e9317ec20d1d153ec2c47b2271ed3ebc5dd6"
+    },
+    "home_tracking_before_after.png": {
+      "bytes": 405663,
+      "sha256": "c69448ea236c20c7b013fda6ddc3ea104254d3f6a67ef990441db93f192fe09f"
+    },
+    "long_hold_protocol.json": {
+      "bytes": 9293,
+      "sha256": "78d730ba50ffc31242110610d6e1e12615b83f9937f26f4280d04ccdbce14eb7"
+    },
+    "reproduction_jobs.json": {
+      "bytes": 4196,
+      "sha256": "5c65a10e4469ed957b614eb3a7e8ad7e284b0dde6547c609a61c9aca5fcc96cf"
+    },
+    "reproduction_protocol.json": {
+      "bytes": 1910,
+      "sha256": "d71addac90d60a68290c0eea46d68938dde83b99cdec8166eb4ba5f4c287e514"
+    },
+    "source_checkpoints.json": {
+      "bytes": 2047,
+      "sha256": "f291c41f3821e85cc54df5111b18f1b34e4e8797adebd2d072d8c1c693fd40ef"
+    },
+    "stabilization_summary.json": {
+      "bytes": 603285,
+      "sha256": "81c813c7ad5ef2d6469bdd67330b1d51334a6fb11f58b934e50978b1ca40708d"
+    },
+    "static_clearance_and_contacts.png": {
+      "bytes": 89195,
+      "sha256": "25270c43c325e2e61a089b46f6ee66e58bc21fb9bdc567503fcbf0ce08695d3e"
+    },
+    "static_figure_sources.json": {
+      "bytes": 30185,
+      "sha256": "2527d3ca1d383bed6184952e047e390fe31b95aa4e1ed87c8ca523555eced9a0"
+    },
+    "static_jobs.json": {
+      "bytes": 9893,
+      "sha256": "98d2b69cfc630416123d16234f12642dbdb3d00745b5c34dad42aecd38d142f3"
+    },
+    "static_planning_and_execution_timing.png": {
+      "bytes": 112894,
+      "sha256": "057e434716253ab7f6169e1d79bb5f388ec72f699b6dda5ab2a636363e3839ab"
+    },
+    "static_tcp_trajectories.png": {
+      "bytes": 784169,
+      "sha256": "461fee306ad23e07dad7635b0076657fe986509fe2aead3948233bf20c92faa3"
+    }
+  },
+  "limitations": [
+    "Strict zero-report success remains3/11 reachable trials; proximity is never relabeled physical contact or hidden.",
+    "No positive Home-after-forced-detour acceptance: unchanged fixtures collide with recorded Home geometry/checked IK candidates. No target/mask/fixture changes.",
+    "Stock collision spheres are not conservative physical coverage; finger state differs from descriptor; no continuous-safety certificate.",
+    "Single scene/seed trials give descriptive timing, not statistical performance estimates. Synchronous owner-loop planning remains.",
+    "Resident memory growth was not isolated from deliberately retained trace buffers; resource cleanup checks pass without a leak guarantee.",
+    "All raw traces, body poses, meshes, contacts, logs and large analyses remain ignored under outputs/."
+  ]
+}

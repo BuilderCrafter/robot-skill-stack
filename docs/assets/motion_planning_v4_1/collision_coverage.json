@@ -1,0 +1,1498 @@
+{
+  "schema_version": 1,
+  "status": "PASS_BOUNDED_COLLISION_MODEL_AUDIT",
+  "cases": [
+    {
+      "case": "global-static-seed123456",
+      "status": "PASS_SURFACE_AND_FRAME_AUDIT",
+      "source_result_status": "PASS",
+      "measured_configuration": {
+        "strategy": "global",
+        "scenario": "static",
+        "seed": 123456,
+        "max_iterations": 10000,
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "objects": [
+          {
+            "name": "Post",
+            "center": [
+              0.45,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.09,
+              0.12,
+              0.26
+            ],
+            "moving": false
+          }
+        ],
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "max_motion_steps": 1000,
+        "mapping_enabled": false,
+        "mapping_source": "ground_truth",
+        "mapping_hz": null,
+        "camera_required": false,
+        "ordinary_direct_setup": true,
+        "stationary_scene_assumption": true,
+        "witness": false
+      },
+      "states": 5,
+      "cooked_hulls": 11,
+      "descriptor_sphere_count": 55,
+      "sphere_counts": {
+        "panda_link0": 1,
+        "panda_link1": 4,
+        "panda_link2": 4,
+        "panda_link3": 4,
+        "panda_link4": 4,
+        "panda_link5": 12,
+        "panda_link6": 3,
+        "panda_link7": 5,
+        "panda_hand": 18
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "own_sphere_count": 18,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6851364749317163,
+            "estimated_covered_surface_fraction_mean": 0.6851364749317163,
+            "estimated_covered_surface_fraction_maximum": 0.6851364749317163,
+            "maximum_sampled_outside_gap_m": 0.00918942720965375
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.5628327976105035,
+            "estimated_covered_surface_fraction_mean": 0.5628327976105035,
+            "estimated_covered_surface_fraction_maximum": 0.5628327976105035,
+            "maximum_sampled_outside_gap_m": 0.009189427209653756
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6909832339140526,
+            "estimated_covered_surface_fraction_mean": 0.6909832339140526,
+            "estimated_covered_surface_fraction_maximum": 0.6909832339140526,
+            "maximum_sampled_outside_gap_m": 0.009622011783349285
+          }
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.3030032575868917,
+            "estimated_covered_surface_fraction_mean": 0.31043763747356357,
+            "estimated_covered_surface_fraction_maximum": 0.3143475573917907,
+            "maximum_sampled_outside_gap_m": 0.039486552687761266
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.30737485872616516,
+            "estimated_covered_surface_fraction_mean": 0.3084992029871505,
+            "estimated_covered_surface_fraction_maximum": 0.3094261836727243,
+            "maximum_sampled_outside_gap_m": 0.03953831684276191
+          }
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.3046073120838089,
+            "estimated_covered_surface_fraction_mean": 0.30922172590258634,
+            "estimated_covered_surface_fraction_maximum": 0.311251668510247,
+            "maximum_sampled_outside_gap_m": 0.03948657387245937
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.004992382142938055,
+            "estimated_covered_surface_fraction_minimum": 0.3082437484016919,
+            "estimated_covered_surface_fraction_mean": 0.30883539680185745,
+            "estimated_covered_surface_fraction_maximum": 0.309254232490931,
+            "maximum_sampled_outside_gap_m": 0.03953833796468801
+          }
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "own_sphere_count": 1,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.07636197747616362,
+            "estimated_covered_surface_fraction_mean": 0.07636197747616362,
+            "estimated_covered_surface_fraction_maximum": 0.07636197747616362,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          }
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.7058008939522867,
+            "estimated_covered_surface_fraction_mean": 0.7058008939522867,
+            "estimated_covered_surface_fraction_maximum": 0.7058008939522867,
+            "maximum_sampled_outside_gap_m": 0.035326738964715346
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.6766447144903212,
+            "estimated_covered_surface_fraction_mean": 0.6766447144903212,
+            "estimated_covered_surface_fraction_maximum": 0.6766447144903212,
+            "maximum_sampled_outside_gap_m": 0.035326738964715346
+          }
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6920039410478693,
+            "estimated_covered_surface_fraction_mean": 0.6920039410478693,
+            "estimated_covered_surface_fraction_maximum": 0.6920039410478693,
+            "maximum_sampled_outside_gap_m": 0.036156016112976724
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6630210095039507,
+            "estimated_covered_surface_fraction_mean": 0.6630210095039507,
+            "estimated_covered_surface_fraction_maximum": 0.6630210095039507,
+            "maximum_sampled_outside_gap_m": 0.036156016112976724
+          }
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.6302904646208406,
+            "estimated_covered_surface_fraction_mean": 0.6306900758462409,
+            "estimated_covered_surface_fraction_maximum": 0.63122848827635,
+            "maximum_sampled_outside_gap_m": 0.030734875418809274
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.5878862761437136,
+            "estimated_covered_surface_fraction_mean": 0.5878862761437136,
+            "estimated_covered_surface_fraction_maximum": 0.5878862761437136,
+            "maximum_sampled_outside_gap_m": 0.030734875418809274
+          }
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6562376344841971,
+            "estimated_covered_surface_fraction_mean": 0.6572802920914145,
+            "estimated_covered_surface_fraction_maximum": 0.6584842713474754,
+            "maximum_sampled_outside_gap_m": 0.02952162567812068
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6259046275245737,
+            "estimated_covered_surface_fraction_mean": 0.6259046275245737,
+            "estimated_covered_surface_fraction_maximum": 0.6259046275245737,
+            "maximum_sampled_outside_gap_m": 0.029521625678120694
+          }
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "own_sphere_count": 12,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5753287322892359,
+            "estimated_covered_surface_fraction_mean": 0.5756109131960143,
+            "estimated_covered_surface_fraction_maximum": 0.575750336066949,
+            "maximum_sampled_outside_gap_m": 0.05205884868945669
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5319026971707095,
+            "estimated_covered_surface_fraction_mean": 0.5319026971707095,
+            "estimated_covered_surface_fraction_maximum": 0.5319026971707095,
+            "maximum_sampled_outside_gap_m": 0.057213419048398814
+          }
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "own_sphere_count": 3,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.907184549003984,
+            "estimated_covered_surface_fraction_mean": 0.9071845490039842,
+            "estimated_covered_surface_fraction_maximum": 0.907184549003984,
+            "maximum_sampled_outside_gap_m": 0.00916469476536548
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.8962753280724803,
+            "estimated_covered_surface_fraction_mean": 0.8962753280724802,
+            "estimated_covered_surface_fraction_maximum": 0.8962753280724803,
+            "maximum_sampled_outside_gap_m": 0.00916469476536548
+          }
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "own_sphere_count": 5,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8513833217314879,
+            "estimated_covered_surface_fraction_mean": 0.8513833217314879,
+            "estimated_covered_surface_fraction_maximum": 0.8513833217314879,
+            "maximum_sampled_outside_gap_m": 0.005443996458022682
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8198378009462964,
+            "estimated_covered_surface_fraction_mean": 0.8198378009462963,
+            "estimated_covered_surface_fraction_maximum": 0.8198378009462964,
+            "maximum_sampled_outside_gap_m": 0.005901635344649658
+          }
+        }
+      ],
+      "configuration_checks": [
+        {
+          "physics_step": 176,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 194,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 212,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 231,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 249,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        }
+      ],
+      "original_static_world": {
+        "obstacles": 2,
+        "source_kinds": {
+          "Plane": 1,
+          "Cube": 1
+        },
+        "paths": [
+          "/World/GroundPlane/CollisionPlane",
+          "/World/ReactiveEvaluation/Post"
+        ],
+        "plane_domains_checked": 1
+      },
+      "frame_alignment": {
+        "arm_and_hand_translation_error_max_m": 3.2664393580800945e-07,
+        "arm_and_hand_rotation_matrix_error_max": 4.2473143497395727e-07,
+        "fixed_finger_translation_mismatch_range_m": [
+          0.022406742741680606,
+          0.022702818228457062
+        ]
+      },
+      "actual_finger_positions_range_m": [
+        [
+          0.0022974193561822176,
+          0.002589613664895296
+        ],
+        [
+          0.0022970489226281643,
+          0.002593157347291708
+        ]
+      ],
+      "descriptor_fixed_finger_positions_m": [
+        0.025,
+        0.025
+      ],
+      "model_gap_witnesses": 10,
+      "minimum_witness_sphere_radius_m": 0.002,
+      "maximum_witness_gap_m": 0.03953833796468801,
+      "source_artifacts": {
+        "result.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+          "sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479"
+        },
+        "trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json",
+          "sha256": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155"
+        },
+        "plan_trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json",
+          "sha256": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3"
+        },
+        "geometry_reference.npz": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/geometry_reference.npz",
+          "sha256": "8e0c4b069ee7e23734a0ef2a9d5c977c56217d1db6b817f9f10904a3de30c260"
+        }
+      },
+      "observed_native_contacts": {
+        "reported_points": 3,
+        "reported_pairs": 3,
+        "penetrating_pairs": 0,
+        "minimum_reported_separation_m": 0.024068204686045647,
+        "maximum_normal_pair_impulse_ns": 0.0,
+        "links": [
+          "/Franka/panda_hand"
+        ],
+        "contact_buffer_saturated": false,
+        "mounted_base_excluded": false,
+        "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts."
+      },
+      "observed_native_physical_contact": {
+        "physical_classification": "contact_offset_proximity",
+        "observed_physical_contact_steps": 0,
+        "maximum_penetration_m": 0.0,
+        "maximum_normal_pair_impulse_ns": 0.0
+      }
+    },
+    {
+      "case": "global-narrow-seed123456",
+      "status": "PASS_SURFACE_AND_FRAME_AUDIT",
+      "source_result_status": "PASS",
+      "measured_configuration": {
+        "strategy": "global",
+        "scenario": "narrow",
+        "seed": 123456,
+        "max_iterations": 10000,
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "objects": [
+          {
+            "name": "Left",
+            "center": [
+              0.29000000000000004,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.1,
+              0.14,
+              0.26
+            ],
+            "moving": false
+          },
+          {
+            "name": "Right",
+            "center": [
+              0.61,
+              0.0,
+              0.35
+            ],
+            "dimensions": [
+              0.1,
+              0.14,
+              0.26
+            ],
+            "moving": false
+          }
+        ],
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "max_motion_steps": 1000,
+        "mapping_enabled": false,
+        "mapping_source": "ground_truth",
+        "mapping_hz": null,
+        "camera_required": false,
+        "ordinary_direct_setup": true,
+        "stationary_scene_assumption": true,
+        "witness": false
+      },
+      "states": 5,
+      "cooked_hulls": 11,
+      "descriptor_sphere_count": 55,
+      "sphere_counts": {
+        "panda_link0": 1,
+        "panda_link1": 4,
+        "panda_link2": 4,
+        "panda_link3": 4,
+        "panda_link4": 4,
+        "panda_link5": 12,
+        "panda_link6": 3,
+        "panda_link7": 5,
+        "panda_hand": 18
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "own_sphere_count": 18,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6851364749317163,
+            "estimated_covered_surface_fraction_mean": 0.6851364749317163,
+            "estimated_covered_surface_fraction_maximum": 0.6851364749317163,
+            "maximum_sampled_outside_gap_m": 0.009189514785115305
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.5628327976105035,
+            "estimated_covered_surface_fraction_mean": 0.5628327976105035,
+            "estimated_covered_surface_fraction_maximum": 0.5628327976105035,
+            "maximum_sampled_outside_gap_m": 0.009189514785115305
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6909832339140526,
+            "estimated_covered_surface_fraction_mean": 0.6909832339140526,
+            "estimated_covered_surface_fraction_maximum": 0.6909832339140526,
+            "maximum_sampled_outside_gap_m": 0.009622100962756026
+          }
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.3030032575868917,
+            "estimated_covered_surface_fraction_mean": 0.3030032575868917,
+            "estimated_covered_surface_fraction_maximum": 0.3030032575868917,
+            "maximum_sampled_outside_gap_m": 0.03948749587506269
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.3074673161796675,
+            "estimated_covered_surface_fraction_mean": 0.3074673161796675,
+            "estimated_covered_surface_fraction_maximum": 0.3074673161796675,
+            "maximum_sampled_outside_gap_m": 0.03953925950232034
+          }
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.3046073120838089,
+            "estimated_covered_surface_fraction_mean": 0.3046073120838089,
+            "estimated_covered_surface_fraction_maximum": 0.3046073120838089,
+            "maximum_sampled_outside_gap_m": 0.039486893839264535
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.004992382142938055,
+            "estimated_covered_surface_fraction_minimum": 0.3083362058491829,
+            "estimated_covered_surface_fraction_mean": 0.3083362058491829,
+            "estimated_covered_surface_fraction_maximum": 0.3083362058491829,
+            "maximum_sampled_outside_gap_m": 0.03953865774105477
+          }
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "own_sphere_count": 1,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.07636197747616362,
+            "estimated_covered_surface_fraction_mean": 0.07636197747616362,
+            "estimated_covered_surface_fraction_maximum": 0.07636197747616362,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          }
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.7058008939522867,
+            "estimated_covered_surface_fraction_mean": 0.7058008939522867,
+            "estimated_covered_surface_fraction_maximum": 0.7058008939522867,
+            "maximum_sampled_outside_gap_m": 0.03532679645790522
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.6766447144903212,
+            "estimated_covered_surface_fraction_mean": 0.6766447144903212,
+            "estimated_covered_surface_fraction_maximum": 0.6766447144903212,
+            "maximum_sampled_outside_gap_m": 0.03532679645790522
+          }
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6920039410478693,
+            "estimated_covered_surface_fraction_mean": 0.6920039410478693,
+            "estimated_covered_surface_fraction_maximum": 0.6920039410478693,
+            "maximum_sampled_outside_gap_m": 0.0361560157696858
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6630210095039507,
+            "estimated_covered_surface_fraction_mean": 0.6630210095039507,
+            "estimated_covered_surface_fraction_maximum": 0.6630210095039507,
+            "maximum_sampled_outside_gap_m": 0.0361560157696858
+          }
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.6302904646208406,
+            "estimated_covered_surface_fraction_mean": 0.6303271238760154,
+            "estimated_covered_surface_fraction_maximum": 0.6304737608967147,
+            "maximum_sampled_outside_gap_m": 0.030734876449098836
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.5878862761437136,
+            "estimated_covered_surface_fraction_mean": 0.5878862761437136,
+            "estimated_covered_surface_fraction_maximum": 0.5878862761437136,
+            "maximum_sampled_outside_gap_m": 0.030734876449098836
+          }
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6562376344841971,
+            "estimated_covered_surface_fraction_mean": 0.6565068258958353,
+            "estimated_covered_surface_fraction_maximum": 0.6569106130132925,
+            "maximum_sampled_outside_gap_m": 0.02952166509789564
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6259046275245737,
+            "estimated_covered_surface_fraction_mean": 0.6259046275245737,
+            "estimated_covered_surface_fraction_maximum": 0.6259046275245737,
+            "maximum_sampled_outside_gap_m": 0.029521665097895666
+          }
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "own_sphere_count": 12,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5753287322892359,
+            "estimated_covered_surface_fraction_mean": 0.575493615748599,
+            "estimated_covered_surface_fraction_maximum": 0.5756584992079623,
+            "maximum_sampled_outside_gap_m": 0.05205881950256365
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5319026971707095,
+            "estimated_covered_surface_fraction_mean": 0.5319026971707095,
+            "estimated_covered_surface_fraction_maximum": 0.5319026971707095,
+            "maximum_sampled_outside_gap_m": 0.057213429104716176
+          }
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "own_sphere_count": 3,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.907184549003984,
+            "estimated_covered_surface_fraction_mean": 0.9071845490039842,
+            "estimated_covered_surface_fraction_maximum": 0.907184549003984,
+            "maximum_sampled_outside_gap_m": 0.009164703314096162
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.8962753280724803,
+            "estimated_covered_surface_fraction_mean": 0.8962753280724802,
+            "estimated_covered_surface_fraction_maximum": 0.8962753280724803,
+            "maximum_sampled_outside_gap_m": 0.009164703314096162
+          }
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "own_sphere_count": 5,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8513833217314879,
+            "estimated_covered_surface_fraction_mean": 0.8513833217314879,
+            "estimated_covered_surface_fraction_maximum": 0.8513833217314879,
+            "maximum_sampled_outside_gap_m": 0.005443993250312369
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8198378009462964,
+            "estimated_covered_surface_fraction_mean": 0.8198378009462963,
+            "estimated_covered_surface_fraction_maximum": 0.8198378009462964,
+            "maximum_sampled_outside_gap_m": 0.005901635344649658
+          }
+        }
+      ],
+      "configuration_checks": [
+        {
+          "physics_step": 176,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 192,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 208,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 224,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 240,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        }
+      ],
+      "original_static_world": {
+        "obstacles": 3,
+        "source_kinds": {
+          "Plane": 1,
+          "Cube": 2
+        },
+        "paths": [
+          "/World/GroundPlane/CollisionPlane",
+          "/World/ReactiveEvaluation/Left",
+          "/World/ReactiveEvaluation/Right"
+        ],
+        "plane_domains_checked": 1
+      },
+      "frame_alignment": {
+        "arm_and_hand_translation_error_max_m": 4.013614990411955e-07,
+        "arm_and_hand_rotation_matrix_error_max": 4.207938373063276e-07,
+        "fixed_finger_translation_mismatch_range_m": [
+          0.02269739973481151,
+          0.02270753978959556
+        ]
+      },
+      "actual_finger_positions_range_m": [
+        [
+          0.002296309219673276,
+          0.0022974193561822176
+        ],
+        [
+          0.0022923648357391357,
+          0.0023025586269795895
+        ]
+      ],
+      "descriptor_fixed_finger_positions_m": [
+        0.025,
+        0.025
+      ],
+      "model_gap_witnesses": 10,
+      "minimum_witness_sphere_radius_m": 0.002,
+      "maximum_witness_gap_m": 0.03953925950232034,
+      "source_artifacts": {
+        "result.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/result.json",
+          "sha256": "82a711dc8acd8ba49377ffdecd4a7e6fae9961a64c66c73b6cc94a5f3378e290"
+        },
+        "trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/trace.json",
+          "sha256": "1d0dfe0f8691b4e4c4b5aa49bd5d7b2043cdedea0fc1bf66d5a29eb8692f7185"
+        },
+        "plan_trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/plan_trace.json",
+          "sha256": "98792d4a68abe626541d4138cb2776fded969117fc826ee9bab20a76ea3004b4"
+        },
+        "geometry_reference.npz": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/geometry_reference.npz",
+          "sha256": "82e2836db6b8be20d11d32cfe39b29c94120885955a36b701b2bdd3b5fefa380"
+        }
+      },
+      "observed_native_contacts": {
+        "reported_points": 42,
+        "reported_pairs": 11,
+        "penetrating_pairs": 0,
+        "minimum_reported_separation_m": 0.01398010179400444,
+        "maximum_normal_pair_impulse_ns": 0.0,
+        "links": [
+          "/Franka/panda_link7"
+        ],
+        "contact_buffer_saturated": false,
+        "mounted_base_excluded": false,
+        "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts."
+      },
+      "observed_native_physical_contact": {
+        "physical_classification": "contact_offset_proximity",
+        "observed_physical_contact_steps": 0,
+        "maximum_penetration_m": 0.0,
+        "maximum_normal_pair_impulse_ns": 0.0
+      }
+    },
+    {
+      "case": "global-large-seed123456",
+      "status": "PASS_SURFACE_AND_FRAME_AUDIT",
+      "source_result_status": "PASS",
+      "measured_configuration": {
+        "strategy": "global",
+        "scenario": "large",
+        "seed": 123456,
+        "max_iterations": 10000,
+        "start": [
+          0.45,
+          -0.25,
+          0.35
+        ],
+        "goal": [
+          0.45,
+          0.25,
+          0.35
+        ],
+        "orientation": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "objects": [
+          {
+            "name": "Wall",
+            "center": [
+              0.55,
+              0.05,
+              0.35
+            ],
+            "dimensions": [
+              0.5,
+              0.12,
+              0.6
+            ],
+            "moving": false
+          }
+        ],
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1,
+        "max_motion_steps": 1000,
+        "mapping_enabled": false,
+        "mapping_source": "ground_truth",
+        "mapping_hz": null,
+        "camera_required": false,
+        "ordinary_direct_setup": true,
+        "stationary_scene_assumption": true,
+        "witness": false
+      },
+      "states": 5,
+      "cooked_hulls": 11,
+      "descriptor_sphere_count": 55,
+      "sphere_counts": {
+        "panda_link0": 1,
+        "panda_link1": 4,
+        "panda_link2": 4,
+        "panda_link3": 4,
+        "panda_link4": 4,
+        "panda_link5": 12,
+        "panda_link6": 3,
+        "panda_link7": 5,
+        "panda_hand": 18
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "own_sphere_count": 18,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6851364749317163,
+            "estimated_covered_surface_fraction_mean": 0.6851364749317163,
+            "estimated_covered_surface_fraction_maximum": 0.6851364749317163,
+            "maximum_sampled_outside_gap_m": 0.009189425395430228
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.5628327976105035,
+            "estimated_covered_surface_fraction_mean": 0.5628327976105035,
+            "estimated_covered_surface_fraction_maximum": 0.5628327976105035,
+            "maximum_sampled_outside_gap_m": 0.009189425395430228
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.049356157804253696,
+            "estimated_covered_surface_fraction_minimum": 0.6909832339140526,
+            "estimated_covered_surface_fraction_mean": 0.6909832339140526,
+            "estimated_covered_surface_fraction_maximum": 0.6909832339140526,
+            "maximum_sampled_outside_gap_m": 0.009621997621174067
+          }
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.3030032575868917,
+            "estimated_covered_surface_fraction_mean": 0.3036310575906242,
+            "estimated_covered_surface_fraction_maximum": 0.3061422576055541,
+            "maximum_sampled_outside_gap_m": 0.03950681686842394
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.0049923815951696884,
+            "estimated_covered_surface_fraction_minimum": 0.30659010872149955,
+            "estimated_covered_surface_fraction_mean": 0.3070186358249447,
+            "estimated_covered_surface_fraction_maximum": 0.3074673161796675,
+            "maximum_sampled_outside_gap_m": 0.0395585634693365
+          }
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "own_sphere_count": 0,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.3046073120838089,
+            "estimated_covered_surface_fraction_mean": 0.3052351120467235,
+            "estimated_covered_surface_fraction_maximum": 0.30774631189838175,
+            "maximum_sampled_outside_gap_m": 0.03950671127969677
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.0049923821429380556,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": null
+          },
+          "refined_all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 20480,
+            "surface_area_m2": 0.004992382142938055,
+            "estimated_covered_surface_fraction_minimum": 0.30676442872763204,
+            "estimated_covered_surface_fraction_mean": 0.30765247597492085,
+            "estimated_covered_surface_fraction_maximum": 0.3083362058491829,
+            "maximum_sampled_outside_gap_m": 0.039558458223840166
+          }
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "own_sphere_count": 1,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.07636197747616362,
+            "estimated_covered_surface_fraction_mean": 0.07636197747616362,
+            "estimated_covered_surface_fraction_maximum": 0.07636197747616362,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 6080,
+            "surface_area_m2": 0.1191558923740611,
+            "estimated_covered_surface_fraction_minimum": 0.0,
+            "estimated_covered_surface_fraction_mean": 0.0,
+            "estimated_covered_surface_fraction_maximum": 0.0,
+            "maximum_sampled_outside_gap_m": 0.11671315482788623
+          }
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.7058008939522867,
+            "estimated_covered_surface_fraction_mean": 0.7058008939522867,
+            "estimated_covered_surface_fraction_maximum": 0.7058008939522867,
+            "maximum_sampled_outside_gap_m": 0.0353267970418535
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11263497765501704,
+            "estimated_covered_surface_fraction_minimum": 0.6766447144903212,
+            "estimated_covered_surface_fraction_mean": 0.6766447144903212,
+            "estimated_covered_surface_fraction_maximum": 0.6766447144903212,
+            "maximum_sampled_outside_gap_m": 0.0353267970418535
+          }
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6920039410478693,
+            "estimated_covered_surface_fraction_mean": 0.6920039410478693,
+            "estimated_covered_surface_fraction_maximum": 0.6920039410478693,
+            "maximum_sampled_outside_gap_m": 0.03615601049053009
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.11339976598485262,
+            "estimated_covered_surface_fraction_minimum": 0.6630210095039507,
+            "estimated_covered_surface_fraction_mean": 0.6630210095039507,
+            "estimated_covered_surface_fraction_maximum": 0.6630210095039507,
+            "maximum_sampled_outside_gap_m": 0.03615601049053009
+          }
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.627524090755729,
+            "estimated_covered_surface_fraction_mean": 0.6305318506627959,
+            "estimated_covered_surface_fraction_maximum": 0.632505296355256,
+            "maximum_sampled_outside_gap_m": 0.030734914047016892
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09266866654855802,
+            "estimated_covered_surface_fraction_minimum": 0.5878862761437136,
+            "estimated_covered_surface_fraction_mean": 0.5878862761437136,
+            "estimated_covered_surface_fraction_maximum": 0.5878862761437136,
+            "maximum_sampled_outside_gap_m": 0.030734914047016892
+          }
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "own_sphere_count": 4,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6562376344841971,
+            "estimated_covered_surface_fraction_mean": 0.6567315438336705,
+            "estimated_covered_surface_fraction_maximum": 0.6569106130132925,
+            "maximum_sampled_outside_gap_m": 0.02952172149636821
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.09385675919653513,
+            "estimated_covered_surface_fraction_minimum": 0.6259046275245737,
+            "estimated_covered_surface_fraction_mean": 0.6259046275245737,
+            "estimated_covered_surface_fraction_maximum": 0.6259046275245737,
+            "maximum_sampled_outside_gap_m": 0.02952172149636821
+          }
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "own_sphere_count": 12,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5753287322892359,
+            "estimated_covered_surface_fraction_mean": 0.5755673787649397,
+            "estimated_covered_surface_fraction_maximum": 0.575750336066949,
+            "maximum_sampled_outside_gap_m": 0.052058910170743156
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5440,
+            "surface_area_m2": 0.13137790430280905,
+            "estimated_covered_surface_fraction_minimum": 0.5319026971707095,
+            "estimated_covered_surface_fraction_mean": 0.5319026971707095,
+            "estimated_covered_surface_fraction_maximum": 0.5319026971707095,
+            "maximum_sampled_outside_gap_m": 0.057213304609814566
+          }
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "own_sphere_count": 3,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.907184549003984,
+            "estimated_covered_surface_fraction_mean": 0.9071845490039842,
+            "estimated_covered_surface_fraction_maximum": 0.907184549003984,
+            "maximum_sampled_outside_gap_m": 0.009164776436658403
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5120,
+            "surface_area_m2": 0.06735804625043314,
+            "estimated_covered_surface_fraction_minimum": 0.8962753280724803,
+            "estimated_covered_surface_fraction_mean": 0.8962753280724802,
+            "estimated_covered_surface_fraction_maximum": 0.8962753280724803,
+            "maximum_sampled_outside_gap_m": 0.009164776436658403
+          }
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "own_sphere_count": 5,
+          "all_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8513833217314879,
+            "estimated_covered_surface_fraction_mean": 0.8513833217314879,
+            "estimated_covered_surface_fraction_maximum": 0.8513833217314879,
+            "maximum_sampled_outside_gap_m": 0.00544408014646338
+          },
+          "own_sphere_surface": {
+            "states": 5,
+            "sampled_points": 5280,
+            "surface_area_m2": 0.03256466449773338,
+            "estimated_covered_surface_fraction_minimum": 0.8198378009462964,
+            "estimated_covered_surface_fraction_mean": 0.8198378009462963,
+            "estimated_covered_surface_fraction_maximum": 0.8198378009462964,
+            "maximum_sampled_outside_gap_m": 0.005901659034238428
+          }
+        }
+      ],
+      "configuration_checks": [
+        {
+          "physics_step": 176,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 211,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 246,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 282,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        },
+        {
+          "physics_step": 317,
+          "joint_limits": true,
+          "original_world_external_collision": false,
+          "unmasked_self_pairs": [],
+          "within_original_plane_domains": true,
+          "sampled_configuration_valid": true
+        }
+      ],
+      "original_static_world": {
+        "obstacles": 2,
+        "source_kinds": {
+          "Plane": 1,
+          "Cube": 1
+        },
+        "paths": [
+          "/World/GroundPlane/CollisionPlane",
+          "/World/ReactiveEvaluation/Wall"
+        ],
+        "plane_domains_checked": 1
+      },
+      "frame_alignment": {
+        "arm_and_hand_translation_error_max_m": 3.032360257900273e-07,
+        "arm_and_hand_rotation_matrix_error_max": 5.419090414182648e-07,
+        "fixed_finger_translation_mismatch_range_m": [
+          0.022580061529430057,
+          0.022802696323662167
+        ]
+      },
+      "actual_finger_positions_range_m": [
+        [
+          0.0021981189493089914,
+          0.002419792115688324
+        ],
+        [
+          0.002197400201112032,
+          0.002419856609776616
+        ]
+      ],
+      "descriptor_fixed_finger_positions_m": [
+        0.025,
+        0.025
+      ],
+      "model_gap_witnesses": 10,
+      "minimum_witness_sphere_radius_m": 0.002,
+      "maximum_witness_gap_m": 0.0395585634693365,
+      "source_artifacts": {
+        "result.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872"
+        },
+        "trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+          "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+        },
+        "plan_trace.json": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+          "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+        },
+        "geometry_reference.npz": {
+          "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/geometry_reference.npz",
+          "sha256": "297c69b872f349d14183cd4364c8fe2fa2ff2740c432bc352468e14bc95f7db3"
+        }
+      },
+      "observed_native_contacts": {
+        "reported_points": 11,
+        "reported_pairs": 6,
+        "penetrating_pairs": 0,
+        "minimum_reported_separation_m": 0.022101953625679016,
+        "maximum_normal_pair_impulse_ns": 0.0,
+        "links": [
+          "/Franka/panda_link5"
+        ],
+        "contact_buffer_saturated": false,
+        "mounted_base_excluded": false,
+        "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts."
+      },
+      "observed_native_physical_contact": {
+        "physical_classification": "contact_offset_proximity",
+        "observed_physical_contact_steps": 0,
+        "maximum_penetration_m": 0.0,
+        "maximum_normal_pair_impulse_ns": 0.0
+      }
+    }
+  ],
+  "coverage_assessment": "INCOMPLETE_PHYSICAL_COLLISION_COVERAGE; no conservative solid-coverage claim",
+  "runtime_model_changed": false,
+  "method": {
+    "surface_quadrature": "One centroid per equal-area barycentric subtriangle; area-weighted finite-sampling estimate, not exact area or solid-volume coverage.",
+    "subdivisions": 4,
+    "hand_refinement": 8,
+    "states_per_case": 5,
+    "sphere_inclusion_numerical_tolerance_m": 1e-09,
+    "witness": "Native Lula query against an analysis-only <=2mm ball centered on a real cooked-finger surface sample; no physical scene authored or motion commanded."
+  },
+  "source_sha256": {
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/robot_descriptor.yaml": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6"
+  },
+  "producer_sha256": "68ee114a6396aedcd0b598cc8a5663dd6cd1576c099370bbfb60681805067e9c",
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-1/collision-audit/frozen/full_audit.json",
+    "sha256": "a86faa239db03be9a407af30cd7ad270c0cc01f0712e89a7e3424b9415ae9d2e"
+  },
+  "coverage_compute_seconds": 0.9559950167313218,
+  "limitations": [
+    "Finite surface samples do not establish conservative solid coverage or continuous-time collision safety.",
+    "A configuration model-gap witness is not a complete validated route or an observed contact in the original scenes.",
+    "Only original recorded static/narrow/large seed123456 states are sampled; no global robot-model redesign or runtime change.",
+    "No force/impulse or position-drive behavior is inferred from geometric coverage."
+  ],
+  "self_collision_policy": {
+    "method": "Existing URDF fixed-joint collapse and immediately adjacent links; never learned from a measured pose.",
+    "excluded_physical_frame_pairs": [
+      [
+        "panda_hand",
+        "panda_leftfinger"
+      ],
+      [
+        "panda_hand",
+        "panda_link6"
+      ],
+      [
+        "panda_hand",
+        "panda_link7"
+      ],
+      [
+        "panda_hand",
+        "panda_rightfinger"
+      ],
+      [
+        "panda_leftfinger",
+        "panda_link7"
+      ],
+      [
+        "panda_link0",
+        "panda_link1"
+      ],
+      [
+        "panda_link1",
+        "panda_link2"
+      ],
+      [
+        "panda_link2",
+        "panda_link3"
+      ],
+      [
+        "panda_link3",
+        "panda_link4"
+      ],
+      [
+        "panda_link4",
+        "panda_link5"
+      ],
+      [
+        "panda_link5",
+        "panda_link6"
+      ],
+      [
+        "panda_link6",
+        "panda_link7"
+      ],
+      [
+        "panda_link7",
+        "panda_rightfinger"
+      ]
+    ],
+    "limitation": "No finger-frame spheres exist, so this sphere inspector does not independently establish physical finger self-collision coverage."
+  },
+  "figure": {
+    "path": "docs/assets/motion_planning_v4_1/collision_coverage.png",
+    "sha256": "2c0b307c9760395296a53db46a567bc7f679fffb4ce100f1d350d55675a12444",
+    "selected_case": "global-static-seed123456",
+    "physics_step": 176,
+    "plotted_surface_samples": 4098,
+    "source_artifacts": {
+      "result.json": {
+        "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+        "sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479"
+      },
+      "trace.json": {
+        "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json",
+        "sha256": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155"
+      },
+      "plan_trace.json": {
+        "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json",
+        "sha256": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3"
+      },
+      "geometry_reference.npz": {
+        "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/geometry_reference.npz",
+        "sha256": "8e0c4b069ee7e23734a0ef2a9d5c977c56217d1db6b817f9f10904a3de30c260"
+      }
+    },
+    "scope": "Measured cooked hand/finger triangle centroids and actual installed planning spheres; blue/red indicates sampled union membership. Wireframes are the18 hand-frame spheres, not an added collider. No runtime/model or physical-scene changes."
+  },
+  "home_self_geometry": {
+    "path": "outputs/motion-planning-v4-1/collision-audit/frozen/home_self_geometry.json",
+    "sha256": "ddb98665f492b5b6b135f51716a296d2137cc4cbab76d7b79e8992b63c8f64ef"
+  },
+  "wall_seconds_including_optional_plot_and_self_audit": 1.7433096086606383
+}

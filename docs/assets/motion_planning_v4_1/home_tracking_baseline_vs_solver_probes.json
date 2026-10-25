@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/plot_global_stabilization_v4_1.py",
+    "sha256": "5f1fad8a18b43a99e51d4ea3cc7b120ae8d41521fa439faabd65fad2cfa241ea"
+  },
+  "figure": {
+    "path": "docs/assets/motion_planning_v4_1/home_tracking_baseline_vs_solver_probes.png",
+    "sha256": "835596878c9dfcc1c16b465c02f55511ea8f2ed71a4e9f4f72db910e66ed34e7"
+  },
+  "cases": [
+    {
+      "result_path": "outputs/motion-planning-v4-1/reproduction/C/r1/result.json",
+      "result_sha256": "a14ec80725e3fca3e1cb37b54043ee7f288fb7eca90f9e834bb3b32574c8a234",
+      "trace_path": "outputs/motion-planning-v4-1/reproduction/C/r1/controlled_trace.json",
+      "trace_sha256": "163eb5249afc053bac07ab6da0aead616607dadc8fc0b84b91b5e698c1b01388",
+      "mode": "C",
+      "strategy": "global",
+      "operation": "home",
+      "returned_success": false,
+      "failure_code": "tracking_failure",
+      "origin_simulation_time": 3.5166668500751257,
+      "origin_source": "First recorded planner actual simulation time",
+      "thresholds": {
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4,
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1
+      },
+      "label": "V4 baseline C"
+    },
+    {
+      "result_path": "outputs/motion-planning-v4-1/solver-probe/Cpos64/r1/result.json",
+      "result_sha256": "2efe03b5c9cfe6c88435cff2fb571ad16721773c9d2d2da0b3227707e6e09d32",
+      "trace_path": "outputs/motion-planning-v4-1/solver-probe/Cpos64/r1/controlled_trace.json",
+      "trace_sha256": "67fb6efe2b6a30fa96c4a47206271381cc1d559f0259634baef3cbd05e139dcf",
+      "mode": "C",
+      "strategy": "global",
+      "operation": "home",
+      "returned_success": false,
+      "failure_code": "tracking_failure",
+      "origin_simulation_time": 3.5166668500751257,
+      "origin_source": "First recorded planner actual simulation time",
+      "thresholds": {
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4,
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1
+      },
+      "label": "Home-only position 64 probe"
+    },
+    {
+      "result_path": "outputs/motion-planning-v4-1/solver-probe/Cpos255/r1/result.json",
+      "result_sha256": "d7049204b4496ac190c9462fed59b48fc794592df171dd4bf95548ad177d7ac1",
+      "trace_path": "outputs/motion-planning-v4-1/solver-probe/Cpos255/r1/controlled_trace.json",
+      "trace_sha256": "a7473131b93cc2503fc002b77a4bafa684feeb8d4a6d65081298c51d7384ac06",
+      "mode": "C",
+      "strategy": "global",
+      "operation": "home",
+      "returned_success": true,
+      "failure_code": null,
+      "origin_simulation_time": 3.5166668500751257,
+      "origin_source": "First recorded planner actual simulation time",
+      "thresholds": {
+        "tracking_limit_rad": 0.15,
+        "tracking_abort_rad": 0.4,
+        "position_tolerance_m": 0.025,
+        "orientation_tolerance_rad": 0.1
+      },
+      "label": "Home-only position 255 probe"
+    }
+  ],
+  "method": "Same-time command/actual pairs form exact q1 errors. The terminal failing guard error is recorded separately because the aborted step is absent from the planner actual trace. TCP is the existing recorded backend FK, independently cross-checked against native body transforms by the separate analysis helper."
+}
