@@ -1,0 +1,191 @@
+{
+  "status": "PASS",
+  "checks": {
+    "original_world_entire_reference_clear": true,
+    "candidate_obstructs_declared_physical_intersection_state": true,
+    "candidate_start_clear": true,
+    "candidate_goal_clear": true,
+    "removal_restores_entire_original_reference": true,
+    "removal_restores_identical_query_results": true,
+    "irrelevant_control_entire_reference_clear": true,
+    "blocked_goal_control_start_clear": true,
+    "blocked_goal_control_goal_collision": true,
+    "frozen_model_alignment_within_design_subtracted_allowance": true
+  },
+  "reference_trajectory_samples": 75,
+  "declared_physical_obstruction_index": 35,
+  "fixed_endpoint_names": [
+    "start",
+    "goal"
+  ],
+  "conditions": {
+    "free": {
+      "trajectory_external_collision_samples": [],
+      "trajectory_self_or_domain_failures": [],
+      "start": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      },
+      "goal": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      }
+    },
+    "obstacle": {
+      "trajectory_external_collision_samples": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "trajectory_self_or_domain_failures": [],
+      "start": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      },
+      "goal": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      }
+    },
+    "removed": {
+      "trajectory_external_collision_samples": [],
+      "trajectory_self_or_domain_failures": [],
+      "start": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      },
+      "goal": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      }
+    },
+    "near": {
+      "trajectory_external_collision_samples": [],
+      "trajectory_self_or_domain_failures": [],
+      "start": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      },
+      "goal": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      }
+    },
+    "goal_blocked": {
+      "trajectory_external_collision_samples": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74
+      ],
+      "trajectory_self_or_domain_failures": [],
+      "start": {
+        "external_collision": false,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      },
+      "goal": {
+        "external_collision": true,
+        "unmasked_self_pairs": [],
+        "domain_error": null
+      }
+    }
+  },
+  "schema_version": 1,
+  "producer_sha256": "adcca4a32fa1b88cb20b7a7e4803f2894166c438d756f1f500ba002dc985013c",
+  "model_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+  "primitive_count": 102,
+  "fixture_sha256": "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+  "frozen_witness_maximum_native_sphere_alignment_error_m": 4.0083750524433855e-16,
+  "source_sha256": {
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/frozen_fixture.json": "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_exact_protocol.json": "9d78b956f7d6e47bdc70092f6f1d580611c12a7d8328dc0f2a8220cacd54ba9a",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_exact_v4_3.py": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_protocol.json": "d06972c91c0b843e6ae244083736785e96b7b9d9c778aeffa8ed9cc57018d297",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/fixture-design/summary.json": "2b77236c4e449a711baa144274c269254966fddc8241d8a73f3412f054bdddc2",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/baseline-free/r1/result.json": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_v4_3.py": "b64fc40e1ad505a476233793deff751ba37e5a2d82d5787a8c5bcda28f71c410",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/baseline-free/r1/frozen_target.json": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/finalize_global_detour_v4_3.py": "35b3b15f66f3ea7cbb41e1bb9ad38a50f7e700f35e6fc1d1bdb15d62805a8908",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/control_finalization_protocol.json": "7759511749d7b38c53f3715ed934c6c152bb73a6decddb2fd5516408f6076265",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/main_design_lock.json": "701772c27bbfc7ecedc061f5f9e5b74ce6fd59c6826d1bfa641ca2753dc0dc07",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/fixture-design-exact/design_proof.json": "2bcc968738d79f5b8d9f7ac690202a3ab9b1dc8dfa2123371725597cd1141cb0",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/fixture-design-exact/candidate_pool.json": "6ad3be6a6754cbfe59d312492ef9a2c515a20f11b0b691c3fa688a4d265c309a",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/fixture-design-exact/independent_witness.npz": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-1/acceptance/cycles/r1/acceptance_trace.json": "1599f4662719abfe27d773ee4ba4d940f31459db599441df8aa8b5ccc24bdf57",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/control-finalization/design_proof.json": "c883659c655992bcaf2132e5e6eb196529b624a2f3ba8454e198001739fe2af6",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/control-finalization/control_checks.json": "e0cdedab302afe5a2e464c7ec4fced0ac3c816a9841d80a88b5e9d11214044bc",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/check_global_reference_v4_3.py": "adcca4a32fa1b88cb20b7a7e4803f2894166c438d756f1f500ba002dc985013c",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/config/motion/franka_enhanced_v4_2.yaml": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/config/motion/franka_enhanced_v4_2.json": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/audit_franka_collision_model_v4_2.py": "686c5b0a8d5a2577ed34b654a071b47bd1d83807b1d4d85936c5eacdb9225cf9",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/audit_global_collision_v4_1.py": "68ee114a6396aedcd0b598cc8a5663dd6cd1576c099370bbfb60681805067e9c"
+  },
+  "reference_q_sha256": "56e9a30a92bab825e0d6f0d543564f8a338021567a7e40d13e46ebff5a1a8b86",
+  "reference_q_time_seconds": 0.34864754916715596,
+  "raw_artifact": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-3/reference-model-check/queries.json",
+    "sha256": "ed05b5b26a41de93177d0ef98357190b65ddac0384ff1c3378de2251705768a3"
+  },
+  "RRT_calls": 0,
+  "SimulationApp_started": false,
+  "meaning": "Native CPU inspector only: the physically proven blocked original generated trajectory is rejected by the enhanced planning model, while endpoints remain clear and removal restores the same reference. No candidate RRT search or execution is performed here.",
+  "limitations": [
+    "All trajectory queries are sampled; this receipt is not a continuous motion or physical execution certificate.",
+    "Physical positive-volume obstruction comes from the independently frozen cooked-solid proof, not these planning spheres.",
+    "Internal native RRT search policy is not measured by inspector queries."
+  ]
+}

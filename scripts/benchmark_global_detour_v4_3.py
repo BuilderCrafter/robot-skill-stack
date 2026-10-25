@@ -66,6 +66,28 @@ def verify_frozen_design(fixture, *, expected_sha256, path):
         ref = witness[name]
         if shared.digest(ref['path']) != ref['sha256']:
             raise ValueError('Frozen independent witness artifact changed: '+name)
+    if fixture.get('algorithm_revision', 0) >= 2:
+        components = {
+            'scripts/design_global_detour_exact_v4_3.py':fixture['original_design_producer_sha256'],
+            'docs/assets/motion_planning_v4_3/design_exact_protocol.json':fixture['original_design_protocol_sha256'],
+            'scripts/finalize_global_detour_v4_3.py':fixture['finalization_producer_sha256'],
+        }
+        for name, expected in components.items():
+            if shared.digest(ROOT/name) != expected:
+                raise ValueError('Frozen design component changed: '+name)
+        for name in ('main_design_lock', 'main_design_proof', 'finalization_protocol', 'control_finalization_proof'):
+            ref = fixture[name]
+            if shared.digest(ref['path']) != ref['sha256']:
+                raise ValueError('Frozen design/finalization reference changed: '+name)
+        lock = json.loads(Path(fixture['main_design_lock']['path']).read_text())['locked_main_fixture']
+        if any(fixture['fixture'][key] != lock[key] for key in ('position_m','dimensions_m','orientation_wxyz')):
+            raise ValueError('Main obstacle changed during control-only finalization')
+        control = json.loads(Path(fixture['finalization_protocol']['path']).read_text())
+        for name, expected in control['original_design_source_sha256'].items():
+            if shared.digest(name) != expected:
+                raise ValueError('Control-finalization source changed: '+name)
+        if set(fixture['protocol_overrides']) != {'negative_controls.goal_blocked.dimensions_m'}:
+            raise ValueError('Control-only finalization changed another declared setting')
 
 
 def load_inputs(args):
@@ -86,6 +108,9 @@ def load_inputs(args):
             raise ValueError('Candidate fixture must be frozen before candidate RRT evaluation')
         if target is not None and fixture['source_baseline_result_sha256'] != target['source_result']['sha256']:
             raise ValueError('Fixture and fixed target use different obstacle-free baselines')
+        if target is not None and (not np.array_equal(fixture['baseline']['goal_q'], target['q'])
+                or not np.array_equal(fixture['baseline']['start_q'], target['initial_state']['feedback']['positions'][:7])):
+            raise ValueError('Fixture and comparison joint endpoints differ')
     if args.condition in ('obstacle', 'near', 'goal_blocked') and fixture is None:
         raise ValueError('Obstacle conditions require an independently frozen fixture')
     if args.condition == 'free' and fixture is None:
@@ -110,6 +135,7 @@ def match_initial(actual, target, names, named_home):
     checks = dict(exact_named_dof_order=list(names) == target['robot_dof_names'],
         exact_actual_nine_joint_positions=first.shape == second.shape == (9,) and np.array_equal(first, second),
         same_named_home=baseline.serial(named_home) == target['named_home'],
+        same_measured_base_pose=actual.get('robot_base_pose') == expected.get('robot_base_pose'),
         same_native_position_targets=(actual['live_drive_feedback']['robot_applied_action'] ==
             expected['live_drive_feedback']['robot_applied_action']))
     return dict(checks=checks, matched=all(checks.values()),

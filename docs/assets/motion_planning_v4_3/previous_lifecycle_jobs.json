@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "jobs": [
+    {
+      "label": "regression/previous_lifecycle/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-3/regression/previous_lifecycle/r1",
+      "result": "outputs/motion-planning-v4-3/regression/previous_lifecycle/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--collision-model",
+        "enhanced",
+        "--mode",
+        "cancel",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-3/regression/previous_lifecycle/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-3/regression/previous_lifecycle/r1"
+      ]
+    }
+  ]
+}

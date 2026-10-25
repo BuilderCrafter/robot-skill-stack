@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "status": "FROZEN_BEFORE_ANY_V4_3_CANDIDATE_RRT",
+  "frozen_at_utc": "2026-10-25T20:50:10.937170+00:00",
+  "candidate_RRT_calls_before_freeze": 0,
+  "fixture_revision_after_candidate_RRT_allowed": false,
+  "source_baseline_result_sha256": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+  "design_protocol_sha256": "9d78b956f7d6e47bdc70092f6f1d580611c12a7d8328dc0f2a8220cacd54ba9a",
+  "producer_sha256": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+  "fixture": {
+    "name": "GlobalRouteDetour",
+    "prim_path": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+    "kind": "cuboid",
+    "position_m": [
+      0.55,
+      -0.225,
+      0.30000000000000004
+    ],
+    "dimensions_m": [
+      0.06,
+      0.06,
+      0.12
+    ],
+    "orientation_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "stationary": true
+  },
+  "baseline": {
+    "result": "outputs/motion-planning-v4-3/baseline-free/r1/result.json",
+    "source_sha256": {
+      "outputs/motion-planning-v4-3/baseline-free/r1/result.json": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+      "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931",
+      "outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_protocol.json": "d06972c91c0b843e6ae244083736785e96b7b9d9c778aeffa8ed9cc57018d297",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_v4_3.py": "b64fc40e1ad505a476233793deff751ba37e5a2d82d5787a8c5bcda28f71c410",
+      "outputs/motion-planning-v4-3/baseline-free/r1/frozen_target.json": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/finalize_global_detour_v4_3.py": "35b3b15f66f3ea7cbb41e1bb9ad38a50f7e700f35e6fc1d1bdb15d62805a8908",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/control_finalization_protocol.json": "7759511749d7b38c53f3715ed934c6c152bb73a6decddb2fd5516408f6076265",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/main_design_lock.json": "701772c27bbfc7ecedc061f5f9e5b74ce6fd59c6826d1bfa641ca2753dc0dc07",
+      "outputs/motion-planning-v4-3/fixture-design-exact/design_proof.json": "2bcc968738d79f5b8d9f7ac690202a3ab9b1dc8dfa2123371725597cd1141cb0",
+      "outputs/motion-planning-v4-3/fixture-design-exact/candidate_pool.json": "6ad3be6a6754cbfe59d312492ef9a2c515a20f11b0b691c3fa688a4d265c309a",
+      "outputs/motion-planning-v4-3/fixture-design-exact/independent_witness.npz": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636"
+    },
+    "start_q": [
+      -0.16536663472652435,
+      -0.029043084010481834,
+      0.06232651323080063,
+      -2.1479387283325195,
+      -0.441255122423172,
+      2.485304832458496,
+      1.340412974357605
+    ],
+    "goal_q": [
+      -0.15918263827987078,
+      -0.11882434967510531,
+      -0.3362481290927299,
+      -2.149789761099588,
+      -0.044544735115996506,
+      2.0376946621228664,
+      0.31093756212348445
+    ],
+    "finger_positions_m": [
+      0.0022974847815930843,
+      0.0022974845487624407
+    ],
+    "target_pose": {
+      "position": [
+        0.45,
+        -0.25,
+        0.35
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "frame": "world"
+    },
+    "baseline_waypoints": 2,
+    "independent_FK_alignment": {
+      "maximum_translation_m": 4.2049360629587245e-07,
+      "maximum_rotation_matrix_component": 4.843231487527966e-07,
+      "maximum_cooked_vertex_error_bound_m": 4.6501042768329695e-07,
+      "allowance_m": 1e-05
+    }
+  },
+  "target_source": {
+    "path": "outputs/motion-planning-v4-3/baseline-free/r1/frozen_target.json",
+    "sha256": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da"
+  },
+  "obstruction_proof": {
+    "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+    "positive_ball_radius_lower_bound_m": 0.003091044922642005,
+    "robot_body": "/Franka/panda_leftfinger",
+    "baseline_sample": 35,
+    "planned_time": 0.34864754916715596,
+    "physics_step": null,
+    "ball_center_m": [
+      0.5396062446081415,
+      -0.198091045922642,
+      0.356908954077358
+    ],
+    "maximum_constraint_residual_m": -9.99999999907325e-10,
+    "reference": "independentFKplannedtrajectory",
+    "planned_q": [
+      -0.1625864844794425,
+      -0.06940620680236166,
+      -0.11686139541296542,
+      -2.1487709004155917,
+      -0.26290533021253354,
+      2.28407193454369,
+      0.8775898879639814
+    ]
+  },
+  "actual_obstruction_proof": {
+    "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+    "positive_ball_radius_lower_bound_m": 0.003741559360246421,
+    "robot_body": "/Franka/panda_leftfinger",
+    "baseline_sample": 49,
+    "planned_time": null,
+    "physics_step": 57,
+    "ball_center_m": [
+      0.5263233640833068,
+      -0.19874156036024648,
+      0.35625843963975357
+    ],
+    "maximum_constraint_residual_m": -9.99999999907325e-10,
+    "reference": "actualNativeBaselineCookedBodyPoses"
+  },
+  "endpoint_clearance": {
+    "actual_start_home": {
+      "minimum_m": 0.05883505764710495,
+      "by_body_m": {
+        "/Franka/panda_hand": 0.05883505764710495,
+        "/Franka/panda_rightfinger": 0.10939784935463956,
+        "/Franka/panda_leftfinger": 0.09035807802665048,
+        "/Franka/panda_link0": 0.5102526205970579,
+        "/Franka/panda_link1": 0.4961566876554972,
+        "/Franka/panda_link2": 0.5022761796016165,
+        "/Franka/panda_link3": 0.512795781490033,
+        "/Franka/panda_link4": 0.4385849393624984,
+        "/Franka/panda_link5": 0.19866935757931906,
+        "/Franka/panda_link6": 0.1807282024942952,
+        "/Franka/panda_link7": 0.1293490986500174
+      }
+    },
+    "actual_goal": {
+      "minimum_m": 0.05892561736560141,
+      "by_body_m": {
+        "/Franka/panda_hand": 0.05892561736560141,
+        "/Franka/panda_rightfinger": 0.06036968316875018,
+        "/Franka/panda_leftfinger": 0.06077342986190601,
+        "/Franka/panda_link0": 0.5102526205970579,
+        "/Franka/panda_link1": 0.49573685525017286,
+        "/Franka/panda_link2": 0.5018301033900746,
+        "/Franka/panda_link3": 0.5358182973332265,
+        "/Franka/panda_link4": 0.4687213670304344,
+        "/Franka/panda_link5": 0.18274795085102827,
+        "/Franka/panda_link6": 0.14754795783306113,
+        "/Franka/panda_link7": 0.09886439365822289
+      }
+    },
+    "fixed_validated_joint_goal": {
+      "minimum_m": 0.05911593648863978,
+      "by_body_m": {
+        "/Franka/panda_hand": 0.05911593648863978,
+        "/Franka/panda_rightfinger": 0.06008127369908884,
+        "/Franka/panda_leftfinger": 0.06042074314622342,
+        "/Franka/panda_link0": 0.5102526205970579,
+        "/Franka/panda_link1": 0.49571767296143476,
+        "/Franka/panda_link2": 0.5018293854026321,
+        "/Franka/panda_link3": 0.5361646762065977,
+        "/Franka/panda_link4": 0.46916857991587807,
+        "/Franka/panda_link5": 0.18358148660711637,
+        "/Franka/panda_link6": 0.148624118907601,
+        "/Franka/panda_link7": 0.09976815034767872
+      }
+    }
+  },
+  "witness": {
+    "status": "INDEPENDENT_NUMERIC_CONTINUOUS_WITNESS_CERTIFIED",
+    "independent_of_candidate_rrt": true,
+    "name": "retained_v4_1_home_goal_start_polyline_with_new_endpoint_bridges",
+    "knots": 229,
+    "states": 571,
+    "numericcontinuousexternal_lower_bound_m": 0.010125650070438466,
+    "self_lower_bound_m": 0.004495507128977797,
+    "planning_model_continuous_external_lower_bound_m": 0.015443136475535824,
+    "planning_model_sampled_self_and_original_world_clear": true,
+    "maximum_native_sphere_alignment_error_m": 4.0083750524433855e-16,
+    "source_sha256": {
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-1/acceptance/cycles/r1/acceptance_trace.json": "1599f4662719abfe27d773ee4ba4d940f31459db599441df8aa8b5ccc24bdf57"
+    },
+    "raw_artifact": {
+      "path": "outputs/motion-planning-v4-3/fixture-design-exact/independent_witness.npz",
+      "sha256": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636"
+    },
+    "proof_artifact": {
+      "path": "outputs/motion-planning-v4-3/control-finalization/design_proof.json",
+      "sha256": "c883659c655992bcaf2132e5e6eb196529b624a2f3ba8454e198001739fe2af6"
+    },
+    "candidate_pool": {
+      "path": "outputs/motion-planning-v4-3/fixture-design-exact/candidate_pool.json",
+      "sha256": "6ad3be6a6754cbfe59d312492ef9a2c515a20f11b0b691c3fa688a4d265c309a"
+    },
+    "qualification": "Independent source-bound floating-point joint-linear witness, not candidate RRT, spline or executed-motion swept-volume proof. No witness waypoints are supplied to RRT.",
+    "regenerated_equal_numeric_arrays_artifact": {
+      "path": "outputs/motion-planning-v4-3/control-finalization/independent_witness.npz",
+      "sha256": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636"
+    }
+  },
+  "controls": {
+    "near": {
+      "name": "OffRoute",
+      "prim_path": "/World/ReactiveEvaluation/V43OffRoute",
+      "kind": "cuboid",
+      "position_m": [
+        0.72,
+        -0.25,
+        0.38
+      ],
+      "dimensions_m": [
+        0.09,
+        0.14,
+        0.25
+      ],
+      "orientation_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary": true
+    },
+    "goal_blocked": {
+      "name": "BlockedGoal",
+      "prim_path": "/World/ReactiveEvaluation/V43BlockedGoal",
+      "kind": "cuboid",
+      "position_m": [
+        0.45,
+        -0.25,
+        0.35
+      ],
+      "dimensions_m": [
+        0.08,
+        0.08,
+        0.08
+      ],
+      "orientation_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary": true
+    }
+  },
+  "control_proofs": {
+    "near": {
+      "original_planned_and_actual_global_route_aabb_clearance_lower_bound_m": 0.04439510196212841,
+      "endpoints": {
+        "actual_start_home": {
+          "minimum_m": 0.10370356687211849,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.1084809352858634,
+            "/Franka/panda_rightfinger": 0.11249523156754593,
+            "/Franka/panda_leftfinger": 0.10370356687211849,
+            "/Franka/panda_link0": 0.6542121958090952,
+            "/Franka/panda_link1": 0.6437379229106027,
+            "/Franka/panda_link2": 0.6445946376961816,
+            "/Franka/panda_link3": 0.5914999431036906,
+            "/Franka/panda_link4": 0.4899642999301572,
+            "/Franka/panda_link5": 0.24271565230993156,
+            "/Franka/panda_link6": 0.15667280388760546,
+            "/Franka/panda_link7": 0.12850028379709158
+          }
+        },
+        "actual_goal": {
+          "minimum_m": 0.18161326152129453,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.19409468125146534,
+            "/Franka/panda_rightfinger": 0.21487344100172584,
+            "/Franka/panda_leftfinger": 0.21486553592201302,
+            "/Franka/panda_link0": 0.6542121958090952,
+            "/Franka/panda_link1": 0.6435729240603419,
+            "/Franka/panda_link2": 0.6441035644241514,
+            "/Franka/panda_link3": 0.6101757650706235,
+            "/Franka/panda_link4": 0.5266377815929087,
+            "/Franka/panda_link5": 0.22161322306547726,
+            "/Franka/panda_link6": 0.1839443224566586,
+            "/Franka/panda_link7": 0.18161326152129453
+          }
+        },
+        "fixed_validated_joint_goal": {
+          "minimum_m": 0.1814328451682403,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.19390227666748855,
+            "/Franka/panda_rightfinger": 0.21454952352043558,
+            "/Franka/panda_leftfinger": 0.21449887473663676,
+            "/Franka/panda_link0": 0.6542121958090952,
+            "/Franka/panda_link1": 0.6435649920070194,
+            "/Franka/panda_link2": 0.6441011815210461,
+            "/Franka/panda_link3": 0.6105968999045733,
+            "/Franka/panda_link4": 0.5271949996688592,
+            "/Franka/panda_link5": 0.22180313693319798,
+            "/Franka/panda_link6": 0.18386517914927847,
+            "/Franka/panda_link7": 0.1814328451682403
+          }
+        }
+      },
+      "passed": true
+    },
+    "goal_blocked": {
+      "goal_positive_volume_intersection": {
+        "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+        "positive_ball_radius_lower_bound_m": 0.01046904647692573,
+        "robot_body": "/Franka/panda_rightfinger",
+        "baseline_sample": 0,
+        "planned_time": null,
+        "physics_step": null,
+        "ball_center_m": [
+          0.4499618532214168,
+          -0.2326566828458899,
+          0.37650797227867944
+        ],
+        "maximum_constraint_residual_m": -9.999999994736442e-10
+      },
+      "endpoints": {
+        "actual_start_home": {
+          "minimum_m": 0.06961621970807216,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.06961621970807216,
+            "/Franka/panda_rightfinger": 0.1632938815410979,
+            "/Franka/panda_leftfinger": 0.1347237142148104,
+            "/Franka/panda_link0": 0.4400365474223671,
+            "/Franka/panda_link1": 0.3932180210381383,
+            "/Franka/panda_link2": 0.4093979468224876,
+            "/Franka/panda_link3": 0.42147582738314265,
+            "/Franka/panda_link4": 0.35038924071063304,
+            "/Franka/panda_link5": 0.18060271199059952,
+            "/Franka/panda_link6": 0.1579943212760809,
+            "/Franka/panda_link7": 0.11751839270200048
+          }
+        },
+        "actual_goal": {
+          "minimum_m": 0.0,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.0,
+            "/Franka/panda_rightfinger": 0.0,
+            "/Franka/panda_leftfinger": 0.0,
+            "/Franka/panda_link0": 0.4400365474223671,
+            "/Franka/panda_link1": 0.39271892481465054,
+            "/Franka/panda_link2": 0.4090135073325596,
+            "/Franka/panda_link3": 0.4377445714051277,
+            "/Franka/panda_link4": 0.3746143209888941,
+            "/Franka/panda_link5": 0.12323218178913663,
+            "/Franka/panda_link6": 0.1146823773531258,
+            "/Franka/panda_link7": 0.05910581633927924
+          }
+        },
+        "fixed_validated_joint_goal": {
+          "minimum_m": 0.0,
+          "by_body_m": {
+            "/Franka/panda_hand": 0.0,
+            "/Franka/panda_rightfinger": 0.0,
+            "/Franka/panda_leftfinger": 0.0,
+            "/Franka/panda_link0": 0.4400365474223671,
+            "/Franka/panda_link1": 0.3926967120245202,
+            "/Franka/panda_link2": 0.4090148098494681,
+            "/Franka/panda_link3": 0.4380762099012776,
+            "/Franka/panda_link4": 0.3750384855827395,
+            "/Franka/panda_link5": 0.1241323925446857,
+            "/Franka/panda_link6": 0.11577033790821953,
+            "/Franka/panda_link7": 0.06017510209807575
+          }
+        }
+      },
+      "passed": true
+    }
+  },
+  "acceptance": {
+    "minimum_rrt_route_waypoints": 3,
+    "minimum_maximum_L2_deviation_from_direct_joint_segment_rad": 0.05,
+    "same_actual_start_and_validated_fixed_goal_required": true,
+    "original_global_route_positive_volume_obstruction_required": true,
+    "sampled_actual_physical_clearance_required": true,
+    "same_stationary_obstacle_outward_and_home_required": true
+  },
+  "algorithm_revision": 2,
+  "previous_bounded_design": {
+    "status": "BOUNDED_DESIGN_INFEASIBLE_WITH_CONSERVATIVE_AABB_FILTER",
+    "path": "outputs/motion-planning-v4-3/fixture-design/summary.json",
+    "sha256": "2b77236c4e449a711baa144274c269254966fddc8241d8a73f3412f054bdddc2",
+    "candidate_RRT_calls": 0,
+    "interpretation": "All seven independent witnesses checked. Positive AABB separation candidates did not overlap the original global route. Failure of an AABB lower bound is not proof of physical collision; the original filter can exclude actual geometric room."
+  },
+  "limitations": [
+    "AABB insufficiency was tightened with independent convex lower bounds; no geometric threshold was relaxed.",
+    "Physical contact/rest offsets and arbitrary asset changes are not certified.",
+    "All candidate RRT outcomes must be retained with the frozen geometry unchanged."
+  ],
+  "original_design_producer_sha256": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+  "original_design_protocol_sha256": "9d78b956f7d6e47bdc70092f6f1d580611c12a7d8328dc0f2a8220cacd54ba9a",
+  "main_design_lock": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/main_design_lock.json",
+    "sha256": "701772c27bbfc7ecedc061f5f9e5b74ce6fd59c6826d1bfa641ca2753dc0dc07"
+  },
+  "main_design_proof": {
+    "path": "outputs/motion-planning-v4-3/fixture-design-exact/design_proof.json",
+    "sha256": "2bcc968738d79f5b8d9f7ac690202a3ab9b1dc8dfa2123371725597cd1141cb0"
+  },
+  "finalization_producer_sha256": "35b3b15f66f3ea7cbb41e1bb9ad38a50f7e700f35e6fc1d1bdb15d62805a8908",
+  "finalization_protocol": {
+    "path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/control_finalization_protocol.json",
+    "sha256": "7759511749d7b38c53f3715ed934c6c152bb73a6decddb2fd5516408f6076265"
+  },
+  "protocol_overrides": {
+    "negative_controls.goal_blocked.dimensions_m": {
+      "original": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "active": [
+        0.08,
+        0.08,
+        0.08
+      ]
+    }
+  },
+  "control_finalization_proof": {
+    "path": "outputs/motion-planning-v4-3/control-finalization/control_checks.json",
+    "sha256": "e0cdedab302afe5a2e464c7ec4fced0ac3c816a9841d80a88b5e9d11214044bc"
+  }
+}

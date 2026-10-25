@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "fixture_sha256": "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+  "jobs": [
+    {
+      "label": "controls/near/seed-123456/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-3/controls/near/seed-123456/r1",
+      "result": "outputs/motion-planning-v4-3/controls/near/seed-123456/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_detour_v4_3.py",
+        "--condition",
+        "near",
+        "--seed",
+        "123456",
+        "--fixed-target",
+        "docs/assets/motion_planning_v4_3/fixed_target.json",
+        "--fixture",
+        "docs/assets/motion_planning_v4_3/frozen_fixture.json",
+        "--fixture-sha256",
+        "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-3/controls/near/seed-123456/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-3/controls/near/seed-123456/r1"
+      ]
+    },
+    {
+      "label": "controls/goal_blocked/seed-123456/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-3/controls/goal_blocked/seed-123456/r1",
+      "result": "outputs/motion-planning-v4-3/controls/goal_blocked/seed-123456/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_detour_v4_3.py",
+        "--condition",
+        "goal_blocked",
+        "--seed",
+        "123456",
+        "--fixed-target",
+        "docs/assets/motion_planning_v4_3/fixed_target.json",
+        "--fixture",
+        "docs/assets/motion_planning_v4_3/frozen_fixture.json",
+        "--fixture-sha256",
+        "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-3/controls/goal_blocked/seed-123456/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-3/controls/goal_blocked/seed-123456/r1"
+      ]
+    }
+  ]
+}
