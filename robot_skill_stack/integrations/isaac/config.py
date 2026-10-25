@@ -104,18 +104,24 @@ class GroundTruthConfig:
 class MotionConfig:
     strategy: str = 'direct'
     max_obstacles: int = 64
+    rrt_seed: int = 123456
+    rrt_max_iterations: int = 10000
 
     def __post_init__(self):
         if not isinstance(self.strategy, str):
             raise ValueError('motion.strategy must be a string')
-        if self.strategy in ('global', 'hybrid'):
+        if self.strategy == 'hybrid':
             raise ValueError(f'Unsupported motion strategy {self.strategy!r}: '
                              'not implemented; select \'direct\'')
-        if self.strategy not in ('direct', 'reactive'):
+        if self.strategy not in ('direct', 'reactive', 'global'):
             raise ValueError(f'Unknown motion strategy {self.strategy!r}; '
-                             'supported strategies: direct, reactive')
+                             'supported strategies: direct, reactive, global')
         if type(self.max_obstacles) is not int or not 1 <= self.max_obstacles <= 128:
             raise ValueError('motion.max_obstacles must be an integer between 1 and 128')
+        if type(self.rrt_seed) is not int or not 1 <= self.rrt_seed <= 2**31-1:
+            raise ValueError('motion.rrt_seed must be an integer between 1 and 2147483647')
+        if type(self.rrt_max_iterations) is not int or not 1 <= self.rrt_max_iterations <= 50000:
+            raise ValueError('motion.rrt_max_iterations must be an integer between 1 and 50000')
 
 
 @dataclass(frozen=True)

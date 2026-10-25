@@ -40,11 +40,32 @@ class MotionConfigTests(unittest.TestCase):
             with self.subTest(profile=path.name):
                 self.assertEqual(load_scene_config(path).motion.strategy, 'direct')
 
-    def test_named_future_strategies_fail_explicitly_without_fallback(self):
-        for name in ('global', 'hybrid'):
-            with self.subTest(strategy=name), self.assertRaisesRegex(
-                    ValueError, rf'Unsupported motion strategy.*{name}.*not implemented'):
-                self.load(f'[motion]\nstrategy = "{name}"\n')
+    def test_hybrid_fails_explicitly_without_fallback(self):
+        with self.assertRaisesRegex(ValueError, r'Unsupported motion strategy.*hybrid.*not implemented'):
+            self.load('[motion]\nstrategy = "hybrid"\n')
+
+    def test_global_is_opt_in_without_spatial_mapping(self):
+        config = self.load('[motion]\nstrategy = "global"\n')
+        self.assertEqual(config.motion.strategy, 'global')
+        self.assertFalse(config.spatial_mapping.enabled)
+        self.assertEqual((config.motion.rrt_seed, config.motion.rrt_max_iterations), (123456, 10000))
+
+    def test_global_seed_and_search_bound_load_explicitly(self):
+        config = self.load('[motion]\nstrategy = "global"\nrrt_seed = 7\nrrt_max_iterations = 2000\n')
+        self.assertEqual((config.motion.rrt_seed, config.motion.rrt_max_iterations), (7, 2000))
+
+    def test_global_search_settings_reject_invalid_programmatic_values(self):
+        for value in (0, -1, 2**31, True, 1.5, None, '4'):
+            with self.subTest(seed=value), self.assertRaisesRegex(ValueError, 'rrt_seed'):
+                MotionConfig(strategy='global', rrt_seed=value)
+        for value in (0, -1, 50001, True, 1.5, None, '100'):
+            with self.subTest(iterations=value), self.assertRaisesRegex(ValueError, 'rrt_max_iterations'):
+                MotionConfig(strategy='global', rrt_max_iterations=value)
+
+    def test_global_search_settings_boundaries_are_accepted(self):
+        for seed, iterations in ((1, 1), (2**31-1, 50000)):
+            config = MotionConfig(strategy='global', rrt_seed=seed, rrt_max_iterations=iterations)
+            self.assertEqual((config.rrt_seed, config.rrt_max_iterations), (seed, iterations))
 
     def test_unknown_names_are_distinct_from_unimplemented_strategies(self):
         for name in ('rrt', 'Direct', '', 'direct '):
@@ -70,8 +91,7 @@ class MotionConfigTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaisesRegex(
                     ValueError, r'motion.strategy must be a string'):
                 MotionConfig(value)
-        with self.assertRaisesRegex(ValueError, 'Unsupported motion strategy'):
-            replace(config, strategy='global')
+        self.assertEqual(replace(config, strategy='global').strategy, 'global')
 
     def test_reactive_requires_mapping_and_accepts_enabled_self_filtered_source(self):
         with self.assertRaisesRegex(ValueError, 'requires enabled Spatial Mapping'):

@@ -20,6 +20,71 @@ def direct_double():
 
 
 class MotionCompositionTests(unittest.TestCase):
+    def test_global_factory_preserves_seed_and_iteration_bound_without_mapping_access(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            module_name = DIRECT_MODULE.replace('.direct', '.global_rrt')
+            global_motion = ModuleType(module_name)
+            global_motion.GlobalRrtStrategy = Mock(side_effect=lambda backend, **kwargs:
+                NS(backend=backend, **kwargs))
+            resolver = Mock(side_effect=AssertionError('Global motion must not request occupancy'))
+            with patch.dict('sys.modules', {module_name: global_motion}):
+                backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                    motion=MotionConfig(strategy='global', max_obstacles=1,
+                        rrt_seed=7, rrt_max_iterations=2500),
+                    mapping_source_provider=resolver)
+                global_motion.GlobalRrtStrategy.assert_not_called()
+                selected = env.backend_calls[-1]['strategy_factory'](backend)
+            self.assertIs(selected.backend, backend)
+            global_motion.GlobalRrtStrategy.assert_called_once_with(backend,
+                seed=7, max_iterations=2500)
+            resolver.assert_not_called()
+
+    def test_global_factory_accepts_static_camera_free_scene_and_missing_mapping_provider(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            config = replace(config, motion=MotionConfig(strategy='global'),
+                perception=replace(config.perception, camera_prim_path=None))
+            self.assertEqual(config.world.provider, 'ground_truth')
+            self.assertFalse(config.spatial_mapping.enabled)
+            module_name = DIRECT_MODULE.replace('.direct', '.global_rrt')
+            global_motion = ModuleType(module_name)
+            global_motion.GlobalRrtStrategy = Mock(return_value=object())
+            with patch.dict('sys.modules', {module_name: global_motion}):
+                backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                    motion=config.motion)
+                env.backend_calls[-1]['strategy_factory'](backend)
+            global_motion.GlobalRrtStrategy.assert_called_once_with(backend,
+                seed=123456, max_iterations=10000)
+
+    def test_global_factory_validates_programmatic_search_settings_before_sdk_construction(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            for options in (dict(rrt_seed=True), dict(rrt_seed=-1),
+                            dict(rrt_max_iterations=0), dict(rrt_max_iterations=1.5)):
+                with self.subTest(options=options), self.assertRaises(ValueError):
+                    bootstrap.create_backend(None, None, config.robot,
+                        motion=NS(strategy='global', **options))
+            self.assertEqual(env.backend_calls, [])
+
+    def test_existing_strategies_never_construct_global_resources(self):
+        with bootstrap_fixture() as (bootstrap, env):
+            config = bootstrap.load_scene_config('profile.toml')
+            module_name = DIRECT_MODULE.replace('.direct', '.global_rrt')
+            global_motion = ModuleType(module_name)
+            global_motion.GlobalRrtStrategy = Mock(side_effect=AssertionError('Unexpected RRT construction'))
+            direct = direct_double()
+            reactive_name = DIRECT_MODULE.replace('.direct', '.reactive')
+            reactive = ModuleType(reactive_name)
+            reactive.ReactiveRmpflowStrategy = Mock(return_value=object())
+            with patch.dict('sys.modules', {module_name: global_motion, DIRECT_MODULE: direct,
+                                          reactive_name: reactive}):
+                for motion in (None, MotionConfig(strategy='direct'), MotionConfig(strategy='reactive')):
+                    backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
+                        motion=motion, mapping_source_provider=Mock())
+                    env.backend_calls[-1]['strategy_factory'](backend)
+            global_motion.GlobalRrtStrategy.assert_not_called()
+
     def test_reactive_factory_selects_reactive_without_querying_mapping_during_construction(self):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
@@ -48,7 +113,7 @@ class MotionCompositionTests(unittest.TestCase):
                 mapping = replace(config.spatial_mapping, enabled=True, source='ground_truth')
                 world = NS(is_playing=lambda: True)
                 updater = NS(provider=NS())
-                for name in ('direct', 'reactive'):
+                for name in ('direct', 'reactive', 'global'):
                     selected = replace(config, spatial_mapping=mapping,
                         motion=MotionConfig(strategy=name, max_obstacles=32))
                     service = NS(close=Mock())
@@ -88,7 +153,7 @@ class MotionCompositionTests(unittest.TestCase):
     def test_factory_rejects_invalid_programmatic_strategy_before_sdk_construction(self):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
-            for name in ('reactive', 'global', 'hybrid', 'typo', None, 1):
+            for name in ('reactive', 'hybrid', 'typo', None, 1):
                 with self.subTest(strategy=name), self.assertRaises(ValueError):
                     bootstrap.create_backend(None, None, config.robot, motion=NS(strategy=name))
             self.assertEqual(env.backend_calls, [])

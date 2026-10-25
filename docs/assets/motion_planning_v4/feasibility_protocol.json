@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_BEFORE_NATIVE_WITNESS",
+  "purpose": "Bounded physical feasibility witness independent of candidate RRT search success.",
+  "scenarios": [
+    "narrow",
+    "large"
+  ],
+  "strategy": "direct",
+  "rrt_used": false,
+  "start_position_m": [
+    0.45,
+    -0.25,
+    0.35
+  ],
+  "goal_position_m": [
+    0.45,
+    0.25,
+    0.35
+  ],
+  "orientation_wxyz": [
+    0.0,
+    0.0,
+    1.0,
+    0.0
+  ],
+  "waypoints_m": [
+    [
+      0.45,
+      -0.25,
+      0.85
+    ],
+    [
+      0.45,
+      0.25,
+      0.85
+    ],
+    [
+      0.45,
+      0.25,
+      0.35
+    ]
+  ],
+  "position_tolerance_m": 0.025,
+  "orientation_tolerance_rad": 0.1,
+  "attempts_per_scene": 1,
+  "physical_scene_mutation": "none after the matched setup; same scene/start/goal as candidate trial",
+  "success_requirements": [
+    "all three full-pose requests reached with original effective tolerances",
+    "zero reported PhysX contact points for strict witness",
+    "no cooked whole-arm/hand obstacle intersection at sampled states",
+    "independent references include physical fixture and support geometry",
+    "no robot joint teleports or changes to physical joint drives"
+  ],
+  "failure_policy": "Retain failed witness and report scene feasibility unproven; do not retune height, fixtures, controller or tolerances to manufacture success.",
+  "limitations": [
+    "A successful physical witness establishes one sampled feasible traversal, not a proof of the entire continuous joint trajectory or arbitrary seeds.",
+    "A failed DirectRmpflow witness cannot prove the physical scene is impossible.",
+    "The manual path is evaluation context and never input to the candidate RRT planner.",
+    "Positive-separation reports and measured penetration/impulse remain separately recorded; strict zero-report criterion is unchanged."
+  ]
+}
