@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "postures": [
+    {
+      "id": "home",
+      "q": [
+        -0.16682235896587372,
+        -0.027431322261691093,
+        0.06416909396648407,
+        -2.148766040802002,
+        -0.4410441517829895,
+        2.485264539718628,
+        1.3404085636138916
+      ],
+      "qd": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation_wxyz": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "source_simulation_time": 6.650000346824527,
+      "actual_tcp_position": [
+        0.5973290081405678,
+        -0.08578370118096562,
+        0.36307097000975763
+      ]
+    },
+    {
+      "id": "raised",
+      "q": [
+        -0.061087384819984436,
+        -0.5380293130874634,
+        -0.12961581349372864,
+        -2.2168710231781006,
+        -0.06736733764410019,
+        1.6741020679473877,
+        0.6218140125274658
+      ],
+      "qd": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation_wxyz": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "source_simulation_time": 15.75000082142651,
+      "actual_tcp_position": [
+        0.37749900878196924,
+        -0.0890183973527872,
+        0.4776424084725006
+      ]
+    },
+    {
+      "id": "low",
+      "q": [
+        -0.04846532642841339,
+        -0.05193108692765236,
+        -0.1315794736146927,
+        -2.590782642364502,
+        -0.012733479030430317,
+        2.5312726497650146,
+        0.6220409274101257
+      ],
+      "qd": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "target": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation_wxyz": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "source_simulation_time": 19.250001003965735,
+      "actual_tcp_position": [
+        0.43101976238659534,
+        -0.07788579670291676,
+        0.17543700653175862
+      ]
+    }
+  ],
+  "source": {
+    "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/capture.json",
+    "sha256": "bb3adc21bfbd23f916341c71ebb0412159544358ada142f03fad6b8c8fc71ff6"
+  },
+  "scope": "q values were captured after legitimate native robot movements. qdot=0 is an explicit static-rest condition, not recorded dynamic velocity. These q values are not asserted exposure-matched to each occupancy snapshot."
+}

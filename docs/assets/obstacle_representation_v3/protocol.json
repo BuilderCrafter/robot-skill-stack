@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_RESEARCH_PROTOCOL",
+  "baseline": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+  "branch": "research/obstacle-representation-v3",
+  "production_policy": "Unchanged; all candidates and native injection isolated in new scripts.",
+  "history": "V2b completion is rejected and will not be reimplemented or threshold-tuned. Existing Z/Y/X exact merge is the baseline, not a straw-man singleton extractor.",
+  "primary_grid": {
+    "voxel_size_m": 0.01,
+    "global_rays": 1024,
+    "stride": 8,
+    "mapping_hz": 2,
+    "proxy_budget": 64,
+    "evidence_ttl_s": 5,
+    "source_freshness_s": 1
+  },
+  "offline": {
+    "inputs": "Actual immutable canonical snapshots or explicit canonical replay of recorded RGB-D; cumulative hit masks are not canonical occupancy.",
+    "scenarios": [
+      "empty",
+      "static",
+      "thin_rectangular_post",
+      "true_cylinder",
+      "partial",
+      "separated",
+      "narrow",
+      "moving"
+    ],
+    "camera_scope": "Historical V2b EYES reference distinguished from authored A_current. Fresh authored-A captures qualify primary conclusions; C uses identical fixed rays for within-layout comparisons.",
+    "packing": [
+      "production Z-run/Y/X exact merge",
+      "six fixed axis permutations",
+      "bounded deterministic greedy exact boxes",
+      "component-aware exact packing"
+    ],
+    "selection": [
+      "production above-plane then volume",
+      "global cell coverage",
+      "spatial diversity",
+      "optional immutable motion context with explicit outside-corridor reserve"
+    ],
+    "sensitivity_budgets": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "adjacency": "Face6 exact compression graph; Chebyshev radius2 is separately reported support and never permits filling cells.",
+    "correctness": "All candidate and selected box cell unions must be subsets of original unexpired eligible OCCUPIED evidence; no FREE/UNKNOWN/out-of-grid cells, overlap duplication, padding or TTL extension. Explicit omitted-cell and FREE-gap audits.",
+    "primary_budget": 64,
+    "shortlist": "At most two candidates; choose using exactness, observed physical endpoint coverage, omissions, gap preservation, churn and measured worker cost before evaluating native outcomes.",
+    "reject": "Any invented/expired geometry or gap bridge; unbounded CPU cost; meaningful hazard-coverage loss without explicit tradeoff. Negligible packing gains are retained as negative findings.",
+    "worker_cost_target": "Extraction should be a small fraction of500ms; report p50/p95/worst. Over100ms p95 requires explicit rejection or measured capacity justification; no freshness relaxation."
+  },
+  "native": {
+    "layouts": [
+      "A_current",
+      "C_asymmetric_1.15_0.65"
+    ],
+    "optional_layout": "K_B_front_height_0.85_rear only after useful improvement",
+    "scenarios": [
+      "empty",
+      "static",
+      "sparse",
+      "true_cylinder",
+      "partial",
+      "narrow",
+      "moving"
+    ],
+    "fixture_policy": "Existing exact START/GOAL, physical scenes and limits; distinguish historical sparse rectangular box from new true-cylinder/prism fixture. No production scene edits.",
+    "setup": "Production extractor during unmeasured approach; all baseline/candidates start from matched actual joints and fixtures, then candidate worker packet must be fresh before command.",
+    "outcomes": "Keep measurement validity, reached goal, zero-contact success, reference clearance and ungraded contact severity separate. No safe-contact threshold.",
+    "repeats": "Repeat the most meaningful baseline/candidate improvements and regressions at least once; no large native search.",
+    "controls": "Reuse prior direct controls only with explicit identical scene/initial-state/target/gain/source proof; new empty/cylinder controls where no matched prior run exists.",
+    "timing": "Dense processing and I/O off Kit; no concurrent CPU-heavy analysis during measured native runs; registry SDK calls remain owner-thread-only. Full forensic captures cannot establish live timing.",
+    "stop": "Stop escalation for GPU/resource failures, repeat source failures or severe control stalls; retain unmeasured/failed records.",
+    "initial_condition_tolerance_rad": 0.01,
+    "actual_setup_match_scope": "Same ordinary production-extractor setup; compare actual joint vectors and fixture/calibration/configuration; within0.01rad predeclared limit, not bitwise-identical native state. Static Lula comparisons use exactly identical q/qd.",
+    "finite_primary_matrix": "A/C\u00d7empty/static/sparse rectangularpost/cylinder/partial/narrow/moving\u00d7baseline/diversity/motion=42 reactive cases, interleaved baseline and candidates by scenario/layout.",
+    "predeclared_repeats": "Astatic andCnarrow known failure modes: repeat all3 representations twice more (12 additional reactive cases), retain all outcomes.",
+    "new_direct_controls": "A/C empty and actualcylinder, four freshcontrols; otherhistoricaldirectcontrols remainseparateunless criticalsource/config/calibration/initialq/actorpose equivalence isproved."
+  },
+  "static_lula": {
+    "inputs": "Actual observed selected packets from offline snapshots",
+    "matches": "q,qd,target,installed policy configuration and physical scene fixed within representation comparison",
+    "sensitivity": "Multiple recorded arm configurations plus small metric translations; same union comparison separated from changed budget-selected unions",
+    "units": "Natural RMP force/metric are not Newtons or torques; keep static responses separate from physical outcomes."
+  },
+  "completion": "Targeted algorithm units; existing unit/architecture suite; matched physical motion; source preservation; reusable scripts/report/compact evidence committed and branch pushed only.",
+  "offline_completed_before_native_shortlist": {
+    "snapshots": 66,
+    "audits": 462,
+    "all_geometry_audits_pass": true,
+    "baseline_exact_lowerbound_matches": 66,
+    "weighted_face_singleton_fraction": 0.946804,
+    "rejected_native_packings": "All6axisorders/greedy/component equal baseline geometry/count on all66 actual snapshots; no compression benefit.",
+    "rejected_selection": "Global coverage loses known observed physical hazards to floor geometry."
+  },
+  "native_shortlist": [
+    {
+      "candidate_id": "diversity",
+      "packing": "baseline",
+      "selection": "diversity",
+      "budget": 64
+    },
+    {
+      "candidate_id": "motion",
+      "packing": "baseline",
+      "selection": "motion",
+      "budget": 64
+    }
+  ]
+}
