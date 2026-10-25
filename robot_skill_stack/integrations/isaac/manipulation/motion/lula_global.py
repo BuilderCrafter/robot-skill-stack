@@ -238,12 +238,10 @@ class LulaGlobalPlanner:
             maximum_velocity_rad_s=maxima[0].tolist(), maximum_acceleration_rad_s2=maxima[1].tolist(),
             maximum_jerk_rad_s3=maxima[2].tolist(), collision_validation='PASS_SAMPLED_SDK_MODEL')
 
-    def plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance,
-             preferred_goal_configuration=None):
+    def plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance):
         result = failure = None
         try:
-            result = self._plan(target, start_q, snapshot, position_tolerance, orientation_tolerance,
-                                preferred_goal_configuration=preferred_goal_configuration)
+            result = self._plan(target, start_q, snapshot, position_tolerance, orientation_tolerance)
             return result
         except Exception as error:
             failure = error
@@ -261,8 +259,7 @@ class LulaGlobalPlanner:
             if isinstance(failure, PlanningFailure):
                 failure.details.update(self._last_diagnostics)
 
-    def _plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance,
-              preferred_goal_configuration=None):
+    def _plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance):
         self._assert_owner()
         self.clear()
         self._last_diagnostics = dict(seed=self.seed, max_iterations=self.max_iterations,
@@ -311,28 +308,6 @@ class LulaGlobalPlanner:
         seeds = [start_q, default, np.clip(start_q+np.array([.6, -.3, .4, 0, 0, 0, 0]), lower, upper),
                  np.clip(start_q+np.array([-.6, .3, -.4, 0, 0, 0, 0]), lower, upper)]
         target_rotation = quaternion_matrix(target.orientation)
-        self._last_diagnostics['preferred_goal_configuration_used'] = preferred_goal_configuration is not None
-        if preferred_goal_configuration is not None:
-            preferred = np.asarray(preferred_goal_configuration, dtype=float)
-            try:
-                check_joint_limits(preferred[None, :], lower, upper)
-            except (PlanningFailure, IndexError) as error:
-                raise PlanningFailure('invalid_goal', 'Preferred joint configuration is invalid or outside joint limits') from error
-            preferred_position, preferred_rotation = solver.compute_forward_kinematics(
-                self.backend.end_effector_frame, preferred)
-            preferred_position_error = float(np.linalg.norm(np.asarray(preferred_position)-target.position))
-            preferred_orientation_error = orientation_error(preferred_rotation, target_rotation)
-            if (not math.isfinite(preferred_position_error+preferred_orientation_error)
-                    or preferred_position_error > float(position_tolerance)
-                    or preferred_orientation_error > float(orientation_tolerance)):
-                raise PlanningFailure('invalid_goal', 'Preferred joint configuration does not satisfy the requested full pose')
-            # This is a warm start, never an oracle route or a collision exemption.
-            # The computed IK candidate still passes the normal goal/route/spline checks.
-            seeds = [preferred.copy(), start_q, default, seeds[2]]
-            self._last_diagnostics.update(preferred_goal_configuration_source='caller joint configuration validated by full-pose FK',
-                preferred_goal_position_error=preferred_position_error,
-                preferred_goal_orientation_error=preferred_orientation_error,
-                preferred_goal_is_warm_start_only=True)
         attempts, solutions = [], []
         self._last_diagnostics.update(ik_attempts=attempts, self_collision_mask='URDF rigid/adjacent links only',
             sdk_configuration_sha256={key: hashlib.sha256(Path(cfg[key]).read_bytes()).hexdigest()
