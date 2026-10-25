@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "planning_sha256": "332baeac3aa8ede9a4d7da71182514ee129c278fd23a9adb096c119b09b8f7a0",
+  "rows": [
+    {
+      "layout_id": "A_current",
+      "scenario": "static",
+      "case_id": "outputs/camera-observability-feasibility/planning/A_current-static-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/A_current-static-reactive-fixed/result.json",
+        "sha256": "abfb20c8f6c9268bc6ef8bd04e54bf600e7d1f1617d61a4df69a9370edc3f0f4"
+      },
+      "goal_reached": false,
+      "strict_contact_free_success": false,
+      "physical_classification": "blocked_timeout",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 523,
+        "supported_voxels": 523,
+        "candidate_boxes": 513,
+        "floor_candidate_boxes": 482,
+        "hazard_candidate_boxes": 31,
+        "proxy_count": 64,
+        "selected_floor_boxes": 33,
+        "selected_hazard_boxes": 31,
+        "represented_voxels": 74,
+        "omitted_voxels": 449
+      }
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "case_id": "outputs/camera-observability-feasibility/planning/A_current-partial-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/A_current-partial-reactive-fixed/result.json",
+        "sha256": "f2c0f9a96db2b17d2af5056567a1d03d6c63b5de3f7aa110a9f73dbdfb7289ad"
+      },
+      "goal_reached": false,
+      "strict_contact_free_success": false,
+      "physical_classification": "blocked_timeout",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 573,
+        "supported_voxels": 573,
+        "candidate_boxes": 563,
+        "floor_candidate_boxes": 455,
+        "hazard_candidate_boxes": 108,
+        "proxy_count": 64,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_voxels": 64,
+        "omitted_voxels": 509
+      }
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "case_id": "outputs/camera-observability-feasibility/planning/C_asymmetric_1.15_0.65-static-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/C_asymmetric_1.15_0.65-static-reactive-fixed/result.json",
+        "sha256": "4522789c43bc08f8bea05f69d1868751079e4c903d225be0c72c76753485f9ef"
+      },
+      "goal_reached": true,
+      "strict_contact_free_success": true,
+      "physical_classification": "target_reached_clear",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 1154,
+        "supported_voxels": 1118,
+        "candidate_boxes": 905,
+        "floor_candidate_boxes": 773,
+        "hazard_candidate_boxes": 132,
+        "proxy_count": 64,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_voxels": 127,
+        "omitted_voxels": 991
+      }
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "partial",
+      "case_id": "outputs/camera-observability-feasibility/planning/C_asymmetric_1.15_0.65-partial-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/C_asymmetric_1.15_0.65-partial-reactive-fixed/result.json",
+        "sha256": "668b158cf0244baf449d06c6ca45f60a2b1fa27dedef0f91d19584ccd2618aef"
+      },
+      "goal_reached": true,
+      "strict_contact_free_success": true,
+      "physical_classification": "target_reached_clear",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 1192,
+        "supported_voxels": 1154,
+        "candidate_boxes": 952,
+        "floor_candidate_boxes": 787,
+        "hazard_candidate_boxes": 165,
+        "proxy_count": 64,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_voxels": 121,
+        "omitted_voxels": 1033
+      }
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "scenario": "static",
+      "case_id": "outputs/camera-observability-feasibility/planning/K_B_front_height_0.85_rear-static-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/K_B_front_height_0.85_rear-static-reactive-fixed/result.json",
+        "sha256": "a8b17e76f2da57ac3710dd4b26d77110a467517e8e9a74786ddf84f19f08b82c"
+      },
+      "goal_reached": false,
+      "strict_contact_free_success": false,
+      "physical_classification": "blocked_timeout",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 1292,
+        "supported_voxels": 1202,
+        "candidate_boxes": 1103,
+        "floor_candidate_boxes": 939,
+        "hazard_candidate_boxes": 164,
+        "proxy_count": 64,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_voxels": 104,
+        "omitted_voxels": 1098
+      }
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "scenario": "partial",
+      "case_id": "outputs/camera-observability-feasibility/planning/K_B_front_height_0.85_rear-partial-reactive-fixed",
+      "artifact": {
+        "path": "outputs/camera-observability-feasibility/planning/K_B_front_height_0.85_rear-partial-reactive-fixed/result.json",
+        "sha256": "df202a77f89d4e033e227e652b4a56381cb495bab6f73d6991a15e9002bc93ac"
+      },
+      "goal_reached": true,
+      "strict_contact_free_success": false,
+      "physical_classification": "target_reached_with_contact",
+      "maximum_registered_proxies": 64,
+      "counts": {
+        "occupied_voxels": 2074,
+        "supported_voxels": 1930,
+        "candidate_boxes": 1635,
+        "floor_candidate_boxes": 999,
+        "hazard_candidate_boxes": 636,
+        "proxy_count": 64,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_voxels": 196,
+        "omitted_voxels": 1734
+      }
+    }
+  ],
+  "interpretation": "Measured final occupancy and extractor counts only; voxel and cuboid counts are separate units. All six rows are retained regardless of physical success.",
+  "limitations": [
+    "These are final published snapshots following different command durations, not time-normalized visibility measurements.",
+    "Above-plane proxy labels are geometric categories, not confirmed fixture association.",
+    "No FREE or UNKNOWN cell is added to improve a plot or representation score."
+  ]
+}

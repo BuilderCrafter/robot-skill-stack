@@ -1,0 +1,4626 @@
+{
+  "schema_version": 1,
+  "status": "RESEARCH_OFFLINE_ONLY",
+  "sampler_uses_evaluation_truth": false,
+  "source_hashes": {
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+    "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c"
+  },
+  "script_sha256": "91a2286d0d0dc8d1f11d0a6c87d6def6c8b091da231cd86df18e39b63f75df9d",
+  "protocol": {
+    "policies": [
+      "fixed1024",
+      "phase1024",
+      "cycle1024",
+      "edge1024",
+      "fixed2048",
+      "fixed4096"
+    ],
+    "fixed_budget_strategy_comparison": 1024,
+    "separate_budget_experiments": [
+      2048,
+      4096
+    ],
+    "production_stride": 8,
+    "cycle_offsets": [
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        4,
+        0
+      ]
+    ],
+    "selection_phases": [
+      0.5,
+      0.25,
+      0.75,
+      0.0
+    ],
+    "adaptive": "Half uniform midpoint samples plus deterministically ranked valid-depth discontinuities; no truth labels or semantic regions.",
+    "cycle_filter_validation_stride": 1,
+    "timing": "Measured offline CPU computation using current exact self-filter and canonical mapper; small timing hooks included. Input loading, evaluation truth rasterization and output I/O excluded.",
+    "geometry": "Exact evaluation box/sphere/Z-cylinder intersections label matched native optical depth and endpoint cells after sampling/masking only; AABBs label ROI counts separately. No truth enters selection or integration.",
+    "source_age": "Original captured phase clocks retained where present. Otherwise explicit logical replay age1ms; no native publication/freshness/rate inference.",
+    "unknown": "UNKNOWN is neither obstruction nor collision. Adapter output is verified to contain only original observed OCCUPIED, unexpired cells."
+  },
+  "cases": [
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3237217.884521166,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00022-input.pkl",
+          "sha256": "62b37bf63a4f71b712342f9b15b81716f2e4c9249f6a6dc344b43da9870e6475",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237218.335757444
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237218.611930295
+            },
+            {
+              "phase": "processor",
+              "value": 3237218.621095419
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237218.884852168,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00023-input.pkl",
+          "sha256": "f77129f5624df0f86f2a2c24f314a7e2f392701721f3655371e6d483c355aaea",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237219.141399353
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237219.412987507
+            },
+            {
+              "phase": "processor",
+              "value": 3237219.422859862
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237219.885868981,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00024-input.pkl",
+          "sha256": "c9772099121bd0b8bd7f2e19adc5d25f76e859e5097e039a173405abab886477",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237219.958927043
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237220.22828181
+            },
+            {
+              "phase": "processor",
+              "value": 3237220.237419914
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237220.478353861,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00025-input.pkl",
+          "sha256": "353b148d8f8f0783531474aacc5a97b61c4ad2e5a290c919e4c1eb9933baedd9",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237220.79486925
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237221.071037792
+            },
+            {
+              "phase": "processor",
+              "value": 3237221.080823204
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237221.479601424,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00026-input.pkl",
+          "sha256": "72db8ecbe34ea2202a1c9d881cb9ed8c5fd5b34cea002f24a77c3127bff0bab1",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237221.62700905
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237221.895871117
+            },
+            {
+              "phase": "processor",
+              "value": 3237221.907636234
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237221.889759231,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00027-input.pkl",
+          "sha256": "f1b8f73a568a84a05707417ce2fbfd0fab6876d14f8fca26e43861594c156cf2",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237222.438346679
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237222.716589062
+            },
+            {
+              "phase": "processor",
+              "value": 3237222.728204549
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237222.886833637,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00028-input.pkl",
+          "sha256": "b20d621d1e76ffaad15029ccf60a8fea4da74240666c9621a4221d004b911d8d",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237223.239687151
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237223.511793633
+            },
+            {
+              "phase": "processor",
+              "value": 3237223.521879646
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237223.888524438,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00029-input.pkl",
+          "sha256": "b7941c7c4fcb90e0a5c55781cbdedeeff7845d1de263f1c3dbdc9fa2f0ab10e2",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237224.098118679
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237224.384361352
+            },
+            {
+              "phase": "processor",
+              "value": 3237224.393166234
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237224.878588141,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00030-input.pkl",
+          "sha256": "af1474848902aa63d63fe748094e6533e8aeec8bfde63b35f66b097cccbe4c5f",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237224.921675642
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237225.192724571
+            },
+            {
+              "phase": "processor",
+              "value": 3237225.201949176
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237225.482145145,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00031-input.pkl",
+          "sha256": "6bc929dfdabd6ee08087a8dba2c723b7cd95c6a092a31f806008f266ea87ebc9",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237225.73661284
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237226.018642531
+            },
+            {
+              "phase": "processor",
+              "value": 3237226.02873737
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237226.491468933,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00032-input.pkl",
+          "sha256": "f689e28e8de9d8dcfd081128d604992f921e1de5c7fd9ac207e96f59050ed958",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237226.571272784
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237226.842293932
+            },
+            {
+              "phase": "processor",
+              "value": 3237226.851858681
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237226.880474685,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture/mapping-audit/job-2577422-00033-input.pkl",
+          "sha256": "1d69e1e22c83a551bb20bad4c32f941ab698bfcafcdd00615893fd638d96de7c",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237227.425042954
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237227.698255751
+            },
+            {
+              "phase": "processor",
+              "value": 3237227.708755826
+            }
+          ]
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1449251,
+              "free": 123595,
+              "occupied": 354
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 33,
+                "represented_roi_voxels": 33,
+                "current_or_previous_physical_hit_cells": 44,
+                "hit_cells_currently_occupied": 44,
+                "hit_cells_represented": 44,
+                "occupied_probability": {
+                  "count": 33,
+                  "mean": 0.9820137900379081,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 354,
+              "supported_voxels": 354,
+              "spatial_supported_voxels": 55,
+              "strong_sparse_retained": 299,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 343,
+              "proxy_count": 64,
+              "represented_voxels": 75,
+              "omitted_voxels": 279,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 299,
+              "hazard_candidate_boxes": 44,
+              "selected_floor_boxes": 20,
+              "selected_hazard_boxes": 44,
+              "represented_floor_voxels": 31,
+              "omitted_floor_voxels": 279,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.788135593220339,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 123596,
+          "unique_occupied_voxel_evidence": 357,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {
+            "Post": 44
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 22.212748726209004,
+              "p50": 22.05036859959364,
+              "p95": 22.90225678589195,
+              "p99": 23.029848742298782,
+              "worst": 23.06174673140049
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 67.22665259925027,
+              "p50": 69.84504917636514,
+              "p95": 75.12005816679448,
+              "p99": 76.38477203901857,
+              "worst": 76.7009505070746
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 11.308837953644494,
+              "p50": 9.956598049029708,
+              "p95": 17.27134690154343,
+              "p99": 20.959095195867125,
+              "worst": 21.881032269448042
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 122.44974026301254,
+              "p50": 122.56517936475575,
+              "p95": 140.07334131747484,
+              "p99": 148.57071060687304,
+              "worst": 150.69505292922258
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 12.68287938243399,
+              "p50": 12.186853913590312,
+              "p95": 15.208694362081586,
+              "p99": 15.825658147223294,
+              "worst": 15.97989909350872
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 135.13261964544654,
+              "p50": 134.51897795312107,
+              "p95": 155.28203567955643,
+              "p99": 164.39636875409633,
+              "worst": 166.6749520227313
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 44,
+              "retained": 44,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1149015,
+              "free": 422780,
+              "occupied": 1405
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 129,
+                "represented_roi_voxels": 74,
+                "current_or_previous_physical_hit_cells": 163,
+                "hit_cells_currently_occupied": 162,
+                "hit_cells_represented": 82,
+                "occupied_probability": {
+                  "count": 129,
+                  "mean": 0.9256233618647991,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9667705129260691,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.49382716049382713
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1405,
+              "supported_voxels": 1084,
+              "spatial_supported_voxels": 1084,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 321,
+              "candidate_boxes": 956,
+              "proxy_count": 64,
+              "represented_voxels": 82,
+              "omitted_voxels": 1002,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 822,
+              "hazard_candidate_boxes": 134,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 932,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9416370106761566,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 422866,
+          "unique_occupied_voxel_evidence": 1417,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {
+            "Post": 164
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 19.932154566049576,
+              "p50": 18.099397886544466,
+              "p95": 28.350547212176014,
+              "p99": 34.81812295969576,
+              "worst": 36.43501689657569
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 62.63560778461397,
+              "p50": 61.61962985061109,
+              "p95": 78.03336442448199,
+              "p99": 79.61710152216256,
+              "worst": 80.0130357965827
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 12.112670190011462,
+              "p50": 11.80955395102501,
+              "p95": 16.259641130454835,
+              "p99": 19.246836886741225,
+              "worst": 19.993635825812817
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 118.22168858877073,
+              "p50": 116.55225744470954,
+              "p95": 141.0419441759586,
+              "p99": 151.04548417031765,
+              "worst": 153.5463691689074
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.839450431987643,
+              "p50": 14.41174978390336,
+              "p95": 15.166427404619753,
+              "p99": 15.331793469376862,
+              "worst": 15.37313498556614
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 132.06113902075836,
+              "p50": 130.58508862741292,
+              "p95": 153.1742935068905,
+              "p99": 163.61801797524095,
+              "worst": 166.22894909232855
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 40,
+              "retained": 40,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1181995,
+              "free": 389808,
+              "occupied": 1397
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 124,
+                "represented_roi_voxels": 79,
+                "current_or_previous_physical_hit_cells": 164,
+                "hit_cells_currently_occupied": 164,
+                "hit_cells_represented": 98,
+                "occupied_probability": {
+                  "count": 124,
+                  "mean": 0.9226317472449519,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9275735146384823,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.4024390243902439
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1397,
+              "supported_voxels": 1181,
+              "spatial_supported_voxels": 1180,
+              "strong_sparse_retained": 1,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 216,
+              "candidate_boxes": 1018,
+              "proxy_count": 64,
+              "represented_voxels": 98,
+              "omitted_voxels": 1083,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 897,
+              "hazard_candidate_boxes": 121,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 1026,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9298496778811739,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 389950,
+          "unique_occupied_voxel_evidence": 1412,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10413,
+          "discarded_self_filter_fraction": 0.152587890625,
+          "unique_physically_matching_pixels": {
+            "Post": 166
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 19.493116182275116,
+              "p50": 19.959842786192894,
+              "p95": 22.166393231600523,
+              "p99": 22.181526478379965,
+              "worst": 22.185309790074825
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 61.3048761151731,
+              "p50": 58.574972208589315,
+              "p95": 73.42638745903969,
+              "p99": 73.60845193266869,
+              "worst": 73.65396805107594
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 11.326894901382426,
+              "p50": 9.943032404407859,
+              "p95": 16.19236143305897,
+              "p99": 19.688086528331045,
+              "worst": 20.562017802149057
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 113.5385975940153,
+              "p50": 108.64933603443205,
+              "p95": 138.29208572860807,
+              "p99": 147.2704642219469,
+              "worst": 149.5150588452816
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.265511253848672,
+              "p50": 12.544782599434257,
+              "p95": 15.39050117135048,
+              "p99": 15.65082497894764,
+              "worst": 15.71590593084693
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 126.80410884786397,
+              "p50": 120.6400184892118,
+              "p95": 151.24379920307547,
+              "p99": 158.8486997084692,
+              "worst": 160.74992483481765
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 40,
+              "retained": 40,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1463073,
+              "free": 109852,
+              "occupied": 275
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 66,
+                "represented_roi_voxels": 51,
+                "current_or_previous_physical_hit_cells": 87,
+                "hit_cells_currently_occupied": 87,
+                "hit_cells_represented": 72,
+                "occupied_probability": {
+                  "count": 66,
+                  "mean": 0.9820137900379093,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.1724137931034483
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 275,
+              "supported_voxels": 275,
+              "spatial_supported_voxels": 83,
+              "strong_sparse_retained": 192,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 265,
+              "proxy_count": 64,
+              "represented_voxels": 72,
+              "omitted_voxels": 203,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 186,
+              "hazard_candidate_boxes": 79,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 188,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7381818181818182,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 109853,
+          "unique_occupied_voxel_evidence": 277,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 8388,
+          "discarded_self_filter_fraction": 0.3173828125,
+          "unique_physically_matching_pixels": {
+            "Post": 88
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 30.361621563012402,
+              "p50": 31.510483473539352,
+              "p95": 39.73911018110812,
+              "p99": 40.45336295850575,
+              "worst": 40.63192615285516
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 58.97525744512677,
+              "p50": 57.67117370851338,
+              "p95": 70.63194587826729,
+              "p99": 72.86874547600746,
+              "worst": 73.4279453754425
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.640812175348401,
+              "p50": 9.243064327165484,
+              "p95": 11.457482120022178,
+              "p99": 11.546607641503215,
+              "worst": 11.568889021873474
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 120.44118100311607,
+              "p50": 120.42997102253139,
+              "p95": 132.87230108398944,
+              "p99": 140.4948131972924,
+              "worst": 142.40044122561812
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 12.849740373591581,
+              "p50": 12.152940034866333,
+              "p95": 15.173939964734018,
+              "p99": 15.384111176244915,
+              "worst": 15.436653979122639
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 133.29092137670764,
+              "p50": 133.66305851377547,
+              "p95": 146.80341137573123,
+              "p99": 155.63035843893886,
+              "worst": 157.83709520474076
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 88,
+              "retained": 88,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1333694,
+              "free": 238800,
+              "occupied": 706
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 65,
+                "represented_roi_voxels": 50,
+                "current_or_previous_physical_hit_cells": 82,
+                "hit_cells_currently_occupied": 80,
+                "hit_cells_represented": 65,
+                "occupied_probability": {
+                  "count": 65,
+                  "mean": 0.9820137900379095,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.1875
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 706,
+              "supported_voxels": 706,
+              "spatial_supported_voxels": 320,
+              "strong_sparse_retained": 386,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 676,
+              "proxy_count": 64,
+              "represented_voxels": 65,
+              "omitted_voxels": 641,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 597,
+              "hazard_candidate_boxes": 79,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 626,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9079320113314447,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 238807,
+          "unique_occupied_voxel_evidence": 726,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 20796,
+          "discarded_self_filter_fraction": 0.15380859375,
+          "unique_physically_matching_pixels": {
+            "Post": 80
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 27.370531228370965,
+              "p50": 25.761024095118046,
+              "p95": 32.71228021476418,
+              "p99": 33.43869511503726,
+              "worst": 33.620298840105534
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 124.4302251143381,
+              "p50": 121.97793181985617,
+              "p95": 139.02914139907807,
+              "p99": 139.40331225749105,
+              "worst": 139.4968549720943
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 19.311682942012947,
+              "p50": 17.667335458099842,
+              "p95": 26.46065719891339,
+              "p99": 30.443880395032473,
+              "worst": 31.439686194062233
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 207.5185866560787,
+              "p50": 199.69727471470833,
+              "p95": 235.7808470726013,
+              "p99": 247.8216966241598,
+              "worst": 250.83190901204944
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.667019278121492,
+              "p50": 13.936797622591257,
+              "p95": 15.782524133101106,
+              "p99": 16.339866491034627,
+              "worst": 16.479202080518007
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 221.1856059342002,
+              "p50": 213.05913804098964,
+              "p95": 251.40883501153436,
+              "p99": 264.13065587636083,
+              "worst": 267.31111109256744
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 80,
+              "retained": 80,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1573200,
+              "free": 0,
+              "occupied": 0
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 0,
+                "represented_roi_voxels": 0,
+                "current_or_previous_physical_hit_cells": 162,
+                "hit_cells_currently_occupied": 0,
+                "hit_cells_represented": 0,
+                "occupied_probability": {
+                  "count": 0
+                },
+                "occupied_physical_hit_discarded_fraction": null
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 0,
+              "supported_voxels": 0,
+              "spatial_supported_voxels": 0,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 0,
+              "proxy_count": 0,
+              "represented_voxels": 0,
+              "omitted_voxels": 0,
+              "run_budget_omitted_voxels": 0,
+              "truncated": false,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 0,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 0,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": null,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 0,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 0,
+          "unique_occupied_voxel_evidence": 0,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 41628,
+          "discarded_self_filter_fraction": 0.153076171875,
+          "unique_physically_matching_pixels": {
+            "Post": 161
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 45.79788745225718,
+              "p50": 46.42337909899652,
+              "p95": 52.257132390514016,
+              "p99": 52.27730472572148,
+              "worst": 52.282347809523344
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 220.01003505041203,
+              "p50": 214.20767181552947,
+              "p95": 239.8553031263873,
+              "p99": 241.75906044896692,
+              "worst": 242.23499977961183
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 289.29613387056935,
+              "p50": 291.5216574911028,
+              "p95": 310.9478656668216,
+              "p99": 312.60865897871554,
+              "worst": 313.023857306689
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.564912041649222,
+              "p50": 10.549154598265886,
+              "p95": 15.465329238213597,
+              "p99": 16.889837165363133,
+              "worst": 17.245964147150517
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 300.8610459122186,
+              "p50": 303.52803342975676,
+              "p95": 324.1705681895837,
+              "p99": 324.59666825365275,
+              "worst": 324.70319326967
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 17995,
+              "selected": 161,
+              "retained": 161,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      }
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3237651.913722289,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00010-input.pkl",
+          "sha256": "5de9fc37a7ba8862bb67f4ca662bc93d66da871422dadd5a199af31afefb9e57",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237651.940061165
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237652.204900268
+            },
+            {
+              "phase": "processor",
+              "value": 3237652.214779827
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237652.312317413,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00011-input.pkl",
+          "sha256": "53d624506b96f97f825c854ffcce6298a23160fb2c9c8153876d3231db824ae4",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237652.363315682
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237652.641791315
+            },
+            {
+              "phase": "processor",
+              "value": 3237652.653964183
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237652.909373908,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00012-input.pkl",
+          "sha256": "813a5f4035d5e7ff6bc4e85240c7ce5977da256d131f5527246cc1c46d591e4a",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237652.94967903
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237653.219791595
+            },
+            {
+              "phase": "processor",
+              "value": 3237653.229095018
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237653.307296497,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00013-input.pkl",
+          "sha256": "3f14e0f4db947924513c7781fd71eb76ba8c7144bb9755420865c01dfef8c920",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237653.390149968
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237653.666021901
+            },
+            {
+              "phase": "processor",
+              "value": 3237653.676057261
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237653.914027588,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00014-input.pkl",
+          "sha256": "9f0658608670b1771bbf7fd1fac483e2de18bdd92b363c4e9be1765c279a5abf",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237653.959018696
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237654.228577808
+            },
+            {
+              "phase": "processor",
+              "value": 3237654.238157667
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237654.31301782,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00015-input.pkl",
+          "sha256": "6abe4206f7b23a343e29716348158ea77690d82b21dd20190a75dd5e16c22611",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237654.429325246
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237654.702998366
+            },
+            {
+              "phase": "processor",
+              "value": 3237654.715485
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237654.915023081,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00016-input.pkl",
+          "sha256": "ce8c6d672ae8b5f02e2bc6e6b9d001da27e08bef435737d8a6e0ab1517368410",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237654.941658381
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237655.21789722
+            },
+            {
+              "phase": "processor",
+              "value": 3237655.229557121
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237655.316215593,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00017-input.pkl",
+          "sha256": "580743b4ed81b8dc98c7b5917d23c0a6a42a5a2b33e2fd20e58f9fa1e11a6b76",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237655.385197655
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237655.653442915
+            },
+            {
+              "phase": "processor",
+              "value": 3237655.664514057
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237655.918828408,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00018-input.pkl",
+          "sha256": "4b8ca0431bd769db1609af223ac4c64d7f24dcab0f05dc08a64d59fc28faf07f",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237655.947395343
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237656.224015053
+            },
+            {
+              "phase": "processor",
+              "value": 3237656.234560334
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237656.317758999,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00019-input.pkl",
+          "sha256": "5a9eebe7f71ec8e5abeabf39f419dfbb92b149c6c6a9131811e14793c3159657",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237656.381246536
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237656.658017208
+            },
+            {
+              "phase": "processor",
+              "value": 3237656.66812407
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237656.917047129,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00020-input.pkl",
+          "sha256": "a4f683049b797894affa02542d8f1a1bc9d1f99f724f7089928cea3cb38614cd",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237656.943743273
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237657.209253568
+            },
+            {
+              "phase": "processor",
+              "value": 3237657.218424865
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237657.310545511,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/mapping-audit/job-2586488-00021-input.pkl",
+          "sha256": "4efa3eb0f99cdd0d278df8724640fb425af406139fab2c890a4d6911ee4eb849",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237657.36320993
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237657.638964665
+            },
+            {
+              "phase": "processor",
+              "value": 3237657.649116391
+            }
+          ]
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1446264,
+              "free": 126602,
+              "occupied": 334
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 13,
+                "represented_roi_voxels": 13,
+                "current_or_previous_physical_hit_cells": 14,
+                "hit_cells_currently_occupied": 14,
+                "hit_cells_represented": 14,
+                "occupied_probability": {
+                  "count": 13,
+                  "mean": 0.9820137900379086,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 334,
+              "supported_voxels": 334,
+              "spatial_supported_voxels": 52,
+              "strong_sparse_retained": 282,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 323,
+              "proxy_count": 64,
+              "represented_voxels": 75,
+              "omitted_voxels": 259,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 309,
+              "hazard_candidate_boxes": 14,
+              "selected_floor_boxes": 50,
+              "selected_hazard_boxes": 14,
+              "represented_floor_voxels": 61,
+              "omitted_floor_voxels": 259,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7754491017964071,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 126602,
+          "unique_occupied_voxel_evidence": 334,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 14
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 22.047176569079358,
+              "p50": 21.591184427961707,
+              "p95": 24.367353529669344,
+              "p99": 25.094905984587967,
+              "worst": 25.276794098317623
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 53.5445751544709,
+              "p50": 52.15236474759877,
+              "p95": 61.42180929891765,
+              "p99": 61.65557309053838,
+              "worst": 61.714014038443565
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.394815114016334,
+              "p50": 8.822925155982375,
+              "p95": 11.506480164825915,
+              "p99": 12.330268882215025,
+              "worst": 12.5362160615623
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 104.76719848035525,
+              "p50": 102.72380174137652,
+              "p95": 117.22857106942683,
+              "p99": 117.99859250430018,
+              "worst": 118.19109786301851
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.223376689789196,
+              "p50": 10.849795769900084,
+              "p95": 13.059178274124859,
+              "p99": 13.946471717208626,
+              "worst": 14.168295077979565
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 115.99057517014444,
+              "p50": 113.72328759171069,
+              "p95": 130.46275421511382,
+              "p99": 130.58002622332424,
+              "worst": 130.60934422537684
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 14,
+              "retained": 14,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1140744,
+              "free": 431123,
+              "occupied": 1333
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 44,
+                "represented_roi_voxels": 43,
+                "current_or_previous_physical_hit_cells": 53,
+                "hit_cells_currently_occupied": 53,
+                "hit_cells_represented": 52,
+                "occupied_probability": {
+                  "count": 44,
+                  "mean": 0.9275735146384819,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9275735146384823,
+                  "worst": 0.9275735146384823
+                },
+                "occupied_physical_hit_discarded_fraction": 0.018867924528301883
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1333,
+              "supported_voxels": 984,
+              "spatial_supported_voxels": 984,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 349,
+              "candidate_boxes": 867,
+              "proxy_count": 64,
+              "represented_voxels": 90,
+              "omitted_voxels": 894,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 822,
+              "hazard_candidate_boxes": 45,
+              "selected_floor_boxes": 19,
+              "selected_hazard_boxes": 45,
+              "represented_floor_voxels": 38,
+              "omitted_floor_voxels": 894,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.932483120780195,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 431199,
+          "unique_occupied_voxel_evidence": 1333,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 53
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 15.270145377144217,
+              "p50": 14.53680288977921,
+              "p95": 18.25191136449575,
+              "p99": 20.139173530042175,
+              "worst": 20.610989071428776
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 49.97558185520271,
+              "p50": 48.1809510383755,
+              "p95": 57.56030490156263,
+              "p99": 57.99628808628768,
+              "worst": 58.10528388246894
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.382998182748755,
+              "p50": 8.820976596325636,
+              "p95": 12.417166004888713,
+              "p99": 12.591891079209745,
+              "worst": 12.635572347790003
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 93.08759969038267,
+              "p50": 89.07021302729845,
+              "p95": 106.1730872374028,
+              "p99": 107.03337646089494,
+              "worst": 107.24844876676798
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.343174419986704,
+              "p50": 10.767016559839249,
+              "p95": 14.562579663470387,
+              "p99": 14.667464578524232,
+              "worst": 14.693685807287693
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 104.43077411036938,
+              "p50": 99.75452488288283,
+              "p95": 120.73566690087318,
+              "p99": 121.70084103941917,
+              "worst": 121.94213457405567
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 13,
+              "retained": 13,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1173297,
+              "free": 398580,
+              "occupied": 1323
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 45,
+                "represented_roi_voxels": 42,
+                "current_or_previous_physical_hit_cells": 54,
+                "hit_cells_currently_occupied": 54,
+                "hit_cells_represented": 51,
+                "occupied_probability": {
+                  "count": 45,
+                  "mean": 0.9223066072358153,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.971125734958023,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.05555555555555558
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1323,
+              "supported_voxels": 1078,
+              "spatial_supported_voxels": 1077,
+              "strong_sparse_retained": 1,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 245,
+              "candidate_boxes": 941,
+              "proxy_count": 64,
+              "represented_voxels": 100,
+              "omitted_voxels": 978,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 898,
+              "hazard_candidate_boxes": 43,
+              "selected_floor_boxes": 21,
+              "selected_hazard_boxes": 43,
+              "represented_floor_voxels": 49,
+              "omitted_floor_voxels": 978,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9244142101284958,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 398710,
+          "unique_occupied_voxel_evidence": 1330,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10413,
+          "discarded_self_filter_fraction": 0.152587890625,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 57
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.558407866085568,
+              "p50": 14.155676355585456,
+              "p95": 16.35520898271352,
+              "p99": 16.76597705576569,
+              "worst": 16.86866907402873
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 48.95788865784804,
+              "p50": 48.11578989028931,
+              "p95": 53.44333017710596,
+              "p99": 54.06092830467969,
+              "worst": 54.215327836573124
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.501058530683318,
+              "p50": 8.766895160079002,
+              "p95": 13.339344481937585,
+              "p99": 14.7269863775,
+              "worst": 15.0738968513906
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 93.53627951350063,
+              "p50": 91.11842350102961,
+              "p95": 104.73851475398988,
+              "p99": 107.84230863209814,
+              "worst": 108.6182571016252
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.228286855233213,
+              "p50": 11.013577226549387,
+              "p95": 13.06129079312086,
+              "p99": 14.421244747936727,
+              "worst": 14.761233236640692
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 104.76456636873384,
+              "p50": 101.82552807964385,
+              "p95": 115.6435266835615,
+              "p99": 118.90573488082737,
+              "worst": 119.72128693014383
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 16,
+              "retained": 16,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1463065,
+              "free": 109886,
+              "occupied": 249
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 38,
+                "represented_roi_voxels": 38,
+                "current_or_previous_physical_hit_cells": 53,
+                "hit_cells_currently_occupied": 53,
+                "hit_cells_represented": 53,
+                "occupied_probability": {
+                  "count": 38,
+                  "mean": 0.9820137900379085,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 249,
+              "supported_voxels": 249,
+              "spatial_supported_voxels": 53,
+              "strong_sparse_retained": 196,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 239,
+              "proxy_count": 64,
+              "represented_voxels": 74,
+              "omitted_voxels": 175,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 194,
+              "hazard_candidate_boxes": 45,
+              "selected_floor_boxes": 19,
+              "selected_hazard_boxes": 45,
+              "represented_floor_voxels": 21,
+              "omitted_floor_voxels": 175,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7028112449799198,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 109886,
+          "unique_occupied_voxel_evidence": 249,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 8160,
+          "discarded_self_filter_fraction": 0.3359375,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 54
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 23.944634129293263,
+              "p50": 22.385282907634974,
+              "p95": 29.101482592523098,
+              "p99": 29.482710920274258,
+              "worst": 29.578018002212048
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 48.10184640033791,
+              "p50": 44.60881929844618,
+              "p95": 63.477014168165624,
+              "p99": 64.7573759732768,
+              "worst": 65.07746642455459
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.809454691596329,
+              "p50": 7.5926578138023615,
+              "p95": 8.920433791354299,
+              "p99": 8.943210700526834,
+              "worst": 8.948904927819967
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 97.23079018294811,
+              "p50": 90.77854896895587,
+              "p95": 120.61348648276179,
+              "p99": 126.47670600097626,
+              "worst": 127.94251088052988
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.591038929608962,
+              "p50": 10.312468046322465,
+              "p95": 11.712740873917936,
+              "p99": 12.370598642155528,
+              "worst": 12.535063084214926
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 107.82182911255707,
+              "p50": 101.03053878992796,
+              "p95": 132.23950085230172,
+              "p99": 138.8299593422562,
+              "worst": 140.4775739647448
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 54,
+              "retained": 54,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1328838,
+              "free": 243690,
+              "occupied": 672
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 21,
+                "represented_roi_voxels": 21,
+                "current_or_previous_physical_hit_cells": 26,
+                "hit_cells_currently_occupied": 26,
+                "hit_cells_represented": 26,
+                "occupied_probability": {
+                  "count": 21,
+                  "mean": 0.9820137900379083,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 672,
+              "supported_voxels": 672,
+              "spatial_supported_voxels": 301,
+              "strong_sparse_retained": 371,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 643,
+              "proxy_count": 64,
+              "represented_voxels": 93,
+              "omitted_voxels": 579,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 617,
+              "hazard_candidate_boxes": 26,
+              "selected_floor_boxes": 38,
+              "selected_hazard_boxes": 26,
+              "represented_floor_voxels": 67,
+              "omitted_floor_voxels": 579,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8616071428571428,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 243690,
+          "unique_occupied_voxel_evidence": 672,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 20796,
+          "discarded_self_filter_fraction": 0.15380859375,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 26
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 22.099794121459126,
+              "p50": 21.207913989201188,
+              "p95": 24.682533578015864,
+              "p99": 24.712165934033692,
+              "worst": 24.71957402303815
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 97.84695381919543,
+              "p50": 92.21586864441633,
+              "p95": 118.01940542645752,
+              "p99": 119.10627701319754,
+              "worst": 119.37799490988255
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 17.028243513777852,
+              "p50": 15.65996604040265,
+              "p95": 23.830239241942763,
+              "p99": 24.65099106542766,
+              "worst": 24.856179021298885
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 169.40668993629515,
+              "p50": 158.1144647207111,
+              "p95": 201.27150712069124,
+              "p99": 209.35775100719184,
+              "worst": 211.379311978817
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.507389484904706,
+              "p50": 11.050626169890165,
+              "p95": 13.66169217508286,
+              "p99": 14.983029714785518,
+              "worst": 15.31336409971118
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 180.91407942119986,
+              "p50": 169.0067551098764,
+              "p95": 215.09271895047277,
+              "p99": 221.7199695063755,
+              "worst": 223.37678214535117
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 26,
+              "retained": 26,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1573200,
+              "free": 0,
+              "occupied": 0
+            },
+            "objects": {
+              "ThinPost": {
+                "aabb_intersecting_voxels": 588,
+                "occupied_roi_voxels": 0,
+                "represented_roi_voxels": 0,
+                "current_or_previous_physical_hit_cells": 58,
+                "hit_cells_currently_occupied": 0,
+                "hit_cells_represented": 0,
+                "occupied_probability": {
+                  "count": 0
+                },
+                "occupied_physical_hit_discarded_fraction": null
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 0,
+              "supported_voxels": 0,
+              "spatial_supported_voxels": 0,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 0,
+              "proxy_count": 0,
+              "represented_voxels": 0,
+              "omitted_voxels": 0,
+              "run_budget_omitted_voxels": 0,
+              "truncated": false,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 0,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 0,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": null,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 0,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 0,
+          "unique_occupied_voxel_evidence": 0,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 41628,
+          "discarded_self_filter_fraction": 0.153076171875,
+          "unique_physically_matching_pixels": {
+            "ThinPost": 58
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 37.52333022809277,
+              "p50": 35.369301214814186,
+              "p95": 45.40707352571189,
+              "p99": 49.5743717905134,
+              "worst": 50.61619635671377
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 171.52197193354368,
+              "p50": 164.8415003437549,
+              "p95": 202.66989038791507,
+              "p99": 204.09016977529973,
+              "worst": 204.4452396221459
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 229.8737382904316,
+              "p50": 221.64862463250756,
+              "p95": 277.21423383336514,
+              "p99": 278.96705289836973,
+              "worst": 279.4052576646209
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 9.458737021001676,
+              "p50": 9.349007857963443,
+              "p95": 10.349328117445111,
+              "p99": 10.435403222218156,
+              "worst": 10.456921998411417
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 239.33247531143329,
+              "p50": 231.00930429063737,
+              "p95": 287.5831244746223,
+              "p99": 289.24986843485385,
+              "worst": 289.66655442491174
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "ThinPost": {
+              "raw": 5996,
+              "selected": 58,
+              "retained": 58,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      }
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3237685.581699183,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00010-input.pkl",
+          "sha256": "a20280dc9ed192b5eb80561f071e9dcfe6d7b0849a20c6227a2aa9206f6e4309",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237685.620529142
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237685.881468719
+            },
+            {
+              "phase": "processor",
+              "value": 3237685.889563817
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237685.982344154,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00011-input.pkl",
+          "sha256": "3ddc423ed586e1769080e0401888706d3c7d0aae433231b7348111ef3e90d97d",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237686.053294911
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237686.326949578
+            },
+            {
+              "phase": "processor",
+              "value": 3237686.337389392
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237686.584962212,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00012-input.pkl",
+          "sha256": "b0f5a9fc42f96f43214788613ce31c475e1fc7439009037c6be3ec42e3084160",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237686.632978475
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237686.892412873
+            },
+            {
+              "phase": "processor",
+              "value": 3237686.900452357
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237686.986448544,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00013-input.pkl",
+          "sha256": "617196b76bdea35c2a4790dcdb4255d86cec9ac891f6ca84e2d49e56a641ff0c",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237687.067360892
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237687.326125299
+            },
+            {
+              "phase": "processor",
+              "value": 3237687.334367291
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237687.581643537,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00014-input.pkl",
+          "sha256": "e13e14fd6dae75411f03d3c57eb0de2b5ea52238c0e6b421b2e307f013cef187",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237687.627271203
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237687.892900262
+            },
+            {
+              "phase": "processor",
+              "value": 3237687.901175055
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237687.981292821,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00015-input.pkl",
+          "sha256": "50796932bd9349db4e7643810421a4df33c9843c474a4644d23a8b2c51db89a8",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237688.057362461
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237688.324793763
+            },
+            {
+              "phase": "processor",
+              "value": 3237688.335139902
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237688.585546461,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00016-input.pkl",
+          "sha256": "55296f36e2337f710043074428b62bfa614ca357965c411f28d41d86e306e363",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237688.622871391
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237688.897874885
+            },
+            {
+              "phase": "processor",
+              "value": 3237688.90815431
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237688.979821744,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00017-input.pkl",
+          "sha256": "c5eaaa9ed593229107cfb2f5ea4cda191463a8582788f4a4a863eb03dd240b33",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237689.064088663
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237689.329436477
+            },
+            {
+              "phase": "processor",
+              "value": 3237689.340147227
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237689.590055957,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00018-input.pkl",
+          "sha256": "8c73ee3fcf3c92a562c7cfc017221de2384269c225ab5931c453336565ab91f6",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237689.615409675
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237689.892100077
+            },
+            {
+              "phase": "processor",
+              "value": 3237689.900483063
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237689.981096092,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00019-input.pkl",
+          "sha256": "d2094f4c779c457fbb69ad75c7bdf962fd5e18bd4073d70f364c31dff403fd90",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237690.073607779
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237690.328172047
+            },
+            {
+              "phase": "processor",
+              "value": 3237690.336065038
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237690.591892414,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00020-input.pkl",
+          "sha256": "8b1f88828aef27c6199fd4acb576382143485c8a01163e6e5a2a82d30a18164f",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237690.623807448
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237690.888869369
+            },
+            {
+              "phase": "processor",
+              "value": 3237690.896867697
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237690.984057301,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture/mapping-audit/job-2587504-00021-input.pkl",
+          "sha256": "d74c327ef4db09c51bfcff4ef42a87b41a4815fa6c96c33c9dc364a091d9bbdf",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237691.07669351
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237691.351515539
+            },
+            {
+              "phase": "processor",
+              "value": 3237691.359836869
+            }
+          ]
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1466016,
+              "free": 106732,
+              "occupied": 452
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 23,
+                "represented_roi_voxels": 23,
+                "current_or_previous_physical_hit_cells": 23,
+                "hit_cells_currently_occupied": 23,
+                "hit_cells_represented": 23,
+                "occupied_probability": {
+                  "count": 23,
+                  "mean": 0.9820137900379082,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 161,
+                "represented_roi_voxels": 24,
+                "current_or_previous_physical_hit_cells": 188,
+                "hit_cells_currently_occupied": 188,
+                "hit_cells_represented": 41,
+                "occupied_probability": {
+                  "count": 161,
+                  "mean": 0.9820137900379102,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.7819148936170213
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 452,
+              "supported_voxels": 452,
+              "spatial_supported_voxels": 70,
+              "strong_sparse_retained": 382,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 448,
+              "proxy_count": 64,
+              "represented_voxels": 64,
+              "omitted_voxels": 388,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 237,
+              "hazard_candidate_boxes": 211,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 241,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8584070796460177,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 106732,
+          "unique_occupied_voxel_evidence": 452,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10644,
+          "discarded_self_filter_fraction": 0.1337890625,
+          "unique_physically_matching_pixels": {
+            "Post": 23,
+            "Occluder": 188
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 21.231981421199936,
+              "p50": 21.167788887396455,
+              "p95": 21.737370337359607,
+              "p99": 22.04411321785301,
+              "worst": 22.12079893797636
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 49.02378213591874,
+              "p50": 48.91126463189721,
+              "p95": 50.39686274249107,
+              "p99": 51.47593679372221,
+              "worst": 51.74570530653
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.767416109951834,
+              "p50": 7.499873638153076,
+              "p95": 8.932153973728417,
+              "p99": 10.081028435379269,
+              "worst": 10.368247050791979
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 93.1173429513971,
+              "p50": 92.20089577138424,
+              "p95": 97.71067285910249,
+              "p99": 101.66864098981023,
+              "worst": 102.65813302248716
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.766265991454324,
+              "p50": 10.450154775753617,
+              "p95": 12.30629270430654,
+              "p99": 13.9045289112255,
+              "worst": 14.304087962955236
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 103.88360894285142,
+              "p50": 102.76489285752177,
+              "p95": 109.82319121249019,
+              "p99": 115.53441503085196,
+              "worst": 116.9622209854424
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 23,
+              "retained": 23,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 188,
+              "retained": 188,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1198627,
+              "free": 372799,
+              "occupied": 1774
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 81,
+                "represented_roi_voxels": 6,
+                "current_or_previous_physical_hit_cells": 85,
+                "hit_cells_currently_occupied": 85,
+                "hit_cells_represented": 6,
+                "occupied_probability": {
+                  "count": 81,
+                  "mean": 0.927573514638482,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9275735146384823,
+                  "worst": 0.9275735146384823
+                },
+                "occupied_physical_hit_discarded_fraction": 0.9294117647058824
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 624,
+                "represented_roi_voxels": 151,
+                "current_or_previous_physical_hit_cells": 753,
+                "hit_cells_currently_occupied": 741,
+                "hit_cells_represented": 158,
+                "occupied_probability": {
+                  "count": 624,
+                  "mean": 0.9190728431489479,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9815873480103516,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.786774628879892
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1774,
+              "supported_voxels": 1472,
+              "spatial_supported_voxels": 1472,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 302,
+              "candidate_boxes": 1223,
+              "proxy_count": 64,
+              "represented_voxels": 164,
+              "omitted_voxels": 1308,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 606,
+              "hazard_candidate_boxes": 617,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 671,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9075535512965051,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 372912,
+          "unique_occupied_voxel_evidence": 1786,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10614,
+          "discarded_self_filter_fraction": 0.13623046875,
+          "unique_physically_matching_pixels": {
+            "Post": 85,
+            "Occluder": 761
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.652830548584461,
+              "p50": 14.418211532756686,
+              "p95": 15.899206954054533,
+              "p99": 17.051880708895624,
+              "worst": 17.340049147605896
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 44.910741271451116,
+              "p50": 44.814492808654904,
+              "p95": 45.55937619879842,
+              "p99": 45.60666749253869,
+              "worst": 45.61849031597376
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.511077953192095,
+              "p50": 7.511655334383249,
+              "p95": 7.686233310960233,
+              "p99": 7.715049791149795,
+              "worst": 7.7222539111971855
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 82.1118224800254,
+              "p50": 82.18060829676688,
+              "p95": 84.20802915934473,
+              "p99": 85.61135545838624,
+              "worst": 85.96218703314662
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.761667353411516,
+              "p50": 10.681746993213892,
+              "p95": 11.410871124826372,
+              "p99": 11.676714490167797,
+              "worst": 11.743175331503153
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 92.8734898334369,
+              "p50": 93.10760325752199,
+              "p95": 95.48880746588111,
+              "p99": 96.61766408011317,
+              "worst": 96.89987823367119
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 20,
+              "retained": 20,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 191,
+              "retained": 191,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1240719,
+              "free": 330747,
+              "occupied": 1734
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 80,
+                "represented_roi_voxels": 38,
+                "current_or_previous_physical_hit_cells": 87,
+                "hit_cells_currently_occupied": 86,
+                "hit_cells_represented": 40,
+                "occupied_probability": {
+                  "count": 80,
+                  "mean": 0.9165776780175247,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9390059724723614,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.5348837209302326
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 565,
+                "represented_roi_voxels": 106,
+                "current_or_previous_physical_hit_cells": 691,
+                "hit_cells_currently_occupied": 678,
+                "hit_cells_represented": 122,
+                "occupied_probability": {
+                  "count": 565,
+                  "mean": 0.9265637464844114,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.8200589970501475
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1734,
+              "supported_voxels": 1516,
+              "spatial_supported_voxels": 1514,
+              "strong_sparse_retained": 2,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 218,
+              "candidate_boxes": 1250,
+              "proxy_count": 64,
+              "represented_voxels": 162,
+              "omitted_voxels": 1354,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 702,
+              "hazard_candidate_boxes": 548,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 782,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9065743944636678,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 330913,
+          "unique_occupied_voxel_evidence": 1753,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10665,
+          "discarded_self_filter_fraction": 0.132080078125,
+          "unique_physically_matching_pixels": {
+            "Post": 88,
+            "Occluder": 744
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.24434695703288,
+              "p50": 14.281000476330519,
+              "p95": 14.58172001875937,
+              "p99": 14.778918148949742,
+              "worst": 14.828217681497335
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 44.903304195031524,
+              "p50": 44.89101725630462,
+              "p95": 45.61096909455955,
+              "p99": 45.73507851921022,
+              "worst": 45.76610587537289
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.509704795666039,
+              "p50": 7.482155691832304,
+              "p95": 7.80068610329181,
+              "p99": 8.005272396840155,
+              "worst": 8.056418970227242
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 81.69154838348429,
+              "p50": 81.71886159107089,
+              "p95": 82.73398578166962,
+              "p99": 82.96736642718315,
+              "worst": 83.02571158856153
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.644971199023226,
+              "p50": 10.656344704329967,
+              "p95": 10.855005937628448,
+              "p99": 10.891418135724962,
+              "worst": 10.90052118524909
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 92.3365195825075,
+              "p50": 92.41859172470868,
+              "p95": 93.34603920578957,
+              "p99": 93.4921682626009,
+              "worst": 93.52870052680373
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 20,
+              "retained": 20,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 188,
+              "retained": 188,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1477842,
+              "free": 94982,
+              "occupied": 376
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 28,
+                "represented_roi_voxels": 28,
+                "current_or_previous_physical_hit_cells": 31,
+                "hit_cells_currently_occupied": 31,
+                "hit_cells_represented": 31,
+                "occupied_probability": {
+                  "count": 28,
+                  "mean": 0.9820137900379081,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 179,
+                "represented_roi_voxels": 58,
+                "current_or_previous_physical_hit_cells": 204,
+                "hit_cells_currently_occupied": 204,
+                "hit_cells_represented": 75,
+                "occupied_probability": {
+                  "count": 179,
+                  "mean": 0.9820137900379102,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.6323529411764706
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 376,
+              "supported_voxels": 376,
+              "spatial_supported_voxels": 153,
+              "strong_sparse_retained": 223,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 331,
+              "proxy_count": 64,
+              "represented_voxels": 106,
+              "omitted_voxels": 270,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 138,
+              "hazard_candidate_boxes": 193,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 141,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7180851063829787,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 94982,
+          "unique_occupied_voxel_evidence": 376,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 9120,
+          "discarded_self_filter_fraction": 0.2578125,
+          "unique_physically_matching_pixels": {
+            "Post": 31,
+            "Occluder": 211
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 19.985329592600465,
+              "p50": 19.933974603191018,
+              "p95": 20.444222586229444,
+              "p99": 20.57814055122435,
+              "worst": 20.611620042473078
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 43.26973327745994,
+              "p50": 43.02844638004899,
+              "p95": 44.226338691078126,
+              "p99": 44.78443033527583,
+              "worst": 44.923953246325254
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 6.684122529501717,
+              "p50": 6.70664245262742,
+              "p95": 6.788576627150178,
+              "p99": 6.808576853945851,
+              "worst": 6.81357691064477
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 85.4083823505789,
+              "p50": 84.49441497214139,
+              "p95": 90.52819113712758,
+              "p99": 93.69021338876337,
+              "worst": 94.48071895167232
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.384508641436696,
+              "p50": 10.32568234950304,
+              "p95": 10.739938216283917,
+              "p99": 10.82305551506579,
+              "worst": 10.843834839761257
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 95.7928909920156,
+              "p50": 94.83702387660742,
+              "p95": 101.01346576120704,
+              "p99": 104.46233618538827,
+              "worst": 105.32455379143357
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 31,
+              "retained": 31,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 211,
+              "retained": 211,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1370015,
+              "free": 202292,
+              "occupied": 893
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 39,
+                "represented_roi_voxels": 0,
+                "current_or_previous_physical_hit_cells": 42,
+                "hit_cells_currently_occupied": 42,
+                "hit_cells_represented": 0,
+                "occupied_probability": {
+                  "count": 39,
+                  "mean": 0.9820137900379086,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 1.0
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 322,
+                "represented_roi_voxels": 128,
+                "current_or_previous_physical_hit_cells": 380,
+                "hit_cells_currently_occupied": 380,
+                "hit_cells_represented": 128,
+                "occupied_probability": {
+                  "count": 322,
+                  "mean": 0.9820137900379106,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.6631578947368422
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 893,
+              "supported_voxels": 893,
+              "spatial_supported_voxels": 484,
+              "strong_sparse_retained": 409,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 818,
+              "proxy_count": 64,
+              "represented_voxels": 128,
+              "omitted_voxels": 765,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 460,
+              "hazard_candidate_boxes": 358,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 471,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8566629339305711,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 202292,
+          "unique_occupied_voxel_evidence": 893,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 21156,
+          "discarded_self_filter_fraction": 0.13916015625,
+          "unique_physically_matching_pixels": {
+            "Post": 42,
+            "Occluder": 382
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 21.390200049305957,
+              "p50": 21.256584906950593,
+              "p95": 21.891250810585916,
+              "p99": 22.10403151344508,
+              "worst": 22.15722668915987
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 84.4652884406969,
+              "p50": 84.43501475267112,
+              "p95": 85.22488239686936,
+              "p99": 85.37421574350446,
+              "worst": 85.41154908016324
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 12.9415716122215,
+              "p50": 12.931394157931209,
+              "p95": 13.11834859661758,
+              "p99": 13.198710521683097,
+              "worst": 13.218801002949476
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 143.74248058690378,
+              "p50": 142.83908158540726,
+              "p95": 148.73002779204398,
+              "p99": 152.63667094055563,
+              "worst": 153.61333172768354
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.653460941587886,
+              "p50": 10.653974721208215,
+              "p95": 10.902733006514609,
+              "p99": 10.945598860271275,
+              "worst": 10.956315323710442
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 154.39594152849168,
+              "p50": 153.5314335487783,
+              "p95": 159.29239902179688,
+              "p99": 163.07127421256155,
+              "worst": 164.0159930102527
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 42,
+              "retained": 42,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 382,
+              "retained": 382,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1198322,
+              "free": 373092,
+              "occupied": 1786
+            },
+            "objects": {
+              "Post": {
+                "aabb_intersecting_voxels": 3240,
+                "occupied_roi_voxels": 80,
+                "represented_roi_voxels": 22,
+                "current_or_previous_physical_hit_cells": 85,
+                "hit_cells_currently_occupied": 85,
+                "hit_cells_represented": 22,
+                "occupied_probability": {
+                  "count": 80,
+                  "mean": 0.9820137900379097,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.7411764705882353
+              },
+              "Occluder": {
+                "aabb_intersecting_voxels": 13120,
+                "occupied_roi_voxels": 626,
+                "represented_roi_voxels": 138,
+                "current_or_previous_physical_hit_cells": 748,
+                "hit_cells_currently_occupied": 748,
+                "hit_cells_represented": 140,
+                "occupied_probability": {
+                  "count": 626,
+                  "mean": 0.9820137900379012,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.8128342245989305
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1786,
+              "supported_voxels": 1786,
+              "spatial_supported_voxels": 1473,
+              "strong_sparse_retained": 313,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 1538,
+              "proxy_count": 64,
+              "represented_voxels": 162,
+              "omitted_voxels": 1624,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 891,
+              "hazard_candidate_boxes": 647,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 64,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 953,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9092945128779395,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 373092,
+          "unique_occupied_voxel_evidence": 1786,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 42492,
+          "discarded_self_filter_fraction": 0.135498046875,
+          "unique_physically_matching_pixels": {
+            "Post": 85,
+            "Occluder": 755
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 34.45611071462432,
+              "p50": 34.40110688097775,
+              "p95": 34.94876453187317,
+              "p99": 35.13417917769402,
+              "worst": 35.18053283914924
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 161.07285600931695,
+              "p50": 160.90127383358777,
+              "p95": 162.15071314945817,
+              "p99": 162.2201425023377,
+              "worst": 162.23749984055758
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 22.91620212296645,
+              "p50": 22.360756527632475,
+              "p95": 26.269590714946382,
+              "p99": 29.81657502241433,
+              "worst": 30.70332109928131
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 262.5901776288326,
+              "p50": 260.6070975307375,
+              "p95": 272.173968446441,
+              "p99": 277.92208964470774,
+              "worst": 279.3591199442744
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.126524729964634,
+              "p50": 11.17729814723134,
+              "p95": 11.411520652472973,
+              "p99": 11.419138498604298,
+              "worst": 11.421042960137129
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 273.7167023587972,
+              "p50": 271.7237318865955,
+              "p95": 283.44005725812167,
+              "p99": 289.0366677334532,
+              "worst": 290.4358203522861
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "Post": {
+              "raw": 10280,
+              "selected": 85,
+              "retained": 85,
+              "masked": 0
+            },
+            "Occluder": {
+              "raw": 80940,
+              "selected": 755,
+              "retained": 755,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      }
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3237619.978386991,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00008-input.pkl",
+          "sha256": "95926e5340919a9c97d86174faeee9e6f911ab7a739b06fc4535dde1a06ec455",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237620.015730746
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237620.296474171
+            },
+            {
+              "phase": "processor",
+              "value": 3237620.306610638
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237620.37814828,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00009-input.pkl",
+          "sha256": "833e999d979309cd0c0fc1c256b732a3fa7b30d87922edb6d4079ccb2a2461dd",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237620.478388239
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237620.766098025
+            },
+            {
+              "phase": "processor",
+              "value": 3237620.776798505
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237620.982236676,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00010-input.pkl",
+          "sha256": "2bf1ed5b0997baeb05d562ab69bd8b23c7ca3219981f23314a2daefaa6d514f9",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237621.017610655
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237621.290443787
+            },
+            {
+              "phase": "processor",
+              "value": 3237621.300404466
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237621.386210798,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00011-input.pkl",
+          "sha256": "39aac8c387f4d5daa18c46733ae86253c9b5df041b4d9b4c3c0e5dc3ab0d7248",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237621.452420095
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237621.724274509
+            },
+            {
+              "phase": "processor",
+              "value": 3237621.735701105
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237621.979880379,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00012-input.pkl",
+          "sha256": "8e142e152c3874abfaaa726adb683ea07fa04cc29c109eb23ddab05609c20433",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237622.00757149
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237622.280897501
+            },
+            {
+              "phase": "processor",
+              "value": 3237622.289977607
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237622.39043404,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00013-input.pkl",
+          "sha256": "38aabc4c694446b0817c711f30b5e864285ff6916b1d8231ec73613f4f3411bd",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237622.42687498
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237622.707600191
+            },
+            {
+              "phase": "processor",
+              "value": 3237622.717500217
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237622.97429183,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00014-input.pkl",
+          "sha256": "ba17f41a679f55ce79b1f9342bba555c50c8ed9d0d0353cd669b8cd21db58adf",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237622.999847114
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237623.272194168
+            },
+            {
+              "phase": "processor",
+              "value": 3237623.281545892
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237623.380677111,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00015-input.pkl",
+          "sha256": "d0c5bc1473b690c0b883cb59a6d673a338df1d487cd4fe83e8e62a2aece722dd",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237623.463447687
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237623.737295212
+            },
+            {
+              "phase": "processor",
+              "value": 3237623.748854505
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237623.977118476,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00016-input.pkl",
+          "sha256": "f6b58aecf87f3748541a6d4017087a0e0c4d2f7502096cdd07243ad3a3d31116",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237624.004425149
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237624.277871084
+            },
+            {
+              "phase": "processor",
+              "value": 3237624.28924937
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237624.379406801,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00017-input.pkl",
+          "sha256": "a977ca1a581fd292d7bbefe51b7348490769f826f97e9ef37ad6305e42580e07",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237624.474450262
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237624.747038426
+            },
+            {
+              "phase": "processor",
+              "value": 3237624.757998842
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237624.983144624,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00018-input.pkl",
+          "sha256": "fdd36dc8649ed46aacdaf067fc4e78880bf627be090446d5ac27b182e76a0ac1",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237625.010691214
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237625.290116088
+            },
+            {
+              "phase": "processor",
+              "value": 3237625.299689776
+            }
+          ]
+        },
+        {
+          "input_timestamp": 3237625.37662458,
+          "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture/mapping-audit/job-2585532-00019-input.pkl",
+          "sha256": "c5d3e045e58c8b949ce671806d73ca526bc8129497551fb559013e7d11d497a6",
+          "recorded_clock_reads": [
+            {
+              "phase": "rgbd_update",
+              "value": 3237625.436611084
+            },
+            {
+              "phase": "rgbd_update",
+              "value": 3237625.710870517
+            },
+            {
+              "phase": "processor",
+              "value": 3237625.720480622
+            }
+          ]
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.6291981935501099,
+              0.2697855830192566,
+              -0.7289206385612488,
+              1.2000000476837158
+            ],
+            [
+              0.7772449254989624,
+              -0.2183978408575058,
+              0.590078592300415,
+              -0.8500000834465027
+            ],
+            [
+              8.00088528762899e-09,
+              -0.9378262758255005,
+              -0.3471050262451172,
+              0.949999988079071
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7282000184059143,
+              -0.22217899560928345,
+              0.6483527421951294,
+              -0.6499999165534973
+            ],
+            [
+              -0.6853647232055664,
+              0.23606519401073456,
+              -0.6888747811317444,
+              0.8500000238418579
+            ],
+            [
+              -8.297444509253182e-09,
+              -0.9459967017173767,
+              -0.3241763412952423,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1444853,
+              "free": 128022,
+              "occupied": 325
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 325,
+              "supported_voxels": 325,
+              "spatial_supported_voxels": 49,
+              "strong_sparse_retained": 276,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 314,
+              "proxy_count": 64,
+              "represented_voxels": 75,
+              "omitted_voxels": 250,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 314,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 64,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 75,
+              "omitted_floor_voxels": 250,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7692307692307692,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 128022,
+          "unique_occupied_voxel_evidence": 325,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.089635068861147,
+              "p50": 14.053229475393891,
+              "p95": 14.475825591944158,
+              "p99": 14.477615314535797,
+              "worst": 14.478062745183706
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 48.49859676323831,
+              "p50": 48.343109199777246,
+              "p95": 49.94708187878132,
+              "p99": 50.733409970998764,
+              "worst": 50.929991994053125
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.00147354695946,
+              "p50": 8.861256530508399,
+              "p95": 9.658207022584975,
+              "p99": 9.824688513763249,
+              "worst": 9.866308886557817
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 88.35714391898364,
+              "p50": 87.85965526476502,
+              "p95": 90.85704828612506,
+              "p99": 91.0024409648031,
+              "worst": 91.03878913447261
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.44629312430819,
+              "p50": 10.383965214714408,
+              "p95": 10.888579720631242,
+              "p99": 11.201026560738683,
+              "worst": 11.279138270765543
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 98.80343704329182,
+              "p50": 98.15300186164677,
+              "p95": 101.7456280067563,
+              "p99": 102.20346752554178,
+              "worst": 102.31792740523815
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1136769,
+              "free": 435134,
+              "occupied": 1297
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 1297,
+              "supported_voxels": 932,
+              "spatial_supported_voxels": 932,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 365,
+              "candidate_boxes": 822,
+              "proxy_count": 64,
+              "represented_voxels": 128,
+              "omitted_voxels": 804,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 822,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 64,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 128,
+              "omitted_floor_voxels": 804,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9013107170393215,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 435210,
+          "unique_occupied_voxel_evidence": 1297,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10404,
+          "discarded_self_filter_fraction": 0.1533203125,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.724595161775747,
+              "p50": 14.411694603040814,
+              "p95": 16.419627005234357,
+              "p99": 17.660170095041394,
+              "worst": 17.970305867493153
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 48.590955208055675,
+              "p50": 48.38984669186175,
+              "p95": 49.8285943409428,
+              "p99": 51.01492922287434,
+              "worst": 51.31151294335723
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.96653498057276,
+              "p50": 8.732586167752743,
+              "p95": 10.10425614658743,
+              "p99": 11.185353701002898,
+              "worst": 11.455628089606762
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 89.48900577767442,
+              "p50": 88.692786404863,
+              "p95": 95.29885773081332,
+              "p99": 99.443862834014,
+              "worst": 100.48011410981417
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.02991922137638,
+              "p50": 10.70519583299756,
+              "p95": 13.033582805655893,
+              "p99": 14.922048705630006,
+              "worst": 15.394165180623531
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 100.5189249990508,
+              "p50": 99.3108747061342,
+              "p95": 108.3324405364692,
+              "p99": 114.365911539644,
+              "worst": 115.8742792904377
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1169209,
+              "free": 402704,
+              "occupied": 1287
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 1287,
+              "supported_voxels": 1030,
+              "spatial_supported_voxels": 1029,
+              "strong_sparse_retained": 1,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 257,
+              "candidate_boxes": 901,
+              "proxy_count": 64,
+              "represented_voxels": 135,
+              "omitted_voxels": 895,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 901,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 64,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 135,
+              "omitted_floor_voxels": 895,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8951048951048951,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 402830,
+          "unique_occupied_voxel_evidence": 1294,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10413,
+          "discarded_self_filter_fraction": 0.152587890625,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.22492457398524,
+              "p50": 14.199813595041633,
+              "p95": 15.195202454924582,
+              "p99": 15.840175449848175,
+              "worst": 16.001418698579073
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 48.23200183454901,
+              "p50": 47.89489088580012,
+              "p95": 49.85395499970764,
+              "p99": 50.827561425976455,
+              "worst": 51.07096303254366
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.558052708394825,
+              "p50": 8.537517627701163,
+              "p95": 8.99830972775817,
+              "p99": 9.134017210453749,
+              "worst": 9.167944081127644
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 88.59168780812372,
+              "p50": 87.79437351040542,
+              "p95": 92.22093475982547,
+              "p99": 93.03515342995524,
+              "worst": 93.23870809748769
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.620615600297848,
+              "p50": 10.598366614431143,
+              "p95": 10.8808379387483,
+              "p99": 10.951598878018558,
+              "worst": 10.969289112836123
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 99.21230340842158,
+              "p50": 98.41006761416793,
+              "p95": 103.10875219292939,
+              "p99": 103.84330966509879,
+              "worst": 104.02694903314114
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1467634,
+              "free": 105363,
+              "occupied": 203
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 203,
+              "supported_voxels": 203,
+              "spatial_supported_voxels": 21,
+              "strong_sparse_retained": 182,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 200,
+              "proxy_count": 64,
+              "represented_voxels": 67,
+              "omitted_voxels": 136,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 200,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 64,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 67,
+              "omitted_floor_voxels": 136,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.6699507389162562,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 105363,
+          "unique_occupied_voxel_evidence": 203,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 7824,
+          "discarded_self_filter_fraction": 0.36328125,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 23.60561160215487,
+              "p50": 23.572285659611225,
+              "p95": 23.828956042416394,
+              "p99": 23.83343926165253,
+              "worst": 23.834560066461563
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 42.44122630916536,
+              "p50": 42.37211565487087,
+              "p95": 43.075142218731344,
+              "p99": 43.236673953942955,
+              "worst": 43.27705688774586
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.396399703187247,
+              "p50": 7.364089833572507,
+              "p95": 7.586772902868688,
+              "p99": 7.702740165404975,
+              "worst": 7.731731981039047
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 89.28020224751283,
+              "p50": 89.05209763906896,
+              "p95": 91.45992873236537,
+              "p99": 92.97002678737044,
+              "worst": 93.34755130112171
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.39831693439434,
+              "p50": 10.307768126949668,
+              "p95": 10.999836213886738,
+              "p99": 11.243876107037067,
+              "worst": 11.30488608032465
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 99.67851918190718,
+              "p50": 99.47503614239395,
+              "p95": 101.8633789382875,
+              "p99": 103.07254871353507,
+              "worst": 103.37484115734696
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1326468,
+              "free": 246079,
+              "occupied": 653
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 653,
+              "supported_voxels": 653,
+              "spatial_supported_voxels": 284,
+              "strong_sparse_retained": 369,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 624,
+              "proxy_count": 64,
+              "represented_voxels": 93,
+              "omitted_voxels": 560,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 624,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 64,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 93,
+              "omitted_floor_voxels": 560,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8575803981623278,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 246079,
+          "unique_occupied_voxel_evidence": 653,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 20796,
+          "discarded_self_filter_fraction": 0.15380859375,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 21.22642833273858,
+              "p50": 21.330432500690222,
+              "p95": 21.62480049300939,
+              "p99": 21.740666539408267,
+              "worst": 21.769633051007986
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 92.31819161990036,
+              "p50": 92.23791304975748,
+              "p95": 93.75632596202195,
+              "p99": 94.58104939199984,
+              "worst": 94.78723024949431
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 15.610158792696893,
+              "p50": 15.591352945193648,
+              "p95": 16.09726909082383,
+              "p99": 16.106429151259363,
+              "worst": 16.108719166368246
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 158.94956494836757,
+              "p50": 158.17340766079724,
+              "p95": 163.65655553527176,
+              "p99": 167.67743051983416,
+              "worst": 168.68264926597476
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.809575013505915,
+              "p50": 10.797418421134353,
+              "p95": 11.282321834005415,
+              "p99": 11.576368440873921,
+              "worst": 11.649880092591047
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 169.7591399618735,
+              "p50": 168.94006333313882,
+              "p95": 174.7798617463559,
+              "p99": 178.68736564181745,
+              "worst": 179.66424161568284
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1573200,
+              "free": 0,
+              "occupied": 0
+            },
+            "objects": {},
+            "extraction": {
+              "occupied_voxels": 0,
+              "supported_voxels": 0,
+              "spatial_supported_voxels": 0,
+              "strong_sparse_retained": 0,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 0,
+              "proxy_count": 0,
+              "represented_voxels": 0,
+              "omitted_voxels": 0,
+              "run_budget_omitted_voxels": 0,
+              "truncated": false,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 0,
+              "hazard_candidate_boxes": 0,
+              "selected_floor_boxes": 0,
+              "selected_hazard_boxes": 0,
+              "represented_floor_voxels": 0,
+              "omitted_floor_voxels": 0,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": null,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 0,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 0,
+          "unique_occupied_voxel_evidence": 0,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 41628,
+          "discarded_self_filter_fraction": 0.153076171875,
+          "unique_physically_matching_pixels": {},
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 35.35903769079596,
+              "p50": 35.190045600757,
+              "p95": 36.644913954660296,
+              "p99": 37.47140518389642,
+              "worst": 37.678027991205454
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 164.156206844685,
+              "p50": 163.97224948741496,
+              "p95": 164.92860924918205,
+              "p99": 164.99391230288893,
+              "worst": 165.01023806631565
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 217.26376935839653,
+              "p50": 216.1755384877324,
+              "p95": 223.65042341407388,
+              "p99": 227.80621602665633,
+              "worst": 228.84516417980194
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 9.370520633334914,
+              "p50": 9.306268068030477,
+              "p95": 9.637363720685244,
+              "p99": 9.67384660616517,
+              "worst": 9.682967327535152
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 226.63428999173144,
+              "p50": 225.47085606493056,
+              "p95": 233.23383070528507,
+              "p99": 237.2922757267952,
+              "worst": 238.30688698217273
+            }
+          },
+          "raw_depth_hits_last_input": {},
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      }
+    }
+  ],
+  "production_sources_unchanged": true
+}

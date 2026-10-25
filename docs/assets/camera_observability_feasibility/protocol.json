@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_RESEARCH_PROTOCOL",
+  "runtime_baseline": "8e56b163650b66e940eb39a2ab8f5684bbd08c10",
+  "research_parent": "39780c2a9725be5fbaa7fd0e937ced3922b52d79",
+  "branch": "research/camera-observability-feasibility",
+  "scope": "Isolated research tools, session-layer camera/fixture edits, compact evidence and report. No production adoption.",
+  "reference_layouts": {
+    "current_A": "Exact authored selected-layout.json ROS optical transforms, preserving roll.",
+    "historical_V2b": "Diagnostic EYES differ from authored A. Historical replay comparisons retain those inputs and are labeled separately.",
+    "historical_smoke": "Camera workload study used authored A and one 320x240 third camera. Single-run timing costs remain evidence, not a universal layout ranking."
+  },
+  "geometry": {
+    "families": [
+      "current",
+      "symmetric_front",
+      "asymmetric_height",
+      "wider_baseline",
+      "closer",
+      "higher",
+      "overhead_oblique",
+      "current_plus_side",
+      "current_plus_overhead",
+      "hypothetical_wrist"
+    ],
+    "variation_axes": [
+      "height",
+      "horizontal_radius",
+      "lateral_separation",
+      "aim_height",
+      "azimuth"
+    ],
+    "evaluation_truth": "Actual calibrated camera models and robot render meshes plus independently specified physical obstacle fixtures; never supplied as RGB-D map or controller evidence.",
+    "selection": "Show component visibility, overlap, worst scenario/posture, relevant-link coverage, sampling footprint and costs. Select a small Pareto shortlist; no opaque combined success score.",
+    "native_validation": "Compare predicted occlusion with actual advancing RGB/depth buffers for shortlisted layouts. Frustum membership alone is insufficient.",
+    "camera_interference": "Report sensor-origin/modeled mount-envelope clearance and absence of physical camera housings; no mounting feasibility certification.",
+    "wrist": "Geometric/kinematic hypothesis only unless attachment, calibration, synchronization and automatic self-filter contracts are independently demonstrated.",
+    "visibility_fixture_scope": "Visibility captures use render-only evaluation shapes so overlapping stress fixtures cannot disturb legitimate robot postures. Physical planner cases keep their original real collision actors. All overlap flags are retained; primary visibility comparisons exclude conservative overlap conditions.",
+    "first_capture_setup_failure": "The firstcollider-equipped visibility capture disturbedthearm; retained asfailedsetup, excluded frommatchedcomparisons. Render-onlyrepeatcompletedall5postures."
+  },
+  "sampling": {
+    "fixed_strategy_budget": 1024,
+    "higher_budgets_separate": [
+      2048,
+      4096
+    ],
+    "strategies": [
+      "current_fixed",
+      "temporal_midpoint_phase",
+      "temporal_stride_offset",
+      "depth_edge_plus_uniform"
+    ],
+    "truth": "Independent object membership used only for scoring. Adaptive selection uses depth data, without oracle labels.",
+    "replay_limits": "Offline compute and logical input timeline are not native publication age, update rate, or GPU performance. Capture I/O runs are excluded from runtime claims.",
+    "interpretation": "Report confidence/revisit and discarded evidence alongside unique coverage; extra cuboids can worsen policy behavior.",
+    "primary_clear_posture": "Home: independently verify positive actual visible-mesh to cylinder-enclosing-box clearance in every source snapshot. Near-gripper hover inputs remain supplemental stress data."
+  },
+  "native_planning": {
+    "shortlist_limit": 3,
+    "matched_strategies": [
+      "direct",
+      "reactive"
+    ],
+    "priority_scenarios": [
+      "static",
+      "sparse",
+      "partial",
+      "narrow"
+    ],
+    "unchanged": [
+      "robot",
+      "START",
+      "GOAL",
+      "fixtures",
+      "controller_tolerances",
+      "gains",
+      "motion_limits",
+      "map_probability_model",
+      "64_proxy_limit",
+      "freshness_limits"
+    ],
+    "outcomes": "Goal, physical clearance, reported contacts, penetration, normal impulse, local stalls and timings. Strict contact-free success stays separate; no harmless-contact threshold is invented.",
+    "robustness_scenarios": [
+      "moving"
+    ],
+    "primary_case_count": 34,
+    "sampling_followup": "Current authored cameras with depth-edge1024 on static, sparse, partial and moving scenarios; fixed matched direct baseline retained.",
+    "moving_amendment_reason": "Before physical trials, sampling showed13.6% less unique FREE evidence underdepth-edge; addactualmoving-obstaclecomparisons tocheckdynamictradeoffs.",
+    "targeted_original_pair_plus_third": {
+      "layout": "H_third_side_-1.00",
+      "scenarios": [
+        "static",
+        "partial"
+      ],
+      "strategies": [
+        "direct",
+        "reactive"
+      ],
+      "reason": "Isolate adding a viewpoint while preserving the validated semantic pair; the optimized K triple also repositions both original cameras. This limited comparison prevents attributing every K outcome to camera count."
+    }
+  },
+  "hardware": {
+    "warmup_seconds": 10,
+    "measurement_seconds": 30,
+    "key_repetitions": 3,
+    "configuration_order": "Interleaved baseline, repositioned pair, best triple, original semantic pair plus mapping-only third; repeat baseline across the study.",
+    "semantic_hz": 5,
+    "mapping_hz": 2,
+    "global_mapping_rays": 1024,
+    "third_resolution": [
+      320,
+      240
+    ],
+    "motion": "Identical direct hover, 80mm lateral, return, home sequence in every window.",
+    "gpu": "CUDA-backed renderer plus actual valid advancing RGB-D required; NVIDIA telemetry optional.",
+    "interpretation": "25% Kit p99 growth is a meaningful cost, not an automatic veto on a visibility gain. Compare repetitions, rates, source ages, motion and resource stability.",
+    "expansion_stop": "Skip higher-resolution/full-semantic or higher-ray live trials after GPU allocation/renderer failure, repeated source failures, loss of movement/frame contracts, or control stalls approaching the previous 300ms failure regime. Missing trials stay unmeasured."
+  },
+  "preservation": {
+    "production_modules_modified": false,
+    "scenes_or_defaults_saved": false,
+    "unknown_is_obstacle": false,
+    "merge_authorized": false,
+    "raw_outputs": "outputs/camera-observability-feasibility/"
+  }
+}

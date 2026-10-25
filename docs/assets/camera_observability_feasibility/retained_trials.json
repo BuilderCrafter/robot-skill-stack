@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "status": "RETAINED_AND_QUALIFIED",
+  "records": [
+    {
+      "id": "restricted_gpu_pilot",
+      "path": "outputs/camera-observability-feasibility/planner-pilot/result.json",
+      "sha256": "8b28a05d36cd84f12858b23107eb47e577df1e267d487d74db4690db2c992115",
+      "status": "FAIL",
+      "primary_recommendation_eligible": false,
+      "reason": "No CUDA/Hydra; no native measurement. Process exit0 did not override JSON failure."
+    },
+    {
+      "id": "sdk_parent_restricted_gpu_pilot",
+      "path": "outputs/camera-observability-feasibility/pilot-sdk-parent/result.json",
+      "sha256": "8b28a05d36cd84f12858b23107eb47e577df1e267d487d74db4690db2c992115",
+      "status": "FAIL",
+      "primary_recommendation_eligible": false,
+      "reason": "Restricted device namespace still unavailable; no performance substitute."
+    },
+    {
+      "id": "collider_visibility_setup",
+      "path": "outputs/camera-observability-feasibility/capture-A-current/capture.json",
+      "sha256": "eb1b6386fc9a88fc17f3a18091c25c851917e77723c516c9550f4af0664a0393",
+      "status": "FAIL",
+      "primary_recommendation_eligible": false,
+      "reason": "Diagnostic collision shapes disturbed later arm poses. Excluded; render-only repetition completed all five poses."
+    },
+    {
+      "id": "render_only_hover_sampling",
+      "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/sampling_capture.json",
+      "sha256": "1e1ad91cb72c616eb174f9f3d3db26ca2beb295f4087ee4364a075f180016242",
+      "status": "CAPTURED",
+      "primary_recommendation_eligible": false,
+      "reason": "Supplemental stress only: actual visible-mesh/enclosing-cylinder-box overlap possible at hover. Guarded Home captures replace this for primary sampling."
+    }
+  ],
+  "other_negative_artifacts": [
+    "sampling_negative_trials.json",
+    "geometry_scene_qualifications.json",
+    "semantic_spotcheck.json",
+    "camera_housing_clearance.json",
+    "planning.json"
+  ],
+  "additional_notes": [
+    "Initial wrist model multiplied meter offsets by a mesh scale100; corrected rigid mounting model and tests replace those preliminary predictions.",
+    "All65 native target conditions remain available; recommendations distinguish42 target-clear,54 robot-clear andall65 stress denominators.",
+    "No failed physical planner outcome is removed when a measurement itself is valid."
+  ]
+}

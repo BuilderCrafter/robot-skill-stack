@@ -1,0 +1,1980 @@
+{
+  "schema_version": 1,
+  "status": "OFFLINE_SEMANTIC_SPOTCHECK",
+  "method": "Existing unchanged MultiViewProcessor.compute on saved native empty-fixture RGB-D views using each capture profile semantic camera subset. Expected original four object classes score output only.",
+  "scope": "Single-frame geometry/class spot-check at five recorded robot postures; no tracker identity, grasp, placement or live publication-rate validation. Empty means no added research fixtures; the four original tabletop objects remain present.",
+  "rows": [
+    {
+      "layout": "A_current",
+      "posture": "home",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 166.18067398667336,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-A-current-render-only/view-home-empty.npz",
+      "source_image_sha256": "803a3eb13da5d47bd422f77df18dc8f08b73275a3967210e57705c8b2691fe4c"
+    },
+    {
+      "layout": "A_current",
+      "posture": "hover",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 148.32572685554624,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-A-current-render-only/view-hover-empty.npz",
+      "source_image_sha256": "2e99e76970de5ede5b09bef0645508c156b94424e99c06e86318d48dd4f7dadc"
+    },
+    {
+      "layout": "A_current",
+      "posture": "extended",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 143.03980534896255,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-A-current-render-only/view-extended-empty.npz",
+      "source_image_sha256": "681d907d456aebbe2258b7001898b56c7d5360eb7ba7196d1b105170fc3b1ad5"
+    },
+    {
+      "layout": "A_current",
+      "posture": "raised",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 142.59587600827217,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-A-current-render-only/view-raised-empty.npz",
+      "source_image_sha256": "b946f05e4c1eaa94bacb0ab4e88015db71489894d03c188aab1f075fe1331b45"
+    },
+    {
+      "layout": "A_current",
+      "posture": "low",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 146.81297214701772,
+      "numerical_fits": 4,
+      "workspace_points": 2102,
+      "source_image": "outputs/camera-observability-feasibility/capture-A-current-render-only/view-low-empty.npz",
+      "source_image_sha256": "2a34e856bdc8a310885e901ee6882f94f9670c45e17a166dbdb6dc263db5689e"
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "posture": "home",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399188460974765,
+            0.16005238307631223,
+            0.024000882258327815
+          ],
+          "size": [
+            0.08007048855067123,
+            0.07236876140900615,
+            0.04800176451665563
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.3600200821386995,
+            0.16001361606932046,
+            0.022167705620947033
+          ],
+          "size": [
+            0.044335411241894065,
+            0.044335411241894065,
+            0.044335411241894065
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35975582942829076,
+            -0.1603232635643941,
+            0.02750072857429921
+          ],
+          "size": [
+            0.07390369220430391,
+            0.07374080550325324,
+            0.05500145714859842
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5398889872583669,
+            -0.16018663937653319,
+            0.0302629581950523
+          ],
+          "size": [
+            0.0605259163901046,
+            0.0605259163901046,
+            0.0605259163901046
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 127.24917382001877,
+      "numerical_fits": 4,
+      "workspace_points": 1100,
+      "source_image": "outputs/camera-observability-feasibility/capture-C_asymmetric_1.15_0.65/view-home-empty.npz",
+      "source_image_sha256": "c203b1b6d50f5464661e5657703310d3deef5e4dae723b49fb0a265a76819213"
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "posture": "hover",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399188460974765,
+            0.16005238307631223,
+            0.024000882258327815
+          ],
+          "size": [
+            0.08007048855067123,
+            0.07236876140900615,
+            0.04800176451665563
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.3600200821386995,
+            0.16001361606932046,
+            0.022167705620947033
+          ],
+          "size": [
+            0.044335411241894065,
+            0.044335411241894065,
+            0.044335411241894065
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3615585691381909,
+            -0.1592501850014565,
+            0.027500730822810352
+          ],
+          "size": [
+            0.06994209491835951,
+            0.07159466032979798,
+            0.055001461645620704
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": false
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5398889872583669,
+            -0.16018663937653319,
+            0.0302629581950523
+          ],
+          "size": [
+            0.0605259163901046,
+            0.0605259163901046,
+            0.0605259163901046
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 128.14370496198535,
+      "numerical_fits": 4,
+      "workspace_points": 1091,
+      "source_image": "outputs/camera-observability-feasibility/capture-C_asymmetric_1.15_0.65/view-hover-empty.npz",
+      "source_image_sha256": "02975afe5f4b06359d12049df95a08bc7a73a11ccb902e3666c113953fbaff85"
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "posture": "extended",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": false,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399188460974765,
+            0.16005238307631223,
+            0.024000882258327815
+          ],
+          "size": [
+            0.08007048855067123,
+            0.07236876140900615,
+            0.04800176451665563
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.3600200821386995,
+            0.16001361606932046,
+            0.022167705620947033
+          ],
+          "size": [
+            0.044335411241894065,
+            0.044335411241894065,
+            0.044335411241894065
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5398889872583669,
+            -0.16018663937653319,
+            0.0302629581950523
+          ],
+          "size": [
+            0.0605259163901046,
+            0.0605259163901046,
+            0.0605259163901046
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 101.31585132330656,
+      "numerical_fits": 3,
+      "workspace_points": 948,
+      "source_image": "outputs/camera-observability-feasibility/capture-C_asymmetric_1.15_0.65/view-extended-empty.npz",
+      "source_image_sha256": "747d381617c37f586357fcef241651065734152fde1c9bcf10348e72951d3f19"
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "posture": "raised",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399188460974765,
+            0.16005238307631223,
+            0.024000882258327815
+          ],
+          "size": [
+            0.08007048855067123,
+            0.07236876140900615,
+            0.04800176451665563
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.3600200821386995,
+            0.16001361606932046,
+            0.022167705620947033
+          ],
+          "size": [
+            0.044335411241894065,
+            0.044335411241894065,
+            0.044335411241894065
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35975582942829076,
+            -0.1603232635643941,
+            0.02750072857429921
+          ],
+          "size": [
+            0.07390369220430391,
+            0.07374080550325324,
+            0.05500145714859842
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5398889872583669,
+            -0.16018663937653319,
+            0.0302629581950523
+          ],
+          "size": [
+            0.0605259163901046,
+            0.0605259163901046,
+            0.0605259163901046
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 124.87011076882482,
+      "numerical_fits": 4,
+      "workspace_points": 1100,
+      "source_image": "outputs/camera-observability-feasibility/capture-C_asymmetric_1.15_0.65/view-raised-empty.npz",
+      "source_image_sha256": "7e543c4fcd2172505193496477a2596f925baa9d4de40783fb0297c077d849eb"
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "posture": "low",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "sphere",
+        "sphere",
+        "unknown"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": false,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.54012673187583,
+            0.15974896718059836,
+            0.024000858319545418
+          ],
+          "size": [
+            0.08079377080079987,
+            0.07297541966981984,
+            0.048001716639090836
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.3600200821386995,
+            0.16001361606932046,
+            0.022167705620947033
+          ],
+          "size": [
+            0.044335411241894065,
+            0.044335411241894065,
+            0.044335411241894065
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "unknown",
+          "center": [
+            0.37088703344920737,
+            -0.1529490349798614,
+            0.027500258887742213
+          ],
+          "size": [
+            0.051281142080071174,
+            0.05881375513629006,
+            0.055000517775484425
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": false
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5398889872583669,
+            -0.16018663937653319,
+            0.0302629581950523
+          ],
+          "size": [
+            0.0605259163901046,
+            0.0605259163901046,
+            0.0605259163901046
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 130.4114698432386,
+      "numerical_fits": 5,
+      "workspace_points": 851,
+      "source_image": "outputs/camera-observability-feasibility/capture-C_asymmetric_1.15_0.65/view-low-empty.npz",
+      "source_image_sha256": "bdd6fa4e46b7428228f6e1746e12f16a1de20f3ce380a596311f0c9b47d2fa99"
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "posture": "home",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5398159399185756,
+            0.16011933992716024,
+            0.024000755288745877
+          ],
+          "size": [
+            0.08027670248372452,
+            0.07250276273440641,
+            0.04800151057749175
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35987709687794234,
+            -0.1600575738466138,
+            0.027500788721978982
+          ],
+          "size": [
+            0.07334126970667021,
+            0.0732097749096118,
+            0.055001577443957964
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.35996482690312426,
+            0.16002818577355454,
+            0.02218281177789504
+          ],
+          "size": [
+            0.04436562355579008,
+            0.04436562355579008,
+            0.04436562355579008
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399431945467332,
+            -0.1601329668507032,
+            0.03021235975153276
+          ],
+          "size": [
+            0.06042471950306552,
+            0.06042471950306552,
+            0.06042471950306552
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 140.40724886581302,
+      "numerical_fits": 4,
+      "workspace_points": 1684,
+      "source_image": "outputs/camera-observability-feasibility/capture-K_B_front_height_0.85_rear/view-home-empty.npz",
+      "source_image_sha256": "53d75e6e7f7c709f3c872586d0821dca393d1c2d54c4e84ffed1a74498201d8f"
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "posture": "hover",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5398159399185756,
+            0.16011933992716024,
+            0.024000755288745877
+          ],
+          "size": [
+            0.08027670248372452,
+            0.07250276273440641,
+            0.04800151057749175
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35987709687794234,
+            -0.1600575738466138,
+            0.027500788721978982
+          ],
+          "size": [
+            0.07334126970667021,
+            0.0732097749096118,
+            0.055001577443957964
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.35996482690312426,
+            0.16002818577355454,
+            0.02218281177789504
+          ],
+          "size": [
+            0.04436562355579008,
+            0.04436562355579008,
+            0.04436562355579008
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399431945467332,
+            -0.1601329668507032,
+            0.03021235975153276
+          ],
+          "size": [
+            0.06042471950306552,
+            0.06042471950306552,
+            0.06042471950306552
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 139.30661277845502,
+      "numerical_fits": 4,
+      "workspace_points": 1684,
+      "source_image": "outputs/camera-observability-feasibility/capture-K_B_front_height_0.85_rear/view-hover-empty.npz",
+      "source_image_sha256": "4dc7df788b04fbc0d2ec868974394d599f0d9fb0c96fa7c4a9ac95117aebf88d"
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "posture": "extended",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5398159399185756,
+            0.16011933992716024,
+            0.024000755288745877
+          ],
+          "size": [
+            0.08027670248372452,
+            0.07250276273440641,
+            0.04800151057749175
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35982645822841247,
+            -0.15994907653642534,
+            0.02750059347733123
+          ],
+          "size": [
+            0.07344221277557646,
+            0.0734265674246226,
+            0.05500118695466246
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.35996482690312426,
+            0.16002818577355454,
+            0.02218281177789504
+          ],
+          "size": [
+            0.04436562355579008,
+            0.04436562355579008,
+            0.04436562355579008
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399431945467332,
+            -0.1601329668507032,
+            0.03021235975153276
+          ],
+          "size": [
+            0.06042471950306552,
+            0.06042471950306552,
+            0.06042471950306552
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 193.27790196985006,
+      "numerical_fits": 11,
+      "workspace_points": 1516,
+      "source_image": "outputs/camera-observability-feasibility/capture-K_B_front_height_0.85_rear/view-extended-empty.npz",
+      "source_image_sha256": "e9ed240972b531f292f7f2af6d3a84b074de84762fd6093468d22aebea761f7c"
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "posture": "raised",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5398159399185756,
+            0.16011933992716024,
+            0.024000755288745877
+          ],
+          "size": [
+            0.08027670248372452,
+            0.07250276273440641,
+            0.04800151057749175
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35987709687794234,
+            -0.1600575738466138,
+            0.027500788721978982
+          ],
+          "size": [
+            0.07334126970667021,
+            0.0732097749096118,
+            0.055001577443957964
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.35996482690312426,
+            0.16002818577355454,
+            0.02218281177789504
+          ],
+          "size": [
+            0.04436562355579008,
+            0.04436562355579008,
+            0.04436562355579008
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399431945467332,
+            -0.1601329668507032,
+            0.03021235975153276
+          ],
+          "size": [
+            0.06042471950306552,
+            0.06042471950306552,
+            0.06042471950306552
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 139.05883021652699,
+      "numerical_fits": 4,
+      "workspace_points": 1684,
+      "source_image": "outputs/camera-observability-feasibility/capture-K_B_front_height_0.85_rear/view-raised-empty.npz",
+      "source_image_sha256": "e873962cbb4321b6eef5ba03db4d74bd3c9a709a56b1ae35b995669bf4ad8e9d"
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "posture": "low",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5398159399185756,
+            0.16011933992716024,
+            0.024000755288745877
+          ],
+          "size": [
+            0.08027670248372452,
+            0.07250276273440641,
+            0.04800151057749175
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.35987709687794234,
+            -0.1600575738466138,
+            0.027500788721978982
+          ],
+          "size": [
+            0.07334126970667021,
+            0.0732097749096118,
+            0.055001577443957964
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.35996482690312426,
+            0.16002818577355454,
+            0.02218281177789504
+          ],
+          "size": [
+            0.04436562355579008,
+            0.04436562355579008,
+            0.04436562355579008
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399431945467332,
+            -0.1601329668507032,
+            0.03021235975153276
+          ],
+          "size": [
+            0.06042471950306552,
+            0.06042471950306552,
+            0.06042471950306552
+          ],
+          "views": [
+            "/World/PerceptionCamera"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 173.24288422241807,
+      "numerical_fits": 6,
+      "workspace_points": 1925,
+      "source_image": "outputs/camera-observability-feasibility/capture-K_B_front_height_0.85_rear/view-low-empty.npz",
+      "source_image_sha256": "9ce53995f3208a6e73294d5dd1da37f8097afea34ea492a7e1bd9bb6e71a3176"
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "posture": "home",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 145.16114722937346,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-H_third_side_-1.00/view-home-empty.npz",
+      "source_image_sha256": "bca7c0595824d4bc2387c6f3e8c1891333975d8050bdd3006f5c1ea701963c05"
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "posture": "hover",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 143.44717608764768,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-H_third_side_-1.00/view-hover-empty.npz",
+      "source_image_sha256": "e83dbdfc03a0ec513545801a1c5fd5fa4f8d97e46f777b10cbd0aa2cffc82861"
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "posture": "extended",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 144.4555288180709,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-H_third_side_-1.00/view-extended-empty.npz",
+      "source_image_sha256": "9608020029b95fe40a83485a6e01f3b8c8be50caf67c1e41a1605ab8d3c23c3b"
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "posture": "raised",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 144.3622149527073,
+      "numerical_fits": 4,
+      "workspace_points": 1919,
+      "source_image": "outputs/camera-observability-feasibility/capture-H_third_side_-1.00/view-raised-empty.npz",
+      "source_image_sha256": "c6c2d9163f69fe3e4b07dabf7846d870972cf5bcce83cb03f6f435a96f95596e"
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "posture": "low",
+      "semantic_camera_paths": [
+        "/World/PerceptionCamera",
+        "/World/PerceptionCameraSide"
+      ],
+      "detection_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "expected_classes": [
+        "cube",
+        "cube",
+        "sphere",
+        "sphere"
+      ],
+      "class_count_match": true,
+      "detections": [
+        {
+          "shape": "cube",
+          "center": [
+            0.5399369574466576,
+            0.159902595661054,
+            0.024000770853832773
+          ],
+          "size": [
+            0.080034169456416,
+            0.07245740534299666,
+            0.048001541707665546
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "cube",
+          "center": [
+            0.3598777260358486,
+            -0.16005718211518125,
+            0.027500690900613117
+          ],
+          "size": [
+            0.07333951882131931,
+            0.07320896496308192,
+            0.05500138180122623
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.5399729443988349,
+            -0.1600868653029714,
+            0.03027079980890753
+          ],
+          "size": [
+            0.06054159961781506,
+            0.06054159961781506,
+            0.06054159961781506
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        },
+        {
+          "shape": "sphere",
+          "center": [
+            0.36003738745571734,
+            0.15993100526713938,
+            0.022157126860306325
+          ],
+          "size": [
+            0.04431425372061265,
+            0.04431425372061265,
+            0.04431425372061265
+          ],
+          "views": [
+            "/World/PerceptionCamera",
+            "/World/PerceptionCameraSide"
+          ],
+          "parameter_observable": true
+        }
+      ],
+      "offline_processing_ms": 145.18308825790882,
+      "numerical_fits": 4,
+      "workspace_points": 2101,
+      "source_image": "outputs/camera-observability-feasibility/capture-H_third_side_-1.00/view-low-empty.npz",
+      "source_image_sha256": "67b07f4a2b7758a63d499c6c83cf391dfadfa150c9035ab59de12df6dc5420e5"
+    }
+  ],
+  "all_class_counts_match": false,
+  "source_files": {
+    "robot_skill_stack/world/perception_multiview/provider.py": "92013e5af86b39b68502e335edea8270452fced129b021fdf77c94bbd9f0f1fa",
+    "robot_skill_stack/world/perception_multiview/fitting.py": "f1522b12083f04c8d5f03d9860f92f0bbb7c72c997d161cf7bc4fcfa0946eca8"
+  }
+}

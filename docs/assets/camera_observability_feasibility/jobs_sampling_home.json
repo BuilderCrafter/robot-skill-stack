@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "scope": "Guardedpositive-clearanceHomecaptures;12advancinginputsperlayout",
+  "choose_fresh_output_root": "Change the reproduce prefix for subsequent runs; completed jobs are never overwritten.",
+  "jobs": [
+    {
+      "label": "sampling_home_A_current",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--task",
+        "postures",
+        "--postures",
+        "home",
+        "--burst-count",
+        "12",
+        "--burst-posture",
+        "home",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/sampling-home-A_current"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/sampling-home-A_current",
+      "result": "outputs/camera-observability-feasibility/reproduce/sampling-home-A_current/capture.json",
+      "timeout": 180
+    },
+    {
+      "label": "sampling_home_C_asymmetric_1.15_0.65",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "C_asymmetric_1.15_0.65",
+        "--task",
+        "postures",
+        "--postures",
+        "home",
+        "--burst-count",
+        "12",
+        "--burst-posture",
+        "home",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/sampling-home-C_asymmetric_1.15_0.65"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/sampling-home-C_asymmetric_1.15_0.65",
+      "result": "outputs/camera-observability-feasibility/reproduce/sampling-home-C_asymmetric_1.15_0.65/capture.json",
+      "timeout": 180
+    },
+    {
+      "label": "sampling_home_K_B_front_height_0.85_rear",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "K_B_front_height_0.85_rear",
+        "--task",
+        "postures",
+        "--postures",
+        "home",
+        "--burst-count",
+        "12",
+        "--burst-posture",
+        "home",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/sampling-home-K_B_front_height_0.85_rear"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/sampling-home-K_B_front_height_0.85_rear",
+      "result": "outputs/camera-observability-feasibility/reproduce/sampling-home-K_B_front_height_0.85_rear/capture.json",
+      "timeout": 180
+    },
+    {
+      "label": "sampling_home_H_third_side_-1.00",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "H_third_side_-1.00",
+        "--task",
+        "postures",
+        "--postures",
+        "home",
+        "--burst-count",
+        "12",
+        "--burst-posture",
+        "home",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/sampling-home-H_third_side_-1.00"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/sampling-home-H_third_side_-1.00",
+      "result": "outputs/camera-observability-feasibility/reproduce/sampling-home-H_third_side_-1.00/capture.json",
+      "timeout": 180
+    }
+  ]
+}

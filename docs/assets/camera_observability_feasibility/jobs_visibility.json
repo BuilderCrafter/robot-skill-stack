@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "Actualrenderedvisibilityatfivesampledpostures;render-onlyfixturegeometry",
+  "choose_fresh_output_root": "Change the reproduce prefix for subsequent runs; completed jobs are never overwritten.",
+  "jobs": [
+    {
+      "label": "visibility_A_current",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--task",
+        "visibility",
+        "--postures",
+        "home,hover,extended,raised,low",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/capture-A_current"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/capture-A_current",
+      "result": "outputs/camera-observability-feasibility/reproduce/capture-A_current/capture.json",
+      "timeout": 360
+    },
+    {
+      "label": "visibility_C_asymmetric_1.15_0.65",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "C_asymmetric_1.15_0.65",
+        "--task",
+        "visibility",
+        "--postures",
+        "home,hover,extended,raised,low",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/capture-C_asymmetric_1.15_0.65"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/capture-C_asymmetric_1.15_0.65",
+      "result": "outputs/camera-observability-feasibility/reproduce/capture-C_asymmetric_1.15_0.65/capture.json",
+      "timeout": 360
+    },
+    {
+      "label": "visibility_K_B_front_height_0.85_rear",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "K_B_front_height_0.85_rear",
+        "--task",
+        "visibility",
+        "--postures",
+        "home,hover,extended,raised,low",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/capture-K_B_front_height_0.85_rear"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/capture-K_B_front_height_0.85_rear",
+      "result": "outputs/camera-observability-feasibility/reproduce/capture-K_B_front_height_0.85_rear/capture.json",
+      "timeout": 360
+    },
+    {
+      "label": "visibility_H_third_side_-1.00",
+      "arguments": [
+        "scripts/camera_observability_capture.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "H_third_side_-1.00",
+        "--task",
+        "visibility",
+        "--postures",
+        "home,hover,extended,raised,low",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/capture-H_third_side_-1.00"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/capture-H_third_side_-1.00",
+      "result": "outputs/camera-observability-feasibility/reproduce/capture-H_third_side_-1.00/capture.json",
+      "timeout": 360
+    }
+  ]
+}

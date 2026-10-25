@@ -1,0 +1,213 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": "empty",
+      "objects": []
+    },
+    {
+      "scenario_id": "small_cube_sphere",
+      "objects": [
+        {
+          "id": "cube",
+          "kind": "box",
+          "center": [
+            0.43,
+            -0.18,
+            0.025
+          ],
+          "dimensions": [
+            0.05,
+            0.05,
+            0.05
+          ]
+        },
+        {
+          "id": "sphere",
+          "kind": "sphere",
+          "center": [
+            0.64,
+            0.24,
+            0.03
+          ],
+          "radius": 0.03
+        }
+      ]
+    },
+    {
+      "scenario_id": "thin_post",
+      "objects": [
+        {
+          "id": "post",
+          "kind": "cylinder",
+          "center": [
+            0.45,
+            0.03,
+            0.17
+          ],
+          "radius": 0.012,
+          "height": 0.34
+        }
+      ]
+    },
+    {
+      "scenario_id": "large_obstruction",
+      "objects": [
+        {
+          "id": "large",
+          "kind": "box",
+          "center": [
+            0.5,
+            0.05,
+            0.25
+          ],
+          "dimensions": [
+            0.18,
+            0.24,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "narrow_gap",
+      "objects": [
+        {
+          "id": "gap_left",
+          "kind": "box",
+          "center": [
+            0.48,
+            0.105,
+            0.18
+          ],
+          "dimensions": [
+            0.08,
+            0.1,
+            0.36
+          ]
+        },
+        {
+          "id": "gap_right",
+          "kind": "box",
+          "center": [
+            0.48,
+            -0.105,
+            0.18
+          ],
+          "dimensions": [
+            0.08,
+            0.1,
+            0.36
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "object_occlusion",
+      "objects": [
+        {
+          "id": "hidden_target",
+          "kind": "box",
+          "center": [
+            0.4,
+            0.08,
+            0.1
+          ],
+          "dimensions": [
+            0.06,
+            0.06,
+            0.2
+          ]
+        },
+        {
+          "id": "occluder",
+          "kind": "box",
+          "center": [
+            0.6,
+            0.08,
+            0.15
+          ],
+          "dimensions": [
+            0.12,
+            0.16,
+            0.3
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "arm_occlusion",
+      "objects": [
+        {
+          "id": "rear_of_arm",
+          "kind": "box",
+          "center": [
+            -0.12,
+            0.12,
+            0.55
+          ],
+          "dimensions": [
+            0.06,
+            0.06,
+            0.12
+          ]
+        }
+      ]
+    },
+    {
+      "scenario_id": "entering_path",
+      "objects": [
+        {
+          "id": "moving_post",
+          "kind": "cylinder",
+          "center": [
+            0.46,
+            0.12,
+            0.2
+          ],
+          "radius": 0.018,
+          "height": 0.4
+        }
+      ]
+    },
+    {
+      "scenario_id": "upper_arm_hazards",
+      "objects": [
+        {
+          "id": "shoulder_neighbor",
+          "kind": "sphere",
+          "center": [
+            -0.1,
+            -0.15,
+            0.38
+          ],
+          "radius": 0.035
+        },
+        {
+          "id": "elbow_neighbor",
+          "kind": "box",
+          "center": [
+            0.02,
+            0.16,
+            0.72
+          ],
+          "dimensions": [
+            0.06,
+            0.06,
+            0.08
+          ]
+        },
+        {
+          "id": "forearm_neighbor",
+          "kind": "cylinder",
+          "center": [
+            0.28,
+            -0.16,
+            0.53
+          ],
+          "radius": 0.018,
+          "height": 0.16
+        }
+      ]
+    }
+  ]
+}

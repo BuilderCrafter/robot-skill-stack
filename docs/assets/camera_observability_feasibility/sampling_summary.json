@@ -1,0 +1,1405 @@
+{
+  "schema_version": 1,
+  "status": "RESEARCH_OFFLINE_ONLY",
+  "source_files": [
+    "docs/assets/camera_observability_feasibility/sampling_v2b_reference.json",
+    "docs/assets/camera_observability_feasibility/sampling_current.json"
+  ],
+  "rows": [
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 123596,
+      "unique_hit_evidence": 357,
+      "occupied_voxels": 354,
+      "supported_voxels": 354,
+      "candidate_cuboids": 343,
+      "selected_cuboids": 64,
+      "selected_floor": 20,
+      "selected_hazards": 44,
+      "omitted_voxels": 279,
+      "occupied_discarded_fraction": 0.788135593220339,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 44,
+          "hit_cells_currently_occupied": 44,
+          "hit_cells_represented": 44,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 44,
+          "retained": 44,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 22.05036859959364,
+        "ray_traversal": 69.84504917636514,
+        "occupancy_integrate": 9.956598049029708,
+        "mapping_worker": 122.56517936475575,
+        "obstacle_extract": 12.186853913590312,
+        "worker_plus_proxy": 134.51897795312107
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "phase1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 422866,
+      "unique_hit_evidence": 1417,
+      "occupied_voxels": 1405,
+      "supported_voxels": 1084,
+      "candidate_cuboids": 956,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 1002,
+      "occupied_discarded_fraction": 0.9416370106761566,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 163,
+          "hit_cells_currently_occupied": 162,
+          "hit_cells_represented": 82,
+          "occupied_physical_hit_discarded_fraction": 0.49382716049382713
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 40,
+          "retained": 40,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 18.099397886544466,
+        "ray_traversal": 61.61962985061109,
+        "occupancy_integrate": 11.80955395102501,
+        "mapping_worker": 116.55225744470954,
+        "obstacle_extract": 14.41174978390336,
+        "worker_plus_proxy": 130.58508862741292
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 389950,
+      "unique_hit_evidence": 1412,
+      "occupied_voxels": 1397,
+      "supported_voxels": 1181,
+      "candidate_cuboids": 1018,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 1083,
+      "occupied_discarded_fraction": 0.9298496778811739,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 164,
+          "hit_cells_currently_occupied": 164,
+          "hit_cells_represented": 98,
+          "occupied_physical_hit_discarded_fraction": 0.4024390243902439
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 40,
+          "retained": 40,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 19.959842786192894,
+        "ray_traversal": 58.574972208589315,
+        "occupancy_integrate": 9.943032404407859,
+        "mapping_worker": 108.64933603443205,
+        "obstacle_extract": 12.544782599434257,
+        "worker_plus_proxy": 120.6400184892118
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "edge1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 109853,
+      "unique_hit_evidence": 277,
+      "occupied_voxels": 275,
+      "supported_voxels": 275,
+      "candidate_cuboids": 265,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 203,
+      "occupied_discarded_fraction": 0.7381818181818182,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 87,
+          "hit_cells_currently_occupied": 87,
+          "hit_cells_represented": 72,
+          "occupied_physical_hit_discarded_fraction": 0.1724137931034483
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 88,
+          "retained": 88,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 31.510483473539352,
+        "ray_traversal": 57.67117370851338,
+        "occupancy_integrate": 9.243064327165484,
+        "mapping_worker": 120.42997102253139,
+        "obstacle_extract": 12.152940034866333,
+        "worker_plus_proxy": 133.66305851377547
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed2048",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 2048,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 238807,
+      "unique_hit_evidence": 726,
+      "occupied_voxels": 706,
+      "supported_voxels": 706,
+      "candidate_cuboids": 676,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 641,
+      "occupied_discarded_fraction": 0.9079320113314447,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 82,
+          "hit_cells_currently_occupied": 80,
+          "hit_cells_represented": 65,
+          "occupied_physical_hit_discarded_fraction": 0.1875
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 80,
+          "retained": 80,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 25.761024095118046,
+        "ray_traversal": 121.97793181985617,
+        "occupancy_integrate": 17.667335458099842,
+        "mapping_worker": 199.69727471470833,
+        "obstacle_extract": 13.936797622591257,
+        "worker_plus_proxy": 213.05913804098964
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 0,
+      "unique_hit_evidence": 0,
+      "occupied_voxels": 0,
+      "supported_voxels": 0,
+      "candidate_cuboids": 0,
+      "selected_cuboids": 0,
+      "selected_floor": 0,
+      "selected_hazards": 0,
+      "omitted_voxels": 0,
+      "occupied_discarded_fraction": null,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 162,
+          "hit_cells_currently_occupied": 0,
+          "hit_cells_represented": 0,
+          "occupied_physical_hit_discarded_fraction": null
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 17995,
+          "selected": 161,
+          "retained": 161,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 46.42337909899652,
+        "ray_traversal": 214.20767181552947,
+        "mapping_worker": 291.5216574911028,
+        "obstacle_extract": 10.549154598265886,
+        "worker_plus_proxy": 303.52803342975676
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 126602,
+      "unique_hit_evidence": 334,
+      "occupied_voxels": 334,
+      "supported_voxels": 334,
+      "candidate_cuboids": 323,
+      "selected_cuboids": 64,
+      "selected_floor": 50,
+      "selected_hazards": 14,
+      "omitted_voxels": 259,
+      "occupied_discarded_fraction": 0.7754491017964071,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 14,
+          "hit_cells_currently_occupied": 14,
+          "hit_cells_represented": 14,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 14,
+          "retained": 14,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 21.591184427961707,
+        "ray_traversal": 52.15236474759877,
+        "occupancy_integrate": 8.822925155982375,
+        "mapping_worker": 102.72380174137652,
+        "obstacle_extract": 10.849795769900084,
+        "worker_plus_proxy": 113.72328759171069
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "phase1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 431199,
+      "unique_hit_evidence": 1333,
+      "occupied_voxels": 1333,
+      "supported_voxels": 984,
+      "candidate_cuboids": 867,
+      "selected_cuboids": 64,
+      "selected_floor": 19,
+      "selected_hazards": 45,
+      "omitted_voxels": 894,
+      "occupied_discarded_fraction": 0.932483120780195,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 53,
+          "hit_cells_currently_occupied": 53,
+          "hit_cells_represented": 52,
+          "occupied_physical_hit_discarded_fraction": 0.018867924528301883
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 13,
+          "retained": 13,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.53680288977921,
+        "ray_traversal": 48.1809510383755,
+        "occupancy_integrate": 8.820976596325636,
+        "mapping_worker": 89.07021302729845,
+        "obstacle_extract": 10.767016559839249,
+        "worker_plus_proxy": 99.75452488288283
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 398710,
+      "unique_hit_evidence": 1330,
+      "occupied_voxels": 1323,
+      "supported_voxels": 1078,
+      "candidate_cuboids": 941,
+      "selected_cuboids": 64,
+      "selected_floor": 21,
+      "selected_hazards": 43,
+      "omitted_voxels": 978,
+      "occupied_discarded_fraction": 0.9244142101284958,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 54,
+          "hit_cells_currently_occupied": 54,
+          "hit_cells_represented": 51,
+          "occupied_physical_hit_discarded_fraction": 0.05555555555555558
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 16,
+          "retained": 16,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.155676355585456,
+        "ray_traversal": 48.11578989028931,
+        "occupancy_integrate": 8.766895160079002,
+        "mapping_worker": 91.11842350102961,
+        "obstacle_extract": 11.013577226549387,
+        "worker_plus_proxy": 101.82552807964385
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "edge1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 109886,
+      "unique_hit_evidence": 249,
+      "occupied_voxels": 249,
+      "supported_voxels": 249,
+      "candidate_cuboids": 239,
+      "selected_cuboids": 64,
+      "selected_floor": 19,
+      "selected_hazards": 45,
+      "omitted_voxels": 175,
+      "occupied_discarded_fraction": 0.7028112449799198,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 53,
+          "hit_cells_currently_occupied": 53,
+          "hit_cells_represented": 53,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 54,
+          "retained": 54,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 22.385282907634974,
+        "ray_traversal": 44.60881929844618,
+        "occupancy_integrate": 7.5926578138023615,
+        "mapping_worker": 90.77854896895587,
+        "obstacle_extract": 10.312468046322465,
+        "worker_plus_proxy": 101.03053878992796
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed2048",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 2048,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 243690,
+      "unique_hit_evidence": 672,
+      "occupied_voxels": 672,
+      "supported_voxels": 672,
+      "candidate_cuboids": 643,
+      "selected_cuboids": 64,
+      "selected_floor": 38,
+      "selected_hazards": 26,
+      "omitted_voxels": 579,
+      "occupied_discarded_fraction": 0.8616071428571428,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 26,
+          "hit_cells_currently_occupied": 26,
+          "hit_cells_represented": 26,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 26,
+          "retained": 26,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 21.207913989201188,
+        "ray_traversal": 92.21586864441633,
+        "occupancy_integrate": 15.65996604040265,
+        "mapping_worker": 158.1144647207111,
+        "obstacle_extract": 11.050626169890165,
+        "worker_plus_proxy": 169.0067551098764
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 0,
+      "unique_hit_evidence": 0,
+      "occupied_voxels": 0,
+      "supported_voxels": 0,
+      "candidate_cuboids": 0,
+      "selected_cuboids": 0,
+      "selected_floor": 0,
+      "selected_hazards": 0,
+      "omitted_voxels": 0,
+      "occupied_discarded_fraction": null,
+      "physical_endpoints": {
+        "ThinPost": {
+          "current_or_previous_physical_hit_cells": 58,
+          "hit_cells_currently_occupied": 0,
+          "hit_cells_represented": 0,
+          "occupied_physical_hit_discarded_fraction": null
+        }
+      },
+      "raw_and_selected_rays": {
+        "ThinPost": {
+          "raw": 5996,
+          "selected": 58,
+          "retained": 58,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 35.369301214814186,
+        "ray_traversal": 164.8415003437549,
+        "mapping_worker": 221.64862463250756,
+        "obstacle_extract": 9.349007857963443,
+        "worker_plus_proxy": 231.00930429063737
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 106732,
+      "unique_hit_evidence": 452,
+      "occupied_voxels": 452,
+      "supported_voxels": 452,
+      "candidate_cuboids": 448,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 388,
+      "occupied_discarded_fraction": 0.8584070796460177,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 23,
+          "hit_cells_currently_occupied": 23,
+          "hit_cells_represented": 23,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 188,
+          "hit_cells_currently_occupied": 188,
+          "hit_cells_represented": 41,
+          "occupied_physical_hit_discarded_fraction": 0.7819148936170213
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 23,
+          "retained": 23,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 188,
+          "retained": 188,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 21.167788887396455,
+        "ray_traversal": 48.91126463189721,
+        "occupancy_integrate": 7.499873638153076,
+        "mapping_worker": 92.20089577138424,
+        "obstacle_extract": 10.450154775753617,
+        "worker_plus_proxy": 102.76489285752177
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "phase1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 372912,
+      "unique_hit_evidence": 1786,
+      "occupied_voxels": 1774,
+      "supported_voxels": 1472,
+      "candidate_cuboids": 1223,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 1308,
+      "occupied_discarded_fraction": 0.9075535512965051,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 85,
+          "hit_cells_currently_occupied": 85,
+          "hit_cells_represented": 6,
+          "occupied_physical_hit_discarded_fraction": 0.9294117647058824
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 753,
+          "hit_cells_currently_occupied": 741,
+          "hit_cells_represented": 158,
+          "occupied_physical_hit_discarded_fraction": 0.786774628879892
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 20,
+          "retained": 20,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 191,
+          "retained": 191,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.418211532756686,
+        "ray_traversal": 44.814492808654904,
+        "occupancy_integrate": 7.511655334383249,
+        "mapping_worker": 82.18060829676688,
+        "obstacle_extract": 10.681746993213892,
+        "worker_plus_proxy": 93.10760325752199
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 330913,
+      "unique_hit_evidence": 1753,
+      "occupied_voxels": 1734,
+      "supported_voxels": 1516,
+      "candidate_cuboids": 1250,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 1354,
+      "occupied_discarded_fraction": 0.9065743944636678,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 87,
+          "hit_cells_currently_occupied": 86,
+          "hit_cells_represented": 40,
+          "occupied_physical_hit_discarded_fraction": 0.5348837209302326
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 691,
+          "hit_cells_currently_occupied": 678,
+          "hit_cells_represented": 122,
+          "occupied_physical_hit_discarded_fraction": 0.8200589970501475
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 20,
+          "retained": 20,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 188,
+          "retained": 188,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.281000476330519,
+        "ray_traversal": 44.89101725630462,
+        "occupancy_integrate": 7.482155691832304,
+        "mapping_worker": 81.71886159107089,
+        "obstacle_extract": 10.656344704329967,
+        "worker_plus_proxy": 92.41859172470868
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "edge1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 94982,
+      "unique_hit_evidence": 376,
+      "occupied_voxels": 376,
+      "supported_voxels": 376,
+      "candidate_cuboids": 331,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 270,
+      "occupied_discarded_fraction": 0.7180851063829787,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 31,
+          "hit_cells_currently_occupied": 31,
+          "hit_cells_represented": 31,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 204,
+          "hit_cells_currently_occupied": 204,
+          "hit_cells_represented": 75,
+          "occupied_physical_hit_discarded_fraction": 0.6323529411764706
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 31,
+          "retained": 31,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 211,
+          "retained": 211,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 19.933974603191018,
+        "ray_traversal": 43.02844638004899,
+        "occupancy_integrate": 6.70664245262742,
+        "mapping_worker": 84.49441497214139,
+        "obstacle_extract": 10.32568234950304,
+        "worker_plus_proxy": 94.83702387660742
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed2048",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 2048,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 202292,
+      "unique_hit_evidence": 893,
+      "occupied_voxels": 893,
+      "supported_voxels": 893,
+      "candidate_cuboids": 818,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 765,
+      "occupied_discarded_fraction": 0.8566629339305711,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 42,
+          "hit_cells_currently_occupied": 42,
+          "hit_cells_represented": 0,
+          "occupied_physical_hit_discarded_fraction": 1.0
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 380,
+          "hit_cells_currently_occupied": 380,
+          "hit_cells_represented": 128,
+          "occupied_physical_hit_discarded_fraction": 0.6631578947368422
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 42,
+          "retained": 42,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 382,
+          "retained": 382,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 21.256584906950593,
+        "ray_traversal": 84.43501475267112,
+        "occupancy_integrate": 12.931394157931209,
+        "mapping_worker": 142.83908158540726,
+        "obstacle_extract": 10.653974721208215,
+        "worker_plus_proxy": 153.5314335487783
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 373092,
+      "unique_hit_evidence": 1786,
+      "occupied_voxels": 1786,
+      "supported_voxels": 1786,
+      "candidate_cuboids": 1538,
+      "selected_cuboids": 64,
+      "selected_floor": 0,
+      "selected_hazards": 64,
+      "omitted_voxels": 1624,
+      "occupied_discarded_fraction": 0.9092945128779395,
+      "physical_endpoints": {
+        "Post": {
+          "current_or_previous_physical_hit_cells": 85,
+          "hit_cells_currently_occupied": 85,
+          "hit_cells_represented": 22,
+          "occupied_physical_hit_discarded_fraction": 0.7411764705882353
+        },
+        "Occluder": {
+          "current_or_previous_physical_hit_cells": 748,
+          "hit_cells_currently_occupied": 748,
+          "hit_cells_represented": 140,
+          "occupied_physical_hit_discarded_fraction": 0.8128342245989305
+        }
+      },
+      "raw_and_selected_rays": {
+        "Post": {
+          "raw": 10280,
+          "selected": 85,
+          "retained": 85,
+          "masked": 0
+        },
+        "Occluder": {
+          "raw": 80940,
+          "selected": 755,
+          "retained": 755,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 34.40110688097775,
+        "ray_traversal": 160.90127383358777,
+        "occupancy_integrate": 22.360756527632475,
+        "mapping_worker": 260.6070975307375,
+        "obstacle_extract": 11.17729814723134,
+        "worker_plus_proxy": 271.7237318865955
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 128022,
+      "unique_hit_evidence": 325,
+      "occupied_voxels": 325,
+      "supported_voxels": 325,
+      "candidate_cuboids": 314,
+      "selected_cuboids": 64,
+      "selected_floor": 64,
+      "selected_hazards": 0,
+      "omitted_voxels": 250,
+      "occupied_discarded_fraction": 0.7692307692307692,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.053229475393891,
+        "ray_traversal": 48.343109199777246,
+        "occupancy_integrate": 8.861256530508399,
+        "mapping_worker": 87.85965526476502,
+        "obstacle_extract": 10.383965214714408,
+        "worker_plus_proxy": 98.15300186164677
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "phase1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 435210,
+      "unique_hit_evidence": 1297,
+      "occupied_voxels": 1297,
+      "supported_voxels": 932,
+      "candidate_cuboids": 822,
+      "selected_cuboids": 64,
+      "selected_floor": 64,
+      "selected_hazards": 0,
+      "omitted_voxels": 804,
+      "occupied_discarded_fraction": 0.9013107170393215,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.411694603040814,
+        "ray_traversal": 48.38984669186175,
+        "occupancy_integrate": 8.732586167752743,
+        "mapping_worker": 88.692786404863,
+        "obstacle_extract": 10.70519583299756,
+        "worker_plus_proxy": 99.3108747061342
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 402830,
+      "unique_hit_evidence": 1294,
+      "occupied_voxels": 1287,
+      "supported_voxels": 1030,
+      "candidate_cuboids": 901,
+      "selected_cuboids": 64,
+      "selected_floor": 64,
+      "selected_hazards": 0,
+      "omitted_voxels": 895,
+      "occupied_discarded_fraction": 0.8951048951048951,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.199813595041633,
+        "ray_traversal": 47.89489088580012,
+        "occupancy_integrate": 8.537517627701163,
+        "mapping_worker": 87.79437351040542,
+        "obstacle_extract": 10.598366614431143,
+        "worker_plus_proxy": 98.41006761416793
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "edge1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 105363,
+      "unique_hit_evidence": 203,
+      "occupied_voxels": 203,
+      "supported_voxels": 203,
+      "candidate_cuboids": 200,
+      "selected_cuboids": 64,
+      "selected_floor": 64,
+      "selected_hazards": 0,
+      "omitted_voxels": 136,
+      "occupied_discarded_fraction": 0.6699507389162562,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 23.572285659611225,
+        "ray_traversal": 42.37211565487087,
+        "occupancy_integrate": 7.364089833572507,
+        "mapping_worker": 89.05209763906896,
+        "obstacle_extract": 10.307768126949668,
+        "worker_plus_proxy": 99.47503614239395
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed2048",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 2048,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 246079,
+      "unique_hit_evidence": 653,
+      "occupied_voxels": 653,
+      "supported_voxels": 653,
+      "candidate_cuboids": 624,
+      "selected_cuboids": 64,
+      "selected_floor": 64,
+      "selected_hazards": 0,
+      "omitted_voxels": 560,
+      "occupied_discarded_fraction": 0.8575803981623278,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 21.330432500690222,
+        "ray_traversal": 92.23791304975748,
+        "occupancy_integrate": 15.591352945193648,
+        "mapping_worker": 158.17340766079724,
+        "obstacle_extract": 10.797418421134353,
+        "worker_plus_proxy": 168.94006333313882
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "source_kind": "historical_v2b_diagnostic_capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 0,
+      "unique_hit_evidence": 0,
+      "occupied_voxels": 0,
+      "supported_voxels": 0,
+      "candidate_cuboids": 0,
+      "selected_cuboids": 0,
+      "selected_floor": 0,
+      "selected_hazards": 0,
+      "omitted_voxels": 0,
+      "occupied_discarded_fraction": null,
+      "physical_endpoints": {},
+      "raw_and_selected_rays": {},
+      "offline_stage_p50_ms": {
+        "robot_filter": 35.190045600757,
+        "ray_traversal": 163.97224948741496,
+        "mapping_worker": 216.1755384877324,
+        "obstacle_extract": 9.306268068030477,
+        "worker_plus_proxy": 225.47085606493056
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "fixed1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 96226,
+      "unique_hit_evidence": 511,
+      "occupied_voxels": 511,
+      "supported_voxels": 511,
+      "candidate_cuboids": 500,
+      "selected_cuboids": 64,
+      "selected_floor": 45,
+      "selected_hazards": 19,
+      "omitted_voxels": 436,
+      "occupied_discarded_fraction": 0.8532289628180039,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 6,
+          "hit_cells_currently_occupied": 6,
+          "hit_cells_represented": 5,
+          "occupied_physical_hit_discarded_fraction": 0.16666666666666663
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 7,
+          "retained": 6,
+          "masked": 1
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 15.36522340029478,
+        "ray_traversal": 44.86904409714043,
+        "occupancy_integrate": 7.719863438978791,
+        "mapping_worker": 88.35507486946881,
+        "obstacle_extract": 11.790456483140588,
+        "worker_plus_proxy": 104.15462986566126
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "phase1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 297743,
+      "unique_hit_evidence": 2001,
+      "occupied_voxels": 1987,
+      "supported_voxels": 1741,
+      "candidate_cuboids": 1374,
+      "selected_cuboids": 64,
+      "selected_floor": 15,
+      "selected_hazards": 49,
+      "omitted_voxels": 1602,
+      "occupied_discarded_fraction": 0.930045294413689,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 27,
+          "hit_cells_currently_occupied": 26,
+          "hit_cells_represented": 25,
+          "occupied_physical_hit_discarded_fraction": 0.038461538461538436
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 7,
+          "retained": 6,
+          "masked": 1
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 10.472154477611184,
+        "ray_traversal": 39.30549183860421,
+        "occupancy_integrate": 7.70181929692626,
+        "mapping_worker": 81.08491636812687,
+        "obstacle_extract": 11.868923669680953,
+        "worker_plus_proxy": 94.53799319453537
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 3.0,
+      "unique_free_evidence": 274060,
+      "unique_hit_evidence": 1965,
+      "occupied_voxels": 1936,
+      "supported_voxels": 1752,
+      "candidate_cuboids": 1367,
+      "selected_cuboids": 64,
+      "selected_floor": 11,
+      "selected_hazards": 53,
+      "omitted_voxels": 1637,
+      "occupied_discarded_fraction": 0.940599173553719,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 23,
+          "hit_cells_currently_occupied": 23,
+          "hit_cells_represented": 20,
+          "occupied_physical_hit_discarded_fraction": 0.13043478260869568
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 8,
+          "retained": 6,
+          "masked": 2
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 10.734504088759422,
+        "ray_traversal": 39.93069985881448,
+        "occupancy_integrate": 9.65467793866992,
+        "mapping_worker": 82.35926646739244,
+        "obstacle_extract": 14.636166859418154,
+        "worker_plus_proxy": 97.72470500320196
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "edge1024",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 1024,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 83155,
+      "unique_hit_evidence": 478,
+      "occupied_voxels": 478,
+      "supported_voxels": 478,
+      "candidate_cuboids": 425,
+      "selected_cuboids": 64,
+      "selected_floor": 11,
+      "selected_hazards": 53,
+      "omitted_voxels": 361,
+      "occupied_discarded_fraction": 0.7552301255230125,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 48,
+          "hit_cells_currently_occupied": 48,
+          "hit_cells_represented": 47,
+          "occupied_physical_hit_discarded_fraction": 0.02083333333333337
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 49,
+          "retained": 48,
+          "masked": 1
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 20.606327336281538,
+        "ray_traversal": 38.04761846549809,
+        "occupancy_integrate": 6.5999075304716825,
+        "mapping_worker": 81.40578051097691,
+        "obstacle_extract": 11.374304071068764,
+        "worker_plus_proxy": 92.70576108247042
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "fixed2048",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 2048,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 160044,
+      "unique_hit_evidence": 1019,
+      "occupied_voxels": 1019,
+      "supported_voxels": 1019,
+      "candidate_cuboids": 864,
+      "selected_cuboids": 64,
+      "selected_floor": 38,
+      "selected_hazards": 26,
+      "omitted_voxels": 870,
+      "occupied_discarded_fraction": 0.8537782139352306,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 15,
+          "hit_cells_currently_occupied": 15,
+          "hit_cells_represented": 15,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 15,
+          "retained": 15,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 14.278908492997289,
+        "ray_traversal": 84.35744815506041,
+        "occupancy_integrate": 11.431591352447867,
+        "mapping_worker": 141.75806380808353,
+        "obstacle_extract": 11.960048461332917,
+        "worker_plus_proxy": 153.7863549310714
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    },
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 12,
+      "unique_selected_pixels": 4096,
+      "pixel_revisit_p50": 12.0,
+      "unique_free_evidence": 297320,
+      "unique_hit_evidence": 2019,
+      "occupied_voxels": 2019,
+      "supported_voxels": 2019,
+      "candidate_cuboids": 1631,
+      "selected_cuboids": 64,
+      "selected_floor": 17,
+      "selected_hazards": 47,
+      "omitted_voxels": 1868,
+      "occupied_discarded_fraction": 0.9252105002476474,
+      "physical_endpoints": {
+        "post": {
+          "current_or_previous_physical_hit_cells": 28,
+          "hit_cells_currently_occupied": 28,
+          "hit_cells_represented": 28,
+          "occupied_physical_hit_discarded_fraction": 0.0
+        }
+      },
+      "raw_and_selected_rays": {
+        "post": {
+          "raw": 3674,
+          "selected": 28,
+          "retained": 28,
+          "masked": 0
+        }
+      },
+      "offline_stage_p50_ms": {
+        "robot_filter": 19.534750375896692,
+        "ray_traversal": 159.5530053600669,
+        "occupancy_integrate": 21.67428215034306,
+        "mapping_worker": 248.6846693791449,
+        "obstacle_extract": 12.128889095038176,
+        "worker_plus_proxy": 268.43325002118945
+      },
+      "offline_native_publication_age": "NOT_MEASURED",
+      "offline_native_rate": "NOT_MEASURED",
+      "false_free_unknown_expired_geometry_cells": 0,
+      "evaluation_scope": "render_only_hover_stress_potential_overlap",
+      "primary_recommendation_eligible": false
+    }
+  ],
+  "qualified_findings": [
+    "Supplemental render-only hover stress with potential robot/fixture overlap: A_current fixed1024 represented5 cylinder endpoint cells; edge1024 represented47, fixed2048 represented15 and4096 represented28. These are not primary physically separated recommendation evidence.",
+    "Fresh A_current depth-edge priority reduced unique FREE evidence13.6% while increasing selected hazard fields19\u219253. It is a tradeoff, not universal coverage improvement.",
+    "Temporal strategies increased distinct selected pixels1024\u21924096 but reduced median revisits12\u21923 and typical occupied confidence0.982\u21920.928.",
+    "Historical V2b partial-object reference shows more sampling can hurt adapter retention: fixed2048 produces42 occupied post endpoint cells but selects0, versus fixed1024 producing/selecting23.",
+    "4096-ray trials violate the unchanged500000 voxel-visit cap in historical static/thin/empty captures; all12 updates reject. Current A geometry accepts4096, showing capacity depends on ray paths.",
+    "All adapter checks show zero invented FREE/UNKNOWN/expired cells. No live publication rate, camera source freshness or RMPflow goal claim comes from replay."
+  ],
+  "qualification": "Selected physical endpoint voxels are not total reconstructed physical surface. Native rendering validated inputs; the mapping replay itself is SDK-free with explicit logical/recorded clocks. CPU timings include small hooks and are descriptive, not controlled native benchmarking.",
+  "current_authored_dataset_scope_review": {
+    "scope": "RENDER_ONLY_HOVER_STRESS_POTENTIAL_ROBOT_FIXTURE_OVERLAP",
+    "posture": "hover",
+    "primary_recommendation_eligible": false,
+    "physical_nonoverlap_validated": false,
+    "reason": "Independent actual robot visible-mesh versus cylinder-enclosing-box evaluation reports zero clearance/potential overlap at hover. This is a conservative overlap screen, not proof of exact cylinder penetration. Counts remain valid rendered-stress observations, not primary physically separated evidence.",
+    "reference": "docs/assets/camera_observability_feasibility/native_visibility.json",
+    "replacement_plan": "New matched HOME bursts with explicit actual-mesh clearance guards will provide a separate sampling_home_primary.json. Preserve all hover results unchanged."
+  }
+}

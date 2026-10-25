@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "RETAINED_NEGATIVE_RESEARCH_TRIALS",
+  "initial_script_sha256": "c496b6e47950e215b52df5bb068bce950f8372f4e1bd0d338006d133766cba8d",
+  "scope": "Initial offset-cycle prototype retained the production stride8 robot-pixel validation contract; off-grid selected pixels were correctly rejected. Higher4096 experiments retained the original500000 voxel-visit cap.",
+  "full_initial_result": "outputs/camera-observability-feasibility/sampling-v2b-reference/initial-contract-result.json",
+  "records": [
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 3,
+      "reasons": [
+        "Invalid RGB-D snapshot: mask provider failed: Robot pixels must be integer stride-grid image coordinates: /World/PerceptionCamera"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-static-direct-capture/cycle1024.json",
+      "trace_sha256": "11b02b0329da58b3f2056b45aafe5501332d5f8b7bbd49b3ebac83e3e9587594"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "reasons": [
+        "Voxel traversal budget exceeded"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-static-direct-capture/fixed4096.json",
+      "trace_sha256": "ac72deeb3413ffb7a9250e50d6dd9d591fa26dcd8d4ed6127c3b39317abe58aa"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 3,
+      "reasons": [
+        "Invalid RGB-D snapshot: mask provider failed: Robot pixels must be integer stride-grid image coordinates: /World/PerceptionCamera"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/cycle1024.json",
+      "trace_sha256": "7db0874dde9eba91130bfc3f4f73e30dfb44fbbc7ac8e3aade26d2bf4879e34d"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "reasons": [
+        "Voxel traversal budget exceeded"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-sparse-direct-capture/fixed4096.json",
+      "trace_sha256": "5a24f361d7ac0426b898d70ca7537bee267139e1ce5764d6975ce9776741dc80"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 3,
+      "reasons": [
+        "Invalid RGB-D snapshot: mask provider failed: Robot pixels must be integer stride-grid image coordinates: /World/PerceptionCamera"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-partial-direct-capture/cycle1024.json",
+      "trace_sha256": "489cd4f87b6d123627a24074e49ee706f9e799637a7e21edda7a67c098c09259"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 12,
+      "reasons": [],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-partial-direct-capture/fixed4096.json",
+      "trace_sha256": "6f745d4c22d3f6338534a22da11d075d2c1bce08e53a375bc38da36f1c74b80b"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "policy": "cycle1024",
+      "attempted": 12,
+      "accepted": 3,
+      "reasons": [
+        "Invalid RGB-D snapshot: mask provider failed: Robot pixels must be integer stride-grid image coordinates: /World/PerceptionCamera"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-empty-direct-capture/cycle1024.json",
+      "trace_sha256": "ece791da23ad8c5c0d4cbb8e4c17bd2fdfe0c39fd1468ddc95b28f04e0da23a4"
+    },
+    {
+      "capture_layout": "V2b_reference_fixedposes/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "policy": "fixed4096",
+      "attempted": 12,
+      "accepted": 0,
+      "reasons": [
+        "Voxel traversal budget exceeded"
+      ],
+      "trace": "outputs/camera-observability-feasibility/sampling-v2b-reference/motion-planning-v2b-baseline-rgbd-empty-direct-capture/fixed4096.json",
+      "trace_sha256": "e05ecedd12b51f44dfa984f4619eadf25f03e9ea744d063b1e0a70aa8a948acc"
+    }
+  ],
+  "followup": "A separate explicitly selected research-only cycle prototype configures worker RobotSelfFilter stride1 while still supplying only1024 explicit selected pixels. No production change or extra rays; exact mesh/tolerances/TTL unchanged."
+}

@@ -1,0 +1,963 @@
+{
+  "status": "MEASURED_COMPONENT_TRADEOFFS",
+  "points": [
+    {
+      "layout_id": "A_current",
+      "label": "Current A",
+      "camera_count": 2,
+      "visibility": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.45697040853126636,
+        "visible_surface_two_fraction": 0.05616850008624258,
+        "object_macro_visible_fraction": 0.446889185685634
+      },
+      "kit_p99_ms": {
+        "count": 3,
+        "minimum": 24.608676973730304,
+        "median": 26.00969549734139,
+        "maximum": 26.329127252102108,
+        "mean": 25.649166574391263
+      },
+      "runtime_case_ids": [
+        "outputs/camera-observability-feasibility/performance/A_current-fixed-r1",
+        "outputs/camera-observability-feasibility/performance/A_current-fixed-r2",
+        "outputs/camera-observability-feasibility/performance/A_current-fixed-r3"
+      ],
+      "runtime_mode": "baseline",
+      "strict_motion_successes": 3,
+      "physical_cases": 5,
+      "physical_scenarios": [
+        "moving",
+        "narrow",
+        "partial",
+        "sparse",
+        "static"
+      ],
+      "semantic_matches": 5,
+      "semantic_postures": 5,
+      "actual_native_calibration": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "position_world_m": [
+            1.658959984779358,
+            -0.05281348153948784,
+            1.1035808324813843
+          ],
+          "world_from_camera_ros": [
+            [
+              0.015999969094991684,
+              0.6062406301498413,
+              -0.7951202988624573,
+              1.658959984779358
+            ],
+            [
+              0.9998406171798706,
+              -0.015999969094991684,
+              0.007920295931398869,
+              -0.05281348153948784
+            ],
+            [
+              -0.007920295931398869,
+              -0.7951202988624573,
+              -0.6064000129699707,
+              1.1035808324813843
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 37.329653261289856,
+          "actual_azimuth_deg": 179.42928822012928,
+          "horizontal_fov_deg": 60.000002939640964,
+          "vertical_fov_deg": 46.82644676683758,
+          "requested_transform_max_error": 3.2502070590467724e-08,
+          "token": [
+            14.966666666666667,
+            6.966667030006647
+          ],
+          "acquired_at": 3247290.747866643,
+          "actual_orientation_ros_wxyz": [
+            0.3136877370168028,
+            -0.6399999904609285,
+            -0.6273754965890745,
+            0.3136877370168028
+          ],
+          "height_m": 1.1035808324813843,
+          "distance_to_mapping_center_m": 1.491504690369288,
+          "horizontal_distance_to_mapping_center_m": 1.38496732932687,
+          "optical_axis_unit_aim_world_m": [
+            0.8638396859169006,
+            -0.04489318560808897,
+            0.4971808195114136
+          ]
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "position_world_m": [
+            0.17999999225139618,
+            0.8000000715255737,
+            0.6500000357627869
+          ],
+          "world_from_camera_ros": [
+            [
+              -0.9474923014640808,
+              -0.18726836144924164,
+              0.2592082917690277,
+              0.17999999225139618
+            ],
+            [
+              -0.3197786509990692,
+              0.5548692345619202,
+              -0.7680245637893677,
+              0.8000000715255737
+            ],
+            [
+              -4.832380273711578e-09,
+              -0.8105866312980652,
+              -0.5856187343597412,
+              0.6500000357627869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 35.846713388977435,
+          "actual_azimuth_deg": -71.35046114615125,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 7.152557368605983e-08,
+          "token": [
+            14.966666666666667,
+            6.966667030006647
+          ],
+          "acquired_at": 3247290.747866643,
+          "actual_orientation_ros_wxyz": [
+            0.07375333174403599,
+            -0.1442716418002165,
+            0.8786324986002029,
+            -0.4491670856707452
+          ],
+          "height_m": 0.6500000357627869,
+          "distance_to_mapping_center_m": 0.8118036234618053,
+          "horizontal_distance_to_mapping_center_m": 0.8056209505177717,
+          "optical_axis_unit_aim_world_m": [
+            0.4392082840204239,
+            0.031975507736206055,
+            0.06438130140304565
+          ]
+        }
+      ],
+      "kit_p99_relative_cost_percent": 0.0
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "label": "Repositioned C",
+      "camera_count": 2,
+      "visibility": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.6680508426488428,
+        "visible_surface_two_fraction": 0.029847394496325928,
+        "object_macro_visible_fraction": 0.5979610799744611
+      },
+      "kit_p99_ms": {
+        "count": 3,
+        "minimum": 24.96053255163133,
+        "median": 25.161817362532016,
+        "maximum": 26.388240279629844,
+        "mean": 25.50353006459773
+      },
+      "runtime_case_ids": [
+        "outputs/camera-observability-feasibility/performance/C_asymmetric_1.15_0.65-fixed-r1",
+        "outputs/camera-observability-feasibility/performance/C_asymmetric_1.15_0.65-fixed-r2",
+        "outputs/camera-observability-feasibility/performance/C_asymmetric_1.15_0.65-fixed-r3"
+      ],
+      "runtime_mode": "baseline",
+      "strict_motion_successes": 4,
+      "physical_cases": 5,
+      "physical_scenarios": [
+        "moving",
+        "narrow",
+        "partial",
+        "sparse",
+        "static"
+      ],
+      "semantic_matches": 3,
+      "semantic_postures": 5,
+      "actual_native_calibration": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "position_world_m": [
+            1.0499999523162842,
+            0.7000000476837158,
+            1.149999976158142
+          ],
+          "world_from_camera_ros": [
+            [
+              -0.7071067690849304,
+              0.4444444179534912,
+              -0.5499719381332397,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              0.4444444179534912,
+              -0.5499719977378845,
+              0.7000000476837158
+            ],
+            [
+              3.253693101909163e-17,
+              -0.7777777910232544,
+              -0.6285393238067627,
+              1.149999976158142
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 38.94243823334173,
+          "actual_azimuth_deg": -134.99999689521033,
+          "horizontal_fov_deg": 60.000002939640964,
+          "vertical_fov_deg": 46.82644676683758,
+          "requested_transform_max_error": 5.681501424881219e-08,
+          "token": [
+            14.966666666666667,
+            6.933333694934845
+          ],
+          "acquired_at": 3247532.917594092,
+          "actual_orientation_ros_wxyz": [
+            0.16492293963202442,
+            -0.3453216314049702,
+            -0.833680171115576,
+            0.3981592206350642
+          ],
+          "height_m": 1.149999976158142,
+          "distance_to_mapping_center_m": 1.204418932198103,
+          "horizontal_distance_to_mapping_center_m": 1.0443299252858012,
+          "optical_axis_unit_aim_world_m": [
+            0.5000280141830444,
+            0.1500280499458313,
+            0.5214606523513794
+          ]
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "position_world_m": [
+            0.18000002205371857,
+            -0.7999999523162842,
+            0.6499999761581421
+          ],
+          "world_from_camera_ros": [
+            [
+              0.9781588315963745,
+              -0.0715809166431427,
+              0.1951446682214737,
+              0.18000002205371857
+            ],
+            [
+              -0.20785875618457794,
+              -0.3368513286113739,
+              0.9183277487754822,
+              -0.7999999523162842
+            ],
+            [
+              -7.514552313736544e-10,
+              -0.9388329386711121,
+              -0.34437286853790283,
+              0.6499999761581421
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 20.143518372977308,
+          "actual_azimuth_deg": 78.00309940224837,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 7.96436384620236e-08,
+          "token": [
+            14.966666666666667,
+            6.933333694934845
+          ],
+          "acquired_at": 3247532.917594092,
+          "actual_orientation_ros_wxyz": [
+            0.5694151786788919,
+            -0.8153807436936519,
+            0.08567766500158772,
+            -0.05983237554336229
+          ],
+          "height_m": 0.6499999761581421,
+          "distance_to_mapping_center_m": 0.811803495155989,
+          "horizontal_distance_to_mapping_center_m": 0.8056208286258809,
+          "optical_axis_unit_aim_world_m": [
+            0.37514469027519226,
+            0.118327796459198,
+            0.30562710762023926
+          ]
+        }
+      ],
+      "kit_p99_relative_cost_percent": -3.259854137454399
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "label": "Optimized three K",
+      "camera_count": 3,
+      "visibility": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.775855594525046,
+        "visible_surface_two_fraction": 0.28896861433909543,
+        "object_macro_visible_fraction": 0.7355734432049184
+      },
+      "kit_p99_ms": {
+        "count": 3,
+        "minimum": 36.2555805407464,
+        "median": 37.81806687824432,
+        "maximum": 37.997092213481764,
+        "mean": 37.35691321082417
+      },
+      "runtime_case_ids": [
+        "outputs/camera-observability-feasibility/performance/K_B_front_height_0.85_rear-fixed-r1",
+        "outputs/camera-observability-feasibility/performance/K_B_front_height_0.85_rear-fixed-r2",
+        "outputs/camera-observability-feasibility/performance/K_B_front_height_0.85_rear-fixed-r3"
+      ],
+      "runtime_mode": "mapping",
+      "strict_motion_successes": 1,
+      "physical_cases": 5,
+      "physical_scenarios": [
+        "moving",
+        "narrow",
+        "partial",
+        "sparse",
+        "static"
+      ],
+      "semantic_matches": 5,
+      "semantic_postures": 5,
+      "actual_native_calibration": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "position_world_m": [
+            1.0499999523162842,
+            0.6999999284744263,
+            0.8500000238418579
+          ],
+          "world_from_camera_ros": [
+            [
+              -0.7071068286895752,
+              0.3187883496284485,
+              -0.6311687231063843,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              0.3187883496284485,
+              -0.631168782711029,
+              0.6999999284744263
+            ],
+            [
+              -1.900126811449354e-08,
+              -0.8926073908805847,
+              -0.45083481073379517,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 26.797256934427544,
+          "actual_azimuth_deg": -134.99999729462638,
+          "horizontal_fov_deg": 60.000002939640964,
+          "vertical_fov_deg": 46.82644676683758,
+          "requested_transform_max_error": 7.152557368605983e-08,
+          "token": [
+            14.666666666666666,
+            6.766667019575834
+          ],
+          "acquired_at": 3247570.027480414,
+          "actual_orientation_ros_wxyz": [
+            0.20052851127306637,
+            -0.3259369793525731,
+            -0.7868815014110795,
+            0.4841186922233824
+          ],
+          "height_m": 0.8500000238418579,
+          "distance_to_mapping_center_m": 1.0865656170980011,
+          "horizontal_distance_to_mapping_center_m": 1.0443298453814507,
+          "optical_axis_unit_aim_world_m": [
+            0.4188312292098999,
+            0.06883114576339722,
+            0.39916521310806274
+          ]
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "position_world_m": [
+            1.0499999523162842,
+            -0.6999999284744263,
+            0.8500000238418579
+          ],
+          "world_from_camera_ros": [
+            [
+              0.70710688829422,
+              0.3187883496284485,
+              -0.6311687231063843,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              -0.3187883794307709,
+              0.631168782711029,
+              -0.6999999284744263
+            ],
+            [
+              -1.8619324748669897e-08,
+              -0.8926073908805847,
+              -0.45083481073379517,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 26.797256934427544,
+          "actual_azimuth_deg": 134.99999729462638,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 1.0710767250898812e-07,
+          "token": [
+            14.666666666666666,
+            6.766667019575834
+          ],
+          "acquired_at": 3247570.027480414,
+          "actual_orientation_ros_wxyz": [
+            0.484118683485332,
+            -0.7868815156138163,
+            -0.3259369734696072,
+            0.2005285196060802
+          ],
+          "height_m": 0.8500000238418579,
+          "distance_to_mapping_center_m": 1.0865656170980011,
+          "horizontal_distance_to_mapping_center_m": 1.0443298453814507,
+          "optical_axis_unit_aim_world_m": [
+            0.4188312292098999,
+            -0.06883114576339722,
+            0.39916521310806274
+          ]
+        },
+        {
+          "camera_id": "/World/CameraObservabilityThird",
+          "position_world_m": [
+            -0.2500000298023224,
+            -0.9000000357627869,
+            0.8500000834465027
+          ],
+          "world_from_camera_ros": [
+            [
+              0.8320503234863281,
+              -0.23274701833724976,
+              0.5035088062286377,
+              -0.2500000298023224
+            ],
+            [
+              -0.5547001361846924,
+              -0.3491206169128418,
+              0.7552632093429565,
+              -0.9000000357627869
+            ],
+            [
+              3.5462281999798506e-08,
+              -0.9077134132385254,
+              -0.4195907413959503,
+              0.8500000834465027
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              366.4996337890625,
+              0.0,
+              160.0
+            ],
+            [
+              0.0,
+              366.4996337890625,
+              120.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            320,
+            240
+          ],
+          "actual_downward_pitch_deg": 24.808751670408494,
+          "actual_azimuth_deg": 56.30993247402021,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 8.344650270775134e-08,
+          "token": [
+            14.666666666666666,
+            6.766667019575834
+          ],
+          "acquired_at": 3247570.027480414,
+          "actual_orientation_ros_wxyz": [
+            0.5155916430997968,
+            -0.8063438599312207,
+            0.24414123851241007,
+            -0.15610859916942502
+          ],
+          "height_m": 0.8500000834465027,
+          "distance_to_mapping_center_m": 1.0842624893139878,
+          "horizontal_distance_to_mapping_center_m": 1.041933345116403,
+          "optical_axis_unit_aim_world_m": [
+            0.2535087764263153,
+            -0.14473682641983032,
+            0.43040934205055237
+          ]
+        }
+      ],
+      "kit_p99_relative_cost_percent": 45.399883217048576
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "label": "Current + side H",
+      "camera_count": 3,
+      "visibility": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.6753831644227629,
+        "visible_surface_two_fraction": 0.18436890131604974,
+        "object_macro_visible_fraction": 0.6663048370129951
+      },
+      "kit_p99_ms": {
+        "count": 3,
+        "minimum": 31.857428085058913,
+        "median": 33.194795572198935,
+        "maximum": 34.21818239148697,
+        "mean": 33.09013534958161
+      },
+      "runtime_case_ids": [
+        "outputs/camera-observability-feasibility/performance/H_third_side_-1.00-fixed-r1",
+        "outputs/camera-observability-feasibility/performance/H_third_side_-1.00-fixed-r2",
+        "outputs/camera-observability-feasibility/performance/H_third_side_-1.00-fixed-r3"
+      ],
+      "runtime_mode": "mapping",
+      "strict_motion_successes": 0,
+      "physical_cases": 2,
+      "physical_scenarios": [
+        "partial",
+        "static"
+      ],
+      "semantic_matches": 5,
+      "semantic_postures": 5,
+      "actual_native_calibration": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "position_world_m": [
+            1.658959984779358,
+            -0.05281348153948784,
+            1.1035808324813843
+          ],
+          "world_from_camera_ros": [
+            [
+              0.015999969094991684,
+              0.6062406301498413,
+              -0.7951202988624573,
+              1.658959984779358
+            ],
+            [
+              0.9998406171798706,
+              -0.015999969094991684,
+              0.007920295931398869,
+              -0.05281348153948784
+            ],
+            [
+              -0.007920295931398869,
+              -0.7951202988624573,
+              -0.6064000129699707,
+              1.1035808324813843
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 37.329653261289856,
+          "actual_azimuth_deg": 179.42928822012928,
+          "horizontal_fov_deg": 60.000002939640964,
+          "vertical_fov_deg": 46.82644676683758,
+          "requested_transform_max_error": 3.2502070590467724e-08,
+          "token": [
+            15.0,
+            6.966667030006647
+          ],
+          "acquired_at": 3247611.561456263,
+          "actual_orientation_ros_wxyz": [
+            0.3136877370168028,
+            -0.6399999904609285,
+            -0.6273754965890745,
+            0.3136877370168028
+          ],
+          "height_m": 1.1035808324813843,
+          "distance_to_mapping_center_m": 1.491504690369288,
+          "horizontal_distance_to_mapping_center_m": 1.38496732932687,
+          "optical_axis_unit_aim_world_m": [
+            0.8638396859169006,
+            -0.04489318560808897,
+            0.4971808195114136
+          ]
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "position_world_m": [
+            0.17999999225139618,
+            0.8000000715255737,
+            0.6500000357627869
+          ],
+          "world_from_camera_ros": [
+            [
+              -0.9474923014640808,
+              -0.18726836144924164,
+              0.2592082917690277,
+              0.17999999225139618
+            ],
+            [
+              -0.3197786509990692,
+              0.5548692345619202,
+              -0.7680245637893677,
+              0.8000000715255737
+            ],
+            [
+              -4.832380273711578e-09,
+              -0.8105866312980652,
+              -0.5856187343597412,
+              0.6500000357627869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ],
+          "actual_downward_pitch_deg": 35.846713388977435,
+          "actual_azimuth_deg": -71.35046114615125,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 7.152557368605983e-08,
+          "token": [
+            15.0,
+            6.966667030006647
+          ],
+          "acquired_at": 3247611.561456263,
+          "actual_orientation_ros_wxyz": [
+            0.07375333174403599,
+            -0.1442716418002165,
+            0.8786324986002029,
+            -0.4491670856707452
+          ],
+          "height_m": 0.6500000357627869,
+          "distance_to_mapping_center_m": 0.8118036234618053,
+          "horizontal_distance_to_mapping_center_m": 0.8056209505177717,
+          "optical_axis_unit_aim_world_m": [
+            0.4392082840204239,
+            0.031975507736206055,
+            0.06438130140304565
+          ]
+        },
+        {
+          "camera_id": "/World/CameraObservabilityThird",
+          "position_world_m": [
+            -0.25,
+            -1.0,
+            0.8500000238418579
+          ],
+          "world_from_camera_ros": [
+            [
+              0.8574929237365723,
+              -0.20273974537849426,
+              0.4728661775588989,
+              -0.25
+            ],
+            [
+              -0.5144957304000854,
+              -0.33789968490600586,
+              0.7881103754043579,
+              -1.0
+            ],
+            [
+              3.1537915390345006e-08,
+              -0.919086754322052,
+              -0.3940553069114685,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "intrinsics": [
+            [
+              366.4996337890625,
+              0.0,
+              160.0
+            ],
+            [
+              0.0,
+              366.4996337890625,
+              120.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            320,
+            240
+          ],
+          "actual_downward_pitch_deg": 23.207069352317525,
+          "actual_azimuth_deg": 59.03624601690855,
+          "horizontal_fov_deg": 47.16855497158303,
+          "vertical_fov_deg": 36.25915817252342,
+          "requested_transform_max_error": 1.3589077174636088e-07,
+          "token": [
+            15.0,
+            6.966667030006647
+          ],
+          "acquired_at": 3247611.561456263,
+          "actual_orientation_ros_wxyz": [
+            0.5304568796200757,
+            -0.804588080255053,
+            0.2228579733468141,
+            -0.1469280432749254
+          ],
+          "height_m": 0.8500000238418579,
+          "distance_to_mapping_center_m": 1.1685995953726476,
+          "horizontal_distance_to_mapping_center_m": 1.1294356998076518,
+          "optical_axis_unit_aim_world_m": [
+            0.22286617755889893,
+            -0.2118896245956421,
+            0.4559447169303894
+          ]
+        }
+      ],
+      "kit_p99_relative_cost_percent": 27.62469893425694
+    }
+  ],
+  "sources": {
+    "docs/assets/camera_observability_feasibility/geometry_scene_qualifications.json": "503e55122511f80ad07755fa744e20322a4aaa94788572fc1df376d7784130dd",
+    "docs/assets/camera_observability_feasibility/native_visibility.json": "8eb5fa00feecd4648b49f6f319b9f8947aa39515dd45b0c87173207781dbdfce",
+    "docs/assets/camera_observability_feasibility/performance.json": "f31527cbf2ceb5daa2b2993b69bc37dbafe0d57bb20375a902821e69fbaebb34",
+    "docs/assets/camera_observability_feasibility/planning.json": "332baeac3aa8ede9a4d7da71182514ee129c278fd23a9adb096c119b09b8f7a0",
+    "docs/assets/camera_observability_feasibility/semantic_spotcheck.json": "4e7d6ea8dbdfc207f45538f575a90fdd0ff39f1593616efd64201386e08c92f7"
+  },
+  "scope": {
+    "visibility": "Area-weighted actual rendered surface over42 matched robot/fixture and fixture/background-clear conditions; support-plane contact excluded from the inter-object qualification.",
+    "runtime": "Median of three per-run Kit p99 values; error bars show their minimum/maximum, not confidence intervals. Ten-second warmup and30-second native headless windows.",
+    "physical": "Primary, valid, fixed1024-ray reactive cases only; strict contact-free goal success. H contains only targeted static/partial cases, so its denominator differs.",
+    "semantics": "Unchanged-processor single-frame original-object class-count spot-check at five postures; not a semantic holdout or manipulation qualification.",
+    "score": "No combined score, no automatic25-percent veto, and no unmeasured wrist or optional single-run costs."
+  },
+  "plot_script_sha256": "cc061bdcf79eb2295f0f8c049ac97e0323776e5add3d33fe8dcb739ad77c38f4"
+}

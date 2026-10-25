@@ -1,0 +1,1177 @@
+{
+  "status": "MEASURED_GEOMETRIC_ENVELOPE",
+  "summaries": [
+    {
+      "layout_id": "A_current",
+      "minimum_housing_clearance_m": 0.6363111907955922,
+      "intersecting_camera_pose_samples": 0,
+      "sampled_camera_poses": 10,
+      "per_camera": {
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 1.169608850196029,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.6363111907955922,
+          "intersecting_postures": []
+        }
+      }
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "minimum_housing_clearance_m": 0.6123986412408005,
+      "intersecting_camera_pose_samples": 0,
+      "sampled_camera_poses": 10,
+      "per_camera": {
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 0.9150120697872663,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.6123986412408005,
+          "intersecting_postures": []
+        }
+      }
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "minimum_housing_clearance_m": 0.6363111907955922,
+      "intersecting_camera_pose_samples": 0,
+      "sampled_camera_poses": 15,
+      "per_camera": {
+        "/World/CameraObservabilityThird": {
+          "minimum_housing_clearance_m": 0.885847974878583,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 1.169608850196029,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.6363111907955922,
+          "intersecting_postures": []
+        }
+      }
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "minimum_housing_clearance_m": 0.0,
+      "intersecting_camera_pose_samples": 5,
+      "sampled_camera_poses": 15,
+      "per_camera": {
+        "/World/CameraObservabilityThird": {
+          "minimum_housing_clearance_m": 0.0,
+          "intersecting_postures": [
+            "home",
+            "hover",
+            "extended",
+            "raised",
+            "low"
+          ]
+        },
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 1.1696088917603196,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.6363111153047308,
+          "intersecting_postures": []
+        }
+      }
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "minimum_housing_clearance_m": 0.0,
+      "intersecting_camera_pose_samples": 5,
+      "sampled_camera_poses": 15,
+      "per_camera": {
+        "/World/CameraObservabilityThird": {
+          "minimum_housing_clearance_m": 0.0,
+          "intersecting_postures": [
+            "home",
+            "hover",
+            "extended",
+            "raised",
+            "low"
+          ]
+        },
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 1.1696088917603196,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.6363111153047308,
+          "intersecting_postures": []
+        }
+      }
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "minimum_housing_clearance_m": 0.7520256565149663,
+      "intersecting_camera_pose_samples": 0,
+      "sampled_camera_poses": 15,
+      "per_camera": {
+        "/World/CameraObservabilityThird": {
+          "minimum_housing_clearance_m": 0.78892803455581,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCamera": {
+          "minimum_housing_clearance_m": 0.7520256565149663,
+          "intersecting_postures": []
+        },
+        "/World/PerceptionCameraSide": {
+          "minimum_housing_clearance_m": 0.7915181404029557,
+          "intersecting_postures": []
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "layout_id": "A_current",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.1873379822472183,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.675230242359693,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.2604152303637395,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6695194179062721,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.169608850196029,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6363111907955922,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.261844565552763,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.7078758992328801,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.3261251142805022,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "A_current",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6831839319907373,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.7000000476837158,
+        1.149999976158142
+      ],
+      "housing_clearance_m": 0.9734768473922113,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18000002205371857,
+        -0.7999999523162842,
+        0.6499999761581421
+      ],
+      "housing_clearance_m": 0.6624576770900735,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.7000000476837158,
+        1.149999976158142
+      ],
+      "housing_clearance_m": 1.0368741863976714,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18000002205371857,
+        -0.7999999523162842,
+        0.6499999761581421
+      ],
+      "housing_clearance_m": 0.677672586440508,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.7000000476837158,
+        1.149999976158142
+      ],
+      "housing_clearance_m": 0.9150120697872663,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18000002205371857,
+        -0.7999999523162842,
+        0.6499999761581421
+      ],
+      "housing_clearance_m": 0.6855555234801647,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.7000000476837158,
+        1.149999976158142
+      ],
+      "housing_clearance_m": 1.0242772819621377,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18000002205371857,
+        -0.7999999523162842,
+        0.6499999761581421
+      ],
+      "housing_clearance_m": 0.6123986412408005,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.7000000476837158,
+        1.149999976158142
+      ],
+      "housing_clearance_m": 1.1363441854537113,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18000002205371857,
+        -0.7999999523162842,
+        0.6499999761581421
+      ],
+      "housing_clearance_m": 0.6578067450866122,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.1873379822472183,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.675230242359693,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "home",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.25,
+        -1.0,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.918543392953733,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.2604152303637395,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6695194179062721,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "hover",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.25,
+        -1.0,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9181136879036168,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.169608850196029,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6363111907955922,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "extended",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.25,
+        -1.0,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9763168604158448,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.261844565552763,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.7078758992328801,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "raised",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.25,
+        -1.0,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.885847974878583,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.658959984779358,
+        -0.05281348153948784,
+        1.1035808324813843
+      ],
+      "housing_clearance_m": 1.3261251142805022,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.17999999225139618,
+        0.8000000715255737,
+        0.6500000357627869
+      ],
+      "housing_clearance_m": 0.6831839319907373,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "pose_id": "low",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.25,
+        -1.0,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9085896148508071,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.1873380234841058,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6752301720280565,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "home",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.5081227030089459,
+        -0.032937580900393594,
+        0.45619246764066124
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.2604152718372745,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6695193485922447,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.4160646604444102,
+        -0.01118035771054007,
+        0.3859350834649162
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.1696088917603196,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6363111153047308,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.5282912157660458,
+        0.1038659748442092,
+        0.3788547919263692
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.261844604366689,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.7078758336902385,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.32848101744970937,
+        -0.08900455158318155,
+        0.6082631993949128
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.326125156193606,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6831838617380872,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_-0.05",
+      "pose_id": "low",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.3821211631834663,
+        -0.07753874278700831,
+        0.3059106829468024
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.1873380234841058,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6752301720280565,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "home",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.5935372077051786,
+        -0.06067832172397494,
+        0.5001789847346086
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.2604152718372745,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6695193485922447,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "hover",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.5160443619811765,
+        -0.013140268962234714,
+        0.38640201869020957
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.1696088917603196,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6363111153047308,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "extended",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.628270992443781,
+        0.10559376239892343,
+        0.3778257119314445
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.261844604366689,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.7078758336902385,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "raised",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.4284780271136062,
+        -0.08914765585878853,
+        0.6075032129181754
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.6589600172814285,
+        -0.05281348017761145,
+        1.1035808604242954
+      ],
+      "housing_clearance_m": 1.326125156193606,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        0.18,
+        0.8,
+        0.65
+      ],
+      "housing_clearance_m": 0.6831838617380872,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "J_wrist_offset_+0.05",
+      "pose_id": "low",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        0.48211662342064926,
+        -0.07809522221314343,
+        0.30513720857601967
+      ],
+      "housing_clearance_m": 0.0,
+      "housing_intersects_robot": true,
+      "camera_pose_source": "kinematic hand-fixed hypothesis"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.8508870670219676,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "home",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        -0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.7915181404029557,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "home",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.2500000298023224,
+        -0.9000000357627869,
+        0.8500000834465027
+      ],
+      "housing_clearance_m": 0.8254821583975003,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.8989692275047483,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "hover",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        -0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.8832728213464119,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "hover",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.2500000298023224,
+        -0.9000000357627869,
+        0.8500000834465027
+      ],
+      "housing_clearance_m": 0.8238021313793009,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.7520256565149663,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "extended",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        -0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9127178324355558,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "extended",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.2500000298023224,
+        -0.9000000357627869,
+        0.8500000834465027
+      ],
+      "housing_clearance_m": 0.8861133121454333,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9398599925766264,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "raised",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        -0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.8248333633932606,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "raised",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.2500000298023224,
+        -0.9000000357627869,
+        0.8500000834465027
+      ],
+      "housing_clearance_m": 0.78892803455581,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCamera",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.9824618867150656,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "low",
+      "camera_id": "/World/PerceptionCameraSide",
+      "optical_origin_world_m": [
+        1.0499999523162842,
+        -0.6999999284744263,
+        0.8500000238418579
+      ],
+      "housing_clearance_m": 0.889214027706183,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "pose_id": "low",
+      "camera_id": "/World/CameraObservabilityThird",
+      "optical_origin_world_m": [
+        -0.2500000298023224,
+        -0.9000000357627869,
+        0.8500000834465027
+      ],
+      "housing_clearance_m": 0.8151984220679466,
+      "housing_intersects_robot": false,
+      "camera_pose_source": "actual native fixed-camera calibration"
+    }
+  ],
+  "protocol": {
+    "housing_assumption": "World-aligned50mmcube centered at optical origin; explicit evaluation assumption, not a real calibrated sensor housing.",
+    "reference": "Exact copied visible robot triangle-mesh solids at five actual native endpoint postures.",
+    "limitations": "No real mounting bracket/cables, table/other-asset mounting clearance or continuous robot swept-volume certification. Jis hypothetical and not rendered or attached.",
+    "runtime": "No collision geometry is introduced into the live scene; these are offline evaluation boxes only."
+  }
+}

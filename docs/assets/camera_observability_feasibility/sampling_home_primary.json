@@ -1,0 +1,3619 @@
+{
+  "schema_version": 1,
+  "status": "PRIMARY_GUARDED_HOME_OFFLINE_REPLAY",
+  "posture": "home",
+  "sampler_uses_evaluation_truth": false,
+  "physical_nonoverlap_guard": {
+    "status": "PASS_PRIMARY_NONOVERLAP_GUARD",
+    "scope": "Every recorded exposure-matched actual visible robot mesh snapshot is checked against the conservative enclosing box of the exact cylinder reference. Positive clearance establishes nonoverlap for this static fixture snapshot, not a swept-motion or physical robot safety proof.",
+    "checked_inputs": 48,
+    "checked_camera_snapshots": 120,
+    "unique_geometry_checks": 1,
+    "elapsed_seconds": 0.35328835900872946,
+    "rows": [
+      {
+        "layout_id": "A_current",
+        "posture": "home",
+        "inputs": 12,
+        "checked_camera_snapshots": 24,
+        "minimum_clearance_m": 0.09451731937124382,
+        "maximum_clearance_m": 0.09451731937124382,
+        "all_positive": true,
+        "records": [
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249815.011357095,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249815.011357095,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249815.545413548,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249815.545413548,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249816.089291581,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249816.089291581,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249816.620962707,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249816.620962707,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249817.15523526,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249817.15523526,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249817.696296777,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249817.696296777,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249818.235395038,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249818.235395038,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249818.769992975,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249818.769992975,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249819.318290449,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249819.318290449,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249819.854055919,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249819.854055919,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249820.413500692,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249820.413500692,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249820.953720344,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249820.953720344,
+            "clearance_m": 0.09451731937124382
+          }
+        ],
+        "manifest": "outputs/camera-observability-feasibility/sampling-home-A_current/sampling_capture.json",
+        "manifest_sha256": "57e2bef0242e0b2d121baf7de9fe6165c1cbd34512c495995dfe5e041eb6185c"
+      },
+      {
+        "layout_id": "C_asymmetric_1.15_0.65",
+        "posture": "home",
+        "inputs": 12,
+        "checked_camera_snapshots": 24,
+        "minimum_clearance_m": 0.09451731937124382,
+        "maximum_clearance_m": 0.09451731937124382,
+        "all_positive": true,
+        "records": [
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249841.57185617,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249841.57185617,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249842.104144106,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249842.104144106,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249842.649242042,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249842.649242042,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249843.182006857,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249843.182006857,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249843.723673729,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249843.723673729,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249844.27075347,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249844.27075347,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249844.802658672,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249844.802658672,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249845.342187417,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249845.342187417,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249845.878789476,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249845.878789476,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249846.424932066,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249846.424932066,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249846.970428666,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249846.970428666,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249847.510154916,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249847.510154916,
+            "clearance_m": 0.09451731937124382
+          }
+        ],
+        "manifest": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/sampling_capture.json",
+        "manifest_sha256": "ef3efeb3a889e22719d5fcd9aa5cc562b0b622cd80b7be1fc94d310d2044e8b0"
+      },
+      {
+        "layout_id": "K_B_front_height_0.85_rear",
+        "posture": "home",
+        "inputs": 12,
+        "checked_camera_snapshots": 36,
+        "minimum_clearance_m": 0.09451731937124382,
+        "maximum_clearance_m": 0.09451731937124382,
+        "all_positive": true,
+        "records": [
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249868.78646394,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249868.78646394,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249868.78646394,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249869.32105554,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249869.32105554,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249869.32105554,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249869.866245772,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249869.866245772,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249869.866245772,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249870.390400498,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249870.390400498,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249870.390400498,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249870.968844694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249870.968844694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249870.968844694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249871.508622834,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249871.508622834,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249871.508622834,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249872.067816223,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249872.067816223,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249872.067816223,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249872.59434674,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249872.59434674,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249872.59434674,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249873.160060998,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249873.160060998,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249873.160060998,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249873.710924786,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249873.710924786,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249873.710924786,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249874.252604787,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249874.252604787,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249874.252604787,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249874.787383703,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249874.787383703,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249874.787383703,
+            "clearance_m": 0.09451731937124382
+          }
+        ],
+        "manifest": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/sampling_capture.json",
+        "manifest_sha256": "1c9cfb11a8160ac80458bad5c2dc698bbccd4c0d1985aa8c35b51d8fc11f7a1a"
+      },
+      {
+        "layout_id": "H_third_side_-1.00",
+        "posture": "home",
+        "inputs": 12,
+        "checked_camera_snapshots": 36,
+        "minimum_clearance_m": 0.09451731937124382,
+        "maximum_clearance_m": 0.09451731937124382,
+        "all_positive": true,
+        "records": [
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249895.469728607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249895.469728607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 0,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249895.469728607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249896.007019607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249896.007019607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 1,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249896.007019607,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249896.544723889,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249896.544723889,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 2,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249896.544723889,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249897.068372891,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249897.068372891,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 3,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249897.068372891,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249897.627237694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249897.627237694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 4,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249897.627237694,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249898.186028037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249898.186028037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 5,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249898.186028037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249898.741723037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249898.741723037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 6,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249898.741723037,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249899.297436038,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249899.297436038,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 7,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249899.297436038,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249899.833487299,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249899.833487299,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 8,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249899.833487299,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249900.376617303,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249900.376617303,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 9,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249900.376617303,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249900.911932644,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249900.911932644,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 10,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249900.911932644,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCamera",
+            "source_timestamp": 3249901.456450001,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/PerceptionCameraSide",
+            "source_timestamp": 3249901.456450001,
+            "clearance_m": 0.09451731937124382
+          },
+          {
+            "input_index": 11,
+            "camera_id": "/World/CameraObservabilityThird",
+            "source_timestamp": 3249901.456450001,
+            "clearance_m": 0.09451731937124382
+          }
+        ],
+        "manifest": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/sampling_capture.json",
+        "manifest_sha256": "15c1d7afee78f72032b8a2c22169c877976ff30be2f56c417c327b6f31a197e5"
+      }
+    ]
+  },
+  "matched_evaluation_shape": [
+    {
+      "name": "post",
+      "center": [
+        0.45,
+        0.03,
+        0.17
+      ],
+      "dimensions": [
+        0.024,
+        0.024,
+        0.34
+      ],
+      "kind": "cylinder",
+      "radius": 0.012,
+      "height": 0.34
+    }
+  ],
+  "source_hashes": {
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+    "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c"
+  },
+  "script_sha256": "91a2286d0d0dc8d1f11d0a6c87d6def6c8b091da231cd86df18e39b63f75df9d",
+  "production_sources_unchanged": true,
+  "protocol": {
+    "initial_condition": "Each policy receives the same12 native inputs within a layout and starts with an independent fresh UNKNOWN map. Layouts use separately captured matched robot/fixture conditions; exact calibration, robot snapshots and all original acquired_at timestamps are retained.",
+    "policies": "A_current six-policy/fixed-budget/density comparison; C,K,H fixed1024 versus edge1024.",
+    "temporal_clock": "Explicit logical evaluation atmax(original acquired_at)+1ms; original inter-input timestamp spacing retained. Native publication/queue/rate are NOT_MEASURED by replay.",
+    "geometry": "Exact cylinder intersections label observed depth/endpoint evidence after mapping only. Conservative enclosing box audits actual recorded visible robot meshes for static separation. No fixture truth enters selectors or integration.",
+    "offset_cycle": "Explicit research-only filter validation stride1 accepts the1024 supplied off-grid pixels; no extra ray casting or production edit.",
+    "camera_count": "Fixed shared1024 budget; three-camera fair remainder rotates341/342 quotas, so view count also changes revisit patterns.",
+    "timings": "Descriptive measured offline CPU stages, not controlled native hardware comparisons; use the independent repeated hardware results.",
+    "scope_correction": "Earlier hover datasets remain supplementary render-only stress with potential overlap; this new guarded Home dataset is primary. No old counts or failures were removed.",
+    "physical_depth_match_tolerance_m": 0.015,
+    "physical_depth_match_scope": "Exact analytic cylinder intersection with15mm optical-depth matching tolerance, inherited from the V2b endpoint audit. Matching endpoint voxel counts are not a complete reconstructed surface or a collision-distance certificate."
+  },
+  "execution_results": [
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-primary-A/result.json",
+      "sha256": "4845e5368f8cc5b774d5b15d3c6990b6413147de0c3a7b1bfcbe16ef26ff48c6"
+    },
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-primary-layouts/result.json",
+      "sha256": "9a04c487b7e3e477e167f0d691c4484776310e0e0607eee2480cad2aeadf5b39"
+    }
+  ],
+  "matched_comparison": [
+    {
+      "layout": "A_current",
+      "policies": {
+        "fixed1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 10,
+          "unmasked_matching_rays_last_input": 10,
+          "occupied_physical_endpoint_cells": 10,
+          "represented_physical_endpoint_cells": 9,
+          "unique_selected_pixels": 1024,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 514,
+          "supported_voxels": 514,
+          "candidate_cuboids": 503,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 41,
+          "selected_hazard_cuboids": 23,
+          "omitted_voxels": 439,
+          "unique_free_evidence": 98413,
+          "offline_worker_p50_ms": 78.19636794738472,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "phase1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 9,
+          "unmasked_matching_rays_last_input": 9,
+          "occupied_physical_endpoint_cells": 36,
+          "represented_physical_endpoint_cells": 35,
+          "unique_selected_pixels": 4096,
+          "pixel_revisit_p50": 3.0,
+          "occupied_endpoint_probability_p50": 0.9275735146384823,
+          "occupied_voxels": 1996,
+          "supported_voxels": 1755,
+          "candidate_cuboids": 1381,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 12,
+          "selected_hazard_cuboids": 52,
+          "omitted_voxels": 1617,
+          "unique_free_evidence": 303302,
+          "offline_worker_p50_ms": 66.32922450080514,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "cycle1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 11,
+          "unmasked_matching_rays_last_input": 11,
+          "occupied_physical_endpoint_cells": 33,
+          "represented_physical_endpoint_cells": 30,
+          "unique_selected_pixels": 4096,
+          "pixel_revisit_p50": 3.0,
+          "occupied_endpoint_probability_p50": 0.9275735146384823,
+          "occupied_voxels": 1953,
+          "supported_voxels": 1788,
+          "candidate_cuboids": 1396,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 7,
+          "selected_hazard_cuboids": 57,
+          "omitted_voxels": 1679,
+          "unique_free_evidence": 279795,
+          "offline_worker_p50_ms": 66.05883850716054,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "edge1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 67,
+          "unmasked_matching_rays_last_input": 67,
+          "occupied_physical_endpoint_cells": 67,
+          "represented_physical_endpoint_cells": 66,
+          "unique_selected_pixels": 1024,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 507,
+          "supported_voxels": 507,
+          "candidate_cuboids": 432,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 9,
+          "selected_hazard_cuboids": 55,
+          "omitted_voxels": 369,
+          "unique_free_evidence": 89149,
+          "offline_worker_p50_ms": 74.43434582091868,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "fixed2048": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 18,
+          "unmasked_matching_rays_last_input": 18,
+          "occupied_physical_endpoint_cells": 18,
+          "represented_physical_endpoint_cells": 18,
+          "unique_selected_pixels": 2048,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 1024,
+          "supported_voxels": 1024,
+          "candidate_cuboids": 866,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 37,
+          "selected_hazard_cuboids": 27,
+          "omitted_voxels": 874,
+          "unique_free_evidence": 163076,
+          "offline_worker_p50_ms": 111.31959757767618,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "fixed4096": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4931,
+          "selected_matching_rays_last_input": 40,
+          "unmasked_matching_rays_last_input": 40,
+          "occupied_physical_endpoint_cells": 40,
+          "represented_physical_endpoint_cells": 40,
+          "unique_selected_pixels": 4096,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 2037,
+          "supported_voxels": 2037,
+          "candidate_cuboids": 1641,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 10,
+          "selected_hazard_cuboids": 54,
+          "omitted_voxels": 1898,
+          "unique_free_evidence": 303777,
+          "offline_worker_p50_ms": 202.60909292846918,
+          "invented_free_unknown_expired_cells": 0
+        }
+      }
+    },
+    {
+      "layout": "C_asymmetric_1.15_0.65",
+      "policies": {
+        "fixed1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 5084,
+          "selected_matching_rays_last_input": 11,
+          "unmasked_matching_rays_last_input": 11,
+          "occupied_physical_endpoint_cells": 11,
+          "represented_physical_endpoint_cells": 10,
+          "unique_selected_pixels": 1024,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 359,
+          "supported_voxels": 359,
+          "candidate_cuboids": 350,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 46,
+          "selected_hazard_cuboids": 18,
+          "omitted_voxels": 286,
+          "unique_free_evidence": 128944,
+          "offline_worker_p50_ms": 100.59974272735417,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "edge1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 5084,
+          "selected_matching_rays_last_input": 37,
+          "unmasked_matching_rays_last_input": 37,
+          "occupied_physical_endpoint_cells": 36,
+          "represented_physical_endpoint_cells": 35,
+          "unique_selected_pixels": 1024,
+          "pixel_revisit_p50": 12.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 255,
+          "supported_voxels": 255,
+          "candidate_cuboids": 238,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 41,
+          "selected_hazard_cuboids": 23,
+          "omitted_voxels": 174,
+          "unique_free_evidence": 109490,
+          "offline_worker_p50_ms": 91.43660753034055,
+          "invented_free_unknown_expired_cells": 0
+        }
+      }
+    },
+    {
+      "layout": "K_B_front_height_0.85_rear",
+      "policies": {
+        "fixed1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4589,
+          "selected_matching_rays_last_input": 8,
+          "unmasked_matching_rays_last_input": 8,
+          "occupied_physical_endpoint_cells": 16,
+          "represented_physical_endpoint_cells": 16,
+          "unique_selected_pixels": 1892,
+          "pixel_revisit_p50": 8.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 709,
+          "supported_voxels": 709,
+          "candidate_cuboids": 672,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 29,
+          "selected_hazard_cuboids": 35,
+          "omitted_voxels": 614,
+          "unique_free_evidence": 234337,
+          "offline_worker_p50_ms": 122.66880250535905,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "edge1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 4589,
+          "selected_matching_rays_last_input": 11,
+          "unmasked_matching_rays_last_input": 11,
+          "occupied_physical_endpoint_cells": 14,
+          "represented_physical_endpoint_cells": 14,
+          "unique_selected_pixels": 1465,
+          "pixel_revisit_p50": 8.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 410,
+          "supported_voxels": 406,
+          "candidate_cuboids": 391,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 39,
+          "selected_hazard_cuboids": 25,
+          "omitted_voxels": 327,
+          "unique_free_evidence": 151539,
+          "offline_worker_p50_ms": 91.14262089133263,
+          "invented_free_unknown_expired_cells": 0
+        }
+      }
+    },
+    {
+      "layout": "H_third_side_-1.00",
+      "policies": {
+        "fixed1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 5428,
+          "selected_matching_rays_last_input": 9,
+          "unmasked_matching_rays_last_input": 9,
+          "occupied_physical_endpoint_cells": 15,
+          "represented_physical_endpoint_cells": 15,
+          "unique_selected_pixels": 1885,
+          "pixel_revisit_p50": 8.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 847,
+          "supported_voxels": 844,
+          "candidate_cuboids": 777,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 33,
+          "selected_hazard_cuboids": 31,
+          "omitted_voxels": 739,
+          "unique_free_evidence": 193260,
+          "offline_worker_p50_ms": 99.70100317150354,
+          "invented_free_unknown_expired_cells": 0
+        },
+        "edge1024": {
+          "accepted": 12,
+          "attempted": 12,
+          "raw_matching_depth_pixels": 5428,
+          "selected_matching_rays_last_input": 66,
+          "unmasked_matching_rays_last_input": 66,
+          "occupied_physical_endpoint_cells": 68,
+          "represented_physical_endpoint_cells": 68,
+          "unique_selected_pixels": 1461,
+          "pixel_revisit_p50": 8.0,
+          "occupied_endpoint_probability_p50": 0.9820137900379085,
+          "occupied_voxels": 659,
+          "supported_voxels": 656,
+          "candidate_cuboids": 585,
+          "selected_cuboids": 64,
+          "selected_floor_cuboids": 6,
+          "selected_hazard_cuboids": 58,
+          "omitted_voxels": 536,
+          "unique_free_evidence": 139553,
+          "offline_worker_p50_ms": 81.96370559744537,
+          "invented_free_unknown_expired_cells": 0
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3249815.011357095,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-000.pkl",
+          "sha256": "31414839c7cbe16d70581de6c6b5a97af8f939234535b8b70e22b0da203a66a8",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249815.545413548,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-001.pkl",
+          "sha256": "3a9facd376a01406866eb6b5ec1251a9b77842aee988c86d2cb4d132a208c28e",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249816.089291581,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-002.pkl",
+          "sha256": "b1f8c584738589a9649e099ecd7547e7bdfdbc07a15889b6d1da84bc553fbd6f",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249816.620962707,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-003.pkl",
+          "sha256": "ab2beb8ea7768e6a8773dfe7cf2da974b8d124b625c5e1d12ac98a209dc05781",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249817.15523526,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-004.pkl",
+          "sha256": "b04727ae7d5454a13b4f36f4c44eb085f752324fec8e95566f8d0b8a67a4d6d5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249817.696296777,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-005.pkl",
+          "sha256": "32bc938f26ead91d95650110f4612428c9f26563477e3c36c80190a230386f1c",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249818.235395038,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-006.pkl",
+          "sha256": "bd343cdf7b2abf42f4dd58e11b38ffcae6cfd133c433d4125ba9c3971d7ff2ec",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249818.769992975,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-007.pkl",
+          "sha256": "c7b092f9af4f7f273fd95cc5fcb84556e1777da9932ac139c1345a01233e8eb1",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249819.318290449,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-008.pkl",
+          "sha256": "3264e78d5ea09b4a90dbebe79cb9a7566025737a361b9a8eeb9f62fad875d993",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249819.854055919,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-009.pkl",
+          "sha256": "f07175162498bd7aa459bee23721271bf991e9ac8bcf8bd326e8479cb0bcdcd4",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249820.413500692,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-010.pkl",
+          "sha256": "55d48b297d48cc09317a57f74250d5ab80abe3bbc0900bcccd5a4ac562e4e7fa",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249820.953720344,
+          "path": "outputs/camera-observability-feasibility/sampling-home-A_current/burst-011.pkl",
+          "sha256": "95613218446bc503046f9536dcafebc35f51dc7ffacad602da62dbdb139bb0ed",
+          "recorded_clock_reads": null
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.015999969094991684,
+              0.6062406301498413,
+              -0.7951202988624573,
+              1.658959984779358
+            ],
+            [
+              0.9998406171798706,
+              -0.015999969094991684,
+              0.007920295931398869,
+              -0.05281348153948784
+            ],
+            [
+              -0.007920295931398869,
+              -0.7951202988624573,
+              -0.6064000129699707,
+              1.1035808324813843
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.9474923014640808,
+              -0.18726836144924164,
+              0.2592082917690277,
+              0.17999999225139618
+            ],
+            [
+              -0.3197786509990692,
+              0.5548692345619202,
+              -0.7680245637893677,
+              0.8000000715255737
+            ],
+            [
+              -4.832380273711578e-09,
+              -0.8105866312980652,
+              -0.5856187343597412,
+              0.6500000357627869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1474273,
+              "free": 98413,
+              "occupied": 514
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 10,
+                "represented_roi_voxels": 9,
+                "current_or_previous_physical_hit_cells": 10,
+                "hit_cells_currently_occupied": 10,
+                "hit_cells_represented": 9,
+                "occupied_probability": {
+                  "count": 10,
+                  "mean": 0.9820137900379085,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.09999999999999998
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 514,
+              "supported_voxels": 514,
+              "spatial_supported_voxels": 174,
+              "strong_sparse_retained": 340,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 503,
+              "proxy_count": 64,
+              "represented_voxels": 75,
+              "omitted_voxels": 439,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 480,
+              "hazard_candidate_boxes": 23,
+              "selected_floor_boxes": 41,
+              "selected_hazard_boxes": 23,
+              "represented_floor_voxels": 51,
+              "omitted_floor_voxels": 439,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8540856031128404,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 98413,
+          "unique_occupied_voxel_evidence": 514,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11868,
+          "discarded_self_filter_fraction": 0.0341796875,
+          "unique_physically_matching_pixels": {
+            "post": 10
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 12.182820898791155,
+              "p50": 12.290155049413443,
+              "p95": 12.833673320710659,
+              "p99": 13.150436393916607,
+              "worst": 13.229627162218094
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 43.37580397259444,
+              "p50": 43.89176773838699,
+              "p95": 45.62123152427375,
+              "p99": 46.031780978664756,
+              "worst": 46.13441834226251
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.48091762357702,
+              "p50": 7.1140374056994915,
+              "p95": 14.567041886039068,
+              "p99": 21.346016251482077,
+              "worst": 23.040759842842817
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 79.92775940025847,
+              "p50": 78.19636794738472,
+              "p95": 88.69212837889789,
+              "p99": 96.73130245879294,
+              "worst": 98.74109597876668
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.68062148988247,
+              "p50": 10.589202400296926,
+              "p95": 11.572952615097165,
+              "p99": 11.984736332669854,
+              "worst": 12.087682262063026
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 90.60838089014094,
+              "p50": 88.57891452498734,
+              "p95": 99.985394324176,
+              "p99": 108.66010145749898,
+              "worst": 110.8287782408297
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 10,
+              "retained": 10,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1268338,
+              "free": 302866,
+              "occupied": 1996
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 38,
+                "represented_roi_voxels": 35,
+                "current_or_previous_physical_hit_cells": 37,
+                "hit_cells_currently_occupied": 36,
+                "hit_cells_represented": 35,
+                "occupied_probability": {
+                  "count": 38,
+                  "mean": 0.8938893412438803,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9618708881401209,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.02777777777777779
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1996,
+              "supported_voxels": 1755,
+              "spatial_supported_voxels": 1747,
+              "strong_sparse_retained": 8,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 241,
+              "candidate_boxes": 1381,
+              "proxy_count": 64,
+              "represented_voxels": 138,
+              "omitted_voxels": 1617,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1329,
+              "hazard_candidate_boxes": 52,
+              "selected_floor_boxes": 12,
+              "selected_hazard_boxes": 52,
+              "represented_floor_voxels": 52,
+              "omitted_floor_voxels": 1617,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9308617234468938,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 303302,
+          "unique_occupied_voxel_evidence": 2010,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11928,
+          "discarded_self_filter_fraction": 0.029296875,
+          "unique_physically_matching_pixels": {
+            "post": 37
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 7.760629484740396,
+              "p50": 8.08549439534545,
+              "p95": 8.398758410476148,
+              "p99": 8.426636490039527,
+              "worst": 8.433606009930372
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 36.218861234374344,
+              "p50": 36.002414766699076,
+              "p95": 37.18405873514712,
+              "p99": 38.10452279634774,
+              "worst": 38.33463881164789
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.652330949592094,
+              "p50": 7.038697134703398,
+              "p95": 10.333027690649027,
+              "p99": 13.345191255211834,
+              "worst": 14.09823214635253
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 68.56463030756761,
+              "p50": 66.32922450080514,
+              "p95": 79.6899212989956,
+              "p99": 84.83329963870347,
+              "worst": 86.11914422363043
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.547169919746617,
+              "p50": 11.001002974808216,
+              "p95": 14.408325077965852,
+              "p99": 16.455007577314976,
+              "worst": 16.966678202152252
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 80.11180022731423,
+              "p50": 77.60401396080852,
+              "p95": 91.86888826079667,
+              "p99": 95.66325054503977,
+              "worst": 96.61184111610055
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 9,
+              "retained": 9,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1291951,
+              "free": 279296,
+              "occupied": 1953
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 31,
+                "represented_roi_voxels": 28,
+                "current_or_previous_physical_hit_cells": 33,
+                "hit_cells_currently_occupied": 33,
+                "hit_cells_represented": 30,
+                "occupied_probability": {
+                  "count": 31,
+                  "mean": 0.9234402797248961,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.09090909090909094
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1953,
+              "supported_voxels": 1788,
+              "spatial_supported_voxels": 1786,
+              "strong_sparse_retained": 2,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 165,
+              "candidate_boxes": 1396,
+              "proxy_count": 64,
+              "represented_voxels": 109,
+              "omitted_voxels": 1679,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1339,
+              "hazard_candidate_boxes": 57,
+              "selected_floor_boxes": 7,
+              "selected_hazard_boxes": 57,
+              "represented_floor_voxels": 28,
+              "omitted_floor_voxels": 1679,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9441884280593958,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 279795,
+          "unique_occupied_voxel_evidence": 1983,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11925,
+          "discarded_self_filter_fraction": 0.029541015625,
+          "unique_physically_matching_pixels": {
+            "post": 37
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 7.979734955976407,
+              "p50": 7.88386189378798,
+              "p95": 9.071887005120516,
+              "p99": 9.091261494904757,
+              "worst": 9.096105117350817
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 36.61596612073481,
+              "p50": 36.29658604040742,
+              "p95": 39.131819596514106,
+              "p99": 40.08589970879257,
+              "worst": 40.32441973686218
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.097774931229651,
+              "p50": 7.062576012685895,
+              "p95": 13.546756841242312,
+              "p99": 14.410270638763906,
+              "worst": 14.626149088144302
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 70.81508725726356,
+              "p50": 66.05883850716054,
+              "p95": 88.94508709199727,
+              "p99": 92.44921804405749,
+              "worst": 93.32525078207254
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.22750093539556,
+              "p50": 11.224867077544332,
+              "p95": 12.192749814130366,
+              "p99": 12.229272243566811,
+              "worst": 12.238402850925922
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 82.04258819265912,
+              "p50": 77.25165458396077,
+              "p95": 100.74138133786619,
+              "p99": 104.59919917397201,
+              "worst": 105.56365363299847
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 11,
+              "retained": 11,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1483544,
+              "free": 89149,
+              "occupied": 507
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 67,
+                "represented_roi_voxels": 65,
+                "current_or_previous_physical_hit_cells": 67,
+                "hit_cells_currently_occupied": 67,
+                "hit_cells_represented": 66,
+                "occupied_probability": {
+                  "count": 67,
+                  "mean": 0.9820137900379095,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.014925373134328401
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 507,
+              "supported_voxels": 507,
+              "spatial_supported_voxels": 250,
+              "strong_sparse_retained": 257,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 432,
+              "proxy_count": 64,
+              "represented_voxels": 138,
+              "omitted_voxels": 369,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 377,
+              "hazard_candidate_boxes": 55,
+              "selected_floor_boxes": 9,
+              "selected_hazard_boxes": 55,
+              "represented_floor_voxels": 18,
+              "omitted_floor_voxels": 369,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7278106508875739,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 89149,
+          "unique_occupied_voxel_evidence": 507,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10656,
+          "discarded_self_filter_fraction": 0.1328125,
+          "unique_physically_matching_pixels": {
+            "post": 67
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 13.43689269075791,
+              "p50": 13.113059336319566,
+              "p95": 14.755014074034987,
+              "p99": 15.397220426239073,
+              "worst": 15.557772014290094
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 36.610751412808895,
+              "p50": 36.315190605819225,
+              "p95": 37.77892389334738,
+              "p99": 38.271152721717954,
+              "worst": 38.3942099288106
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 6.545120772595207,
+              "p50": 6.41220947727561,
+              "p95": 7.130793994292617,
+              "p99": 7.351426733657718,
+              "worst": 7.406584918498993
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 75.14800239975254,
+              "p50": 74.43434582091868,
+              "p95": 83.02926423493773,
+              "p99": 83.45522948075086,
+              "worst": 83.56172079220414
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 11.356115729237596,
+              "p50": 10.744012426584959,
+              "p95": 13.903471291996535,
+              "p99": 15.771610778756441,
+              "worst": 16.238645650446415
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 86.50411812899013,
+              "p50": 85.88608680292964,
+              "p95": 93.72999551706016,
+              "p99": 94.18033889494836,
+              "worst": 94.29292473942041
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 67,
+              "retained": 67,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1409100,
+              "free": 163076,
+              "occupied": 1024
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 20,
+                "represented_roi_voxels": 18,
+                "current_or_previous_physical_hit_cells": 18,
+                "hit_cells_currently_occupied": 18,
+                "hit_cells_represented": 18,
+                "occupied_probability": {
+                  "count": 20,
+                  "mean": 0.9820137900379085,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1024,
+              "supported_voxels": 1024,
+              "spatial_supported_voxels": 788,
+              "strong_sparse_retained": 236,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 866,
+              "proxy_count": 64,
+              "represented_voxels": 150,
+              "omitted_voxels": 874,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 839,
+              "hazard_candidate_boxes": 27,
+              "selected_floor_boxes": 37,
+              "selected_hazard_boxes": 27,
+              "represented_floor_voxels": 109,
+              "omitted_floor_voxels": 874,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.853515625,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 163076,
+          "unique_occupied_voxel_evidence": 1024,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 23928,
+          "discarded_self_filter_fraction": 0.0263671875,
+          "unique_physically_matching_pixels": {
+            "post": 18
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 9.442988007018963,
+              "p50": 9.341013384982944,
+              "p95": 9.978347248397768,
+              "p99": 10.266452427022159,
+              "worst": 10.338478721678257
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 68.04333790205419,
+              "p50": 67.69711920060217,
+              "p95": 69.74340486340225,
+              "p99": 70.67607468925416,
+              "worst": 70.90924214571714
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 11.228525506642958,
+              "p50": 10.675438912585378,
+              "p95": 14.0120823867619,
+              "p99": 16.380487550050024,
+              "worst": 16.97258884087205
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 113.94339920176814,
+              "p50": 111.31959757767618,
+              "p95": 124.19720594771206,
+              "p99": 126.27287887968123,
+              "worst": 126.79179711267352
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.86971532398214,
+              "p50": 10.76220697723329,
+              "p95": 11.391178611665964,
+              "p99": 11.47638538852334,
+              "worst": 11.497687082737684
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 124.81311452575028,
+              "p50": 122.02383554540575,
+              "p95": 135.41357873473316,
+              "p99": 137.41698805708438,
+              "worst": 137.9178403876722
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 18,
+              "retained": 18,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1267386,
+              "free": 303777,
+              "occupied": 2037
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 40,
+                "represented_roi_voxels": 40,
+                "current_or_previous_physical_hit_cells": 40,
+                "hit_cells_currently_occupied": 40,
+                "hit_cells_represented": 40,
+                "occupied_probability": {
+                  "count": 40,
+                  "mean": 0.9820137900379086,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 2037,
+              "supported_voxels": 2037,
+              "spatial_supported_voxels": 1840,
+              "strong_sparse_retained": 197,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 1641,
+              "proxy_count": 64,
+              "represented_voxels": 139,
+              "omitted_voxels": 1898,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1587,
+              "hazard_candidate_boxes": 54,
+              "selected_floor_boxes": 10,
+              "selected_hazard_boxes": 54,
+              "represented_floor_voxels": 48,
+              "omitted_floor_voxels": 1898,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9317623956799215,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 303777,
+          "unique_occupied_voxel_evidence": 2037,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 47832,
+          "discarded_self_filter_fraction": 0.02685546875,
+          "unique_physically_matching_pixels": {
+            "post": 40
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.585569384507835,
+              "p50": 14.570260187610984,
+              "p95": 14.823708683252335,
+              "p99": 14.930612593889236,
+              "worst": 14.957338571548462
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 129.6690869688367,
+              "p50": 129.50014881789684,
+              "p95": 130.90674194972962,
+              "p99": 130.9290658449754,
+              "worst": 130.93464681878686
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 19.172553011837106,
+              "p50": 18.84243614040315,
+              "p95": 21.52943727560341,
+              "p99": 23.859856883063916,
+              "worst": 24.442461784929037
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 204.8701986980935,
+              "p50": 202.60909292846918,
+              "p95": 212.6020766561851,
+              "p99": 216.05126179289073,
+              "worst": 216.91355807706714
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.997304576449096,
+              "p50": 10.953929740935564,
+              "p95": 11.407606559805572,
+              "p99": 11.666789329610765,
+              "worst": 11.731585022062063
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 215.8675032745426,
+              "p50": 213.58254924416542,
+              "p95": 223.94930007867515,
+              "p99": 227.02266498468816,
+              "worst": 227.79100621119142
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4931,
+              "selected": 40,
+              "retained": 40,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      },
+      "evaluation_scope": {
+        "posture": "home",
+        "primary_recommendation_eligible": true,
+        "physical_nonoverlap_validated": true,
+        "minimum_visible_mesh_to_fixture_enclosing_box_clearance_m": 0.09451731937124382,
+        "checked_inputs": 12,
+        "checked_camera_snapshots": 24,
+        "limitation": "Static recorded fixture/robot separation only; not a swept-path, dynamic contact or physical robot safety claim."
+      }
+    },
+    {
+      "capture_layout": "C_asymmetric_1.15_0.65",
+      "source_kind": "research_native_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3249841.57185617,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-000.pkl",
+          "sha256": "63cbf6b9aee1cfc80aeb61d916b6e3312f9900e99441e742cb4391e32bd4dde5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249842.104144106,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-001.pkl",
+          "sha256": "5299002056d577e21a9acbde35baafd92e974b5a6843b7a3600a40a97fe51687",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249842.649242042,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-002.pkl",
+          "sha256": "ced5ee66b6354d7c227aa6e99a4f0cc54bda194e253b3b6b18b3f217a9d141a3",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249843.182006857,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-003.pkl",
+          "sha256": "d4b51c25c52ad7457240729a962e496f82c786c91e95c0a3e23ae3bf03d72f8d",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249843.723673729,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-004.pkl",
+          "sha256": "6ffda97f6099a4b7ca49f684e7b964bdbd3e46eba51e59c7ef74ddc9c0421ef6",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249844.27075347,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-005.pkl",
+          "sha256": "e320260e0ee340e93318f61fdbe60afd741b1db0bd9c0cc3bd0b4fa2639a9f0e",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249844.802658672,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-006.pkl",
+          "sha256": "4fcc614b79d9d80cb62454b958982036b2606c53cf7a50ead13a5bf445320ccc",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249845.342187417,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-007.pkl",
+          "sha256": "2fa46f17e52db4159fff659810fae5dc5774c73d95ebcc3c8aec60eb6b8fc3e6",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249845.878789476,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-008.pkl",
+          "sha256": "4acc6be6cdaf0c0ba3ca27db8aa4e59124dcb6b69e9c7eac8105f960eecab2fc",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249846.424932066,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-009.pkl",
+          "sha256": "335af52faecea0f95eb2b3f6b334def1941e40a9bb16bf28a4b269cecb2c6083",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249846.970428666,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-010.pkl",
+          "sha256": "b4c97d10235b88405aa7631997251e10abc337a823b33f7cd7ec2b392dd2c918",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249847.510154916,
+          "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/burst-011.pkl",
+          "sha256": "09a03b2916f848a2838a5fdd5739fb6c1f1614318715bb7439eec516f676f703",
+          "recorded_clock_reads": null
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7071067690849304,
+              0.4444444179534912,
+              -0.5499719381332397,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              0.4444444179534912,
+              -0.5499719977378845,
+              0.7000000476837158
+            ],
+            [
+              3.253693101909163e-17,
+              -0.7777777910232544,
+              -0.6285393238067627,
+              1.149999976158142
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.9781588315963745,
+              -0.0715809166431427,
+              0.1951446682214737,
+              0.18000002205371857
+            ],
+            [
+              -0.20785875618457794,
+              -0.3368513286113739,
+              0.9183277487754822,
+              -0.7999999523162842
+            ],
+            [
+              -7.514552313736544e-10,
+              -0.9388329386711121,
+              -0.34437286853790283,
+              0.6499999761581421
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1443897,
+              "free": 128944,
+              "occupied": 359
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 11,
+                "represented_roi_voxels": 10,
+                "current_or_previous_physical_hit_cells": 11,
+                "hit_cells_currently_occupied": 11,
+                "hit_cells_represented": 10,
+                "occupied_probability": {
+                  "count": 11,
+                  "mean": 0.9820137900379085,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.09090909090909094
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 359,
+              "supported_voxels": 359,
+              "spatial_supported_voxels": 35,
+              "strong_sparse_retained": 324,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 350,
+              "proxy_count": 64,
+              "represented_voxels": 73,
+              "omitted_voxels": 286,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 332,
+              "hazard_candidate_boxes": 18,
+              "selected_floor_boxes": 46,
+              "selected_hazard_boxes": 18,
+              "represented_floor_voxels": 55,
+              "omitted_floor_voxels": 286,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7966573816155988,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 128944,
+          "unique_occupied_voxel_evidence": 359,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 10260,
+          "discarded_self_filter_fraction": 0.1650390625,
+          "unique_physically_matching_pixels": {
+            "post": 11
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 22.31696337306251,
+              "p50": 22.7444798219949,
+              "p95": 23.261093930341303,
+              "p99": 23.37104928214103,
+              "worst": 23.39853812009096
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 51.95835997195294,
+              "p50": 51.86523147858679,
+              "p95": 53.515565348789096,
+              "p99": 53.52321802638471,
+              "worst": 53.525131195783615
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 10.667094922003647,
+              "p50": 8.827036945149302,
+              "p95": 19.199039624072604,
+              "p99": 23.91906302887947,
+              "worst": 25.099068880081177
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 104.34571975686897,
+              "p50": 100.59974272735417,
+              "p95": 120.89639366604386,
+              "p99": 125.7145666051656,
+              "worst": 126.91910983994603
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.668774135410786,
+              "p50": 10.703215841203928,
+              "p95": 11.398565885610878,
+              "p99": 11.66412363294512,
+              "worst": 11.73051306977868
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 115.01449389227976,
+              "p50": 111.05104768648744,
+              "p95": 132.08498395979404,
+              "p99": 137.33669511973858,
+              "worst": 138.6496229097247
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 5084,
+              "selected": 11,
+              "retained": 11,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1463455,
+              "free": 109490,
+              "occupied": 255
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 33,
+                "represented_roi_voxels": 32,
+                "current_or_previous_physical_hit_cells": 36,
+                "hit_cells_currently_occupied": 36,
+                "hit_cells_represented": 35,
+                "occupied_probability": {
+                  "count": 33,
+                  "mean": 0.9820137900379081,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.02777777777777779
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 255,
+              "supported_voxels": 255,
+              "spatial_supported_voxels": 41,
+              "strong_sparse_retained": 214,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 238,
+              "proxy_count": 64,
+              "represented_voxels": 81,
+              "omitted_voxels": 174,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 215,
+              "hazard_candidate_boxes": 23,
+              "selected_floor_boxes": 41,
+              "selected_hazard_boxes": 23,
+              "represented_floor_voxels": 41,
+              "omitted_floor_voxels": 174,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.6823529411764706,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 109490,
+          "unique_occupied_voxel_evidence": 255,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 8148,
+          "discarded_self_filter_fraction": 0.3369140625,
+          "unique_physically_matching_pixels": {
+            "post": 37
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 23.599869028354686,
+              "p50": 23.447865387424827,
+              "p95": 24.529106728732586,
+              "p99": 25.29342133551836,
+              "worst": 25.484499987214804
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 43.79480824961016,
+              "p50": 43.697167886421084,
+              "p95": 44.520223466679454,
+              "p99": 44.938344871625304,
+              "worst": 45.04287522286177
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.166368235833943,
+              "p50": 7.665538927540183,
+              "p95": 10.59914291836321,
+              "p99": 13.328146757557992,
+              "worst": 14.010397717356682
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 93.37940482267489,
+              "p50": 91.43660753034055,
+              "p95": 102.50583996530621,
+              "p99": 110.2328247530386,
+              "worst": 112.16457094997168
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.350834423055252,
+              "p50": 10.40099048987031,
+              "p95": 10.77557650860399,
+              "p99": 10.881374622695148,
+              "worst": 10.907824151217937
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 103.73023924573015,
+              "p50": 101.6829686705023,
+              "p95": 112.81418949365614,
+              "p99": 120.19012823700906,
+              "worst": 122.03411292284727
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 5084,
+              "selected": 37,
+              "retained": 37,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      },
+      "evaluation_scope": {
+        "posture": "home",
+        "primary_recommendation_eligible": true,
+        "physical_nonoverlap_validated": true,
+        "minimum_visible_mesh_to_fixture_enclosing_box_clearance_m": 0.09451731937124382,
+        "checked_inputs": 12,
+        "checked_camera_snapshots": 24,
+        "limitation": "Static recorded fixture/robot separation only; not a swept-path, dynamic contact or physical robot safety claim."
+      }
+    },
+    {
+      "capture_layout": "K_B_front_height_0.85_rear",
+      "source_kind": "research_native_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3249868.78646394,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-000.pkl",
+          "sha256": "8ee060d1ffd205a469ee8df0e78a402d47f296fe9f4118fc52d34e9f65174b5c",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249869.32105554,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-001.pkl",
+          "sha256": "d83b1860af787c4fd4f57e9d87ceaa11fc9286b76cbc1b4c469b1cbe9fd0953f",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249869.866245772,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-002.pkl",
+          "sha256": "ceba39ea970a1475cfb056688980c5e71548841e434b4e94c1fdb156d4bb197c",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249870.390400498,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-003.pkl",
+          "sha256": "c8c9238a3edaee7e80ec0546f56b739744041adb2916dc03eec9a0dc20b62b62",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249870.968844694,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-004.pkl",
+          "sha256": "5fe2f3a4f8db499337ca5b0fa9089bdb5301747d80bc8b3d53fe94041f5fd91a",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249871.508622834,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-005.pkl",
+          "sha256": "452964a08ab5683cb087683732cbaf9422717eaff5b9b21e732af8a2a55f2d57",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249872.067816223,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-006.pkl",
+          "sha256": "318b6a3ae4063d5b87c6becd103eb42f2d9bba4c848f778344b210a09e2c2d6d",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249872.59434674,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-007.pkl",
+          "sha256": "9945c6c9729c0409a5ce39ca8b4a86041eab63753db2d952bcf087edc3ddb104",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249873.160060998,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-008.pkl",
+          "sha256": "e94b53f77f4b14e29f5e80492f4643672bef7495f3a024f14281f682e159b465",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249873.710924786,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-009.pkl",
+          "sha256": "db0daabaa04a23e426cc00ed39f20412de066db4920d53e8eadac59a9dfb1d75",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249874.252604787,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-010.pkl",
+          "sha256": "6e440a2d40f5ddd50d5fff59d68b9433e5a53d8d15dc18a017b7d9ea48315909",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249874.787383703,
+          "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/burst-011.pkl",
+          "sha256": "a8af3e416b1cad01a378b5f76deca08899e367b707bea03f34b363ca1738bbda",
+          "recorded_clock_reads": null
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.7071068286895752,
+              0.3187883496284485,
+              -0.6311687231063843,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              0.3187883496284485,
+              -0.631168782711029,
+              0.6999999284744263
+            ],
+            [
+              -1.900126811449354e-08,
+              -0.8926073908805847,
+              -0.45083481073379517,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.70710688829422,
+              0.3187883496284485,
+              -0.6311687231063843,
+              1.0499999523162842
+            ],
+            [
+              0.7071067690849304,
+              -0.3187883794307709,
+              0.631168782711029,
+              -0.6999999284744263
+            ],
+            [
+              -1.8619324748669897e-08,
+              -0.8926073908805847,
+              -0.45083481073379517,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/CameraObservabilityThird": {
+          "intrinsics": [
+            [
+              366.4996337890625,
+              0.0,
+              160.0
+            ],
+            [
+              0.0,
+              366.4996337890625,
+              120.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.8320503234863281,
+              -0.23274701833724976,
+              0.5035088062286377,
+              -0.2500000298023224
+            ],
+            [
+              -0.5547001361846924,
+              -0.3491206169128418,
+              0.7552632093429565,
+              -0.9000000357627869
+            ],
+            [
+              3.5462281999798506e-08,
+              -0.9077134132385254,
+              -0.4195907413959503,
+              0.8500000834465027
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            320,
+            240
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1338178,
+              "free": 234313,
+              "occupied": 709
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 16,
+                "represented_roi_voxels": 16,
+                "current_or_previous_physical_hit_cells": 16,
+                "hit_cells_currently_occupied": 16,
+                "hit_cells_represented": 16,
+                "occupied_probability": {
+                  "count": 16,
+                  "mean": 0.9757534910907516,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 709,
+              "supported_voxels": 709,
+              "spatial_supported_voxels": 377,
+              "strong_sparse_retained": 332,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 672,
+              "proxy_count": 64,
+              "represented_voxels": 95,
+              "omitted_voxels": 614,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 637,
+              "hazard_candidate_boxes": 35,
+              "selected_floor_boxes": 29,
+              "selected_hazard_boxes": 35,
+              "represented_floor_voxels": 58,
+              "omitted_floor_voxels": 614,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8660084626234132,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1892,
+          "depth_pixel_revisit_counts": {
+            "count": 1892,
+            "mean": 6.494714587737843,
+            "p50": 8.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 234337,
+          "unique_occupied_voxel_evidence": 710,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 9836,
+          "discarded_self_filter_fraction": 0.19954427083333337,
+          "unique_physically_matching_pixels": {
+            "post": 16
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 31.298066217762727,
+              "p50": 31.12036711536348,
+              "p95": 32.19450127799064,
+              "p99": 32.83784026745707,
+              "worst": 32.998675014823675
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 63.46917152404785,
+              "p50": 63.607055926695466,
+              "p95": 64.0202368143946,
+              "p99": 64.19697289355099,
+              "worst": 64.24115691334009
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.168690419755876,
+              "p50": 9.17115993797779,
+              "p95": 9.284059330821037,
+              "p99": 9.285532087087631,
+              "worst": 9.28590027615428
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 122.78209157132854,
+              "p50": 122.66880250535905,
+              "p95": 125.64551203977317,
+              "p99": 126.96320252027363,
+              "worst": 127.29262514039874
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.529337373251716,
+              "p50": 10.51000994630158,
+              "p95": 10.853280127048492,
+              "p99": 10.897243171930313,
+              "worst": 10.908233933150768
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 133.31142894458026,
+              "p50": 133.32212483510375,
+              "p95": 136.2196990288794,
+              "p99": 137.50368842855096,
+              "worst": 137.82468577846885
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4589,
+              "selected": 8,
+              "retained": 8,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1421257,
+              "free": 151533,
+              "occupied": 410
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 12,
+                "represented_roi_voxels": 12,
+                "current_or_previous_physical_hit_cells": 14,
+                "hit_cells_currently_occupied": 14,
+                "hit_cells_represented": 14,
+                "occupied_probability": {
+                  "count": 12,
+                  "mean": 0.9784364763538188,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 410,
+              "supported_voxels": 406,
+              "spatial_supported_voxels": 77,
+              "strong_sparse_retained": 329,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 4,
+              "candidate_boxes": 391,
+              "proxy_count": 64,
+              "represented_voxels": 79,
+              "omitted_voxels": 327,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 366,
+              "hazard_candidate_boxes": 25,
+              "selected_floor_boxes": 39,
+              "selected_hazard_boxes": 25,
+              "represented_floor_voxels": 53,
+              "omitted_floor_voxels": 327,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8073170731707318,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1465,
+          "depth_pixel_revisit_counts": {
+            "count": 1465,
+            "mean": 8.387713310580205,
+            "p50": 8.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 151539,
+          "unique_occupied_voxel_evidence": 410,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 6600,
+          "discarded_self_filter_fraction": 0.462890625,
+          "unique_physically_matching_pixels": {
+            "post": 14
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 30.12994785482685,
+              "p50": 30.059402575716376,
+              "p95": 30.63245180528611,
+              "p99": 31.08740461524576,
+              "worst": 31.201142817735672
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 38.4156449775522,
+              "p50": 38.084944477304816,
+              "p95": 40.69881294853985,
+              "p99": 41.40775085426867,
+              "worst": 41.584985330700874
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.576346009348829,
+              "p50": 6.873532431200147,
+              "p95": 10.81014110241085,
+              "p99": 13.538052258081738,
+              "worst": 14.220030046999454
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 94.04504295283307,
+              "p50": 91.14262089133263,
+              "p95": 104.97791811358184,
+              "p99": 108.55487981345505,
+              "worst": 109.44912023842335
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.363450235066315,
+              "p50": 10.403926018625498,
+              "p95": 10.642734193243086,
+              "p99": 10.648716394789517,
+              "worst": 10.650211945176125
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 104.4084931878994,
+              "p50": 101.68155934661627,
+              "p95": 115.26028872467577,
+              "p99": 118.49087712354958,
+              "worst": 119.29852422326803
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 4589,
+              "selected": 11,
+              "retained": 11,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      },
+      "evaluation_scope": {
+        "posture": "home",
+        "primary_recommendation_eligible": true,
+        "physical_nonoverlap_validated": true,
+        "minimum_visible_mesh_to_fixture_enclosing_box_clearance_m": 0.09451731937124382,
+        "checked_inputs": 12,
+        "checked_camera_snapshots": 36,
+        "limitation": "Static recorded fixture/robot separation only; not a swept-path, dynamic contact or physical robot safety claim."
+      }
+    },
+    {
+      "capture_layout": "H_third_side_-1.00",
+      "source_kind": "research_native_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3249895.469728607,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-000.pkl",
+          "sha256": "a7f46c54183e47da9fc9d4815511ae729ac92c459ff0c2bf8a11e02e577981a6",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249896.007019607,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-001.pkl",
+          "sha256": "1a9b456b3131e6763d65d3bc3d57eb61ba6cc79b8938c07609853574c2819e7e",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249896.544723889,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-002.pkl",
+          "sha256": "5d277411ec6b7e49166e2b8cec3299c89abf41f596b8b9a6c4e2f34ac430ed93",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249897.068372891,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-003.pkl",
+          "sha256": "fffe6283f143ea6aaa2b97e0fab8183db558d69eb883ee1fc8f29c817d6755b7",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249897.627237694,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-004.pkl",
+          "sha256": "a0a08e157a088a732f44ba9cdd58372fd1cc301ba01ae01e975a7a546ba26670",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249898.186028037,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-005.pkl",
+          "sha256": "fc4c10f83f5a1a2da57fbea672e7134eae62718f9b889cd6e128406d93ea0bc9",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249898.741723037,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-006.pkl",
+          "sha256": "0ad30f9f9c1d295c762ab22539cf9fe8e6eec04f4d17d581001ba27e166b73f5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249899.297436038,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-007.pkl",
+          "sha256": "9edade6840aec5314bf761e4135259a12c4560fd97ea95465b66a38fbb86e0ad",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249899.833487299,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-008.pkl",
+          "sha256": "baa84fd9889b54751bb6271e62815b682b46c10cc4e79e3c95d6e8aca311b7be",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249900.376617303,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-009.pkl",
+          "sha256": "8d03bb569c7e9c9794003242db5c48b7ca113565e3153d1bab5d8442e21affe5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249900.911932644,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-010.pkl",
+          "sha256": "66ce4cabe7a13723b93c6b8b6087f43c5d3384e828fc615292bd55022db88c32",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3249901.456450001,
+          "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/burst-011.pkl",
+          "sha256": "93d0da9ca0462b553f85ff32d7e472537f6a61544d964ec0b2df1000acbf732d",
+          "recorded_clock_reads": null
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.015999969094991684,
+              0.6062406301498413,
+              -0.7951202988624573,
+              1.658959984779358
+            ],
+            [
+              0.9998406171798706,
+              -0.015999969094991684,
+              0.007920295931398869,
+              -0.05281348153948784
+            ],
+            [
+              -0.007920295931398869,
+              -0.7951202988624573,
+              -0.6064000129699707,
+              1.1035808324813843
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.9474923014640808,
+              -0.18726836144924164,
+              0.2592082917690277,
+              0.17999999225139618
+            ],
+            [
+              -0.3197786509990692,
+              0.5548692345619202,
+              -0.7680245637893677,
+              0.8000000715255737
+            ],
+            [
+              -4.832380273711578e-09,
+              -0.8105866312980652,
+              -0.5856187343597412,
+              0.6500000357627869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/CameraObservabilityThird": {
+          "intrinsics": [
+            [
+              366.4996337890625,
+              0.0,
+              160.0
+            ],
+            [
+              0.0,
+              366.4996337890625,
+              120.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.8574929237365723,
+              -0.20273974537849426,
+              0.4728661775588989,
+              -0.25
+            ],
+            [
+              -0.5144957304000854,
+              -0.33789968490600586,
+              0.7881103754043579,
+              -1.0
+            ],
+            [
+              3.1537915390345006e-08,
+              -0.919086754322052,
+              -0.3940553069114685,
+              0.8500000238418579
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            320,
+            240
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1379146,
+              "free": 193207,
+              "occupied": 847
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 15,
+                "represented_roi_voxels": 15,
+                "current_or_previous_physical_hit_cells": 15,
+                "hit_cells_currently_occupied": 15,
+                "hit_cells_represented": 15,
+                "occupied_probability": {
+                  "count": 15,
+                  "mean": 0.9753361378276078,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 847,
+              "supported_voxels": 844,
+              "spatial_supported_voxels": 522,
+              "strong_sparse_retained": 322,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 3,
+              "candidate_boxes": 777,
+              "proxy_count": 64,
+              "represented_voxels": 105,
+              "omitted_voxels": 739,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 746,
+              "hazard_candidate_boxes": 31,
+              "selected_floor_boxes": 33,
+              "selected_hazard_boxes": 31,
+              "represented_floor_voxels": 68,
+              "omitted_floor_voxels": 739,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8760330578512396,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1885,
+          "depth_pixel_revisit_counts": {
+            "count": 1885,
+            "mean": 6.518832891246684,
+            "p50": 8.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 193260,
+          "unique_occupied_voxel_evidence": 855,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11156,
+          "discarded_self_filter_fraction": 0.09212239583333337,
+          "unique_physically_matching_pixels": {
+            "post": 15
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 19.856743747368455,
+              "p50": 19.614594522863626,
+              "p95": 20.6127074547112,
+              "p99": 20.648894477635622,
+              "worst": 20.657941233366728
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 55.5348820053041,
+              "p50": 55.45280152000487,
+              "p95": 55.973493470810354,
+              "p99": 56.28159436862916,
+              "worst": 56.35861959308386
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.813474551464121,
+              "p50": 7.792341290041804,
+              "p95": 8.03676056675613,
+              "p99": 8.059573536738753,
+              "worst": 8.06527677923441
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 99.95191943986963,
+              "p50": 99.70100317150354,
+              "p95": 101.34556596167386,
+              "p99": 101.48908511735499,
+              "worst": 101.52496490627527
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.591375563914577,
+              "p50": 10.581638431176543,
+              "p95": 10.910810669884086,
+              "p99": 10.913750855252147,
+              "worst": 10.914485901594162
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 110.5432950037842,
+              "p50": 110.39774166420102,
+              "p95": 111.97766333352774,
+              "p99": 112.08080360200256,
+              "worst": 112.10658866912127
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 5428,
+              "selected": 9,
+              "retained": 9,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1433002,
+              "free": 139539,
+              "occupied": 659
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 67,
+                "represented_roi_voxels": 67,
+                "current_or_previous_physical_hit_cells": 68,
+                "hit_cells_currently_occupied": 68,
+                "hit_cells_represented": 68,
+                "occupied_probability": {
+                  "count": 67,
+                  "mean": 0.9814581289470513,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 659,
+              "supported_voxels": 656,
+              "spatial_supported_voxels": 331,
+              "strong_sparse_retained": 325,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 3,
+              "candidate_boxes": 585,
+              "proxy_count": 64,
+              "represented_voxels": 120,
+              "omitted_voxels": 536,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 527,
+              "hazard_candidate_boxes": 58,
+              "selected_floor_boxes": 6,
+              "selected_hazard_boxes": 58,
+              "represented_floor_voxels": 12,
+              "omitted_floor_voxels": 536,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8179059180576631,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1461,
+          "depth_pixel_revisit_counts": {
+            "count": 1461,
+            "mean": 8.410677618069816,
+            "p50": 8.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 139553,
+          "unique_occupied_voxel_evidence": 660,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 9576,
+          "discarded_self_filter_fraction": 0.220703125,
+          "unique_physically_matching_pixels": {
+            "post": 68
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 19.963562333335478,
+              "p50": 19.853140460327268,
+              "p95": 20.625710650347173,
+              "p99": 20.784583720378578,
+              "worst": 20.82430198788643
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 39.471225502590336,
+              "p50": 39.24624645151198,
+              "p95": 40.77100642025471,
+              "p99": 41.879341155290604,
+              "worst": 42.15642483904958
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.411104394122958,
+              "p50": 6.892863195389509,
+              "p95": 9.862371324561533,
+              "p99": 12.537572639994327,
+              "worst": 13.20637296885252
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 84.04192371138681,
+              "p50": 81.96370559744537,
+              "p95": 92.21737245097755,
+              "p99": 97.04271288588643,
+              "worst": 98.24904799461365
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 10.692155066256722,
+              "p50": 10.697866091504693,
+              "p95": 11.087502120062709,
+              "p99": 11.13658375106752,
+              "worst": 11.148854158818722
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 94.73407877764355,
+              "p50": 92.65984245575964,
+              "p95": 102.95840012840925,
+              "p99": 107.78796828351915,
+              "worst": 108.99536032229662
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 5428,
+              "selected": 66,
+              "retained": 66,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      },
+      "evaluation_scope": {
+        "posture": "home",
+        "primary_recommendation_eligible": true,
+        "physical_nonoverlap_validated": true,
+        "minimum_visible_mesh_to_fixture_enclosing_box_clearance_m": 0.09451731937124382,
+        "checked_inputs": 12,
+        "checked_camera_snapshots": 36,
+        "limitation": "Static recorded fixture/robot separation only; not a swept-path, dynamic contact or physical robot safety claim."
+      }
+    }
+  ]
+}

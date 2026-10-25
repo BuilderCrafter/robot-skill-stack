@@ -1,0 +1,1085 @@
+{
+  "schema_version": 1,
+  "status": "RESEARCH_OFFLINE_ONLY",
+  "sampler_uses_evaluation_truth": false,
+  "source_hashes": {
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+    "robot_skill_stack/world/spatial_mapping/robot_filter.py": "f5e0cc1e80b5253f03078a6590b6a35262ff5c4f682256da84aa34e55ffc2faa",
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c"
+  },
+  "script_sha256": "91a2286d0d0dc8d1f11d0a6c87d6def6c8b091da231cd86df18e39b63f75df9d",
+  "protocol": {
+    "policies": [
+      "fixed1024",
+      "phase1024",
+      "cycle1024",
+      "edge1024",
+      "fixed2048",
+      "fixed4096"
+    ],
+    "fixed_budget_strategy_comparison": 1024,
+    "separate_budget_experiments": [
+      2048,
+      4096
+    ],
+    "production_stride": 8,
+    "cycle_offsets": [
+      [
+        0,
+        0
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        4,
+        0
+      ]
+    ],
+    "selection_phases": [
+      0.5,
+      0.25,
+      0.75,
+      0.0
+    ],
+    "adaptive": "Half uniform midpoint samples plus deterministically ranked valid-depth discontinuities; no truth labels or semantic regions.",
+    "cycle_filter_validation_stride": 1,
+    "timing": "Measured offline CPU computation using current exact self-filter and canonical mapper; small timing hooks included. Input loading, evaluation truth rasterization and output I/O excluded.",
+    "geometry": "Exact evaluation box/sphere/Z-cylinder intersections label matched native optical depth and endpoint cells after sampling/masking only; AABBs label ROI counts separately. No truth enters selection or integration.",
+    "source_age": "Original captured phase clocks retained where present. Otherwise explicit logical replay age1ms; no native publication/freshness/rate inference.",
+    "unknown": "UNKNOWN is neither obstruction nor collision. Adapter output is verified to contain only original observed OCCUPIED, unexpired cells."
+  },
+  "cases": [
+    {
+      "capture_layout": "A_current",
+      "source_kind": "research_native_capture",
+      "input_count": 12,
+      "input_files": [
+        {
+          "input_timestamp": 3247310.371963224,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-000.pkl",
+          "sha256": "800954a56869ee67f984d01cfef685ba6fae0e1f04d2420ce2332750ce8613ab",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247310.916899007,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-001.pkl",
+          "sha256": "2b5aeb329151742d8b5ce13eb73e5afd999a387855e5b2be3737f0c3a0d78a8e",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247311.45559838,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-002.pkl",
+          "sha256": "96e90fc86cd5843dd47de85bdbbd1e5e8e00cf5ceb21c0eee98bdce463d90628",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247311.99235832,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-003.pkl",
+          "sha256": "69d396de2a24c43bee467454c8aa0b3c9bf6cb44aade5adca612b2e026bde677",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247312.539642268,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-004.pkl",
+          "sha256": "6be36d57eb201e9bf84f4a10493a1a70d3b9145c39fa159fe206b888f7c92fa9",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247313.089661425,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-005.pkl",
+          "sha256": "2a48da4fe69dafd52c3c81b6b1f8dc5da78801274502782b13dce0e60080cd2e",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247313.637719097,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-006.pkl",
+          "sha256": "17d736572163e045751fa5ba774fee0ee955d5ff96346be546aa6341f24e59c5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247314.178038315,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-007.pkl",
+          "sha256": "5c39ccb85763caac61bb649e4547c7f9b9472b9ffe6b8d4a045e1a70a009736b",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247314.7195926,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-008.pkl",
+          "sha256": "d6ab7ff249da08737d78525d87d545c0e4ca0ea13bc7bfbbf5b36fc392b6f145",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247315.260960225,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-009.pkl",
+          "sha256": "e6d85e0f5d71ee9c87d11ad0cd5974d6cb8716a8ee76a8b6af35cece53bf7bd5",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247315.793322548,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-010.pkl",
+          "sha256": "b8ebc1f5153f5a396be1f5b12b1cf8f21b9e2ea8d1eb1bb150a95b6e64fbd451",
+          "recorded_clock_reads": null
+        },
+        {
+          "input_timestamp": 3247316.338259238,
+          "path": "outputs/camera-observability-feasibility/capture-A-current-render-only/burst-011.pkl",
+          "sha256": "596b85302999ad6b1355fe3f91137eb67dca72f849ab4dcb1700566cb944872b",
+          "recorded_clock_reads": null
+        }
+      ],
+      "actual_camera_calibration": {
+        "/World/PerceptionCamera": {
+          "intrinsics": [
+            [
+              554.2562255859375,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              554.2562866210938,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              0.015999969094991684,
+              0.6062406301498413,
+              -0.7951202988624573,
+              1.658959984779358
+            ],
+            [
+              0.9998406171798706,
+              -0.015999969094991684,
+              0.007920295931398869,
+              -0.05281348153948784
+            ],
+            [
+              -0.007920295931398869,
+              -0.7951202988624573,
+              -0.6064000129699707,
+              1.1035808324813843
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        },
+        "/World/PerceptionCameraSide": {
+          "intrinsics": [
+            [
+              732.999267578125,
+              0.0,
+              320.0
+            ],
+            [
+              0.0,
+              732.999267578125,
+              240.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "world_from_camera": [
+            [
+              -0.9474923014640808,
+              -0.18726836144924164,
+              0.2592082917690277,
+              0.17999999225139618
+            ],
+            [
+              -0.3197786509990692,
+              0.5548692345619202,
+              -0.7680245637893677,
+              0.8000000715255737
+            ],
+            [
+              -4.832380273711578e-09,
+              -0.8105866312980652,
+              -0.5856187343597412,
+              0.6500000357627869
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "resolution": [
+            640,
+            480
+          ]
+        }
+      },
+      "initial_condition": "All policies start with UNKNOWN in independent fresh maps at the first selected original input; omitted earlier capture history is not recreated.",
+      "policy_results": {
+        "fixed1024": {
+          "final": {
+            "states": {
+              "unknown": 1476463,
+              "free": 96226,
+              "occupied": 511
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 6,
+                "represented_roi_voxels": 5,
+                "current_or_previous_physical_hit_cells": 6,
+                "hit_cells_currently_occupied": 6,
+                "hit_cells_represented": 5,
+                "occupied_probability": {
+                  "count": 6,
+                  "mean": 0.9820137900379083,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.16666666666666663
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 511,
+              "supported_voxels": 511,
+              "spatial_supported_voxels": 170,
+              "strong_sparse_retained": 341,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 500,
+              "proxy_count": 64,
+              "represented_voxels": 75,
+              "omitted_voxels": 436,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 481,
+              "hazard_candidate_boxes": 19,
+              "selected_floor_boxes": 45,
+              "selected_hazard_boxes": 19,
+              "represented_floor_voxels": 55,
+              "omitted_floor_voxels": 436,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8532289628180039,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 96226,
+          "unique_occupied_voxel_evidence": 511,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11700,
+          "discarded_self_filter_fraction": 0.0478515625,
+          "unique_physically_matching_pixels": {
+            "post": 6
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.830911221603552,
+              "p50": 15.36522340029478,
+              "p95": 16.39244668185711,
+              "p99": 17.131667882204056,
+              "worst": 17.316473182290792
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 45.36093201022595,
+              "p50": 44.86904409714043,
+              "p95": 56.72190827317536,
+              "p99": 58.71675745584071,
+              "worst": 59.215469751507044
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 10.487426111164192,
+              "p50": 7.719863438978791,
+              "p95": 19.715598877519366,
+              "p99": 21.3181240670383,
+              "worst": 21.71875536441803
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 91.37862198986113,
+              "p50": 88.35507486946881,
+              "p95": 113.31794129218905,
+              "p99": 120.92295940499754,
+              "worst": 122.82421393319964
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.059228891506791,
+              "p50": 11.790456483140588,
+              "p95": 16.410198714584112,
+              "p99": 16.81118918582797,
+              "worst": 16.911436803638935
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 104.43785088136792,
+              "p50": 104.15462986566126,
+              "p95": 129.02081802021712,
+              "p99": 136.3352228840813,
+              "worst": 138.16382410004735
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 7,
+              "retained": 6,
+              "masked": 1
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "phase1024": {
+          "final": {
+            "states": {
+              "unknown": 1273903,
+              "free": 297310,
+              "occupied": 1987
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 28,
+                "represented_roi_voxels": 25,
+                "current_or_previous_physical_hit_cells": 27,
+                "hit_cells_currently_occupied": 26,
+                "hit_cells_represented": 25,
+                "occupied_probability": {
+                  "count": 28,
+                  "mean": 0.8913909854914815,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9275735146384823,
+                  "p99": 0.9673149156800634,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.038461538461538436
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1987,
+              "supported_voxels": 1741,
+              "spatial_supported_voxels": 1734,
+              "strong_sparse_retained": 7,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 246,
+              "candidate_boxes": 1374,
+              "proxy_count": 64,
+              "represented_voxels": 139,
+              "omitted_voxels": 1602,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1325,
+              "hazard_candidate_boxes": 49,
+              "selected_floor_boxes": 15,
+              "selected_hazard_boxes": 49,
+              "represented_floor_voxels": 63,
+              "omitted_floor_voxels": 1602,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.930045294413689,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 297743,
+          "unique_occupied_voxel_evidence": 2001,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11763,
+          "discarded_self_filter_fraction": 0.042724609375,
+          "unique_physically_matching_pixels": {
+            "post": 27
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 11.800817679613829,
+              "p50": 10.472154477611184,
+              "p95": 16.537184431217607,
+              "p99": 17.88665923755616,
+              "worst": 18.224027939140797
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 47.27021333140632,
+              "p50": 39.30549183860421,
+              "p95": 77.93778292834754,
+              "p99": 101.09163247048858,
+              "worst": 106.88009485602379
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 8.341010194271803,
+              "p50": 7.70181929692626,
+              "p95": 11.731965281069275,
+              "p99": 13.602568171918394,
+              "worst": 14.07021889463067
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 86.84844993210088,
+              "p50": 81.08491636812687,
+              "p95": 120.45220481231806,
+              "p99": 137.88958081975582,
+              "worst": 142.24892482161522
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 12.132879657049974,
+              "p50": 11.868923669680953,
+              "p95": 14.863235177472234,
+              "p99": 15.049884701147676,
+              "worst": 15.096547082066536
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 98.98132958915085,
+              "p50": 94.53799319453537,
+              "p95": 132.23263793624935,
+              "p99": 149.34357960708442,
+              "worst": 153.62131502479315
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 7,
+              "retained": 6,
+              "masked": 1
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "cycle1024": {
+          "final": {
+            "states": {
+              "unknown": 1297696,
+              "free": 273568,
+              "occupied": 1936
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 23,
+                "represented_roi_voxels": 20,
+                "current_or_previous_physical_hit_cells": 23,
+                "hit_cells_currently_occupied": 23,
+                "hit_cells_represented": 20,
+                "occupied_probability": {
+                  "count": 23,
+                  "mean": 0.9278045409044936,
+                  "p50": 0.9275735146384823,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.13043478260869568
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1936,
+              "supported_voxels": 1752,
+              "spatial_supported_voxels": 1750,
+              "strong_sparse_retained": 2,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 184,
+              "candidate_boxes": 1367,
+              "proxy_count": 64,
+              "represented_voxels": 115,
+              "omitted_voxels": 1637,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1314,
+              "hazard_candidate_boxes": 53,
+              "selected_floor_boxes": 11,
+              "selected_hazard_boxes": 53,
+              "represented_floor_voxels": 44,
+              "omitted_floor_voxels": 1637,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.940599173553719,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 3.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "worst": 3.0
+          },
+          "unique_free_voxel_evidence": 274060,
+          "unique_occupied_voxel_evidence": 1965,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 11745,
+          "discarded_self_filter_fraction": 0.044189453125,
+          "unique_physically_matching_pixels": {
+            "post": 27
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 11.390749093455574,
+              "p50": 10.734504088759422,
+              "p95": 14.376207184977828,
+              "p99": 15.255548604764046,
+              "worst": 15.475383959710598
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 42.297350553174816,
+              "p50": 39.93069985881448,
+              "p95": 54.183169757016,
+              "p99": 54.615274355746806,
+              "worst": 54.723300505429506
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 9.359891021934649,
+              "p50": 9.65467793866992,
+              "p95": 11.993309762328861,
+              "p99": 13.20981463417411,
+              "worst": 13.51394085213542
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 84.57461170231302,
+              "p50": 82.35926646739244,
+              "p95": 105.28449108824132,
+              "p99": 114.84228176996113,
+              "worst": 117.23172944039106
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.909450887391964,
+              "p50": 14.636166859418154,
+              "p95": 15.332096302881837,
+              "p99": 15.625507952645421,
+              "worst": 15.698860865086317
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 98.48406258970499,
+              "p50": 97.72470500320196,
+              "p95": 118.88893132563679,
+              "p99": 129.57059628795832,
+              "worst": 132.2410125285387
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 8,
+              "retained": 6,
+              "masked": 2
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "edge1024": {
+          "final": {
+            "states": {
+              "unknown": 1489567,
+              "free": 83155,
+              "occupied": 478
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 49,
+                "represented_roi_voxels": 47,
+                "current_or_previous_physical_hit_cells": 48,
+                "hit_cells_currently_occupied": 48,
+                "hit_cells_represented": 47,
+                "occupied_probability": {
+                  "count": 49,
+                  "mean": 0.982013790037909,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.02083333333333337
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 478,
+              "supported_voxels": 478,
+              "spatial_supported_voxels": 223,
+              "strong_sparse_retained": 255,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 425,
+              "proxy_count": 64,
+              "represented_voxels": 117,
+              "omitted_voxels": 361,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 372,
+              "hazard_candidate_boxes": 53,
+              "selected_floor_boxes": 11,
+              "selected_hazard_boxes": 53,
+              "represented_floor_voxels": 20,
+              "omitted_floor_voxels": 361,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.7552301255230125,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 1024,
+          "depth_pixel_revisit_counts": {
+            "count": 1024,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 83155,
+          "unique_occupied_voxel_evidence": 478,
+          "allocated_ray_observations": 12288,
+          "retained_ray_observations": 9768,
+          "discarded_self_filter_fraction": 0.205078125,
+          "unique_physically_matching_pixels": {
+            "post": 48
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 20.906499586999416,
+              "p50": 20.606327336281538,
+              "p95": 25.674812425859272,
+              "p99": 25.858163819648325,
+              "worst": 25.90400166809559
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 41.233608149923384,
+              "p50": 38.04761846549809,
+              "p95": 53.30982790328562,
+              "p99": 54.023177521303296,
+              "worst": 54.201514925807714
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 7.652113097719848,
+              "p50": 6.5999075304716825,
+              "p95": 12.422437896020705,
+              "p99": 16.07381312642247,
+              "worst": 16.986656934022903
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 88.22882148281981,
+              "p50": 81.40578051097691,
+              "p95": 116.29706334788351,
+              "p99": 121.13188634160906,
+              "worst": 122.34059209004045
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 12.51013825337092,
+              "p50": 11.374304071068764,
+              "p95": 16.801678063347936,
+              "p99": 17.81454057432711,
+              "worst": 18.067756202071905
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 100.73895973619074,
+              "p50": 92.70576108247042,
+              "p95": 133.328937436454,
+              "p99": 137.15089791920036,
+              "worst": 138.10638803988695
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 49,
+              "retained": 48,
+              "masked": 1
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed2048": {
+          "final": {
+            "states": {
+              "unknown": 1412137,
+              "free": 160044,
+              "occupied": 1019
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 17,
+                "represented_roi_voxels": 15,
+                "current_or_previous_physical_hit_cells": 15,
+                "hit_cells_currently_occupied": 15,
+                "hit_cells_represented": 15,
+                "occupied_probability": {
+                  "count": 17,
+                  "mean": 0.9820137900379086,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 1019,
+              "supported_voxels": 1019,
+              "spatial_supported_voxels": 781,
+              "strong_sparse_retained": 238,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 864,
+              "proxy_count": 64,
+              "represented_voxels": 149,
+              "omitted_voxels": 870,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 838,
+              "hazard_candidate_boxes": 26,
+              "selected_floor_boxes": 38,
+              "selected_hazard_boxes": 26,
+              "represented_floor_voxels": 111,
+              "omitted_floor_voxels": 870,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.8537782139352306,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 2048,
+          "depth_pixel_revisit_counts": {
+            "count": 2048,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 160044,
+          "unique_occupied_voxel_evidence": 1019,
+          "allocated_ray_observations": 24576,
+          "retained_ray_observations": 23628,
+          "discarded_self_filter_fraction": 0.03857421875,
+          "unique_physically_matching_pixels": {
+            "post": 15
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 14.734240636850396,
+              "p50": 14.278908492997289,
+              "p95": 17.61574049014598,
+              "p99": 17.837620400823653,
+              "worst": 17.89309037849307
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 85.2008016857629,
+              "p50": 84.35744815506041,
+              "p95": 100.8171116001904,
+              "p99": 103.56607796624303,
+              "worst": 104.25331955775619
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 13.281427246207992,
+              "p50": 11.431591352447867,
+              "p95": 19.4027055054903,
+              "p99": 22.01840996742249,
+              "worst": 22.67233608290553
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 142.67580249967673,
+              "p50": 141.75806380808353,
+              "p95": 168.02361200097948,
+              "p99": 169.2295151995495,
+              "worst": 169.530990999192
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 12.178105612595877,
+              "p50": 11.960048461332917,
+              "p95": 14.18938124552369,
+              "p99": 15.569255519658329,
+              "worst": 15.914224088191986
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 154.85390811227262,
+              "p50": 153.7863549310714,
+              "p95": 179.63986909016967,
+              "p99": 181.22742822393775,
+              "worst": 181.62431800737977
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 15,
+              "retained": 15,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        },
+        "fixed4096": {
+          "final": {
+            "states": {
+              "unknown": 1273861,
+              "free": 297320,
+              "occupied": 2019
+            },
+            "objects": {
+              "post": {
+                "aabb_intersecting_voxels": 544,
+                "occupied_roi_voxels": 29,
+                "represented_roi_voxels": 29,
+                "current_or_previous_physical_hit_cells": 28,
+                "hit_cells_currently_occupied": 28,
+                "hit_cells_represented": 28,
+                "occupied_probability": {
+                  "count": 29,
+                  "mean": 0.9820137900379081,
+                  "p50": 0.9820137900379085,
+                  "p95": 0.9820137900379085,
+                  "p99": 0.9820137900379085,
+                  "worst": 0.9820137900379085
+                },
+                "occupied_physical_hit_discarded_fraction": 0.0
+              }
+            },
+            "extraction": {
+              "occupied_voxels": 2019,
+              "supported_voxels": 2019,
+              "spatial_supported_voxels": 1814,
+              "strong_sparse_retained": 205,
+              "temporal_probabilities": true,
+              "temporal_support_probability": 0.95,
+              "rejected_sparse_voxels": 0,
+              "candidate_boxes": 1631,
+              "proxy_count": 64,
+              "represented_voxels": 151,
+              "omitted_voxels": 1868,
+              "run_budget_omitted_voxels": 0,
+              "truncated": true,
+              "max_obstacles": 64,
+              "minimum_component_voxels": 3,
+              "support_radius_voxels": 2,
+              "support_neighborhood": "Chebyshev",
+              "support_plane_z": 0.0,
+              "floor_candidate_boxes": 1584,
+              "hazard_candidate_boxes": 47,
+              "selected_floor_boxes": 17,
+              "selected_hazard_boxes": 47,
+              "represented_floor_voxels": 74,
+              "omitted_floor_voxels": 1868,
+              "padding_m": 0.0
+            },
+            "occupied_evidence_discarded_fraction": 0.9252105002476474,
+            "false_free_or_unknown_or_expired_cells": 0
+          },
+          "accepted_updates": 12,
+          "attempted_updates": 12,
+          "unique_depth_pixels": 4096,
+          "depth_pixel_revisit_counts": {
+            "count": 4096,
+            "mean": 12.0,
+            "p50": 12.0,
+            "p95": 12.0,
+            "p99": 12.0,
+            "worst": 12.0
+          },
+          "unique_free_voxel_evidence": 297320,
+          "unique_occupied_voxel_evidence": 2019,
+          "allocated_ray_observations": 49152,
+          "retained_ray_observations": 47088,
+          "discarded_self_filter_fraction": 0.0419921875,
+          "unique_physically_matching_pixels": {
+            "post": 28
+          },
+          "stages_ms": {
+            "robot_filter": {
+              "count": 12,
+              "mean": 20.613405698289473,
+              "p50": 19.534750375896692,
+              "p95": 25.916739995591342,
+              "p99": 26.183451279066503,
+              "worst": 26.250129099935293
+            },
+            "ray_traversal": {
+              "count": 12,
+              "mean": 164.95744814164937,
+              "p50": 159.5530053600669,
+              "p95": 187.70297525916249,
+              "p99": 188.52114771027118,
+              "worst": 188.72569082304835
+            },
+            "occupancy_integrate": {
+              "count": 12,
+              "mean": 22.193944236884516,
+              "p50": 21.67428215034306,
+              "p95": 25.513538485392928,
+              "p99": 25.763039542362094,
+              "worst": 25.825414806604385
+            },
+            "mapping_worker": {
+              "count": 12,
+              "mean": 259.14873046955717,
+              "p50": 248.6846693791449,
+              "p95": 292.037559277378,
+              "p99": 294.4572164816782,
+              "worst": 295.06213078275323
+            },
+            "obstacle_extract": {
+              "count": 12,
+              "mean": 13.711003004573286,
+              "p50": 12.128889095038176,
+              "p95": 20.14108181465417,
+              "p99": 21.17178848478943,
+              "worst": 21.429465152323246
+            },
+            "worker_plus_proxy": {
+              "count": 12,
+              "mean": 272.85973347413045,
+              "p50": 268.43325002118945,
+              "p95": 306.4304457278922,
+              "p99": 310.0510864937678,
+              "worst": 310.9562466852367
+            }
+          },
+          "raw_depth_hits_last_input": {
+            "post": {
+              "raw": 3674,
+              "selected": 28,
+              "retained": 28,
+              "masked": 0
+            }
+          },
+          "publication_age": "NOT_MEASURED_OFFLINE",
+          "effective_native_update_hz": "NOT_MEASURED_OFFLINE"
+        }
+      },
+      "evaluation_scope_review": {
+        "scope": "RENDER_ONLY_HOVER_STRESS_POTENTIAL_ROBOT_FIXTURE_OVERLAP",
+        "posture": "hover",
+        "primary_recommendation_eligible": false,
+        "physical_nonoverlap_validated": false,
+        "reason": "Independent actual robot visible-mesh versus cylinder-enclosing-box evaluation reports zero clearance/potential overlap at hover. This is a conservative overlap screen, not proof of exact cylinder penetration. Counts remain valid rendered-stress observations, not primary physically separated evidence.",
+        "reference": "docs/assets/camera_observability_feasibility/native_visibility.json",
+        "replacement_plan": "New matched HOME bursts with explicit actual-mesh clearance guards will provide a separate sampling_home_primary.json. Preserve all hover results unchanged.",
+        "overlap_evaluation": {
+          "clearance_to_enclosing_box_m": 0.0,
+          "potential_overlap": true,
+          "reference": "Exact actual robot visible triangle meshes; exact box fixture or conservative enclosing box for sphere/cylinder.",
+          "motion_validity": "Potential overlap must be excluded/checked before any physical movement claim; visibility trial retained."
+        }
+      }
+    }
+  ],
+  "production_sources_unchanged": true,
+  "evaluation_scope_review": {
+    "scope": "RENDER_ONLY_HOVER_STRESS_POTENTIAL_ROBOT_FIXTURE_OVERLAP",
+    "posture": "hover",
+    "primary_recommendation_eligible": false,
+    "physical_nonoverlap_validated": false,
+    "reason": "Independent actual robot visible-mesh versus cylinder-enclosing-box evaluation reports zero clearance/potential overlap at hover. This is a conservative overlap screen, not proof of exact cylinder penetration. Counts remain valid rendered-stress observations, not primary physically separated evidence.",
+    "reference": "docs/assets/camera_observability_feasibility/native_visibility.json",
+    "replacement_plan": "New matched HOME bursts with explicit actual-mesh clearance guards will provide a separate sampling_home_primary.json. Preserve all hover results unchanged."
+  },
+  "primary_guarded_replacement": "docs/assets/camera_observability_feasibility/sampling_home_primary.json"
+}

@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "status": "POSTHOC_SCENE_GEOMETRY_QUALIFICATION",
+  "fixture_background_pairs_tested": 52,
+  "intersecting_or_potential_pairs": [
+    {
+      "scenario_id": "large_obstruction",
+      "fixture_id": "large",
+      "background_id": "background_Rectangle",
+      "method": "Exact oriented-box SAT positive-volume intersection",
+      "world_aabb_overlap_extent_m": [
+        0.07990443809091996,
+        0.046129809117364806,
+        0.048
+      ],
+      "fixture": {
+        "id": "large",
+        "kind": "box",
+        "center": [
+          0.5,
+          0.05,
+          0.25
+        ],
+        "dimensions": [
+          0.18,
+          0.24,
+          0.5
+        ]
+      },
+      "background": {
+        "id": "background_Rectangle",
+        "kind": "box",
+        "center": [
+          0.54,
+          0.16,
+          0.024
+        ],
+        "dimensions": [
+          0.068,
+          0.042,
+          0.048
+        ],
+        "radius": 0.025,
+        "yaw": -0.5759586531581288
+      }
+    },
+    {
+      "scenario_id": "narrow_gap",
+      "fixture_id": "gap_left",
+      "background_id": "background_Rectangle",
+      "method": "Exact oriented-box SAT positive-volume intersection",
+      "world_aabb_overlap_extent_m": [
+        0.019952219045459962,
+        0.03112980911736482,
+        0.048
+      ],
+      "fixture": {
+        "id": "gap_left",
+        "kind": "box",
+        "center": [
+          0.48,
+          0.105,
+          0.18
+        ],
+        "dimensions": [
+          0.08,
+          0.1,
+          0.36
+        ]
+      },
+      "background": {
+        "id": "background_Rectangle",
+        "kind": "box",
+        "center": [
+          0.54,
+          0.16,
+          0.024
+        ],
+        "dimensions": [
+          0.068,
+          0.042,
+          0.048
+        ],
+        "radius": 0.025,
+        "yaw": -0.5759586531581288
+      }
+    },
+    {
+      "scenario_id": "narrow_gap",
+      "fixture_id": "gap_right",
+      "background_id": "background_LargeSphere",
+      "method": "Exact sphere/oriented-box closest-point test",
+      "world_aabb_overlap_extent_m": [
+        0.010000000000000009,
+        0.024999999999999994,
+        0.06
+      ],
+      "fixture": {
+        "id": "gap_right",
+        "kind": "box",
+        "center": [
+          0.48,
+          -0.105,
+          0.18
+        ],
+        "dimensions": [
+          0.08,
+          0.1,
+          0.36
+        ]
+      },
+      "background": {
+        "id": "background_LargeSphere",
+        "kind": "sphere",
+        "center": [
+          0.54,
+          -0.16,
+          0.03
+        ],
+        "dimensions": [
+          0.06,
+          0.06,
+          0.06
+        ],
+        "radius": 0.03,
+        "yaw": 0.0
+      }
+    },
+    {
+      "scenario_id": "object_occlusion",
+      "fixture_id": "occluder",
+      "background_id": "background_Rectangle",
+      "method": "Exact oriented-box SAT positive-volume intersection",
+      "world_aabb_overlap_extent_m": [
+        0.03995221904545998,
+        0.036129809117364825,
+        0.048
+      ],
+      "fixture": {
+        "id": "occluder",
+        "kind": "box",
+        "center": [
+          0.6,
+          0.08,
+          0.15
+        ],
+        "dimensions": [
+          0.12,
+          0.16,
+          0.3
+        ]
+      },
+      "background": {
+        "id": "background_Rectangle",
+        "kind": "box",
+        "center": [
+          0.54,
+          0.16,
+          0.024
+        ],
+        "dimensions": [
+          0.068,
+          0.042,
+          0.048
+        ],
+        "radius": 0.025,
+        "yaw": -0.5759586531581288
+      }
+    }
+  ],
+  "affected_scenario_object_pairs": [
+    [
+      "large_obstruction",
+      "large"
+    ],
+    [
+      "narrow_gap",
+      "gap_left"
+    ],
+    [
+      "narrow_gap",
+      "gap_right"
+    ],
+    [
+      "object_occlusion",
+      "occluder"
+    ]
+  ],
+  "sensitivity": [
+    {
+      "layout_id": "A_current",
+      "robot_fixture_nonoverlap": {
+        "condition_count": 54,
+        "surface_area_denominator_m2": 3.528368271867259,
+        "visible_surface_one_fraction": 0.6318201955238582,
+        "visible_surface_two_fraction": 0.047724373126699283,
+        "object_macro_visible_fraction": 0.5090222357182137
+      },
+      "robot_and_background_disjoint": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.45697040853126636,
+        "visible_surface_two_fraction": 0.05616850008624258,
+        "object_macro_visible_fraction": 0.446889185685634
+      },
+      "excluded_background_intersection_conditions": [
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "hover",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "large_obstruction",
+          "object_id": "large"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        }
+      ]
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "robot_fixture_nonoverlap": {
+        "condition_count": 54,
+        "surface_area_denominator_m2": 3.528368271867259,
+        "visible_surface_one_fraction": 0.761570767693525,
+        "visible_surface_two_fraction": 0.04788265784045559,
+        "object_macro_visible_fraction": 0.6402378301770407
+      },
+      "robot_and_background_disjoint": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.6680508426488428,
+        "visible_surface_two_fraction": 0.029847394496325928,
+        "object_macro_visible_fraction": 0.5979610799744611
+      },
+      "excluded_background_intersection_conditions": [
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "hover",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "large_obstruction",
+          "object_id": "large"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        }
+      ]
+    },
+    {
+      "layout_id": "H_third_side_-1.00",
+      "robot_fixture_nonoverlap": {
+        "condition_count": 54,
+        "surface_area_denominator_m2": 3.528368271867259,
+        "visible_surface_one_fraction": 0.8095072317947768,
+        "visible_surface_two_fraction": 0.25187007005227263,
+        "object_macro_visible_fraction": 0.7127842647558131
+      },
+      "robot_and_background_disjoint": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.6753831644227629,
+        "visible_surface_two_fraction": 0.18436890131604974,
+        "object_macro_visible_fraction": 0.6663048370129951
+      },
+      "excluded_background_intersection_conditions": [
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "hover",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "large_obstruction",
+          "object_id": "large"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        }
+      ]
+    },
+    {
+      "layout_id": "K_B_front_height_0.85_rear",
+      "robot_fixture_nonoverlap": {
+        "condition_count": 54,
+        "surface_area_denominator_m2": 3.528368271867259,
+        "visible_surface_one_fraction": 0.839120127547428,
+        "visible_surface_two_fraction": 0.3797353943185263,
+        "object_macro_visible_fraction": 0.7656862981959145
+      },
+      "robot_and_background_disjoint": {
+        "condition_count": 42,
+        "surface_area_denominator_m2": 1.1771682718672594,
+        "visible_surface_one_fraction": 0.775855594525046,
+        "visible_surface_two_fraction": 0.28896861433909543,
+        "object_macro_visible_fraction": 0.7355734432049184
+      },
+      "excluded_background_intersection_conditions": [
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "home",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "hover",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "extended",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "large_obstruction",
+          "object_id": "large"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_right"
+        },
+        {
+          "posture": "raised",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "narrow_gap",
+          "object_id": "gap_left"
+        },
+        {
+          "posture": "low",
+          "scenario_id": "object_occlusion",
+          "object_id": "occluder"
+        }
+      ]
+    }
+  ],
+  "rank_order_robot_fixture_nonoverlap": [
+    "K_B_front_height_0.85_rear",
+    "H_third_side_-1.00",
+    "C_asymmetric_1.15_0.65",
+    "A_current"
+  ],
+  "rank_order_also_background_disjoint": [
+    "K_B_front_height_0.85_rear",
+    "H_third_side_-1.00",
+    "C_asymmetric_1.15_0.65",
+    "A_current"
+  ],
+  "rank_order_unchanged": true,
+  "sources": {
+    "docs/assets/camera_observability_feasibility/native_visibility.json": "8eb5fa00feecd4648b49f6f319b9f8947aa39515dd45b0c87173207781dbdfce",
+    "docs/assets/camera_observability_feasibility/geometry_screen.json": "82ef8e3d5b7795632b7d43ff660c42a611fdf716f29d74bcbae6022ad364d9ac",
+    "docs/assets/multiview_final/selected-layout.json": "776a3e34312555ecf0cd45970322c5f262a26370f52bb35f1ac2155aaceb1f4e",
+    "docs/assets/camera_observability_feasibility/visibility_fixtures.json": "57a6bb844265bcbb844f3802d52f5262263ca3edfcab53ea5795edf6c8209b60"
+  },
+  "scope": {
+    "primary_54": "The existing54condition label means robot/fixture-nonoverlap only; it does not certify mutually disjoint full scenes.",
+    "geometry": "Research fixtures and original four tabletop primitives form static rendered volume unions. Some volumes intersect. Depth and occlusion remain actual rendered measurements; full declared primitive surfaces include buried/unobservable pieces.",
+    "sensitivity": "Further restrict the same existing native measurements to fixture/background-disjoint conditions. No rerender, retuning, deletion, replacement of original metrics, or new sampling/performance measurement.",
+    "support_plane": "Expected ground/table support contact is outside this inter-object check.",
+    "planner": "Separate native physical planner fixtures deactivate original FinalPerceptionObjects and use prevalidated non-overlapping physical setups; their collision results are unaffected by this visibility-scene qualification.",
+    "limits": "Exact tests cover boxes/spheres; curved-cylinder cases would use conservative enclosing bounds if any were potential intersections. No continuous motion/scene certification is implied."
+  }
+}

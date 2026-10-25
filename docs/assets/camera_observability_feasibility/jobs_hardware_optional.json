@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "scope": "Runonlyafterallprimarywindowsarestable;onewindowperpolicy,notpooledwithn3",
+  "choose_fresh_output_root": "Change the reproduce prefix for subsequent runs; completed jobs are never overwritten.",
+  "jobs": [
+    {
+      "label": "A_current-edge-live",
+      "arguments": [
+        "scripts/camera_observability_performance.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--mode",
+        "baseline",
+        "--max-rays",
+        "1024",
+        "--sampling-policy",
+        "depth_edge",
+        "--seconds",
+        "30",
+        "--warmup",
+        "10",
+        "--headless",
+        "--result",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-edge-live/result.json",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-edge-live"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-edge-live",
+      "result": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-edge-live/result.json",
+      "timeout": 240
+    },
+    {
+      "label": "K_B-front-full-semantic",
+      "arguments": [
+        "scripts/camera_observability_performance.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "K_B_front_height_0.85_rear",
+        "--mode",
+        "full",
+        "--max-rays",
+        "1024",
+        "--sampling-policy",
+        "fixed",
+        "--seconds",
+        "30",
+        "--warmup",
+        "10",
+        "--headless",
+        "--result",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/K_B-front-full-semantic/result.json",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/K_B-front-full-semantic"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/performance-optional/K_B-front-full-semantic",
+      "result": "outputs/camera-observability-feasibility/reproduce/performance-optional/K_B-front-full-semantic/result.json",
+      "timeout": 240
+    },
+    {
+      "label": "A_current-rays2048-live",
+      "arguments": [
+        "scripts/camera_observability_performance.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--mode",
+        "baseline",
+        "--max-rays",
+        "2048",
+        "--sampling-policy",
+        "fixed",
+        "--seconds",
+        "30",
+        "--warmup",
+        "10",
+        "--headless",
+        "--result",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays2048-live/result.json",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays2048-live"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays2048-live",
+      "result": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays2048-live/result.json",
+      "timeout": 240
+    }
+  ]
+}

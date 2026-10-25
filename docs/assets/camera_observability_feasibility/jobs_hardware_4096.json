@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "scope": "Runonlyafter2048maintainsrates,freshnessandzerojobfailures;retain500kvisitcapand1sstalelimit",
+  "choose_fresh_output_root": "Change the reproduce prefix for subsequent runs; completed jobs are never overwritten.",
+  "jobs": [
+    {
+      "label": "A_current-rays4096-live",
+      "arguments": [
+        "scripts/camera_observability_performance.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--mode",
+        "baseline",
+        "--max-rays",
+        "4096",
+        "--seconds",
+        "30",
+        "--warmup",
+        "10",
+        "--headless",
+        "--result",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays4096-live/result.json",
+        "--artifacts-dir",
+        "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays4096-live"
+      ],
+      "artifacts_dir": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays4096-live",
+      "result": "outputs/camera-observability-feasibility/reproduce/performance-optional/A_current-rays4096-live/result.json",
+      "timeout": 240
+    }
+  ]
+}

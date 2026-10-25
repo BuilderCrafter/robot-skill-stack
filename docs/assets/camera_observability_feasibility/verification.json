@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "production_baseline": "8e56b163650b66e940eb39a2ab8f5684bbd08c10",
+  "original_local_parent": "39780c2a9725be5fbaa7fd0e937ced3922b52d79",
+  "scope": "Only new research code/tests/docs; inherited camera smoke benchmark is isolated and unchanged. No production module, scene, launcher, default or pre-existing test was edited.",
+  "unit_command": "./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/camera-observability-feasibility/unit-final",
+  "unit_artifact": "outputs/camera-observability-feasibility/unit-final/run-_2x21pe7/summary.json",
+  "unit_test_count": 866,
+  "regression_checks": {
+    "architecture": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "unit_discovery": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_async_runtime": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_grasp_planning": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_perception": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_placement": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_primitive_perception": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_reactive_pick": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_world_model_update_rate": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    },
+    "test_world_model_view": {
+      "status": "PASS",
+      "return_code": 0,
+      "error": null
+    }
+  },
+  "measurement_source_freeze_sha256": {
+    "scripts/camera_observability_planner.py": "5befad509e1e4df8378fd0dcda94314d1e40d8b1ec554ea7b6fd9f72a56f1ec6",
+    "scripts/camera_observability_performance.py": "28f1c1117e3188eab649704830ad627d766aee411222b5a64256ba4781afff79",
+    "scripts/camera_observability_sampling.py": "91a2286d0d0dc8d1f11d0a6c87d6def6c8b091da231cd86df18e39b63f75df9d",
+    "scripts/camera_workload_native.py": "931cfe2c28671ff64d76559fe5433f01061e3b9888f734973eb27520651616a4",
+    "scripts/camera_workload_config.py": "35a8431d684dd6c218c27a8edf20a1c2b190912b3a9999ff7878145e21ce1614",
+    "scripts/camera_workload_metrics.py": "08eb5042d15a4417ebc6f3a8adebeec7cbd3a66f25d420533aadb5cfe9039454",
+    "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+    "tests/support/reactive_geometry.py": "be4facbb9ee0226c0720e1ec6ac7fa7e1853ae7f73df43ba4cfa9890f32af4db",
+    "tests/support/reactive_contact_metrics.py": "f40b40d2c94c2647319b42a4b88f494b037b8089f23c1048bc932923c17c48ad"
+  },
+  "freeze_checked_after_native_queues": true,
+  "research_source_sha256": {
+    "scripts/audit_camera_observability_scenes.py": "5ef81bab528a881f9b67d6cbeca5ae960f341d403e4804ce153aadea352e98d9",
+    "scripts/camera_observability_capture.py": "f746726c6a4f268d467d2ffb63216fe3d2cb612925ef2799449e080ef21938d7",
+    "scripts/camera_observability_geometry.py": "0e7f071d436c970da6fb32d16835c569962860a4aece7c017dc350c07d80fb67",
+    "scripts/camera_observability_performance.py": "28f1c1117e3188eab649704830ad627d766aee411222b5a64256ba4781afff79",
+    "scripts/camera_observability_planner.py": "5befad509e1e4df8378fd0dcda94314d1e40d8b1ec554ea7b6fd9f72a56f1ec6",
+    "scripts/camera_observability_sampling.py": "91a2286d0d0dc8d1f11d0a6c87d6def6c8b091da231cd86df18e39b63f75df9d",
+    "scripts/plot_camera_observability_representation.py": "536e259d81ae8eef7756e6cbea03a04fdb52d3f8723613be966cd321b0c4bbbd",
+    "scripts/plot_camera_observability_tradeoffs.py": "cc061bdcf79eb2295f0f8c049ac97e0323776e5add3d33fe8dcb739ad77c38f4",
+    "scripts/run_camera_observability_jobs.py": "053f64744fd30aff0e69d0bc46e96120d5f30aba9066ead3123cee09c8e76fe0",
+    "scripts/summarize_camera_observability_performance.py": "67761934c98031f3157b1223cde22f8cf2576c70ce1608fd9d0115f97f8b4c54",
+    "scripts/summarize_camera_observability_planning.py": "0552d7d67c89c246dcf40a100643c42ad8f41e316ec82fb534b6c75a4bd679e0",
+    "tests/unit/test_camera_observability_geometry.py": "50335067950817c8d17eb47a20ac86060c66adef0ba8f012dd40ec921c570796",
+    "tests/unit/test_camera_observability_performance.py": "e74cbc22a12b125010a33107e22ef690848c635199b03de1f206e460d502dba7",
+    "tests/unit/test_camera_observability_performance_summary.py": "0d5cbc4687a2770812498fbcf275b8ad9bd95f5781f958b35c8656a60c30b821",
+    "tests/unit/test_camera_observability_planner.py": "b278dd3a5a40f2f9d4633c67374945c321d97d6fbc2ed7f1aab0f660614fe138",
+    "tests/unit/test_camera_observability_planning_summary.py": "d3e28856400177ac364451da69b127010e72f2247a5e7fe162fd347083b976c7",
+    "tests/unit/test_camera_observability_sampling.py": "0b14133b5b2e4352920f56ac8dc051c0adefaa3f44dac586c9e48e3293c21106"
+  },
+  "native_evidence": {
+    "visibility_views": 450,
+    "physical_trials_valid": 38,
+    "direct_reactive_pairs": 17,
+    "additional_reactive_sampling_trials": 4,
+    "runtime_windows_valid": 16,
+    "runtime_direct_moves_completed": 64,
+    "all_original_native_regressions_rerun": false
+  },
+  "post_measurement_changes": "New report reducers/plots and byte-exact compact scene/FOV audit only; measurement scripts and production source remain frozen.",
+  "limitations": "Physical-valid is not collision-free success. Optional hardware n1 remains separate from repeated n3 groups. Full-solid occupancy IoU, GUI, long-duration operation, native wrist and higher-resolution third-camera trials unmeasured."
+}
