@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "status": "PARTIAL_ACCEPTANCE_UNRESOLVED_MOVING_HOME_EXECUTION_BLOCKER",
+  "attempts": [
+    {
+      "id": "nominal",
+      "outcome": "REJECTED_EXECUTION_TRACKING_FAILURE",
+      "measurement_scope": "One bounded diagnostic after the same nominal cancellation; excluded from primary comparisons and timing",
+      "artifacts": {
+        "diagnostic": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/r1/home_diagnostic.json",
+          "sha256": "d4ff005a03ac1488c9182dffa8449f7418b2575ece3cbc25f957253d2f213b1a"
+        },
+        "home_joint_trace": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/r1/home_plan_trace.json",
+          "sha256": "6cebe283572cea450154b5d1035ee6f118848a8a5f7dbc5e34ffb329e705f22a"
+        },
+        "native_measurement": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/r1/result.json",
+          "sha256": "05e871ffdf98ce01a5d831ddd33f2f9d557a758812e7534a6fc143d43e591c9c"
+        }
+      },
+      "source": {
+        "runtime_equivalent_commit": "f8ea1558871d0f0db5a80800fa9cade96792dc98",
+        "wrapper_path": "scripts/diagnose_global_home_v4.py",
+        "wrapper_sha256_at_measurement": "87a10a188ad0363a01b6398d5d16b409b49a281e207d5fbcec728e45a7718248",
+        "wrapper_committed_equivalent": null,
+        "wrapper_note": "Nominal wrapper predates the time-scaling option; its exact recorded SHA is retained rather than assigned to a later commit.",
+        "core_manifest_sha256_canonical_json": "55a30c1cbd7235b06f7d794c0f1a8023c90b5feace4bceca268ce1c20d49c2ac",
+        "executor_sha256": "3ccee7d59f8614fe17f7889142225becfef4ab8508a21c6e592e59d7ea1b0fc1",
+        "adapter_sha256": "7d23cda580e3bc4cc2077e054942970fc35a2c24e729a898fc47b54680493cfc",
+        "core_sources_unchanged_during_capture": true,
+        "wrapper_unchanged_during_capture": true
+      },
+      "capture": {
+        "complete": true,
+        "total_observer_samples": 55,
+        "home_observer_samples": 53,
+        "home_actions_including_final_hold": 52,
+        "self_contact_reports": 0,
+        "self_contact_buffer_saturated": false
+      },
+      "applied_target_verification": {
+        "method": "Public get_applied_action -> Articulation.get_applied_actions -> actual PhysX get_dof_position_targets/get_dof_velocity_targets, then clone; inspected installed source.",
+        "all_home_actions_available": true,
+        "all_seven_joint_indices_correct": true,
+        "maximum_position_target_roundoff_rad": 1.1871932104057237e-07,
+        "maximum_velocity_target_roundoff_rad_s": 5.9079574121767564e-08,
+        "targets_match_requested_within_1e_minus6_rad_tolerance": true,
+        "gain_arrays_unchanged_before_after_home": true,
+        "gain_array_sha256_canonical_json": "7b81f0605051a1d1a66fc7cee2e1b553668d63b8282fae95add028b0ecca50a1",
+        "dof_properties_sha256_canonical_json": "a9630c36ce7b520b85609553d7b902d2e92d7062e5291748262ad088f5ac76ad"
+      },
+      "planning": {
+        "ik_candidates": 1,
+        "rrt_waypoints": 2,
+        "full_pose_ik_success": true,
+        "trajectory_duration_sim_seconds": 0.7385320540805275,
+        "route_validation_samples": 62,
+        "trajectory_validation_samples": 194,
+        "trajectory_validation": "PASS_SAMPLED_SDK_MODEL",
+        "original_request_position_tolerance_m": 0.025,
+        "original_request_orientation_tolerance_rad": 0.1
+      },
+      "execution": {
+        "skill_status": "failed",
+        "skill_failure_code": "path_blocked",
+        "strategy_failure_code": "tracking_failure",
+        "message": "Joint tracking exceeded the immediate abort bound.",
+        "elapsed_sim_seconds": 0.8500000443309546,
+        "abort_tracking_error_rad": 0.4014517038328449,
+        "logged_tracking_maximum_rad": 0.3814784257871906,
+        "logged_tracking_samples": 51,
+        "diagnostic_joint1_maximum_target_error_rad": 0.4014517068862915,
+        "joint1_actual_change_rad": -0.3952399492263794,
+        "joint1_planned_change_rad": 0.006211754606465503,
+        "final_position_error_m": 0.22022824069452324,
+        "final_orientation_error_rad": 0.3693915147458756,
+        "final_arm_hold": true,
+        "aborting_sample_excluded_from_tracking_distribution": true
+      }
+    },
+    {
+      "id": "fixed_time_scale_2",
+      "outcome": "REJECTED_EXECUTION_TRACKING_FAILURE",
+      "measurement_scope": "One bounded diagnostic after the same nominal cancellation; excluded from primary comparisons and timing",
+      "artifacts": {
+        "diagnostic": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/time-scale2-r1/home_diagnostic.json",
+          "sha256": "5ad06e028635fc17c7ab1e206a34ecc354c8d10db70ef24812a2a3cf8fd49d81"
+        },
+        "home_joint_trace": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/time-scale2-r1/home_plan_trace.json",
+          "sha256": "4e6e3d809fce50df76631c0cb75101e4290c073056e757c00c06791750443ff9"
+        },
+        "native_measurement": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/time-scale2-r1/result.json",
+          "sha256": "af1a30d2ee7bb51e827dedfbd2f93bf2ad3df7ad93e59f5ac30fa4b12cc60ba2"
+        }
+      },
+      "source": {
+        "runtime_equivalent_commit": "f8ea1558871d0f0db5a80800fa9cade96792dc98",
+        "wrapper_path": "scripts/diagnose_global_home_v4.py",
+        "wrapper_sha256_at_measurement": "b11e54486892bef7c37c088828334bc08f2fa58d9f917f2ec459cc19bcad267c",
+        "wrapper_committed_equivalent": "b4aad8f7133e9fb1c61a419d76ce4c8110770ea3",
+        "wrapper_note": "Recorded wrapper SHA matches the indicated committed source.",
+        "core_manifest_sha256_canonical_json": "41fd1b3922bffad6cc6dd9ffb9a0b7f365d65c43b1c21ded373bc1a3be3734d7",
+        "executor_sha256": "3ccee7d59f8614fe17f7889142225becfef4ab8508a21c6e592e59d7ea1b0fc1",
+        "adapter_sha256": "7d23cda580e3bc4cc2077e054942970fc35a2c24e729a898fc47b54680493cfc",
+        "core_sources_unchanged_during_capture": true,
+        "wrapper_unchanged_during_capture": true
+      },
+      "capture": {
+        "complete": true,
+        "total_observer_samples": 98,
+        "home_observer_samples": 96,
+        "home_actions_including_final_hold": 95,
+        "self_contact_reports": 0,
+        "self_contact_buffer_saturated": false
+      },
+      "applied_target_verification": {
+        "method": "Public get_applied_action -> Articulation.get_applied_actions -> actual PhysX get_dof_position_targets/get_dof_velocity_targets, then clone; inspected installed source.",
+        "all_home_actions_available": true,
+        "all_seven_joint_indices_correct": true,
+        "maximum_position_target_roundoff_rad": 1.1871932104057237e-07,
+        "maximum_velocity_target_roundoff_rad_s": 2.9539787060883782e-08,
+        "targets_match_requested_within_1e_minus6_rad_tolerance": true,
+        "gain_arrays_unchanged_before_after_home": true,
+        "gain_array_sha256_canonical_json": "7b81f0605051a1d1a66fc7cee2e1b553668d63b8282fae95add028b0ecca50a1",
+        "dof_properties_sha256_canonical_json": "a9630c36ce7b520b85609553d7b902d2e92d7062e5291748262ad088f5ac76ad"
+      },
+      "planning": {
+        "ik_candidates": 1,
+        "rrt_waypoints": 2,
+        "full_pose_ik_success": true,
+        "trajectory_duration_sim_seconds": 1.477064108161055,
+        "route_validation_samples": 62,
+        "trajectory_validation_samples": 387,
+        "trajectory_validation": "PASS_SAMPLED_SDK_MODEL",
+        "original_request_position_tolerance_m": 0.025,
+        "original_request_orientation_tolerance_rad": 0.1
+      },
+      "execution": {
+        "skill_status": "failed",
+        "skill_failure_code": "path_blocked",
+        "strategy_failure_code": "tracking_failure",
+        "message": "Joint tracking remained outside the declared bound.",
+        "elapsed_sim_seconds": 1.5666667483747005,
+        "abort_tracking_error_rad": 0.25939976863692205,
+        "logged_tracking_maximum_rad": 0.25939976863692205,
+        "logged_tracking_samples": 95,
+        "diagnostic_joint1_maximum_target_error_rad": 0.25939977169036865,
+        "joint1_actual_change_rad": -0.25318801403045654,
+        "joint1_planned_change_rad": 0.006211754606465503,
+        "final_position_error_m": 0.14475401961930687,
+        "final_orientation_error_rad": 0.2416456895113274,
+        "final_arm_hold": true,
+        "aborting_sample_excluded_from_tracking_distribution": false
+      },
+      "time_scale_probe": {
+        "factor": 2.0,
+        "applies_only_to": "moving Home after the nominal cancellation",
+        "time_helper_sha256": "0326c9c72adcec1f7bbfc58ddd96ee590a0849d9fa14af4044dbf4b7a96b9e9e",
+        "nominal_duration_seconds": 0.7385320540805275,
+        "scaled_duration_seconds": 1.477064108161055,
+        "maximum_identity_errors_for_orders0_through3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "identity_conditions": 41,
+        "collision_world_unchanged": true,
+        "robot_model_unchanged": true,
+        "route_unchanged": true,
+        "requested_pose_unchanged": true,
+        "hard_limits_unchanged": true,
+        "drive_gains_unchanged": true,
+        "method": "q_scaled(t0+s)=q_base(t0+s/factor); derivative n divided by factor**n. Original inspector, static snapshot, base frame, self-collision exclusions and hard limits validate the entire scaled curve again.",
+        "hard_limits_sha256_canonical_json": "b42fe9c64a7b59dcf8a00eca556df050df1a28f19a78606343421e8d3c086bfb",
+        "independent_redense_validation_samples": 387,
+        "adopted": false
+      }
+    },
+    {
+      "id": "recorded_home_ik_preference",
+      "outcome": "REJECTED_EXECUTION_TRACKING_FAILURE",
+      "measurement_scope": "One bounded diagnostic after the same nominal cancellation; excluded from primary comparisons and timing",
+      "artifacts": {
+        "diagnostic": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/preferred-home-r1/home_diagnostic.json",
+          "sha256": "32a3c060d5b1c51927930a05741b6a20a74d9a790a6c85f3cac1857d5ac01901"
+        },
+        "home_joint_trace": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/preferred-home-r1/home_plan_trace.json",
+          "sha256": "c843d619f445f71741447318081a3175df1db0dc39e6e44d7e1af49470c776f2"
+        },
+        "native_measurement": {
+          "path": "outputs/motion-planning-v4/home-diagnostic/preferred-home-r1/result.json",
+          "sha256": "554b6bb517eaa6fd8f77ba040091df641cab503204d6676fa806aa0a01f4688e"
+        }
+      },
+      "source": {
+        "runtime_equivalent_commit": "b7c4dc46383df76def76d49899e31db91f34cfdb",
+        "wrapper_path": "scripts/diagnose_global_home_v4.py",
+        "wrapper_sha256_at_measurement": "dabfd9afac2dd43e8395cdd90aeef3055d2dd83fb5fa3354894fb7c6ad0166ab",
+        "wrapper_committed_equivalent": "b7c4dc46383df76def76d49899e31db91f34cfdb",
+        "wrapper_note": "Recorded wrapper SHA matches the indicated committed source.",
+        "core_manifest_sha256_canonical_json": "38a454e5c04a2ce9b71ff1ee15d831b70bc4b38c76b3c7135cdb9c57eae217fb",
+        "executor_sha256": "d13dc39697add46f57e6fa618cf91d63e2d5e38487ae7c370643b15ba8d8b0c8",
+        "adapter_sha256": "9a47a9077d50635f7bc91d84c92f3efd6aaaaf11ae832efbcbdd516002cb5a8a",
+        "core_sources_unchanged_during_capture": true,
+        "wrapper_unchanged_during_capture": true
+      },
+      "capture": {
+        "complete": true,
+        "total_observer_samples": 61,
+        "home_observer_samples": 59,
+        "home_actions_including_final_hold": 58,
+        "self_contact_reports": 0,
+        "self_contact_buffer_saturated": false
+      },
+      "applied_target_verification": {
+        "method": "Public get_applied_action -> Articulation.get_applied_actions -> actual PhysX get_dof_position_targets/get_dof_velocity_targets, then clone; inspected installed source.",
+        "all_home_actions_available": true,
+        "all_seven_joint_indices_correct": true,
+        "maximum_position_target_roundoff_rad": 1.1897412033334831e-07,
+        "maximum_velocity_target_roundoff_rad_s": 1.0859629284709627e-07,
+        "targets_match_requested_within_1e_minus6_rad_tolerance": true,
+        "gain_arrays_unchanged_before_after_home": true,
+        "gain_array_sha256_canonical_json": "7b81f0605051a1d1a66fc7cee2e1b553668d63b8282fae95add028b0ecca50a1",
+        "dof_properties_sha256_canonical_json": "a9630c36ce7b520b85609553d7b902d2e92d7062e5291748262ad088f5ac76ad"
+      },
+      "planning": {
+        "ik_candidates": 1,
+        "rrt_waypoints": 2,
+        "full_pose_ik_success": true,
+        "trajectory_duration_sim_seconds": 0.8266581961833098,
+        "route_validation_samples": 77,
+        "trajectory_validation_samples": 217,
+        "trajectory_validation": "PASS_SAMPLED_SDK_MODEL",
+        "original_request_position_tolerance_m": 0.025,
+        "original_request_orientation_tolerance_rad": 0.1
+      },
+      "execution": {
+        "skill_status": "failed",
+        "skill_failure_code": "path_blocked",
+        "strategy_failure_code": "tracking_failure",
+        "message": "Joint tracking exceeded the immediate abort bound.",
+        "elapsed_sim_seconds": 0.950000049546361,
+        "abort_tracking_error_rad": 0.40585966408252716,
+        "logged_tracking_maximum_rad": 0.38842029869556427,
+        "logged_tracking_samples": 57,
+        "diagnostic_joint1_maximum_target_error_rad": 0.40585966408252716,
+        "joint1_actual_change_rad": -0.24723148345947266,
+        "joint1_planned_change_rad": 0.1586281806230545,
+        "final_position_error_m": 0.22822648767858011,
+        "final_orientation_error_rad": 0.38204049749575286,
+        "final_arm_hold": true,
+        "aborting_sample_excluded_from_tracking_distribution": true
+      },
+      "goal_preference_probe": {
+        "used": true,
+        "source": "caller joint configuration validated by full-pose FK",
+        "preferred_fk_position_error": 0.0,
+        "preferred_fk_orientation_error": 0.0,
+        "validated_ik_goal_matches_recorded_startup_warm_start": true,
+        "adopted": false,
+        "nominal_time_profile": true,
+        "all_collision_and_trajectory_checks_retained": true
+      }
+    }
+  ],
+  "same_requested_home_pose_in_all_attempts": true,
+  "requested_home_pose_sha256_canonical_json": "701eac5879f0b9ae58506c1f9b0ce3f0d11227d802763c9271058a16b9c4b170",
+  "same_physical_dof_properties_and_limits_in_all_attempts": true,
+  "original_tracking_contract": {
+    "sustained_limit_rad": 0.15,
+    "grace_sim_seconds": 0.25,
+    "immediate_abort_rad": 0.4,
+    "relaxed": false
+  },
+  "original_lifecycle_trial": {
+    "artifact": "outputs/motion-planning-v4/native/lifecycle/global-empty-seed123456-lifecycle/result.json",
+    "sha256": "b162f2de833deaaad676db0387393a030daa5b2e6d45294f5c7da81774dd2095",
+    "checks_total": 19,
+    "checks_passed": 18,
+    "failed_checks": [
+      "home_completed"
+    ],
+    "status": "FAIL",
+    "zero_motion_home_after_reset_is_not_a_moving_home_pass": true
+  },
+  "rejection": {
+    "decision_commit": "d913540fe8b19f6a13210f0b11dfbb989dbd9be8",
+    "time_scale_2_adopted": false,
+    "recorded_home_ik_preference_adopted": false,
+    "final_runtime_restored_to_nominal_source": {
+      "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py": true,
+      "robot_skill_stack/integrations/isaac/manipulation/motion/lula_global.py": true
+    },
+    "experimental_code_and_raw_failures_retained_in_history_and_ignored_outputs": true
+  },
+  "interpretation": [
+    "The tested moving Home requests fail the unchanged joint tracking contract; no PASS is manufactured from valid IK, RRT or zero-motion Home.",
+    "Public applied-target values reflect actual PhysX position/velocity target buffers, excluding a simple command-cache or joint-index mismatch in these observations.",
+    "No self-contact reports were observed in these finite diagnostic samples; this is not proof of no continuous physical self contact.",
+    "The precise coupled-plant/SDK cause of joint1 drift remains unresolved. These measurements do not establish a specific SDK bug, insufficient drive torque, torque saturation or a hardware-controller defect.",
+    "Projected measured joint effort and authored USD drive attributes are not independent calibrated drive-torque sensors or live position-target getters. No force inference or gain modification is used.",
+    "For immediate aborts the execution loop checks the .4rad bound before appending that sample to the normal tracking distribution, so the separate abort error can exceed its logged maximum.",
+    "One fixed2x mathematically exact time parameterization and one recorded-startup IK branch preference were tried and rejected; no indefinite seed, timing, gain, tolerance or geometry search occurred."
+  ],
+  "publication_scope": "Compact scalar outcomes and exact source/artifact hashes only; no raw per-sample joint vectors, target pose, meshes, drive arrays, contact buffers or trajectories."
+}

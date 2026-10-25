@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "base_commit": "4f64b356013aea6de887adf5986ec400c77affa0",
+  "meaning": "GitHub creates commit metadata separately; each published equivalent has the exact verified local Git tree. Native source hashes bind measurement checkpoints. Final runtime restores the nominal main algorithm; Home acceptance remains failed.",
+  "checkpoints": [
+    {
+      "local_commit": "182b7438f034ff4f69c20fdf888f2615cf7b1c89",
+      "published_equivalent": "5fd3ca2d9a056be15cb1952ba2da176e57c262dd",
+      "git_tree": "13c94109c12b852daf9d41ff0a64f405be0f4c22",
+      "subject": "feat(motion): add opt-in static Lula RRT planning and joint execution",
+      "tree_equality_verified": true
+    },
+    {
+      "local_commit": "f8ea1558871d0f0db5a80800fa9cade96792dc98",
+      "published_equivalent": "8215968342e0540a48c7f5500c45aee390e75a30",
+      "git_tree": "a4c83358f837482248bd1c3886358a55468a9156",
+      "subject": "test(motion): freeze V4 native protocol and retain failed-plan timing",
+      "tree_equality_verified": true
+    },
+    {
+      "local_commit": "b4aad8f7133e9fb1c61a419d76ce4c8110770ea3",
+      "published_equivalent": "ccf18e49e49fbea9bec5885d00513266f63ddace",
+      "git_tree": "c7381547b901968a37e840ed05629f30ead17fc5",
+      "subject": "test(motion): diagnose Home tracking and preserve compact failure evidence",
+      "tree_equality_verified": true
+    },
+    {
+      "local_commit": "b7c4dc46383df76def76d49899e31db91f34cfdb",
+      "published_equivalent": "e54a8aa80af66b1dfdaf3c7529f2f4712968af0c",
+      "git_tree": "648bcc78398583a7ebfaf847cdefe2f163f64da6",
+      "subject": "fix(motion): preserve the recorded Home IK branch during global planning",
+      "tree_equality_verified": true
+    },
+    {
+      "local_commit": "d913540fe8b19f6a13210f0b11dfbb989dbd9be8",
+      "published_equivalent": "408d538e7004f7867aead88ca0fdce3358a91b50",
+      "git_tree": "371018a273fc6ff2767204a591fdc6524eb770bb",
+      "subject": "research(motion): reject ineffective Home preference and retain nominal planner",
+      "tree_equality_verified": true
+    }
+  ]
+}

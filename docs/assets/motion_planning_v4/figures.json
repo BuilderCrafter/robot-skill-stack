@@ -1,0 +1,1037 @@
+{
+  "schema_version": 1,
+  "reducer_sha256": "2b76318cde907cfc4899b1bc1d9022a702621aa8c6f4fb46087f350abc77eb5d",
+  "figures": [
+    {
+      "path": "docs/assets/motion_planning_v4/tcp_trajectories.png",
+      "sha256": "27fd80d500d09c9baf2b9a3156b32df5047101fd4e5c1aedcc5a09fef00293c7",
+      "caption": "Every valid primary/additional-seed TCP trace; fixed physical boxes are drawn from the matched snapshot. No planned Cartesian path is invented. Curves are sampled TCP motion, not whole-arm swept clearance.",
+      "sources": [
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/result.json",
+          "sha256": "78e3efc1f10fb14a2553715150af86b710a3680051ca45c94ddedca30729bc90",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/trace.json",
+              "sha256": "a61c0d84055b8298d9d1195de60171a641ea6681e9c1ea3bb1b25e509ae89872"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/result.json",
+          "sha256": "f06236763619122efbb46273cfe90c02cc2b64de61296db03abdda90f3d30119",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/trace.json",
+              "sha256": "2dab5c36558434af6d0a722b461091314506b931d8e23a69212f3f8da1c4268a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/result.json",
+          "sha256": "b1a69ea4ff65d94a7ff91ea819cc505abd499d8764407db659f8084b04f7b45f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/trace.json",
+              "sha256": "21aaea386d2ec8efc8c96b65e54f82c17a2003652e1555a94b3360da37b2765e"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/result.json",
+          "sha256": "12a2b84b58a4f94155d48f4e02027334b3e85f2948c02b93a4fefaa7aa811b76",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/trace.json",
+              "sha256": "f858d847618cd844c48fbfba771fcb1e62727d75eade7ccc20b8ce2c8c7a56f7"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/result.json",
+          "sha256": "69c1e2442d3fe0f3cfc8cba1181360ae82bb3fa556dbe141f0e0c922e6f24dc2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/trace.json",
+              "sha256": "a21d34537dad841c2be792cc8e9710e7648437cb50ed42446cfc59f385b19ca1"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/result.json",
+          "sha256": "736b6db3bb4f1c26bcf1305a22114a8685f5f49cef957125a083d67707db233a",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/trace.json",
+              "sha256": "ae403047bef63d28ba5d075ffb16fc2ff0b493d0e0d9c3e4364dbe76c6a1e48a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/plan_trace.json",
+              "sha256": "c543dd41658b44b4d19af1a5a83715b9b56ed756cf4236a9b50d3d473fad0b31"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/result.json",
+          "sha256": "4615fd67d3176f30740808e472bc65b2ead18320ac800182da4ec31a9cda4c42",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/trace.json",
+              "sha256": "b5c5e8fddf90ffe1190fdf38b20bb447926eaf95abfc353fc5921d5ab1690e22"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/plan_trace.json",
+              "sha256": "284f249a5aeb4e150e75ba3918fdf64ad2c208ea4e25fdd6fef811594cc25788"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+              "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+              "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/result.json",
+          "sha256": "82a711dc8acd8ba49377ffdecd4a7e6fae9961a64c66c73b6cc94a5f3378e290",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/trace.json",
+              "sha256": "1d0dfe0f8691b4e4c4b5aa49bd5d7b2043cdedea0fc1bf66d5a29eb8692f7185"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/plan_trace.json",
+              "sha256": "98792d4a68abe626541d4138cb2776fded969117fc826ee9bab20a76ea3004b4"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-near-seed123456/result.json",
+          "sha256": "0e657f02878c8c47ffe889756fa4dbe27331aa5743b7d1eda30197a9d575435d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/trace.json",
+              "sha256": "4a3e04578fcbb9333823c881532085a4119ee75df072cf5fbb9716fe7359387a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/plan_trace.json",
+              "sha256": "d22ff14a94b1d5c1816e55854f3c6b8da9694c469022bfaa58f07a7ea2501f8b"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+          "sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json",
+              "sha256": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json",
+              "sha256": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/result.json",
+          "sha256": "e5bc61ecd9f042d9bb7d1b07c7ffbeeb5f61b933cffbc5349e93c97eddd83e9f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/trace.json",
+              "sha256": "afd54f01c79e19f3b9212e44181a55cf4d997f6d075663e3bc7b9debc0dbfc6d"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/result.json",
+          "sha256": "5c7677367d9cedb1d1c1caf1ecdc41ad5f1aef44ff497efb9267ea99d9e46a3f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/trace.json",
+              "sha256": "ebd32b6eee7cb94d3ec7ea9961da58f3ce81492b4c72ff5c8460f68fc83dc5bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/result.json",
+          "sha256": "2369f068cd9980c665fd3a76cd105efeb5a94bb5f95e16539552ba3a6ba2855d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/trace.json",
+              "sha256": "361c82f0906fc91decfc9b62e58607db824861f684d111772c32e1e4c944afda"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/result.json",
+          "sha256": "61c848af59d773bd63655dbf348cd6241b1d805a3381846ef56e7e337f0dc1da",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/trace.json",
+              "sha256": "ddd30aa588e689d265235519ed1fca8f8ba03f21ea35cfc2e589ed34bb254272"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/result.json",
+          "sha256": "a9626769c3dd57b5881f6bf12f5a1d12f906f487a92345d5edea56b5398166a4",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/trace.json",
+              "sha256": "1b1ab388dab88ae59376cf505fb217304ac3a21a3b76d714d367deadc00cd475"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/result.json",
+          "sha256": "b84ff4cf3665776852760806f713faffc29976b0b9cab1b41413c9e37ff161c1",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/trace.json",
+              "sha256": "6d392f062b7281677b5a860766b3124b4c9451948b529d7a0529fd90b6846423"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/result.json",
+          "sha256": "d439a629738960b387b46880b1b31291546abb86d479d31540d02256472e7d07",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/trace.json",
+              "sha256": "6e97fe96f741e32061198432e1659260462adcffd763a1f4d50362059bd62994"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/plan_trace.json",
+              "sha256": "d938ca95c874230916fd04716edf6e540012ae134b39b8ddbe36401003e1026f"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/result.json",
+          "sha256": "7f2df7d8ab0ff6cb776ce31b88b12b65945b04adf162cda53fc82b45243183d2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/trace.json",
+              "sha256": "9defbf8efdd9c01192adde6b86246b2ebd6d7cbe453bb3e862277f044c420ebd"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/plan_trace.json",
+              "sha256": "2ee92a78f24f58349e43cef446f28c0b1c58fded008345076d0d68ccef5fe655"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/result.json",
+          "sha256": "7163eeb0954e4dc47bb633078eefe972bdb99cdebff9f2c92f2e8be7451bc7aa",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/trace.json",
+              "sha256": "d2f54bb7244c98890777e6a785cd92736ae8e5fd45fe70990010129e27acd96f"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/plan_trace.json",
+              "sha256": "ac60b8c2e82dc45dd5cb5e85cccc656827f56317198544430247ed79944ca1e0"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/result.json",
+          "sha256": "2f1f50db484c0623f1ed9d45108c2f4b57a25490d32c7cba0aa17c0c51bf56a0",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/trace.json",
+              "sha256": "892192c48b550166c71a7e41c2e3e8a0344c1890d18eca5d175f85ab8f17a8bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/plan_trace.json",
+              "sha256": "c3d8e1792895c4805d8617d8f69ae69fd5f329e7c013ba7ad7f8426282f153e3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/result.json",
+          "sha256": "84ce6337bf9d9964ece9d083832b2558126570587c4528c21cbb1d5f15d28494",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/trace.json",
+              "sha256": "a57047b5c4eb5d68e775cdb16e6b9114946ee9a99fa83cdfeaa232a0e1a513ea"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/plan_trace.json",
+              "sha256": "ebb5214a012edda23284dc74c85687c52446a44ddb861ea17b02b3ac9b0385ff"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/result.json",
+          "sha256": "02ea3e2fe873d6fd07ef499900f209b968f52a9e4b818bccb7a24e268979db38",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/trace.json",
+              "sha256": "a671aa7d7946a5239a8fa45bdac856e995083925cb6674a645260ea6d7fb3c74"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/plan_trace.json",
+              "sha256": "9f9dba31667d305419336a58eba763c6399c7ba6563d4b70cb1c256377908f21"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/assets/motion_planning_v4/joint_route.png",
+      "sha256": "e55aade360ac910d8f8f008f496da55ba7b906f7575cc5853dfa95cf57e89ff9",
+      "caption": "First available recorded route in deterministic scene/seed order (prefer obstructed scenes). All seven RRT joint configurations are preserved; the axis is geometric joint-space arc length, not time.",
+      "sources": [
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+              "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+              "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/assets/motion_planning_v4/planned_vs_actual_joints.png",
+      "sha256": "1c01ca9579c33f9b5ef1b9c748fb96b21e67996dc74c5c596d02e1318179382e",
+      "caption": "Generated plan samples and actual q from the same attempt. Time uses measured simulation timestamps, not rendered update count; traces are neither retimed nor projected to hide tracking error.",
+      "sources": [
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+              "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+              "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/assets/motion_planning_v4/clearance_and_contacts.png",
+      "sha256": "31ae40ccd8c1004b5dce134b5ff94e8072abc382d3f5236fd898423fddd14151",
+      "caption": "Movable-arm clearance excludes the mounted base in this panel; all-link/base minima remain in JSON. Reported points and physical-contact steps have distinct definitions. Missing counts are annotated as unavailable in the compact table.",
+      "sources": [
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/result.json",
+          "sha256": "78e3efc1f10fb14a2553715150af86b710a3680051ca45c94ddedca30729bc90",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/trace.json",
+              "sha256": "a61c0d84055b8298d9d1195de60171a641ea6681e9c1ea3bb1b25e509ae89872"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/result.json",
+          "sha256": "f06236763619122efbb46273cfe90c02cc2b64de61296db03abdda90f3d30119",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/trace.json",
+              "sha256": "2dab5c36558434af6d0a722b461091314506b931d8e23a69212f3f8da1c4268a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/result.json",
+          "sha256": "b1a69ea4ff65d94a7ff91ea819cc505abd499d8764407db659f8084b04f7b45f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/trace.json",
+              "sha256": "21aaea386d2ec8efc8c96b65e54f82c17a2003652e1555a94b3360da37b2765e"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/result.json",
+          "sha256": "12a2b84b58a4f94155d48f4e02027334b3e85f2948c02b93a4fefaa7aa811b76",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/trace.json",
+              "sha256": "f858d847618cd844c48fbfba771fcb1e62727d75eade7ccc20b8ce2c8c7a56f7"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/result.json",
+          "sha256": "69c1e2442d3fe0f3cfc8cba1181360ae82bb3fa556dbe141f0e0c922e6f24dc2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/trace.json",
+              "sha256": "a21d34537dad841c2be792cc8e9710e7648437cb50ed42446cfc59f385b19ca1"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/result.json",
+          "sha256": "736b6db3bb4f1c26bcf1305a22114a8685f5f49cef957125a083d67707db233a",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/trace.json",
+              "sha256": "ae403047bef63d28ba5d075ffb16fc2ff0b493d0e0d9c3e4364dbe76c6a1e48a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/plan_trace.json",
+              "sha256": "c543dd41658b44b4d19af1a5a83715b9b56ed756cf4236a9b50d3d473fad0b31"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/result.json",
+          "sha256": "4615fd67d3176f30740808e472bc65b2ead18320ac800182da4ec31a9cda4c42",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/trace.json",
+              "sha256": "b5c5e8fddf90ffe1190fdf38b20bb447926eaf95abfc353fc5921d5ab1690e22"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/plan_trace.json",
+              "sha256": "284f249a5aeb4e150e75ba3918fdf64ad2c208ea4e25fdd6fef811594cc25788"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+              "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+              "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/result.json",
+          "sha256": "82a711dc8acd8ba49377ffdecd4a7e6fae9961a64c66c73b6cc94a5f3378e290",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/trace.json",
+              "sha256": "1d0dfe0f8691b4e4c4b5aa49bd5d7b2043cdedea0fc1bf66d5a29eb8692f7185"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/plan_trace.json",
+              "sha256": "98792d4a68abe626541d4138cb2776fded969117fc826ee9bab20a76ea3004b4"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-near-seed123456/result.json",
+          "sha256": "0e657f02878c8c47ffe889756fa4dbe27331aa5743b7d1eda30197a9d575435d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/trace.json",
+              "sha256": "4a3e04578fcbb9333823c881532085a4119ee75df072cf5fbb9716fe7359387a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/plan_trace.json",
+              "sha256": "d22ff14a94b1d5c1816e55854f3c6b8da9694c469022bfaa58f07a7ea2501f8b"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+          "sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json",
+              "sha256": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json",
+              "sha256": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/result.json",
+          "sha256": "e5bc61ecd9f042d9bb7d1b07c7ffbeeb5f61b933cffbc5349e93c97eddd83e9f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/trace.json",
+              "sha256": "afd54f01c79e19f3b9212e44181a55cf4d997f6d075663e3bc7b9debc0dbfc6d"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/result.json",
+          "sha256": "5c7677367d9cedb1d1c1caf1ecdc41ad5f1aef44ff497efb9267ea99d9e46a3f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/trace.json",
+              "sha256": "ebd32b6eee7cb94d3ec7ea9961da58f3ce81492b4c72ff5c8460f68fc83dc5bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/result.json",
+          "sha256": "2369f068cd9980c665fd3a76cd105efeb5a94bb5f95e16539552ba3a6ba2855d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/trace.json",
+              "sha256": "361c82f0906fc91decfc9b62e58607db824861f684d111772c32e1e4c944afda"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/result.json",
+          "sha256": "61c848af59d773bd63655dbf348cd6241b1d805a3381846ef56e7e337f0dc1da",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/trace.json",
+              "sha256": "ddd30aa588e689d265235519ed1fca8f8ba03f21ea35cfc2e589ed34bb254272"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/result.json",
+          "sha256": "a9626769c3dd57b5881f6bf12f5a1d12f906f487a92345d5edea56b5398166a4",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/trace.json",
+              "sha256": "1b1ab388dab88ae59376cf505fb217304ac3a21a3b76d714d367deadc00cd475"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/result.json",
+          "sha256": "b84ff4cf3665776852760806f713faffc29976b0b9cab1b41413c9e37ff161c1",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/trace.json",
+              "sha256": "6d392f062b7281677b5a860766b3124b4c9451948b529d7a0529fd90b6846423"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/result.json",
+          "sha256": "d439a629738960b387b46880b1b31291546abb86d479d31540d02256472e7d07",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/trace.json",
+              "sha256": "6e97fe96f741e32061198432e1659260462adcffd763a1f4d50362059bd62994"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/plan_trace.json",
+              "sha256": "d938ca95c874230916fd04716edf6e540012ae134b39b8ddbe36401003e1026f"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/result.json",
+          "sha256": "7f2df7d8ab0ff6cb776ce31b88b12b65945b04adf162cda53fc82b45243183d2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/trace.json",
+              "sha256": "9defbf8efdd9c01192adde6b86246b2ebd6d7cbe453bb3e862277f044c420ebd"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/plan_trace.json",
+              "sha256": "2ee92a78f24f58349e43cef446f28c0b1c58fded008345076d0d68ccef5fe655"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/result.json",
+          "sha256": "7163eeb0954e4dc47bb633078eefe972bdb99cdebff9f2c92f2e8be7451bc7aa",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/trace.json",
+              "sha256": "d2f54bb7244c98890777e6a785cd92736ae8e5fd45fe70990010129e27acd96f"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/plan_trace.json",
+              "sha256": "ac60b8c2e82dc45dd5cb5e85cccc656827f56317198544430247ed79944ca1e0"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/result.json",
+          "sha256": "2f1f50db484c0623f1ed9d45108c2f4b57a25490d32c7cba0aa17c0c51bf56a0",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/trace.json",
+              "sha256": "892192c48b550166c71a7e41c2e3e8a0344c1890d18eca5d175f85ab8f17a8bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/plan_trace.json",
+              "sha256": "c3d8e1792895c4805d8617d8f69ae69fd5f329e7c013ba7ad7f8426282f153e3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/result.json",
+          "sha256": "84ce6337bf9d9964ece9d083832b2558126570587c4528c21cbb1d5f15d28494",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/trace.json",
+              "sha256": "a57047b5c4eb5d68e775cdb16e6b9114946ee9a99fa83cdfeaa232a0e1a513ea"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/plan_trace.json",
+              "sha256": "ebb5214a012edda23284dc74c85687c52446a44ddb861ea17b02b3ac9b0385ff"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/result.json",
+          "sha256": "02ea3e2fe873d6fd07ef499900f209b968f52a9e4b818bccb7a24e268979db38",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/trace.json",
+              "sha256": "a671aa7d7946a5239a8fa45bdac856e995083925cb6674a645260ea6d7fb3c74"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/plan_trace.json",
+              "sha256": "9f9dba31667d305419336a58eba763c6399c7ba6563d4b70cb1c256377908f21"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "docs/assets/motion_planning_v4/planning_and_execution_timing.png",
+      "sha256": "4a4ffe7a9bfe45573355720054314ae1d029abac95d35a23313277617e5a0b78",
+      "caption": "Recorded whole-request, planning-and-validation, execution and RRT-call wall durations; direct/reactive request durations include their controller work and global request durations also include preplanning. Missing values are absent, not zero estimates. Worst Kit interval captures owner-loop responsiveness and is not a planning deadline guarantee.",
+      "sources": [
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/result.json",
+          "sha256": "78e3efc1f10fb14a2553715150af86b710a3680051ca45c94ddedca30729bc90",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/trace.json",
+              "sha256": "a61c0d84055b8298d9d1195de60171a641ea6681e9c1ea3bb1b25e509ae89872"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/result.json",
+          "sha256": "f06236763619122efbb46273cfe90c02cc2b64de61296db03abdda90f3d30119",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/trace.json",
+              "sha256": "2dab5c36558434af6d0a722b461091314506b931d8e23a69212f3f8da1c4268a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/result.json",
+          "sha256": "b1a69ea4ff65d94a7ff91ea819cc505abd499d8764407db659f8084b04f7b45f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/trace.json",
+              "sha256": "21aaea386d2ec8efc8c96b65e54f82c17a2003652e1555a94b3360da37b2765e"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/result.json",
+          "sha256": "12a2b84b58a4f94155d48f4e02027334b3e85f2948c02b93a4fefaa7aa811b76",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/trace.json",
+              "sha256": "f858d847618cd844c48fbfba771fcb1e62727d75eade7ccc20b8ce2c8c7a56f7"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/result.json",
+          "sha256": "69c1e2442d3fe0f3cfc8cba1181360ae82bb3fa556dbe141f0e0c922e6f24dc2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/trace.json",
+              "sha256": "a21d34537dad841c2be792cc8e9710e7648437cb50ed42446cfc59f385b19ca1"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/direct-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/result.json",
+          "sha256": "736b6db3bb4f1c26bcf1305a22114a8685f5f49cef957125a083d67707db233a",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/trace.json",
+              "sha256": "ae403047bef63d28ba5d075ffb16fc2ff0b493d0e0d9c3e4364dbe76c6a1e48a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-blocked-seed123456/plan_trace.json",
+              "sha256": "c543dd41658b44b4d19af1a5a83715b9b56ed756cf4236a9b50d3d473fad0b31"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/result.json",
+          "sha256": "4615fd67d3176f30740808e472bc65b2ead18320ac800182da4ec31a9cda4c42",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/trace.json",
+              "sha256": "b5c5e8fddf90ffe1190fdf38b20bb447926eaf95abfc353fc5921d5ab1690e22"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-empty-seed123456/plan_trace.json",
+              "sha256": "284f249a5aeb4e150e75ba3918fdf64ad2c208ea4e25fdd6fef811594cc25788"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json",
+          "sha256": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json",
+              "sha256": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json",
+              "sha256": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/result.json",
+          "sha256": "82a711dc8acd8ba49377ffdecd4a7e6fae9961a64c66c73b6cc94a5f3378e290",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/trace.json",
+              "sha256": "1d0dfe0f8691b4e4c4b5aa49bd5d7b2043cdedea0fc1bf66d5a29eb8692f7185"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-narrow-seed123456/plan_trace.json",
+              "sha256": "98792d4a68abe626541d4138cb2776fded969117fc826ee9bab20a76ea3004b4"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-near-seed123456/result.json",
+          "sha256": "0e657f02878c8c47ffe889756fa4dbe27331aa5743b7d1eda30197a9d575435d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/trace.json",
+              "sha256": "4a3e04578fcbb9333823c881532085a4119ee75df072cf5fbb9716fe7359387a"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-near-seed123456/plan_trace.json",
+              "sha256": "d22ff14a94b1d5c1816e55854f3c6b8da9694c469022bfaa58f07a7ea2501f8b"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json",
+          "sha256": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json",
+              "sha256": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json",
+              "sha256": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/result.json",
+          "sha256": "e5bc61ecd9f042d9bb7d1b07c7ffbeeb5f61b933cffbc5349e93c97eddd83e9f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/trace.json",
+              "sha256": "afd54f01c79e19f3b9212e44181a55cf4d997f6d075663e3bc7b9debc0dbfc6d"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/global-unreachable-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/result.json",
+          "sha256": "5c7677367d9cedb1d1c1caf1ecdc41ad5f1aef44ff497efb9267ea99d9e46a3f",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/trace.json",
+              "sha256": "ebd32b6eee7cb94d3ec7ea9961da58f3ce81492b4c72ff5c8460f68fc83dc5bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-empty-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/result.json",
+          "sha256": "2369f068cd9980c665fd3a76cd105efeb5a94bb5f95e16539552ba3a6ba2855d",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/trace.json",
+              "sha256": "361c82f0906fc91decfc9b62e58607db824861f684d111772c32e1e4c944afda"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-large-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/result.json",
+          "sha256": "61c848af59d773bd63655dbf348cd6241b1d805a3381846ef56e7e337f0dc1da",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/trace.json",
+              "sha256": "ddd30aa588e689d265235519ed1fca8f8ba03f21ea35cfc2e589ed34bb254272"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-narrow-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/result.json",
+          "sha256": "a9626769c3dd57b5881f6bf12f5a1d12f906f487a92345d5edea56b5398166a4",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/trace.json",
+              "sha256": "1b1ab388dab88ae59376cf505fb217304ac3a21a3b76d714d367deadc00cd475"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-near-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/result.json",
+          "sha256": "b84ff4cf3665776852760806f713faffc29976b0b9cab1b41413c9e37ff161c1",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/trace.json",
+              "sha256": "6d392f062b7281677b5a860766b3124b4c9451948b529d7a0529fd90b6846423"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/primary/reactive-static-seed123456/plan_trace.json",
+              "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/result.json",
+          "sha256": "d439a629738960b387b46880b1b31291546abb86d479d31540d02256472e7d07",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/trace.json",
+              "sha256": "6e97fe96f741e32061198432e1659260462adcffd763a1f4d50362059bd62994"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed234567/plan_trace.json",
+              "sha256": "d938ca95c874230916fd04716edf6e540012ae134b39b8ddbe36401003e1026f"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/result.json",
+          "sha256": "7f2df7d8ab0ff6cb776ce31b88b12b65945b04adf162cda53fc82b45243183d2",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/trace.json",
+              "sha256": "9defbf8efdd9c01192adde6b86246b2ebd6d7cbe453bb3e862277f044c420ebd"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-large-seed345678/plan_trace.json",
+              "sha256": "2ee92a78f24f58349e43cef446f28c0b1c58fded008345076d0d68ccef5fe655"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/result.json",
+          "sha256": "7163eeb0954e4dc47bb633078eefe972bdb99cdebff9f2c92f2e8be7451bc7aa",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/trace.json",
+              "sha256": "d2f54bb7244c98890777e6a785cd92736ae8e5fd45fe70990010129e27acd96f"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed234567/plan_trace.json",
+              "sha256": "ac60b8c2e82dc45dd5cb5e85cccc656827f56317198544430247ed79944ca1e0"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/result.json",
+          "sha256": "2f1f50db484c0623f1ed9d45108c2f4b57a25490d32c7cba0aa17c0c51bf56a0",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/trace.json",
+              "sha256": "892192c48b550166c71a7e41c2e3e8a0344c1890d18eca5d175f85ab8f17a8bb"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-narrow-seed345678/plan_trace.json",
+              "sha256": "c3d8e1792895c4805d8617d8f69ae69fd5f329e7c013ba7ad7f8426282f153e3"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/result.json",
+          "sha256": "84ce6337bf9d9964ece9d083832b2558126570587c4528c21cbb1d5f15d28494",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/trace.json",
+              "sha256": "a57047b5c4eb5d68e775cdb16e6b9114946ee9a99fa83cdfeaa232a0e1a513ea"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed234567/plan_trace.json",
+              "sha256": "ebb5214a012edda23284dc74c85687c52446a44ddb861ea17b02b3ac9b0385ff"
+            }
+          }
+        },
+        {
+          "artifact": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/result.json",
+          "sha256": "02ea3e2fe873d6fd07ef499900f209b968f52a9e4b818bccb7a24e268979db38",
+          "raw_artifacts": {
+            "trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/trace.json",
+              "sha256": "a671aa7d7946a5239a8fa45bdac856e995083925cb6674a645260ea6d7fb3c74"
+            },
+            "plan_trace.json": {
+              "path": "outputs/motion-planning-v4/native/seeds/global-static-seed345678/plan_trace.json",
+              "sha256": "9f9dba31667d305419336a58eba763c6399c7ba6563d4b70cb1c256377908f21"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "selection": "All valid primary and additional-seed attempts in TCP/contact/timing panels; lifecycle/witness/pilot and invalid attempts remain in compact JSON. One deterministic available route in joint panels.",
+  "limitations": "Figures use recorded raw artifacts bound by SHA256. No new native execution, collision query, IK, FK, or timing benchmark is performed."
+}

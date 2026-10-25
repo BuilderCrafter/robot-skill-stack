@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "measurement_validation": "PARTIAL_ONE_INVALID_LIFECYCLE_CASE",
+  "overall_v4_acceptance": "PARTIAL_MOVING_HOME_EXECUTION_BLOCKER",
+  "default_strategy": "direct",
+  "merged": false,
+  "unit_regression": {
+    "command": "./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/motion-planning-v4/unit-final",
+    "artifact": "outputs/motion-planning-v4/unit-final/run-q24d9gt9",
+    "tests": 1052,
+    "seconds": 35.306,
+    "components": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    },
+    "summary_sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+    "unit_log_sha256": "166b1389a38c79b073af5765746ef6180e47ae3efe8b4633e932165bafdbcea2"
+  },
+  "legacy_native_regressions": {
+    "direct-strategy": {
+      "path": "outputs/motion-planning-v4/regressions/direct-strategy/result.json",
+      "sha256": "fbfaad73b5ec273bec94691265ed83dedb492748b577248d69836747e428a35c",
+      "status": "PASS",
+      "checks": {
+        "explicit_direct_selected": true,
+        "mapping_provider_resolves_current_service": true,
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "unsupported_frame_and_ik_rejected_without_actions": true,
+        "competing_motion_rejected_without_actions": true,
+        "cancellation_propagated": true,
+        "cancelled_motion_applied_final_hold": true,
+        "cancelled_motion_released_ownership": true,
+        "home_after_cancellation_succeeded": true,
+        "ordinary_released_home_succeeded": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "all_executed_motions_applied_final_hold": true,
+        "held_motion_grasp_checks_preserved": true,
+        "normal_home_routed_through_strategy": true,
+        "source_and_saved_scenes_unchanged": true
+      }
+    },
+    "reactive-strategy": {
+      "path": "outputs/motion-planning-v4/regressions/reactive-strategy/result.json",
+      "sha256": "fb3edf99eecf71e03c6acb73437dfb7ab8b0a0f959605948606e285fa9db8c7d",
+      "status": "PASS",
+      "checks": {
+        "valid_measurement": true,
+        "ordinary_move_reached_without_contact": true,
+        "ordinary_home_succeeded": true,
+        "lifecycle_complete": true,
+        "lifecycle_all_checks_pass": true
+      }
+    }
+  },
+  "native_queue": {
+    "plan": "docs/assets/motion_planning_v4/native_jobs.json",
+    "plan_sha256": "965442ffa21978529a194318077dad757753e05f5979f2671c407ade4bbbe08d",
+    "driver_artifact": "outputs/motion-planning-v4/native-driver.json",
+    "driver_sha256": "5f9c3abd600e87a4937bb6e8f535d27fdfd150bc4c736e8542c9a40a8b5b55a8",
+    "status": "PARTIAL",
+    "attempts": 26,
+    "valid": 25,
+    "production_unchanged_during_queue": true
+  },
+  "evaluation_counts": {
+    "unique_attempts": 27,
+    "valid_measurements": 26,
+    "strict_successes": 10,
+    "declared_reference_edges": 19,
+    "eligible_reference_edges": 16,
+    "unique_declared_baselines": 5
+  },
+  "cohort_counts": {
+    "primary": 17,
+    "seeds": 6,
+    "witness": 2,
+    "lifecycle": 1,
+    "pilot": 1
+  },
+  "separate_home_diagnostics": {
+    "attempts": 3,
+    "all_failed": true,
+    "changes_rejected": [
+      "exact2x_time_parameterization",
+      "recorded_startup_home_ik_preference"
+    ],
+    "compact_artifact": "docs/assets/motion_planning_v4/home_execution_diagnostics.json"
+  },
+  "source_preservation": {
+    "baseline_commit": "4f64b356013aea6de887adf5986ec400c77affa0",
+    "protected_files": 254,
+    "mismatches": [],
+    "manifest_artifact": "outputs/motion-planning-v4/baseline-preservation.json",
+    "manifest_sha256": "d0e092210f7c429ed818f1b7c460983190380b9ed2e2ecd303124e4457e94dc0",
+    "permitted_existing_changes": [
+      "robot_skill_stack/integrations/isaac/config.py",
+      "robot_skill_stack/integrations/isaac/manipulation/factory.py",
+      "tests/unit/test_motion_composition.py",
+      "tests/unit/test_motion_config.py"
+    ],
+    "measured_main_commit": "f8ea1558871d0f0db5a80800fa9cade96792dc98",
+    "main_frozen_entries": 21,
+    "identical_final_entries": 19,
+    "post_measurement_analysis_changes": [
+      "scripts/summarize_global_motion_v4.py",
+      "tests/unit/test_global_motion_v4_summary.py"
+    ],
+    "final_executor_sha256": "3ccee7d59f8614fe17f7889142225becfef4ab8508a21c6e592e59d7ea1b0fc1",
+    "final_adapter_sha256": "7d23cda580e3bc4cc2077e054942970fc35a2c24e729a898fc47b54680493cfc",
+    "runtime_restored_exactly": true,
+    "final_local_implementation_commit": "d913540fe8b19f6a13210f0b11dfbb989dbd9be8",
+    "published_equivalent": "408d538e7004f7867aead88ca0fdce3358a91b50"
+  },
+  "installed_sdk_sha256": {
+    "exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/path_planners.py": "395506723e8e5d6c5b686f202ac02356e7606aecb191b3f23b0362bc0d787ff1",
+    "exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/trajectory_generator.py": "d6103e5f4a62c765ba40563bd51d174e84f845eb2fb0285ca81187b7b223d235",
+    "exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/lula/kinematics.py": "ddb7fba5d65eb141e0d9e417fac3d859c2e58c8ad4e370e0f32d07c20c00674a",
+    "exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/articulation_trajectory.py": "fd9d39ea7f1e9819dcd1355d99af86ea95d7ca0deaf1806a4a83f0a264b4c469",
+    "exts/isaacsim.robot_motion.motion_generation/isaacsim/robot_motion/motion_generation/interface_config_loader.py": "a311e1120ed9e1c03f3346c3d22ab79bfc19656bda54e1a5121f879fecff3972",
+    "exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/rmpflow/robot_descriptor.yaml": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+    "exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "exts/isaacsim.robot_motion.motion_generation/path_planner_configs/franka/rrt/config.json": "60818a6c4c47ea65a8f1ca3b8d5d8c63ba2e66ad2282a099d683af4603460e07",
+    "exts/isaacsim.robot_motion.motion_generation/path_planner_configs/franka/rrt/franka_planner_config.yaml": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+  },
+  "development_failure_retained": {
+    "artifact": "outputs/motion-planning-v4/unit-preflight/run-voxzc0zb",
+    "unit_tests_passed": 1026,
+    "initial_architecture": "Failed while a new analysis helper was being written; invalid reserved-keyword syntax was corrected. Subsequent architecture and final full regression passed."
+  },
+  "limits": [
+    "Unit PASS does not override failed movingHome acceptance.",
+    "Reported proximity is not physical penetration/impulse and still fails strictzero-report.",
+    "Stock55spheres lack explicitfingercoverage; sampledSDKchecks are not continuousphysicalcertificate.",
+    "Bothpredeclaredmanualfeasibilitywitnesses were unreachable and failed; not retuned.",
+    "No raw frames, meshes, map arrays, trajectory/contact arrays or native logs published."
+  ],
+  "assets": {
+    "clearance_and_contacts.png": {
+      "bytes": 107046,
+      "sha256": "31ae40ccd8c1004b5dce134b5ff94e8072abc382d3f5236fd898423fddd14151"
+    },
+    "evaluation.json": {
+      "bytes": 192208,
+      "sha256": "be90f796f334d953ec1cc637fa9bf9ef71276c6d3d2647420737cbfff03a1ff7"
+    },
+    "feasibility_protocol.json": {
+      "bytes": 1859,
+      "sha256": "dad67745271f4fae538063216d6d46e11548f7c31562b26fbe51596bb92162fa"
+    },
+    "figures.json": {
+      "bytes": 55001,
+      "sha256": "938577ab5811b21f1e40eac84c1b67df6ec1c220e023b3623d2b1a0aed7967f4"
+    },
+    "home_execution_diagnostics.json": {
+      "bytes": 17035,
+      "sha256": "3eed60e44c629e3f55a0e61b6012297767a4e0ea6c0a63d84d1a593cf0f49c2d"
+    },
+    "independent_audit.json": {
+      "bytes": 13980,
+      "sha256": "36d974a2dca7de855af457a7e7d55f2aa05f2cb59356ccf2e252897ddf8509db"
+    },
+    "joint_route.png": {
+      "bytes": 86268,
+      "sha256": "e55aade360ac910d8f8f008f496da55ba7b906f7575cc5853dfa95cf57e89ff9"
+    },
+    "native_jobs.json": {
+      "bytes": 22553,
+      "sha256": "965442ffa21978529a194318077dad757753e05f5979f2671c407ade4bbbe08d"
+    },
+    "native_protocol.json": {
+      "bytes": 2343,
+      "sha256": "4bb57688bc31851d97026239aa6a4b04241fc1223714cf55dea0ea177b64dead"
+    },
+    "planned_vs_actual_joints.png": {
+      "bytes": 251064,
+      "sha256": "1c01ca9579c33f9b5ef1b9c748fb96b21e67996dc74c5c596d02e1318179382e"
+    },
+    "planning_and_execution_timing.png": {
+      "bytes": 123365,
+      "sha256": "4a4ffe7a9bfe45573355720054314ae1d029abac95d35a23313277617e5a0b78"
+    },
+    "source_checkpoints.json": {
+      "bytes": 2095,
+      "sha256": "7b23859627bf5fc248153bd537d63258dba58a25402018dbc975e1da8adca102"
+    },
+    "tcp_trajectories.png": {
+      "bytes": 799760,
+      "sha256": "27fd80d500d09c9baf2b9a3156b32df5047101fd4e5c1aedcc5a09fef00293c7"
+    }
+  }
+}
