@@ -30,6 +30,26 @@ class ProductionValidationTests(unittest.TestCase):
         self.assertEqual(calls, ['original-complete', 'observe-hold'])
         self.assertTrue(state['callback_complete'])
 
+    def test_duration_defaults_to_one_and_five_is_forwarded_only_to_hold_observer(self):
+        for options, expected in [([], 1.), (['--post-hold-seconds', '5'], 5.),
+                (['--post-hold-seconds=5'], 5.)]:
+            with self.subTest(options=options):
+                observer, outcome = object(), dict(status='PASS')
+                state = dict(observer=observer)
+                def original_factory(mode, current):
+                    self.assertEqual(mode, 'C')
+                    self.assertIs(current, state)
+                    return AsyncMock(return_value=outcome)
+                def controlled_main(arguments):
+                    self.assertEqual(arguments, ['--mode', 'C'])
+                    self.assertIs(asyncio.run(validation.controlled.callback_for('C', state)()), outcome)
+                    return True
+                with patch.object(validation.controlled, 'callback_for', original_factory), \
+                        patch.object(validation.controlled, 'main', side_effect=controlled_main), \
+                        patch.object(validation.observations, 'observe_post_home_hold', AsyncMock()) as hold:
+                    self.assertTrue(validation.main(['--mode', 'C', *options]))
+                hold.assert_awaited_once_with(observer, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
