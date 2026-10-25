@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "purpose": "Initial enhanced ordinary-IK no-candidate-obstacle global route; independent fixture design input only. No candidate RRT before fixture freeze.",
+  "jobs": [
+    {
+      "label": "baseline-free/r1",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-3/baseline-free/r1",
+      "result": "outputs/motion-planning-v4-3/baseline-free/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_detour_v4_3.py",
+        "--condition",
+        "baseline_free",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-3/baseline-free/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-3/baseline-free/r1"
+      ]
+    }
+  ]
+}

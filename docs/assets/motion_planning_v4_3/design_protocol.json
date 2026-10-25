@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_BEFORE_NEW_BASELINE_FIXTURE_SELECTION_AND_ANY_CANDIDATE_RRT",
+  "baseline_commit": "83a1197da593286d7057977ecd5ed711111b37cf",
+  "purpose": "Select one new static cuboid against the independently measured obstacle-free GLOBAL route. V4.2's historical RMPflow-interference fixture remains unchanged.",
+  "candidate_RRT_calls_allowed_during_design": 0,
+  "candidate_grid_integer_steps": {
+    "unit_m": 0.025,
+    "x_inclusive": [12, 28],
+    "y_inclusive": [-12, 6],
+    "z_inclusive": [6, 28]
+  },
+  "candidate_dimensions_m": [[0.04, 0.04, 0.08], [0.06, 0.06, 0.12]],
+  "candidate_orientation_wxyz": [1.0, 0.0, 0.0, 0.0],
+  "candidates_per_witness": 14858,
+  "witness_priority": [
+    "retained_v4_1_home_goal_start_polyline_with_new_endpoint_bridges",
+    "midpoint_panda_joint1_plus_0.6_rad",
+    "midpoint_panda_joint1_minus_0.6_rad",
+    "midpoint_panda_joint3_plus_0.6_rad",
+    "midpoint_panda_joint3_minus_0.6_rad",
+    "midpoint_panda_joint1_plus_1.0_rad",
+    "midpoint_panda_joint1_minus_1.0_rad"
+  ],
+  "retained_witness_source": {
+    "path": "outputs/motion-planning-v4-1/acceptance/cycles/r1/acceptance_trace.json",
+    "generation": 0,
+    "operations_reversed_in_order": ["home_cycle_1", "move_to_goal"],
+    "description": "New actual Home to old settled Home bridge, reverse previously captured empty-world Home return, reverse previously captured empty-world START-to-GOAL, then joint-linear bridge to NEW fixed validated IK goal. Historical RRT routes are independent of the V4.3 candidate RRT and are not used as an executed substitute. Physical finger coordinates are held at the NEW baseline start values in this constructed numeric witness."
+  },
+  "manual_witness_definition": "Three knots: exact NEW seven-joint baseline start, its start/goal midpoint plus the named single-joint offset, exact NEW validated seven-joint goal. No candidate RRT output is consulted or executed.",
+  "maximum_joint_interval_rad": 0.005,
+  "minimum_endpoint_cooked_clearance_m": 0.01,
+  "minimum_original_route_intersection_ball_radius_m": 0.003,
+  "minimum_continuous_witness_external_lower_bound_m": 0.01,
+  "minimum_continuous_witness_self_lower_bound_m": 0.0,
+  "minimum_planning_sphere_witness_margin_m": 0.0,
+  "negative_controls": {
+    "near": {"name": "OffRoute", "position_m": [0.72, -0.25, 0.38], "dimensions_m": [0.09, 0.14, 0.25], "orientation_wxyz": [1.0, 0.0, 0.0, 0.0], "source": "Unchanged historical diagnose_reactive_motion.fixtures('near') geometry; new V4.3 prim only."},
+    "goal_blocked": {"name": "BlockedGoal", "position_m": "NEW baseline full-pose target position", "dimensions_m": [0.18, 0.18, 0.18], "orientation_wxyz": [1.0, 0.0, 0.0, 0.0], "source": "Historical blocked fixture size centered at this experiment's fixed full-pose target. Independently verify endpoint solid overlap before native control."}
+  },
+  "selection": "Process witnesses in fixed priority. For each geometrically feasible witness, rank all grid boxes by decreasing conservative continuous whole-cooked-body AABB separation lower bound, then increasing box volume, then lexicographic center and dimensions. Require clear actual Home and goal, verified positive-volume obstruction of the original time-parameterized GLOBAL trajectory and actual native baseline corroboration, and independent witness physical/model clearance. Select the first fully certified candidate in that fixed order. Every tested rejection is retained. If none succeeds, report bounded design infeasibility without changing grid, dimensions, thresholds or witness library.",
+  "whole_robot_reference": "All eleven actual PhysX-cooked convex bodies, including mounted base, hand and both fingers. Installed URDF-only nine-DOF FK is checked against NEW actual body poses before counterfactual planned/witness geometry is used.",
+  "continuous_bound": "Each joint-linear interval is bounded by descendant translation triangle inequalities and ancestor revolute radius times absolute angle change. Subtract per-body displacement envelopes from endpoint AABB separation; independent self bounds cancel common ancestor rigid motions. Floating-point numeric witness only, separate from sampled executed trajectories.",
+  "model_scope": "Frozen enhanced 102-sphere description and existing [1,5] mm finger contract. Numeric inspector/geometry queries may verify fixed witness feasibility, but no candidate RRT search call or candidate execution may enter fixture selection.",
+  "detour_acceptance": {
+    "minimum_rrt_route_waypoints": 3,
+    "minimum_maximum_L2_deviation_from_direct_joint_segment_rad": 0.05,
+    "same_actual_start_and_validated_fixed_goal_required": true,
+    "original_global_route_positive_volume_obstruction_required": true,
+    "sampled_actual_physical_clearance_required": true,
+    "same_stationary_obstacle_outward_and_home_required": true
+  },
+  "freeze": "Write and hash one frozen_fixture.json before any candidate RRT call. Do not revise fixture after native outcomes. All failures remain evidence. Independent witness is never supplied as RRT intermediate waypoints or executed in place of RRT.",
+  "strong_claim_limits": "Finite surface or pose samples alone are not solid coverage or continuous swept clearance certificates. This source-bound geometric witness does not certify future candidate trajectories, execution tracking, contact/rest offsets, or incomplete RGB-D observations."
+}
