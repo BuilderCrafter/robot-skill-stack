@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "purpose": "Additional three fresh enhanced primary repetitions after tightening validation of partially exposed finger targets. No geometry, fixture, solver, tolerances, or full native target getter behavior changed.",
+  "jobs": [
+    {
+      "label": "roundtrip/enhanced/seed-123456/r4",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-123456/r5",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5"
+      ]
+    },
+    {
+      "label": "roundtrip/enhanced/seed-123456/r6",
+      "timeout": 600,
+      "artifacts_dir": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6",
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/result.json",
+      "arguments": [
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--result",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6"
+      ]
+    }
+  ]
+}

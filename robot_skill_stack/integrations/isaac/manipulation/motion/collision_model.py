@@ -87,7 +87,11 @@ class EnhancedCollisionModel:
                     _finite(positions, (len(action_indices),), 'Native position targets')
                     mapping = dict(zip(action_indices.tolist(), positions.tolist()))
                     if not set(indices) <= set(mapping):
-                        details['target_feedback'] = 'partial action omits fingers; measured positions checked'
+                        available = {name: mapping[index] for name, index in zip(FINGER_NAMES, indices) if index in mapping}
+                        details['native_partial_position_targets_m'] = available
+                        if any(value < low or value > high for value in available.values()):
+                            raise ValueError('Native finger targets leave the validated collision-model range')
+                        details['target_feedback'] = 'partial action omits fingers; available targets and measured positions checked'
                         return details
                     targets = np.array([mapping[index] for index in indices])
                 details['native_position_targets_m'] = targets.tolist()

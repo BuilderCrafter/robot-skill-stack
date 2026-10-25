@@ -406,6 +406,77 @@ def compact_results(states, models):
     return summary
 
 
+def audit_gap_witnesses(source, manifest_path, models, enhanced):
+    """Recheck historical source-bound finger counterexamples without simulation."""
+    from scripts.obstacle_representation_v3_cylinder import convex_distance_details
+
+    source, manifest_path = Path(source), Path(manifest_path)
+    manifest = json.loads(manifest_path.read_text())
+    if manifest['raw_artifact']['sha256'] != digest(source):
+        raise ValueError('Historical witness list differs from its retained compact manifest')
+    descriptions = {case['case']: case for case in manifest['cases']}
+    rows, provenance = [], {str(source): digest(source), str(manifest_path): digest(manifest_path)}
+    for case_record in json.loads(source.read_text()):
+        description = descriptions[case_record['case']]
+        for artifact in description['source_artifacts'].values():
+            if digest(artifact['path']) != artifact['sha256']:
+                raise ValueError('Historical independent witness source changed')
+            provenance[artifact['path']] = artifact['sha256']
+        case = load_case(description['source_artifacts']['result.json']['path'])
+        if case.snapshot is None:
+            raise ValueError('Historical witness source is missing its original frozen world')
+        for witness in case_record['witnesses']:
+            samples = [sample for sample in case.samples if sample['physics_step'] == witness['physics_step']
+                and np.allclose(np.asarray(sample['joint_feedback']['positions'])[:7], witness['native_q'], atol=1e-12, rtol=0)]
+            if not samples:
+                raise ValueError('Witness q does not match an actual retained source state')
+            sample = samples[0]
+            physical = {path: pose_matrix_xyzw(sample['poses'][index])
+                for index, path in enumerate(case.body_paths)}
+            base = physical['/Franka/panda_link0']
+            fingers = np.asarray(sample['joint_feedback']['positions'])[7:9]
+            supported = bool(np.all(fingers >= enhanced.finger_range_m[0]) and np.all(fingers <= enhanced.finger_range_m[1]))
+            part = next(part for part in case.parts if part['body'] == witness['body'])
+            pose = physical[part['body']]
+            vertices = part['vertices']@pose[:3, :3].T+pose[:3, 3]
+            point = np.asarray(witness['physical_cooked_surface_center'])
+            distance = convex_distance_details(vertices, point[None])
+            physical_intersection = distance['upper_bound_m'] < witness['radius_m']
+            q, query_rows = np.asarray(witness['native_q']), {}
+            for name, model in models.items():
+                register_numeric_scene(model, case.snapshot, base)
+                inspector = model['inspector']
+                baseline = bool(inspector.in_collision_with_obstacle(q))
+                self_pairs = [tuple(pair) for pair in inspector.frames_in_self_collision(q)
+                    if frozenset(pair) not in model['exclusions']]
+                clear_numeric_scene(model)
+                lula = model['lula']
+                ball = lula.create_obstacle(lula.Obstacle.Type.SPHERE)
+                ball.set_attribute(lula.Obstacle.Attribute.RADIUS, witness['radius_m'])
+                handle = model['world'].add_obstacle(ball, lula.Pose3(lula.Rotation3(np.eye(3)),
+                    base[:3, :3].T@(point-base[:3, 3])))
+                try:
+                    inspector.update_world_view()
+                    detected = bool(inspector.in_collision_with_obstacle(q))
+                finally:
+                    model['world'].remove_obstacle(handle)
+                    inspector.update_world_view()
+                query_rows[name] = dict(original_world_external_collision=baseline,
+                    original_world_unmasked_self_pairs=self_pairs, isolated_witness_collision=detected)
+            passed = (physical_intersection and supported and not query_rows['stock']['original_world_external_collision']
+                and not query_rows['stock']['original_world_unmasked_self_pairs']
+                and not query_rows['stock']['isolated_witness_collision']
+                and query_rows['enhanced']['isolated_witness_collision'])
+            rows.append(dict(case=case.name, witness=witness, measured_finger_positions_m=fingers.tolist(),
+                enhanced_finger_contract_supported=supported, physical_point_to_cooked_solid_distance=distance,
+                witness_ball_intersects_cooked_solid=physical_intersection, native_models=query_rows,
+                prevented_stock_model_gap=bool(passed)))
+    return dict(status='PASS' if rows and all(row['prevented_stock_model_gap'] for row in rows) else 'FAIL',
+        witnesses=len(rows), prevented_stock_model_gaps=sum(row['prevented_stock_model_gap'] for row in rows),
+        source_sha256=provenance, models={name: digest(model['descriptor']) for name, model in models.items()},
+        rows=rows, scope='Actual recorded cooked-solid configuration counterexamples and numeric native Lula obstacle queries only; never authored or physically executed witness balls. Not a route or continuous-motion certificate.')
+
+
 def plot_measurements(summary, render, models, directory):
     """Render only the actual source posture, native spheres and measured gaps."""
     import os
@@ -511,6 +582,8 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, default=ROOT/'outputs/motion-planning-v4-2/collision-audit')
     parser.add_argument('--compact', type=Path)
     parser.add_argument('--figure-dir', type=Path)
+    parser.add_argument('--gap-witnesses', type=Path)
+    parser.add_argument('--gap-manifest', type=Path)
     args = parser.parse_args(argv)
     enhanced = load_enhanced_collision_model()
     if enhanced.descriptor_sha256 != DESCRIPTOR_SHA256:
@@ -547,6 +620,13 @@ def main(argv=None):
     raw = args.output/'states.json'
     raw.write_text(json.dumps(states, indent=2, allow_nan=False)+'\n')
     result['raw_artifact'] = dict(path=str(raw), sha256=digest(raw))
+    if args.gap_witnesses:
+        gap = audit_gap_witnesses(args.gap_witnesses,
+            args.gap_manifest or args.gap_witnesses.with_name('compact.json'), models, enhanced)
+        artifact = args.output/'model_gap_witnesses.json'
+        artifact.write_text(json.dumps(gap, indent=2, allow_nan=False)+'\n')
+        result['model_gap_witnesses'] = {key: value for key, value in gap.items() if key != 'rows'}
+        result['model_gap_witnesses']['raw_artifact'] = dict(path=str(artifact), sha256=digest(artifact))
     if args.figure_dir:
         result['figures'] = plot_measurements(result['models'], render, models, args.figure_dir)
         result['figure_source'] = dict(case=render['case'], sample=render['sample'])

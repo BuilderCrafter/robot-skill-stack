@@ -108,6 +108,18 @@ class CollisionModelTests(unittest.TestCase):
         with self.assertRaisesRegex(PlanningFailure, 'native target read failed'):
             self.model.check_gripper(robot)
 
+    def test_partial_native_action_checks_each_available_finger_target(self):
+        for index, name in ((2, FINGER_NAMES[0]), (0, FINGER_NAMES[1])):
+            with self.subTest(finger=name):
+                robot = self.robot()
+                robot.get_applied_action = lambda: NS(joint_positions=[.04], joint_indices=[index])
+                with self.assertRaisesRegex(PlanningFailure, 'Native finger targets') as caught:
+                    self.model.check_gripper(robot)
+                self.assertEqual(caught.exception.details['native_partial_position_targets_m'], {name: .04})
+                robot.get_applied_action = lambda: NS(joint_positions=[.004], joint_indices=[index])
+                result = self.model.check_gripper(robot)
+                self.assertEqual(result['native_partial_position_targets_m'], {name: .004})
+
     def test_finite_cuboid_check_uses_rotated_box_not_world_aabb(self):
         model = replace(self.model, base_center=(2., 0., 0.), base_radius=.1)
         axis_aligned = StaticObstacle('/Box', 'cuboid', (0, 0, 0), dimensions=(.2, 4., .2))
