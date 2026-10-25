@@ -123,6 +123,7 @@ class GlobalDetourAnalysisTests(unittest.TestCase):
         paired = analysis.paired_results(cases, proof, self.frozen, 'fixture-sha')
         self.assertFalse(paired[0]['strong_detour_accepted'])
         self.assertFalse(paired[0]['controls_and_acceptance']['obstacle_home_physical_acceptance'])
+        self.assertTrue(paired[0]['matched_obstacle_induced_route_selection'])
 
     def test_actual_tcp_or_surface_tangency_does_not_prove_original_global_route_obstruction(self):
         cases = [self.baseline(), self.case('free'), self.case('obstacle', self.detour)]
@@ -188,6 +189,34 @@ class GlobalDetourAnalysisTests(unittest.TestCase):
             record = analysis.declarations([path])['outputs/test/obstacle/r1/result.json']
             self.assertEqual(record['seed'], 234567)
             self.assertEqual(record['condition'], 'obstacle')
+
+    def test_counterfactual_cooked_clearance_keeps_box_absent_observations_separate(self):
+        with TemporaryDirectory() as folder:
+            paths = [f'/Franka/panda_link{index}' for index in range(8)]+[
+                '/Franka/panda_hand', '/Franka/panda_leftfinger', '/Franka/panda_rightfinger']
+            vertices = np.asarray([[x, y, z] for x in (-1., 1.) for y in (-1., 1.) for z in (-1., 1.)])
+            local = np.eye(4)
+            local[:3, :3] *= .01
+            archive = {key: value for index in range(11) for key, value in (
+                (f'vertices_{index}', vertices), (f'body_from_mesh_{index}', local))}
+            np.savez(Path(folder)/'geometry_reference.npz', **archive)
+            operation = self.operation('outward', self.direct)
+            operation['raw_operation'] = dict(first_sample=0, last_sample=1)
+            case = dict(summary=dict(result=str(Path(folder)/'result.json'), condition='free', measurement_valid=True),
+                operations=[operation], raw=dict(metrics=dict(geometry_reference=dict(cooking=[dict(body=path, cooked_hulls=1) for path in paths]))),
+                trace=dict(metadata=dict(body_paths=paths), samples=[dict(physics_step=32, simulation_time=0.,
+                    poses=[[.5 if index == 0 else 2., 0., 0., 0., 0., 0., 1.] for index in range(11)])]))
+            frozen = dict(fixture=dict(prim_path='/FrozenBox', position_m=[.5, 0., 0.], dimensions_m=[.04]*3, orientation_wxyz=[1., 0., 0., 0.]))
+            analysis.attach_counterfactual_free_clearance(case, frozen)
+            self.assertEqual(operation['summary']['counterfactual_fixture_clearance']['minimum_m'], 0.)
+            self.assertTrue(operation['curve_counterfactual'])
+            self.assertEqual(operation['summary']['sampled_fixture_minimum_m'], .03)
+            frozen['fixture']['position_m'] = [.6, 0., 0.]
+            analysis.attach_counterfactual_free_clearance(case, frozen)
+            self.assertAlmostEqual(operation['summary']['counterfactual_fixture_clearance']['minimum_m'], .07)
+            case['raw']['metrics']['geometry_reference']['cooking'].pop()
+            with self.assertRaisesRegex(ValueError, 'all eleven'):
+                analysis.attach_counterfactual_free_clearance(case, frozen)
 
 
 if __name__ == '__main__':

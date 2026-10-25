@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "native_global_regressions": [
+    {
+      "suite": "previous_roundtrip",
+      "result": {
+        "path": "outputs/motion-planning-v4-3/regression/previous_roundtrip/r1/result.json",
+        "sha256": "eeec35fccd0d43dd2e83dcd9f4eba898f7ad02bf8d5072c05f39085cae0c79e4"
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "behavior_passed": true,
+      "strict_zero_reports": true
+    },
+    {
+      "suite": "previous_static",
+      "result": {
+        "path": "outputs/motion-planning-v4-3/regression/previous_static/r1/result.json",
+        "sha256": "91cdd81ce070ae72afcf84e12f3fa5a36973d0010d4b0230ab8999cf50ff7e28"
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "error": null,
+      "behavior_passed": true,
+      "strict_zero_reports": false,
+      "physical_contact_steps": 0,
+      "reported_points": 4,
+      "minimum_movable_arm_clearance_m": 0.023148320530149504
+    },
+    {
+      "suite": "previous_lifecycle",
+      "result": {
+        "path": "outputs/motion-planning-v4-3/regression/previous_lifecycle/r1/result.json",
+        "sha256": "677596d15b16e1bbc0fc63c2fbf130ac43c8f62f74f01348bbd226c70e331d31"
+      },
+      "measurement_status": "PASS",
+      "contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "error": null,
+      "behavior_passed": true,
+      "mode": "cancel",
+      "checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "home_after_cancel": true,
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "ownership_released": true,
+        "request_interrupted": true,
+        "no_stale_commands_after_completion": true,
+        "pre_fault_geometry_clear": true,
+        "cancel_final_velocity_zero": true,
+        "cancel_hold_one_second_observed": true,
+        "cancel_hold_tracking_within_original_bounds": true,
+        "cancel_hold_no_additional_arm_commands": true,
+        "cancel_hold_ownership_released_throughout": true,
+        "cancel_hold_zero_velocity_target": true,
+        "cancel_hold_geometry_clear": true
+      },
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      }
+    }
+  ],
+  "direct_native": {
+    "status": "NOT_RERUN",
+    "reason": "No production motion source changed; V4.2 native PASS evidence remains unchanged."
+  },
+  "reactive_native": {
+    "status": "NOT_RERUN",
+    "reason": "No production motion source changed; V4.2 native PASS evidence remains unchanged."
+  }
+}

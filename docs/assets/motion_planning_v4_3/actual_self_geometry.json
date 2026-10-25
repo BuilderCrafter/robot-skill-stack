@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "status": "BOUNDED_NUMERIC_ENDPOINT_AND_ACTUAL_SELF_AUDIT",
+  "producer_sha256": "2777d80cdb3590a24a7ea5465733f4908fa86be78324c08c24e54fa2042d4b22",
+  "candidate_classifications": {},
+  "physically_clear_model_rejected_endpoints": [],
+  "limitations": [
+    "Physical candidate poses are independently checked URDF counterfactuals, not actual observed configurations.",
+    "No finite IK candidate audit establishes whole-goal or whole-path infeasibility.",
+    "Route/trajectory rejection requires its failed interior configuration; endpoint clearance alone cannot diagnose it.",
+    "Positive intersection balls establish numeric solid overlap, separate from native contacts, offsets and physical execution.",
+    "The nominal nonpenetrating mount remains explicitly qualified and source/frame conditional."
+  ],
+  "actual_self_geometry": {
+    "states": 28,
+    "source_sha256": {
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-123456/r1/result.json": "822e8a550206e3d687758906714151a13378f1d535b3fcc4a2934260274f7580",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-123456/r1/roundtrip_trace.json": "f80a835c7cc9b6ab0f9681cddc05ec0c97acd8bffdf9c6aad1be8a03593fd718",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-123456/r1/geometry_reference.npz": "7e960877c41d8eedeace3faaaae60311b76e2c9ea0a969dc221af8757cd40cb0",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-234567/r1/result.json": "9c0a0f0ce6a923691d4f0a1129fdb625dc48d5a64ebfdad9fec00d1376644266",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-234567/r1/roundtrip_trace.json": "62c31b9873adfa2c8b8fd658dd5b96e44db32d35fdce25301cf993b657a88a54",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-234567/r1/geometry_reference.npz": "04b358932ee721db48ec7dbb45cc54f11a84780a0f92a2d90720d5a7c2d18937",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-345678/r1/result.json": "80d63a6a7570908b0534d7c16c99f74a04b78fcc2cdbfb42aac0c4203319a7e8",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-345678/r1/roundtrip_trace.json": "f5d029dd59d8e26c4aaaa59cd0f74f2ed53b9e503a4d40d742ee3ac0fa929922",
+      "outputs/motion-planning-v4-3/matched/obstacle/seed-345678/r1/geometry_reference.npz": "b144b47406d73d87932cd2a5f5984263dc7d2bb4b64e844c60eeb0ed32aa8ae5",
+      "outputs/motion-planning-v4-3/baseline-free/r1/result.json": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+      "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931",
+      "outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4"
+    },
+    "pair_queries": 1176,
+    "pair_classifications": {
+      "SEPARATED_BEYOND_FRAME_ALLOWANCE": 1176
+    },
+    "minimum_separation_lower_bound_m": 0.0043284462241965525,
+    "nonseparated_or_unresolved": [],
+    "scope": "All measured nonadjacent pairs, including physical finger/finger; structural exclusions are explicitly listed in raw evidence. No absence-of-contact-report inference."
+  },
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-3/actual-self-audit/candidates.json",
+    "sha256": "ac042e3b8c2248646941b9cada9fee9a6149059c4fb63893a65d6ccaf8919515"
+  }
+}

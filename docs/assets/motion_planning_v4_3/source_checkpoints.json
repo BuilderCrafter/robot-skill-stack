@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "83a1197da593286d7057977ecd5ed711111b37cf",
+  "branch": "research/global-rrt-detour-v4-3",
+  "publication_method": "Connected GitHub Git data API; exact local/published Git tree equality verified per commit; commit metadata differs.",
+  "checkpoints": [
+    {
+      "local": "d7bdda0fdbf96e6d1ef0784429547ba235822ae1",
+      "published": "2fa12c460619aa5640b4dfd20a6b431f03cce45c",
+      "tree": "073e87ee6e26f601042071cd4942bd79b12e012d"
+    },
+    {
+      "local": "93e554308a63c829af769585eea55c254e808f45",
+      "published": "2f420027800b72a3e68a461993161a7b54cd61a1",
+      "tree": "0cf4a3d7ab9cb07396d95bab24b947aacc05e333"
+    },
+    {
+      "local": "3844a88770a6a5447633e9b351992dcaa4ae2f86",
+      "published": "1df3381c82df9cb6a32d87cbae942bbfba95c561",
+      "tree": "8d5b8a8e3f7b9835003c2e8415dd8efa52c49a84"
+    },
+    {
+      "local": "c3debbcaa73ebb9d362a1a2f8fa84ff2d4b422d6",
+      "published": "f3da47f4e629f8170569cdd35980ef279ea7aa62",
+      "tree": "d995717fc4f238e338a42f5a7d225e37a80aca43"
+    },
+    {
+      "local": "2ef13dfc628cb5cebc1c27ea5f46019f66aa3f32",
+      "published": "a6ba92b8475fbaa1409cf4b4567b808575bb2864",
+      "tree": "8c083f805d663fa111850e0db1fceff4d3ae0207"
+    },
+    {
+      "local": "139b9e8595e53217c7c2fd667066f234a6ddb9f6",
+      "published": "e24481f689d9543cf1fa738d30bf6ed8c65bd183",
+      "tree": "34931bba29d488b6be445ef9f77fd5c2e75853fd"
+    }
+  ],
+  "measured_source": {
+    "initial_no_obstacle_baseline": {
+      "local": "d7bdda0fdbf96e6d1ef0784429547ba235822ae1",
+      "published": "2fa12c460619aa5640b4dfd20a6b431f03cce45c",
+      "tree": "073e87ee6e26f601042071cd4942bd79b12e012d"
+    },
+    "matched_pairs_controls_and_global_regressions": {
+      "local": "139b9e8595e53217c7c2fd667066f234a6ddb9f6",
+      "published": "e24481f689d9543cf1fa738d30bf6ed8c65bd183",
+      "tree": "34931bba29d488b6be445ef9f77fd5c2e75853fd"
+    }
+  },
+  "design_rule": "All geometric design revisions and the control-only correction precede any candidate-obstacle RRT evaluation. The selected main box remains unchanged after its independent exact design lock.",
+  "final_evidence_commit_mapping": "Stored in ignored outputs/motion-planning-v4-3/publication_receipt.json after publication."
+}

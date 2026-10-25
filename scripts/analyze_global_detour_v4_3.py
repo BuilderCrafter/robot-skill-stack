@@ -190,7 +190,8 @@ def read_case(path, declaration=None):
             hashes=result.get('hashes') or {}, fixed_target={key: value for key, value in (metrics.get('fixed_target') or {}).items()
                 if key in ('schema_version', 'joint_names', 'q', 'target', 'end_effector_frame', 'baseline_result_sha256')},
             fixture_sha256=metrics.get('fixture_document_sha256', metrics.get('frozen_fixture_sha256')),
-            final_strategy=metrics.get('strategy_after_close'))
+            final_strategy=metrics.get('strategy_after_close'), kit_interval_ms=metrics.get('kit_interval_ms'),
+            controller_wait_ms=metrics.get('controller_wait_ms'), rss=metrics.get('rss'))
         trace_path = path.parent/metrics.get('trace_artifact', 'roundtrip_trace.json')
         if not trace_path.exists():
             summary['actual_trace_status'] = 'NOT_CAPTURED'
@@ -203,6 +204,8 @@ def read_case(path, declaration=None):
         case.update(operations=loaded['operations'], raw=result, trace=trace)
         for measured, original in zip(case['operations'], trace.get('operations', [])):
             measured['raw_operation'] = original
+            diagnostics = original.get('strategy_diagnostics') or {}
+            measured['summary']['generated_trajectory_duration_seconds'] = diagnostics.get('trajectory_duration_seconds', diagnostics.get('trajectory_duration'))
             if measured['route'] is not None:
                 native_names = (original.get('plan_trace') or {}).get('joint_names') or []
                 measured['route'] = named_route(measured['route'], native_names)
@@ -399,10 +402,17 @@ def paired_results(cases, proof_checks, frozen=None, fixture_sha256=None):
             and geometry_rows[0].get('kind') == 'cuboid'
             and all(_same_numeric_vector(geometry_rows[0].get(actual), fixture.get(expected), length)
                 for actual, expected, length in (('position', 'position_m', 3), ('dimensions', 'dimensions_m', 3), ('orientation', 'orientation_wxyz', 4))))
+        execution_checks = {'free_outward_physical_acceptance', 'obstacle_outward_physical_acceptance',
+            'obstacle_home_physical_acceptance', 'obstacle_both_legs_positive_physical_box_clearance'}
+        route_selection = all(value for key, value in checks.items() if key not in execution_checks)
+        home = _operation(obstacle, 'home_return')
         row.update(status='PASS_STRONG_DETOUR' if all(checks.values()) else 'INCOMPLETE_OR_FAILED_ACCEPTANCE',
             free_result=free['summary']['result'], obstacle_result=obstacle['summary']['result'], controls_and_acceptance=checks,
             route_comparison=geometry, strong_detour_accepted=all(checks.values()),
             route_comparison_error=geometry_error,
+            matched_obstacle_induced_route_selection=route_selection,
+            strict_zero_report_obstacle_roundtrip=bool(b is not None and home is not None
+                and b['summary'].get('strict_zero_reports') is True and home['summary'].get('strict_zero_reports') is True),
             free_outward=a['summary'] if a else None, obstacle_outward=b['summary'] if b else None,
             obstacle_home=(_operation(obstacle, 'home_return') or {}).get('summary'))
         pairs.append(row)
@@ -461,6 +471,9 @@ def summarize(cases, frozen, fixture_sha256=None):
         meaningful_deviation_threshold_rad=MEANINGFUL_DEVIATION_RAD, design_checks=proof,
         cases=[case['summary'] for case in cases], matched_pairs=pairs, negative_controls=controls,
         detour_demonstrated=bool(accepted), accepted_pairs=len(accepted), retained_pair_attempts=len(pairs),
+        obstacle_induced_route_selection_demonstrated=any(row.get('matched_obstacle_induced_route_selection') for row in pairs),
+        matched_route_selection_pairs=sum(row.get('matched_obstacle_induced_route_selection', False) for row in pairs),
+        strict_zero_report_accepted_pairs=sum(row['strong_detour_accepted'] and row.get('strict_zero_report_obstacle_roundtrip') for row in pairs),
         seeds=robustness, accepted_primary_fresh_pairs=primary, all_declared_pair_attempts_passed=all_required,
         qualifications=['Configuration-space geometry is measured in all seven named revolute coordinates.',
             'Actual cooked-solid clearance and self geometry remain sampled; no continuous executed swept-volume certificate is inferred.',
@@ -488,8 +501,62 @@ def draw_box(axis, frozen, *, color='#555555', alpha=.35):
                 axis.plot(*vertices[[i, j]].T, color=color, alpha=alpha)
 
 
+def attach_counterfactual_free_clearance(case, frozen):
+    """Score actual box-free body poses offline; never relabel them as impacts."""
+    from scripts.audit_global_collision_v4_1 import body_mesh_vertices, pose_matrix_xyzw
+    from scripts.obstacle_representation_v3_cylinder import convex_distance_details
+
+    if case['summary'].get('condition') not in ('baseline_free', 'free') or not case['summary'].get('measurement_valid'):
+        return
+    paths = case['trace']['metadata']['body_paths']
+    parts, index = [], 0
+    with np.load(Path(case['summary']['result']).parent/'geometry_reference.npz', allow_pickle=False) as archive:
+        for record in case['raw']['metrics']['geometry_reference']['cooking']:
+            for _ in range(record['cooked_hulls']):
+                vertices = body_mesh_vertices(archive[f'vertices_{index}'], archive[f'body_from_mesh_{index}'])
+                parts.append((record['body'], paths.index(record['body']), vertices))
+                index += 1
+    if len(paths) != 11 or {body for body, _, _ in parts} != set(paths):
+        raise ValueError('Counterfactual clearance requires all eleven captured cooked bodies')
+    corners = box_geometry(frozen)
+    low, high = corners.min(0), corners.max(0)
+    for operation in case['operations']:
+        original = operation['raw_operation']
+        samples = recorded.unique_samples(case['trace']['samples'][original['first_sample']:original['last_sample']])
+        curve = []
+        for sample in samples:
+            candidates = []
+            for body, body_index, vertices in parts:
+                pose = pose_matrix_xyzw(sample['poses'][body_index])
+                world = vertices@pose[:3, :3].T+pose[:3, 3]
+                lower = float(np.linalg.norm(np.maximum(np.maximum(low-world.max(0), world.min(0)-high), 0.)))
+                candidates.append((lower, body, world))
+            best, pair, queries, width = float('inf'), None, 0, 0.
+            for lower, body, world in sorted(candidates, key=lambda row: row[0]):
+                if lower > best:
+                    continue
+                measured = convex_distance_details(world, corners)
+                queries += 1
+                width = max(width, measured['upper_bound_m']-measured['lower_bound_m'])
+                if measured['distance_m'] < best:
+                    best, pair = measured['distance_m'], body
+            curve.append(dict(physics_step=sample['physics_step'], simulation_time=sample['simulation_time'],
+                minimum_m=float(best), closest_pair=dict(robot_link=pair, obstacle=frozen['fixture']['prim_path']),
+                convex_distance_queries=queries, maximum_numerical_certificate_width_m=float(width)))
+        operation['curve'], operation['curve_counterfactual'] = curve, True
+        closest = min(curve, key=lambda row: row['minimum_m']) if curve else None
+        operation['summary']['counterfactual_fixture_clearance'] = dict(
+            minimum_m=closest['minimum_m'] if closest else None,
+            closest_pair=closest['closest_pair'] if closest else None,
+            sampled_poses=len(curve), all11_cooked_bodies=True,
+            queries=sum(row['convex_distance_queries'] for row in curve),
+            maximum_numerical_certificate_width_m=max((row['maximum_numerical_certificate_width_m'] for row in curve), default=None),
+            qualification='Counterfactual frozen box against actual box-free recorded body poses. Zero distance alone does not distinguish tangency from volume intersection; the separate positive-volume planned/actual LP witnesses establish obstruction. No physical impact was performed.')
+
+
 def _save(fig, path, plt):
-    fig.savefig(path, dpi=150, bbox_inches='tight')
+    extras = [*fig.texts, *[text for axis in fig.axes for text in axis.texts]]
+    fig.savefig(path, dpi=150, bbox_inches='tight', bbox_extra_artists=extras, pad_inches=.12)
     plt.close(fig)
     return str(path)
 
@@ -535,12 +602,15 @@ def render_physical_obstruction(cases, frozen, directory, plt):
                 vertices = archive[f'vertices_{index}']@body_from_mesh[:3, :3].T+body_from_mesh[:3, 3]
                 parts.append((record['body'].rsplit('/', 1)[-1], vertices, archive[f'triangles_{index}'].copy()))
                 index += 1
-    fig = plt.figure(figsize=(13, 6), constrained_layout=True)
+    fig = plt.figure(figsize=(13, 6.3))
+    fig.subplots_adjust(left=.02, right=.91, bottom=.12, top=.86, wspace=.22)
     axes = [fig.add_subplot(121, projection='3d'), fig.add_subplot(122, projection='3d')]
-    vertices_world = []
+    vertices_world, zoom_vertices = [], []
     body = str(proof.get('robot_body', '')).rsplit('/', 1)[-1]
     for state_index, command in enumerate(selected):
         command_q = named_route([command['q']], plan.get('joint_names') or [])[0]
+        if state_index == 1 and proof.get('planned_q') is not None and not np.array_equal(command_q, proof['planned_q']):
+            raise ValueError('Rendered planned obstruction configuration differs from the frozen proof')
         poses = fk.poses((*ARM, *FINGERS), [*command_q, *finger_values])
         for frame, vertices, triangles in parts:
             pose = base@poses[frame]
@@ -548,26 +618,41 @@ def render_physical_obstruction(cases, frozen, directory, plt):
             vertices_world.append(world)
             color = '#b34230' if state_index == 1 and frame == body else ('#8d9aa2', '#3175a0', '#c79748')[state_index]
             for column, axis in enumerate(axes):
-                if column == 1 and state_index != 1:
-                    continue
+                if column == 1:
+                    if state_index != 1 or frame not in ('panda_hand', 'panda_leftfinger', 'panda_rightfinger'):
+                        continue
+                    zoom_vertices.append(world)
                 axis.add_collection3d(Poly3DCollection(world[triangles], facecolor=color,
                     edgecolor='none', alpha=.55 if state_index == 1 else .10))
     for axis in axes:
         draw_box(axis, frozen, color='#222222', alpha=.95)
-        axis.set(xlabel='World X (m)', ylabel='World Y (m)', zlabel='World Z (m)')
+        axis.set_xlabel('World X (m)', fontsize=9, labelpad=2)
+        axis.set_ylabel('World Y (m)', fontsize=9, labelpad=2)
+        axis.set_zlabel('')
+        axis.text2D(1.08, .52, 'World Z (m)', transform=axis.transAxes, fontsize=9, rotation=90, ha='center', va='center')
+        axis.tick_params(labelsize=8)
         axis.view_init(elev=24, azim=-58)
     cloud = np.concatenate([*vertices_world, box_geometry(frozen)])
     low, high = cloud.min(0), cloud.max(0)
     for dimension, setter in enumerate((axes[0].set_xlim, axes[0].set_ylim, axes[0].set_zlim)):
         setter(low[dimension]-.025, high[dimension]+.025)
-    center = np.asarray(frozen['fixture']['position_m'])
-    half = np.asarray(frozen['fixture']['dimensions_m'])/2
-    radius = max(.10, float(half.max())+.07)
-    axes[1].set(xlim=(center[0]-radius, center[0]+radius), ylim=(center[1]-radius, center[1]+radius), zlim=(center[2]-radius, center[2]+radius))
-    axes[0].set_title('Original planned start, obstruction and goal configurations')
-    axes[1].set_title(f'Original planned q at t={planned_time:.4f} s; {body}')
-    fig.suptitle('Captured PhysX-cooked solids placed by independent, source-checked URDF FK')
-    fig.text(.02, .01, 'Frozen box is superposed on the no-obstacle reference. Red body has an independent positive-volume intersection witness.', fontsize=8)
+    zoom_cloud = np.concatenate([*zoom_vertices, box_geometry(frozen)])
+    low, high = zoom_cloud.min(0)-.015, zoom_cloud.max(0)+.015
+    axes[1].set(xlim=(low[0], high[0]), ylim=(low[1], high[1]), zlim=(low[2], high[2]))
+    ball = np.asarray(proof['ball_center_m'])
+    radius = float(proof['positive_ball_radius_lower_bound_m'])
+    phi, theta = np.meshgrid(np.linspace(0., 2*np.pi, 13), np.linspace(0., np.pi, 9))
+    axes[1].plot_wireframe(ball[0]+radius*np.cos(phi)*np.sin(theta),
+        ball[1]+radius*np.sin(phi)*np.sin(theta), ball[2]+radius*np.cos(theta), color='#a51d1d', linewidth=.6)
+    axes[1].scatter(*ball, color='#a51d1d', s=12)
+    axes[1].text2D(.02, .94, f'Positive-volume ball radius ≥ {radius*1000:.3f} mm', transform=axes[1].transAxes, fontsize=9, color='#a51d1d')
+    axes[0].set_title('Original planned start, obstruction and goal', fontsize=11)
+    axes[1].set_title(f'Original planned obstruction pose at t={planned_time:.4f} s', fontsize=11)
+    from matplotlib.lines import Line2D
+    axes[0].legend(handles=[Line2D([], [], color=color, lw=3, label=label) for color, label in
+        (('#8d9aa2', 'Start'), ('#3175a0', 'Obstructed original route'), ('#c79748', 'Goal'))], fontsize=8, loc='upper left')
+    fig.suptitle('Captured PhysX-cooked solids placed by independent, source-checked URDF FK', fontsize=13)
+    fig.text(.02, .025, 'Frozen box is superposed on the no-obstacle reference. Red finger and inscribed ball show the independently proved volume intersection.', fontsize=8)
     return _save(fig, Path(directory)/'physical_obstruction_scene.png', plt)
 
 
@@ -600,7 +685,9 @@ def render_figures(cases, frozen, directory):
     for op, label in operations:
         axis.plot(*op['tcp'].T, label=label, lw=1.8)
     draw_box(axis, frozen)
-    axis.set(xlabel='World X (m)', ylabel='World Y (m)', zlabel='World Z (m)', title='Actual TCP trajectories in matched conditions')
+    axis.set(xlabel='World X (m)', ylabel='World Y (m)', title='Actual TCP trajectories in matched conditions')
+    axis.set_zlabel('')
+    axis.text2D(1.08, .52, 'World Z (m)', transform=axis.transAxes, fontsize=10, rotation=90, ha='center', va='center')
     axis.legend(fontsize=8)
     fig.text(.02, .01, 'Box is counterfactual for the no-obstacle capture; physical-body obstruction is proved separately.', fontsize=8)
     paths.append(_save(fig, directory/'actual_tcp_conditions.png', plt))
@@ -663,7 +750,8 @@ def render_figures(cases, frozen, directory):
     fig, axes = plt.subplots(2, 1, figsize=(10, 7), constrained_layout=True)
     for op, label in operations:
         if op['curve']:
-            axes[0].plot([row['simulation_time']-op['origin'] for row in op['curve']], [row['minimum_m']*1000 for row in op['curve']], label=label)
+            clearance_label = label+' (counterfactual box)' if op.get('curve_counterfactual') else label
+            axes[0].plot([row['simulation_time']-op['origin'] for row in op['curve']], [row['minimum_m']*1000 for row in op['curve']], label=clearance_label)
         axes[1].plot(op['times'], op['position_error']*1000, label=label)
     axes[0].axhline(0., color='#9a3020', ls=':')
     axes[0].set(ylabel='Sampled all-body box clearance (mm)', title='Recorded cooked-solid clearance; counterfactual box in no-obstacle case')
@@ -684,7 +772,7 @@ def render_figures(cases, frozen, directory):
                 else op['summary']['planning_seconds'][key]*1000 for _, op in rows]
             axis.bar(x+(index-.5)*.32, values, .32, label=label)
         axis.set_xticks(x, [f"{case['summary']['condition']} {case['summary']['seed']} {case['summary']['repeat']} {op['summary']['label']}" for case, op in rows], rotation=40, ha='right')
-        axis.set(ylabel='Measured wall time (ms)', title='Recorded planning time; failed attempts remain in the inventory')
+        axis.set(ylabel='Measured wall time (ms)', title='Recorded planning time across matched conditions')
         axis.legend(fontsize=8)
         paths.append(_save(fig, directory/'planning_time_comparison.png', plt))
     return paths
@@ -710,6 +798,7 @@ def main(argv=None):
     parser.add_argument('--fixture', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--figures-dir', type=Path)
+    parser.add_argument('--counterfactual-free-clearance', action='store_true')
     args = parser.parse_args(argv)
     declared = declarations(args.jobs)
     paths = list(dict.fromkeys([*declared, *map(str, args.result)]))
@@ -719,6 +808,9 @@ def main(argv=None):
         parser.error('Refusing to overwrite an existing V4.3 reduction')
     frozen = json.loads(args.fixture.read_text())
     cases = [read_case(path, declared.get(path)) for path in paths]
+    if args.counterfactual_free_clearance:
+        for case in cases:
+            attach_counterfactual_free_clearance(case, frozen)
     summary = summarize(cases, frozen, recorded.digest(args.fixture))
     summary.update(fixture=dict(path=str(args.fixture), sha256=recorded.digest(args.fixture)), figures=[])
     if args.figures_dir is not None:

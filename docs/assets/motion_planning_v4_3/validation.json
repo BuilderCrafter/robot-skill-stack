@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "PASS_DECLARED_STATIC_OBSTACLE_INDUCED_DETOUR",
+  "fixture_sha256": "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+  "native_measurement_processes": 16,
+  "native_driver_receipts": [
+    {
+      "path": "outputs/motion-planning-v4-3/baseline_driver.json",
+      "sha256": "d89b569fb64717884fb8c9710a661331b07db22280486a51b43e8e54f4215234"
+    },
+    {
+      "path": "outputs/motion-planning-v4-3/paired_driver.json",
+      "sha256": "fb169cc7610173b0dc19210bf032052287d7c002b493a93afcc697ea0de58bf8"
+    },
+    {
+      "path": "outputs/motion-planning-v4-3/control_driver.json",
+      "sha256": "0e3e21730b0b7b0813737816f4fb822a2def473b1ee8c3f185ccf054d4e4e7c3"
+    },
+    {
+      "path": "outputs/motion-planning-v4-3/previous_roundtrip_driver.json",
+      "sha256": "94778262365ccb57e5259d1006fb11b5f165adc870ef62a05a102d0de2bca9f0"
+    },
+    {
+      "path": "outputs/motion-planning-v4-3/previous_static_driver.json",
+      "sha256": "4160f7a46dc9d656a5c2c557f5b62a4f4b29ad1da6b36ef464c688ae3b40eee4"
+    },
+    {
+      "path": "outputs/motion-planning-v4-3/previous_lifecycle_driver.json",
+      "sha256": "020c4db519fe62c57235388789d90b689776564988a29753a830d3eca01fc517"
+    }
+  ],
+  "matched_pairs": 5,
+  "accepted_obstacle_present_roundtrips": 5,
+  "strict_zero_report_obstacle_roundtrips": 5,
+  "primary_fresh_repetitions": 3,
+  "seeds": [
+    123456,
+    234567,
+    345678
+  ],
+  "no_failed_native_detour_seed_omitted": true,
+  "negative_geometric_designs_retained": true,
+  "controls": {
+    "removal_restores_same_original_route": true,
+    "off_route": "PASS",
+    "physically_blocked_goal": "PASS_ZERO_COMMAND_REJECTION"
+  },
+  "unit_suite": {
+    "tests": 1279,
+    "status": "PASS",
+    "architecture": "PASS",
+    "existing_auxiliary_scripts": 8,
+    "summary": {
+      "path": "outputs/motion-planning-v4-3/units-publish/run-7d_m5gs7/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "log": {
+      "path": "outputs/motion-planning-v4-3/units-publish/run-7d_m5gs7/unit_discovery.log",
+      "sha256": "462bb402964e530d761afad27c028873c73bb93d39d9303c93f4d2e095c006e4"
+    }
+  },
+  "production_motion_changes": false,
+  "native_global_regressions": 3,
+  "direct_and_reactive_native": "NOT_RERUN_UNCHANGED_PRODUCTION",
+  "physical_observations": "PASS_SAMPLED_DECLARED_CASES",
+  "independent_witness": "SOURCE_BOUND_FLOATING_POINT_CONTINUOUS_NUMERIC_WITNESS",
+  "actual_continuous_swept_volume": "NOT_CERTIFIED",
+  "general_planner_completeness": "NOT_CLAIMED",
+  "physical_robot_safety": "NOT_CLAIMED",
+  "next_checkpoint": "READY_FOR_FROZEN_RGBD_RESEARCH_DESIGN"
+}
