@@ -11,6 +11,8 @@ NATIVE = {
     "acceptance": "scripts/benchmark_global_acceptance_v4_1.py",
     "solver": "scripts/diagnose_global_solver_velocity_v4_1.py",
     "controlled": "scripts/validate_global_stabilization_v4_1.py",
+    "direct": "tests/isaac/test_motion_strategy.py",
+    "reactive": "tests/isaac/test_reactive_motion.py",
 }
 OUTPUT_ROOT = Path("outputs/motion-planning-v4-1")
 
