@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+  "branch": "feature/global-motion-planning-v4-2",
+  "publication_method": "Connected GitHub Git data API; commit metadata differs from local commits. Every published Git tree SHA was checked equal to its local tree.",
+  "checkpoints": [
+    {
+      "local": "9c178a94402824bcfcb21213302f1566fcd33edf",
+      "published": "c3b4db262006c62aeb8c2af53dfd80f481dd18ef",
+      "tree": "521e542d99bb514f7da03dfb090bed74211652b6",
+      "scope": "Initial model/fixture freeze; canonical postures, direct reference, first ten roundtrips and all 26 paired static cases."
+    },
+    {
+      "local": "3ddf37dcf3e80928fd9616e5ba144b8e3248f19d",
+      "published": "8a710b751eda1cfbf74af0421ae5c1b348cfbdf8",
+      "tree": "4b18c9fd04be026dddac6051514ea2914e160fc4",
+      "scope": "Final runtime finger-target guard; three further enhanced primary roundtrips, five lifecycle modes and native direct/reactive regressions."
+    }
+  ],
+  "runtime_change_after_initial_freeze": "Validate every available finger target when a hypothetical partial target getter omits the other finger; complete installed native target getter path, model, fixture, thresholds and planner geometry unchanged.",
+  "offline_evidence": "Final reducers/plots are source-bound by producer SHA256 in each compact asset. Final documentation/evidence commit mapping is retained in ignored outputs publication receipt.",
+  "raw_output_root": "outputs/motion-planning-v4-2/"
+}

@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "status": "MEASURED_RECORDED_STATES",
+  "states": 5,
+  "cases": [
+    "outputs/motion-planning-v4-2/postures/r1/result.json"
+  ],
+  "source_sha256": {
+    "outputs/motion-planning-v4-2/postures/r1/result.json": "a1a407c44c81569f75b1ef8e0ebbdb5b5c63725c892f9c3b24c30c8a7a356d56",
+    "outputs/motion-planning-v4-2/postures/r1/trace.json": "e414b9f61c61ada1f384841dd7532a7bd53a94e736d05a03a5b048f0c4b23279",
+    "outputs/motion-planning-v4-2/postures/r1/geometry_reference.npz": "0dd4e732ed4e5219852c6dc43b7fa870a666cb272c369ff54abffb8f7c23359d"
+  },
+  "captured_goal_outcomes": [
+    {
+      "case": "motion-planning-v4-2/postures/r1",
+      "source_status": "PASS",
+      "posture_goal_checks": {
+        "Extended": true,
+        "Raised": true,
+        "Low": true,
+        "Home_return": true
+      },
+      "measured_states": 5
+    }
+  ],
+  "producer_sha256": "686c5b0a8d5a2577ed34b654a071b47bd1d83807b1d4d85936c5eacdb9225cf9",
+  "models": {
+    "stock": {
+      "descriptor_sha256": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+      "primitive_count": 55,
+      "primitive_counts_by_frame": {
+        "panda_link0": 1,
+        "panda_link1": 4,
+        "panda_link2": 4,
+        "panda_link3": 4,
+        "panda_link4": 4,
+        "panda_link5": 12,
+        "panda_link6": 3,
+        "panda_link7": 5,
+        "panda_hand": 18
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.6909832339140527,
+          "sphere_union_surface_coverage_mean": 0.6909832339140527,
+          "maximum_sampled_outside_gap_m": 0.009621951600023663
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.30746731617966755,
+          "sphere_union_surface_coverage_mean": 0.30746731617966755,
+          "maximum_sampled_outside_gap_m": 0.039539533057392655
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.308336205849183,
+          "sphere_union_surface_coverage_mean": 0.308336205849183,
+          "maximum_sampled_outside_gap_m": 0.03953956671148574
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.07693380470540362,
+          "sphere_union_surface_coverage_mean": 0.07693380470540362,
+          "maximum_sampled_outside_gap_m": 0.11705772566150048
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.6816128800980378,
+          "sphere_union_surface_coverage_mean": 0.6816128800980378,
+          "maximum_sampled_outside_gap_m": 0.03645434013260601
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.6779762104109678,
+          "sphere_union_surface_coverage_mean": 0.6779762104109678,
+          "maximum_sampled_outside_gap_m": 0.03641414964792322
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.6245499821517373,
+          "sphere_union_surface_coverage_mean": 0.6251283667620351,
+          "maximum_sampled_outside_gap_m": 0.03165846920733675
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.6524460893763085,
+          "sphere_union_surface_coverage_mean": 0.6535145265153413,
+          "maximum_sampled_outside_gap_m": 0.03141946319079507
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.5540833885049041,
+          "sphere_union_surface_coverage_mean": 0.5541253142905246,
+          "maximum_sampled_outside_gap_m": 0.05351205838620851
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.9104134718090835,
+          "sphere_union_surface_coverage_mean": 0.9104134718090835,
+          "maximum_sampled_outside_gap_m": 0.009455177873384166
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.8318655690971837,
+          "sphere_union_surface_coverage_mean": 0.8318655690971838,
+          "maximum_sampled_outside_gap_m": 0.005553117039364779
+        }
+      ],
+      "maximum_measured_prismatic_corrected_frame_translation_error_m": 2.6828582156990437e-07,
+      "maximum_rotation_matrix_error": 4.142847486732215e-07,
+      "externally_obstructed_states": 0,
+      "independently_clear_but_model_obstructed_states": 0,
+      "unmasked_self_obstructed_states": 0,
+      "independently_self_clear_but_model_obstructed_states": 0,
+      "enhanced_contract_unsupported_states": 0,
+      "moving_bodies_area_weighted_sample_coverage": 0.6702399626204223,
+      "including_base_area_weighted_sample_coverage": 0.5842725868230408,
+      "cpu_query_timing": {
+        "status": "MEASURED_OFFLINE_SAME_Q",
+        "queries": {
+          "external_collision": {
+            "states": 5,
+            "median_state_batch_median_us": 0.8670078125,
+            "p95_state_batch_median_us": 0.872834375
+          },
+          "self_collision_pairs": {
+            "states": 5,
+            "median_state_batch_median_us": 13.81228125,
+            "p95_state_batch_median_us": 16.710815625
+          },
+          "sphere_positions": {
+            "states": 5,
+            "median_state_batch_median_us": 11.7951484375,
+            "p95_state_batch_median_us": 11.969321875
+          },
+          "combined_external_self": {
+            "states": 5,
+            "median_state_batch_median_us": 14.980234375,
+            "p95_state_batch_median_us": 17.8788578125
+          },
+          "combined_external_self_positions": {
+            "states": 5,
+            "median_state_batch_median_us": 27.2407890625,
+            "p95_state_batch_median_us": 30.295915625
+          }
+        },
+        "limitation": "Explicit repeated Python/native inspector calls, not native RRT internal query counts, which are unexposed."
+      }
+    },
+    "enhanced": {
+      "descriptor_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+      "primitive_count": 102,
+      "primitive_counts_by_frame": {
+        "panda_link0": 1,
+        "panda_link1": 9,
+        "panda_link2": 9,
+        "panda_link3": 9,
+        "panda_link4": 9,
+        "panda_link5": 18,
+        "panda_link6": 7,
+        "panda_link7": 8,
+        "panda_hand": 26,
+        "panda_rightfinger": 3,
+        "panda_leftfinger": 3
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 0.07693380470540362,
+          "sphere_union_surface_coverage_mean": 0.07693380470540362,
+          "maximum_sampled_outside_gap_m": 0.11705772566150048
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "states": 5,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        }
+      ],
+      "maximum_measured_prismatic_corrected_frame_translation_error_m": 2.6828582156990437e-07,
+      "maximum_rotation_matrix_error": 4.142847486732215e-07,
+      "externally_obstructed_states": 0,
+      "independently_clear_but_model_obstructed_states": 0,
+      "unmasked_self_obstructed_states": 0,
+      "independently_self_clear_but_model_obstructed_states": 0,
+      "enhanced_contract_unsupported_states": 0,
+      "moving_bodies_area_weighted_sample_coverage": 1.0,
+      "including_base_area_weighted_sample_coverage": 0.8662518879365552,
+      "cpu_query_timing": {
+        "status": "MEASURED_OFFLINE_SAME_Q",
+        "queries": {
+          "external_collision": {
+            "states": 5,
+            "median_state_batch_median_us": 0.9460625,
+            "p95_state_batch_median_us": 0.9737203125
+          },
+          "self_collision_pairs": {
+            "states": 5,
+            "median_state_batch_median_us": 39.6172578125,
+            "p95_state_batch_median_us": 44.002759375
+          },
+          "sphere_positions": {
+            "states": 5,
+            "median_state_batch_median_us": 21.9621015625,
+            "p95_state_batch_median_us": 22.80855625
+          },
+          "combined_external_self": {
+            "states": 5,
+            "median_state_batch_median_us": 40.7150859375,
+            "p95_state_batch_median_us": 45.1888640625
+          },
+          "combined_external_self_positions": {
+            "states": 5,
+            "median_state_batch_median_us": 63.4188125,
+            "p95_state_batch_median_us": 68.04565
+          }
+        },
+        "limitation": "Explicit repeated Python/native inspector calls, not native RRT internal query counts, which are unexposed."
+      }
+    }
+  },
+  "enhanced_solid_certificate_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+  "surface_method": "Equal-area cooked-triangle centroid quadrature,64centroids per input triangle. Area fractions/max outside gaps are sample estimates; finite-cell solid containment is a separate source-bound certificate.",
+  "base_interpretation": "The native base sphere union remains incomplete. Fixed-base enclosing-sphere/AABB preflight is reported separately and conditionally contains the whole captured base solid.",
+  "limitations": [
+    "No invented FK-only postures: only actual captured joint/body states are measured.",
+    "A physically clear but sphere-obstructed sampled configuration measures conservative obstruction, not continuous passage infeasibility.",
+    "Measured posture clearance excludes contact/rest offsets and does not certify future tracking or continuous execution.",
+    "Missing posture captures, timing and native planning measurements remain unmeasured."
+  ],
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-2/collision-query-cost/states.json",
+    "sha256": "231cc91cf41e5a9054fed0b80d185af72ba3fe7b46b4a55c05cad90c485e5643"
+  }
+}

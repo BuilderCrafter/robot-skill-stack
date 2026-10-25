@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from scripts.summarize_global_validation_v4_2 import (
-    build_reports, inventory, lifecycle_record, performance, regression_record, static_record,
+    build_reports, inventory, lifecycle_record, paired_performance, performance, regression_record, static_record,
 )
 
 
@@ -22,6 +22,7 @@ class ValidationSummaryTests(unittest.TestCase):
         return dict(status='PASS' if valid else 'FAIL', contracts=dict(source_unchanged=True), error=None,
             hashes={'runtime.py': 'frozen'}, metrics=dict(
                 configuration=dict(strategy='global', global_collision_model='enhanced', scenario='static', seed=123456),
+                initial_joints=[0.]*9, physical_world=[dict(path='/Post', position=[.4, 0., .3])],
                 goal_reached=goal, strict_success=goal and reports == 0,
                 clearance=dict(minimum_m=.01, movable_arm_minimum_m=.02),
                 contacts=dict(reported_points=reports, minimum_reported_separation_m=.015,
@@ -49,6 +50,29 @@ class ValidationSummaryTests(unittest.TestCase):
         row = static_record(self.write('result.json', self.static(goal=False, reports=0)))
         self.assertFalse(row['sampled_physical_contact_free_completion'])
         self.assertEqual(row['rejection_physical_feasibility'], 'NOT_ESTABLISHED_BY_PLANNER_REJECTION')
+
+    def test_upstream_workspace_gate_is_preserved_as_no_command_rejection(self):
+        raw = self.static(goal=False)
+        raw['metrics']['motion'] = dict(result=dict(failure_code='unreachable', message='Requested pose is unreachable.'))
+        raw['metrics']['strategy_diagnostics'] = dict(state='ready', global_collision_model='enhanced')
+        raw['metrics']['no_requested_movement_joint_delta_rad'] = 0.
+        row = static_record(self.write('result.json', raw))
+        self.assertEqual(row['diagnostics']['failure_code'], 'unreachable')
+        self.assertEqual(row['rejection_phase'], 'upstream_workspace_gate_before_rrt')
+
+    def test_successful_pairs_require_exact_task_world_state_and_source_matches(self):
+        raw = self.static()
+        enhanced = static_record(self.write('enhanced/result.json', raw))
+        raw['metrics']['configuration']['global_collision_model'] = 'stock'
+        raw['metrics']['strategy_diagnostics']['global_collision_model'] = 'stock'
+        stock = static_record(self.write('stock/result.json', raw))
+        result = paired_performance([stock, enhanced])
+        self.assertEqual(len(result['matched_pairs']), 1)
+        self.assertEqual(result['descriptive_timing']['rrt_seconds']['stock']['count'], 1)
+        enhanced['initial_joint_positions_rad'][0] += .000001
+        result = paired_performance([stock, enhanced])
+        self.assertEqual(result['matched_pairs'], [])
+        self.assertFalse(result['excluded_pairs'][0]['checks']['same_recorded_initial_joints'])
 
     def test_zero_reports_without_independent_clearance_cannot_establish_physical_completion(self):
         raw = self.static(reports=0); raw['metrics']['clearance'] = {}

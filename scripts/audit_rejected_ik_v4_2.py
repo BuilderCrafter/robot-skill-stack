@@ -36,6 +36,11 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def case_label(path):
+    folder = Path(path).resolve().parent
+    return str(folder.relative_to(ROOT/'outputs')) if folder.is_relative_to(ROOT/'outputs') else str(folder)
+
+
 def vector(text):
     value = np.fromstring(text, sep=' ')
     if value.shape != (3,) or not np.isfinite(value).all():
@@ -249,7 +254,7 @@ def audit_case(path, urdf, *, budget):
     diagnostics = metrics.get('strategy_diagnostics', {})
     attempts = diagnostics.get('ik_attempts', [])
     if not attempts:
-        return dict(case=folder.name, candidates=[], classification='NO_RETAINED_IK_ATTEMPTS',
+        return dict(case=case_label(path), candidates=[], classification='NO_RETAINED_IK_ATTEMPTS',
             source_failure=metrics.get('motion'), source_sha256={str(path): digest(path), str(urdf): digest(urdf)},
             limitation='No physical candidate or goal infeasibility is inferred.'), 0
     if snapshot is None or snapshot['meters_per_unit'] != 1.:
@@ -324,7 +329,7 @@ def audit_case(path, urdf, *, budget):
                 classification=classify_candidate(entry.get('status', ''), entry.get('error', ''), relations))
             used += 1
         candidates.append(row)
-    return dict(case=folder.name, candidates=candidates, independent_fk_alignment=checks,
+    return dict(case=case_label(path), candidates=candidates, independent_fk_alignment=checks,
         global_collision_model=diagnostics.get('global_collision_model', 'stock'),
         physical_finger_feedback_source=finger_source,
         measured_finger_positions_m=measured[[names.index(name) for name in NAMES[7:]]].tolist(),
@@ -370,13 +375,13 @@ def audit_actual_case(path, urdf, *, per_phase=3):
         relations = physical_relations(parts, actual, [], exclusions)
         finger = next(row for row in relations if set(row['bodies']) ==
                       {'panda_leftfinger', 'panda_rightfinger'})
-        states.append(dict(case=folder.name, sample=index, phase=sample.get('phase', 'recorded_route'),
+        states.append(dict(case=case_label(path), sample=index, phase=sample.get('phase', 'recorded_route'),
             simulation_time=sample.get('simulation_time'), physics_step=sample.get('physics_step'),
             actual_tcp_pose=sample.get('tcp_pose'),
             measured_joint_positions=sample['joint_feedback']['positions'],
             nonadjacent_pair_queries=len(relations), pairs=relations,
             physical_finger_pair=finger))
-    return dict(case=folder.name, states=states, structural_exclusions=excluded_pairs,
+    return dict(case=case_label(path), states=states, structural_exclusions=excluded_pairs,
         source_sha256={str(source): digest(source) for source in (path, trace_path, geometry_path, urdf)},
         scope='Direct actual body poses and all cooked nonadjacent solid pairs, without consulting Lula flags or PhysX self-contact reports. Physical finger pair is retained separately and is not excluded.')
 

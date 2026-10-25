@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+  "baseline_manifest_sha256": "8bced1588cf926f56322b1e70bb2af606bb6b843de06b07092c8deb11111f956",
+  "baseline_files": 594,
+  "unchanged_baseline_files": 586,
+  "changed_baseline_files": [
+    {
+      "path": "robot_skill_stack/integrations/isaac/config.py",
+      "baseline_sha256": "0751e5a6d53915a91fc35d71d6646bd568536f48352b2748c69a57732c6cc225",
+      "current_sha256": "afedfe1b32bf2b57f75d70eccfc7c27b17f72988e47255d10ab9b5346a0b8f35"
+    },
+    {
+      "path": "robot_skill_stack/integrations/isaac/manipulation/factory.py",
+      "baseline_sha256": "88efca84772f0bb5fc048b35a0f4354c711cf8a35302588190e3318b895b24de",
+      "current_sha256": "8529f14ca412bab2662b00c95272ca83f4ace9ad35d17413f8624c9c6ac1be07"
+    },
+    {
+      "path": "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py",
+      "baseline_sha256": "3fc26fabfddf4886c6963e387d7632752d892dfaa163471b4fabf716f33e60b2",
+      "current_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282"
+    },
+    {
+      "path": "robot_skill_stack/integrations/isaac/manipulation/motion/lula_global.py",
+      "baseline_sha256": "7d23cda580e3bc4cc2077e054942970fc35a2c24e729a898fc47b54680493cfc",
+      "current_sha256": "ec8c5c4b2f9c4b579fd43cf0f6f227ea0ac04a10ac3bf3b8ff2f85c9d5e0a445"
+    },
+    {
+      "path": "tests/unit/test_global_motion_strategy.py",
+      "baseline_sha256": "4fadc18435556f17f3f28b0e044df3653e8d172f396a905d6132dac06a1a20b0",
+      "current_sha256": "8d23987937af1a5191df22ae8ee9c963b04a8fc97d7aacb7b34e2466804ea7f5"
+    },
+    {
+      "path": "tests/unit/test_lula_global.py",
+      "baseline_sha256": "715df23eaf518c4616ae23a46d281e2bb90334f6cda9e2fbfc3f933e06cf08ce",
+      "current_sha256": "ffd66b35e50cfc890c8339f1ab0154d4c098c5d9134da5dbe17087e4abfcc415"
+    },
+    {
+      "path": "tests/unit/test_motion_composition.py",
+      "baseline_sha256": "2af963a0d943c96cc7101fdcf6cb695189a00addec71627c9e76267913c2c92d",
+      "current_sha256": "ed361047333dfa3b09d18aff52ef35c652230a6df56fa687f5a324b67d7644f4"
+    },
+    {
+      "path": "tests/unit/test_motion_config.py",
+      "baseline_sha256": "e53f1e1501b3d01a6117603e11d7b222d1fd42de07c02137b386645c69933dac",
+      "current_sha256": "e76fc873023e53f425c044c004ca1c12b14778131aef5ae1cb880399ecd7ed54"
+    }
+  ],
+  "previous_repository_refs": [
+    {
+      "ref": "feature/collision-aware-manipulation",
+      "initial": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+      "current": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+      "unchanged": true
+    },
+    {
+      "ref": "feature/global-motion-planning",
+      "initial": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+      "current": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+      "unchanged": true
+    },
+    {
+      "ref": "feature/global-motion-planning-v4-1",
+      "initial": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+      "current": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+      "unchanged": true
+    },
+    {
+      "ref": "feature/motion-planning",
+      "initial": "39780c2a9725be5fbaa7fd0e937ced3922b52d79",
+      "current": "39780c2a9725be5fbaa7fd0e937ced3922b52d79",
+      "unchanged": true
+    },
+    {
+      "ref": "main",
+      "initial": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+      "current": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/multiview-variable-camera-count",
+      "initial": "00dcd14a2f6ec0e7da17b1308f7d994bebe80c5e",
+      "current": "00dcd14a2f6ec0e7da17b1308f7d994bebe80c5e",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-2-pruning",
+      "initial": "22114ac7c3757a62c1760c1d62bdd552fe03a825",
+      "current": "22114ac7c3757a62c1760c1d62bdd552fe03a825",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-3a-execution",
+      "initial": "68383ef3c493707e28f889d4becb63dd03bc533d",
+      "current": "68383ef3c493707e28f889d4becb63dd03bc533d",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-3b-held-state",
+      "initial": "30e74200d0565c0a2ab99d58cc432c6ae9d46de9",
+      "current": "30e74200d0565c0a2ab99d58cc432c6ae9d46de9",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-4a-world-model",
+      "initial": "9ac2e0402260f4a237424b80772c70a4de66219d",
+      "current": "9ac2e0402260f4a237424b80772c70a4de66219d",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-4b-config-adapters-ui",
+      "initial": "a8fe32cbe4e8b0e702038377ed21b1b099ef96f4",
+      "current": "a8fe32cbe4e8b0e702038377ed21b1b099ef96f4",
+      "unchanged": true
+    },
+    {
+      "ref": "refactor/phase-4c-final-cleanup",
+      "initial": "8b3973df7a29f62a310e4e30ba87701cc70caf59",
+      "current": "8b3973df7a29f62a310e4e30ba87701cc70caf59",
+      "unchanged": true
+    },
+    {
+      "ref": "research/camera-observability-feasibility",
+      "initial": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "current": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "unchanged": true
+    },
+    {
+      "ref": "research/multiview-final-perception",
+      "initial": "82d952c5cd881511a59f249135717801107c5aed",
+      "current": "82d952c5cd881511a59f249135717801107c5aed",
+      "unchanged": true
+    },
+    {
+      "ref": "research/multiview-geometric-observability",
+      "initial": "e91208b60648b9c577ca0f740519eca2a44ec045",
+      "current": "e91208b60648b9c577ca0f740519eca2a44ec045",
+      "unchanged": true
+    },
+    {
+      "ref": "research/multiview-manipulation-readiness",
+      "initial": "e4266a5653b2c7bba65f2eab7260a231227eb9b2",
+      "current": "e4266a5653b2c7bba65f2eab7260a231227eb9b2",
+      "unchanged": true
+    },
+    {
+      "ref": "research/multiview-rgbd-fusion",
+      "initial": "42e3258ac5a5c79bba766262357e77f80d158c14",
+      "current": "42e3258ac5a5c79bba766262357e77f80d158c14",
+      "unchanged": true
+    },
+    {
+      "ref": "research/multiview-robustness-performance",
+      "initial": "18c234bf44d74197698792d189b5557b5eff3adc",
+      "current": "18c234bf44d74197698792d189b5557b5eff3adc",
+      "unchanged": true
+    },
+    {
+      "ref": "research/obstacle-representation-v3",
+      "initial": "4f64b356013aea6de887adf5986ec400c77affa0",
+      "current": "4f64b356013aea6de887adf5986ec400c77affa0",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/chore/phase-3a-cleanup",
+      "initial": "b00685dc856961355fb671347139abe8ea1eaab8",
+      "current": "b00685dc856961355fb671347139abe8ea1eaab8",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/feature/collision-aware-manipulation",
+      "initial": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+      "current": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/feature/global-motion-planning",
+      "initial": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+      "current": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/feature/global-motion-planning-v4-1",
+      "initial": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+      "current": "5ce1b7053d2fd94cd1ed62b93384d3979abed33c",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/feature/motion-planning",
+      "initial": "8e56b163650b66e940eb39a2ab8f5684bbd08c10",
+      "current": "8e56b163650b66e940eb39a2ab8f5684bbd08c10",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/main",
+      "initial": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+      "current": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/multiview-variable-camera-count",
+      "initial": "00dcd14a2f6ec0e7da17b1308f7d994bebe80c5e",
+      "current": "00dcd14a2f6ec0e7da17b1308f7d994bebe80c5e",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-1-baseline",
+      "initial": "0f735c5baa3a72dfc297eaedeca9d77226794a24",
+      "current": "0f735c5baa3a72dfc297eaedeca9d77226794a24",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-2-pruning",
+      "initial": "22114ac7c3757a62c1760c1d62bdd552fe03a825",
+      "current": "22114ac7c3757a62c1760c1d62bdd552fe03a825",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-3a-execution",
+      "initial": "66e3ee754d5de5216bffa18fa74c4bfdb9ead771",
+      "current": "66e3ee754d5de5216bffa18fa74c4bfdb9ead771",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-3b-held-state",
+      "initial": "30e74200d0565c0a2ab99d58cc432c6ae9d46de9",
+      "current": "30e74200d0565c0a2ab99d58cc432c6ae9d46de9",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-4a-world-model",
+      "initial": "f87b00833e40661782e8187113a6ec259cfdbb42",
+      "current": "f87b00833e40661782e8187113a6ec259cfdbb42",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-4b-config-adapters-ui",
+      "initial": "a8fe32cbe4e8b0e702038377ed21b1b099ef96f4",
+      "current": "a8fe32cbe4e8b0e702038377ed21b1b099ef96f4",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/refactor/phase-4c-final-cleanup",
+      "initial": "8b3973df7a29f62a310e4e30ba87701cc70caf59",
+      "current": "8b3973df7a29f62a310e4e30ba87701cc70caf59",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/camera-observability-feasibility",
+      "initial": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "current": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/multiview-final-perception",
+      "initial": "82d952c5cd881511a59f249135717801107c5aed",
+      "current": "82d952c5cd881511a59f249135717801107c5aed",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/multiview-geometric-observability",
+      "initial": "e91208b60648b9c577ca0f740519eca2a44ec045",
+      "current": "e91208b60648b9c577ca0f740519eca2a44ec045",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/multiview-manipulation-readiness",
+      "initial": "e4266a5653b2c7bba65f2eab7260a231227eb9b2",
+      "current": "e4266a5653b2c7bba65f2eab7260a231227eb9b2",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/multiview-rgbd-fusion",
+      "initial": "881b3d34b4c0042aeeff6455b9f028c09f31f723",
+      "current": "881b3d34b4c0042aeeff6455b9f028c09f31f723",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/multiview-robustness-performance",
+      "initial": "18c234bf44d74197698792d189b5557b5eff3adc",
+      "current": "18c234bf44d74197698792d189b5557b5eff3adc",
+      "unchanged": true
+    },
+    {
+      "ref": "origin/research/obstacle-representation-v3",
+      "initial": "4f64b356013aea6de887adf5986ec400c77affa0",
+      "current": "4f64b356013aea6de887adf5986ec400c77affa0",
+      "unchanged": true
+    },
+    {
+      "ref": "archive/perception-v2-pre-phase-2",
+      "initial": "a44a8347aeeac7fbdf7b167182d2a761b2601503",
+      "current": "a44a8347aeeac7fbdf7b167182d2a761b2601503",
+      "unchanged": true
+    }
+  ],
+  "all_previous_repository_refs_preserved": true,
+  "preexisting_untracked_models_preserved": true,
+  "global_solver_unchanged": true,
+  "raw_outputs_ignored": true,
+  "scope": "Repository inputs and historical refs; unrelated untracked model contents are not read or published."
+}

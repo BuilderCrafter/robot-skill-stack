@@ -1,0 +1,1036 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "scripts/summarize_global_validation_v4_2.py",
+    "sha256": "e956815f0dbb50fe43e873ded8f8d986b25e09e1ce35e8d20c90b09f32a27015"
+  },
+  "input_root": "outputs/motion-planning-v4-2",
+  "meaning": "Evidence inventory only. Missing/failed attempts are retained. A planner rejection does not establish physical infeasibility; zero contact reports alone do not establish geometric clearance.",
+  "attempts": [
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/regression/direct/result.json",
+        "sha256": "17ef860c27849a7d54d218544c43b9b3d2016bc9dca9f7530376a8a5b5fc023e"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/regression/direct/launch.json",
+        "sha256": "ada11749b7b52d59e44dbae19ac8bd3cdadc48b94990eeeb736fc7a9fe1cb70d"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/regression/direct/driver_result.json",
+        "sha256": "d37e18d544d551c536c05d0bd7c059151f40880e5ee98e4c51f9dbb92d7cdceb"
+      },
+      "declared_label": "regression/direct",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 29.914627850987017,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "c0540745ba5f576cf8e616c694c23b669af32f4a6783f0bb6ada4c0725a10053",
+      "regression_passed": true,
+      "checks": {
+        "checks": {
+          "explicit_direct_selected": true,
+          "mapping_provider_resolves_current_service": true,
+          "pick_succeeded": true,
+          "actual_lift": true,
+          "held_identity": true,
+          "ordinary_held_home_succeeded": true,
+          "place_succeeded": true,
+          "release_cleared_held": true,
+          "placed_identity_reacquired": true,
+          "unsupported_frame_and_ik_rejected_without_actions": true,
+          "competing_motion_rejected_without_actions": true,
+          "cancellation_propagated": true,
+          "cancelled_motion_applied_final_hold": true,
+          "cancelled_motion_released_ownership": true,
+          "home_after_cancellation_succeeded": true,
+          "ordinary_released_home_succeeded": true,
+          "all_requested_steps_completed": true,
+          "final_service_closed": true,
+          "all_executed_motions_applied_final_hold": true,
+          "held_motion_grasp_checks_preserved": true,
+          "normal_home_routed_through_strategy": true,
+          "source_and_saved_scenes_unchanged": true
+        }
+      },
+      "groups": {},
+      "metrics": {
+        "pick": {
+          "result": {
+            "status": "success",
+            "message": "Picked 'multiview_1'.",
+            "failure_code": null,
+            "details": {
+              "visual_lift_distance_m": null,
+              "object_visible_after_lift": false,
+              "local_replans": 0,
+              "movement_threshold_m": 0.02,
+              "grasp_planner_details": {
+                "object_bottom_z_m": 0.0,
+                "object_top_z_m": 0.05000154643103917,
+                "object_height_m": 0.05000154643103917,
+                "grasp_tcp_z_m": 0.02500154643103917,
+                "palm_clearance_m": 0.0049999999999999975,
+                "fingertip_z_m": 0.013001546431039169,
+                "support_clearance_m": 0.013001546431039169,
+                "strategy": "cube",
+                "required_width_m": 0.05000261641029106,
+                "gripper_max_width_m": 0.075,
+                "open_aperture_m": 0.08,
+                "clearance_m": 0.005,
+                "wrist_yaw_rad": -1.9377047211159066e-18,
+                "grasp_height_shift_m": 7.732155195838697e-07,
+                "support_check": true,
+                "axial_contact_span_m": 0.024,
+                "obstacle_check": "known_object_swept_envelopes",
+                "feasibility_checked": true,
+                "orientation_change_rad": 0.6015632598190308,
+                "attachment_reference": "pre-close measured TCP / planned object center"
+              },
+              "grasp_at_contact": {
+                "estimated_width_m": 0.05002417415380478,
+                "minimum_grasp_width_m": 0.005,
+                "maximum_grasp_width_m": 0.075,
+                "grasp_state": "held"
+              },
+              "grasp_after_lift": {
+                "estimated_width_m": 0.050021931529045105,
+                "minimum_grasp_width_m": 0.005,
+                "maximum_grasp_width_m": 0.075,
+                "grasp_state": "held"
+              }
+            }
+          },
+          "seconds": 3.9079037457704544,
+          "state": {
+            "runtime": {
+              "state": "running",
+              "generation": 0,
+              "error": null,
+              "semantic": {
+                "attempts": 23,
+                "published": 23,
+                "no_frame": 0,
+                "rejected": 0,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "last": {
+                  "timestamp": 3321572.882705222,
+                  "input_timestamp": 3321572.882705222,
+                  "completed_at": 3321572.907096257,
+                  "worker_seconds": 0.01830851985141635,
+                  "queue_seconds": 3.6257319152355194e-05,
+                  "compute_seconds": 0.012840821873396635,
+                  "transport_seconds": 0.005467697978019714,
+                  "publish_age_seconds": 0.03358418820425868,
+                  "status": "published"
+                },
+                "worker": {
+                  "submitted": 23,
+                  "started": 23,
+                  "completed": 23,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 23,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49021,
+                  "transport_error": null
+                }
+              },
+              "mapping": {
+                "status": "ok",
+                "reason": null,
+                "last_error": null,
+                "age_seconds": 0.5665335291996598,
+                "stale": false,
+                "fresh": true,
+                "timestamp": 3321572.492587904,
+                "submitted": 9,
+                "published": 9,
+                "rejected": 0,
+                "failures": 0,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "processing_failures": 0,
+                "resets": 0,
+                "generation": 0,
+                "closed": false,
+                "worker": {
+                  "submitted": 9,
+                  "started": 9,
+                  "completed": 9,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 9,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49022,
+                  "transport_error": null
+                },
+                "worker_seconds": 0.1704144859686494,
+                "queue_seconds": 0.0011216439306735992,
+                "completed_at": 3321572.670454622,
+                "worker_to_publication_seconds": 0.010799943003803492,
+                "input_timestamp": 3321572.492587904,
+                "publish_age_seconds": 0.1886666608043015,
+                "filter_seconds": 0.01692706113681197,
+                "compute_seconds": 0.10000500921159983,
+                "transport_seconds": 0.07040947675704956,
+                "completion_status": "published",
+                "last": {
+                  "worker_seconds": 0.1704144859686494,
+                  "queue_seconds": 0.0011216439306735992,
+                  "completed_at": 3321572.670454622,
+                  "worker_to_publication_seconds": 0.010799943003803492,
+                  "timestamp": 3321572.492587904,
+                  "input_timestamp": 3321572.492587904,
+                  "status": "published",
+                  "publish_age_seconds": 0.1886666608043015,
+                  "filter_seconds": 0.01692706113681197,
+                  "compute_seconds": 0.10000500921159983,
+                  "transport_seconds": 0.07040947675704956
+                }
+              },
+              "cameras": {
+                "acquisitions": 46,
+                "shared_reads": 18,
+                "failures": 0,
+                "consumers": {
+                  "semantic": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  },
+                  "mapping": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  }
+                }
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.566714296117425,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3321572.492587904,
+              "submitted": 9,
+              "published": 9,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 9,
+                "started": 9,
+                "completed": 9,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 9,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 49022,
+                "transport_error": null
+              },
+              "worker_seconds": 0.1704144859686494,
+              "queue_seconds": 0.0011216439306735992,
+              "completed_at": 3321572.670454622,
+              "worker_to_publication_seconds": 0.010799943003803492,
+              "input_timestamp": 3321572.492587904,
+              "publish_age_seconds": 0.1886666608043015,
+              "filter_seconds": 0.01692706113681197,
+              "compute_seconds": 0.10000500921159983,
+              "transport_seconds": 0.07040947675704956,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.1704144859686494,
+                "queue_seconds": 0.0011216439306735992,
+                "completed_at": 3321572.670454622,
+                "worker_to_publication_seconds": 0.010799943003803492,
+                "timestamp": 3321572.492587904,
+                "input_timestamp": 3321572.492587904,
+                "status": "published",
+                "publish_age_seconds": 0.1886666608043015,
+                "filter_seconds": 0.01692706113681197,
+                "compute_seconds": 0.10000500921159983,
+                "transport_seconds": 0.07040947675704956
+              }
+            },
+            "semantic_status": "fresh",
+            "semantic_timestamp": 3321572.882705222,
+            "held": "multiview_1",
+            "held_uncertain": false
+          }
+        },
+        "place": {
+          "result": {
+            "status": "success",
+            "message": "Placed 'multiview_1'.",
+            "failure_code": null,
+            "details": {
+              "object_id": "multiview_1",
+              "release_confirmed": true,
+              "placement_verified": true,
+              "retreat_ok": true,
+              "retreat_message": "End effector reached target pose.",
+              "retreat_details": {
+                "steps": 40,
+                "position_error_m": 0.01952125423954019,
+                "orientation_error_rad": 0.010146364813372265,
+                "position_tolerance_m": 0.02,
+                "orientation_tolerance_rad": 0.1
+              },
+              "placement_planner_details": {
+                "object_id": "multiview_1",
+                "clearance_m": 0.005,
+                "feasibility_checked": true,
+                "strategy": "simple_aabb"
+              },
+              "visible": true,
+              "placement_error_m": 0.021173888443104475
+            }
+          },
+          "seconds": 3.860130009241402,
+          "state": {
+            "runtime": {
+              "state": "running",
+              "generation": 0,
+              "error": null,
+              "semantic": {
+                "attempts": 48,
+                "published": 47,
+                "no_frame": 0,
+                "rejected": 1,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "last": {
+                  "timestamp": 3321577.890853861,
+                  "input_timestamp": 3321577.890853861,
+                  "completed_at": 3321577.961415814,
+                  "worker_seconds": 0.06494876276701689,
+                  "queue_seconds": 3.8872938603162766e-05,
+                  "compute_seconds": 0.05965061206370592,
+                  "transport_seconds": 0.0052981507033109665,
+                  "publish_age_seconds": 0.07426169002428651,
+                  "status": "published"
+                },
+                "worker": {
+                  "submitted": 48,
+                  "started": 48,
+                  "completed": 48,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 48,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49021,
+                  "transport_error": null
+                }
+              },
+              "mapping": {
+                "status": "ok",
+                "reason": null,
+                "last_error": null,
+                "age_seconds": 0.5178304291330278,
+                "stale": false,
+                "fresh": true,
+                "timestamp": 3321577.492043852,
+                "submitted": 19,
+                "published": 19,
+                "rejected": 0,
+                "failures": 0,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "processing_failures": 0,
+                "resets": 0,
+                "generation": 0,
+                "closed": false,
+                "worker": {
+                  "submitted": 19,
+                  "started": 19,
+                  "completed": 19,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 19,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49022,
+                  "transport_error": null
+                },
+                "worker_seconds": 0.1976962899789214,
+                "queue_seconds": 0.001895778812468052,
+                "completed_at": 3321577.698156965,
+                "worker_to_publication_seconds": 0.007201915141195059,
+                "input_timestamp": 3321577.492043852,
+                "publish_age_seconds": 0.213315028231591,
+                "filter_seconds": 0.01611547591164708,
+                "compute_seconds": 0.09914442291483283,
+                "transport_seconds": 0.09855186706408858,
+                "completion_status": "published",
+                "last": {
+                  "worker_seconds": 0.1976962899789214,
+                  "queue_seconds": 0.001895778812468052,
+                  "completed_at": 3321577.698156965,
+                  "worker_to_publication_seconds": 0.007201915141195059,
+                  "timestamp": 3321577.492043852,
+                  "input_timestamp": 3321577.492043852,
+                  "status": "published",
+                  "publish_age_seconds": 0.213315028231591,
+                  "filter_seconds": 0.01611547591164708,
+                  "compute_seconds": 0.09914442291483283,
+                  "transport_seconds": 0.09855186706408858
+                }
+              },
+              "cameras": {
+                "acquisitions": 96,
+                "shared_reads": 38,
+                "failures": 0,
+                "consumers": {
+                  "semantic": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  },
+                  "mapping": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  }
+                }
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.5180322462692857,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3321577.492043852,
+              "submitted": 19,
+              "published": 19,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 19,
+                "started": 19,
+                "completed": 19,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 19,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 49022,
+                "transport_error": null
+              },
+              "worker_seconds": 0.1976962899789214,
+              "queue_seconds": 0.001895778812468052,
+              "completed_at": 3321577.698156965,
+              "worker_to_publication_seconds": 0.007201915141195059,
+              "input_timestamp": 3321577.492043852,
+              "publish_age_seconds": 0.213315028231591,
+              "filter_seconds": 0.01611547591164708,
+              "compute_seconds": 0.09914442291483283,
+              "transport_seconds": 0.09855186706408858,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.1976962899789214,
+                "queue_seconds": 0.001895778812468052,
+                "completed_at": 3321577.698156965,
+                "worker_to_publication_seconds": 0.007201915141195059,
+                "timestamp": 3321577.492043852,
+                "input_timestamp": 3321577.492043852,
+                "status": "published",
+                "publish_age_seconds": 0.213315028231591,
+                "filter_seconds": 0.01611547591164708,
+                "compute_seconds": 0.09914442291483283,
+                "transport_seconds": 0.09855186706408858
+              }
+            },
+            "semantic_status": "fresh",
+            "semantic_timestamp": 3321577.890853861,
+            "held": null,
+            "held_uncertain": false
+          },
+          "actual_target_error_mm": 21.173848769418836
+        },
+        "motion_strategy": {
+          "startup_home": {
+            "frame": "world"
+          },
+          "after_cancellation": {
+            "runtime": {
+              "state": "running",
+              "generation": 0,
+              "error": null,
+              "semantic": {
+                "attempts": 55,
+                "published": 54,
+                "no_frame": 0,
+                "rejected": 1,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "last": {
+                  "timestamp": 3321579.286144105,
+                  "input_timestamp": 3321579.286144105,
+                  "completed_at": 3321579.339778556,
+                  "worker_seconds": 0.047552525997161865,
+                  "queue_seconds": 3.630807623267174e-05,
+                  "compute_seconds": 0.041948563884943724,
+                  "transport_seconds": 0.0056039621122181416,
+                  "publish_age_seconds": 0.054575938265770674,
+                  "status": "published"
+                },
+                "worker": {
+                  "submitted": 55,
+                  "started": 55,
+                  "completed": 55,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 55,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49021,
+                  "transport_error": null
+                }
+              },
+              "mapping": {
+                "status": "ok",
+                "reason": null,
+                "last_error": null,
+                "age_seconds": 0.3605593699030578,
+                "stale": false,
+                "fresh": true,
+                "timestamp": 3321579.085824828,
+                "submitted": 22,
+                "published": 22,
+                "rejected": 0,
+                "failures": 0,
+                "source_failures": 0,
+                "worker_failures": 0,
+                "processing_failures": 0,
+                "resets": 0,
+                "generation": 0,
+                "closed": false,
+                "worker": {
+                  "submitted": 22,
+                  "started": 22,
+                  "completed": 22,
+                  "replaced": 0,
+                  "discarded": 0,
+                  "errors": 0,
+                  "delivered": 22,
+                  "running": false,
+                  "pending": false,
+                  "result_ready": false,
+                  "closed": false,
+                  "epoch": 0,
+                  "execution": "process",
+                  "pid": 49022,
+                  "transport_error": null
+                },
+                "worker_seconds": 0.17613504687324166,
+                "queue_seconds": 0.001388251781463623,
+                "completed_at": 3321579.270170063,
+                "worker_to_publication_seconds": 0.006282399408519268,
+                "input_timestamp": 3321579.085824828,
+                "publish_age_seconds": 0.19062763405963778,
+                "filter_seconds": 0.017888836096972227,
+                "compute_seconds": 0.10257240291684866,
+                "transport_seconds": 0.073562643956393,
+                "completion_status": "published",
+                "last": {
+                  "worker_seconds": 0.17613504687324166,
+                  "queue_seconds": 0.001388251781463623,
+                  "completed_at": 3321579.270170063,
+                  "worker_to_publication_seconds": 0.006282399408519268,
+                  "timestamp": 3321579.085824828,
+                  "input_timestamp": 3321579.085824828,
+                  "status": "published",
+                  "publish_age_seconds": 0.19062763405963778,
+                  "filter_seconds": 0.017888836096972227,
+                  "compute_seconds": 0.10257240291684866,
+                  "transport_seconds": 0.073562643956393
+                }
+              },
+              "cameras": {
+                "acquisitions": 110,
+                "shared_reads": 44,
+                "failures": 0,
+                "consumers": {
+                  "semantic": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  },
+                  "mapping": {
+                    "state": "synchronized",
+                    "tokens": {},
+                    "skew_seconds": 0.0
+                  }
+                }
+              }
+            },
+            "mapping": {
+              "status": "ok",
+              "reason": null,
+              "last_error": null,
+              "age_seconds": 0.3607242377474904,
+              "stale": false,
+              "fresh": true,
+              "timestamp": 3321579.085824828,
+              "submitted": 22,
+              "published": 22,
+              "rejected": 0,
+              "failures": 0,
+              "source_failures": 0,
+              "worker_failures": 0,
+              "processing_failures": 0,
+              "resets": 0,
+              "generation": 0,
+              "closed": false,
+              "worker": {
+                "submitted": 22,
+                "started": 22,
+                "completed": 22,
+                "replaced": 0,
+                "discarded": 0,
+                "errors": 0,
+                "delivered": 22,
+                "running": false,
+                "pending": false,
+                "result_ready": false,
+                "closed": false,
+                "epoch": 0,
+                "execution": "process",
+                "pid": 49022,
+                "transport_error": null
+              },
+              "worker_seconds": 0.17613504687324166,
+              "queue_seconds": 0.001388251781463623,
+              "completed_at": 3321579.270170063,
+              "worker_to_publication_seconds": 0.006282399408519268,
+              "input_timestamp": 3321579.085824828,
+              "publish_age_seconds": 0.19062763405963778,
+              "filter_seconds": 0.017888836096972227,
+              "compute_seconds": 0.10257240291684866,
+              "transport_seconds": 0.073562643956393,
+              "completion_status": "published",
+              "last": {
+                "worker_seconds": 0.17613504687324166,
+                "queue_seconds": 0.001388251781463623,
+                "completed_at": 3321579.270170063,
+                "worker_to_publication_seconds": 0.006282399408519268,
+                "timestamp": 3321579.085824828,
+                "input_timestamp": 3321579.085824828,
+                "status": "published",
+                "publish_age_seconds": 0.19062763405963778,
+                "filter_seconds": 0.017888836096972227,
+                "compute_seconds": 0.10257240291684866,
+                "transport_seconds": 0.073562643956393
+              }
+            },
+            "semantic_status": "fresh",
+            "semantic_timestamp": 3321579.286144105,
+            "held": null,
+            "held_uncertain": false
+          },
+          "arm_action_count": 875,
+          "control_interval_ms": {
+            "count": 655,
+            "p50": 10.375660378485918,
+            "p95": 19.621492410078627,
+            "p99": 28.486234741285443,
+            "worst": 38.384138606488705
+          }
+        }
+      }
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/regression/reactive/result.json",
+        "sha256": "12273027c4dc348baa7790b72d6c21df24edeed8b296aa47fd00081f71e20c92"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/regression/reactive/launch.json",
+        "sha256": "3ce422128f39fc43b8cfc35b00f0b26c91055d88990b387ae60f11eb73a84773"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/regression/reactive/driver_result.json",
+        "sha256": "d17d8d08ccddd2b4c6ae4614579bc25e04c1d29898b049001b6efe2c6c706c3c"
+      },
+      "declared_label": "regression/reactive",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 33.772026259917766,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "4c44b2e96d09f1c3b087caa52278d18cafc2bab5f665759a2579fb63e7b03876",
+      "regression_passed": true,
+      "checks": {
+        "native_acceptance": {
+          "valid_measurement": true,
+          "ordinary_move_reached_without_contact": true,
+          "ordinary_home_succeeded": true,
+          "lifecycle_complete": true,
+          "lifecycle_all_checks_pass": true
+        },
+        "contracts": {
+          "source_unchanged": true,
+          "ordinary_async_motion": true,
+          "numeric_proxies_did_not_add_scene_prims": true,
+          "mapping_closed": true,
+          "physical_reference_captured": true,
+          "cooking_did_not_add_scene_prims": true,
+          "contact_buffer_not_saturated": true
+        }
+      },
+      "groups": {},
+      "metrics": {
+        "home": {
+          "status": "success",
+          "message": "Robot reached named pose 'home'.",
+          "failure_code": null,
+          "details": {
+            "map_generation": 0,
+            "map_revision": 23,
+            "map_timestamp": 3321626.110761022,
+            "map_age_seconds": 0.5434819487854838,
+            "motion_strategy": "reactive",
+            "steps": 110,
+            "position_error_m": 0.02382309872252774,
+            "orientation_error_rad": 0.010680995379889011,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "pose_name": "home"
+          }
+        },
+        "lifecycle": {
+          "checks": {
+            "pick_place_explicitly_unsupported_without_actuation": true,
+            "competing_motion_rejected_without_action": true,
+            "cancelled_error_propagated": true,
+            "cancellation_final_hold_and_owner_release": true,
+            "cancellation_recovery_home": true,
+            "source_failure_stopped_with_hold": true,
+            "source_failure_recovery_home": true,
+            "map_reset_stopped_with_hold": true,
+            "map_reset_recovery_home": true,
+            "new_generation_observed_after_reset": true,
+            "worker_failure_stopped_with_hold": true,
+            "worker_failure_recovery_home": true,
+            "stop_did_not_continue_motion": true,
+            "play_map_advanced_generation": true,
+            "invalid_sdk_after_play_rejected_explicitly": true,
+            "clean_reinit_has_distinct_strategy_and_service": true,
+            "old_registry_and_source_closed_after_reinit": true,
+            "clean_reinitialization_recovery_home": true,
+            "new_runtime_uses_own_mapping_generation": true,
+            "shutdown_stopped_motion_with_hold": true,
+            "shutdown_closed_registry_without_proxies": true,
+            "shutdown_no_late_mapping_publication": true,
+            "all_lifecycle_steps_completed": true
+          }
+        },
+        "contacts": {
+          "frames": 0,
+          "initial_reported_points": 0,
+          "reported_points": 0,
+          "penetrating_pairs": 0,
+          "minimum_reported_separation_m": null,
+          "maximum_pair_impulse": 0.0,
+          "buffer_saturated": false
+        },
+        "avoidance_success": true
+      }
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/units-final/run-wk_t6lw3/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/units-final/run-wk_t6lw3/launch.json",
+        "sha256": null
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/units-final/run-wk_t6lw3/driver_result.json",
+        "sha256": null
+      },
+      "declared_label": null,
+      "measurement_status": "PASS",
+      "driver": {},
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": null,
+      "regression_passed": true,
+      "checks": {},
+      "groups": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "metrics": {}
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/units-pre-native/run-ul0rd2l7/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/units-pre-native/run-ul0rd2l7/launch.json",
+        "sha256": null
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/units-pre-native/run-ul0rd2l7/driver_result.json",
+        "sha256": null
+      },
+      "declared_label": null,
+      "measurement_status": "PASS",
+      "driver": {},
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": null,
+      "regression_passed": true,
+      "checks": {},
+      "groups": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "metrics": {}
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/units-publish/run-f1oxros_/summary.json",
+        "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/units-publish/run-f1oxros_/launch.json",
+        "sha256": null
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/units-publish/run-f1oxros_/driver_result.json",
+        "sha256": null
+      },
+      "declared_label": null,
+      "measurement_status": "PASS",
+      "driver": {},
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": null,
+      "regression_passed": true,
+      "checks": {},
+      "groups": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      },
+      "metrics": {}
+    }
+  ]
+}

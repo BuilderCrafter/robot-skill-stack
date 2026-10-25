@@ -1,0 +1,3187 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "scripts/summarize_global_validation_v4_2.py",
+    "sha256": "e956815f0dbb50fe43e873ded8f8d986b25e09e1ce35e8d20c90b09f32a27015"
+  },
+  "input_root": "outputs/motion-planning-v4-2",
+  "meaning": "Evidence inventory only. Missing/failed attempts are retained. A planner rejection does not establish physical infeasibility; zero contact reports alone do not establish geometric clearance.",
+  "attempts": [
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456/result.json",
+        "sha256": "900a399873d43339ac35ee8863bb264dc192d5a4a8f5a85c5868deab709c7d5a"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "blocked",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.002518711145967245,
+        "world_update_seconds": 0.0002657463774085045,
+        "ik_seconds": 0.0003240751102566719,
+        "rrt_seconds": 0.0,
+        "route_validation_seconds": 0.0,
+        "trajectory_generation_seconds": 0.0,
+        "trajectory_validation_seconds": 0.0,
+        "planning_and_validation_wall_seconds": 0.007596326991915703,
+        "configuration_validation_calls": 5.0,
+        "configuration_validation_wall_seconds": 0.00017107930034399033,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": null,
+        "trajectory_duration": null,
+        "execution_wall_seconds": null,
+        "execution_sim_seconds": null
+      },
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "controller_wait_ms": {
+        "count": 0
+      },
+      "joint_tracking_error_rad": null,
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4648075264,
+          "process_maximum_rss_bytes": 4645498880,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4801871872,
+          "process_maximum_rss_bytes": 4799684608,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4802195456,
+          "process_maximum_rss_bytes": 4799946752,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 3.4215860068798065e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456/result.json",
+        "sha256": "b72ccfe40e9180540885672b47f41d531dd8351ccc5d7f1a3197e6ff8b23b312"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "empty",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0020476398058235645,
+        "world_update_seconds": 0.00023852474987506866,
+        "ik_seconds": 8.730310946702957e-05,
+        "rrt_seconds": 0.00034807901829481125,
+        "route_validation_seconds": 0.013485590927302837,
+        "trajectory_generation_seconds": 8.924584835767746e-05,
+        "trajectory_validation_seconds": 0.04763412335887551,
+        "planning_and_validation_wall_seconds": 0.07095669908449054,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.047500097658485174,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.42816984187811613,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 5.876465240320147,
+        "p50": 4.8742895014584064,
+        "p95": 5.98738354165107,
+        "p99": 18.148162029684034,
+        "worst": 84.64301377534866
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.2645203512768415,
+        "p50": 4.148971056565642,
+        "p95": 5.518904654309154,
+        "p99": 5.9001649264246225,
+        "worst": 5.953226704150438
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4641636352,
+          "process_maximum_rss_bytes": 4639502336,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4788916224,
+          "process_maximum_rss_bytes": 4786511872,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4792139776,
+          "process_maximum_rss_bytes": 4790837248,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.0001230572478199098
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json",
+        "sha256": "b8b439c4bfc1bf683bf1b45a5422f980993d623aa1c9c82fa680206a903cbde0"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "large",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0022278577089309692,
+        "world_update_seconds": 0.0002745622768998146,
+        "ik_seconds": 0.0001832009293138981,
+        "rrt_seconds": 0.004324398934841156,
+        "route_validation_seconds": 0.07478317804634571,
+        "trajectory_generation_seconds": 9.575905278325081e-05,
+        "trajectory_validation_seconds": 0.09855665173381567,
+        "planning_and_validation_wall_seconds": 0.18784714303910732,
+        "configuration_validation_calls": 1222.0,
+        "configuration_validation_wall_seconds": 0.14379866141825914,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 2.2267083227705338,
+        "trajectory_duration": 2.2267083227705338,
+        "execution_wall_seconds": 0.8011422492563725,
+        "execution_sim_seconds": 2.65000013820827
+      },
+      "kit_interval_ms": {
+        "count": 159,
+        "mean": 6.25997796104108,
+        "p50": 4.9351598136126995,
+        "p95": 5.747387651354073,
+        "p99": 6.7478956840932325,
+        "worst": 200.93037793412805
+      },
+      "controller_wait_ms": {
+        "count": 159,
+        "mean": 4.324902408410731,
+        "p50": 4.236596170812845,
+        "p95": 5.106538347899914,
+        "p99": 6.067620310932398,
+        "worst": 6.1606368981301785
+      },
+      "joint_tracking_error_rad": {
+        "count": 160,
+        "p50": 0.020392431948334927,
+        "p95": 0.03340435436686266,
+        "p99": 0.03396676057981762,
+        "worst": 0.03400224751072689
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4629331968,
+          "process_maximum_rss_bytes": 4627234816,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4813533184,
+          "process_maximum_rss_bytes": 4811038720,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4819898368,
+          "process_maximum_rss_bytes": 4818509824,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00011767484567778981
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567/result.json",
+        "sha256": "d6d01c99581d3e43e03a02e5ae0ed789832041e4283c019849347a027ebe81c6"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "large",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.002179055940359831,
+        "world_update_seconds": 0.0002675098367035389,
+        "ik_seconds": 0.0001863064244389534,
+        "rrt_seconds": 0.00409733597189188,
+        "route_validation_seconds": 0.07913808804005384,
+        "trajectory_generation_seconds": 0.00010028714314103127,
+        "trajectory_validation_seconds": 0.14416599413380027,
+        "planning_and_validation_wall_seconds": 0.23714848794043064,
+        "configuration_validation_calls": 1519.0,
+        "configuration_validation_wall_seconds": 0.18091488955542445,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 3.23206040198297,
+        "trajectory_duration": 3.23206040198297,
+        "execution_wall_seconds": 1.091947971843183,
+        "execution_sim_seconds": 3.6833335254341364
+      },
+      "kit_interval_ms": {
+        "count": 221,
+        "mean": 6.044765538219952,
+        "p50": 4.845291841775179,
+        "p95": 5.655212793499231,
+        "p99": 6.5643523819744605,
+        "worst": 250.55759167298675
+      },
+      "controller_wait_ms": {
+        "count": 221,
+        "mean": 4.239400109166608,
+        "p50": 4.18891804292798,
+        "p95": 4.838950000703335,
+        "p99": 5.720421578735113,
+        "worst": 6.119761150330305
+      },
+      "joint_tracking_error_rad": {
+        "count": 222,
+        "p50": 0.025816150721725828,
+        "p95": 0.04134002661091852,
+        "p99": 0.04178584912674104,
+        "worst": 0.0418165957611345
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4641599488,
+          "process_maximum_rss_bytes": 4639354880,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4821270528,
+          "process_maximum_rss_bytes": 4818817024,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4829147136,
+          "process_maximum_rss_bytes": 4827774976,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.0001191013097797396
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678/result.json",
+        "sha256": "ee5904323e217a638920dc9e23f284e387d59bbe95ba97044c5368a00ab19f5a"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "large",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.0021582581102848053,
+        "world_update_seconds": 0.00026159919798374176,
+        "ik_seconds": 8.886586874723434e-05,
+        "rrt_seconds": 0.0030965786427259445,
+        "route_validation_seconds": 0.03053306322544813,
+        "trajectory_generation_seconds": 0.00012663612142205238,
+        "trajectory_validation_seconds": 0.090883350931108,
+        "planning_and_validation_wall_seconds": 0.13416220108047128,
+        "configuration_validation_calls": 808.0,
+        "configuration_validation_wall_seconds": 0.09457494365051389,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 2.0797200316983098,
+        "trajectory_duration": 2.0797200316983098,
+        "execution_wall_seconds": 0.76024139393121,
+        "execution_sim_seconds": 2.5500001329928637
+      },
+      "kit_interval_ms": {
+        "count": 153,
+        "mean": 5.88670177872177,
+        "p50": 4.868336021900177,
+        "p95": 5.465353466570377,
+        "p99": 6.90661987289786,
+        "worst": 147.42325898259878
+      },
+      "controller_wait_ms": {
+        "count": 153,
+        "mean": 4.249219289597343,
+        "p50": 4.170923959463835,
+        "p95": 4.903795477002859,
+        "p99": 5.945923291146755,
+        "worst": 6.025906186550856
+      },
+      "joint_tracking_error_rad": {
+        "count": 154,
+        "p50": 0.01533391325698058,
+        "p95": 0.03228492715138384,
+        "p99": 0.03284677041484521,
+        "worst": 0.03288413328953388
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4628377600,
+          "process_maximum_rss_bytes": 4625661952,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4807671808,
+          "process_maximum_rss_bytes": 4805492736,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4814135296,
+          "process_maximum_rss_bytes": 4812832768,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00011704819758726966
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456/result.json",
+        "sha256": "436e7f2d3ac162e0f7dd44316a121240caf74117d3c052ea869be257e3bc35a8"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "narrow",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.002447647973895073,
+        "world_update_seconds": 0.0002876068465411663,
+        "ik_seconds": 9.107030928134918e-05,
+        "rrt_seconds": 0.0004294309765100479,
+        "route_validation_seconds": 0.014030871912837029,
+        "trajectory_generation_seconds": 9.000813588500023e-05,
+        "trajectory_validation_seconds": 0.04729035496711731,
+        "planning_and_validation_wall_seconds": 0.07135991891846061,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.047822907101362944,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.4288592888042331,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 5.8910588647217255,
+        "p50": 4.841734422370791,
+        "p95": 6.158019183203578,
+        "p99": 18.221984477714145,
+        "worst": 83.96478928625584
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.277926945495744,
+        "p50": 4.186497535556555,
+        "p95": 5.352064152248204,
+        "p99": 5.7547962525859475,
+        "worst": 5.783682223409414
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4641316864,
+          "process_maximum_rss_bytes": 4639080448,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4798525440,
+          "process_maximum_rss_bytes": 4796067840,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4802428928,
+          "process_maximum_rss_bytes": 4801048576,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.0001238935417133755
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567/result.json",
+        "sha256": "4ec9056e744e73465f6cd4461fd4581268bb40c69b54af9c98ed3ba8580429df"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "narrow",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.002493293024599552,
+        "world_update_seconds": 0.00028567295521497726,
+        "ik_seconds": 9.174132719635963e-05,
+        "rrt_seconds": 0.00044808583334088326,
+        "route_validation_seconds": 0.01426653191447258,
+        "trajectory_generation_seconds": 9.201187640428543e-05,
+        "trajectory_validation_seconds": 0.04968527611345053,
+        "planning_and_validation_wall_seconds": 0.07433145679533482,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.04962503397837281,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.4282558336853981,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 5.919745126955731,
+        "p50": 4.851443460211158,
+        "p95": 6.295770988799632,
+        "p99": 18.907359661534887,
+        "worst": 87.46946277096868
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.256313401382676,
+        "p50": 4.150455119088292,
+        "p95": 5.315512418746948,
+        "p99": 5.939491861499847,
+        "worst": 6.124387960880995
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4631298048,
+          "process_maximum_rss_bytes": 4629028864,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4801327104,
+          "process_maximum_rss_bytes": 4799008768,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4804116480,
+          "process_maximum_rss_bytes": 4803858432,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.0001285622641926757
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678/result.json",
+        "sha256": "aa46bd76cc782be71db150c5bcee5ce7aad5da70b3aade1774165e19a9552c14"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "narrow",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.002557162195444107,
+        "world_update_seconds": 0.00027925102040171623,
+        "ik_seconds": 9.170081466436386e-05,
+        "rrt_seconds": 0.0004354817792773247,
+        "route_validation_seconds": 0.013907583430409431,
+        "trajectory_generation_seconds": 8.9205801486969e-05,
+        "trajectory_validation_seconds": 0.04780270531773567,
+        "planning_and_validation_wall_seconds": 0.07201127102598548,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.048059902619570494,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.4385975729674101,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.011586793330173,
+        "p50": 4.975545220077038,
+        "p95": 6.521419272758067,
+        "p99": 18.432162888348547,
+        "worst": 84.76395905017853
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.381756623123968,
+        "p50": 4.24730614759028,
+        "p95": 5.5106335785239935,
+        "p99": 6.004458502866329,
+        "worst": 6.146920379251242
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4657033216,
+          "process_maximum_rss_bytes": 4654587904,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4809723904,
+          "process_maximum_rss_bytes": 4807340032,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4813504512,
+          "process_maximum_rss_bytes": 4812189696,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00012450751973981994
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json",
+        "sha256": "9f62c27ba28bbaa8277018feb0edfc2b3a420eac41d525f6a446f77fba8bdaeb"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "near",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.002327031921595335,
+        "world_update_seconds": 0.00027855904772877693,
+        "ik_seconds": 8.938601240515709e-05,
+        "rrt_seconds": 0.0003419681452214718,
+        "route_validation_seconds": 0.013826236594468355,
+        "trajectory_generation_seconds": 9.123003110289574e-05,
+        "trajectory_validation_seconds": 0.04777991818264127,
+        "planning_and_validation_wall_seconds": 0.07155037997290492,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.04794751945883036,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.4313273848965764,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 5.920989780015377,
+        "p50": 4.9059283919632435,
+        "p95": 6.5044385846704245,
+        "p99": 18.623895081691884,
+        "worst": 84.60714109241962
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.296241382266893,
+        "p50": 4.2015244252979755,
+        "p95": 5.482501350343227,
+        "p99": 5.887729628011585,
+        "worst": 6.029800046235323
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4644777984,
+          "process_maximum_rss_bytes": 4642521088,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4821983232,
+          "process_maximum_rss_bytes": 4819841024,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4824600576,
+          "process_maximum_rss_bytes": 4824035328,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00012421637165500093
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456/result.json",
+        "sha256": "4f09f428a27862643747e823bd6b59556113e7cb436a35be45e51595eaf7d303"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "static",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0023960797116160393,
+        "world_update_seconds": 0.000277017243206501,
+        "ik_seconds": 9.162118658423424e-05,
+        "rrt_seconds": 0.0012615537270903587,
+        "route_validation_seconds": 0.04146583005785942,
+        "trajectory_generation_seconds": 0.00010304339230060577,
+        "trajectory_validation_seconds": 0.09885231498628855,
+        "planning_and_validation_wall_seconds": 0.1514412690885365,
+        "configuration_validation_calls": 925.0,
+        "configuration_validation_wall_seconds": 0.11185345891863108,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 2.2096414822209307,
+        "trajectory_duration": 2.2096414822209307,
+        "execution_wall_seconds": 0.8071183641441166,
+        "execution_sim_seconds": 2.7166668083518744
+      },
+      "kit_interval_ms": {
+        "count": 163,
+        "mean": 5.916896324741877,
+        "p50": 4.871959798038006,
+        "p95": 5.545188020914794,
+        "p99": 6.6017952747642985,
+        "worst": 164.69298489391804
+      },
+      "controller_wait_ms": {
+        "count": 163,
+        "mean": 4.249188714757836,
+        "p50": 4.1565559804439545,
+        "p95": 4.743218794465065,
+        "p99": 5.973702110350132,
+        "worst": 6.015774328261614
+      },
+      "joint_tracking_error_rad": {
+        "count": 164,
+        "p50": 0.021944123646103486,
+        "p95": 0.03979635570111104,
+        "p99": 0.04034945604251466,
+        "worst": 0.04038661950502109
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4619952128,
+          "process_maximum_rss_bytes": 4617560064,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4817068032,
+          "process_maximum_rss_bytes": 4814626816,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4822589440,
+          "process_maximum_rss_bytes": 4821966848,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00012092265829041197
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567/result.json",
+        "sha256": "8d58840928032bcf2f18904f32f48253dac17d6c93b42df8cad81f540b568481"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "static",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.0022571110166609287,
+        "world_update_seconds": 0.00026342179626226425,
+        "ik_seconds": 8.680205792188644e-05,
+        "rrt_seconds": 0.001251355279237032,
+        "route_validation_seconds": 0.026492641773074865,
+        "trajectory_generation_seconds": 9.759189561009407e-05,
+        "trajectory_validation_seconds": 0.07644167402759194,
+        "planning_and_validation_wall_seconds": 0.11368398414924741,
+        "configuration_validation_calls": 686.0,
+        "configuration_validation_wall_seconds": 0.0806503826752305,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.7472941695342739,
+        "trajectory_duration": 1.7472941695342739,
+        "execution_wall_seconds": 0.6968682077713311,
+        "execution_sim_seconds": 2.3333334550261497
+      },
+      "kit_interval_ms": {
+        "count": 140,
+        "mean": 5.835844845777111,
+        "p50": 4.882655572146177,
+        "p95": 5.84524318110197,
+        "p99": 6.864179796539243,
+        "worst": 126.74012640491128
+      },
+      "controller_wait_ms": {
+        "count": 140,
+        "mean": 4.27397013907986,
+        "p50": 4.188069608062506,
+        "p95": 4.843121604062616,
+        "p99": 5.958594433031969,
+        "worst": 6.327567156404257
+      },
+      "joint_tracking_error_rad": {
+        "count": 141,
+        "p50": 0.01449350958507889,
+        "p95": 0.033757562601109514,
+        "p99": 0.03421684167517269,
+        "worst": 0.0342496530330717
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4633354240,
+          "process_maximum_rss_bytes": 4630605824,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4811997184,
+          "process_maximum_rss_bytes": 4809789440,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4817924096,
+          "process_maximum_rss_bytes": 4816998400,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00011756615550325146
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678/result.json",
+        "sha256": "b470fd4f584fbdcb13cb1c83650374829a60332eb2154b4522e70b06e5c446b5"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "static",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.0022309632040560246,
+        "world_update_seconds": 0.00026114797219634056,
+        "ik_seconds": 0.0002022269181907177,
+        "rrt_seconds": 0.0026224437169730663,
+        "route_validation_seconds": 0.04964072769507766,
+        "trajectory_generation_seconds": 0.00010023685172200203,
+        "trajectory_validation_seconds": 0.08306457614526153,
+        "planning_and_validation_wall_seconds": 0.14535963581874967,
+        "configuration_validation_calls": 907.0,
+        "configuration_validation_wall_seconds": 0.10808647656813264,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.863211299330275,
+        "trajectory_duration": 1.863211299330275,
+        "execution_wall_seconds": 0.720025825779885,
+        "execution_sim_seconds": 2.416666792705655
+      },
+      "kit_interval_ms": {
+        "count": 145,
+        "mean": 6.011761204692824,
+        "p50": 4.855620209127665,
+        "p95": 5.70150502026081,
+        "p99": 6.761514525860548,
+        "worst": 158.6608556099236
+      },
+      "controller_wait_ms": {
+        "count": 145,
+        "mean": 4.241302811765466,
+        "p50": 4.146798048168421,
+        "p95": 4.939921945333477,
+        "p99": 5.910749938338995,
+        "worst": 6.0576340183615685
+      },
+      "joint_tracking_error_rad": {
+        "count": 146,
+        "p50": 0.021873198767451564,
+        "p95": 0.03773101881795474,
+        "p99": 0.03850133734449497,
+        "worst": 0.03855357990887309
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4626673664,
+          "process_maximum_rss_bytes": 4624351232,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4814360576,
+          "process_maximum_rss_bytes": 4811829248,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4820410368,
+          "process_maximum_rss_bytes": 4819038208,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 0.00011916921341580225
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456/result.json",
+        "sha256": "37e707d32a55216ce6eddd89b9ea0a68cf61db2599368441f3d9d520c58e4c6f"
+      },
+      "measurement_valid": true,
+      "model": "enhanced",
+      "scenario": "unreachable",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": null,
+        "world_update_seconds": null,
+        "ik_seconds": null,
+        "rrt_seconds": null,
+        "route_validation_seconds": null,
+        "trajectory_generation_seconds": null,
+        "trajectory_validation_seconds": null,
+        "planning_and_validation_wall_seconds": null,
+        "configuration_validation_calls": null,
+        "configuration_validation_wall_seconds": null,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": null,
+        "trajectory_duration": null,
+        "execution_wall_seconds": null,
+        "execution_sim_seconds": null
+      },
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "controller_wait_ms": {
+        "count": 0
+      },
+      "joint_tracking_error_rad": null,
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4632674304,
+          "process_maximum_rss_bytes": 4630421504,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4798377984,
+          "process_maximum_rss_bytes": 4796231680,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4798644224,
+          "process_maximum_rss_bytes": 4796493824,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": null
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456/result.json",
+        "sha256": "0edc160e930a7d1364be25e13478ea8f1b33e5f97f9f50b6df599352fe0071da"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "blocked",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.002195666078478098,
+        "world_update_seconds": 0.011849757749587297,
+        "ik_seconds": 0.00032409513369202614,
+        "rrt_seconds": 0.0,
+        "route_validation_seconds": 0.0,
+        "trajectory_generation_seconds": 0.0,
+        "trajectory_validation_seconds": 0.0,
+        "planning_and_validation_wall_seconds": 0.02835773630067706,
+        "configuration_validation_calls": 5.0,
+        "configuration_validation_wall_seconds": 0.00013042287901043892,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": null,
+        "trajectory_duration": null,
+        "execution_wall_seconds": null,
+        "execution_sim_seconds": null
+      },
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "controller_wait_ms": {
+        "count": 0
+      },
+      "joint_tracking_error_rad": null,
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4637573120,
+          "process_maximum_rss_bytes": 4634951680,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4797169664,
+          "process_maximum_rss_bytes": 4794699776,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4797480960,
+          "process_maximum_rss_bytes": 4795092992,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 2.6084575802087782e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/empty/seed-123456/result.json",
+        "sha256": "ddfd7805350423d7b4e171f9e9926b2c7abecbdc7de549bd30fac194b5c3bb3b"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "empty",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0018840329721570015,
+        "world_update_seconds": 0.011306835804134607,
+        "ik_seconds": 9.061908349394798e-05,
+        "rrt_seconds": 0.011389459948986769,
+        "route_validation_seconds": 0.008305859286338091,
+        "trajectory_generation_seconds": 9.832298383116722e-05,
+        "trajectory_validation_seconds": 0.03372307913377881,
+        "planning_and_validation_wall_seconds": 0.08254710910841823,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.028947200160473585,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.4203735892660916,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.022255689035668,
+        "p50": 4.7683678567409515,
+        "p95": 6.4079000148922205,
+        "p99": 21.536551043391782,
+        "worst": 104.78977812454104
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.233743166984167,
+        "p50": 4.129946464672685,
+        "p95": 5.491720978170633,
+        "p99": 5.912541644647718,
+        "worst": 6.02782191708684
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4654325760,
+          "process_maximum_rss_bytes": 4652027904,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4830351360,
+          "process_maximum_rss_bytes": 4828758016,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4833697792,
+          "process_maximum_rss_bytes": 4832821248,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.499274652972431e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json",
+        "sha256": "4b43f5ec7381eb4619dc13242056b3bfc5a3fb1a63c5b517fa5ba7894f958069"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "large",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0022812653332948685,
+        "world_update_seconds": 0.011713800951838493,
+        "ik_seconds": 9.631970897316933e-05,
+        "rrt_seconds": 0.013851460069417953,
+        "route_validation_seconds": 0.02775524603202939,
+        "trajectory_generation_seconds": 9.87248495221138e-05,
+        "trajectory_validation_seconds": 0.07636032626032829,
+        "planning_and_validation_wall_seconds": 0.14786388305947185,
+        "configuration_validation_calls": 983.0,
+        "configuration_validation_wall_seconds": 0.07394646666944027,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 2.3196560416252234,
+        "trajectory_duration": 2.3196560416252234,
+        "execution_wall_seconds": 0.8426153119653463,
+        "execution_sim_seconds": 2.8166668135672808
+      },
+      "kit_interval_ms": {
+        "count": 169,
+        "mean": 5.953894302623688,
+        "p50": 4.872099030762911,
+        "p95": 5.69429863244295,
+        "p99": 6.725177112966773,
+        "worst": 170.68554600700736
+      },
+      "controller_wait_ms": {
+        "count": 169,
+        "mean": 4.322542759352888,
+        "p50": 4.245960153639317,
+        "p95": 4.922589007765054,
+        "p99": 5.95636686310172,
+        "worst": 6.094108801335096
+      },
+      "joint_tracking_error_rad": {
+        "count": 170,
+        "p50": 0.02221009834667209,
+        "p95": 0.039307165285809485,
+        "p99": 0.039618128119502063,
+        "worst": 0.039660192240731806
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4656402432,
+          "process_maximum_rss_bytes": 4653637632,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4829102080,
+          "process_maximum_rss_bytes": 4826312704,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4834762752,
+          "process_maximum_rss_bytes": 4833783808,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.522529671357098e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json",
+        "sha256": "212cbe6750c9255a9318702ee4860ae03d4164dcf4e2f62aba5bf817214be7eb"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "large",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.002244918141514063,
+        "world_update_seconds": 0.011332832276821136,
+        "ik_seconds": 0.00018572714179754257,
+        "rrt_seconds": 0.014432374853640795,
+        "route_validation_seconds": 0.07560870982706547,
+        "trajectory_generation_seconds": 0.0001703677698969841,
+        "trajectory_validation_seconds": 0.1531640407629311,
+        "planning_and_validation_wall_seconds": 0.2740764361806214,
+        "configuration_validation_calls": 2228.0,
+        "configuration_validation_wall_seconds": 0.16773571725934744,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 3.227835124904522,
+        "trajectory_duration": 3.227835124904522,
+        "execution_wall_seconds": 1.0804148418828845,
+        "execution_sim_seconds": 3.6833335254341364
+      },
+      "kit_interval_ms": {
+        "count": 221,
+        "mean": 6.201573533777198,
+        "p50": 4.794533830136061,
+        "p95": 5.509519018232822,
+        "p99": 6.885312777012588,
+        "worst": 297.02873388305306
+      },
+      "controller_wait_ms": {
+        "count": 221,
+        "mean": 4.242769025299884,
+        "p50": 4.179256036877632,
+        "p95": 4.802057985216379,
+        "p99": 5.909844674170018,
+        "worst": 6.088176742196083
+      },
+      "joint_tracking_error_rad": {
+        "count": 222,
+        "p50": 0.0257840705595882,
+        "p95": 0.04132163878849526,
+        "p99": 0.04179020205315746,
+        "worst": 0.04181926193170904
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4627980288,
+          "process_maximum_rss_bytes": 4625584128,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4811231232,
+          "process_maximum_rss_bytes": 4808777728,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4818141184,
+          "process_maximum_rss_bytes": 4817608704,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.528533090634984e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json",
+        "sha256": "df99cc53a011e7c19532fee89913c004416a13c453e3b9efa3035ddfac36f1b6"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "large",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.002328694798052311,
+        "world_update_seconds": 0.011327682994306087,
+        "ik_seconds": 8.681230247020721e-05,
+        "rrt_seconds": 0.012820518109947443,
+        "route_validation_seconds": 0.015059113968163729,
+        "trajectory_generation_seconds": 0.0001155659556388855,
+        "trajectory_validation_seconds": 0.049437148962169886,
+        "planning_and_validation_wall_seconds": 0.10639912681654096,
+        "configuration_validation_calls": 600.0,
+        "configuration_validation_wall_seconds": 0.04491090727970004,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.4968132904907476,
+        "trajectory_duration": 1.4968132904907476,
+        "execution_wall_seconds": 0.5880444031208754,
+        "execution_sim_seconds": 1.9500001017004251
+      },
+      "kit_interval_ms": {
+        "count": 117,
+        "mean": 6.067182836879013,
+        "p50": 4.860558081418276,
+        "p95": 6.38410011306405,
+        "p99": 6.817745566368104,
+        "worst": 129.31049102917314
+      },
+      "controller_wait_ms": {
+        "count": 117,
+        "mean": 4.369905011521445,
+        "p50": 4.213029984384775,
+        "p95": 5.618146806955336,
+        "p99": 6.07077905908227,
+        "worst": 6.269004661589861
+      },
+      "joint_tracking_error_rad": {
+        "count": 118,
+        "p50": 0.015900033331182728,
+        "p95": 0.03516257329139413,
+        "p99": 0.03579157277452327,
+        "worst": 0.035823937012328555
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4609114112,
+          "process_maximum_rss_bytes": 4607000576,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4759138304,
+          "process_maximum_rss_bytes": 4756668416,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4763766784,
+          "process_maximum_rss_bytes": 4763222016,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.485151213283341e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456/result.json",
+        "sha256": "c3f2e50c328ee73978a18015f3700b11e8c7fb126c6151fb8b5869430b15522d"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "narrow",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0025911633856594563,
+        "world_update_seconds": 0.01210784399881959,
+        "ik_seconds": 9.376509115099907e-05,
+        "rrt_seconds": 0.011762409936636686,
+        "route_validation_seconds": 0.00866408133879304,
+        "trajectory_generation_seconds": 0.00010132882744073868,
+        "trajectory_validation_seconds": 0.035392265766859055,
+        "planning_and_validation_wall_seconds": 0.08734104316681623,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.030276186764240265,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.42994463397189975,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.20596018771446,
+        "p50": 4.84288833104074,
+        "p95": 6.39119406696409,
+        "p99": 22.687131911516772,
+        "worst": 110.1758349686861
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.332540594691108,
+        "p50": 4.173233872279525,
+        "p95": 5.724915536120534,
+        "p99": 6.166396848857404,
+        "worst": 6.246080156415701
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4649017344,
+          "process_maximum_rss_bytes": 4646670336,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4811186176,
+          "process_maximum_rss_bytes": 4808929280,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4814962688,
+          "process_maximum_rss_bytes": 4813516800,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.84357170058038e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567/result.json",
+        "sha256": "e22163c39f47fd27f8c355b7e793ea7eb9a6f83ce36a506da0525470ef732e84"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "narrow",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.002586204092949629,
+        "world_update_seconds": 0.011336095631122589,
+        "ik_seconds": 9.144982323050499e-05,
+        "rrt_seconds": 0.011575012002140284,
+        "route_validation_seconds": 0.008824360091239214,
+        "trajectory_generation_seconds": 9.097997099161148e-05,
+        "trajectory_validation_seconds": 0.03502294002100825,
+        "planning_and_validation_wall_seconds": 0.08426382904872298,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.030222713947296143,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.42703945515677333,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.126047621026289,
+        "p50": 4.841095069423318,
+        "p95": 6.343520246446133,
+        "p99": 21.641894918867024,
+        "worst": 106.47547105327249
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.308143267841187,
+        "p50": 4.163205390796065,
+        "p95": 5.274335388094187,
+        "p99": 5.848072050139308,
+        "worst": 5.864670034497976
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4653535232,
+          "process_maximum_rss_bytes": 4651323392,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4815687680,
+          "process_maximum_rss_bytes": 4813492224,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4818522112,
+          "process_maximum_rss_bytes": 4818210816,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.829718639195891e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678/result.json",
+        "sha256": "1c9ffcbdc18040b325426b9314ed88ebe916849cd99642b66b39473dd47b6180"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "narrow",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.003123937174677849,
+        "world_update_seconds": 0.011430072132498026,
+        "ik_seconds": 8.765282109379768e-05,
+        "rrt_seconds": 0.011506685055792332,
+        "route_validation_seconds": 0.008499113842844963,
+        "trajectory_generation_seconds": 9.141024202108383e-05,
+        "trajectory_validation_seconds": 0.034434673842042685,
+        "planning_and_validation_wall_seconds": 0.08353983471170068,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.02952193422242999,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.425130242947489,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.096485698985499,
+        "p50": 4.788997815921903,
+        "p95": 6.2060944037511945,
+        "p99": 21.4986706152564,
+        "worst": 106.33464576676488
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.273323298886765,
+        "p50": 4.195992602035403,
+        "p95": 5.454377154819667,
+        "p99": 5.789133021607996,
+        "worst": 5.98581600934267
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4626735104,
+          "process_maximum_rss_bytes": 4624420864,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4808572928,
+          "process_maximum_rss_bytes": 4806176768,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4811472896,
+          "process_maximum_rss_bytes": 4811157504,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.648169487676163e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/near/seed-123456/result.json",
+        "sha256": "0b2f701118411a1e61099b1d33f35b7daf1559533f9af50132d0fe82f6c7b91f"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "near",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.002446583006531,
+        "world_update_seconds": 0.011389050167053938,
+        "ik_seconds": 9.577907621860504e-05,
+        "rrt_seconds": 0.01216902444139123,
+        "route_validation_seconds": 0.008396878838539124,
+        "trajectory_generation_seconds": 9.150104597210884e-05,
+        "trajectory_validation_seconds": 0.03494065208360553,
+        "planning_and_validation_wall_seconds": 0.08476573321968317,
+        "configuration_validation_calls": 386.0,
+        "configuration_validation_wall_seconds": 0.02964971261098981,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.0373968004413578,
+        "trajectory_duration": 1.0373968004413578,
+        "execution_wall_seconds": 0.42580402130261064,
+        "execution_sim_seconds": 1.433333408087492
+      },
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 6.118336042692495,
+        "p50": 4.843021975830197,
+        "p95": 6.066295667551458,
+        "p99": 21.864749561064517,
+        "worst": 107.40611609071493
+      },
+      "controller_wait_ms": {
+        "count": 86,
+        "mean": 4.304760038246249,
+        "p50": 4.2167240753769875,
+        "p95": 5.426003714092076,
+        "p99": 5.912561900913716,
+        "worst": 6.021600216627121
+      },
+      "joint_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4650721280,
+          "process_maximum_rss_bytes": 4648353792,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4790071296,
+          "process_maximum_rss_bytes": 4787441664,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4793610240,
+          "process_maximum_rss_bytes": 4792029184,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.681272697147619e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json",
+        "sha256": "67ae6c1f2461fe82968f6d2c11bc6f9709a6877d6329f418c3375a714b95fe35"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "static",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": 0.0024603083729743958,
+        "world_update_seconds": 0.011327365878969431,
+        "ik_seconds": 9.98261384665966e-05,
+        "rrt_seconds": 0.012091311160475016,
+        "route_validation_seconds": 0.012896181084215641,
+        "trajectory_generation_seconds": 9.635975584387779e-05,
+        "trajectory_validation_seconds": 0.038813307881355286,
+        "planning_and_validation_wall_seconds": 0.09280578466132283,
+        "configuration_validation_calls": 489.0,
+        "configuration_validation_wall_seconds": 0.036448067519813776,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.1983540051694181,
+        "trajectory_duration": 1.1983540051694181,
+        "execution_wall_seconds": 0.5222902637906373,
+        "execution_sim_seconds": 1.7500000912696123
+      },
+      "kit_interval_ms": {
+        "count": 105,
+        "mean": 6.009450816505012,
+        "p50": 4.833543673157692,
+        "p95": 6.12109014764428,
+        "p99": 7.338819019496438,
+        "worst": 115.24795973673463
+      },
+      "controller_wait_ms": {
+        "count": 105,
+        "mean": 4.313173087402468,
+        "p50": 4.186888691037893,
+        "p95": 5.428279377520083,
+        "p99": 5.90498648583889,
+        "worst": 6.133649032562971
+      },
+      "joint_tracking_error_rad": {
+        "count": 106,
+        "p50": 0.015376089551279101,
+        "p95": 0.035061831943536736,
+        "p99": 0.03581023539059956,
+        "worst": 0.03584034776051026
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4637110272,
+          "process_maximum_rss_bytes": 4634808320,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4792373248,
+          "process_maximum_rss_bytes": 4790317056,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4796272640,
+          "process_maximum_rss_bytes": 4796215296,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.453592539839218e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json",
+        "sha256": "7d84943cf3dc413fdbcee30b1bc3cb8a362801a53f177586fd8db8fef38d2df9"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "static",
+      "seed": 234567,
+      "timing": {
+        "snapshot_seconds": 0.002269322983920574,
+        "world_update_seconds": 0.011397527065128088,
+        "ik_seconds": 8.796388283371925e-05,
+        "rrt_seconds": 0.012253102846443653,
+        "route_validation_seconds": 0.0166269913315773,
+        "trajectory_generation_seconds": 9.235180914402008e-05,
+        "trajectory_validation_seconds": 0.0567439328879118,
+        "planning_and_validation_wall_seconds": 0.11474353820085526,
+        "configuration_validation_calls": 687.0,
+        "configuration_validation_wall_seconds": 0.05105212703347206,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 1.7587641596775572,
+        "trajectory_duration": 1.7587641596775572,
+        "execution_wall_seconds": 0.6885066353715956,
+        "execution_sim_seconds": 2.3333334550261497
+      },
+      "kit_interval_ms": {
+        "count": 140,
+        "mean": 5.84871243752007,
+        "p50": 4.8100866843014956,
+        "p95": 5.588048556819545,
+        "p99": 7.209335505031041,
+        "worst": 136.73607632517815
+      },
+      "controller_wait_ms": {
+        "count": 140,
+        "mean": 4.261448756525559,
+        "p50": 4.173984518274665,
+        "p95": 4.896641778759657,
+        "p99": 5.9862932935357085,
+        "worst": 6.30946783348918
+      },
+      "joint_tracking_error_rad": {
+        "count": 141,
+        "p50": 0.014755965059489784,
+        "p95": 0.03368859442075944,
+        "p99": 0.03414590909135371,
+        "worst": 0.034177186341243004
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4646436864,
+          "process_maximum_rss_bytes": 4644089856,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4818747392,
+          "process_maximum_rss_bytes": 4816437248,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4824748032,
+          "process_maximum_rss_bytes": 4823646208,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.431168418263764e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json",
+        "sha256": "879631e552c70e0b3f9b4f7faff58cca875085d7be099c873bc3279e31c3715f"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "static",
+      "seed": 345678,
+      "timing": {
+        "snapshot_seconds": 0.0023630671203136444,
+        "world_update_seconds": 0.011839151848107576,
+        "ik_seconds": 9.275274351239204e-05,
+        "rrt_seconds": 0.01268959790468216,
+        "route_validation_seconds": 0.022782102227211,
+        "trajectory_generation_seconds": 9.540840983390808e-05,
+        "trajectory_validation_seconds": 0.08188492897897959,
+        "planning_and_validation_wall_seconds": 0.14729097299277782,
+        "configuration_validation_calls": 933.0,
+        "configuration_validation_wall_seconds": 0.07250338094308972,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": 2.442890828168557,
+        "trajectory_duration": 2.442890828168557,
+        "execution_wall_seconds": 0.896834091283381,
+        "execution_sim_seconds": 3.0500001590698957
+      },
+      "kit_interval_ms": {
+        "count": 183,
+        "mean": 5.797277247950516,
+        "p50": 4.779525101184845,
+        "p95": 5.511857429519296,
+        "p99": 6.969032352790237,
+        "worst": 170.9657204337418
+      },
+      "controller_wait_ms": {
+        "count": 183,
+        "mean": 4.2485187639344915,
+        "p50": 4.143969155848026,
+        "p95": 4.80778506025672,
+        "p99": 6.058510271832347,
+        "worst": 6.1511932872235775
+      },
+      "joint_tracking_error_rad": {
+        "count": 184,
+        "p50": 0.01615243584139075,
+        "p95": 0.03365940510217545,
+        "p99": 0.034106047087578896,
+        "worst": 0.034132405754983663
+      },
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4624637952,
+          "process_maximum_rss_bytes": 4622254080,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4813983744,
+          "process_maximum_rss_bytes": 4811587584,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4820656128,
+          "process_maximum_rss_bytes": 4819451904,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": 7.770994742024622e-05
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456/result.json",
+        "sha256": "4906a611337a67e7d3a9d79ea752a3f79ea63d5193a73c3ac5f766e8f40e8e94"
+      },
+      "measurement_valid": true,
+      "model": "stock",
+      "scenario": "unreachable",
+      "seed": 123456,
+      "timing": {
+        "snapshot_seconds": null,
+        "world_update_seconds": null,
+        "ik_seconds": null,
+        "rrt_seconds": null,
+        "route_validation_seconds": null,
+        "trajectory_generation_seconds": null,
+        "trajectory_validation_seconds": null,
+        "planning_and_validation_wall_seconds": null,
+        "configuration_validation_calls": null,
+        "configuration_validation_wall_seconds": null,
+        "native_rrt_collision_query_count": null,
+        "native_rrt_collision_query_seconds": null,
+        "trajectory_duration_seconds": null,
+        "trajectory_duration": null,
+        "execution_wall_seconds": null,
+        "execution_sim_seconds": null
+      },
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "controller_wait_ms": {
+        "count": 0
+      },
+      "joint_tracking_error_rad": null,
+      "memory": {
+        "memory_before_native": {
+          "current_rss_bytes": 4619886592,
+          "process_maximum_rss_bytes": 4617318400,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_runtime_close": {
+          "current_rss_bytes": 4786905088,
+          "process_maximum_rss_bytes": 4784599040,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        },
+        "memory_after_offline_reduction": {
+          "current_rss_bytes": 4787171328,
+          "process_maximum_rss_bytes": 4784861184,
+          "interpretation": "Process RSS includes Isaac, resources and retained observations; differences alone do not establish a leak"
+        }
+      },
+      "mean_explicit_configuration_check_seconds": null
+    }
+  ],
+  "descriptive_cohorts": [
+    {
+      "model": "enhanced",
+      "strategy": "global",
+      "valid_attempts": 13,
+      "timing": {
+        "snapshot_seconds": {
+          "count": 12,
+          "median": 0.002292071469128132,
+          "minimum": 0.0020476398058235645,
+          "maximum": 0.002557162195444107
+        },
+        "world_update_seconds": {
+          "count": 12,
+          "median": 0.00027103605680167675,
+          "minimum": 0.00023852474987506866,
+          "maximum": 0.0002876068465411663
+        },
+        "ik_seconds": {
+          "count": 12,
+          "median": 9.166100062429905e-05,
+          "minimum": 8.680205792188644e-05,
+          "maximum": 0.0003240751102566719
+        },
+        "rrt_seconds": {
+          "count": 12,
+          "median": 0.0008497205562889576,
+          "minimum": 0.0,
+          "maximum": 0.004324398934841156
+        },
+        "route_validation_seconds": {
+          "count": 12,
+          "median": 0.020379586843773723,
+          "minimum": 0.0,
+          "maximum": 0.07913808804005384
+        },
+        "trajectory_generation_seconds": {
+          "count": 12,
+          "median": 9.388546459376812e-05,
+          "minimum": 0.0,
+          "maximum": 0.00012663612142205238
+        },
+        "trajectory_validation_seconds": {
+          "count": 12,
+          "median": 0.06306347507052124,
+          "minimum": 0.0,
+          "maximum": 0.14416599413380027
+        },
+        "planning_and_validation_wall_seconds": {
+          "count": 12,
+          "median": 0.09400772047229111,
+          "minimum": 0.007596326991915703,
+          "maximum": 0.23714848794043064
+        },
+        "configuration_validation_calls": {
+          "count": 12,
+          "median": 536.0,
+          "minimum": 5.0,
+          "maximum": 1519.0
+        },
+        "configuration_validation_wall_seconds": {
+          "count": 12,
+          "median": 0.06513770832680166,
+          "minimum": 0.00017107930034399033,
+          "maximum": 0.18091488955542445
+        },
+        "native_rrt_collision_query_count": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "native_rrt_collision_query_seconds": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "trajectory_duration_seconds": {
+          "count": 11,
+          "median": 1.7472941695342739,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.23206040198297
+        },
+        "trajectory_duration": {
+          "count": 11,
+          "median": 1.7472941695342739,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.23206040198297
+        },
+        "execution_wall_seconds": {
+          "count": 11,
+          "median": 0.6968682077713311,
+          "minimum": 0.42816984187811613,
+          "maximum": 1.091947971843183
+        },
+        "execution_sim_seconds": {
+          "count": 11,
+          "median": 2.3333334550261497,
+          "minimum": 1.433333408087492,
+          "maximum": 3.6833335254341364
+        }
+      }
+    },
+    {
+      "model": "stock",
+      "strategy": "global",
+      "valid_attempts": 13,
+      "timing": {
+        "snapshot_seconds": {
+          "count": 12,
+          "median": 0.0023458809591829777,
+          "minimum": 0.0018840329721570015,
+          "maximum": 0.003123937174677849
+        },
+        "world_update_seconds": {
+          "count": 12,
+          "median": 0.011393288616091013,
+          "minimum": 0.011306835804134607,
+          "maximum": 0.01210784399881959
+        },
+        "ik_seconds": {
+          "count": 12,
+          "median": 9.325891733169556e-05,
+          "minimum": 8.681230247020721e-05,
+          "maximum": 0.00032409513369202614
+        },
+        "rrt_seconds": {
+          "count": 12,
+          "median": 0.012130167800933123,
+          "minimum": 0.0,
+          "maximum": 0.014432374853640795
+        },
+        "route_validation_seconds": {
+          "count": 12,
+          "median": 0.010860270587727427,
+          "minimum": 0.0,
+          "maximum": 0.07560870982706547
+        },
+        "trajectory_generation_seconds": {
+          "count": 12,
+          "median": 9.588408283889294e-05,
+          "minimum": 0.0,
+          "maximum": 0.0001703677698969841
+        },
+        "trajectory_validation_seconds": {
+          "count": 12,
+          "median": 0.03710278682410717,
+          "minimum": 0.0,
+          "maximum": 0.1531640407629311
+        },
+        "planning_and_validation_wall_seconds": {
+          "count": 12,
+          "median": 0.09007341391406953,
+          "minimum": 0.02835773630067706,
+          "maximum": 0.2740764361806214
+        },
+        "configuration_validation_calls": {
+          "count": 12,
+          "median": 437.5,
+          "minimum": 5.0,
+          "maximum": 2228.0
+        },
+        "configuration_validation_wall_seconds": {
+          "count": 12,
+          "median": 0.03336212714202702,
+          "minimum": 0.00013042287901043892,
+          "maximum": 0.16773571725934744
+        },
+        "native_rrt_collision_query_count": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "native_rrt_collision_query_seconds": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "trajectory_duration_seconds": {
+          "count": 11,
+          "median": 1.1983540051694181,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.227835124904522
+        },
+        "trajectory_duration": {
+          "count": 11,
+          "median": 1.1983540051694181,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.227835124904522
+        },
+        "execution_wall_seconds": {
+          "count": 11,
+          "median": 0.5222902637906373,
+          "minimum": 0.4203735892660916,
+          "maximum": 1.0804148418828845
+        },
+        "execution_sim_seconds": {
+          "count": 11,
+          "median": 1.7500000912696123,
+          "minimum": 1.433333408087492,
+          "maximum": 3.6833335254341364
+        }
+      }
+    }
+  ],
+  "successful_matched_comparisons": {
+    "matched_pairs": [
+      {
+        "scenario": "empty",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/empty/seed-123456/result.json",
+          "sha256": "ddfd7805350423d7b4e171f9e9926b2c7abecbdc7de549bd30fac194b5c3bb3b"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/empty/seed-123456/result.json",
+          "sha256": "b72ccfe40e9180540885672b47f41d531dd8351ccc5d7f1a3197e6ff8b23b312"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.0018840329721570015,
+            "enhanced": 0.0020476398058235645
+          },
+          "world_update_seconds": {
+            "stock": 0.011306835804134607,
+            "enhanced": 0.00023852474987506866
+          },
+          "ik_seconds": {
+            "stock": 9.061908349394798e-05,
+            "enhanced": 8.730310946702957e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.011389459948986769,
+            "enhanced": 0.00034807901829481125
+          },
+          "route_validation_seconds": {
+            "stock": 0.008305859286338091,
+            "enhanced": 0.013485590927302837
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.832298383116722e-05,
+            "enhanced": 8.924584835767746e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.03372307913377881,
+            "enhanced": 0.04763412335887551
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.08254710910841823,
+            "enhanced": 0.07095669908449054
+          },
+          "configuration_validation_calls": {
+            "stock": 386.0,
+            "enhanced": 386.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.028947200160473585,
+            "enhanced": 0.047500097658485174
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "trajectory_duration": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "execution_wall_seconds": {
+            "stock": 0.4203735892660916,
+            "enhanced": 0.42816984187811613
+          },
+          "execution_sim_seconds": {
+            "stock": 1.433333408087492,
+            "enhanced": 1.433333408087492
+          }
+        }
+      },
+      {
+        "scenario": "large",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json",
+          "sha256": "4b43f5ec7381eb4619dc13242056b3bfc5a3fb1a63c5b517fa5ba7894f958069"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json",
+          "sha256": "b8b439c4bfc1bf683bf1b45a5422f980993d623aa1c9c82fa680206a903cbde0"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.0022812653332948685,
+            "enhanced": 0.0022278577089309692
+          },
+          "world_update_seconds": {
+            "stock": 0.011713800951838493,
+            "enhanced": 0.0002745622768998146
+          },
+          "ik_seconds": {
+            "stock": 9.631970897316933e-05,
+            "enhanced": 0.0001832009293138981
+          },
+          "rrt_seconds": {
+            "stock": 0.013851460069417953,
+            "enhanced": 0.004324398934841156
+          },
+          "route_validation_seconds": {
+            "stock": 0.02775524603202939,
+            "enhanced": 0.07478317804634571
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.87248495221138e-05,
+            "enhanced": 9.575905278325081e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.07636032626032829,
+            "enhanced": 0.09855665173381567
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.14786388305947185,
+            "enhanced": 0.18784714303910732
+          },
+          "configuration_validation_calls": {
+            "stock": 983.0,
+            "enhanced": 1222.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.07394646666944027,
+            "enhanced": 0.14379866141825914
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 2.3196560416252234,
+            "enhanced": 2.2267083227705338
+          },
+          "trajectory_duration": {
+            "stock": 2.3196560416252234,
+            "enhanced": 2.2267083227705338
+          },
+          "execution_wall_seconds": {
+            "stock": 0.8426153119653463,
+            "enhanced": 0.8011422492563725
+          },
+          "execution_sim_seconds": {
+            "stock": 2.8166668135672808,
+            "enhanced": 2.65000013820827
+          }
+        }
+      },
+      {
+        "scenario": "large",
+        "seed": 234567,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json",
+          "sha256": "212cbe6750c9255a9318702ee4860ae03d4164dcf4e2f62aba5bf817214be7eb"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-234567/result.json",
+          "sha256": "d6d01c99581d3e43e03a02e5ae0ed789832041e4283c019849347a027ebe81c6"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.002244918141514063,
+            "enhanced": 0.002179055940359831
+          },
+          "world_update_seconds": {
+            "stock": 0.011332832276821136,
+            "enhanced": 0.0002675098367035389
+          },
+          "ik_seconds": {
+            "stock": 0.00018572714179754257,
+            "enhanced": 0.0001863064244389534
+          },
+          "rrt_seconds": {
+            "stock": 0.014432374853640795,
+            "enhanced": 0.00409733597189188
+          },
+          "route_validation_seconds": {
+            "stock": 0.07560870982706547,
+            "enhanced": 0.07913808804005384
+          },
+          "trajectory_generation_seconds": {
+            "stock": 0.0001703677698969841,
+            "enhanced": 0.00010028714314103127
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.1531640407629311,
+            "enhanced": 0.14416599413380027
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.2740764361806214,
+            "enhanced": 0.23714848794043064
+          },
+          "configuration_validation_calls": {
+            "stock": 2228.0,
+            "enhanced": 1519.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.16773571725934744,
+            "enhanced": 0.18091488955542445
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 3.227835124904522,
+            "enhanced": 3.23206040198297
+          },
+          "trajectory_duration": {
+            "stock": 3.227835124904522,
+            "enhanced": 3.23206040198297
+          },
+          "execution_wall_seconds": {
+            "stock": 1.0804148418828845,
+            "enhanced": 1.091947971843183
+          },
+          "execution_sim_seconds": {
+            "stock": 3.6833335254341364,
+            "enhanced": 3.6833335254341364
+          }
+        }
+      },
+      {
+        "scenario": "large",
+        "seed": 345678,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json",
+          "sha256": "df99cc53a011e7c19532fee89913c004416a13c453e3b9efa3035ddfac36f1b6"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/large/seed-345678/result.json",
+          "sha256": "ee5904323e217a638920dc9e23f284e387d59bbe95ba97044c5368a00ab19f5a"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.002328694798052311,
+            "enhanced": 0.0021582581102848053
+          },
+          "world_update_seconds": {
+            "stock": 0.011327682994306087,
+            "enhanced": 0.00026159919798374176
+          },
+          "ik_seconds": {
+            "stock": 8.681230247020721e-05,
+            "enhanced": 8.886586874723434e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.012820518109947443,
+            "enhanced": 0.0030965786427259445
+          },
+          "route_validation_seconds": {
+            "stock": 0.015059113968163729,
+            "enhanced": 0.03053306322544813
+          },
+          "trajectory_generation_seconds": {
+            "stock": 0.0001155659556388855,
+            "enhanced": 0.00012663612142205238
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.049437148962169886,
+            "enhanced": 0.090883350931108
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.10639912681654096,
+            "enhanced": 0.13416220108047128
+          },
+          "configuration_validation_calls": {
+            "stock": 600.0,
+            "enhanced": 808.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.04491090727970004,
+            "enhanced": 0.09457494365051389
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.4968132904907476,
+            "enhanced": 2.0797200316983098
+          },
+          "trajectory_duration": {
+            "stock": 1.4968132904907476,
+            "enhanced": 2.0797200316983098
+          },
+          "execution_wall_seconds": {
+            "stock": 0.5880444031208754,
+            "enhanced": 0.76024139393121
+          },
+          "execution_sim_seconds": {
+            "stock": 1.9500001017004251,
+            "enhanced": 2.5500001329928637
+          }
+        }
+      },
+      {
+        "scenario": "narrow",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-123456/result.json",
+          "sha256": "c3f2e50c328ee73978a18015f3700b11e8c7fb126c6151fb8b5869430b15522d"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-123456/result.json",
+          "sha256": "436e7f2d3ac162e0f7dd44316a121240caf74117d3c052ea869be257e3bc35a8"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.0025911633856594563,
+            "enhanced": 0.002447647973895073
+          },
+          "world_update_seconds": {
+            "stock": 0.01210784399881959,
+            "enhanced": 0.0002876068465411663
+          },
+          "ik_seconds": {
+            "stock": 9.376509115099907e-05,
+            "enhanced": 9.107030928134918e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.011762409936636686,
+            "enhanced": 0.0004294309765100479
+          },
+          "route_validation_seconds": {
+            "stock": 0.00866408133879304,
+            "enhanced": 0.014030871912837029
+          },
+          "trajectory_generation_seconds": {
+            "stock": 0.00010132882744073868,
+            "enhanced": 9.000813588500023e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.035392265766859055,
+            "enhanced": 0.04729035496711731
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.08734104316681623,
+            "enhanced": 0.07135991891846061
+          },
+          "configuration_validation_calls": {
+            "stock": 386.0,
+            "enhanced": 386.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.030276186764240265,
+            "enhanced": 0.047822907101362944
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "trajectory_duration": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "execution_wall_seconds": {
+            "stock": 0.42994463397189975,
+            "enhanced": 0.4288592888042331
+          },
+          "execution_sim_seconds": {
+            "stock": 1.433333408087492,
+            "enhanced": 1.433333408087492
+          }
+        }
+      },
+      {
+        "scenario": "narrow",
+        "seed": 234567,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-234567/result.json",
+          "sha256": "e22163c39f47fd27f8c355b7e793ea7eb9a6f83ce36a506da0525470ef732e84"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-234567/result.json",
+          "sha256": "4ec9056e744e73465f6cd4461fd4581268bb40c69b54af9c98ed3ba8580429df"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.002586204092949629,
+            "enhanced": 0.002493293024599552
+          },
+          "world_update_seconds": {
+            "stock": 0.011336095631122589,
+            "enhanced": 0.00028567295521497726
+          },
+          "ik_seconds": {
+            "stock": 9.144982323050499e-05,
+            "enhanced": 9.174132719635963e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.011575012002140284,
+            "enhanced": 0.00044808583334088326
+          },
+          "route_validation_seconds": {
+            "stock": 0.008824360091239214,
+            "enhanced": 0.01426653191447258
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.097997099161148e-05,
+            "enhanced": 9.201187640428543e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.03502294002100825,
+            "enhanced": 0.04968527611345053
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.08426382904872298,
+            "enhanced": 0.07433145679533482
+          },
+          "configuration_validation_calls": {
+            "stock": 386.0,
+            "enhanced": 386.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.030222713947296143,
+            "enhanced": 0.04962503397837281
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "trajectory_duration": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "execution_wall_seconds": {
+            "stock": 0.42703945515677333,
+            "enhanced": 0.4282558336853981
+          },
+          "execution_sim_seconds": {
+            "stock": 1.433333408087492,
+            "enhanced": 1.433333408087492
+          }
+        }
+      },
+      {
+        "scenario": "narrow",
+        "seed": 345678,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/narrow/seed-345678/result.json",
+          "sha256": "1c9ffcbdc18040b325426b9314ed88ebe916849cd99642b66b39473dd47b6180"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/narrow/seed-345678/result.json",
+          "sha256": "aa46bd76cc782be71db150c5bcee5ce7aad5da70b3aade1774165e19a9552c14"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.003123937174677849,
+            "enhanced": 0.002557162195444107
+          },
+          "world_update_seconds": {
+            "stock": 0.011430072132498026,
+            "enhanced": 0.00027925102040171623
+          },
+          "ik_seconds": {
+            "stock": 8.765282109379768e-05,
+            "enhanced": 9.170081466436386e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.011506685055792332,
+            "enhanced": 0.0004354817792773247
+          },
+          "route_validation_seconds": {
+            "stock": 0.008499113842844963,
+            "enhanced": 0.013907583430409431
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.141024202108383e-05,
+            "enhanced": 8.9205801486969e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.034434673842042685,
+            "enhanced": 0.04780270531773567
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.08353983471170068,
+            "enhanced": 0.07201127102598548
+          },
+          "configuration_validation_calls": {
+            "stock": 386.0,
+            "enhanced": 386.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.02952193422242999,
+            "enhanced": 0.048059902619570494
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "trajectory_duration": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "execution_wall_seconds": {
+            "stock": 0.425130242947489,
+            "enhanced": 0.4385975729674101
+          },
+          "execution_sim_seconds": {
+            "stock": 1.433333408087492,
+            "enhanced": 1.433333408087492
+          }
+        }
+      },
+      {
+        "scenario": "near",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/near/seed-123456/result.json",
+          "sha256": "0b2f701118411a1e61099b1d33f35b7daf1559533f9af50132d0fe82f6c7b91f"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json",
+          "sha256": "9f62c27ba28bbaa8277018feb0edfc2b3a420eac41d525f6a446f77fba8bdaeb"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.002446583006531,
+            "enhanced": 0.002327031921595335
+          },
+          "world_update_seconds": {
+            "stock": 0.011389050167053938,
+            "enhanced": 0.00027855904772877693
+          },
+          "ik_seconds": {
+            "stock": 9.577907621860504e-05,
+            "enhanced": 8.938601240515709e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.01216902444139123,
+            "enhanced": 0.0003419681452214718
+          },
+          "route_validation_seconds": {
+            "stock": 0.008396878838539124,
+            "enhanced": 0.013826236594468355
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.150104597210884e-05,
+            "enhanced": 9.123003110289574e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.03494065208360553,
+            "enhanced": 0.04777991818264127
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.08476573321968317,
+            "enhanced": 0.07155037997290492
+          },
+          "configuration_validation_calls": {
+            "stock": 386.0,
+            "enhanced": 386.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.02964971261098981,
+            "enhanced": 0.04794751945883036
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "trajectory_duration": {
+            "stock": 1.0373968004413578,
+            "enhanced": 1.0373968004413578
+          },
+          "execution_wall_seconds": {
+            "stock": 0.42580402130261064,
+            "enhanced": 0.4313273848965764
+          },
+          "execution_sim_seconds": {
+            "stock": 1.433333408087492,
+            "enhanced": 1.433333408087492
+          }
+        }
+      },
+      {
+        "scenario": "static",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json",
+          "sha256": "67ae6c1f2461fe82968f6d2c11bc6f9709a6877d6329f418c3375a714b95fe35"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-123456/result.json",
+          "sha256": "4f09f428a27862643747e823bd6b59556113e7cb436a35be45e51595eaf7d303"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.0024603083729743958,
+            "enhanced": 0.0023960797116160393
+          },
+          "world_update_seconds": {
+            "stock": 0.011327365878969431,
+            "enhanced": 0.000277017243206501
+          },
+          "ik_seconds": {
+            "stock": 9.98261384665966e-05,
+            "enhanced": 9.162118658423424e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.012091311160475016,
+            "enhanced": 0.0012615537270903587
+          },
+          "route_validation_seconds": {
+            "stock": 0.012896181084215641,
+            "enhanced": 0.04146583005785942
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.635975584387779e-05,
+            "enhanced": 0.00010304339230060577
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.038813307881355286,
+            "enhanced": 0.09885231498628855
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.09280578466132283,
+            "enhanced": 0.1514412690885365
+          },
+          "configuration_validation_calls": {
+            "stock": 489.0,
+            "enhanced": 925.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.036448067519813776,
+            "enhanced": 0.11185345891863108
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.1983540051694181,
+            "enhanced": 2.2096414822209307
+          },
+          "trajectory_duration": {
+            "stock": 1.1983540051694181,
+            "enhanced": 2.2096414822209307
+          },
+          "execution_wall_seconds": {
+            "stock": 0.5222902637906373,
+            "enhanced": 0.8071183641441166
+          },
+          "execution_sim_seconds": {
+            "stock": 1.7500000912696123,
+            "enhanced": 2.7166668083518744
+          }
+        }
+      },
+      {
+        "scenario": "static",
+        "seed": 234567,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json",
+          "sha256": "7d84943cf3dc413fdbcee30b1bc3cb8a362801a53f177586fd8db8fef38d2df9"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-234567/result.json",
+          "sha256": "8d58840928032bcf2f18904f32f48253dac17d6c93b42df8cad81f540b568481"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.002269322983920574,
+            "enhanced": 0.0022571110166609287
+          },
+          "world_update_seconds": {
+            "stock": 0.011397527065128088,
+            "enhanced": 0.00026342179626226425
+          },
+          "ik_seconds": {
+            "stock": 8.796388283371925e-05,
+            "enhanced": 8.680205792188644e-05
+          },
+          "rrt_seconds": {
+            "stock": 0.012253102846443653,
+            "enhanced": 0.001251355279237032
+          },
+          "route_validation_seconds": {
+            "stock": 0.0166269913315773,
+            "enhanced": 0.026492641773074865
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.235180914402008e-05,
+            "enhanced": 9.759189561009407e-05
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.0567439328879118,
+            "enhanced": 0.07644167402759194
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.11474353820085526,
+            "enhanced": 0.11368398414924741
+          },
+          "configuration_validation_calls": {
+            "stock": 687.0,
+            "enhanced": 686.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.05105212703347206,
+            "enhanced": 0.0806503826752305
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 1.7587641596775572,
+            "enhanced": 1.7472941695342739
+          },
+          "trajectory_duration": {
+            "stock": 1.7587641596775572,
+            "enhanced": 1.7472941695342739
+          },
+          "execution_wall_seconds": {
+            "stock": 0.6885066353715956,
+            "enhanced": 0.6968682077713311
+          },
+          "execution_sim_seconds": {
+            "stock": 2.3333334550261497,
+            "enhanced": 2.3333334550261497
+          }
+        }
+      },
+      {
+        "scenario": "static",
+        "seed": 345678,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json",
+          "sha256": "879631e552c70e0b3f9b4f7faff58cca875085d7be099c873bc3279e31c3715f"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/static/seed-345678/result.json",
+          "sha256": "b470fd4f584fbdcb13cb1c83650374829a60332eb2154b4522e70b06e5c446b5"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": true,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        },
+        "timing": {
+          "snapshot_seconds": {
+            "stock": 0.0023630671203136444,
+            "enhanced": 0.0022309632040560246
+          },
+          "world_update_seconds": {
+            "stock": 0.011839151848107576,
+            "enhanced": 0.00026114797219634056
+          },
+          "ik_seconds": {
+            "stock": 9.275274351239204e-05,
+            "enhanced": 0.0002022269181907177
+          },
+          "rrt_seconds": {
+            "stock": 0.01268959790468216,
+            "enhanced": 0.0026224437169730663
+          },
+          "route_validation_seconds": {
+            "stock": 0.022782102227211,
+            "enhanced": 0.04964072769507766
+          },
+          "trajectory_generation_seconds": {
+            "stock": 9.540840983390808e-05,
+            "enhanced": 0.00010023685172200203
+          },
+          "trajectory_validation_seconds": {
+            "stock": 0.08188492897897959,
+            "enhanced": 0.08306457614526153
+          },
+          "planning_and_validation_wall_seconds": {
+            "stock": 0.14729097299277782,
+            "enhanced": 0.14535963581874967
+          },
+          "configuration_validation_calls": {
+            "stock": 933.0,
+            "enhanced": 907.0
+          },
+          "configuration_validation_wall_seconds": {
+            "stock": 0.07250338094308972,
+            "enhanced": 0.10808647656813264
+          },
+          "native_rrt_collision_query_count": {
+            "stock": null,
+            "enhanced": null
+          },
+          "native_rrt_collision_query_seconds": {
+            "stock": null,
+            "enhanced": null
+          },
+          "trajectory_duration_seconds": {
+            "stock": 2.442890828168557,
+            "enhanced": 1.863211299330275
+          },
+          "trajectory_duration": {
+            "stock": 2.442890828168557,
+            "enhanced": 1.863211299330275
+          },
+          "execution_wall_seconds": {
+            "stock": 0.896834091283381,
+            "enhanced": 0.720025825779885
+          },
+          "execution_sim_seconds": {
+            "stock": 3.0500001590698957,
+            "enhanced": 2.416666792705655
+          }
+        }
+      }
+    ],
+    "excluded_pairs": [
+      {
+        "scenario": "blocked",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/blocked/seed-123456/result.json",
+          "sha256": "0edc160e930a7d1364be25e13478ea8f1b33e5f97f9f50b6df599352fe0071da"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/blocked/seed-123456/result.json",
+          "sha256": "900a399873d43339ac35ee8863bb264dc192d5a4a8f5a85c5868deab709c7d5a"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": false,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        }
+      },
+      {
+        "scenario": "unreachable",
+        "seed": 123456,
+        "stock": {
+          "path": "outputs/motion-planning-v4-2/static/stock/unreachable/seed-123456/result.json",
+          "sha256": "4906a611337a67e7d3a9d79ea752a3f79ea63d5193a73c3ac5f766e8f40e8e94"
+        },
+        "enhanced": {
+          "path": "outputs/motion-planning-v4-2/static/enhanced/unreachable/seed-123456/result.json",
+          "sha256": "37e707d32a55216ce6eddd89b9ea0a68cf61db2599368441f3d9d520c58e4c6f"
+        },
+        "checks": {
+          "both_valid": true,
+          "both_completed": false,
+          "same_task_configuration": true,
+          "same_physical_world": true,
+          "same_recorded_initial_joints": true,
+          "same_source_cohort": true
+        }
+      }
+    ],
+    "descriptive_timing": {
+      "snapshot_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.0023630671203136444,
+          "minimum": 0.0018840329721570015,
+          "maximum": 0.003123937174677849
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.0022571110166609287,
+          "minimum": 0.0020476398058235645,
+          "maximum": 0.002557162195444107
+        },
+        "median_change_percent": -4.48383809083901
+      },
+      "world_update_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.011389050167053938,
+          "minimum": 0.011306835804134607,
+          "maximum": 0.01210784399881959
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.0002745622768998146,
+          "minimum": 0.00023852474987506866,
+          "maximum": 0.0002876068465411663
+        },
+        "median_change_percent": -97.58924341474881
+      },
+      "ik_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 9.275274351239204e-05,
+          "minimum": 8.681230247020721e-05,
+          "maximum": 0.00018572714179754257
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 9.162118658423424e-05,
+          "minimum": 8.680205792188644e-05,
+          "maximum": 0.0002022269181907177
+        },
+        "median_change_percent": -1.2199713833873083
+      },
+      "rrt_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.01216902444139123,
+          "minimum": 0.011389459948986769,
+          "maximum": 0.014432374853640795
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.001251355279237032,
+          "minimum": 0.0003419681452214718,
+          "maximum": 0.004324398934841156
+        },
+        "median_change_percent": -89.7168808784645
+      },
+      "route_validation_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.012896181084215641,
+          "minimum": 0.008305859286338091,
+          "maximum": 0.07560870982706547
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.026492641773074865,
+          "minimum": 0.013485590927302837,
+          "maximum": 0.07913808804005384
+        },
+        "median_change_percent": 105.4301316030735
+      },
+      "trajectory_generation_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 9.635975584387779e-05,
+          "minimum": 9.097997099161148e-05,
+          "maximum": 0.0001703677698969841
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 9.575905278325081e-05,
+          "minimum": 8.9205801486969e-05,
+          "maximum": 0.00012663612142205238
+        },
+        "median_change_percent": -0.6233962045319452
+      },
+      "trajectory_validation_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.038813307881355286,
+          "minimum": 0.03372307913377881,
+          "maximum": 0.1531640407629311
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.07644167402759194,
+          "minimum": 0.04729035496711731,
+          "maximum": 0.14416599413380027
+        },
+        "median_change_percent": 96.94707356883686
+      },
+      "planning_and_validation_wall_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.09280578466132283,
+          "minimum": 0.08254710910841823,
+          "maximum": 0.2740764361806214
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.11368398414924741,
+          "minimum": 0.07095669908449054,
+          "maximum": 0.23714848794043064
+        },
+        "median_change_percent": 22.49665747034586
+      },
+      "configuration_validation_calls": {
+        "stock": {
+          "count": 11,
+          "median": 489.0,
+          "minimum": 386.0,
+          "maximum": 2228.0
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 686.0,
+          "minimum": 386.0,
+          "maximum": 1519.0
+        },
+        "median_change_percent": 40.28629856850716
+      },
+      "configuration_validation_wall_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.036448067519813776,
+          "minimum": 0.028947200160473585,
+          "maximum": 0.16773571725934744
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.0806503826752305,
+          "minimum": 0.047500097658485174,
+          "maximum": 0.18091488955542445
+        },
+        "median_change_percent": 121.27478399612714
+      },
+      "native_rrt_collision_query_count": {
+        "stock": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "enhanced": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "median_change_percent": null
+      },
+      "native_rrt_collision_query_seconds": {
+        "stock": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "enhanced": {
+          "count": 0,
+          "median": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "median_change_percent": null
+      },
+      "trajectory_duration_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 1.1983540051694181,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.227835124904522
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 1.7472941695342739,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.23206040198297
+        },
+        "median_change_percent": 45.80784659598554
+      },
+      "trajectory_duration": {
+        "stock": {
+          "count": 11,
+          "median": 1.1983540051694181,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.227835124904522
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 1.7472941695342739,
+          "minimum": 1.0373968004413578,
+          "maximum": 3.23206040198297
+        },
+        "median_change_percent": 45.80784659598554
+      },
+      "execution_wall_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 0.5222902637906373,
+          "minimum": 0.4203735892660916,
+          "maximum": 1.0804148418828845
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 0.6968682077713311,
+          "minimum": 0.42816984187811613,
+          "maximum": 1.091947971843183
+        },
+        "median_change_percent": 33.42546397737836
+      },
+      "execution_sim_seconds": {
+        "stock": {
+          "count": 11,
+          "median": 1.7500000912696123,
+          "minimum": 1.433333408087492,
+          "maximum": 3.6833335254341364
+        },
+        "enhanced": {
+          "count": 11,
+          "median": 2.3333334550261497,
+          "minimum": 1.433333408087492,
+          "maximum": 3.6833335254341364
+        },
+        "median_change_percent": 33.33333333333333
+      }
+    },
+    "interpretation": "Only pairs with valid completed movements, identical frozen task/world/initial joints/source cohort are pooled. Different sphere geometry can change RRT routes and query counts: elapsed RRT time is not per-query collision cost or an algorithmic speedup proof. One attempt per model/task/seed gives descriptive measurements, not statistical confidence."
+  },
+  "interpretation": "Single frozen-scene attempts; descriptive cohorts include valid rejections and completions separately identifiable by source artifact. No confidence interval or controlled runtime speedup claim.",
+  "configuration_query_scope": "Explicit external/self/domain validator calls, including failed calls; native RRT internal query counts and time remain unavailable.",
+  "memory_scope": "RSS includes Kit and retained observations; process differences alone do not establish a resource leak."
+}

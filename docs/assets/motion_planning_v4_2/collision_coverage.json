@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "status": "MEASURED_RECORDED_STATES",
+  "states": 44,
+  "cases": [
+    "outputs/motion-planning-v4-2/postures/r1/result.json",
+    "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json",
+    "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json",
+    "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json"
+  ],
+  "source_sha256": {
+    "outputs/motion-planning-v4-2/postures/r1/result.json": "a1a407c44c81569f75b1ef8e0ebbdb5b5c63725c892f9c3b24c30c8a7a356d56",
+    "outputs/motion-planning-v4-2/postures/r1/trace.json": "e414b9f61c61ada1f384841dd7532a7bd53a94e736d05a03a5b048f0c4b23279",
+    "outputs/motion-planning-v4-2/postures/r1/geometry_reference.npz": "0dd4e732ed4e5219852c6dc43b7fa870a666cb272c369ff54abffb8f7c23359d",
+    "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json": "4f817bf9aac4ce450b29e443a5b6893eb3b6b588c27ae215156fb344ca30cedb",
+    "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/roundtrip_trace.json": "98da368f813e0a9223890a41c6cb6f16cadf07be26d682ea441c0d2342dc1ccc",
+    "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-123456/result.json": "67ae6c1f2461fe82968f6d2c11bc6f9709a6877d6329f418c3375a714b95fe35",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-123456/trace.json": "11fec87fa9105e2bb2d074f566b95867c3023a0d9231e8e2dacedec382fa3cb1",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-123456/geometry_reference.npz": "b8ad9ab95d800e31b22b67b09788da6a3893264ccdfcaa73d080cc682a1f4878",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-123456/plan_trace.json": "ab836ae691677de7c03c28e05f85c74991263bf90f0533402b702fe4a51aadbd",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-234567/result.json": "7d84943cf3dc413fdbcee30b1bc3cb8a362801a53f177586fd8db8fef38d2df9",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-234567/trace.json": "5e3045833842540f2a6d92b74e02911549e8090df10404f4156a061d4858ac20",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-234567/geometry_reference.npz": "6af2f7d947774e2e8b2cbb8a796acfa67f407cbc4d27ba7c60663430ece05299",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-234567/plan_trace.json": "1edbdd88191cd15230e7c295195b7fb813cb9e85026100dc6dbf41f96d889261",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-345678/result.json": "879631e552c70e0b3f9b4f7faff58cca875085d7be099c873bc3279e31c3715f",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-345678/trace.json": "7b774cc99239f560ae33ce1e9076ab15a51f8e0d380cd5e0113bc150bb24080d",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-345678/geometry_reference.npz": "f1cd9b7dfaccd72fc83032848bffc16fe688f1abc8d6572aa38d7a9407b24b52",
+    "outputs/motion-planning-v4-2/static/stock/static/seed-345678/plan_trace.json": "c0c2725c11585cd7678884fe4a30d1422a33b5ad5162d1ca15f69277488c077a",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json": "4b43f5ec7381eb4619dc13242056b3bfc5a3fb1a63c5b517fa5ba7894f958069",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-123456/trace.json": "2c322c987851a2687320e4ed9ceeab0ea14cee7d73e042fe7fc176e5df46058e",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-123456/geometry_reference.npz": "83f1c6297cd7a90f5c9ab99713041a06920600d042a963db27df8b0e4163062d",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-123456/plan_trace.json": "16858d4ffc76986d8275fda021314a7e8875375c22b1a6f6ffdf56ec49f15c5f",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-234567/result.json": "212cbe6750c9255a9318702ee4860ae03d4164dcf4e2f62aba5bf817214be7eb",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-234567/trace.json": "e4fdbccfc5b286674fd12a88809ebd58eb2cfb5a99fcfe0c94066eb8866c70d2",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-234567/geometry_reference.npz": "9b7efe9db759e8efc44a55365842e49b4bc9ebf0902aa82d709781df50939247",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-234567/plan_trace.json": "b4f7875d9eb390b4ac850ca4bf0e90ac71ea62b64b97c7fe834637dd8f42673f",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-345678/result.json": "df99cc53a011e7c19532fee89913c004416a13c453e3b9efa3035ddfac36f1b6",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-345678/trace.json": "bbc2cfe3c0f1d9d347f3df32a87a7d186b1f5ecf29633c960bb065fe3a6d0fdc",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-345678/geometry_reference.npz": "653b146d802d391cb4e29eec8557ff437cf659ffd16d9d4a0c051842cab1baff",
+    "outputs/motion-planning-v4-2/static/stock/large/seed-345678/plan_trace.json": "299c49efa55677da34bfbc15e24fde2b8203d919f02a6fc8ce15acb60e4cfa02",
+    "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/result.json": "9f62c27ba28bbaa8277018feb0edfc2b3a420eac41d525f6a446f77fba8bdaeb",
+    "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/trace.json": "4b408e244b3fceb6251848ceb1ffa594b88fd48806c5adbcb7a8b6f28f22d704",
+    "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/geometry_reference.npz": "0d8fe5c8f73d1f4c2e81ea8ab43527f37168e0bb3a75ee8fe6c79a39749eafc8",
+    "outputs/motion-planning-v4-2/static/enhanced/near/seed-123456/plan_trace.json": "ebef99e471f4b8712c9b4234440dcab38abd223a22c8a7bb73aa00abf3503d86",
+    "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/result.json": "b8b439c4bfc1bf683bf1b45a5422f980993d623aa1c9c82fa680206a903cbde0",
+    "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/trace.json": "47af394868b03780951904fbbc82450c4f40a410887f169299030c15bfc2badb",
+    "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/geometry_reference.npz": "7f2a7be6eb1ed090f9db6ce3ca13167ba177cc353ae50ea7bd91e2ac6bc06285",
+    "outputs/motion-planning-v4-2/static/enhanced/large/seed-123456/plan_trace.json": "b180fb81af5f24e7459875ee35d4309c5461c889e4f46fb91f83bec051a515e9"
+  },
+  "captured_goal_outcomes": [
+    {
+      "case": "motion-planning-v4-2/postures/r1",
+      "source_status": "PASS",
+      "posture_goal_checks": {
+        "Extended": true,
+        "Raised": true,
+        "Low": true,
+        "Home_return": true
+      },
+      "measured_states": 13
+    },
+    {
+      "case": "motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 7
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/static/seed-123456",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/static/seed-234567",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/static/seed-345678",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/large/seed-123456",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/large/seed-234567",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/stock/large/seed-345678",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/enhanced/near/seed-123456",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    },
+    {
+      "case": "motion-planning-v4-2/static/enhanced/large/seed-123456",
+      "source_status": "PASS",
+      "posture_goal_checks": {},
+      "measured_states": 3
+    }
+  ],
+  "producer_sha256": "686c5b0a8d5a2577ed34b654a071b47bd1d83807b1d4d85936c5eacdb9225cf9",
+  "models": {
+    "stock": {
+      "descriptor_sha256": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+      "primitive_count": 55,
+      "primitive_counts_by_frame": {
+        "panda_link0": 1,
+        "panda_link1": 4,
+        "panda_link2": 4,
+        "panda_link3": 4,
+        "panda_link4": 4,
+        "panda_link5": 12,
+        "panda_link6": 3,
+        "panda_link7": 5,
+        "panda_hand": 18
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.6909832339140526,
+          "sphere_union_surface_coverage_mean": 0.6909832339140528,
+          "maximum_sampled_outside_gap_m": 0.009621966763768326
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.30659010872149955,
+          "sphere_union_surface_coverage_mean": 0.30738009784903775,
+          "maximum_sampled_outside_gap_m": 0.039575047649921515
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.3063762081519832,
+          "sphere_union_surface_coverage_mean": 0.30806506504084613,
+          "maximum_sampled_outside_gap_m": 0.0395750326806757
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.07693380470540362,
+          "sphere_union_surface_coverage_mean": 0.07693380470540362,
+          "maximum_sampled_outside_gap_m": 0.11705772566150048
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.6816128800980378,
+          "sphere_union_surface_coverage_mean": 0.6816128800980377,
+          "maximum_sampled_outside_gap_m": 0.036454385222276633
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.6779762104109678,
+          "sphere_union_surface_coverage_mean": 0.6779762104109678,
+          "maximum_sampled_outside_gap_m": 0.0364143219003821
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.6206001204023341,
+          "sphere_union_surface_coverage_mean": 0.6246369537984149,
+          "maximum_sampled_outside_gap_m": 0.031658538482745475
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.6522724350131966,
+          "sphere_union_surface_coverage_mean": 0.6533751946109393,
+          "maximum_sampled_outside_gap_m": 0.03141953197531043
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.552947569283464,
+          "sphere_union_surface_coverage_mean": 0.5541772860660075,
+          "maximum_sampled_outside_gap_m": 0.053512182460553157
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.9104134718090832,
+          "sphere_union_surface_coverage_mean": 0.9104134718090836,
+          "maximum_sampled_outside_gap_m": 0.009455232161960689
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.8318655690971836,
+          "sphere_union_surface_coverage_mean": 0.8318655690971835,
+          "maximum_sampled_outside_gap_m": 0.005553281069452784
+        }
+      ],
+      "maximum_measured_prismatic_corrected_frame_translation_error_m": 3.197196367259518e-07,
+      "maximum_rotation_matrix_error": 5.582076143539894e-07,
+      "externally_obstructed_states": 0,
+      "independently_clear_but_model_obstructed_states": 0,
+      "unmasked_self_obstructed_states": 0,
+      "independently_self_clear_but_model_obstructed_states": 0,
+      "enhanced_contract_unsupported_states": 0,
+      "moving_bodies_area_weighted_sample_coverage": 0.670163772606405,
+      "including_base_area_weighted_sample_coverage": 0.5842074363970668,
+      "cpu_query_timing": {
+        "status": "NOT_MEASURED",
+        "queries": {},
+        "limitation": "Explicit repeated Python/native inspector calls, not native RRT internal query counts, which are unexposed."
+      }
+    },
+    "enhanced": {
+      "descriptor_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+      "primitive_count": 102,
+      "primitive_counts_by_frame": {
+        "panda_link0": 1,
+        "panda_link1": 9,
+        "panda_link2": 9,
+        "panda_link3": 9,
+        "panda_link4": 9,
+        "panda_link5": 18,
+        "panda_link6": 7,
+        "panda_link7": 8,
+        "panda_hand": 26,
+        "panda_rightfinger": 3,
+        "panda_leftfinger": 3
+      },
+      "bodies": [
+        {
+          "body": "/Franka/panda_hand",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_rightfinger",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_leftfinger",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link0",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 0.07693380470540362,
+          "sphere_union_surface_coverage_mean": 0.07693380470540362,
+          "maximum_sampled_outside_gap_m": 0.11705772566150048
+        },
+        {
+          "body": "/Franka/panda_link1",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link2",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link3",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link4",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link5",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link6",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        },
+        {
+          "body": "/Franka/panda_link7",
+          "states": 44,
+          "sphere_union_surface_coverage_minimum": 1.0,
+          "sphere_union_surface_coverage_mean": 1.0,
+          "maximum_sampled_outside_gap_m": 0.0
+        }
+      ],
+      "maximum_measured_prismatic_corrected_frame_translation_error_m": 3.197196367259518e-07,
+      "maximum_rotation_matrix_error": 5.582076143539894e-07,
+      "externally_obstructed_states": 0,
+      "independently_clear_but_model_obstructed_states": 0,
+      "unmasked_self_obstructed_states": 0,
+      "independently_self_clear_but_model_obstructed_states": 0,
+      "enhanced_contract_unsupported_states": 0,
+      "moving_bodies_area_weighted_sample_coverage": 1.0,
+      "including_base_area_weighted_sample_coverage": 0.8662518879365545,
+      "cpu_query_timing": {
+        "status": "NOT_MEASURED",
+        "queries": {},
+        "limitation": "Explicit repeated Python/native inspector calls, not native RRT internal query counts, which are unexposed."
+      }
+    }
+  },
+  "enhanced_solid_certificate_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+  "surface_method": "Equal-area cooked-triangle centroid quadrature,64centroids per input triangle. Area fractions/max outside gaps are sample estimates; finite-cell solid containment is a separate source-bound certificate.",
+  "base_interpretation": "The native base sphere union remains incomplete. Fixed-base enclosing-sphere/AABB preflight is reported separately and conditionally contains the whole captured base solid.",
+  "limitations": [
+    "No invented FK-only postures: only actual captured joint/body states are measured.",
+    "A physically clear but sphere-obstructed sampled configuration measures conservative obstruction, not continuous passage infeasibility.",
+    "Measured posture clearance excludes contact/rest offsets and does not certify future tracking or continuous execution.",
+    "Missing posture captures, timing and native planning measurements remain unmeasured."
+  ],
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-2/collision-audit-final/states.json",
+    "sha256": "a139489135c016b494e2319b5e2ac312f37781a30fd60ec6ee9b31f45cbc4508"
+  },
+  "model_gap_witnesses": {
+    "status": "PASS",
+    "witnesses": 30,
+    "prevented_stock_model_gaps": 30,
+    "source_sha256": {
+      "outputs/motion-planning-v4-1/collision-audit/final-stable/full_audit.json": "a86faa239db03be9a407af30cd7ad270c0cc01f0712e89a7e3424b9415ae9d2e",
+      "outputs/motion-planning-v4-1/collision-audit/final-stable/compact.json": "e754763ed8d5e6656ed4fb9cd918a55030094f6a22cfb04fbe96e4de5f1213ee",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/result.json": "daa21ecbb41f948e3a222974769b0895ec06c4381e2a49b75b525ff2b6df7479",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/trace.json": "f28c834dbfaabf3f3cadca072088ee37bbd26d7aaadc67841beb64942b0af155",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/plan_trace.json": "e399b4a22a3b7bda3d840f892d085a70930737add108a7c680c3a46fbb0386c3",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-static-seed123456/geometry_reference.npz": "8e0c4b069ee7e23734a0ef2a9d5c977c56217d1db6b817f9f10904a3de30c260",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/result.json": "82a711dc8acd8ba49377ffdecd4a7e6fae9961a64c66c73b6cc94a5f3378e290",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/trace.json": "1d0dfe0f8691b4e4c4b5aa49bd5d7b2043cdedea0fc1bf66d5a29eb8692f7185",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/plan_trace.json": "98792d4a68abe626541d4138cb2776fded969117fc826ee9bab20a76ea3004b4",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-narrow-seed123456/geometry_reference.npz": "82e2836db6b8be20d11d32cfe39b29c94120885955a36b701b2bdd3b5fefa380",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/result.json": "a1352f1bd823cf1ddd4b84cc3fba1730a22a7ebdcc031dca9307d1682ba05872",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/trace.json": "b56bc80ff8bdc7a7d65d71db97e471b474162d92619d122fd9b541db1c204da0",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/plan_trace.json": "270fc93565bc95fb81423aa0687fc0e0cccd27b826ba408ab420def0fbec7403",
+      "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4/native/primary/global-large-seed123456/geometry_reference.npz": "297c69b872f349d14183cd4364c8fe2fa2ff2740c432bc352468e14bc95f7db3"
+    },
+    "models": {
+      "stock": "f91201b9270bea28fe72ae5466365ba410b373e0e46de7ec3fe36c0af9d2dc59",
+      "enhanced": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d"
+    },
+    "scope": "Actual recorded cooked-solid configuration counterexamples and numeric native Lula obstacle queries only; never authored or physically executed witness balls. Not a route or continuous-motion certificate.",
+    "raw_artifact": {
+      "path": "outputs/motion-planning-v4-2/collision-audit-final/model_gap_witnesses.json",
+      "sha256": "afc54d1bbccbe3b63bdbd54bd4bf7bf2b65c0e167e9b625c8bb1e7b2e5afa0ba"
+    }
+  },
+  "figures": [
+    {
+      "path": "docs/assets/motion_planning_v4_2/collision_geometry_comparison.png",
+      "sha256": "37e8e726efe9a99e8af9e7c8f73b78c5b65c2fce35c5ae09c1f62bb7ae6ad570"
+    },
+    {
+      "path": "docs/assets/motion_planning_v4_2/hand_finger_coverage.png",
+      "sha256": "5a6094ed23ffb15b1f7040e307b13696fb262f842a54bc777a32b5d1c2b9c788"
+    },
+    {
+      "path": "docs/assets/motion_planning_v4_2/collision_coverage.png",
+      "sha256": "7025b64756e4e8a9852a131503b917c1ae5af91b648288bf6a3bb4ddf3ed2327"
+    }
+  ],
+  "figure_source": {
+    "case": "motion-planning-v4-2/postures/r1",
+    "sample": 0
+  }
+}

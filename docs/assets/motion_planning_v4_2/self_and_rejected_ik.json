@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "status": "BOUNDED_NUMERIC_ENDPOINT_AND_ACTUAL_SELF_AUDIT",
+  "producer_sha256": "2777d80cdb3590a24a7ea5465733f4908fa86be78324c08c24e54fa2042d4b22",
+  "candidate_classifications": {
+    "NUMERIC_PHYSICAL_INTERSECTION_AT_IK_ENDPOINT": 8,
+    "ENDPOINT_ONLY_CANNOT_DIAGNOSE_FAILED_ROUTE_OR_TRAJECTORY": 1,
+    "ACCEPTED_OR_DUPLICATE_ENDPOINT_RETAINED_WITHOUT_REAUDIT": 1
+  },
+  "physically_clear_model_rejected_endpoints": [],
+  "limitations": [
+    "Physical candidate poses are independently checked URDF counterfactuals, not actual observed configurations.",
+    "No finite IK candidate audit establishes whole-goal or whole-path infeasibility.",
+    "Route/trajectory rejection requires its failed interior configuration; endpoint clearance alone cannot diagnose it.",
+    "Positive intersection balls establish numeric solid overlap, separate from native contacts, offsets and physical execution.",
+    "The nominal nonpenetrating mount remains explicitly qualified and source/frame conditional."
+  ],
+  "actual_self_geometry": {
+    "states": 23,
+    "source_sha256": {
+      "outputs/motion-planning-v4-2/postures/r1/result.json": "a1a407c44c81569f75b1ef8e0ebbdb5b5c63725c892f9c3b24c30c8a7a356d56",
+      "outputs/motion-planning-v4-2/postures/r1/trace.json": "e414b9f61c61ada1f384841dd7532a7bd53a94e736d05a03a5b048f0c4b23279",
+      "outputs/motion-planning-v4-2/postures/r1/geometry_reference.npz": "0dd4e732ed4e5219852c6dc43b7fa870a666cb272c369ff54abffb8f7c23359d",
+      "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json": "4f817bf9aac4ce450b29e443a5b6893eb3b6b588c27ae215156fb344ca30cedb",
+      "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/roundtrip_trace.json": "98da368f813e0a9223890a41c6cb6f16cadf07be26d682ea441c0d2342dc1ccc",
+      "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "outputs/motion-planning-v4-2/static/stock/large/seed-123456/result.json": "4b43f5ec7381eb4619dc13242056b3bfc5a3fb1a63c5b517fa5ba7894f958069",
+      "outputs/motion-planning-v4-2/static/stock/large/seed-123456/trace.json": "2c322c987851a2687320e4ed9ceeab0ea14cee7d73e042fe7fc176e5df46058e",
+      "outputs/motion-planning-v4-2/static/stock/large/seed-123456/geometry_reference.npz": "83f1c6297cd7a90f5c9ab99713041a06920600d042a963db27df8b0e4163062d"
+    },
+    "pair_queries": 966,
+    "pair_classifications": {
+      "SEPARATED_BEYOND_FRAME_ALLOWANCE": 966
+    },
+    "minimum_separation_lower_bound_m": 0.004335566298426782,
+    "nonseparated_or_unresolved": [],
+    "scope": "All measured nonadjacent pairs, including physical finger/finger; structural exclusions are explicitly listed in raw evidence. No absence-of-contact-report inference."
+  },
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-2/independent-self-and-ik-audit/candidates.json",
+    "sha256": "d568da35954da79d204d90b82e59875569a0c61aafc26a4f82c8d53aaf153965"
+  }
+}

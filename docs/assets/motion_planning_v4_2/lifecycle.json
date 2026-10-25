@@ -1,0 +1,3187 @@
+{
+  "schema_version": 1,
+  "producer": {
+    "path": "scripts/summarize_global_validation_v4_2.py",
+    "sha256": "e956815f0dbb50fe43e873ded8f8d986b25e09e1ce35e8d20c90b09f32a27015"
+  },
+  "input_root": "outputs/motion-planning-v4-2",
+  "meaning": "Evidence inventory only. Missing/failed attempts are retained. A planner rejection does not establish physical infeasibility; zero contact reports alone do not establish geometric clearance.",
+  "attempts": [
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1/result.json",
+        "sha256": "4c0689b868f9312c7c81a6fb59699be68a482c118c8822e65b5f58da8aa5012f"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1/launch.json",
+        "sha256": "c3c62fe6649a05fd4743f4746033eb024c2eaa3f41fdeb874256a8d5bdd15dfc"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cancel/r1/driver_result.json",
+        "sha256": "467f2e14199f0be0da959d44fa839573d213dbd34a8073032081e36efa3ce344"
+      },
+      "declared_label": "lifecycle/enhanced/cancel/r1",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 17.946056018117815,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "62a6989b8a19412ab96fb756d6f7cc598c78e135917783a7bcfad2ec509002cd",
+      "measurement_valid": true,
+      "mode": "cancel",
+      "seed": 123456,
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      },
+      "behavior_checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "home_after_cancel": true,
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "ownership_released": true,
+        "request_interrupted": true,
+        "no_stale_commands_after_completion": true,
+        "pre_fault_geometry_clear": true,
+        "cancel_final_velocity_zero": true,
+        "cancel_hold_one_second_observed": true,
+        "cancel_hold_tracking_within_original_bounds": true,
+        "cancel_hold_no_additional_arm_commands": true,
+        "cancel_hold_ownership_released_throughout": true,
+        "cancel_hold_zero_velocity_target": true,
+        "cancel_hold_geometry_clear": true
+      },
+      "behavior_acceptance_passed": true,
+      "source_unchanged": true,
+      "operations": [
+        {
+          "id": 0,
+          "label": "setup_start",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "wall_seconds": 0.6934020020999014,
+          "sample_count": 86,
+          "action_count": 85,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {},
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465549047302
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0001659393310546875,
+          "timing": {
+            "snapshot_seconds": null,
+            "world_update_seconds": null,
+            "ik_seconds": null,
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null,
+            "configuration_validation_calls": null,
+            "configuration_validation_wall_seconds": null,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": null,
+            "trajectory_duration": null,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "move_to_goal",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "wall_seconds": 0.8263011020608246,
+          "sample_count": 88,
+          "action_count": 87,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "execution_wall_seconds": 0.7403553542681038,
+            "execution_sim_seconds": 1.433333408087492,
+            "planning_and_validation_wall_seconds": 0.06941622216254473,
+            "rrt_seconds": 0.0003531891852617264,
+            "commanded_updates": 86,
+            "final_hold": true,
+            "position_error_m": 0.0009896916369831444,
+            "orientation_error_rad": 0.002203610972778534,
+            "measured_arm_velocity_rad_s": 0.005188426468521357,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 87,
+              "p50": 0.008069944169681875,
+              "p95": 0.03099931019179204,
+              "p99": 0.031325588079907526,
+              "worst": 0.03136763534431575
+            },
+            "control_interval_ms": {
+              "count": 85,
+              "p50": 8.407734800130129,
+              "p95": 9.902150835841894,
+              "p99": 10.703344065695998,
+              "worst": 11.557665187865496
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "trajectory_validation": {
+              "samples": 272,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465560337218
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0024104416370391846,
+          "after_target_gap_maximum_rad": 0.0010480880737304688,
+          "timing": {
+            "snapshot_seconds": 0.0018596621230244637,
+            "world_update_seconds": 0.0002328041009604931,
+            "ik_seconds": 8.526910096406937e-05,
+            "rrt_seconds": 0.0003531891852617264,
+            "route_validation_seconds": 0.013391818851232529,
+            "trajectory_generation_seconds": 9.164074435830116e-05,
+            "trajectory_validation_seconds": 0.0460695899091661,
+            "planning_and_validation_wall_seconds": 0.06941622216254473,
+            "configuration_validation_calls": 386.0,
+            "configuration_validation_wall_seconds": 0.04639393510296941,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "trajectory_duration": 1.0373968004413578,
+            "execution_wall_seconds": 0.7403553542681038,
+            "execution_sim_seconds": 1.433333408087492
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "interrupted_home",
+          "kind": "interruption",
+          "runtime_generation": 0,
+          "cancelled": true,
+          "returned_success": false,
+          "strict_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.346528853381713,
+          "orientation_error_rad": 0.5677339932319422,
+          "maximum_actual_joint_displacement_rad": 0.024906128644943237,
+          "wall_seconds": 0.20697577111423016,
+          "sample_count": 25,
+          "action_count": 11,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "cancelled",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "execution_wall_seconds": 0.12090450711548328,
+            "execution_sim_seconds": 0.15000000782310963,
+            "planning_and_validation_wall_seconds": 0.050617790780961514,
+            "rrt_seconds": 0.00033312197774648666,
+            "commanded_updates": 10,
+            "final_hold": true,
+            "position_error_m": 0.35661296000959614,
+            "orientation_error_rad": 0.582155571998307,
+            "measured_arm_velocity_rad_s": 0.35895732045173645,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 10,
+              "p50": 0.001346112116600351,
+              "p95": 0.004609166803192864,
+              "p99": 0.0049949541725284805,
+              "worst": 0.0050914010148623845
+            },
+            "control_interval_ms": {
+              "count": 9,
+              "p50": 11.500898748636246,
+              "p95": 13.536772038787603,
+              "p99": 13.79369055852294,
+              "worst": 13.857920188456774
+            },
+            "failure_message": "",
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "cancelled",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465593304802
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010480880737304688,
+          "after_target_gap_maximum_rad": 0.011001288890838623,
+          "timing": {
+            "snapshot_seconds": 0.001981979701668024,
+            "world_update_seconds": 0.0002437247894704342,
+            "ik_seconds": 0.00010224990546703339,
+            "rrt_seconds": 0.00033312197774648666,
+            "route_validation_seconds": 0.007286401931196451,
+            "trajectory_generation_seconds": 3.611762076616287e-05,
+            "trajectory_validation_seconds": 0.033256100956350565,
+            "planning_and_validation_wall_seconds": 0.050617790780961514,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.031179924495518208,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": 0.12090450711548328,
+            "execution_sim_seconds": 0.15000000782310963
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 3,
+          "label": "post_cancel_hold",
+          "kind": "hold_observation",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": false,
+          "strict_success": false,
+          "measured_full_pose_within_tolerances": null,
+          "position_error_m": null,
+          "orientation_error_rad": null,
+          "maximum_actual_joint_displacement_rad": 0.014690279960632324,
+          "wall_seconds": 0.4266104828566313,
+          "sample_count": 62,
+          "action_count": 0,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "cancelled",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "execution_wall_seconds": 0.12090450711548328,
+            "execution_sim_seconds": 0.15000000782310963,
+            "planning_and_validation_wall_seconds": 0.050617790780961514,
+            "rrt_seconds": 0.00033312197774648666,
+            "commanded_updates": 10,
+            "final_hold": true,
+            "position_error_m": 0.35661296000959614,
+            "orientation_error_rad": 0.582155571998307,
+            "measured_arm_velocity_rad_s": 0.35895732045173645,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 10,
+              "p50": 0.001346112116600351,
+              "p95": 0.004609166803192864,
+              "p99": 0.0049949541725284805,
+              "worst": 0.0050914010148623845
+            },
+            "control_interval_ms": {
+              "count": 9,
+              "p50": 11.500898748636246,
+              "p95": 13.536772038787603,
+              "p99": 13.79369055852294,
+              "worst": 13.857920188456774
+            },
+            "failure_message": "",
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "hold_observation",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465592938878
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.011001288890838623,
+          "after_target_gap_maximum_rad": 0.007705390453338623,
+          "hold_observation": {
+            "readings_available": true,
+            "duration_sim_seconds": 1.0000000521540642,
+            "additional_arm_commands": 0,
+            "maximum_actual_target_gap_rad": 0.011503756046295166,
+            "longest_sampled_above_sustained_limit_seconds": 0.0,
+            "tracking_within_original_bounds": true,
+            "no_additional_arm_commands": true,
+            "ownership_released_throughout": true,
+            "final_actual_target_gap_max_rad": 0.007705390453338623,
+            "final_measured_arm_velocity_max_rad_s": 0.0,
+            "maximum_measured_arm_velocity_rad_s": 0.08640430122613907
+          },
+          "timing": {
+            "snapshot_seconds": 0.001981979701668024,
+            "world_update_seconds": 0.0002437247894704342,
+            "ik_seconds": 0.00010224990546703339,
+            "rrt_seconds": 0.00033312197774648666,
+            "route_validation_seconds": 0.007286401931196451,
+            "trajectory_generation_seconds": 3.611762076616287e-05,
+            "trajectory_validation_seconds": 0.033256100956350565,
+            "planning_and_validation_wall_seconds": 0.050617790780961514,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.031179924495518208,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": 0.12090450711548328,
+            "execution_sim_seconds": 0.15000000782310963
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 4,
+          "label": "home_after_cancel",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0014480090820865558,
+          "orientation_error_rad": 0.0031383711973132647,
+          "maximum_actual_joint_displacement_rad": 0.5684324949979782,
+          "wall_seconds": 1.1824543136171997,
+          "sample_count": 135,
+          "action_count": 134,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7173017380439211,
+            "execution_wall_seconds": 1.1166269900277257,
+            "execution_sim_seconds": 2.2166667822748423,
+            "planning_and_validation_wall_seconds": 0.051036391872912645,
+            "rrt_seconds": 0.0003317701630294323,
+            "commanded_updates": 133,
+            "final_hold": true,
+            "position_error_m": 0.0014480090820865558,
+            "orientation_error_rad": 0.0031383711973132647,
+            "measured_arm_velocity_rad_s": 0.008977760560810566,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 134,
+              "p50": 0.012375834687908427,
+              "p95": 0.08709086913427738,
+              "p99": 0.09175089944962667,
+              "worst": 0.09202105988625692
+            },
+            "control_interval_ms": {
+              "count": 132,
+              "p50": 8.323192363604903,
+              "p95": 9.032511478289962,
+              "p99": 9.741571922786534,
+              "worst": 9.947458747774363
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9219348144429598,
+            "trajectory_validation": {
+              "samples": 189,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465587726925
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.007705390453338623,
+          "after_target_gap_maximum_rad": 0.0016654878854751587,
+          "timing": {
+            "snapshot_seconds": 0.0021003312431275845,
+            "world_update_seconds": 0.0003801588900387287,
+            "ik_seconds": 0.00010737031698226929,
+            "rrt_seconds": 0.0003317701630294323,
+            "route_validation_seconds": 0.007180092856287956,
+            "trajectory_generation_seconds": 3.988528624176979e-05,
+            "trajectory_validation_seconds": 0.03306370135396719,
+            "planning_and_validation_wall_seconds": 0.051036391872912645,
+            "configuration_validation_calls": 250.0,
+            "configuration_validation_wall_seconds": 0.03081604139879346,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7173017380439211,
+            "trajectory_duration": 0.7173017380439211,
+            "execution_wall_seconds": 1.1166269900277257,
+            "execution_sim_seconds": 2.2166667822748423
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        }
+      ],
+      "episode_flags": {
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "request_interrupted": true,
+        "ownership_released": true,
+        "no_stale_commands_after_completion": true
+      },
+      "post_fault_result": null,
+      "final_execution_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "interruption_snapshot_scope": "Stop/reset/close operation observations end before the fault; their transient solver restored=False is not the final cleanup result. post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics."
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1/result.json",
+        "sha256": "ab012b9ba599519c329871a15b7db98401c04d23cd95dd4b7e56936c48b5fa92"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1/launch.json",
+        "sha256": "454d8b3e591115a109abf9f9c2f76cfd2a8869ef3b814d8787f5e526e7146741"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/close/r1/driver_result.json",
+        "sha256": "4408e711ed8edb3cee8643a96b8859c978f51619f312ba92404a0ea2955ce0f5"
+      },
+      "declared_label": "lifecycle/enhanced/close/r1",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 16.04165921965614,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "62a6989b8a19412ab96fb756d6f7cc598c78e135917783a7bcfad2ec509002cd",
+      "measurement_valid": true,
+      "mode": "close",
+      "seed": 123456,
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      },
+      "behavior_checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "ownership_released": true,
+        "request_interrupted": true,
+        "no_stale_commands_after_completion": true,
+        "pre_fault_geometry_clear": true,
+        "lifecycle_failure_code": true,
+        "no_trajectory_restart_after_play": true,
+        "strategy_closed": true
+      },
+      "behavior_acceptance_passed": true,
+      "source_unchanged": true,
+      "operations": [
+        {
+          "id": 0,
+          "label": "setup_start",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "wall_seconds": 0.687599831726402,
+          "sample_count": 86,
+          "action_count": 85,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {},
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465549047302
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0001659393310546875,
+          "timing": {
+            "snapshot_seconds": null,
+            "world_update_seconds": null,
+            "ik_seconds": null,
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null,
+            "configuration_validation_calls": null,
+            "configuration_validation_wall_seconds": null,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": null,
+            "trajectory_duration": null,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "move_to_goal",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "wall_seconds": 0.8209831891581416,
+          "sample_count": 88,
+          "action_count": 87,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "execution_wall_seconds": 0.7313946108333766,
+            "execution_sim_seconds": 1.433333408087492,
+            "planning_and_validation_wall_seconds": 0.07234682003036141,
+            "rrt_seconds": 0.00045009981840848923,
+            "commanded_updates": 86,
+            "final_hold": true,
+            "position_error_m": 0.0009896916369831444,
+            "orientation_error_rad": 0.002203610972778534,
+            "measured_arm_velocity_rad_s": 0.005188426468521357,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 87,
+              "p50": 0.008069944169681875,
+              "p95": 0.03099931019179204,
+              "p99": 0.031325588079907526,
+              "worst": 0.03136763534431575
+            },
+            "control_interval_ms": {
+              "count": 85,
+              "p50": 8.36156914010644,
+              "p95": 9.604452084749935,
+              "p99": 10.450150314718485,
+              "worst": 10.480665136128664
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "trajectory_validation": {
+              "samples": 272,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465560337218
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0024104416370391846,
+          "after_target_gap_maximum_rad": 0.0010480880737304688,
+          "timing": {
+            "snapshot_seconds": 0.002027925569564104,
+            "world_update_seconds": 0.00026171887293457985,
+            "ik_seconds": 8.44472087919712e-05,
+            "rrt_seconds": 0.00045009981840848923,
+            "route_validation_seconds": 0.014863668009638786,
+            "trajectory_generation_seconds": 8.899625390768051e-05,
+            "trajectory_validation_seconds": 0.04724225401878357,
+            "planning_and_validation_wall_seconds": 0.07234682003036141,
+            "configuration_validation_calls": 386.0,
+            "configuration_validation_wall_seconds": 0.04827405046671629,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "trajectory_duration": 1.0373968004413578,
+            "execution_wall_seconds": 0.7313946108333766,
+            "execution_sim_seconds": 1.433333408087492
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "interrupted_home",
+          "kind": "interruption",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": false,
+          "strict_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "wall_seconds": 0.17764891311526299,
+          "sample_count": 21,
+          "action_count": 10,
+          "final_applied_arm_velocity_zero": false,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "executing",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "planning_and_validation_wall_seconds": 0.05011014826595783,
+            "rrt_seconds": 0.0003845682367682457,
+            "position_error_m": 0.35661296000959614,
+            "orientation_error_rad": 0.582155571998307,
+            "measured_arm_velocity_rad_s": 0.35895732045173645,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": false,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "other_noncompletion",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465593304802
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010480880737304688,
+          "after_target_gap_maximum_rad": 0.0029243379831314087,
+          "timing": {
+            "snapshot_seconds": 0.0019287611357867718,
+            "world_update_seconds": 0.00024164095520973206,
+            "ik_seconds": 0.00010227086022496223,
+            "rrt_seconds": 0.0003845682367682457,
+            "route_validation_seconds": 0.007317360024899244,
+            "trajectory_generation_seconds": 3.4724827855825424e-05,
+            "trajectory_validation_seconds": 0.03260718332603574,
+            "planning_and_validation_wall_seconds": 0.05011014826595783,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.030665405094623566,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        }
+      ],
+      "episode_flags": {
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "request_interrupted": true,
+        "ownership_released": true,
+        "no_stale_commands_after_completion": true,
+        "no_trajectory_restart_after_play": true,
+        "strategy_closed": true
+      },
+      "post_fault_result": {
+        "status": "failed",
+        "failure_code": "lifecycle_invalidated",
+        "execution_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "final_execution_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "interruption_snapshot_scope": "Stop/reset/close operation observations end before the fault; their transient solver restored=False is not the final cleanup result. post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics."
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1/result.json",
+        "sha256": "14e29e44ef4d0130246c6dfd20229760066b0f8a9b7511519f01907caf524c69"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1/launch.json",
+        "sha256": "b7d94b9d88976ebc1a4c3d739b7a47af9f5df415cf0491088f7de89100436c77"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/cycles/r1/driver_result.json",
+        "sha256": "18b43cb72844d935f95fc7254109aeec59fa0e77606b4a0e567958c681f184c2"
+      },
+      "declared_label": "lifecycle/enhanced/cycles/r1",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 22.152992088347673,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "62a6989b8a19412ab96fb756d6f7cc598c78e135917783a7bcfad2ec509002cd",
+      "measurement_valid": true,
+      "mode": "cycles",
+      "seed": 123456,
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      },
+      "behavior_checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "home_cycle_1": true,
+        "home_cycle_2": true,
+        "home_cycle_3": true,
+        "goal_cycle_2": true,
+        "goal_cycle_3": true
+      },
+      "behavior_acceptance_passed": true,
+      "source_unchanged": true,
+      "operations": [
+        {
+          "id": 0,
+          "label": "setup_start",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "wall_seconds": 0.7083373521454632,
+          "sample_count": 86,
+          "action_count": 85,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {},
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465549047302
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0001659393310546875,
+          "timing": {
+            "snapshot_seconds": null,
+            "world_update_seconds": null,
+            "ik_seconds": null,
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null,
+            "configuration_validation_calls": null,
+            "configuration_validation_wall_seconds": null,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": null,
+            "trajectory_duration": null,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "move_to_goal",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "wall_seconds": 0.8359614899381995,
+          "sample_count": 88,
+          "action_count": 87,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "execution_wall_seconds": 0.7453649030067027,
+            "execution_sim_seconds": 1.433333408087492,
+            "planning_and_validation_wall_seconds": 0.07406293321400881,
+            "rrt_seconds": 0.00033647799864411354,
+            "commanded_updates": 86,
+            "final_hold": true,
+            "position_error_m": 0.0009896916369831444,
+            "orientation_error_rad": 0.002203610972778534,
+            "measured_arm_velocity_rad_s": 0.005188426468521357,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 87,
+              "p50": 0.008069944169681875,
+              "p95": 0.03099931019179204,
+              "p99": 0.031325588079907526,
+              "worst": 0.03136763534431575
+            },
+            "control_interval_ms": {
+              "count": 85,
+              "p50": 8.50713113322854,
+              "p95": 9.880085382610558,
+              "p99": 10.688667818903921,
+              "worst": 10.913922917097807
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "trajectory_validation": {
+              "samples": 272,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465560337218
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0024104416370391846,
+          "after_target_gap_maximum_rad": 0.0010480880737304688,
+          "timing": {
+            "snapshot_seconds": 0.001976609695702791,
+            "world_update_seconds": 0.00024149101227521896,
+            "ik_seconds": 9.430618956685066e-05,
+            "rrt_seconds": 0.00033647799864411354,
+            "route_validation_seconds": 0.01354687800630927,
+            "trajectory_generation_seconds": 9.619910269975662e-05,
+            "trajectory_validation_seconds": 0.0505599700845778,
+            "planning_and_validation_wall_seconds": 0.07406293321400881,
+            "configuration_validation_calls": 386.0,
+            "configuration_validation_wall_seconds": 0.049455714877694845,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "trajectory_duration": 1.0373968004413578,
+            "execution_wall_seconds": 0.7453649030067027,
+            "execution_sim_seconds": 1.433333408087492
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "home_cycle_1",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0014597405075184988,
+          "orientation_error_rad": 0.0034517742181980754,
+          "maximum_actual_joint_displacement_rad": 0.5807681828737259,
+          "wall_seconds": 1.1760556059889495,
+          "sample_count": 135,
+          "action_count": 134,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "execution_wall_seconds": 1.1087877368554473,
+            "execution_sim_seconds": 2.2166667822748423,
+            "planning_and_validation_wall_seconds": 0.05221455916762352,
+            "rrt_seconds": 0.0003287740983068943,
+            "commanded_updates": 133,
+            "final_hold": true,
+            "position_error_m": 0.0014597405075184988,
+            "orientation_error_rad": 0.0034517742181980754,
+            "measured_arm_velocity_rad_s": 0.008808505721390247,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 134,
+              "p50": 0.012121886345573762,
+              "p95": 0.08559354361610759,
+              "p99": 0.08991853442507138,
+              "worst": 0.09028595652895322
+            },
+            "control_interval_ms": {
+              "count": 132,
+              "p50": 8.217609487473965,
+              "p95": 9.001554036512971,
+              "p99": 10.441484735347329,
+              "worst": 11.210917960852385
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465588523113
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010480880737304688,
+          "after_target_gap_maximum_rad": 0.0016914904117584229,
+          "timing": {
+            "snapshot_seconds": 0.0019989912398159504,
+            "world_update_seconds": 0.00024028820917010307,
+            "ik_seconds": 0.0001043449155986309,
+            "rrt_seconds": 0.0003287740983068943,
+            "route_validation_seconds": 0.007200281135737896,
+            "trajectory_generation_seconds": 3.823079168796539e-05,
+            "trajectory_validation_seconds": 0.03496147273108363,
+            "planning_and_validation_wall_seconds": 0.05221455916762352,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.03222684329375625,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": 1.1087877368554473,
+            "execution_sim_seconds": 2.2166667822748423
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 3,
+          "label": "goal_cycle_2",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.000847545908864718,
+          "orientation_error_rad": 0.0022182886165167254,
+          "maximum_actual_joint_displacement_rad": 0.5770260244607925,
+          "wall_seconds": 0.6443354436196387,
+          "sample_count": 72,
+          "action_count": 71,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7202986393019839,
+            "execution_wall_seconds": 0.5800438104197383,
+            "execution_sim_seconds": 1.1666667275130749,
+            "planning_and_validation_wall_seconds": 0.04940191796049476,
+            "rrt_seconds": 0.00032992614433169365,
+            "commanded_updates": 70,
+            "final_hold": true,
+            "position_error_m": 0.000847545908864718,
+            "orientation_error_rad": 0.0022182886165167254,
+            "measured_arm_velocity_rad_s": 0.005187067668884993,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 71,
+              "p50": 0.006621751703177803,
+              "p95": 0.068416095870283,
+              "p99": 0.07213258535171393,
+              "worst": 0.0727997548229542
+            },
+            "control_interval_ms": {
+              "count": 69,
+              "p50": 8.166162762790918,
+              "p95": 9.063382353633642,
+              "p99": 9.591394681483504,
+              "worst": 9.862520266324282
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9503569271212542,
+            "trajectory_validation": {
+              "samples": 189,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.1409646559213899
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0016914904117584229,
+          "after_target_gap_maximum_rad": 0.0010476112365722656,
+          "timing": {
+            "snapshot_seconds": 0.0020526121370494366,
+            "world_update_seconds": 0.00023484788835048676,
+            "ik_seconds": 8.929707109928131e-05,
+            "rrt_seconds": 0.00032992614433169365,
+            "route_validation_seconds": 0.007175844628363848,
+            "trajectory_generation_seconds": 3.485521301627159e-05,
+            "trajectory_validation_seconds": 0.03227024897933006,
+            "planning_and_validation_wall_seconds": 0.04940191796049476,
+            "configuration_validation_calls": 250.0,
+            "configuration_validation_wall_seconds": 0.030340138357132673,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7202986393019839,
+            "trajectory_duration": 0.7202986393019839,
+            "execution_wall_seconds": 0.5800438104197383,
+            "execution_sim_seconds": 1.1666667275130749
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 4,
+          "label": "home_cycle_2",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0014563949845938654,
+          "orientation_error_rad": 0.00292096857462232,
+          "maximum_actual_joint_displacement_rad": 0.5795928984880447,
+          "wall_seconds": 1.1794808749109507,
+          "sample_count": 135,
+          "action_count": 134,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7242809263203135,
+            "execution_wall_seconds": 1.1126605411991477,
+            "execution_sim_seconds": 2.2166667822748423,
+            "planning_and_validation_wall_seconds": 0.05170280393213034,
+            "rrt_seconds": 0.0003452235832810402,
+            "commanded_updates": 133,
+            "final_hold": true,
+            "position_error_m": 0.0014563949845938654,
+            "orientation_error_rad": 0.00292096857462232,
+            "measured_arm_velocity_rad_s": 0.00876534916460514,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 134,
+              "p50": 0.012059074951682736,
+              "p95": 0.08556762753578598,
+              "p99": 0.08990935562702591,
+              "worst": 0.09027463464590485
+            },
+            "control_interval_ms": {
+              "count": 132,
+              "p50": 8.278673747554421,
+              "p95": 9.267253498546777,
+              "p99": 10.199151821434498,
+              "worst": 10.56238729506731
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9535395783575059,
+            "trajectory_validation": {
+              "samples": 191,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465588013135
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010476112365722656,
+          "after_target_gap_maximum_rad": 0.0016685426235198975,
+          "timing": {
+            "snapshot_seconds": 0.00201584305614233,
+            "world_update_seconds": 0.00023570004850625992,
+            "ik_seconds": 0.00010385410860180855,
+            "rrt_seconds": 0.0003452235832810402,
+            "route_validation_seconds": 0.0073913466185331345,
+            "trajectory_generation_seconds": 4.054605960845947e-05,
+            "trajectory_validation_seconds": 0.033766050823032856,
+            "planning_and_validation_wall_seconds": 0.05170280393213034,
+            "configuration_validation_calls": 253.0,
+            "configuration_validation_wall_seconds": 0.03158452594652772,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7242809263203135,
+            "trajectory_duration": 0.7242809263203135,
+            "execution_wall_seconds": 1.1126605411991477,
+            "execution_sim_seconds": 2.2166667822748423
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 5,
+          "label": "goal_cycle_3",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0008487361366077583,
+          "orientation_error_rad": 0.0009295358635235283,
+          "maximum_actual_joint_displacement_rad": 0.5775090605020523,
+          "wall_seconds": 0.6463358202017844,
+          "sample_count": 72,
+          "action_count": 71,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7216026603107258,
+            "execution_wall_seconds": 0.5795292421244085,
+            "execution_sim_seconds": 1.1666667275130749,
+            "planning_and_validation_wall_seconds": 0.051488433964550495,
+            "rrt_seconds": 0.0003359168767929077,
+            "commanded_updates": 70,
+            "final_hold": true,
+            "position_error_m": 0.0008487361366077583,
+            "orientation_error_rad": 0.0009295358635235283,
+            "measured_arm_velocity_rad_s": 0.005188211798667908,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 71,
+              "p50": 0.006610026960140347,
+              "p95": 0.06820145062004865,
+              "p99": 0.07187569256979436,
+              "worst": 0.07257420421403082
+            },
+            "control_interval_ms": {
+              "count": 69,
+              "p50": 8.203484117984772,
+              "p95": 8.883923571556807,
+              "p99": 9.548259191215038,
+              "worst": 9.571838192641735
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.94979267467764,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.140964655915713
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0016685426235198975,
+          "after_target_gap_maximum_rad": 0.0010478496551513672,
+          "timing": {
+            "snapshot_seconds": 0.0020537744276225567,
+            "world_update_seconds": 0.00023638224229216576,
+            "ik_seconds": 8.865492418408394e-05,
+            "rrt_seconds": 0.0003359168767929077,
+            "route_validation_seconds": 0.007476225960999727,
+            "trajectory_generation_seconds": 3.688875585794449e-05,
+            "trajectory_validation_seconds": 0.033834478817880154,
+            "planning_and_validation_wall_seconds": 0.051488433964550495,
+            "configuration_validation_calls": 251.0,
+            "configuration_validation_wall_seconds": 0.031626241747289896,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7216026603107258,
+            "trajectory_duration": 0.7216026603107258,
+            "execution_wall_seconds": 0.5795292421244085,
+            "execution_sim_seconds": 1.1666667275130749
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 6,
+          "label": "home_cycle_3",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0014554014676361317,
+          "orientation_error_rad": 0.0029202800899362476,
+          "maximum_actual_joint_displacement_rad": 0.5801531374454498,
+          "wall_seconds": 1.1835500448942184,
+          "sample_count": 135,
+          "action_count": 134,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7246169735889001,
+            "execution_wall_seconds": 1.1197300208732486,
+            "execution_sim_seconds": 2.2166667822748423,
+            "planning_and_validation_wall_seconds": 0.04943613288924098,
+            "rrt_seconds": 0.0003281431272625923,
+            "commanded_updates": 133,
+            "final_hold": true,
+            "position_error_m": 0.0014554014676361317,
+            "orientation_error_rad": 0.0029202800899362476,
+            "measured_arm_velocity_rad_s": 0.00869300588965416,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 134,
+              "p50": 0.011979115748955993,
+              "p95": 0.0853720270151355,
+              "p99": 0.08971005723421356,
+              "worst": 0.09007631466333649
+            },
+            "control_interval_ms": {
+              "count": 132,
+              "p50": 8.24701995588839,
+              "p95": 9.579470055177804,
+              "p99": 10.366617338731883,
+              "worst": 15.860006213188171
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9522179031555348,
+            "trajectory_validation": {
+              "samples": 191,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465587395907
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010478496551513672,
+          "after_target_gap_maximum_rad": 0.0016485601663589478,
+          "timing": {
+            "snapshot_seconds": 0.001971330028027296,
+            "world_update_seconds": 0.00023840507492423058,
+            "ik_seconds": 9.891530498862267e-05,
+            "rrt_seconds": 0.0003281431272625923,
+            "route_validation_seconds": 0.0072652618400752544,
+            "trajectory_generation_seconds": 3.600725904107094e-05,
+            "trajectory_validation_seconds": 0.032164011150598526,
+            "planning_and_validation_wall_seconds": 0.04943613288924098,
+            "configuration_validation_calls": 253.0,
+            "configuration_validation_wall_seconds": 0.030453245155513287,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7246169735889001,
+            "trajectory_duration": 0.7246169735889001,
+            "execution_wall_seconds": 1.1197300208732486,
+            "execution_sim_seconds": 2.2166667822748423
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        }
+      ],
+      "episode_flags": {},
+      "post_fault_result": null,
+      "final_execution_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "interruption_snapshot_scope": "Stop/reset/close operation observations end before the fault; their transient solver restored=False is not the final cleanup result. post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics."
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1/result.json",
+        "sha256": "ac1d9c2f3274a960c4e7bc88ea251b521c6f5043ea303299bedfe3885679aa61"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1/launch.json",
+        "sha256": "156ac3cba2c7ed1f43a955d10a4fce5a642d19cc2dfb7a530be9fb9a42a7a397"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/reset/r1/driver_result.json",
+        "sha256": "f14c0cf9b6115da757358c5f895d04fbff2ceb5501336e674e89a36f3f15263d"
+      },
+      "declared_label": "lifecycle/enhanced/reset/r1",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 19.04495178721845,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "62a6989b8a19412ab96fb756d6f7cc598c78e135917783a7bcfad2ec509002cd",
+      "measurement_valid": true,
+      "mode": "reset",
+      "seed": 123456,
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      },
+      "behavior_checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "home_after_rebuild": true,
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "ownership_released": true,
+        "request_interrupted": true,
+        "no_stale_commands_after_completion": true,
+        "pre_fault_geometry_clear": true,
+        "lifecycle_failure_code": true,
+        "no_trajectory_restart_after_play": true,
+        "rebuild_new_strategy": true,
+        "old_strategy_closed": true,
+        "move_away_after_rebuild": true
+      },
+      "behavior_acceptance_passed": true,
+      "source_unchanged": true,
+      "operations": [
+        {
+          "id": 0,
+          "label": "setup_start",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "wall_seconds": 0.6886617210693657,
+          "sample_count": 86,
+          "action_count": 85,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {},
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465549047302
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0001659393310546875,
+          "timing": {
+            "snapshot_seconds": null,
+            "world_update_seconds": null,
+            "ik_seconds": null,
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null,
+            "configuration_validation_calls": null,
+            "configuration_validation_wall_seconds": null,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": null,
+            "trajectory_duration": null,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "move_to_goal",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "wall_seconds": 0.8274891283363104,
+          "sample_count": 88,
+          "action_count": 87,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "execution_wall_seconds": 0.7412674170918763,
+            "execution_sim_seconds": 1.433333408087492,
+            "planning_and_validation_wall_seconds": 0.06927983229979873,
+            "rrt_seconds": 0.0003410661593079567,
+            "commanded_updates": 86,
+            "final_hold": true,
+            "position_error_m": 0.0009896916369831444,
+            "orientation_error_rad": 0.002203610972778534,
+            "measured_arm_velocity_rad_s": 0.005188426468521357,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 87,
+              "p50": 0.008069944169681875,
+              "p95": 0.03099931019179204,
+              "p99": 0.031325588079907526,
+              "worst": 0.03136763534431575
+            },
+            "control_interval_ms": {
+              "count": 85,
+              "p50": 8.432421833276749,
+              "p95": 9.932334814220667,
+              "p99": 10.690759550780058,
+              "worst": 10.870232246816158
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "trajectory_validation": {
+              "samples": 272,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465560337218
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0024104416370391846,
+          "after_target_gap_maximum_rad": 0.0010480880737304688,
+          "timing": {
+            "snapshot_seconds": 0.0019357530400156975,
+            "world_update_seconds": 0.00023939693346619606,
+            "ik_seconds": 8.633080869913101e-05,
+            "rrt_seconds": 0.0003410661593079567,
+            "route_validation_seconds": 0.013397249858826399,
+            "trajectory_generation_seconds": 9.315414354205132e-05,
+            "trajectory_validation_seconds": 0.04597466578707099,
+            "planning_and_validation_wall_seconds": 0.06927983229979873,
+            "configuration_validation_calls": 386.0,
+            "configuration_validation_wall_seconds": 0.04627035604789853,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "trajectory_duration": 1.0373968004413578,
+            "execution_wall_seconds": 0.7412674170918763,
+            "execution_sim_seconds": 1.433333408087492
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "interrupted_home",
+          "kind": "interruption",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": false,
+          "strict_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "wall_seconds": 0.18575737392529845,
+          "sample_count": 21,
+          "action_count": 10,
+          "final_applied_arm_velocity_zero": false,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "executing",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "planning_and_validation_wall_seconds": 0.05050161713734269,
+            "rrt_seconds": 0.00032633915543556213,
+            "position_error_m": 0.35661296000959614,
+            "orientation_error_rad": 0.582155571998307,
+            "measured_arm_velocity_rad_s": 0.35895732045173645,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": false,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "other_noncompletion",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465593304802
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010480880737304688,
+          "after_target_gap_maximum_rad": 0.0029243379831314087,
+          "timing": {
+            "snapshot_seconds": 0.002032063901424408,
+            "world_update_seconds": 0.0002527921460568905,
+            "ik_seconds": 0.00010226015001535416,
+            "rrt_seconds": 0.00032633915543556213,
+            "route_validation_seconds": 0.007314024027436972,
+            "trajectory_generation_seconds": 3.6708079278469086e-05,
+            "trajectory_validation_seconds": 0.0330849839374423,
+            "planning_and_validation_wall_seconds": 0.05050161713734269,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.031066300347447395,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 0,
+          "label": "move_away_after_rebuild",
+          "kind": "motion",
+          "runtime_generation": 1,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009452386411831261,
+          "orientation_error_rad": 0.001907139706695262,
+          "maximum_actual_joint_displacement_rad": 0.5884856954216957,
+          "wall_seconds": 0.6453230991028249,
+          "sample_count": 72,
+          "action_count": 71,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7274749647019629,
+            "execution_wall_seconds": 0.5799109260551631,
+            "execution_sim_seconds": 1.1666667275130749,
+            "planning_and_validation_wall_seconds": 0.04988158028572798,
+            "rrt_seconds": 0.00032663997262716293,
+            "commanded_updates": 70,
+            "final_hold": true,
+            "position_error_m": 0.0009452386411831261,
+            "orientation_error_rad": 0.001907139706695262,
+            "measured_arm_velocity_rad_s": 0.005377219989895821,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 71,
+              "p50": 0.006312607333562731,
+              "p95": 0.07586813209804925,
+              "p99": 0.07989393304088623,
+              "worst": 0.08026408718720038
+            },
+            "control_interval_ms": {
+              "count": 69,
+              "p50": 8.163660299032927,
+              "p95": 8.73750289902091,
+              "p99": 10.054618455469605,
+              "worst": 10.377132799476385
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9298681820232222,
+            "trajectory_validation": {
+              "samples": 191,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.1409646555676188
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0010791569948196411,
+          "timing": {
+            "snapshot_seconds": 0.0019782520830631256,
+            "world_update_seconds": 0.00023900624364614487,
+            "ik_seconds": 0.00011792127043008804,
+            "rrt_seconds": 0.00032663997262716293,
+            "route_validation_seconds": 0.007285611238330603,
+            "trajectory_generation_seconds": 3.7960708141326904e-05,
+            "trajectory_validation_seconds": 0.032861045096069574,
+            "planning_and_validation_wall_seconds": 0.04988158028572798,
+            "configuration_validation_calls": 253.0,
+            "configuration_validation_wall_seconds": 0.030843231827020645,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7274749647019629,
+            "trajectory_duration": 0.7274749647019629,
+            "execution_wall_seconds": 0.5799109260551631,
+            "execution_sim_seconds": 1.1666667275130749
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "home_after_rebuild",
+          "kind": "motion",
+          "runtime_generation": 1,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0016930748336920632,
+          "orientation_error_rad": 0.003588255252021025,
+          "maximum_actual_joint_displacement_rad": 0.5898859351873398,
+          "wall_seconds": 1.2472698651254177,
+          "sample_count": 144,
+          "action_count": 143,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7299032790489923,
+            "execution_wall_seconds": 1.1806243900209665,
+            "execution_sim_seconds": 2.366666790097952,
+            "planning_and_validation_wall_seconds": 0.05175729235634208,
+            "rrt_seconds": 0.00032265204936265945,
+            "commanded_updates": 142,
+            "final_hold": true,
+            "position_error_m": 0.0016930748336920632,
+            "orientation_error_rad": 0.003588255252021025,
+            "measured_arm_velocity_rad_s": 0.007809062954038382,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 143,
+              "p50": 0.014233003003082112,
+              "p95": 0.1021818181448366,
+              "p99": 0.10759438957504289,
+              "worst": 0.10798219348720567
+            },
+            "control_interval_ms": {
+              "count": 141,
+              "p50": 8.213784079998732,
+              "p95": 8.965666871517897,
+              "p99": 10.54742019623518,
+              "worst": 10.57254709303379
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9296713787551039,
+            "trajectory_validation": {
+              "samples": 192,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465553564688
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010791569948196411,
+          "after_target_gap_maximum_rad": 0.0019414573907852173,
+          "timing": {
+            "snapshot_seconds": 0.00216504093259573,
+            "world_update_seconds": 0.00023916689679026604,
+            "ik_seconds": 0.0001044049859046936,
+            "rrt_seconds": 0.00032265204936265945,
+            "route_validation_seconds": 0.007824536878615618,
+            "trajectory_generation_seconds": 3.8090627640485764e-05,
+            "trajectory_validation_seconds": 0.03379254508763552,
+            "planning_and_validation_wall_seconds": 0.05175729235634208,
+            "configuration_validation_calls": 255.0,
+            "configuration_validation_wall_seconds": 0.03213286167010665,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7299032790489923,
+            "trajectory_duration": 0.7299032790489923,
+            "execution_wall_seconds": 1.1806243900209665,
+            "execution_sim_seconds": 2.366666790097952
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        }
+      ],
+      "episode_flags": {
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "request_interrupted": true,
+        "ownership_released": true,
+        "no_stale_commands_after_completion": true,
+        "no_trajectory_restart_after_play": true,
+        "strategy_closed": false,
+        "rebuild_new_strategy": true,
+        "old_strategy_closed": true
+      },
+      "post_fault_result": {
+        "status": "failed",
+        "failure_code": "lifecycle_invalidated",
+        "execution_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "final_execution_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "interruption_snapshot_scope": "Stop/reset/close operation observations end before the fault; their transient solver restored=False is not the final cleanup result. post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics."
+    },
+    {
+      "artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1/result.json",
+        "sha256": "7c293c9492fc6ff76f2a771c68d5bd3a6b76585dd6bca1e572d31fcf4f89b3bf"
+      },
+      "launch": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1/launch.json",
+        "sha256": "1c43aeac8987f0bcb937b9ff9a971e3f0c0ec9a0516474c9975af6098fbb5434"
+      },
+      "driver_artifact": {
+        "path": "outputs/motion-planning-v4-2/lifecycle/enhanced/stop/r1/driver_result.json",
+        "sha256": "d97c436b96bfe54c04114fbe9dc639ccf7664badf712b6f5a7bdeb7cfadbac22"
+      },
+      "declared_label": "lifecycle/enhanced/stop/r1",
+      "measurement_status": "PASS",
+      "driver": {
+        "status": "PASS",
+        "return_code": 0,
+        "wall_seconds": 19.099593273364007,
+        "driver_error": null
+      },
+      "driver_read_error": null,
+      "driver_valid": true,
+      "error": null,
+      "source_manifest_sha256": "62a6989b8a19412ab96fb756d6f7cc598c78e135917783a7bcfad2ec509002cd",
+      "measurement_valid": true,
+      "mode": "stop",
+      "seed": 123456,
+      "observation_checks": {
+        "source_unchanged": true,
+        "callback_complete": true,
+        "physical_capture_available": true,
+        "observers_available": true,
+        "no_contact_overflow": true,
+        "owner_thread": true
+      },
+      "behavior_checks": {
+        "setup_start": true,
+        "move_to_goal": true,
+        "home_after_rebuild": true,
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "ownership_released": true,
+        "request_interrupted": true,
+        "no_stale_commands_after_completion": true,
+        "pre_fault_geometry_clear": true,
+        "lifecycle_failure_code": true,
+        "no_trajectory_restart_after_play": true,
+        "rebuild_new_strategy": true,
+        "old_strategy_closed": true,
+        "move_away_after_rebuild": true
+      },
+      "behavior_acceptance_passed": true,
+      "source_unchanged": true,
+      "operations": [
+        {
+          "id": 0,
+          "label": "setup_start",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "wall_seconds": 0.6945842429995537,
+          "sample_count": 86,
+          "action_count": 85,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {},
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465549047302
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0001659393310546875,
+          "timing": {
+            "snapshot_seconds": null,
+            "world_update_seconds": null,
+            "ik_seconds": null,
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null,
+            "configuration_validation_calls": null,
+            "configuration_validation_wall_seconds": null,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": null,
+            "trajectory_duration": null,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "move_to_goal",
+          "kind": "motion",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "wall_seconds": 0.820257187820971,
+          "sample_count": 88,
+          "action_count": 87,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "execution_wall_seconds": 0.7332543525844812,
+            "execution_sim_seconds": 1.433333408087492,
+            "planning_and_validation_wall_seconds": 0.07063073199242353,
+            "rrt_seconds": 0.00034119701012969017,
+            "commanded_updates": 86,
+            "final_hold": true,
+            "position_error_m": 0.0009896916369831444,
+            "orientation_error_rad": 0.002203610972778534,
+            "measured_arm_velocity_rad_s": 0.005188426468521357,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 87,
+              "p50": 0.008069944169681875,
+              "p95": 0.03099931019179204,
+              "p99": 0.031325588079907526,
+              "worst": 0.03136763534431575
+            },
+            "control_interval_ms": {
+              "count": 85,
+              "p50": 8.398408070206642,
+              "p95": 9.667718783020973,
+              "p99": 10.161280389875172,
+              "worst": 10.712096933275461
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "trajectory_validation": {
+              "samples": 272,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465560337218
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0024104416370391846,
+          "after_target_gap_maximum_rad": 0.0010480880737304688,
+          "timing": {
+            "snapshot_seconds": 0.001915395725518465,
+            "world_update_seconds": 0.0002340567298233509,
+            "ik_seconds": 8.467817679047585e-05,
+            "rrt_seconds": 0.00034119701012969017,
+            "route_validation_seconds": 0.013709031045436859,
+            "trajectory_generation_seconds": 9.017903357744217e-05,
+            "trajectory_validation_seconds": 0.0466293073259294,
+            "planning_and_validation_wall_seconds": 0.07063073199242353,
+            "configuration_validation_calls": 386.0,
+            "configuration_validation_wall_seconds": 0.047155413776636124,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 1.0373968004413578,
+            "trajectory_duration": 1.0373968004413578,
+            "execution_wall_seconds": 0.7332543525844812,
+            "execution_sim_seconds": 1.433333408087492
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 2,
+          "label": "interrupted_home",
+          "kind": "interruption",
+          "runtime_generation": 0,
+          "cancelled": false,
+          "returned_success": false,
+          "strict_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "wall_seconds": 0.18002509698271751,
+          "sample_count": 21,
+          "action_count": 10,
+          "final_applied_arm_velocity_zero": false,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "executing",
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "planning_and_validation_wall_seconds": 0.05258479434996843,
+            "rrt_seconds": 0.0003265189006924629,
+            "position_error_m": 0.35661296000959614,
+            "orientation_error_rad": 0.582155571998307,
+            "measured_arm_velocity_rad_s": 0.35895732045173645,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": false,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9533260866496778,
+            "trajectory_validation": {
+              "samples": 190,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "other_noncompletion",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465593304802
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010480880737304688,
+          "after_target_gap_maximum_rad": 0.0029243379831314087,
+          "timing": {
+            "snapshot_seconds": 0.00204882537946105,
+            "world_update_seconds": 0.00024256296455860138,
+            "ik_seconds": 0.00010779127478599548,
+            "rrt_seconds": 0.0003265189006924629,
+            "route_validation_seconds": 0.00765386875718832,
+            "trajectory_generation_seconds": 3.520585596561432e-05,
+            "trajectory_validation_seconds": 0.03416507923975587,
+            "planning_and_validation_wall_seconds": 0.05258479434996843,
+            "configuration_validation_calls": 252.0,
+            "configuration_validation_wall_seconds": 0.03212315496057272,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7240260370842776,
+            "trajectory_duration": 0.7240260370842776,
+            "execution_wall_seconds": null,
+            "execution_sim_seconds": null
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 0,
+          "label": "move_away_after_rebuild",
+          "kind": "motion",
+          "runtime_generation": 1,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009452386411831261,
+          "orientation_error_rad": 0.001907139706695262,
+          "maximum_actual_joint_displacement_rad": 0.5884856954216957,
+          "wall_seconds": 0.6455927998758852,
+          "sample_count": 72,
+          "action_count": 71,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7274749647019629,
+            "execution_wall_seconds": 0.5815989878028631,
+            "execution_sim_seconds": 1.1666667275130749,
+            "planning_and_validation_wall_seconds": 0.049852554220706224,
+            "rrt_seconds": 0.0003299061208963394,
+            "commanded_updates": 70,
+            "final_hold": true,
+            "position_error_m": 0.0009452386411831261,
+            "orientation_error_rad": 0.001907139706695262,
+            "measured_arm_velocity_rad_s": 0.005377219989895821,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 71,
+              "p50": 0.006312607333562731,
+              "p95": 0.07586813209804925,
+              "p99": 0.07989393304088623,
+              "worst": 0.08026408718720038
+            },
+            "control_interval_ms": {
+              "count": 69,
+              "p50": 8.192573674023151,
+              "p95": 9.136020578444004,
+              "p99": 9.718421716243027,
+              "worst": 9.845689870417118
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9298681820232222,
+            "trajectory_validation": {
+              "samples": 191,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.1409646555676188
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0029853172600269318,
+          "after_target_gap_maximum_rad": 0.0010791569948196411,
+          "timing": {
+            "snapshot_seconds": 0.0018384521827101707,
+            "world_update_seconds": 0.00023621134459972382,
+            "ik_seconds": 9.270291775465012e-05,
+            "rrt_seconds": 0.0003299061208963394,
+            "route_validation_seconds": 0.00729308370500803,
+            "trajectory_generation_seconds": 3.750994801521301e-05,
+            "trajectory_validation_seconds": 0.03297381475567818,
+            "planning_and_validation_wall_seconds": 0.049852554220706224,
+            "configuration_validation_calls": 253.0,
+            "configuration_validation_wall_seconds": 0.030993463937193155,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7274749647019629,
+            "trajectory_duration": 0.7274749647019629,
+            "execution_wall_seconds": 0.5815989878028631,
+            "execution_sim_seconds": 1.1666667275130749
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        },
+        {
+          "id": 1,
+          "label": "home_after_rebuild",
+          "kind": "motion",
+          "runtime_generation": 1,
+          "cancelled": false,
+          "returned_success": true,
+          "strict_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0016930748336920632,
+          "orientation_error_rad": 0.003588255252021025,
+          "maximum_actual_joint_displacement_rad": 0.5898859351873398,
+          "wall_seconds": 1.250755268149078,
+          "sample_count": 144,
+          "action_count": 143,
+          "final_applied_arm_velocity_zero": true,
+          "observed_physical_contact_steps": 0,
+          "ownership_released": null,
+          "overlap_rejected": null,
+          "active_before_cancel": null,
+          "first_command_observed": null,
+          "diagnostics": {
+            "state": "succeeded",
+            "trajectory_duration_seconds": 0.7299032790489923,
+            "execution_wall_seconds": 1.1852415082976222,
+            "execution_sim_seconds": 2.366666790097952,
+            "planning_and_validation_wall_seconds": 0.05065670469775796,
+            "rrt_seconds": 0.0003454452380537987,
+            "commanded_updates": 142,
+            "final_hold": true,
+            "position_error_m": 0.0016930748336920632,
+            "orientation_error_rad": 0.003588255252021025,
+            "measured_arm_velocity_rad_s": 0.007809062954038382,
+            "terminal_velocity_limit_rad_s": 0.01,
+            "terminal_settle_seconds": 0.25,
+            "tracking_limit_rad": 0.15,
+            "tracking_grace_seconds": 0.25,
+            "tracking_abort_rad": 0.4,
+            "position_tolerance_m": 0.025,
+            "orientation_tolerance_rad": 0.1,
+            "execution_solver": {
+              "solver_type": "TGS",
+              "requested_position_iterations_before": 32,
+              "requested_position_iterations_during": 255,
+              "changed": true,
+              "original_session_opinion_restored": true,
+              "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+              "count_provenance": "USD requested count; native effective island count is not read here"
+            },
+            "joint_tracking_error_rad": {
+              "count": 143,
+              "p50": 0.014233003003082112,
+              "p95": 0.1021818181448366,
+              "p99": 0.10759438957504289,
+              "worst": 0.10798219348720567
+            },
+            "control_interval_ms": {
+              "count": 141,
+              "p50": 8.21189908310771,
+              "p95": 9.744531009346247,
+              "p99": 10.557366535067557,
+              "worst": 11.267163790762424
+            },
+            "global_collision_model": "enhanced",
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 0.9296713787551039,
+            "trajectory_validation": {
+              "samples": 192,
+              "maximum_time_step_seconds": 0.003831417624521073,
+              "maximum_joint_step_rad": 0.01,
+              "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+            },
+            "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+            "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+            "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+            "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+            "sdk_configuration_sha256": {
+              "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+              "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+              "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+            }
+          },
+          "outcome_class": "completed",
+          "clearance": {
+            "minimum_m": 2.384185648907078e-08,
+            "movable_arm_minimum_m": 0.14096465553564688
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "contact_buffer_saturated": false
+          },
+          "before_target_gap_maximum_rad": 0.0010791569948196411,
+          "after_target_gap_maximum_rad": 0.0019414573907852173,
+          "timing": {
+            "snapshot_seconds": 0.0020513590425252914,
+            "world_update_seconds": 0.00023534893989562988,
+            "ik_seconds": 9.915465489029884e-05,
+            "rrt_seconds": 0.0003454452380537987,
+            "route_validation_seconds": 0.007565183099359274,
+            "trajectory_generation_seconds": 3.468384966254234e-05,
+            "trajectory_validation_seconds": 0.033066337928175926,
+            "planning_and_validation_wall_seconds": 0.05065670469775796,
+            "configuration_validation_calls": 255.0,
+            "configuration_validation_wall_seconds": 0.03148026065900922,
+            "native_rrt_collision_query_count": null,
+            "native_rrt_collision_query_seconds": null,
+            "trajectory_duration_seconds": 0.7299032790489923,
+            "trajectory_duration": 0.7299032790489923,
+            "execution_wall_seconds": 1.1852415082976222,
+            "execution_sim_seconds": 2.366666790097952
+          },
+          "contact_severity": {
+            "observed_physical_contact_steps": 0,
+            "minimum_reported_separation_m": null,
+            "depth_m": {
+              "count": 0
+            },
+            "normal_pair_impulse_ns": {
+              "count": 0
+            }
+          }
+        }
+      ],
+      "episode_flags": {
+        "genuinely_moving_home": true,
+        "competing_request_rejected": true,
+        "runtime_competing_request_rejected": true,
+        "request_interrupted": true,
+        "ownership_released": true,
+        "no_stale_commands_after_completion": true,
+        "no_trajectory_restart_after_play": true,
+        "strategy_closed": false,
+        "rebuild_new_strategy": true,
+        "old_strategy_closed": true
+      },
+      "post_fault_result": {
+        "status": "failed",
+        "failure_code": "lifecycle_invalidated",
+        "execution_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "final_execution_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "interruption_snapshot_scope": "Stop/reset/close operation observations end before the fault; their transient solver restored=False is not the final cleanup result. post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics."
+    }
+  ]
+}

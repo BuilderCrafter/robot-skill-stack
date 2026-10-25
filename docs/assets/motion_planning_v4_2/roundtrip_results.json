@@ -1,0 +1,2334 @@
+{
+  "schema_version": 1,
+  "source_script_sha256": "5c94b7c3f5cbbccc5aebb95bb738a5c6403f3962012b849380b2a84897f29e0d",
+  "cases": [
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+      "result_sha256": "4f817bf9aac4ce450b29e443a5b6893eb3b6b588c27ae215156fb344ca30cedb",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r4",
+      "source_manifest_sha256": "bc4dcc43a464380bcc0c231e88cd914b6f8e19209df36bb2c7df7af782e087b9",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003763320855796337,
+            "route_validation_seconds": 0.012757251970469952,
+            "trajectory_generation_seconds": 0.00013479217886924744,
+            "trajectory_validation_seconds": 0.03480435535311699,
+            "planning_and_validation_wall_seconds": 0.0580746098421514
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8937262706458569
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003436408005654812,
+            "route_validation_seconds": 0.01269920403137803,
+            "trajectory_generation_seconds": 4.928186535835266e-05,
+            "trajectory_validation_seconds": 0.03361460426822305,
+            "planning_and_validation_wall_seconds": 0.05643455917015672
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6741490690037608
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/roundtrip_trace.json",
+      "trace_sha256": "98da368f813e0a9223890a41c6cb6f16cadf07be26d682ea441c0d2342dc1ccc",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/result.json",
+      "result_sha256": "5e0e8b6344eb1cf094e234583ca1b90d7c12b967df8fb0c1863e8f385d6c7170",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00033890316262841225,
+            "route_validation_seconds": 0.012653722893446684,
+            "trajectory_generation_seconds": 8.749309927225113e-05,
+            "trajectory_validation_seconds": 0.033250318840146065,
+            "planning_and_validation_wall_seconds": 0.055767541751265526
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.9094446790404618
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003396449610590935,
+            "route_validation_seconds": 0.012732430826872587,
+            "trajectory_generation_seconds": 4.803994670510292e-05,
+            "trajectory_validation_seconds": 0.03357968386262655,
+            "planning_and_validation_wall_seconds": 0.05621432699263096
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6822506068274379
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/roundtrip_trace.json",
+      "trace_sha256": "107aa618123d3bf89d6d080f6aa89009b5817e049e5329d8780a8bbcc46c48ca",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/result.json",
+      "result_sha256": "f6ed44d32731fe4ebea0dfae929e88e7c84cf0946cb124629328e2599631dc93",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r2",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00035203807055950165,
+            "route_validation_seconds": 0.012564095202833414,
+            "trajectory_generation_seconds": 9.435601532459259e-05,
+            "trajectory_validation_seconds": 0.03360246680676937,
+            "planning_and_validation_wall_seconds": 0.05626591295003891
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8995908312499523
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00033943401649594307,
+            "route_validation_seconds": 0.012734164018183947,
+            "trajectory_generation_seconds": 4.811026155948639e-05,
+            "trajectory_validation_seconds": 0.03390108374878764,
+            "planning_and_validation_wall_seconds": 0.05671348888427019
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6611504997126758
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/roundtrip_trace.json",
+      "trace_sha256": "623dd59313bf536db8e4aaefbcf3d4f00414fe702c8c1716c88455e5e6499440",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/result.json",
+      "result_sha256": "ee9e90b8924f9532a1e048bb4652e8350c81d3647497b5aa25adc6395c53ce1d",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r3",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00037016114220023155,
+            "route_validation_seconds": 0.013710948638617992,
+            "trajectory_generation_seconds": 9.33338887989521e-05,
+            "trajectory_validation_seconds": 0.03652942506596446,
+            "planning_and_validation_wall_seconds": 0.06078906310722232
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.9195956932380795
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003598933108150959,
+            "route_validation_seconds": 0.012846773955971003,
+            "trajectory_generation_seconds": 4.5324210077524185e-05,
+            "trajectory_validation_seconds": 0.03381540300324559,
+            "planning_and_validation_wall_seconds": 0.05686722509562969
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.7001577420160174
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/roundtrip_trace.json",
+      "trace_sha256": "aa1ef5ad84950a431c1a140208ce22dda3c13b34fff9f860f1141a6b7d7fa9e1",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/result.json",
+      "result_sha256": "3ef7a48463352ae99fbdd2dfca8c05616e34dd3d24c7cf6577d664cd4617fd40",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r5",
+      "source_manifest_sha256": "bc4dcc43a464380bcc0c231e88cd914b6f8e19209df36bb2c7df7af782e087b9",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003404151648283005,
+            "route_validation_seconds": 0.012546169105917215,
+            "trajectory_generation_seconds": 9.650969877839088e-05,
+            "trajectory_validation_seconds": 0.03310331096872687,
+            "planning_and_validation_wall_seconds": 0.05553206708282232
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.9045578171499074
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00033863214775919914,
+            "route_validation_seconds": 0.012758293654769659,
+            "trajectory_generation_seconds": 5.4111238569021225e-05,
+            "trajectory_validation_seconds": 0.0343670891597867,
+            "planning_and_validation_wall_seconds": 0.05716204782947898
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.678473322186619
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/roundtrip_trace.json",
+      "trace_sha256": "60dd05d36eef3ac00c04a204b16332d016d472a8756c5b1153b90d891f722388",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/result.json",
+      "result_sha256": "19a87d5f0318dd0e54a495ffbe4e2960476860c3bdc1a2318e1ee75487f83285",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 123456,
+      "repeat": "r6",
+      "source_manifest_sha256": "bc4dcc43a464380bcc0c231e88cd914b6f8e19209df36bb2c7df7af782e087b9",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00034338096156716347,
+            "route_validation_seconds": 0.012324605602771044,
+            "trajectory_generation_seconds": 9.034806862473488e-05,
+            "trajectory_validation_seconds": 0.03264836175367236,
+            "planning_and_validation_wall_seconds": 0.054869270883500576
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.9158962690271437
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003417283296585083,
+            "route_validation_seconds": 0.01288034301251173,
+            "trajectory_generation_seconds": 4.5744702219963074e-05,
+            "trajectory_validation_seconds": 0.03587957378476858,
+            "planning_and_validation_wall_seconds": 0.05866565788164735
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6868560686707497
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/roundtrip_trace.json",
+      "trace_sha256": "ebdba1b1e2be274ad46b12dfd75d7d62306c4c4efd393f889fedbecc4e97c761",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/result.json",
+      "result_sha256": "f6f27ae83c6022b8752f457341e4c6dda275b4496ffce6c9d7cdc5d6497ec348",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 234567,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00034680822864174843,
+            "route_validation_seconds": 0.012933335732668638,
+            "trajectory_generation_seconds": 9.801378473639488e-05,
+            "trajectory_validation_seconds": 0.03356726001948118,
+            "planning_and_validation_wall_seconds": 0.05639809789136052
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.9095232058316469
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003589410334825516,
+            "route_validation_seconds": 0.012804153840988874,
+            "trajectory_generation_seconds": 4.6005938202142715e-05,
+            "trajectory_validation_seconds": 0.03442626493051648,
+            "planning_and_validation_wall_seconds": 0.05723412102088332
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6657977201975882
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/roundtrip_trace.json",
+      "trace_sha256": "8d722238ab275272da4332e878d8c0d720b2157ce3d40a4880cdad8eb9e2eae2",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/result.json",
+      "result_sha256": "a07c048fc9607d0ab05b60315b040627268117fec39a13e7cd43e3ea3dec675d",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "enhanced",
+      "seed": 345678,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.00033819209784269333,
+            "route_validation_seconds": 0.012424835935235023,
+            "trajectory_generation_seconds": 9.077973663806915e-05,
+            "trajectory_validation_seconds": 0.032786580733954906,
+            "planning_and_validation_wall_seconds": 0.05517709720879793
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8908950653858483
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.0003460966981947422,
+            "route_validation_seconds": 0.014185796026140451,
+            "trajectory_generation_seconds": 4.5795924961566925e-05,
+            "trajectory_validation_seconds": 0.035954009275883436,
+            "planning_and_validation_wall_seconds": 0.06044015008956194
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6766366311348975
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/roundtrip_trace.json",
+      "trace_sha256": "f6b137b9e5e5c2751edfc97a657dea3088357f5c6ad188baa4a4f79385061989",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/result.json",
+      "result_sha256": "d405e3791c703704f77d89c0d5f428f6a6f10df27a3b786ca2e18fc800a4ab3b",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "stock",
+      "seed": 123456,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.01173874270170927,
+            "route_validation_seconds": 0.008119801059365273,
+            "trajectory_generation_seconds": 0.00010082824155688286,
+            "trajectory_validation_seconds": 0.02450047805905342,
+            "planning_and_validation_wall_seconds": 0.07425457192584872
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8943537310697138
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011843319050967693,
+            "route_validation_seconds": 0.007935447152704,
+            "trajectory_generation_seconds": 5.148584023118019e-05,
+            "trajectory_validation_seconds": 0.02462061308324337,
+            "planning_and_validation_wall_seconds": 0.07387184724211693
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.653322678990662
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/roundtrip_trace.json",
+      "trace_sha256": "7c671cf32c4076f3925809425190e1acf00b1f62a6cd45b66f5d1706fb85bff1",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/result.json",
+      "result_sha256": "c17563497c404c26aeacb4c75383aec562e67ae31e812e48eeeedd8604558c5e",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "stock",
+      "seed": 123456,
+      "repeat": "r2",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011681356001645327,
+            "route_validation_seconds": 0.008439057972282171,
+            "trajectory_generation_seconds": 9.226333349943161e-05,
+            "trajectory_validation_seconds": 0.024241955019533634,
+            "planning_and_validation_wall_seconds": 0.07373318774625659
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8955448209308088
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011452208273112774,
+            "route_validation_seconds": 0.007898136973381042,
+            "trajectory_generation_seconds": 4.764879122376442e-05,
+            "trajectory_validation_seconds": 0.024236293975263834,
+            "planning_and_validation_wall_seconds": 0.07262782193720341
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6753941178321838
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/roundtrip_trace.json",
+      "trace_sha256": "170a6b050dc2e879537f46d3a406b0e9de928aa2c2c9d898e35e353cfc7d98a8",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/result.json",
+      "result_sha256": "dfded83a254b1cc46b1337177b4231ccc2656cd89c35b3a1511f4a48a42e377b",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "stock",
+      "seed": 123456,
+      "repeat": "r3",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011581509839743376,
+            "route_validation_seconds": 0.007743238005787134,
+            "trajectory_generation_seconds": 8.740322664380074e-05,
+            "trajectory_validation_seconds": 0.025714667048305273,
+            "planning_and_validation_wall_seconds": 0.073776348028332
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8961578602902591
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011730057187378407,
+            "route_validation_seconds": 0.007911021821200848,
+            "trajectory_generation_seconds": 8.361600339412689e-05,
+            "trajectory_validation_seconds": 0.02457980578765273,
+            "planning_and_validation_wall_seconds": 0.07519536884501576
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6597632821649313
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/roundtrip_trace.json",
+      "trace_sha256": "1ddd2e438284a075b3c1c8e80d18da0f149fb5e270ba31570908bd7f4b4e446b",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/result.json",
+      "result_sha256": "ca876c7ecfe748e165ee30d6548da0ef947cfd2e4ec6e1bd55859e22bd938c95",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "stock",
+      "seed": 234567,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011662901844829321,
+            "route_validation_seconds": 0.007855015806853771,
+            "trajectory_generation_seconds": 8.903723210096359e-05,
+            "trajectory_validation_seconds": 0.02435173001140356,
+            "planning_and_validation_wall_seconds": 0.07319240598008037
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8916876027360559
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011803384404629469,
+            "route_validation_seconds": 0.007850609254091978,
+            "trajectory_generation_seconds": 4.745926707983017e-05,
+            "trajectory_validation_seconds": 0.023710301145911217,
+            "planning_and_validation_wall_seconds": 0.07232620799914002
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6538933250121772
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/roundtrip_trace.json",
+      "trace_sha256": "01170c8e0b5d598eb5041d4c154bd232f8555280ee6a29b873824f42dd78b8fe",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/result.json",
+      "result_sha256": "66c937a3133f816676f6dffcf6669f28475788ed2b06b9a51a474a24ed59c542",
+      "status": "PASS",
+      "mode": "roundtrip",
+      "model": "stock",
+      "seed": 345678,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": true,
+      "native_strict_zero_report_roundtrip": true,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 78,
+          "maximum_actual_arm_displacement_rad": 1.0289045870304108,
+          "final_position_error_m": 0.0011279426998548215,
+          "final_orientation_error_rad": 0.0018325743756180681,
+          "final_measured_arm_velocity_max_rad_s": 0.005835092160850763,
+          "sampled_fixture_minimum_m": 0.040511101000783596,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 27,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.040511101000783596
+          },
+          "runtime_guard_error_max_rad": 0.05511268128102695,
+          "exact_same_time_actual_command_error_max_rad": 0.05511268128102695,
+          "exact_same_time_pairs": 77,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+          "generated_trajectory_sha256": "a3bc5edf449c1097709509b156c1c9bb7e5a1c69803d4657c83d777c14958688",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011627368163317442,
+            "route_validation_seconds": 0.007647744845598936,
+            "trajectory_generation_seconds": 9.226193651556969e-05,
+            "trajectory_validation_seconds": 0.024363277945667505,
+            "planning_and_validation_wall_seconds": 0.07268798211589456
+          },
+          "execution_sim_seconds": 1.2833334002643824,
+          "execution_wall_seconds": 0.8970337649807334
+        },
+        {
+          "label": "home_return",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 145,
+          "maximum_actual_arm_displacement_rad": 1.0280747711658478,
+          "final_position_error_m": 0.001937190772357919,
+          "final_orientation_error_rad": 0.004083142239497535,
+          "final_measured_arm_velocity_max_rad_s": 0.006279825698584318,
+          "sampled_fixture_minimum_m": 0.04426123827272556,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 69,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.04426123827272556
+          },
+          "runtime_guard_error_max_rad": 0.07462745848500701,
+          "exact_same_time_actual_command_error_max_rad": 0.07462745848500701,
+          "exact_same_time_pairs": 144,
+          "observed_terminal_settling_sim_seconds": 0.25000001303851604,
+          "recorded_required_terminal_settle_seconds": 0.25,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": 2,
+          "route_joint_names": [
+            "panda_joint1",
+            "panda_joint2",
+            "panda_joint3",
+            "panda_joint4",
+            "panda_joint5",
+            "panda_joint6",
+            "panda_joint7"
+          ],
+          "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+          "generated_trajectory_sha256": "2eaec736db8fa63cd15a05287ec0b65b8d1f310d1d6b0b544f1f582bd466abda",
+          "selected_ik_index": 0,
+          "ik_candidates_attempted": 1,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": 0.011520122177898884,
+            "route_validation_seconds": 0.007645387202501297,
+            "trajectory_generation_seconds": 4.738941788673401e-05,
+            "trajectory_validation_seconds": 0.023761728312820196,
+            "planning_and_validation_wall_seconds": 0.07202053721994162
+          },
+          "execution_sim_seconds": 2.400000125169754,
+          "execution_wall_seconds": 1.6851317370310426
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/roundtrip_trace.json",
+      "trace_sha256": "08a8dd4251296cdbd732abaca7c405dd5b28c01be6ed8f219388e02d2f9a1cbf",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": []
+    },
+    {
+      "result": "outputs/motion-planning-v4-2/direct-reference/r1/result.json",
+      "result_sha256": "b86bfbe19dc0019bed5e52d3333c971bc3b80c41cb4d72802a3cda8e5a45c8a2",
+      "status": "PASS",
+      "mode": "direct_reference",
+      "model": "stock",
+      "seed": 123456,
+      "repeat": "r1",
+      "source_manifest_sha256": "130ea706783dd5c395c2c6585a133e22189357cafc4eedebc66657457ec00077",
+      "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+      "native_roundtrip_acceptance": false,
+      "native_strict_zero_report_roundtrip": false,
+      "contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "error": null,
+      "operations": [
+        {
+          "label": "outward",
+          "returned_success": true,
+          "failure_code": null,
+          "actual_unique_physics_samples": 85,
+          "maximum_actual_arm_displacement_rad": 0.9890591502189636,
+          "final_position_error_m": 0.023805669013672644,
+          "final_orientation_error_rad": 0.01027368596945958,
+          "final_measured_arm_velocity_max_rad_s": 0.27228811383247375,
+          "sampled_fixture_minimum_m": 0.0,
+          "sampled_all_scene_minimum_m": 2.384185648907078e-08,
+          "minimum_clearance_robot_link": {
+            "sample": 11,
+            "robot_link": "/Franka/panda_rightfinger",
+            "obstacle": "/World/ReactiveEvaluation/HomeDetour",
+            "clearance_m": 0.0
+          },
+          "runtime_guard_error_max_rad": null,
+          "exact_same_time_actual_command_error_max_rad": null,
+          "exact_same_time_pairs": 0,
+          "observed_terminal_settling_sim_seconds": null,
+          "recorded_required_terminal_settle_seconds": null,
+          "solver_position_iterations_restored": true,
+          "solver_position_iterations_before": [
+            32
+          ],
+          "solver_position_iterations_after": [
+            32
+          ],
+          "route_waypoints": null,
+          "route_joint_names": null,
+          "route_joint_polyline_sha256": null,
+          "generated_trajectory_sha256": null,
+          "selected_ik_index": null,
+          "ik_candidates_attempted": null,
+          "observed_physical_contact_steps": 0,
+          "maximum_penetration_depth_m": null,
+          "maximum_normal_pair_impulse_ns": null,
+          "strict_zero_reports": true,
+          "planning_seconds": {
+            "rrt_seconds": null,
+            "route_validation_seconds": null,
+            "trajectory_generation_seconds": null,
+            "trajectory_validation_seconds": null,
+            "planning_and_validation_wall_seconds": null
+          },
+          "execution_sim_seconds": null,
+          "execution_wall_seconds": null
+        }
+      ],
+      "trace": "outputs/motion-planning-v4-2/direct-reference/r1/roundtrip_trace.json",
+      "trace_sha256": "6ef21d6bce3155b60b512b117c7258d27f0f71c8ce012f77e24620aa574a594c",
+      "actual_body_poses_match_cooked_archive": true,
+      "geometry_reference_sha256": "b0da076b8b60cda157e252d0de7e9e9fb0737e73c737600ac4b19fe2c0d726fa",
+      "actual_trace_status": "CAPTURED",
+      "missing_roundtrip_directions": [
+        "home_return"
+      ],
+      "fresh_positive_volume_intersection": {
+        "status": "BOTH_FINGERS_POSITIVE_VOLUME_INTERSECTION",
+        "positive_sample_counts": {
+          "/Franka/panda_leftfinger": 6,
+          "/Franka/panda_rightfinger": 10
+        },
+        "lp_queries": 21,
+        "witness_ball_radius_lower_bound_by_body_m": {
+          "/Franka/panda_leftfinger": 0.0007028881957426286,
+          "/Franka/panda_rightfinger": 0.009248317043642346
+        },
+        "minimum_two_finger_witness_radius_m": 0.0007028881957426286,
+        "maximum_halfspace_feasibility_residual_m": 2.220446049250313e-16,
+        "raw_details": "outputs/motion-planning-v4-2/roundtrip-analysis-final/direct-positive-volume/13/positive_volume_finger_witnesses.json",
+        "raw_details_sha256": "28312b6bd0a601a7a765c8475ae52a7f0a6b4e9e9f33d715ab08fd7055462ae9",
+        "qualification": "Counterfactual unchanged box against actual captured direct motion; no physical impact was performed"
+      }
+    }
+  ],
+  "interpretation": "Actual recorded motion, commands and cooked-solid clearance samples. Missing experiments remain missing. No future-execution continuous guarantee is inferred from the independent frozen numeric witness.",
+  "path_comparison": {
+    "rows": [
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r4/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r2/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r3/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r5/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-123456/r6/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 234567,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 234567,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-234567/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 345678,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "enhanced",
+        "seed": 345678,
+        "result": "outputs/motion-planning-v4-2/roundtrip/enhanced/seed-345678/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r2/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 123456,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-123456/r3/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 234567,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 234567,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-234567/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 345678,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/result.json",
+        "label": "outward",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "dce6528621257c43308ef9cac33f133ff5dedd74b1cdddfdd24d7d2de5cf341b",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      },
+      {
+        "model": "stock",
+        "seed": 345678,
+        "result": "outputs/motion-planning-v4-2/roundtrip/stock/seed-345678/r1/result.json",
+        "label": "home_return",
+        "route_waypoints": 2,
+        "global_runtime_sha256": "25e01fc497838659091267918383155e645eaeb013f8b53cf9f204963e93f282",
+        "route_joint_polyline_sha256": "a086f8c2a8493e911867a04b969bdc755048b2af74974ef4d6d96c25041616c4",
+        "selected_ik_index": 0,
+        "maximum_joint_difference_to_first_route_rad": 0.0
+      }
+    ],
+    "interpretation": "All accepted global routes have two waypoints and identical per-direction joint/trajectory hashes across recorded seeds and both models. These results do not prove an obstacle-induced change to the global path, a multisegment RRT detour, stochastic search robustness, or a geometry-specific benefit of the enhanced model."
+  },
+  "figures": [
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_joint_trajectories.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_tcp_trajectory.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_clearance_and_tcp_errors.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_joint_trajectories.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_tcp_trajectory.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_clearance_and_tcp_errors.png",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/planning_time_comparison.png"
+  ],
+  "figure_sha256": {
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_joint_trajectories.png": "e0795bd8481239812010e560621f79bec31c49072d9eb37ca1cc6a2bc9c51baf",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_tcp_trajectory.png": "9059eb5759cdca18ebf5a16e4a3ea776d6f4b79689ec12f029bae0113933d26f",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/0_enhanced_123456_r4/actual_clearance_and_tcp_errors.png": "dcbb522315dc18f62c8bad346b515edb3df3c8cf20c37ab181b054630f057bcf",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_joint_trajectories.png": "3c79c538b0830add4e9e92892ca622d3dd93d7792d3de036f048b8f54e758896",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_tcp_trajectory.png": "8634da818e2297c5352b49d3c51eb764654a66bd3c89a7977b23aab717364be2",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/13_stock_123456_r1/actual_clearance_and_tcp_errors.png": "73581ac4635066feae76ae4498bc39355f5f7253989de020e060bc6604183654",
+    "docs/assets/motion_planning_v4_2/roundtrip_figures/planning_time_comparison.png": "c50f3a9cc3d61c1188d48bcbb956b26b0696ba67fe60da6fcc604d599d8a9beb"
+  },
+  "qualifications": [
+    "The fixed direct-reference criterion passes: actual ordinary direct RMPflow finger solids intersect the unchanged counterfactual box, while the observed global roundtrips remain clear.",
+    "All accepted global routes have two waypoints and identical per-direction joint/trajectory hashes across recorded seeds and both models. These results do not prove an obstacle-induced change to the global path, a multisegment RRT detour, stochastic search robustness, or a geometry-specific benefit of the enhanced model.",
+    "Executed physical clearance is sampled. The separately frozen continuous geometric witness is not a continuous certificate of these executed trajectories.",
+    "Outward cooked-solid clearance and contacts are confirmed retrospectively after close; the native Home request is gated on outward runtime/full-pose success rather than an online independent physical-clearance reduction."
+  ]
+}

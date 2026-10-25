@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "status": "BOUNDED_STATIC_RESEARCH_CHECKPOINT",
+  "native_measurement_processes": 48,
+  "driver_artifacts": [
+    {
+      "path": "outputs/motion-planning-v4-2/capture_driver.json",
+      "sha256": "1dab7aea9cc972e2dd44129df4f38880ea405b4721a86a33bbd20b62cd5edd0e"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/direct_reference_driver.json",
+      "sha256": "04190730e26b49c89d9cc22235711fe37e577997bdacee6d21bc81fee48cad0a"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/roundtrip_driver.json",
+      "sha256": "5810f9ec525d64f9f44e53465d5ee38ecddab5ee0babf667364960de7c6d4165"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/roundtrip_guard_driver.json",
+      "sha256": "ce721bf32cac298d57ab71115f7637372b09cab0316fd429e1d1ed795c5bd902"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/static_driver.json",
+      "sha256": "b484d90329279ebc3f2c4b0458a84e3772afaa7ad025b1e725437448af699207"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/lifecycle_driver.json",
+      "sha256": "eb70ccb69394280e8fdd0859fab46f96634b84bff15c6d8b492a567aabbd308a"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/direct_driver.json",
+      "sha256": "52cd6f5129eca73f116d49bca7bf7a5de6cf01b0bc75496cf82c2679d5f9118f"
+    },
+    {
+      "path": "outputs/motion-planning-v4-2/reactive_driver.json",
+      "sha256": "8d017a47c239c74e1ffa8ef3fc079bced9553cd9de8325ff791571f7471b5c31"
+    }
+  ],
+  "units": {
+    "tests": 1212,
+    "status": "PASS",
+    "summary": {
+      "path": "outputs/motion-planning-v4-2/units-publish/run-f1oxros_/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759"
+    },
+    "discovery_log": {
+      "path": "outputs/motion-planning-v4-2/units-publish/run-f1oxros_/unit_discovery.log",
+      "sha256": "1144fbe63ad17d445c193be6e34944ab6aec294e30433d3efb04221c117ba6d2"
+    },
+    "architecture": "PASS",
+    "existing_auxiliary_scripts": 8
+  },
+  "static_valid": 26,
+  "stock_reachable_completions": 11,
+  "enhanced_reachable_completions": 11,
+  "roundtrip_strict_completions": 13,
+  "enhanced_roundtrips": 8,
+  "stock_roundtrips": 5,
+  "lifecycle_passed": 5,
+  "native_direct": "PASS",
+  "native_reactive": "PASS",
+  "source_and_tests": "PASS",
+  "numeric_geometry": "SOURCE_BOUND_FLOATING_POINT_CONDITIONAL_VALIDITY",
+  "actual_execution_clearance": "PASS_SAMPLED_DECLARED_CASES",
+  "roundtrip_acceptance": "PASS_BOUNDED_DIRECT_REFERENCE_CRITERION",
+  "obstacle_induced_global_path_change": "NOT_ESTABLISHED",
+  "multisegment_global_roundtrip_detour": "NOT_ESTABLISHED",
+  "continuous_actual_swept_clearance": "NOT_ESTABLISHED",
+  "native_rrt_internal_self_policy_equivalence": "NOT_VERIFIED",
+  "next_checkpoint": "READY_FOR_BOUNDED_FROZEN_RGBD_RESEARCH_DESIGN_REVIEW",
+  "full_production_or_physical_robot_safety_acceptance": "NOT_CLAIMED"
+}

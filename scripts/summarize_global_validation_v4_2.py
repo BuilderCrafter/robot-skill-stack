@@ -80,14 +80,24 @@ def static_record(path, declared=None):
     metrics, contracts = raw.get('metrics') or {}, raw.get('contracts') or {}
     valid = (record['measurement_status'] == 'PASS' and checks_pass(contracts)
         and not record['error'] and record['driver_valid'])
-    details = dict((((metrics.get('motion') or {}).get('result') or {}).get('details') or {}))
+    outcome = (metrics.get('motion') or {}).get('result') or {}
+    details = dict(outcome.get('details') or {})
     details.update(metrics.get('strategy_diagnostics') or {})
+    details['failure_code'] = details.get('failure_code') or outcome.get('failure_code')
+    details['failure_message'] = details.get('failure_message') or outcome.get('message')
     record.update(measurement_valid=valid, contracts=contracts,
         metrics=pick(metrics, METRICS), diagnostics=pick(details, DIAGNOSTICS),
         timing={key: number(details.get(key)) for key in TIMING},
         physical_world_sha256=fingerprint(metrics['physical_world']) if metrics.get('physical_world') else None)
     # These are compact configurations, not the raw seven-joint time series.
     record['metrics']['configuration'] = metrics.get('configuration') or {}
+    record['initial_joint_positions_rad'] = metrics.get('initial_joints')
+    record['motion_result_status'] = outcome.get('status')
+    record['motion_wall_seconds'] = number((metrics.get('motion') or {}).get('wall_seconds'))
+    record['rejection_phase'] = ('upstream_workspace_gate_before_rrt'
+        if details['failure_code'] == 'unreachable' and details.get('state') == 'ready'
+        and metrics.get('no_requested_movement_joint_delta_rad') == 0 else
+        'global_planner_or_validator' if details['failure_code'] else None)
     severity = metrics.get('contact_severity') or {}
     contacts = metrics.get('contacts') or {}
     separation = number(contacts.get('minimum_reported_separation_m'))
@@ -129,6 +139,17 @@ def lifecycle_record(path, declared=None):
         source_unchanged=(section.get('source_hashes_before') == section.get('source_hashes_after')
             if section.get('source_hashes_before') else None),
         operations=[compact_operation(operation) for operation in section.get('operations') or []])
+    episode = section.get('episode') or {}
+    returned = episode.get('result') or {}
+    returned_details = returned.get('details') or {}
+    record['episode_flags'] = {key: value for key, value in episode.items() if isinstance(value, bool)}
+    record['post_fault_result'] = (dict(status=returned.get('status'),
+        failure_code=returned_details.get('failure_code') or returned.get('failure_code'),
+        execution_solver=returned_details.get('execution_solver')) if returned else None)
+    record['final_execution_solver'] = ((raw.get('metrics') or {}).get('strategy_after_close') or {}).get('execution_solver')
+    record['interruption_snapshot_scope'] = ('Stop/reset/close operation observations end before the fault; '
+        'their transient solver restored=False is not the final cleanup result. '
+        'post_fault_result records the awaited interruption result; final_execution_solver records runtime-close diagnostics.')
     for compact, original in zip(record['operations'], section.get('operations') or []):
         compact['diagnostics'].update(pick(original.get('strategy_diagnostics') or {}, DIAGNOSTICS))
         compact['timing'] = {key: number((original.get('strategy_diagnostics') or {}).get(key)) for key in TIMING}
@@ -207,10 +228,72 @@ def performance(records):
     cohorts = [dict(model=key[0], strategy=key[1], valid_attempts=len(values),
         timing={field: distribution(row['timing'].get(field) for row in values) for field in TIMING})
         for key, values in sorted(groups.items(), key=lambda item: str(item[0]))]
-    return dict(attempts=rows, descriptive_cohorts=cohorts,
+    return dict(attempts=rows, descriptive_cohorts=cohorts, successful_matched_comparisons=paired_performance(records),
         interpretation='Single frozen-scene attempts; descriptive cohorts include valid rejections and completions separately identifiable by source artifact. No confidence interval or controlled runtime speedup claim.',
         configuration_query_scope='Explicit external/self/domain validator calls, including failed calls; native RRT internal query counts and time remain unavailable.',
         memory_scope='RSS includes Kit and retained observations; process differences alone do not establish a resource leak.')
+
+
+def paired_performance(records):
+    indexed = defaultdict(dict)
+    for record in records:
+        config = record['metrics'].get('configuration') or {}
+        model = record['diagnostics'].get('global_collision_model') or config.get('global_collision_model')
+        indexed[(config.get('scenario'), config.get('seed'))].setdefault(model, []).append(record)
+    matched, excluded = [], []
+    for key, models in sorted(indexed.items(), key=lambda item: str(item[0])):
+        if len(models.get('stock', [])) != 1 or len(models.get('enhanced', [])) != 1:
+            excluded.append(dict(scenario=key[0], seed=key[1], reason='missing or ambiguous stock/enhanced pair'))
+            continue
+        before, after = models['stock'][0], models['enhanced'][0]
+        configs = [{name: value for name, value in record['metrics']['configuration'].items()
+                    if name != 'global_collision_model'} for record in (before, after)]
+        checks = dict(both_valid=before['measurement_valid'] and after['measurement_valid'],
+            both_completed=before['metrics'].get('goal_reached') is True and after['metrics'].get('goal_reached') is True,
+            same_task_configuration=configs[0] == configs[1],
+            same_physical_world=bool(before['physical_world_sha256']) and before['physical_world_sha256'] == after['physical_world_sha256'],
+            same_recorded_initial_joints=bool(before['initial_joint_positions_rad'])
+                and before['initial_joint_positions_rad'] == after['initial_joint_positions_rad'],
+            same_source_cohort=bool(before['source_manifest_sha256'])
+                and before['source_manifest_sha256'] == after['source_manifest_sha256'])
+        row = dict(scenario=key[0], seed=key[1], stock=before['artifact'], enhanced=after['artifact'], checks=checks)
+        if not all(checks.values()):
+            excluded.append(row); continue
+        row['timing'] = {field: dict(stock=before['timing'].get(field), enhanced=after['timing'].get(field)) for field in TIMING}
+        matched.append(row)
+    comparison = {}
+    for field in TIMING:
+        stocks = [row['timing'][field]['stock'] for row in matched]
+        enhanced = [row['timing'][field]['enhanced'] for row in matched]
+        before, after = distribution(stocks), distribution(enhanced)
+        comparison[field] = dict(stock=before, enhanced=after,
+            median_change_percent=(100*(after['median']/before['median']-1)
+                if before['median'] and after['median'] is not None else None))
+    return dict(matched_pairs=matched, excluded_pairs=excluded, descriptive_timing=comparison,
+        interpretation='Only pairs with valid completed movements, identical frozen task/world/initial joints/source cohort are pooled. Different sphere geometry can change RRT routes and query counts: elapsed RRT time is not per-query collision cost or an algorithmic speedup proof. One attempt per model/task/seed gives descriptive measurements, not statistical confidence.')
+
+
+def static_table(records):
+    groups = defaultdict(list)
+    for record in records:
+        config = record['metrics'].get('configuration') or {}
+        model = record['diagnostics'].get('global_collision_model') or config.get('global_collision_model')
+        groups[(model, config.get('scenario'))].append(record)
+    rows = []
+    for (model, scenario), cases in sorted(groups.items(), key=lambda item: str(item[0])):
+        valid = [record for record in cases if record['measurement_valid']]
+        clearances = [number((record['metrics'].get('clearance') or {}).get('movable_arm_minimum_m')) for record in valid]
+        rows.append(dict(model=model, scenario=scenario, attempts=len(cases), valid=len(valid),
+            reported_completions=sum(record['metrics'].get('goal_reached') is True for record in valid),
+            strict_zero_report_successes=sum(record['metrics'].get('strict_success') is True for record in valid),
+            sampled_physical_contact_free_completions=sum(record['sampled_physical_contact_free_completion'] is True for record in valid),
+            minimum_movable_arm_clearance_m=min((value for value in clearances if value is not None), default=None),
+            reported_contact_points=sum(record['contacts'].get('reported_points') or 0 for record in valid),
+            positive_separation_reported_points=sum(record['contacts'].get('positive_separation_reported_points') or 0 for record in valid),
+            observed_physical_contact_steps=sum(record['contacts'].get('observed_physical_contact_steps') or 0 for record in valid),
+            rejection_codes=dict(Counter(record['diagnostics'].get('failure_code') for record in valid
+                if record['diagnostics'].get('failure_code')))))
+    return rows
 
 
 def build_reports(root=INPUT_ROOT, assets=ASSETS):
@@ -224,7 +307,7 @@ def build_reports(root=INPUT_ROOT, assets=ASSETS):
     common = dict(schema_version=1, producer=reference(__file__), input_root=label(root),
         meaning='Evidence inventory only. Missing/failed attempts are retained. A planner rejection does not establish physical infeasibility; zero contact reports alone do not establish geometric clearance.')
     return {'static_results.json': dict(common, attempts=static,
-                counts=dict(Counter(record['measurement_status'] for record in static))),
+                counts=dict(Counter(record['measurement_status'] for record in static)), scenario_table=static_table(static)),
         'performance.json': dict(common, **performance(static)),
         'lifecycle.json': dict(common, attempts=lifecycle),
         'regressions.json': dict(common, attempts=regressions)}

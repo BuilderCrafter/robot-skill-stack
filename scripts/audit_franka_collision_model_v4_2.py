@@ -42,6 +42,11 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def case_label(path):
+    folder = Path(path).resolve().parent
+    return str(folder.relative_to(ROOT/'outputs')) if folder.is_relative_to(ROOT/'outputs') else str(folder)
+
+
 def representative_indices(samples, per_phase=3):
     """Select first/middle/last unique measured states within each phase."""
     if type(per_phase) is not int or not 1 <= per_phase <= 21:
@@ -158,7 +163,7 @@ def load_case(path):
         elif path.name != 'acceptance_trace.json':
             raise ValueError('Standard native capture is missing duplicate NPZ poses')
         parts = _parts(cooking, archive, body_paths)
-    return CapturedCase(path.parent.name, samples, body_paths, parts, names, snapshot, sources, goals, source_status)
+    return CapturedCase(case_label(path), samples, body_paths, parts, names, snapshot, sources, goals, source_status)
 
 
 def native_model(isaac_root, descriptor, urdf, *, extra_exclusions=frozenset()):
@@ -508,10 +513,14 @@ def plot_measurements(summary, render, models, directory):
             xlabel='World X (m)', ylabel='World Y (m)', zlabel='World Z (m)',
             title=f'{name.capitalize()}: {len(positions["radii"])} native planning spheres')
         axis.set_box_aspect(high-low)
+        axis.tick_params(labelsize=8)
+        axis.xaxis.label.set_size(9)
+        axis.yaxis.label.set_size(9)
+        axis.zaxis.label.set_size(9)
         axis.view_init(elev=21, azim=-55)
     figure.suptitle(f'Actual captured cooked surfaces and native planning spheres\n{render["case"]}, sample {render["sample"]}')
     path = directory/'collision_geometry_comparison.png'
-    figure.savefig(path, dpi=170)
+    figure.savefig(path, dpi=170, bbox_inches='tight', pad_inches=.2)
     plt.close(figure)
     paths.append(path)
 
@@ -539,13 +548,17 @@ def plot_measurements(summary, render, models, directory):
         axis.set(xlim=(-.085, .085), ylim=(-.13, .13), zlim=(-.05, .15),
             xlabel='Hand X (m)', ylabel='Hand Y (m)', zlabel='Hand Z (m)', title=name.capitalize())
         axis.set_box_aspect((.17, .26, .20))
+        axis.tick_params(labelsize=8)
+        axis.xaxis.label.set_size(9)
+        axis.yaxis.label.set_size(9)
+        axis.zaxis.label.set_size(9)
         axis.view_init(elev=19, azim=-53)
     figure.legend(handles=[Line2D([], [], marker='.', linestyle='', color='#3477a5', label='Covered physical samples'),
         Line2D([], [], marker='.', linestyle='', color='#ca4a38', label='Uncovered physical samples'),
-        Line2D([], [], color='#d98926', label='Native spheres')], loc='lower center', ncol=3)
+        Line2D([], [], color='#d98926', label='Native spheres')], loc='lower center', ncol=3, fontsize=9)
     figure.suptitle('Measured hand and finger coverage at the same actual posture\nPhysical finger feedback; enhanced range 1–5 mm per joint')
     path = directory/'hand_finger_coverage.png'
-    figure.savefig(path, dpi=170)
+    figure.savefig(path, dpi=170, bbox_inches='tight', pad_inches=.2)
     plt.close(figure)
     paths.append(path)
 
@@ -566,7 +579,7 @@ def plot_measurements(summary, render, models, directory):
     axes[0].legend(loc='lower right')
     figure.suptitle('Actual cooked geometry across recorded postures\nBase sphere-union gap retained; fixed-base containment uses its separate preflight')
     path = directory/'collision_coverage.png'
-    figure.savefig(path, dpi=170)
+    figure.savefig(path, dpi=170, bbox_inches='tight', pad_inches=.2)
     plt.close(figure)
     paths.append(path)
     return [dict(path=str(path), sha256=digest(path)) for path in paths]

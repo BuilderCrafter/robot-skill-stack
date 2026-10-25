@@ -17,6 +17,12 @@ import numpy as np
 
 
 ARM = tuple(f'panda_joint{i}' for i in range(1, 8))
+QUALIFICATIONS = (
+    'The fixed direct-reference criterion passes: actual ordinary direct RMPflow finger solids intersect the unchanged counterfactual box, while the observed global roundtrips remain clear.',
+    'All accepted global routes have two waypoints and identical per-direction joint/trajectory hashes across recorded seeds and both models. These results do not prove an obstacle-induced change to the global path, a multisegment RRT detour, stochastic search robustness, or a geometry-specific benefit of the enhanced model.',
+    'Executed physical clearance is sampled. The separately frozen continuous geometric witness is not a continuous certificate of these executed trajectories.',
+    'Outward cooked-solid clearance and contacts are confirmed retrospectively after close; the native Home request is gated on outward runtime/full-pose success rather than an online independent physical-clearance reduction.',
+)
 
 
 def digest(path):
@@ -167,6 +173,8 @@ def load_case(path):
     trace_path = path.parent/metrics.get('trace_artifact','roundtrip_trace.json')
     summary = dict(result=str(path),result_sha256=digest(path),status=result['status'],
         mode=metrics.get('mode'),model=metrics.get('collision_model'),seed=metrics.get('seed'),
+        repeat=path.parent.name,source_manifest_sha256=numeric_hash(result.get('hashes',{})),
+        global_runtime_sha256=result.get('hashes',{}).get('robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py'),
         native_roundtrip_acceptance=metrics.get('roundtrip_acceptance'),
         native_strict_zero_report_roundtrip=metrics.get('strict_zero_report_roundtrip'),
         contracts=result.get('contracts'),error=result.get('error'),operations=[])
@@ -284,9 +292,10 @@ def path_comparison(cases):
                 if route.shape==primary[label].shape:difference=float(np.max(np.abs(route-primary[label])))
             rows.append(dict(model=case['summary']['model'],seed=case['summary']['seed'],
                 result=case['summary']['result'],label=label,route_waypoints=op['summary']['route_waypoints'],
+                global_runtime_sha256=case['summary'].get('global_runtime_sha256'),
                 route_joint_polyline_sha256=op['summary']['route_joint_polyline_sha256'],
                 selected_ik_index=op['summary']['selected_ik_index'],maximum_joint_difference_to_first_route_rad=difference))
-    return dict(rows=rows,interpretation='The frozen fixture checks interference with ordinary direct RMPflow. Identical two-waypoint global joint routes across models/seeds do not establish a geometry-specific improvement or a difficult stochastic detour.')
+    return dict(rows=rows,interpretation=QUALIFICATIONS[1])
 
 
 def render_case(case, folder, frozen,direct_reference=None):
@@ -299,6 +308,7 @@ def render_case(case, folder, frozen,direct_reference=None):
     folder.mkdir(parents=True,exist_ok=True)
     paths=[]
     fig,axes=plt.subplots(7,len(operations),figsize=(6.4*len(operations),11),squeeze=False,sharex='col',constrained_layout=True)
+    fig.suptitle(f"Measured {case['summary']['model']}, seed {case['summary']['seed']}, {case['summary']['repeat']}")
     for column,op in enumerate(operations):
         for joint in range(7):
             axis=axes[joint,column]
@@ -340,14 +350,14 @@ def render_case(case, folder, frozen,direct_reference=None):
                 [row['minimum_m']*1000 for row in curve],color='#2878b5')
         else:
             axes[0,column].text(.5,.5,'No executed clearance curve captured',ha='center',transform=axes[0,column].transAxes)
-        axes[0,column].axhline(0.,color='#a83030',ls=':');axes[0,column].set_ylabel('All11 cooked bodies → obstacle (mm)')
+        axes[0,column].axhline(0.,color='#a83030',ls=':');axes[0,column].set_ylabel('All 11 cooked bodies → obstacle (mm)')
         axes[0,column].set_title(op['summary']['label'])
         axes[1,column].plot(op['times'],op['position_error']*1000,label='TCP position error (mm)')
-        axes[1,column].axhline(25.,ls=':',color='#777777',label='Original 25mm tolerance')
+        axes[1,column].axhline(25.,ls=':',color='#777777',label='Original 25 mm tolerance')
         twin=axes[1,column].twinx();twin.plot(op['times'],op['orientation_error'],color='#d86435',label='Orientation error')
         twin.set_ylabel('Orientation error (rad)');twin.axhline(.10,color='#d86435',ls=':')
         axes[1,column].set_xlabel('Operation simulation time (s)');axes[1,column].legend(fontsize=7)
-    fig.suptitle('Measured sampled clearance and TCP errors; continuous design witness shown separately')
+    fig.suptitle('Measured sampled clearance and TCP errors')
     path=folder/'actual_clearance_and_tcp_errors.png';fig.savefig(path,dpi=150);plt.close(fig);paths.append(str(path))
     return paths
 
@@ -361,13 +371,14 @@ def render_planning(cases,folder):
         for op in case['operations']:
             values=op['summary']['planning_seconds']
             if any(value is not None for value in values.values()):
-                rows.append((f"{case['summary']['model']} {case['summary']['seed']} {op['summary']['label']}",values))
+                rows.append((f"{case['summary']['model']} {case['summary']['seed']} {case['summary']['repeat']} {op['summary']['label']}",values))
     if not rows:return None
     fig,axis=plt.subplots(figsize=(max(8.,len(rows)*.9),5),constrained_layout=True)
     x=np.arange(len(rows));width=.18
+    legend=('RRT search','Route validation','Trajectory validation','Total planning and validation')
     for index,key in enumerate(('rrt_seconds','route_validation_seconds','trajectory_validation_seconds','planning_and_validation_wall_seconds')):
         values=[np.nan if row[1].get(key) is None else row[1][key]*1000 for row in rows]
-        axis.bar(x+(index-1.5)*width,values,width,label=key.removesuffix('_seconds'))
+        axis.bar(x+(index-1.5)*width,values,width,label=legend[index])
     axis.set_xticks(x,[row[0] for row in rows],rotation=35,ha='right');axis.set_ylabel('Recorded planning wall time (ms)')
     axis.legend(fontsize=8);path=folder/'planning_time_comparison.png';fig.savefig(path,dpi=150);plt.close(fig);return str(path)
 
@@ -387,7 +398,7 @@ def main(argv=None):
     frozen=json.loads(args.frozen_fixture.read_text())
     summary=dict(schema_version=1,source_script_sha256=digest(__file__),cases=[case['summary'] for case in cases],
         interpretation='Actual recorded motion, commands and cooked-solid clearance samples. Missing experiments remain missing. No future-execution continuous guarantee is inferred from the independent frozen numeric witness.',
-        path_comparison=path_comparison(cases),figures=[])
+        qualifications=list(QUALIFICATIONS),path_comparison=path_comparison(cases),figures=[])
     if args.direct_intersection_details is not None:
         for index,case in enumerate(cases):
             if case['summary'].get('mode')=='direct_reference':
@@ -401,10 +412,11 @@ def main(argv=None):
             if args.primary_only_figures and case['summary'].get('mode')=='roundtrip':
                 if global_rendered:continue
                 global_rendered=True
-            label=re.sub('[^a-zA-Z0-9_-]+','_',f"{index}_{case['summary']['model']}_{case['summary']['seed']}")
+            label=re.sub('[^a-zA-Z0-9_-]+','_',f"{index}_{case['summary']['model']}_{case['summary']['seed']}_{case['summary']['repeat']}")
             summary['figures'].extend(render_case(case,args.figures_dir/label,frozen,direct_reference=direct))
         planning=render_planning(cases,args.figures_dir)
         if planning:summary['figures'].append(planning)
+    summary['figure_sha256']={name:digest(name) for name in summary['figures']}
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(summary,indent=2,allow_nan=False)+'\n')
     print(json.dumps(dict(cases=len(cases),figures=len(summary['figures']),output=str(args.output))))
