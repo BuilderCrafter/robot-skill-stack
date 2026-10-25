@@ -11,6 +11,7 @@ class GlobalRgbdV5DriverTests(unittest.TestCase):
     def test_primary_matrix_is_serial_gt_then_rgbd_and_preserves_launcher(self):
         jobs = driver.jobs_for(driver.OUTPUT_ROOT/'example')
         self.assertEqual(len(jobs),14)
+        self.assertNotIn('verified_occlusion',[job['scenario'] for job in jobs])
         self.assertEqual([(job['scenario'],job['execution_condition']) for job in jobs],
             [(scene,source) for scene in driver.protocol.SCENES for source in driver.protocol.SOURCES])
         self.assertEqual(len({job['artifacts_dir'] for job in jobs}),14)
@@ -29,6 +30,25 @@ class GlobalRgbdV5DriverTests(unittest.TestCase):
         self.assertEqual([job['label'] for job in jobs],
             ['empty-static-b128','empty-frozen_rgbd-b128','v43-static-b128','v43-frozen_rgbd-b128'])
         self.assertTrue(all(job['timeout']==900 for job in jobs))
+
+    def test_opt_in_occlusion_case_has_distinct_label_and_secondary_declaration(self):
+        jobs = driver.jobs_for(driver.OUTPUT_ROOT/'occlusion',('verified_occlusion',))
+        self.assertEqual([job['label'] for job in jobs],
+            ['verified_occlusion-static-b64','verified_occlusion-frozen_rgbd-b64'])
+        with TemporaryDirectory() as temporary,patch.object(driver,'ROOT',Path(temporary)), \
+                patch.object(driver.runner,'run_job') as run:
+            folder = driver.OUTPUT_ROOT/'occlusion'
+            self.assertEqual(driver.main(['--artifacts-dir',str(folder),'--case','verified_occlusion']),0)
+            manifest = json.loads((Path(temporary)/folder/'jobs.json').read_text())
+            declaration = json.loads((Path(temporary)/folder/'protocol.json').read_text())
+            self.assertEqual(len(manifest['jobs']),2)
+            self.assertEqual(declaration['scenes'],list(driver.protocol.SCENES))
+            self.assertEqual(declaration['selected_scenes'],['verified_occlusion'])
+            self.assertEqual(declaration['selected_diagnostic_scenes'],['verified_occlusion'])
+            self.assertTrue(declaration['diagnostic_condition'])
+            self.assertEqual(list(declaration['physical_fixtures']),['verified_occlusion'])
+            self.assertEqual(declaration['physical_fixtures']['verified_occlusion'][1]['center'],[.79,-.015,.40])
+            run.assert_not_called()
 
     def test_invalid_output_selections_and_bounds_are_rejected(self):
         for options in (dict(scenes=()),dict(scenes=('static','static')),dict(scenes=('unknown',)),

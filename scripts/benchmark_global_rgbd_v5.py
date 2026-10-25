@@ -190,6 +190,23 @@ def run_native(args, app, state):
                 if time.monotonic()-warm_start > 30.:
                     break
             state['warmup'] = dict(seconds=time.monotonic()-warm_start, health=dict(service.health))
+            if args.scenario == 'verified_occlusion':
+                # This separately declared diagnostic must actually occlude
+                # the post in native depth before either planner is called.
+                from scripts.diagnose_reactive_motion import Box, depth_reference_scores
+                publication = service.snapshot()
+                original_input = next((p for p in reversed(state['mapping_inputs']) if p.frames
+                    and min(f.acquired_at for f in p.frames) == publication.timestamp), None)
+                if original_input is None:
+                    raise RuntimeError('Verified-occlusion diagnostic lacks its original native depth batch')
+                visibility = depth_reference_scores(original_input.frames,
+                    [Box(Path(x['path']).name,tuple(x['center']),tuple(x['dimensions'])) for x in objects])
+                state['diagnostic_visibility'] = visibility
+                post = [row for row in visibility['rows'] if row['obstacle'] == 'Post']
+                if (len(post) != 2 or not any(row['visible_stride_grid_returns'] > 0
+                        and row['occluded_stride_grid_returns'] > 0 for row in post)
+                        or not all(row['visible_stride_grid_returns'] > 0 for row in post)):
+                    raise RuntimeError('Declared diagnostic did not produce native partial Post occlusion; no RRT attempted')
             observer = controlled.make_observer(bundle)
             state['observer'] = observer
             capture = acceptance.fresh_physical_capture(bundle)
@@ -375,7 +392,7 @@ def execute(args,app):
         'selected_result','fixed_joint_target','matched_joint_goal','matched_start_and_physics_instant',
         'runtime_before','runtime_after','strategy_after_motion','strategy_after_close','fingerprints',
         'fixture_actual_poses_before','fixture_actual_poses_after','world_before_sha256','world_after_sha256',
-        'request_to_first_command_seconds')}
+        'request_to_first_command_seconds','diagnostic_visibility')}
     # Per-sample physical curves remain raw; compact output retains outcomes.
     physical={key:{k:v for k,v in value.items() if k!='per_sample'} for key,value in state['physical_evaluation'].items()}
     checks=dict(runtime_closed=state.get('runtime_closed',False),source_unchanged=before==source_hashes(),
@@ -398,7 +415,7 @@ def execute(args,app):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--scenario',choices=protocol.SCENES,required=True)
+    parser.add_argument('--scenario',choices=protocol.SCENES+protocol.DIAGNOSTIC_SCENES,required=True)
     parser.add_argument('--execution-condition',choices=('static','frozen_rgbd'),required=True)
     parser.add_argument('--budget',type=int,choices=(64,128),default=64)
     parser.add_argument('--headless',action='store_true')

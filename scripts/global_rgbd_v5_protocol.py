@@ -20,6 +20,7 @@ START = (.45, -.25, .35)
 GOAL = (.45, .25, .35)
 ORIENTATION = (0., 0., 1., 0.)
 SCENES = ('empty', 'static', 'sparse', 'partial', 'narrow', 'large', 'v43')
+DIAGNOSTIC_SCENES = ('verified_occlusion',)
 SOURCES = ('static', 'frozen_rgbd')
 WORKSPACE_MIN = (-.3, -.6, -.02)
 WORKSPACE_MAX = (1., .6, 1.12)
@@ -64,15 +65,20 @@ def fixtures(scene):
     Nothing here queries or supplies geometry to the RGB-D planning source.
     These declarations create physical test fixtures and label post-hoc scores.
     """
-    if scene not in SCENES:
-        raise ValueError(f'Unknown V5 scene {scene!r}; expected one of {SCENES}')
+    allowed = SCENES+DIAGNOSTIC_SCENES
+    if scene not in allowed:
+        raise ValueError(f'Unknown V5 scene {scene!r}; expected one of {allowed}')
     values = []
     if scene == 'sparse':
         values = [('ThinPost', (.45,0.,.35), (.035,.06,.20))]
-    elif scene in ('static', 'partial'):
+    elif scene in ('static', 'partial', 'verified_occlusion'):
         values = [('Post', (.45,0.,.35), (.09,.12,.26))]
         if scene == 'partial':
             values.append(('Occluder', (.79,-.30,.53), (.08,.40,.40)))
+        elif scene == 'verified_occlusion':
+            # Separate secondary geometry; never replace the primary partial
+            # condition, whose actual camera occlusion must remain measured.
+            values.append(('Occluder', (.79,-.015,.40), (.08,.40,.40)))
     elif scene == 'narrow':
         values = [(label, (.45+sign*(.22+.10)/2,0.,.35), (.10,.14,.26))
                   for sign,label in ((-1,'Left'),(1,'Right'))]

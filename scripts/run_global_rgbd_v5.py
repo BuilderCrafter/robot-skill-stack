@@ -25,6 +25,7 @@ from scripts import run_obstacle_representation_v3_jobs as runner
 
 NATIVE = 'scripts/benchmark_global_rgbd_v5.py'
 OUTPUT_ROOT = Path('outputs/motion-planning-v5')
+SCENE_CHOICES = protocol.SCENES+protocol.DIAGNOSTIC_SCENES
 
 
 def output_folder(path):
@@ -47,7 +48,7 @@ def _selection(selected, allowed, kind):
 def jobs_for(path, scenes=None, sources=None, *, budget=64, timeout=600):
     """Seven scenes x two sources by default; GT precedes RGB-D per scene."""
     path = output_folder(path)
-    scenes = _selection(scenes,protocol.SCENES,'scenes')
+    scenes = _selection(protocol.SCENES if scenes is None else scenes,SCENE_CHOICES,'scenes')
     sources = _selection(sources,protocol.SOURCES,'execution conditions')
     if type(budget) is not int or budget not in (64,128):
         raise ValueError('Use primary budget 64 or separately labeled diagnostic 128')
@@ -79,8 +80,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--artifacts-dir',type=Path,required=True,
         help='Fresh run directory below '+str(OUTPUT_ROOT))
-    parser.add_argument('--case',choices=protocol.SCENES,action='append',dest='scenes',
-        help='Repeat to choose a scene subset; default is all seven declared scenes')
+    parser.add_argument('--case',choices=SCENE_CHOICES,action='append',dest='scenes',
+        help='Repeat to choose primary or opt-in diagnostic scenes; default is the original seven primary scenes')
     parser.add_argument('--execution-condition',choices=protocol.SOURCES,action='append',dest='sources',
         help='Repeat to choose sources; default is static then frozen_rgbd for each scene')
     parser.add_argument('--budget',type=int,choices=(64,128),default=64,
@@ -100,13 +101,18 @@ def main(argv=None):
     except ValueError as error:
         parser.error(str(error))
     declaration = dict(protocol.PROTOCOL,
-        selected_scenes=[scene for scene in protocol.SCENES if any(job['scenario']==scene for job in jobs)],
+        selected_scenes=[scene for scene in SCENE_CHOICES if any(job['scenario']==scene for job in jobs)],
         selected_execution_conditions=[source for source in protocol.SOURCES
             if any(job['execution_condition']==source for job in jobs)],
         selected_cuboid_budget=args.budget,
-        diagnostic_condition=args.budget!=64,
-        physical_fixtures={scene:protocol.fixtures(scene) for scene in protocol.SCENES
+        diagnostic_condition=args.budget!=64 or any(job['scenario'] in protocol.DIAGNOSTIC_SCENES for job in jobs),
+        physical_fixtures={scene:protocol.fixtures(scene) for scene in SCENE_CHOICES
             if any(job['scenario']==scene for job in jobs)})
+    diagnostic_scenes = [scene for scene in protocol.DIAGNOSTIC_SCENES
+        if any(job['scenario']==scene for job in jobs)]
+    if diagnostic_scenes:
+        declaration['selected_diagnostic_scenes'] = diagnostic_scenes
+        declaration['secondary_scene_policy'] = 'Explicit secondary fixture condition; primary scenes, cameras and profiles remain unchanged'
     _write_new_json(folder/'protocol.json',declaration)
     manifest = dict(schema_version=1,jobs=jobs,serial_only=True,
         maximum_native_wall_seconds=sum(job['timeout'] for job in jobs),

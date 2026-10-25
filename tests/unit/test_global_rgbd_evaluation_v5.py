@@ -5,6 +5,7 @@ import json
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace as NS
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -91,6 +92,15 @@ class PhysicalVetoTests(unittest.TestCase):
         self.assertGreater(result['minimum_nonmount_clearance_lower_bound_m'],0.)
         self.assertIn('No continuous',result['qualification'])
         self.assertGreater(result['broadphase_separations'],0)
+
+    def test_per_sample_nonmount_bound_excludes_qualified_base_plane(self):
+        parts=[CookedRobotPart(part.body,box((0.,10.,.004))) if part.body=='panda_link0' else part for part in self.parts]
+        evaluator=PhysicalMotionEvaluator(parts,[PhysicalObstacle.plane('/Ground',[0,0,0],[0,0,1])],self.path)
+        result=evaluator(self.payload())
+        self.assertTrue(result['execution_allowed'])
+        self.assertEqual(result['minimum_external_clearance_lower_bound_m'],0.)
+        self.assertGreater(result['minimum_nonmount_clearance_lower_bound_m'],.01)
+        self.assertTrue(all(row['minimum_nonmount_clearance_lower_bound_m']>.01 for row in result['per_sample']))
 
     def test_actual_frame_disagreement_vetoes_before_geometry_queries(self):
         payload=self.payload();payload['actual_start_body_poses']['panda_hand'][0,3]=.001
@@ -225,6 +235,15 @@ class OccupancyExposureTests(unittest.TestCase):
         result=physically_free_proxy_audit(packet,touching,complete_reference=True)
         self.assertEqual(result['whole_proxy_boxes_in_physical_free'],0)
 
+    def test_unresolved_proxy_gjk_cannot_become_certified_physical_free(self):
+        _,packet=self.fixture()
+        touching=[PhysicalObstacle.convex('/KnownSolid',box((.015,.005,.005),.01))]
+        with patch('scripts.evaluate_global_rgbd_v5.convex_distance_details',side_effect=RuntimeError('unresolved distance')):
+            result=physically_free_proxy_audit(packet,touching,complete_reference=True)
+        self.assertEqual(result['status'],'PARTIAL_UNRESOLVED_QUERIES')
+        self.assertEqual(result['whole_proxy_boxes_in_physical_free'],0)
+        self.assertEqual(len(result['unresolved_boxes']),1)
+
     def test_rejected_source_archive_does_not_manufacture_a_world_or_fk(self):
         snapshot,_=self.fixture()
         view=MappingReadView(snapshot,now=1.,evidence_ttl=10.,stale_after=20.)
@@ -237,6 +256,20 @@ class OccupancyExposureTests(unittest.TestCase):
             self.assertEqual(summary['occupancy']['status'],'RAW_VIEW_ONLY_NO_SELECTED_PACKET')
             self.assertFalse(summary['occupancy']['source_usable'])
             self.assertEqual(summary['motion_exposure'],{})
+
+    def test_archive_error_and_execution_eligibility_are_not_native_success(self):
+        summary=summarize_case(dict(execution_condition='frozen_rgbd',
+            frozen_archive={'archive_error':'recorded failure'},
+            paired_plans={'frozen_rgbd':{'planner_success':True}},
+            physical_evaluation={'frozen_rgbd':{'execution_allowed':True}},
+            metrics={'strategy_after_motion':{'commanded_updates':0},
+                'world_before_sha256':'physical','world_after_sha256':'physical'}))
+        self.assertEqual(summary['occupancy']['status'],'UNMEASURED_ARCHIVE_ERROR')
+        self.assertTrue(summary['condition_outcomes']['frozen_rgbd']['execution_eligible'])
+        self.assertFalse(summary['condition_outcomes']['frozen_rgbd']['executed'])
+        self.assertTrue(summary['physical_scene_unchanged'])
+        self.assertIsNone(summary['frozen_planning_world']['active_world_obstacle_refreshes'])
+        self.assertNotIn('frozen_world_unchanged',summary)
 
 
 if __name__=='__main__':unittest.main()

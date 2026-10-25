@@ -40,6 +40,25 @@ class GlobalRgbdV5ProtocolTests(unittest.TestCase):
         first.append(dict(path='/Other',center=(0.,0.,0.),dimensions=(1.,1.,1.)))
         self.assertEqual(protocol.fixtures('partial'),expected)
 
+    def test_optional_occlusion_scene_never_changes_primary_scenes_protocol_or_profile(self):
+        primary = ('empty','static','sparse','partial','narrow','large','v43')
+        self.assertEqual(protocol.SCENES,primary)
+        self.assertEqual(protocol.PROTOCOL['scenes'],primary)
+        self.assertEqual(protocol.DIAGNOSTIC_SCENES,('verified_occlusion',))
+        original_protocol = copy.deepcopy(protocol.PROTOCOL)
+        first = protocol.write_profile(self.root/'before.toml','frozen_rgbd').read_bytes()
+        original_partial = protocol.fixtures('partial')
+        diagnostic = protocol.fixtures('verified_occlusion')
+        self.assertEqual(diagnostic,[
+            dict(path='/World/ReactiveEvaluation/Post',center=(.45,0.,.35),dimensions=(.09,.12,.26)),
+            dict(path='/World/ReactiveEvaluation/Occluder',center=(.79,-.015,.40),dimensions=(.08,.40,.40))])
+        self.assertEqual(diagnostic[0],original_partial[0])
+        self.assertEqual(original_partial[1]['center'],(.79,-.30,.53))
+        self.assertEqual(protocol.fixtures('partial'),original_partial)
+        self.assertEqual(protocol.PROTOCOL,original_protocol)
+        second = protocol.write_profile(self.root/'after.toml','frozen_rgbd').read_bytes()
+        self.assertEqual(first,second)
+
     def test_matched_profiles_differ_only_in_explicit_planning_source(self):
         values = []
         for source in protocol.SOURCES:
