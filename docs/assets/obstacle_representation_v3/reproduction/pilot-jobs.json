@@ -1,0 +1,72 @@
+{
+  "jobs": [
+    {
+      "label": "pilot-A-empty",
+      "arguments": [
+        "scripts/benchmark_obstacle_representation_v3.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--scenario",
+        "empty",
+        "--strategy",
+        "reactive",
+        "--packing",
+        "baseline",
+        "--selection",
+        "baseline",
+        "--max-obstacles",
+        "64",
+        "--candidate-id",
+        "baseline",
+        "--capture-dir",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-empty-baseline-capture/mapping-audit",
+        "--capture-limit",
+        "12",
+        "--result",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-empty-baseline-capture/result.json",
+        "--artifacts-dir",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-empty-baseline-capture",
+        "--headless"
+      ],
+      "artifacts_dir": "outputs/obstacle-representation-v3/reproduce/pilot/A_current-empty-baseline-capture",
+      "result": "outputs/obstacle-representation-v3/reproduce/pilot/A_current-empty-baseline-capture/result.json",
+      "timeout": 360
+    },
+    {
+      "label": "pilot-A-cylinder",
+      "arguments": [
+        "scripts/benchmark_obstacle_representation_v3.py",
+        "--layouts",
+        "docs/assets/camera_observability_feasibility/camera_layouts.json",
+        "--layout-id",
+        "A_current",
+        "--scenario",
+        "cylinder",
+        "--strategy",
+        "reactive",
+        "--packing",
+        "baseline",
+        "--selection",
+        "baseline",
+        "--max-obstacles",
+        "64",
+        "--candidate-id",
+        "baseline",
+        "--capture-dir",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-cylinder-baseline-capture/mapping-audit",
+        "--capture-limit",
+        "12",
+        "--result",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-cylinder-baseline-capture/result.json",
+        "--artifacts-dir",
+        "outputs/obstacle-representation-v3/reproduce/pilot/A_current-cylinder-baseline-capture",
+        "--headless"
+      ],
+      "artifacts_dir": "outputs/obstacle-representation-v3/reproduce/pilot/A_current-cylinder-baseline-capture",
+      "result": "outputs/obstacle-representation-v3/reproduce/pilot/A_current-cylinder-baseline-capture/result.json",
+      "timeout": 360
+    }
+  ]
+}

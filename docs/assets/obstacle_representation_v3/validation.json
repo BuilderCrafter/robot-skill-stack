@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "baseline_commit": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+  "measured_core_local_commit": "e810adf7f7a22d27cd1e0982f7f8f5e59482ac61",
+  "measured_core_published_commit": "1b91d13930f13c0df9490b8df4f1e3f92fa2ca72",
+  "measured_core_tree": "fee7ae808a72617ae87850222e18836780286efe",
+  "analysis_local_commit": "84f569187f03fe9924c488d00b0954ac8f464aca",
+  "analysis_published_commit": "e6cfc9270cf0789ad1641bf619ef0089443b3f42",
+  "analysis_tree": "74033d02e80d955ed8f8701e3c604b41207a1a3e",
+  "source_preservation": {
+    "protected-baseline.json": {
+      "commit": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "files": 250,
+      "mismatches": [],
+      "manifest_sha256": "9b6fce47f72a36c6c2cc6e954189a5ddf0415b6b470b699ab0351abe3d5a829b"
+    },
+    "final-source-freeze.json": {
+      "commit": "e810adf7f7a22d27cd1e0982f7f8f5e59482ac61",
+      "files": 14,
+      "mismatches": [],
+      "manifest_sha256": "c48f84f506e52bd9217e8e5ea1d3e6c5cfa038b5bccac46c3eed3927af090609"
+    }
+  },
+  "core_sha256": {
+    "scripts/benchmark_obstacle_representation_v3.py": "8938279dcce141e05d7916581ed4249ca994858debcb55d4d188075829bc1eb0",
+    "scripts/evaluate_obstacle_representation_v3.py": "d52425db4d5ec431b79cf63952cc90f51bb22555c3c0ad3dfce87324d619559f",
+    "scripts/obstacle_representation_v3.py": "dac567139a96f1b2cd7cf68f511596f925a4b8a3cafc53154a2a907abf05547f",
+    "scripts/obstacle_representation_v3_cylinder.py": "e791414876337077abea06e6ac54930991209cb06cbec6a174593a589f48e262",
+    "scripts/probe_obstacle_representation_v3.py": "5538b41060f7e02e37e52eee9a7277d7e3e6118dc0217a2b1b65c65a396f6a4b",
+    "scripts/run_obstacle_representation_v3_jobs.py": "32277c68fecf4ff00fcb847ddf2b87345bcada81938458a0429c8147e1a9b7cb",
+    "scripts/summarize_obstacle_representation_v3.py": "21b073653fdff18bfde82b6c8165dacb8f4c86ca960936362801813085655ecc",
+    "tests/unit/test_evaluate_obstacle_representation_v3.py": "71b3869720f6ba2cd74a577247384c27c7b472d804b1ecaa1e15076eb9efaaad",
+    "tests/unit/test_obstacle_representation_v3.py": "325fc66b1bc849b6e4bb84a788ab4ca1e5aa66fd5b14994803a15ce2e54bed5a",
+    "tests/unit/test_obstacle_representation_v3_cylinder.py": "84b4a09f06435be4a1b23a1c5d5cdb05f606f181ec18505acadff233f2f4fa4d",
+    "tests/unit/test_obstacle_representation_v3_harness.py": "b475509ba9d95c761cae562bf471a32a93fdc2e37c5f64c9e5e1e40741f899df",
+    "tests/unit/test_obstacle_representation_v3_jobs.py": "523f7332bb2e5adf888e2bc14c4ef9ee78773d5799ac6c37c45768b7d8743387",
+    "tests/unit/test_obstacle_representation_v3_probe.py": "520bf53f6c83225ae0e419a37d7dc1254859c20dd2fd29fbd98239f7a38cb8cc",
+    "tests/unit/test_obstacle_representation_v3_summary.py": "51545fc0dc499298746bc7137e87374b492e33f3835ff64a8ed00053a7e674e3"
+  },
+  "regression": {
+    "command": "./run_isaac_python.sh scripts/run_all_regressions.py --unit-only --artifacts-dir outputs/obstacle-representation-v3/unit-final-complete",
+    "artifact": "outputs/obstacle-representation-v3/unit-final-complete/run-e23z6r1z",
+    "unit_tests": 959,
+    "unit_seconds": 35.398,
+    "modules": {
+      "architecture": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "unit_discovery": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_async_runtime": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_grasp_planning": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_placement": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_primitive_perception": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_reactive_pick": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_update_rate": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      },
+      "test_world_model_view": {
+        "status": "PASS",
+        "return_code": 0,
+        "error": null
+      }
+    },
+    "summary_sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+    "unit_log_sha256": "dfd380f6f47fa789e3027bfc74ba62e92193324bc92b6c5621691e4608f5a4f6"
+  },
+  "native_counts": {
+    "unique_attempts": 85,
+    "valid_measurements": 85,
+    "timing_eligible": 74,
+    "declared_reference_edges": 58,
+    "eligible_reference_edges": 54,
+    "unique_declared_baselines": 26
+  },
+  "native_cohorts": {
+    "primary": 42,
+    "repeats": 20,
+    "direct": 4,
+    "optional_k": 8,
+    "retained": 11
+  },
+  "scope": "Only74 timing-eligible native runs enter runtime comparisons;11 forensic measurements retained separately. All completed native runs precede final plots/tests. No production change or merge.",
+  "raw_publication": "No raw frame, depth, map array, input pickle, captured mesh, trace or native log published.",
+  "compact_evidence": {
+    "actual_voxel_cuboid_views.png": {
+      "bytes": 1276861,
+      "sha256": "11d3af8527deb6ae13d09492287bb2abc4784f56919cf9d3ae7fc8f0a4aa20ed"
+    },
+    "fixture_scale_details.json": {
+      "bytes": 11792,
+      "sha256": "52d6d8e751656d7d187a46167e6d882e8791bfe94e804948c0939eb3460cc715"
+    },
+    "fixture_scale_details.png": {
+      "bytes": 899170,
+      "sha256": "6509871167b0754bac07a483db6caade054a8c38cd53a0baff814befe279820c"
+    },
+    "followup_protocol.json": {
+      "bytes": 2631,
+      "sha256": "ff044e727789c96d57432c5379583562f1efa1d7c8e6099ee64292f073146ee8"
+    },
+    "fragmentation_and_packing.png": {
+      "bytes": 120897,
+      "sha256": "b4bf81e8f0ad23097a2762d81e60416b90f75837ef27142a3bf21d0b3495d407"
+    },
+    "independent_audit.json": {
+      "bytes": 7447,
+      "sha256": "a59a29be4c525040624f2930ca678360016dd26f315b84325a06bea6049f7302"
+    },
+    "inventory.json": {
+      "bytes": 9023,
+      "sha256": "b5cb01e2a610ba2f431d3ba09d6809731e068bea61c5e618932b69b228a7a67c"
+    },
+    "motion.json": {
+      "bytes": 168909,
+      "sha256": "27b5cd94270e743553f4ec98d55c96cfbbb1bd35b68b9811e334b02eb8435736"
+    },
+    "offline_budget_sensitivity.json": {
+      "bytes": 61178,
+      "sha256": "f98ae96ddd5fe9aeae057d42c765f202b8db86adbd5af9a0370497bfef52c6e9"
+    },
+    "offline_primary.json": {
+      "bytes": 242793,
+      "sha256": "5919012daeed5acf57133216dc06b25dc70b6f45a5ecc1354ef36199a79abe35"
+    },
+    "protocol.json": {
+      "bytes": 6578,
+      "sha256": "38e8fa62669c871682d8d725f52a17712fd4611b2b9d3faf67fd087d67dfc59b"
+    },
+    "proxy_count_vs_observed_coverage.png": {
+      "bytes": 70487,
+      "sha256": "0eba91e4b1e9a3a377566881ee9876a692e99e28783e23f0956503ce2b2ca255"
+    },
+    "sampling_quantization.json": {
+      "bytes": 68894,
+      "sha256": "3e3eb28de7c5133f0120e747f5ed3d05b9d605ed545a2f0ab4131664afe832fa"
+    },
+    "static_budget_response.json": {
+      "bytes": 28749,
+      "sha256": "a883efb1ae717c0fbc37132b6ab5b24903fdfc4ecca0612197f4dbca5374df19"
+    },
+    "static_postures.json": {
+      "bytes": 2586,
+      "sha256": "b288325c899049bdae2a55fd7e86ac13929ee75c786955823487bb1c1b751521"
+    },
+    "static_response.json": {
+      "bytes": 128664,
+      "sha256": "646ead76ef1590e883e0cfd76b45c9b352fbb842516bf707fc90c5adcde2dcf0"
+    },
+    "static_response.png": {
+      "bytes": 204963,
+      "sha256": "b17243477c1f97ab28c699a9330eded5f7c8e1145d1197ec38c96b80f6da8db8"
+    },
+    "trajectories.json": {
+      "bytes": 9695,
+      "sha256": "4722f7e4dd08ed829a6b2945377d49921500280259568f4c817c1ded4fe3b853"
+    },
+    "trajectories.png": {
+      "bytes": 519514,
+      "sha256": "639bb0b861d98c1578c68c449a69a26d366c724ad9e9371dc35df6f08b3e861c"
+    }
+  },
+  "reproduction_plans": {
+    "baseline-capture-jobs.json": {
+      "bytes": 11287,
+      "sha256": "9469888e315757b3cbf9755b6183b441362092bb0699881b40e46c2d11513e0d"
+    },
+    "direct-control-jobs.json": {
+      "bytes": 5567,
+      "sha256": "0e21101eb22f44ce8827c3cb44defe40fbff8ca5eb1f0c94d641fba4231aa01d"
+    },
+    "native-primary-jobs.json": {
+      "bytes": 52745,
+      "sha256": "2847db1d6c11f8ee3ef7fd1039106d32dfec567fdac0809bd1afcb844e0dbdd8"
+    },
+    "native-repeat-jobs.json": {
+      "bytes": 27743,
+      "sha256": "ee25b90a7417e574a4b2b78ffe84d631138cb4a3124f178f2ec6ef36e44e794b"
+    },
+    "optional-K-jobs.json": {
+      "bytes": 12522,
+      "sha256": "9caee2c409d118f4573b5be132415a04f2a76c8b46118489e3f9a0edb3831250"
+    },
+    "pilot-jobs.json": {
+      "bytes": 2476,
+      "sha256": "554fdd214f785144e55a982f8326d448c5fbeafbd232cdb220c31361c2855a70"
+    }
+  }
+}

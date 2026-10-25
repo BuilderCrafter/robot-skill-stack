@@ -1,0 +1,289 @@
+{
+  "figure": "docs/assets/obstacle_representation_v3/trajectories.png",
+  "selected": [
+    {
+      "layout_id": "A_current",
+      "scenario": "static",
+      "candidate": "baseline",
+      "attempt": "A_current-static-baseline-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-static-baseline-r1/result.json",
+      "artifact_sha256": "12ad732a4edc6004ff1414f0a87f516733fd162a32402bd22226108eabd39703",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "static",
+      "candidate": "diversity",
+      "attempt": "A_current-static-diversity-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-static-diversity-r1/result.json",
+      "artifact_sha256": "626631fc774afc95e20342c08777655c2c04fc1dcc90a85361decd6b0df793bb",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "static",
+      "candidate": "motion",
+      "attempt": "A_current-static-motion-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-static-motion-r1/result.json",
+      "artifact_sha256": "8d78129434bbaeb485aee0c8894701c001f25585e3a22aaee4e7d988f276704c",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "static",
+      "physical_fixture_outlines": [
+        {
+          "name": "Post",
+          "dimensions_m": [
+            0.09,
+            0.12,
+            0.26
+          ],
+          "actual_pose": [
+            0.44999998807907104,
+            0.0,
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "candidate": "baseline",
+      "attempt": "A_current-partial-baseline-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-partial-baseline-r1/result.json",
+      "artifact_sha256": "8821ac1918c4ebfb7cfa5b807bd56da6dbd3d0d64634ed336a37f5d1ccb365ea",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "candidate": "diversity",
+      "attempt": "A_current-partial-diversity-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-partial-diversity-r1/result.json",
+      "artifact_sha256": "c74d838c269b71aa3610e10ddebb9492dec46a53e2b6eb10afed5588299efa2a",
+      "tcp_samples": 234,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "candidate": "motion",
+      "attempt": "A_current-partial-motion-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/A_current-partial-motion-r1/result.json",
+      "artifact_sha256": "48881c8a78fe3faf5cdfd53ff8f98a39ce5fc34fb2e47321fd768d99e46a9eff",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "physical_fixture_outlines": [
+        {
+          "name": "Post",
+          "dimensions_m": [
+            0.09,
+            0.12,
+            0.26
+          ],
+          "actual_pose": [
+            0.44999998807907104,
+            0.0,
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Occluder",
+          "dimensions_m": [
+            0.08,
+            0.4,
+            0.4
+          ],
+          "actual_pose": [
+            0.7900000214576721,
+            -0.30000001192092896,
+            0.5299999713897705,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "candidate": "baseline",
+      "attempt": "C_asymmetric_1.15_0.65-static-baseline-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-static-baseline-r1/result.json",
+      "artifact_sha256": "f46beb59cf0088e40cac7984a53deadd39e527ef132f609b2e517282fcae5210",
+      "tcp_samples": 303,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "candidate": "diversity",
+      "attempt": "C_asymmetric_1.15_0.65-static-diversity-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-static-diversity-r1/result.json",
+      "artifact_sha256": "c674c9bdeda40f534f0bf73265fbc27822c43ce04a9eb25b5eddafdcc55eb528",
+      "tcp_samples": 1000,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "timeout",
+      "strict_contact_free_success": false
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "candidate": "motion",
+      "attempt": "C_asymmetric_1.15_0.65-static-motion-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-static-motion-r1/result.json",
+      "artifact_sha256": "7b4cd8b8fed1344e93a7c69b5797bfe7a27dddabf9d5619c4158f0bab02011c3",
+      "tcp_samples": 301,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "physical_fixture_outlines": [
+        {
+          "name": "Post",
+          "dimensions_m": [
+            0.09,
+            0.12,
+            0.26
+          ],
+          "actual_pose": [
+            0.44999998807907104,
+            0.0,
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "candidate": "baseline",
+      "attempt": "C_asymmetric_1.15_0.65-narrow-baseline-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-narrow-baseline-r1/result.json",
+      "artifact_sha256": "9cc94c22d28cd723242aed73afa83b9b29b07203f8ba6764bc0254696a70be1f",
+      "tcp_samples": 486,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "candidate": "diversity",
+      "attempt": "C_asymmetric_1.15_0.65-narrow-diversity-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-narrow-diversity-r1/result.json",
+      "artifact_sha256": "adbf2ecf8e62c357ab17b022ab1f03a0b7b3c4a5299803117e7402f9b760f0bc",
+      "tcp_samples": 975,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "candidate": "motion",
+      "attempt": "C_asymmetric_1.15_0.65-narrow-motion-r1",
+      "artifact": "outputs/obstacle-representation-v3/native-primary/C_asymmetric_1.15_0.65-narrow-motion-r1/result.json",
+      "artifact_sha256": "3d40c67b83b190be9563161986afe5b0d9a263f3e5be133a2be4ccd130919424",
+      "tcp_samples": 381,
+      "raw_reported_contact_points": 0,
+      "plotted_contact_points": 0,
+      "goal_status": "success",
+      "strict_contact_free_success": true
+    },
+    {
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "physical_fixture_outlines": [
+        {
+          "name": "Left",
+          "dimensions_m": [
+            0.1,
+            0.14,
+            0.26
+          ],
+          "actual_pose": [
+            0.28999999165534973,
+            0.0,
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Right",
+          "dimensions_m": [
+            0.1,
+            0.14,
+            0.26
+          ],
+          "actual_pose": [
+            0.6100000143051147,
+            0.0,
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ],
+  "contact_points_enabled": true,
+  "caption": "Curves connect actual measured TCP samples from the predeclared primary r1 attempts. Gray wireframes use actual inserted actor poses and physical box dimensions. Red markers, when enabled, are sampled PhysX robot-surface contact points, not TCP positions; at most2000 actual points per attempt are displayed. This is not a whole-arm swept volume or a continuous-clearance certificate. All panels share world-coordinate limits."
+}

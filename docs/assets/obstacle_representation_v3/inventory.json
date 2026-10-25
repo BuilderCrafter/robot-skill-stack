@@ -1,0 +1,200 @@
+{
+  "status": "READ_ONLY_INVENTORY",
+  "sources": [
+    {
+      "path": "outputs/motion-planning-v2b-baseline-rgbd-empty-direct-capture",
+      "canonical_snapshot_files": 24,
+      "raw_mapping_inputs": 24,
+      "clock_scope": "Actual recorded processor phase clocks",
+      "layout_scope": "Historical V2b diagnostic EYES, not authored A_current"
+    },
+    {
+      "path": "outputs/motion-planning-v2b-baseline-rgbd-partial-direct-capture",
+      "canonical_snapshot_files": 25,
+      "raw_mapping_inputs": 25,
+      "clock_scope": "Actual recorded processor phase clocks",
+      "layout_scope": "Historical V2b diagnostic EYES, not authored A_current"
+    },
+    {
+      "path": "outputs/motion-planning-v2b-baseline-rgbd-sparse-direct-capture",
+      "canonical_snapshot_files": 24,
+      "raw_mapping_inputs": 24,
+      "clock_scope": "Actual recorded processor phase clocks",
+      "layout_scope": "Historical V2b diagnostic EYES, not authored A_current"
+    },
+    {
+      "path": "outputs/motion-planning-v2b-baseline-rgbd-static-direct-capture",
+      "canonical_snapshot_files": 34,
+      "raw_mapping_inputs": 34,
+      "clock_scope": "Actual recorded processor phase clocks",
+      "layout_scope": "Historical V2b diagnostic EYES, not authored A_current"
+    },
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-A_current/sampling_capture.json",
+      "layout": "A_current",
+      "raw_mapping_inputs": 12,
+      "canonical_snapshot_files": 0,
+      "clock_scope": "No worker clock recorded; explicit canonical offline replay required",
+      "physical_guard": {
+        "post": {
+          "clearance_to_enclosing_box_m": 0.09451731937124382,
+          "potential_overlap": false,
+          "reference": "Exact actual robot visible triangle meshes; exact box fixture or conservative enclosing box for sphere/cylinder.",
+          "motion_validity": "Potential overlap must be excluded/checked before any physical movement claim; visibility trial retained."
+        }
+      }
+    },
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-C_asymmetric_1.15_0.65/sampling_capture.json",
+      "layout": "C_asymmetric_1.15_0.65",
+      "raw_mapping_inputs": 12,
+      "canonical_snapshot_files": 0,
+      "clock_scope": "No worker clock recorded; explicit canonical offline replay required",
+      "physical_guard": {
+        "post": {
+          "clearance_to_enclosing_box_m": 0.09451731937124382,
+          "potential_overlap": false,
+          "reference": "Exact actual robot visible triangle meshes; exact box fixture or conservative enclosing box for sphere/cylinder.",
+          "motion_validity": "Potential overlap must be excluded/checked before any physical movement claim; visibility trial retained."
+        }
+      }
+    },
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-H_third_side_-1.00/sampling_capture.json",
+      "layout": "H_third_side_-1.00",
+      "raw_mapping_inputs": 12,
+      "canonical_snapshot_files": 0,
+      "clock_scope": "No worker clock recorded; explicit canonical offline replay required",
+      "physical_guard": {
+        "post": {
+          "clearance_to_enclosing_box_m": 0.09451731937124382,
+          "potential_overlap": false,
+          "reference": "Exact actual robot visible triangle meshes; exact box fixture or conservative enclosing box for sphere/cylinder.",
+          "motion_validity": "Potential overlap must be excluded/checked before any physical movement claim; visibility trial retained."
+        }
+      }
+    },
+    {
+      "path": "outputs/camera-observability-feasibility/sampling-home-K_B_front_height_0.85_rear/sampling_capture.json",
+      "layout": "K_B_front_height_0.85_rear",
+      "raw_mapping_inputs": 12,
+      "canonical_snapshot_files": 0,
+      "clock_scope": "No worker clock recorded; explicit canonical offline replay required",
+      "physical_guard": {
+        "post": {
+          "clearance_to_enclosing_box_m": 0.09451731937124382,
+          "potential_overlap": false,
+          "reference": "Exact actual robot visible triangle meshes; exact box fixture or conservative enclosing box for sphere/cylinder.",
+          "motion_validity": "Potential overlap must be excluded/checked before any physical movement claim; visibility trial retained."
+        }
+      }
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-moving",
+      "scenario": "moving",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-narrow",
+      "scenario": "narrow",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-partial",
+      "scenario": "partial",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-separated",
+      "scenario": "separated",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-sparse",
+      "scenario": "sparse",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/A_current-static",
+      "scenario": "static",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-narrow",
+      "scenario": "narrow",
+      "layout": "C_asymmetric_1.15_0.65",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-partial",
+      "scenario": "partial",
+      "layout": "C_asymmetric_1.15_0.65",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-static",
+      "scenario": "static",
+      "layout": "C_asymmetric_1.15_0.65",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/pilot/A_current-cylinder-baseline-capture",
+      "scenario": "cylinder",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/pilot/A_current-empty-baseline-capture",
+      "scenario": "empty",
+      "layout": "A_current",
+      "canonical_snapshot_files": 12,
+      "raw_mapping_inputs": 12,
+      "clock_scope": "Original recorded snapshot and packet/extraction clocks are distinct and retained",
+      "full_capture_excluded_from_timing_claims": true
+    }
+  ],
+  "initially_missing_historical_canonical_scenarios": [
+    "two_separated",
+    "narrow",
+    "moving",
+    "native_true_cylinder"
+  ],
+  "missing_current_native_scenarios": [],
+  "limitation": "Physical-motion geometry_reference.npz and cumulative unique_hit/unique_free archives are not canonical maps."
+}

@@ -1,0 +1,2866 @@
+{
+  "schema_version": 1,
+  "status": "OFFLINE_RESEARCH_MEASUREMENT",
+  "snapshot_manifests": [
+    {
+      "path": "outputs/obstacle-representation-v3/primary-final-snapshots.json",
+      "sha256": "d5c321650f68a0b848e81beca72d29ab4201014ec77be7bb0a3e09c84c0f2d70"
+    }
+  ],
+  "implementation_sha256": "dac567139a96f1b2cd7cf68f511596f925a4b8a3cafc53154a2a907abf05547f",
+  "evaluator_sha256": "1e1d3ec8ed62f14465eedeb9dcce12408d72f2867b2f527b2eceead58ff7f2a0",
+  "variants": [
+    {
+      "id": "baseline",
+      "packing": "baseline",
+      "selection": "baseline"
+    },
+    {
+      "id": "diversity",
+      "packing": "baseline",
+      "selection": "diversity"
+    },
+    {
+      "id": "motion",
+      "packing": "baseline",
+      "selection": "motion"
+    }
+  ],
+  "budgets": [
+    16,
+    32,
+    128
+  ],
+  "qualifications": [
+    "All variants receive the exact same immutable canonical snapshot and original recorded evaluation/TTL clocks.",
+    "Canonical replays of raw native inputs retain source timestamps but declare their logical completion clock; they are not native freshness measurements.",
+    "Physical object metadata is evaluation-only. Motion ranking receives only exposure robot points and a recorded public target/corridor when available.",
+    "Registry call counts use the unchanged registry with a counting numeric interface. They predict orchestration operations, not installed-SDK registration latency.",
+    "Full-capture IO perturbs native cadence; extraction wall times are offline CPU measurements, not control or GPU performance.",
+    "Endpoint surface support is not full-solid reconstruction or a certified free-space/swept-path guarantee."
+  ],
+  "all_geometry_audits_pass": true,
+  "production_sources_unchanged": true,
+  "full_report": {
+    "path": "outputs/obstacle-representation-v3/budget-offline/full_report.json",
+    "sha256": "2fbc9fb1bd0f9aedc54eaaa224c97810112e7698862abab403d88567ae78a016",
+    "scope": "Ignored full scalar diagnostics and exact numeric source/cell-audit references; no cumulative mask replaces canonical state."
+  },
+  "cases": [
+    {
+      "case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "snapshot_arrays_sha256": "4f68391b2c0b588ccb9708bdca13771b0b6d0d3d66225fd307d799db7be6f366",
+      "clock": {
+        "timestamp": 3287832.995848286,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3287833.120402443,
+        "evaluated_at": 3287833.126188845,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 517,
+        "supported_voxels": 517,
+        "spatial_supported_voxels": 167,
+        "strong_sparse_retained": 350,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 506,
+      "face6_singletons": 495,
+      "exact_box_count_lower_bound": 506,
+      "axis_order_candidate_counts": {
+        "xyz": 506,
+        "xzy": 506,
+        "yxz": 506,
+        "yzx": 506,
+        "zxy": 506,
+        "zyx": 506
+      },
+      "radius2_components": 330,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-empty-baseline-capture/job-00018",
+      "snapshot_arrays_sha256": "d29dd239a00afe45fa0c6310e0ea3dd9fb5e452eeb79104c79c5d8a4bb6326c7",
+      "clock": {
+        "timestamp": 3287805.290350263,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3287805.408180018,
+        "evaluated_at": 3287805.413761838,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 512,
+        "supported_voxels": 512,
+        "spatial_supported_voxels": 162,
+        "strong_sparse_retained": 350,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 501,
+      "face6_singletons": 490,
+      "exact_box_count_lower_bound": 501,
+      "axis_order_candidate_counts": {
+        "xyz": 501,
+        "xzy": 501,
+        "yxz": 501,
+        "yzx": 501,
+        "zxy": 501,
+        "zyx": 501
+      },
+      "radius2_components": 329,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-moving/job-00032",
+      "snapshot_arrays_sha256": "51f060f4fac8ef61fdda78185b896604b581f9e2ed75eacd6ad86f5270a3067b",
+      "clock": {
+        "timestamp": 3288177.81058775,
+        "revision": 36,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288177.928510591,
+        "evaluated_at": 3288177.934563682,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 571,
+        "supported_voxels": 549,
+        "spatial_supported_voxels": 199,
+        "strong_sparse_retained": 350,
+        "rejected_sparse_voxels": 22
+      },
+      "face6_components": 535,
+      "face6_singletons": 521,
+      "exact_box_count_lower_bound": 535,
+      "axis_order_candidate_counts": {
+        "xyz": 535,
+        "xzy": 535,
+        "yxz": 535,
+        "yzx": 535,
+        "zxy": 535,
+        "zyx": 535
+      },
+      "radius2_components": 354,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-narrow/job-00018",
+      "snapshot_arrays_sha256": "34ecc7e9f9abf45ee70aded4f92274cd2708a0226391082b8a041978d45693cd",
+      "clock": {
+        "timestamp": 3288134.942503443,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288135.060647407,
+        "evaluated_at": 3288135.066662104,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 562,
+        "supported_voxels": 562,
+        "spatial_supported_voxels": 202,
+        "strong_sparse_retained": 360,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 550,
+      "face6_singletons": 538,
+      "exact_box_count_lower_bound": 550,
+      "axis_order_candidate_counts": {
+        "xyz": 550,
+        "xzy": 550,
+        "yxz": 550,
+        "yzx": 550,
+        "zxy": 550,
+        "zyx": 550
+      },
+      "radius2_components": 345,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-partial/job-00018",
+      "snapshot_arrays_sha256": "4ab8e701981defce7d1e21717865465de45f8ed95c8ecd1391c4049190e5b530",
+      "clock": {
+        "timestamp": 3288042.094233751,
+        "revision": 21,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288042.209050924,
+        "evaluated_at": 3288042.214318836,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 589,
+        "supported_voxels": 589,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 410,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 578,
+      "face6_singletons": 567,
+      "exact_box_count_lower_bound": 578,
+      "axis_order_candidate_counts": {
+        "xyz": 578,
+        "xzy": 578,
+        "yxz": 578,
+        "yzx": 578,
+        "zxy": 578,
+        "zyx": 578
+      },
+      "radius2_components": 399,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-separated/job-00018",
+      "snapshot_arrays_sha256": "9287065a907cc905cbfbd1387ddc7378845403353121c473d062c26e50c6c71b",
+      "clock": {
+        "timestamp": 3288100.00198681,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288100.123914986,
+        "evaluated_at": 3288100.130199016,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 562,
+        "supported_voxels": 562,
+        "spatial_supported_voxels": 198,
+        "strong_sparse_retained": 364,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 547,
+      "face6_singletons": 532,
+      "exact_box_count_lower_bound": 547,
+      "axis_order_candidate_counts": {
+        "xyz": 547,
+        "xzy": 547,
+        "yxz": 547,
+        "yzx": 547,
+        "zxy": 547,
+        "zyx": 547
+      },
+      "radius2_components": 346,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-sparse/job-00018",
+      "snapshot_arrays_sha256": "10b7665ebd84b111e386a3ee874342b1dd23fa574805af3b8e75671796fc1b98",
+      "clock": {
+        "timestamp": 3288010.210590594,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288010.329804342,
+        "evaluated_at": 3288010.3355834,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 519,
+        "supported_voxels": 519,
+        "spatial_supported_voxels": 169,
+        "strong_sparse_retained": 350,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 508,
+      "face6_singletons": 497,
+      "exact_box_count_lower_bound": 508,
+      "axis_order_candidate_counts": {
+        "xyz": 508,
+        "xzy": 508,
+        "yxz": 508,
+        "yzx": 508,
+        "zxy": 508,
+        "zyx": 508
+      },
+      "radius2_components": 330,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "A_current-static/job-00018",
+      "snapshot_arrays_sha256": "051d9f6d315c8fccbf6d88f70f2a22528f5cd7688dd01090a2ad1249fea96311",
+      "clock": {
+        "timestamp": 3287953.255952647,
+        "revision": 20,
+        "generation": 0,
+        "snapshot_evaluated_at": 3287953.374438258,
+        "evaluated_at": 3287953.380409254,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 537,
+        "supported_voxels": 537,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 358,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 526,
+      "face6_singletons": 515,
+      "exact_box_count_lower_bound": 526,
+      "axis_order_candidate_counts": {
+        "xyz": 526,
+        "xzy": 526,
+        "yxz": 526,
+        "yzx": 526,
+        "zxy": 526,
+        "zyx": 526
+      },
+      "radius2_components": 339,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "snapshot_arrays_sha256": "c4f0b00782c12f7f4591b5a8d99ba9cfa564b5b6792d4bb606adf0f700ad3e0c",
+      "clock": {
+        "timestamp": 3288300.998839259,
+        "revision": 22,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288301.135938701,
+        "evaluated_at": 3288301.141811448,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 410,
+        "supported_voxels": 410,
+        "spatial_supported_voxels": 93,
+        "strong_sparse_retained": 317,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 401,
+      "face6_singletons": 392,
+      "exact_box_count_lower_bound": 401,
+      "axis_order_candidate_counts": {
+        "xyz": 401,
+        "xzy": 401,
+        "yxz": 401,
+        "yzx": 401,
+        "zxy": 401,
+        "zyx": 401
+      },
+      "radius2_components": 286,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-partial/job-00018",
+      "snapshot_arrays_sha256": "44c39747d893eca9ffae78e02a83d3a2e49447a2b300e3d79551de48cc5a5cb2",
+      "clock": {
+        "timestamp": 3288263.277261546,
+        "revision": 21,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288263.417724674,
+        "evaluated_at": 3288263.424276487,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 398,
+        "supported_voxels": 398,
+        "spatial_supported_voxels": 63,
+        "strong_sparse_retained": 335,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 391,
+      "face6_singletons": 384,
+      "exact_box_count_lower_bound": 391,
+      "axis_order_candidate_counts": {
+        "xyz": 391,
+        "xzy": 391,
+        "yxz": 391,
+        "yzx": 391,
+        "zxy": 391,
+        "zyx": 391
+      },
+      "radius2_components": 300,
+      "packing_counts": {}
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-static/job-00018",
+      "snapshot_arrays_sha256": "6aeb8958eff7994a6d17e9c7cfee99977b0828dddd97964fcdc71ac3698c6d2d",
+      "clock": {
+        "timestamp": 3288225.452877097,
+        "revision": 21,
+        "generation": 0,
+        "snapshot_evaluated_at": 3288225.602076612,
+        "evaluated_at": 3288225.608117933,
+        "evidence_ttl": 5.0
+      },
+      "evidence": {
+        "occupied_voxels": 367,
+        "supported_voxels": 367,
+        "spatial_supported_voxels": 60,
+        "strong_sparse_retained": 307,
+        "rejected_sparse_voxels": 0
+      },
+      "face6_components": 360,
+      "face6_singletons": 353,
+      "exact_box_count_lower_bound": 360,
+      "axis_order_candidate_counts": {
+        "xyz": 360,
+        "xzy": 360,
+        "yxz": 360,
+        "yzx": 360,
+        "zxy": 360,
+        "zyx": 360
+      },
+      "radius2_components": 274,
+      "packing_counts": {}
+    }
+  ],
+  "audit_error_totals": {
+    "free_cells": 0,
+    "unknown_cells": 0,
+    "ineligible_cells": 0,
+    "unsupported_cells": 0,
+    "overlap_cells": 0,
+    "wrong_expiry_boxes": 0,
+    "expired_boxes": 0,
+    "wrong_voxel_count_boxes": 0,
+    "wrong_extracted_at": 0,
+    "candidate_incorrect_cells": 0,
+    "candidate_overlap_cells": 0,
+    "candidate_missing_supported_cells": 0,
+    "stage_selection_disagrees": 0
+  },
+  "all_input_snapshots_unchanged": true,
+  "all_quiet_packet_expiry_checks_pass": true,
+  "summary": [
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "baseline_16",
+      "counts": [
+        506,
+        16,
+        27,
+        490,
+        11,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "diversity_16",
+      "counts": [
+        506,
+        16,
+        16,
+        501,
+        11,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "motion_16",
+      "counts": [
+        506,
+        16,
+        17,
+        500,
+        11,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "baseline_32",
+      "counts": [
+        506,
+        32,
+        43,
+        474,
+        27,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "diversity_32",
+      "counts": [
+        506,
+        32,
+        32,
+        485,
+        27,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "motion_32",
+      "counts": [
+        506,
+        32,
+        33,
+        484,
+        27,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "baseline_128",
+      "counts": [
+        506,
+        128,
+        139,
+        378,
+        123,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "diversity_128",
+      "counts": [
+        506,
+        128,
+        131,
+        386,
+        123,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "variant": "motion_128",
+      "counts": [
+        506,
+        128,
+        129,
+        388,
+        123,
+        5
+      ],
+      "physical_objects": {
+        "ThinCylinder": [
+          5,
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "baseline_16",
+      "counts": [
+        501,
+        16,
+        27,
+        485,
+        16,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "diversity_16",
+      "counts": [
+        501,
+        16,
+        17,
+        495,
+        16,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "motion_16",
+      "counts": [
+        501,
+        16,
+        17,
+        495,
+        16,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "baseline_32",
+      "counts": [
+        501,
+        32,
+        43,
+        469,
+        32,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "diversity_32",
+      "counts": [
+        501,
+        32,
+        33,
+        479,
+        32,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "motion_32",
+      "counts": [
+        501,
+        32,
+        33,
+        479,
+        32,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "baseline_128",
+      "counts": [
+        501,
+        128,
+        139,
+        373,
+        128,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "diversity_128",
+      "counts": [
+        501,
+        128,
+        131,
+        381,
+        128,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "variant": "motion_128",
+      "counts": [
+        501,
+        128,
+        129,
+        383,
+        128,
+        0
+      ],
+      "physical_objects": {}
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "baseline_16",
+      "counts": [
+        535,
+        16,
+        19,
+        530,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          13
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "diversity_16",
+      "counts": [
+        535,
+        16,
+        18,
+        531,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          5
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "motion_16",
+      "counts": [
+        535,
+        16,
+        18,
+        531,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          6
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "baseline_32",
+      "counts": [
+        535,
+        32,
+        35,
+        514,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          13
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "diversity_32",
+      "counts": [
+        535,
+        32,
+        35,
+        514,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          12
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "motion_32",
+      "counts": [
+        535,
+        32,
+        35,
+        514,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          11
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "baseline_128",
+      "counts": [
+        535,
+        128,
+        142,
+        407,
+        94,
+        34
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          13
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "diversity_128",
+      "counts": [
+        535,
+        128,
+        133,
+        416,
+        94,
+        34
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          13
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "variant": "motion_128",
+      "counts": [
+        535,
+        128,
+        132,
+        417,
+        94,
+        34
+      ],
+      "physical_objects": {
+        "MovingPost": [
+          22,
+          13,
+          13,
+          13
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "baseline_16",
+      "counts": [
+        550,
+        16,
+        18,
+        544,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          18
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "diversity_16",
+      "counts": [
+        550,
+        16,
+        17,
+        545,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          8
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          9
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "motion_16",
+      "counts": [
+        550,
+        16,
+        16,
+        546,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          5
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          11
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "baseline_32",
+      "counts": [
+        550,
+        32,
+        34,
+        528,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          34
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "diversity_32",
+      "counts": [
+        550,
+        32,
+        33,
+        529,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          14
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          19
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "motion_32",
+      "counts": [
+        550,
+        32,
+        32,
+        530,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          15
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          17
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "baseline_128",
+      "counts": [
+        550,
+        128,
+        140,
+        422,
+        57,
+        71
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          34
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          39
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "diversity_128",
+      "counts": [
+        550,
+        128,
+        130,
+        432,
+        57,
+        71
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          34
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          39
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "variant": "motion_128",
+      "counts": [
+        550,
+        128,
+        131,
+        431,
+        57,
+        71
+      ],
+      "physical_objects": {
+        "Left": [
+          34,
+          34,
+          34,
+          34
+        ],
+        "Right": [
+          39,
+          39,
+          39,
+          39
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "baseline_16",
+      "counts": [
+        578,
+        16,
+        16,
+        573,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          16
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "diversity_16",
+      "counts": [
+        578,
+        16,
+        16,
+        573,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          4
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          12
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "motion_16",
+      "counts": [
+        578,
+        16,
+        16,
+        573,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          12
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          4
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "baseline_32",
+      "counts": [
+        578,
+        32,
+        32,
+        557,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          32
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "diversity_32",
+      "counts": [
+        578,
+        32,
+        32,
+        557,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          9
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          23
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "motion_32",
+      "counts": [
+        578,
+        32,
+        32,
+        557,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          24
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "baseline_128",
+      "counts": [
+        578,
+        128,
+        139,
+        450,
+        15,
+        113
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          77
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "diversity_128",
+      "counts": [
+        578,
+        128,
+        128,
+        461,
+        15,
+        113
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          77
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "variant": "motion_128",
+      "counts": [
+        578,
+        128,
+        129,
+        460,
+        15,
+        113
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Occluder": [
+          77,
+          77,
+          77,
+          77
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "baseline_16",
+      "counts": [
+        547,
+        16,
+        22,
+        540,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          20
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          2
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "diversity_16",
+      "counts": [
+        547,
+        16,
+        18,
+        544,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          9
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          9
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "motion_16",
+      "counts": [
+        547,
+        16,
+        18,
+        544,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          8
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          10
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "baseline_32",
+      "counts": [
+        547,
+        32,
+        38,
+        524,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          2
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "diversity_32",
+      "counts": [
+        547,
+        32,
+        35,
+        527,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          17
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          18
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "motion_32",
+      "counts": [
+        547,
+        32,
+        35,
+        527,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          16
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          19
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "baseline_128",
+      "counts": [
+        547,
+        128,
+        143,
+        419,
+        60,
+        68
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          38
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "diversity_128",
+      "counts": [
+        547,
+        128,
+        135,
+        427,
+        60,
+        68
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          38
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "variant": "motion_128",
+      "counts": [
+        547,
+        128,
+        135,
+        427,
+        60,
+        68
+      ],
+      "physical_objects": {
+        "Left": [
+          36,
+          36,
+          36,
+          36
+        ],
+        "Right": [
+          38,
+          38,
+          38,
+          38
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "baseline_16",
+      "counts": [
+        508,
+        16,
+        24,
+        495,
+        8,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "diversity_16",
+      "counts": [
+        508,
+        16,
+        16,
+        503,
+        8,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "motion_16",
+      "counts": [
+        508,
+        16,
+        17,
+        502,
+        8,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "baseline_32",
+      "counts": [
+        508,
+        32,
+        43,
+        476,
+        24,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "diversity_32",
+      "counts": [
+        508,
+        32,
+        32,
+        487,
+        24,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "motion_32",
+      "counts": [
+        508,
+        32,
+        33,
+        486,
+        24,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "baseline_128",
+      "counts": [
+        508,
+        128,
+        139,
+        380,
+        120,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "diversity_128",
+      "counts": [
+        508,
+        128,
+        129,
+        390,
+        120,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "variant": "motion_128",
+      "counts": [
+        508,
+        128,
+        129,
+        390,
+        120,
+        8
+      ],
+      "physical_objects": {
+        "ThinPost": [
+          8,
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "baseline_16",
+      "counts": [
+        526,
+        16,
+        16,
+        521,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "diversity_16",
+      "counts": [
+        526,
+        16,
+        16,
+        521,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "motion_16",
+      "counts": [
+        526,
+        16,
+        16,
+        521,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "baseline_32",
+      "counts": [
+        526,
+        32,
+        32,
+        505,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "diversity_32",
+      "counts": [
+        526,
+        32,
+        32,
+        505,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "motion_32",
+      "counts": [
+        526,
+        32,
+        32,
+        505,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "baseline_128",
+      "counts": [
+        526,
+        128,
+        139,
+        398,
+        92,
+        36
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "diversity_128",
+      "counts": [
+        526,
+        128,
+        130,
+        407,
+        92,
+        36
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ]
+      }
+    },
+    {
+      "sequence_id": "A_current-static",
+      "variant": "motion_128",
+      "counts": [
+        526,
+        128,
+        129,
+        408,
+        92,
+        36
+      ],
+      "physical_objects": {
+        "Post": [
+          36,
+          36,
+          36,
+          36
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "baseline_16",
+      "counts": [
+        401,
+        16,
+        18,
+        392,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          16
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          2
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "diversity_16",
+      "counts": [
+        401,
+        16,
+        17,
+        393,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          10
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          7
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "motion_16",
+      "counts": [
+        401,
+        16,
+        18,
+        392,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          14
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          4
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "baseline_32",
+      "counts": [
+        401,
+        32,
+        34,
+        376,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          32
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          2
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "diversity_32",
+      "counts": [
+        401,
+        32,
+        33,
+        377,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          18
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          15
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "motion_32",
+      "counts": [
+        401,
+        32,
+        34,
+        376,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          26
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "baseline_128",
+      "counts": [
+        401,
+        128,
+        137,
+        273,
+        31,
+        97
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          62
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          37
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "diversity_128",
+      "counts": [
+        401,
+        128,
+        131,
+        279,
+        31,
+        97
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          62
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          37
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "variant": "motion_128",
+      "counts": [
+        401,
+        128,
+        131,
+        279,
+        31,
+        97
+      ],
+      "physical_objects": {
+        "Left": [
+          62,
+          62,
+          62,
+          62
+        ],
+        "Right": [
+          37,
+          37,
+          37,
+          37
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "baseline_16",
+      "counts": [
+        391,
+        16,
+        16,
+        382,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          16
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "diversity_16",
+      "counts": [
+        391,
+        16,
+        16,
+        382,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          6
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          10
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "motion_16",
+      "counts": [
+        391,
+        16,
+        16,
+        382,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          12
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          4
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "baseline_32",
+      "counts": [
+        391,
+        32,
+        32,
+        366,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          32
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          0
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "diversity_32",
+      "counts": [
+        391,
+        32,
+        32,
+        366,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          11
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          21
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "motion_32",
+      "counts": [
+        391,
+        32,
+        32,
+        366,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          24
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          8
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "baseline_128",
+      "counts": [
+        391,
+        128,
+        135,
+        263,
+        54,
+        74
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          34
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "diversity_128",
+      "counts": [
+        391,
+        128,
+        128,
+        270,
+        54,
+        74
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          34
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "variant": "motion_128",
+      "counts": [
+        391,
+        128,
+        129,
+        269,
+        54,
+        74
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ],
+        "Occluder": [
+          34,
+          34,
+          34,
+          34
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "baseline_16",
+      "counts": [
+        360,
+        16,
+        16,
+        351,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "diversity_16",
+      "counts": [
+        360,
+        16,
+        16,
+        351,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "motion_16",
+      "counts": [
+        360,
+        16,
+        16,
+        351,
+        0,
+        16
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          16
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "baseline_32",
+      "counts": [
+        360,
+        32,
+        32,
+        335,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "diversity_32",
+      "counts": [
+        360,
+        32,
+        32,
+        335,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "motion_32",
+      "counts": [
+        360,
+        32,
+        32,
+        335,
+        0,
+        32
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          32
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "baseline_128",
+      "counts": [
+        360,
+        128,
+        135,
+        232,
+        88,
+        40
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "diversity_128",
+      "counts": [
+        360,
+        128,
+        128,
+        239,
+        88,
+        40
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ]
+      }
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "variant": "motion_128",
+      "counts": [
+        360,
+        128,
+        129,
+        238,
+        88,
+        40
+      ],
+      "physical_objects": {
+        "Post": [
+          40,
+          40,
+          40,
+          40
+        ]
+      }
+    }
+  ],
+  "sequences": [
+    {
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "layout_id": "A_current",
+      "scenario": "cylinder",
+      "final_case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 155,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-empty-baseline-capture",
+      "layout_id": "A_current",
+      "scenario": "empty",
+      "final_case_id": "A_current-empty-baseline-capture/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 0,
+        "total_frames": 2,
+        "reference": {
+          "status": "NO_EXTERNAL_FIXTURE_OBJECTS"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-moving",
+      "layout_id": "A_current",
+      "scenario": "moving",
+      "final_case_id": "A_current-moving/job-00032",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "EXPOSURE_MATCHED_DYNAMIC_REFERENCE",
+          "matched_frames": 2,
+          "total_frames": 2,
+          "simulation_time_tolerance_seconds": 1e-06,
+          "qualification": "Only actual same-rendering/physics-step poses qualify; no interpolation, initial-pose substitution or monotonic-clock matching."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-narrow",
+      "layout_id": "A_current",
+      "scenario": "narrow",
+      "final_case_id": "A_current-narrow/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 229,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-partial",
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "final_case_id": "A_current-partial/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 1002,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-separated",
+      "layout_id": "A_current",
+      "scenario": "separated",
+      "final_case_id": "A_current-separated/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 184,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-sparse",
+      "layout_id": "A_current",
+      "scenario": "thin_box_reference",
+      "final_case_id": "A_current-sparse/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 163,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "A_current-static",
+      "layout_id": "A_current",
+      "scenario": "static",
+      "final_case_id": "A_current-static/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 1002,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "final_case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 1002,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "partial",
+      "final_case_id": "C_asymmetric_1.15_0.65-partial/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 314,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    },
+    {
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "final_case_id": "C_asymmetric_1.15_0.65-static/job-00018",
+      "snapshot_count": 1,
+      "physical_attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+          "maximum_matrix_component_drift": 0.0,
+          "trace_samples_checked": 318,
+          "qualification": "Actual post-insertion kinematic fixture pose; verified unchanged through recorded motion trace. Pre-motion exposures rely on the static kinematic-body invariant, not a trace timestamp join."
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "baseline_gap_preservation": {}
+    }
+  ],
+  "snapshot_count": 11,
+  "exact_audit_count": 99,
+  "baseline_at_proven_lower_bound_snapshots": 0,
+  "supported_face_singleton_cell_fraction": {
+    "count": 11,
+    "mean": 0.9572233067809877,
+    "p50": 0.9574468085106383,
+    "p95": 0.9637363387395381,
+    "p99": 0.9646065642303197,
+    "worst": 0.964824120603015
+  },
+  "diagnostic_scope": "One exact final snapshot per sequence. Budget sensitivity only; no temporal/native performance inference.",
+  "count_columns": [
+    "candidate_boxes",
+    "proxy_count",
+    "represented_voxels",
+    "omitted_voxels",
+    "selected_floor_boxes",
+    "selected_hazard_boxes"
+  ],
+  "physical_columns": [
+    "eligible_native_depth_supported_cells",
+    "supported_cells",
+    "candidate_covered_cells",
+    "selected_cells"
+  ]
+}

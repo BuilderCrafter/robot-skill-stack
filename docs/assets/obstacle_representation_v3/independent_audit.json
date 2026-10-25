@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "status": "PASS_WITH_SCOPE_QUALIFICATIONS",
+  "scope": "Independent compact-evidence audit. No simulator, policy query, raw coordinate/depth/NPZ loading, replay or measurement source edits.",
+  "checked_compact_artifact_sha256": {
+    "docs/assets/obstacle_representation_v3/motion.json": "27b5cd94270e743553f4ec98d55c96cfbbb1bd35b68b9811e334b02eb8435736",
+    "docs/assets/obstacle_representation_v3/sampling_quantization.json": "3e3eb28de7c5133f0120e747f5ed3d05b9d605ed545a2f0ab4131664afe832fa",
+    "docs/assets/obstacle_representation_v3/offline_primary.json": "5919012daeed5acf57133216dc06b25dc70b6f45a5ecc1354ef36199a79abe35",
+    "docs/assets/obstacle_representation_v3/offline_budget_sensitivity.json": "f98ae96ddd5fe9aeae057d42c765f202b8db86adbd5af9a0370497bfef52c6e9"
+  },
+  "source_script_sha256": {
+    "scripts/plot_obstacle_representation_v3_motion.py": "4a4866f447ec67f2b71033d6a8052214450326e74a2dea0507473d9bced44d63",
+    "scripts/evaluate_obstacle_representation_v3.py": "d52425db4d5ec431b79cf63952cc90f51bb22555c3c0ad3dfce87324d619559f",
+    "scripts/diagnose_obstacle_representation_v3_sampling.py": "be9f333b52e0c13e0dc9ac7b453d1b25940f65bdcaefdbad6fa86b4be18d256a",
+    "scripts/obstacle_representation_v3.py": "dac567139a96f1b2cd7cf68f511596f925a4b8a3cafc53154a2a907abf05547f"
+  },
+  "motion": {
+    "unique_attempts": 85,
+    "unique_ids": 85,
+    "unique_artifacts": 85,
+    "declared_counts": {
+      "unique_attempts": 85,
+      "valid_measurements": 85,
+      "timing_eligible": 74,
+      "declared_reference_edges": 58,
+      "eligible_reference_edges": 54,
+      "unique_declared_baselines": 26
+    },
+    "cohort_outcomes": {
+      "primary": {
+        "attempts": 42,
+        "valid": 42,
+        "timing_eligible": 42,
+        "goal_reached": 36,
+        "strict_contact_free_success": 36,
+        "runs_with_reported_contacts": 0
+      },
+      "repeats": {
+        "attempts": 20,
+        "valid": 20,
+        "timing_eligible": 20,
+        "goal_reached": 10,
+        "strict_contact_free_success": 10,
+        "runs_with_reported_contacts": 0
+      },
+      "direct": {
+        "attempts": 4,
+        "valid": 4,
+        "timing_eligible": 4,
+        "goal_reached": 4,
+        "strict_contact_free_success": 2,
+        "runs_with_reported_contacts": 2
+      },
+      "optional_k": {
+        "attempts": 8,
+        "valid": 8,
+        "timing_eligible": 8,
+        "goal_reached": 4,
+        "strict_contact_free_success": 2,
+        "runs_with_reported_contacts": 3
+      },
+      "retained": {
+        "attempts": 11,
+        "valid": 11,
+        "timing_eligible": 0,
+        "goal_reached": 8,
+        "strict_contact_free_success": 7,
+        "runs_with_reported_contacts": 2
+      }
+    },
+    "declared_edge_cohorts": {
+      "primary": 28,
+      "repeats": 20,
+      "direct": 4,
+      "optional_k": 6
+    },
+    "unique_edge_candidates": 58,
+    "eligible_edges": 54,
+    "unique_declared_baselines": 26,
+    "baseline_use_counter_matches": true,
+    "eligible_same_policy_repeat_edges": 10,
+    "eligible_edge_outcome_or_duration_errors": [],
+    "duration_delta_absolute_tolerance_seconds": 1e-08,
+    "source_failures_lifetime_total": 0,
+    "timing_runs_with_wait_over_100ms": [
+      {
+        "case": "K_B_front_height_0.85_rear-static-diversity-r2",
+        "waits": 1,
+        "worst_control_interval_ms": 133.140102
+      }
+    ],
+    "maximum_recorded_timing_consumed_source_age_ms": 925.2704391
+  },
+  "offline_primary": {
+    "snapshots": 66,
+    "exact_audits": 462,
+    "final_case_policy_rows": 77,
+    "all_geometry_audits_pass": true,
+    "all_snapshots_unchanged": true,
+    "all_quiet_expiry_checks_pass": true,
+    "audit_error_totals": {
+      "free_cells": 0,
+      "unknown_cells": 0,
+      "ineligible_cells": 0,
+      "unsupported_cells": 0,
+      "overlap_cells": 0,
+      "wrong_expiry_boxes": 0,
+      "expired_boxes": 0,
+      "wrong_voxel_count_boxes": 0,
+      "wrong_extracted_at": 0,
+      "candidate_incorrect_cells": 0,
+      "candidate_overlap_cells": 0,
+      "candidate_missing_supported_cells": 0,
+      "stage_selection_disagrees": 0
+    },
+    "all_axis_and_packing_counts_at_strengthened_lower_bound_snapshots": 66,
+    "snapshots_with_nonrectangular_components": 6,
+    "weighted_supported_singleton_cell_percentage": 94.68040192518788
+  },
+  "offline_budget": {
+    "snapshots": 11,
+    "exact_audits": 99,
+    "case_budget_policy_rows": 99,
+    "all_geometry_audits_pass": true,
+    "audit_error_totals": {
+      "free_cells": 0,
+      "unknown_cells": 0,
+      "ineligible_cells": 0,
+      "unsupported_cells": 0,
+      "overlap_cells": 0,
+      "wrong_expiry_boxes": 0,
+      "expired_boxes": 0,
+      "wrong_voxel_count_boxes": 0,
+      "wrong_extracted_at": 0,
+      "candidate_incorrect_cells": 0,
+      "candidate_overlap_cells": 0,
+      "candidate_missing_supported_cells": 0,
+      "stage_selection_disagrees": 0
+    },
+    "scope": "One final snapshot per sequence,16/32/128 boxes,baseline/diversity/motion; no temporal or native runtime inference."
+  },
+  "sampling": {
+    "rows": 11,
+    "actual_selected_endpoint_to_integration_set_matches": 11,
+    "measured_rows": 11,
+    "method_source_hash_matches": true,
+    "configuration_proof_row_counts": [
+      2,
+      9
+    ],
+    "inherited_fields": [
+      [
+        "max_depth"
+      ],
+      [
+        "max_depth"
+      ]
+    ],
+    "effective_max_depth_m": [
+      5.0
+    ],
+    "fixed_evaluation_origin_phases": 8,
+    "artifact_bytes": 68894
+  },
+  "qualifications": [
+    "85 valid measurements do not mean85 goal completions or contact-free successes. Retained11 forensic captures are excluded from74 timing-eligible attempts.",
+    "58 declared edges include4 intentionally ineligible direct-vs-reactive strategy comparisons;54 eligible edges include10 same-policy baseline-repeat edges. Shared26 baselines do not provide54 independent baseline samples.",
+    "Repeat scene mixes differ by policy. Report per-condition n rather than ranking pooled final policy success rates.",
+    "No controller wait over100ms is a primary-cohort observation only. Optional-K static/diversity r2 recorded one such wait,133.140102ms.",
+    "Reported contact points and sampled independent physical-contact steps/penetration/impulse are distinct. Zero sampled physical-contact steps do not override positive reported contact points.",
+    "The strengthened exact-packing bound is face6 component count plus nonrectangular-component count. Six early C snapshots need the additional term; all11 final maps are rectangular.",
+    "Sampling current selected-ray points and cumulative canonical depth-attributed eligible/supported cells have different denominators; do not subtract moving30 current object endpoints from22 canonical eligible attributed cells as a measured classification loss.",
+    "Eight origin phases are evaluation-only on a fixed pointset. They neither search all origins nor change maps, UNKNOWN geometry, thresholds or packets. Full-solid occupancy IoU remains unmeasured.",
+    "Sampling JSON is68894 bytes, above the60KB requested target. Initial0/11 missing-default diagnostic summary remains preserved separately; corrected values are bound to the actual hash-proven parser and defaults leaf.",
+    "Offline extractor costs, sparse worker observations, native owner-thread updates and static policy CPU costs are separate measurement scopes."
+  ]
+}

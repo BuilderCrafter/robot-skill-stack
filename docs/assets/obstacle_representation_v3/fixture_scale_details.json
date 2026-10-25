@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "kind": "actual_canonical_snapshot_fixture_scale_plot",
+  "panels": [
+    {
+      "case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "layout_id": "A_current",
+      "scenario": "cylinder",
+      "policy": "baseline",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 5,
+      "roi_selected_cells": 5,
+      "roi_omitted_supported_cells": 0,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": null,
+      "gap_known_free_cells": null,
+      "gap_unknown_cells": null,
+      "native_depth_attributed_objects": {
+        "ThinCylinder": {
+          "eligible_native_depth_supported_cells": 5,
+          "supported_cells": 5,
+          "candidate_covered_cells": 5,
+          "selected_cells": 5,
+          "candidate_cuboids_with_attributed_cells": 5,
+          "selected_cuboids_with_attributed_cells": 5
+        }
+      },
+      "original_snapshot_timestamp": 3287832.995848286,
+      "snapshot_evaluated_at": 3287833.120402443,
+      "extracted_at": 3287833.126188845,
+      "snapshot_arrays_sha256": "4f68391b2c0b588ccb9708bdca13771b0b6d0d3d66225fd307d799db7be6f366"
+    },
+    {
+      "case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "layout_id": "A_current",
+      "scenario": "cylinder",
+      "policy": "diversity",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 5,
+      "roi_selected_cells": 5,
+      "roi_omitted_supported_cells": 0,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": null,
+      "gap_known_free_cells": null,
+      "gap_unknown_cells": null,
+      "native_depth_attributed_objects": {
+        "ThinCylinder": {
+          "eligible_native_depth_supported_cells": 5,
+          "supported_cells": 5,
+          "candidate_covered_cells": 5,
+          "selected_cells": 5,
+          "candidate_cuboids_with_attributed_cells": 5,
+          "selected_cuboids_with_attributed_cells": 5
+        }
+      },
+      "original_snapshot_timestamp": 3287832.995848286,
+      "snapshot_evaluated_at": 3287833.120402443,
+      "extracted_at": 3287833.126188845,
+      "snapshot_arrays_sha256": "4f68391b2c0b588ccb9708bdca13771b0b6d0d3d66225fd307d799db7be6f366"
+    },
+    {
+      "case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "layout_id": "A_current",
+      "scenario": "cylinder",
+      "policy": "motion",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 5,
+      "roi_selected_cells": 5,
+      "roi_omitted_supported_cells": 0,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": null,
+      "gap_known_free_cells": null,
+      "gap_unknown_cells": null,
+      "native_depth_attributed_objects": {
+        "ThinCylinder": {
+          "eligible_native_depth_supported_cells": 5,
+          "supported_cells": 5,
+          "candidate_covered_cells": 5,
+          "selected_cells": 5,
+          "candidate_cuboids_with_attributed_cells": 5,
+          "selected_cuboids_with_attributed_cells": 5
+        }
+      },
+      "original_snapshot_timestamp": 3287832.995848286,
+      "snapshot_evaluated_at": 3287833.120402443,
+      "extracted_at": 3287833.126188845,
+      "snapshot_arrays_sha256": "4f68391b2c0b588ccb9708bdca13771b0b6d0d3d66225fd307d799db7be6f366"
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "policy": "baseline",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 99,
+      "roi_selected_cells": 66,
+      "roi_omitted_supported_cells": 33,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": 0,
+      "gap_known_free_cells": 1103,
+      "gap_unknown_cells": 6591,
+      "native_depth_attributed_objects": {
+        "Left": {
+          "eligible_native_depth_supported_cells": 62,
+          "supported_cells": 62,
+          "candidate_covered_cells": 62,
+          "selected_cells": 62,
+          "candidate_cuboids_with_attributed_cells": 61,
+          "selected_cuboids_with_attributed_cells": 61
+        },
+        "Right": {
+          "eligible_native_depth_supported_cells": 37,
+          "supported_cells": 37,
+          "candidate_covered_cells": 37,
+          "selected_cells": 4,
+          "candidate_cuboids_with_attributed_cells": 36,
+          "selected_cuboids_with_attributed_cells": 3
+        }
+      },
+      "original_snapshot_timestamp": 3288300.998839259,
+      "snapshot_evaluated_at": 3288301.135938701,
+      "extracted_at": 3288301.141811448,
+      "snapshot_arrays_sha256": "c4f0b00782c12f7f4591b5a8d99ba9cfa564b5b6792d4bb606adf0f700ad3e0c"
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "policy": "diversity",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 99,
+      "roi_selected_cells": 65,
+      "roi_omitted_supported_cells": 34,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": 0,
+      "gap_known_free_cells": 1103,
+      "gap_unknown_cells": 6591,
+      "native_depth_attributed_objects": {
+        "Left": {
+          "eligible_native_depth_supported_cells": 62,
+          "supported_cells": 62,
+          "candidate_covered_cells": 62,
+          "selected_cells": 38,
+          "candidate_cuboids_with_attributed_cells": 61,
+          "selected_cuboids_with_attributed_cells": 37
+        },
+        "Right": {
+          "eligible_native_depth_supported_cells": 37,
+          "supported_cells": 37,
+          "candidate_covered_cells": 37,
+          "selected_cells": 27,
+          "candidate_cuboids_with_attributed_cells": 36,
+          "selected_cuboids_with_attributed_cells": 27
+        }
+      },
+      "original_snapshot_timestamp": 3288300.998839259,
+      "snapshot_evaluated_at": 3288301.135938701,
+      "extracted_at": 3288301.141811448,
+      "snapshot_arrays_sha256": "c4f0b00782c12f7f4591b5a8d99ba9cfa564b5b6792d4bb606adf0f700ad3e0c"
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "policy": "motion",
+      "budget": 64,
+      "global_selected_cuboids": 64,
+      "roi_supported_cells": 99,
+      "roi_selected_cells": 66,
+      "roi_omitted_supported_cells": 33,
+      "invariants": {
+        "incorrect_cells_covered": 0,
+        "known_free_cells_covered": 0,
+        "unknown_cells_covered": 0,
+        "overlap_cells": 0
+      },
+      "gap_known_free_cells_covered": 0,
+      "gap_known_free_cells": 1103,
+      "gap_unknown_cells": 6591,
+      "native_depth_attributed_objects": {
+        "Left": {
+          "eligible_native_depth_supported_cells": 62,
+          "supported_cells": 62,
+          "candidate_covered_cells": 62,
+          "selected_cells": 46,
+          "candidate_cuboids_with_attributed_cells": 61,
+          "selected_cuboids_with_attributed_cells": 45
+        },
+        "Right": {
+          "eligible_native_depth_supported_cells": 37,
+          "supported_cells": 37,
+          "candidate_covered_cells": 37,
+          "selected_cells": 20,
+          "candidate_cuboids_with_attributed_cells": 36,
+          "selected_cuboids_with_attributed_cells": 19
+        }
+      },
+      "original_snapshot_timestamp": 3288300.998839259,
+      "snapshot_evaluated_at": 3288301.135938701,
+      "extracted_at": 3288301.141811448,
+      "snapshot_arrays_sha256": "c4f0b00782c12f7f4591b5a8d99ba9cfa564b5b6792d4bb606adf0f700ad3e0c"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/full_report.json",
+      "sha256": "d4c5e8add28912691f1803eb06519fc9e99da8ff6899c68c59e280f5b1172a6b"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-final-snapshots.json",
+      "sha256": "d5c321650f68a0b848e81beca72d29ab4201014ec77be7bb0a3e09c84c0f2d70"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/packet_bundle.json",
+      "sha256": "75a76f4c3c7b55c27f8096c290a0baf8afd6830def6805ebfed62915f0e4ba16"
+    },
+    {
+      "path": "scripts/plot_obstacle_representation_v3_details.py",
+      "sha256": "b1521da3438f0292add116a4a029c2096b37f0f5328d7e38459cb81e3e87aa04"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/pilot/A_current-cylinder-baseline-capture/cylinder_cooked_reference.npz",
+      "sha256": "bfc749608324ef7742fc45a0b9353a11289c3ea981d85a3575e42b5ba9bcac68"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/2fc691b6668a110b.npz",
+      "sha256": "3f449cc08547439d76e0af633f2f46c9eb0347c329261a37a5f8827f3839b860"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/pilot/A_current-cylinder-baseline-capture/mapping-audit/job-3537822-00018-arrays.npz",
+      "sha256": "61e9e3ef13fc14be347b7ca2a93ff1a7ba93756cf65abb0473064ca224e66495"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/d8ac14b4b09e7a18.npz",
+      "sha256": "e0f025fba915208a69eb029d4a328093448235675bf4934abe90714e87886ba9"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/f644eba6a304cd29.npz",
+      "sha256": "14f11fe3cff6ae51e30acd32984472d1f11744c9a75a7fbeb370432b7cd29234"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/2fa8375e853e9ed4.npz",
+      "sha256": "796527855957977e4493c4ef91e06596ab7f7b124419e559134b833a3fd6925f"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-narrow/mapping-audit/job-3550902-00018-arrays.npz",
+      "sha256": "9be1c5e2b169ec5306078fb38b2bca190b2587f3a25811efc51c072fab514586"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/6195de34be229c39.npz",
+      "sha256": "db90cd5a19050aee9c2ff7bb15f22f5a96a66f1088fd9fee8973011f4af01a94"
+    },
+    {
+      "path": "outputs/obstacle-representation-v3/primary-offline/946fdb1729c68386.npz",
+      "sha256": "caae43c7709dc9aeb6437c63e4bbaa7115b76a915d3f729011d02f4d24b641fd"
+    }
+  ],
+  "selection": "Last actual canonical snapshot for A_current/cylinder and C_asymmetric/narrow; baseline/diversity/motion at64.",
+  "qualifications": [
+    "No extraction or native simulation is rerun.",
+    "Filled cubes are existing supported occupied grid cells; orange is omitted support, blue is selected support.",
+    "Dark blue edges are the exact saved selected packet cuboids, with no padding or gap bridging.",
+    "Dashed physical cooked-prism/box outlines define only the evaluation display ROI and enter no policy.",
+    "Known-FREE gap count concerns only known-FREE whole cells in the recorded gap audit; UNKNOWN is not inferred FREE.",
+    "Raw cell coordinates remain in ignored native/offline archives; this companion contains only counts and SHA bindings."
+  ],
+  "figure": {
+    "path": "docs/assets/obstacle_representation_v3/fixture_scale_details.png",
+    "sha256": "6509871167b0754bac07a483db6caade054a8c38cd53a0baff814befe279820c"
+  }
+}

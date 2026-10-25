@@ -1,0 +1,2398 @@
+{
+  "schema_version": 1,
+  "scope": "Actual current selected-ray sparsity versus evaluation-only voxel phase sensitivity",
+  "manifest_sha256": "4a1a189495fc69be99f067ae70194c3522c9c1b11cb4335323440de173fd9b6b",
+  "method_sha256": "be9f333b52e0c13e0dc9ac7b453d1b25940f65bdcaefdbad6fa86b4be18d256a",
+  "reference_helper_sha256": "d52425db4d5ec431b79cf63952cc90f51bb22555c3c0ad3dfce87324d619559f",
+  "representation_helper_sha256": "dac567139a96f1b2cd7cf68f511596f925a4b8a3cafc53154a2a907abf05547f",
+  "protected_production_sha256": {
+    "robot_skill_stack/world/spatial_mapping/obstacles.py": "b98bd3324c58774421f953084ae39591d25b6634f9e61a4db524a07004979173",
+    "robot_skill_stack/world/spatial_mapping/occupancy.py": "081e282b1af7de22403cae27451a3387786a8dcc2dc404b39c189cd42c8f02a0",
+    "robot_skill_stack/world/spatial_mapping/rgbd.py": "373517b0f153609d4914badeaba17de884eaff8cb146c2043175270b35eacd4b",
+    "robot_skill_stack/world/spatial_mapping/runtime.py": "01f291874c4ba64fb9e1a6b623822f6645df5099f3903bb8fe23042f38d1f30c",
+    "robot_skill_stack/integrations/isaac/manipulation/motion/obstacles.py": "33e255f3d46af6ce43e4983143804cbbc3ed5bc311ae12162b1cb766248dbfc5"
+  },
+  "production_sources_unchanged": true,
+  "configuration_source_proofs": [
+    {
+      "mode": "VERIFIED_ORIGINAL_PRODUCTION_PARSER_DEFAULTS",
+      "inherited_fields": [
+        "max_depth"
+      ],
+      "baseline_commit": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "protected_baseline_sha256": "9b6fce47f72a36c6c2cc6e954189a5ddf0415b6b470b699ab0351abe3d5a829b",
+      "parser_and_leaf_sha256": {
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/config.py": "2db1bf3256a5c5a080eb0a607a4c31f59c458f8977ab953025931fb061866a92"
+      },
+      "capture_driver": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/pilot-driver.json",
+      "capture_driver_sha256": "b6846ddbc1f2c792ffe35ccaf2c2c0719096cfc7455c541b477aa7ab348c5491"
+    },
+    {
+      "mode": "VERIFIED_ORIGINAL_PRODUCTION_PARSER_DEFAULTS",
+      "inherited_fields": [
+        "max_depth"
+      ],
+      "baseline_commit": "1a6d4901c52c6fec4e1eeb40d2e44eb16be5b3a8",
+      "protected_baseline_sha256": "9b6fce47f72a36c6c2cc6e954189a5ddf0415b6b470b699ab0351abe3d5a829b",
+      "parser_and_leaf_sha256": {
+        "robot_skill_stack/integrations/isaac/config.py": "9c4b0c061765c887056f517422d2951cd91466caaedda5adf64aa78204135238",
+        "robot_skill_stack/integrations/isaac/spatial_mapping/config.py": "2db1bf3256a5c5a080eb0a607a4c31f59c458f8977ab953025931fb061866a92"
+      },
+      "capture_driver": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-capture-driver.json",
+      "capture_driver_sha256": "51cbbfc76a419e1f6b92ab0d1050673dab74d5028c600c32506112365922b8e7"
+    }
+  ],
+  "evaluation_only_phase_offsets_voxels": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.5
+    ],
+    [
+      0.0,
+      0.5,
+      0.0
+    ],
+    [
+      0.0,
+      0.5,
+      0.5
+    ],
+    [
+      0.5,
+      0.0,
+      0.0
+    ],
+    [
+      0.5,
+      0.0,
+      0.5
+    ],
+    [
+      0.5,
+      0.5,
+      0.0
+    ],
+    [
+      0.5,
+      0.5,
+      0.5
+    ]
+  ],
+  "qualifications": [
+    "Recorded selected pixels and automatic masks are mandatory; no policy, mask or map is recomputed.",
+    "Raw physical counts use original finite positive depth, original max-depth and explicit masks; automatic masks were evaluated only at selected pixels, so raw dense counts are not densely robot-filtered.",
+    "Current-input endpoint cells and continuous distances are separate from cumulative canonical eligible/supported states at their original extraction clock.",
+    "Nearest L-infinity and Euclidean distances are independently minimized, exclude self and retain duplicate returns as zero-distance neighbors.",
+    "A nearest L-infinity distance above20mm rules out another current endpoint in a26-neighbor10mm cell for any uniform origin; above10mm only rules out sharing one10mm cell. This says nothing about unseen surfaces or temporal map support.",
+    "Eight fixed half-voxel phases keep identical points in the original physical ROI and change only evaluation lattice indices; no phase is selected, no ROI point is dropped, no packet/map/controller is altered.",
+    "Face6,face26 and Chebyshev radius2 are graph counts; no intervening cell or unknown solid is filled.",
+    "Physical first-hit depth tolerance15mm is scoring only; no physical reference enters actual sampling or the canonical map. Full-solid IoU remains unmeasured."
+  ],
+  "diagnostic_wall_seconds": 2.8237716322764754,
+  "rows": [
+    {
+      "case_id": "A_current-cylinder-baseline-capture/job-00018",
+      "sequence_id": "A_current-cylinder-baseline-capture",
+      "layout_id": "A_current",
+      "scenario": "cylinder",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "42d9eb4dac305fa4d4e110441e9939cef16d5ccd58a5087db7e06447021e77c5",
+      "source_array_sha256": "61e9e3ef13fc14be347b7ca2a93ff1a7ba93756cf65abb0473064ca224e66495",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 41,
+        "selected_unmasked_valid_rays": 983,
+        "selected_in_grid_endpoint_rays": 522,
+        "selected_out_of_grid_endpoint_rays": 461
+      },
+      "current_input_cells": {
+        "unique_cells": 517,
+        "face6": 506,
+        "face26": 484,
+        "radius2_chebyshev": 330
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 522,
+        "exact_unique_coordinates": 522,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.02671409924264268,
+          "p95": 0.06553049596373146,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.0240861456438638,
+          "p95": 0.06033079609650399,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9157088122605364,
+        "fraction_nearest_linf_gt_020_m": 0.6800766283524904
+      },
+      "canonical_eligible": {
+        "unique_cells": 517,
+        "face6": 506,
+        "face26": 484,
+        "radius2_chebyshev": 330
+      },
+      "canonical_supported": {
+        "unique_cells": 517,
+        "face6": 506,
+        "face26": 484,
+        "radius2_chebyshev": 330
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "ThinCylinder": {
+          "raw_valid_depth_matching_pixels": 4105,
+          "raw_valid_in_grid_matching_pixels": 4105,
+          "raw_stride_grid_valid_matching_pixels": 51,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 5,
+          "selected_unmasked_physical_hit_rays": 5,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 5,
+            "face6": 5,
+            "face26": 5,
+            "radius2_chebyshev": 1
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 5,
+            "exact_unique_coordinates": 5,
+            "euclidean_m": {
+              "min": 0.01918495135345912,
+              "p50": 0.02011992161061591,
+              "p95": 0.020335928502541865,
+              "worst": 0.020335928502541865
+            },
+            "linf_m": {
+              "min": 0.017667975432834493,
+              "p50": 0.019184949819152697,
+              "p95": 0.020335368913331764,
+              "worst": 0.020335368913331764
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.4
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "face6": [
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "face26": [
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5
+            ],
+            "radius2_chebyshev": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          517,
+          515,
+          517,
+          515,
+          520,
+          518,
+          519,
+          515
+        ],
+        "face6": [
+          506,
+          499,
+          504,
+          495,
+          503,
+          496,
+          497,
+          492
+        ],
+        "face26": [
+          484,
+          484,
+          478,
+          478,
+          478,
+          478,
+          473,
+          473
+        ],
+        "radius2_chebyshev": [
+          330,
+          330,
+          337,
+          337,
+          336,
+          336,
+          341,
+          341
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/pilot/A_current-cylinder-baseline-capture/result.json",
+      "settings_source_proof_id": 0
+    },
+    {
+      "case_id": "A_current-empty-baseline-capture/job-00018",
+      "sequence_id": "A_current-empty-baseline-capture",
+      "layout_id": "A_current",
+      "scenario": "empty",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "57c771c31599bde0cdb2a6f2f7aa93221210cbb0979b7dd4bb55139e69f0ca32",
+      "source_array_sha256": "e208bfd6e1a65ddf4b4fe15521a3b797bfe02b51ecb7c873b199406c9f3089ab",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 41,
+        "selected_unmasked_valid_rays": 983,
+        "selected_in_grid_endpoint_rays": 517,
+        "selected_out_of_grid_endpoint_rays": 466
+      },
+      "current_input_cells": {
+        "unique_cells": 512,
+        "face6": 501,
+        "face26": 479,
+        "radius2_chebyshev": 329
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 517,
+        "exact_unique_coordinates": 517,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.02691348933115213,
+          "p95": 0.06565820126206687,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.024243293728408277,
+          "p95": 0.0608387972892942,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9148936170212766,
+        "fraction_nearest_linf_gt_020_m": 0.6827852998065764
+      },
+      "canonical_eligible": {
+        "unique_cells": 512,
+        "face6": 501,
+        "face26": 479,
+        "radius2_chebyshev": 329
+      },
+      "canonical_supported": {
+        "unique_cells": 512,
+        "face6": 501,
+        "face26": 479,
+        "radius2_chebyshev": 329
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {},
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          512,
+          510,
+          512,
+          510,
+          515,
+          513,
+          514,
+          510
+        ],
+        "face6": [
+          501,
+          494,
+          499,
+          490,
+          498,
+          491,
+          492,
+          487
+        ],
+        "face26": [
+          479,
+          479,
+          473,
+          473,
+          473,
+          473,
+          468,
+          468
+        ],
+        "radius2_chebyshev": [
+          329,
+          329,
+          336,
+          336,
+          335,
+          335,
+          340,
+          340
+        ]
+      },
+      "physical_reference_status": "NO_EXTERNAL_FIXTURE_OBJECTS",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/pilot/A_current-empty-baseline-capture/result.json",
+      "settings_source_proof_id": 0
+    },
+    {
+      "case_id": "A_current-moving/job-00032",
+      "sequence_id": "A_current-moving",
+      "layout_id": "A_current",
+      "scenario": "moving",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "300a55810bb45f1f8938c8099618b16e3f7182c4e5f8ec26aac1bf27a190485b",
+      "source_array_sha256": "d64612ab22fdb08d155eca32e03743d44030651ff677c6116fdab0f3fab137c0",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 65,
+        "selected_unmasked_valid_rays": 959,
+        "selected_in_grid_endpoint_rays": 532,
+        "selected_out_of_grid_endpoint_rays": 427
+      },
+      "current_input_cells": {
+        "unique_cells": 527,
+        "face6": 513,
+        "face26": 490,
+        "radius2_chebyshev": 325
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 532,
+        "exact_unique_coordinates": 532,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.026349102727385706,
+          "p95": 0.06607226506433371,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.02365863955756213,
+          "p95": 0.0631301276998388,
+          "worst": 0.12068468618045536
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9172932330827067,
+        "fraction_nearest_linf_gt_020_m": 0.650375939849624
+      },
+      "canonical_eligible": {
+        "unique_cells": 571,
+        "face6": 557,
+        "face26": 533,
+        "radius2_chebyshev": 354
+      },
+      "canonical_supported": {
+        "unique_cells": 549,
+        "face6": 535,
+        "face26": 511,
+        "radius2_chebyshev": 334
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "MovingPost": {
+          "raw_valid_depth_matching_pixels": 18259,
+          "raw_valid_in_grid_matching_pixels": 18259,
+          "raw_stride_grid_valid_matching_pixels": 299,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 30,
+          "selected_unmasked_physical_hit_rays": 30,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 30,
+            "face6": 27,
+            "face26": 26,
+            "radius2_chebyshev": 8
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 30,
+            "exact_unique_coordinates": 30,
+            "euclidean_m": {
+              "min": 0.013522817650542971,
+              "p50": 0.018610063934852462,
+              "p95": 0.05234078866079565,
+              "worst": 0.058896096816824825
+            },
+            "linf_m": {
+              "min": 0.012860519060157116,
+              "p50": 0.01794958382338055,
+              "p95": 0.05098776257101834,
+              "worst": 0.053759353173673086
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.26666666666666666
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              30,
+              30,
+              30,
+              30,
+              30,
+              30,
+              30,
+              30
+            ],
+            "face6": [
+              27,
+              27,
+              27,
+              26,
+              27,
+              29,
+              27,
+              28
+            ],
+            "face26": [
+              26,
+              24,
+              26,
+              24,
+              27,
+              25,
+              27,
+              25
+            ],
+            "radius2_chebyshev": [
+              8,
+              9,
+              8,
+              9,
+              7,
+              9,
+              7,
+              9
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          527,
+          525,
+          527,
+          525,
+          530,
+          528,
+          529,
+          525
+        ],
+        "face6": [
+          513,
+          506,
+          511,
+          501,
+          510,
+          505,
+          504,
+          500
+        ],
+        "face26": [
+          490,
+          488,
+          484,
+          482,
+          485,
+          483,
+          480,
+          478
+        ],
+        "radius2_chebyshev": [
+          325,
+          326,
+          332,
+          333,
+          329,
+          331,
+          334,
+          336
+        ]
+      },
+      "physical_reference_status": "EXPOSURE_MATCHED_DYNAMIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-moving/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "A_current-narrow/job-00018",
+      "sequence_id": "A_current-narrow",
+      "layout_id": "A_current",
+      "scenario": "narrow",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "bc7984b58eae15cdeb50ad2d34383af6523ab6da3cd800d2c2cc93476687c13f",
+      "source_array_sha256": "7a8b06920d43de0ed04bf1e69424383b320ee1a1efa896e7e5d40244cfd7c754",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 34,
+        "selected_unmasked_valid_rays": 990,
+        "selected_in_grid_endpoint_rays": 565,
+        "selected_out_of_grid_endpoint_rays": 425
+      },
+      "current_input_cells": {
+        "unique_cells": 562,
+        "face6": 550,
+        "face26": 527,
+        "radius2_chebyshev": 345
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 565,
+        "exact_unique_coordinates": 565,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.026474016700309456,
+          "p95": 0.06639431468831901,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.023773723714859307,
+          "p95": 0.06221817027358154,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9292035398230089,
+        "fraction_nearest_linf_gt_020_m": 0.6761061946902654
+      },
+      "canonical_eligible": {
+        "unique_cells": 562,
+        "face6": 550,
+        "face26": 527,
+        "radius2_chebyshev": 345
+      },
+      "canonical_supported": {
+        "unique_cells": 562,
+        "face6": 550,
+        "face26": 527,
+        "radius2_chebyshev": 345
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Left": {
+          "raw_valid_depth_matching_pixels": 20938,
+          "raw_valid_in_grid_matching_pixels": 20938,
+          "raw_stride_grid_valid_matching_pixels": 331,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 34,
+          "selected_unmasked_physical_hit_rays": 34,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 34,
+            "face6": 32,
+            "face26": 30,
+            "radius2_chebyshev": 10
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 34,
+            "exact_unique_coordinates": 34,
+            "euclidean_m": {
+              "min": 0.01571264748358238,
+              "p50": 0.018959561708633513,
+              "p95": 0.04864372570047949,
+              "worst": 0.051345574798934875
+            },
+            "linf_m": {
+              "min": 0.015158332490580628,
+              "p50": 0.018531125951157412,
+              "p95": 0.04171195933891392,
+              "worst": 0.046713419756577834
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.2647058823529412
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            "face6": [
+              32,
+              33,
+              31,
+              31,
+              32,
+              32,
+              31,
+              32
+            ],
+            "face26": [
+              30,
+              30,
+              31,
+              30,
+              30,
+              30,
+              31,
+              30
+            ],
+            "radius2_chebyshev": [
+              10,
+              9,
+              10,
+              9,
+              9,
+              9,
+              9,
+              9
+            ]
+          }
+        },
+        "Right": {
+          "raw_valid_depth_matching_pixels": 22537,
+          "raw_valid_in_grid_matching_pixels": 22537,
+          "raw_stride_grid_valid_matching_pixels": 359,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 39,
+          "selected_unmasked_physical_hit_rays": 39,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 39,
+            "face6": 39,
+            "face26": 39,
+            "radius2_chebyshev": 16
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 39,
+            "exact_unique_coordinates": 39,
+            "euclidean_m": {
+              "min": 0.017857507479637606,
+              "p50": 0.023112151767814795,
+              "p95": 0.049989240080695885,
+              "worst": 0.06973986517330917
+            },
+            "linf_m": {
+              "min": 0.017492549732550433,
+              "p50": 0.020850896780318484,
+              "p95": 0.04656587933014636,
+              "worst": 0.06731831270234001
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.7435897435897436
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              39,
+              39,
+              39,
+              39,
+              39,
+              39,
+              39,
+              39
+            ],
+            "face6": [
+              39,
+              38,
+              39,
+              38,
+              39,
+              38,
+              39,
+              38
+            ],
+            "face26": [
+              39,
+              38,
+              39,
+              38,
+              38,
+              37,
+              39,
+              38
+            ],
+            "radius2_chebyshev": [
+              16,
+              15,
+              19,
+              18,
+              17,
+              16,
+              20,
+              19
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          562,
+          560,
+          561,
+          559,
+          563,
+          561,
+          562,
+          558
+        ],
+        "face6": [
+          550,
+          543,
+          548,
+          538,
+          547,
+          539,
+          539,
+          535
+        ],
+        "face26": [
+          527,
+          526,
+          522,
+          520,
+          521,
+          520,
+          518,
+          516
+        ],
+        "radius2_chebyshev": [
+          345,
+          343,
+          352,
+          350,
+          350,
+          349,
+          356,
+          355
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-narrow/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "A_current-partial/job-00018",
+      "sequence_id": "A_current-partial",
+      "layout_id": "A_current",
+      "scenario": "partial",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "bab49cb8053049d5da2cf429717244a95a85132b4ab18a4c9b5580c14b51e17e",
+      "source_array_sha256": "ae05b4528fe73dc03c127c84cd63e2084abfb8b55c94e9a8454e8c62dc32b1c8",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 24,
+        "selected_unmasked_valid_rays": 1000,
+        "selected_in_grid_endpoint_rays": 590,
+        "selected_out_of_grid_endpoint_rays": 410
+      },
+      "current_input_cells": {
+        "unique_cells": 589,
+        "face6": 578,
+        "face26": 556,
+        "radius2_chebyshev": 399
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 590,
+        "exact_unique_coordinates": 590,
+        "euclidean_m": {
+          "min": 0.002981490572168477,
+          "p50": 0.029125191390381312,
+          "p95": 0.06421534124040275,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.002695104829839423,
+          "p50": 0.026631133980579397,
+          "p95": 0.060636798705474615,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9389830508474576,
+        "fraction_nearest_linf_gt_020_m": 0.7338983050847457
+      },
+      "canonical_eligible": {
+        "unique_cells": 589,
+        "face6": 578,
+        "face26": 556,
+        "radius2_chebyshev": 399
+      },
+      "canonical_supported": {
+        "unique_cells": 589,
+        "face6": 578,
+        "face26": 556,
+        "radius2_chebyshev": 399
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Post": {
+          "raw_valid_depth_matching_pixels": 19691,
+          "raw_valid_in_grid_matching_pixels": 19691,
+          "raw_stride_grid_valid_matching_pixels": 317,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 36,
+          "selected_unmasked_physical_hit_rays": 36,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 36,
+            "face6": 36,
+            "face26": 34,
+            "radius2_chebyshev": 17
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 36,
+            "exact_unique_coordinates": 36,
+            "euclidean_m": {
+              "min": 0.01811518648941959,
+              "p50": 0.021090197378411283,
+              "p95": 0.04844336385624455,
+              "worst": 0.07541387382364072
+            },
+            "linf_m": {
+              "min": 0.014997306186474324,
+              "p50": 0.020351772767096044,
+              "p95": 0.047488457086296176,
+              "worst": 0.07230464456892749
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.5833333333333334
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face6": [
+              36,
+              35,
+              36,
+              35,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face26": [
+              34,
+              35,
+              34,
+              35,
+              34,
+              35,
+              34,
+              35
+            ],
+            "radius2_chebyshev": [
+              17,
+              17,
+              17,
+              17,
+              16,
+              17,
+              16,
+              17
+            ]
+          }
+        },
+        "Occluder": {
+          "raw_valid_depth_matching_pixels": 46569,
+          "raw_valid_in_grid_matching_pixels": 46569,
+          "raw_stride_grid_valid_matching_pixels": 734,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 77,
+          "selected_unmasked_physical_hit_rays": 77,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 77,
+            "face6": 77,
+            "face26": 77,
+            "radius2_chebyshev": 74
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 77,
+            "exact_unique_coordinates": 77,
+            "euclidean_m": {
+              "min": 0.025505441263849515,
+              "p50": 0.03553575870841276,
+              "p95": 0.04827646882985601,
+              "worst": 0.06606192364691266
+            },
+            "linf_m": {
+              "min": 0.02367596452716747,
+              "p50": 0.03306429677558076,
+              "p95": 0.042624069285542784,
+              "worst": 0.06403565405986522
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 1.0
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77
+            ],
+            "face6": [
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77
+            ],
+            "face26": [
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77,
+              77
+            ],
+            "radius2_chebyshev": [
+              74,
+              74,
+              74,
+              74,
+              75,
+              75,
+              75,
+              75
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          589,
+          587,
+          588,
+          586,
+          588,
+          586,
+          587,
+          583
+        ],
+        "face6": [
+          578,
+          570,
+          576,
+          567,
+          576,
+          569,
+          569,
+          565
+        ],
+        "face26": [
+          556,
+          557,
+          549,
+          550,
+          552,
+          553,
+          546,
+          547
+        ],
+        "radius2_chebyshev": [
+          399,
+          399,
+          405,
+          405,
+          405,
+          406,
+          409,
+          410
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-partial/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "A_current-separated/job-00018",
+      "sequence_id": "A_current-separated",
+      "layout_id": "A_current",
+      "scenario": "separated",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "42def20cca69ce79623880441d19890005b95481035f262d274e324e3ac11e33",
+      "source_array_sha256": "2c86505fdebbb5ba41234c12d7d0ec6cbdaa4f1aba2b8fed2e3616619701213e",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 33,
+        "selected_unmasked_valid_rays": 991,
+        "selected_in_grid_endpoint_rays": 566,
+        "selected_out_of_grid_endpoint_rays": 425
+      },
+      "current_input_cells": {
+        "unique_cells": 562,
+        "face6": 547,
+        "face26": 526,
+        "radius2_chebyshev": 346
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 566,
+        "exact_unique_coordinates": 566,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.02643035812003571,
+          "p95": 0.06634830759917829,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.023759287268080548,
+          "p95": 0.06362075565671194,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9257950530035336,
+        "fraction_nearest_linf_gt_020_m": 0.6696113074204947
+      },
+      "canonical_eligible": {
+        "unique_cells": 562,
+        "face6": 547,
+        "face26": 526,
+        "radius2_chebyshev": 346
+      },
+      "canonical_supported": {
+        "unique_cells": 562,
+        "face6": 547,
+        "face26": 526,
+        "radius2_chebyshev": 346
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Left": {
+          "raw_valid_depth_matching_pixels": 21785,
+          "raw_valid_in_grid_matching_pixels": 21785,
+          "raw_stride_grid_valid_matching_pixels": 343,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 36,
+          "selected_unmasked_physical_hit_rays": 36,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 36,
+            "face6": 31,
+            "face26": 31,
+            "radius2_chebyshev": 10
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 36,
+            "exact_unique_coordinates": 36,
+            "euclidean_m": {
+              "min": 0.01571264748358238,
+              "p50": 0.01893561198632006,
+              "p95": 0.055456479072493924,
+              "worst": 0.08861424887897235
+            },
+            "linf_m": {
+              "min": 0.015586116141905415,
+              "p50": 0.018471332729620565,
+              "p95": 0.052787095807813336,
+              "worst": 0.08861385394614407
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.2222222222222222
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face6": [
+              31,
+              36,
+              31,
+              34,
+              34,
+              35,
+              34,
+              35
+            ],
+            "face26": [
+              31,
+              33,
+              31,
+              33,
+              31,
+              33,
+              31,
+              33
+            ],
+            "radius2_chebyshev": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              8,
+              10,
+              8
+            ]
+          }
+        },
+        "Right": {
+          "raw_valid_depth_matching_pixels": 22452,
+          "raw_valid_in_grid_matching_pixels": 22452,
+          "raw_stride_grid_valid_matching_pixels": 362,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 38,
+          "selected_unmasked_physical_hit_rays": 38,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 38,
+            "face6": 37,
+            "face26": 37,
+            "radius2_chebyshev": 17
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 38,
+            "exact_unique_coordinates": 38,
+            "euclidean_m": {
+              "min": 0.01328664471121489,
+              "p50": 0.02358372302987066,
+              "p95": 0.05632758277387053,
+              "worst": 0.09683942317510841
+            },
+            "linf_m": {
+              "min": 0.010475812790702754,
+              "p50": 0.020850896780318484,
+              "p95": 0.05611519489633071,
+              "worst": 0.07866861780361611
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.6578947368421053
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              38,
+              38,
+              38,
+              38,
+              38,
+              38,
+              38,
+              38
+            ],
+            "face6": [
+              37,
+              37,
+              38,
+              38,
+              37,
+              37,
+              38,
+              38
+            ],
+            "face26": [
+              37,
+              36,
+              37,
+              37,
+              37,
+              36,
+              37,
+              37
+            ],
+            "radius2_chebyshev": [
+              17,
+              18,
+              17,
+              18,
+              18,
+              18,
+              18,
+              18
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          562,
+          560,
+          561,
+          559,
+          564,
+          562,
+          563,
+          559
+        ],
+        "face6": [
+          547,
+          545,
+          546,
+          540,
+          546,
+          540,
+          540,
+          537
+        ],
+        "face26": [
+          526,
+          527,
+          520,
+          522,
+          521,
+          522,
+          516,
+          518
+        ],
+        "radius2_chebyshev": [
+          346,
+          347,
+          351,
+          352,
+          351,
+          349,
+          355,
+          353
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-separated/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "A_current-sparse/job-00018",
+      "sequence_id": "A_current-sparse",
+      "layout_id": "A_current",
+      "scenario": "thin_box_reference",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "b809c38c070fa14f6e460a874a8aa52dd708583d26ecf75b3d469146fd1916de",
+      "source_array_sha256": "009364f43952ac788ac2c50fc420425e6f29f85a219ca41a48f24add418e692d",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 40,
+        "selected_unmasked_valid_rays": 984,
+        "selected_in_grid_endpoint_rays": 524,
+        "selected_out_of_grid_endpoint_rays": 460
+      },
+      "current_input_cells": {
+        "unique_cells": 519,
+        "face6": 508,
+        "face26": 486,
+        "radius2_chebyshev": 330
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 524,
+        "exact_unique_coordinates": 524,
+        "euclidean_m": {
+          "min": 0.0014944983762453289,
+          "p50": 0.02667512773740701,
+          "p95": 0.06527508536706066,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.001372773751152856,
+          "p50": 0.02403189029096925,
+          "p95": 0.060092487948540996,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.916030534351145,
+        "fraction_nearest_linf_gt_020_m": 0.6755725190839694
+      },
+      "canonical_eligible": {
+        "unique_cells": 519,
+        "face6": 508,
+        "face26": 486,
+        "radius2_chebyshev": 330
+      },
+      "canonical_supported": {
+        "unique_cells": 519,
+        "face6": 508,
+        "face26": 486,
+        "radius2_chebyshev": 330
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "ThinPost": {
+          "raw_valid_depth_matching_pixels": 6633,
+          "raw_valid_in_grid_matching_pixels": 6633,
+          "raw_stride_grid_valid_matching_pixels": 100,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 8,
+          "selected_unmasked_physical_hit_rays": 8,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 8,
+            "face6": 8,
+            "face26": 8,
+            "radius2_chebyshev": 2
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 8,
+            "exact_unique_coordinates": 8,
+            "euclidean_m": {
+              "min": 0.018849788573391164,
+              "p50": 0.01954662667911284,
+              "p95": 0.028553912125466967,
+              "worst": 0.030812467062448955
+            },
+            "linf_m": {
+              "min": 0.016467174110285088,
+              "p50": 0.018297320180830856,
+              "p95": 0.026853094263731007,
+              "worst": 0.029442378100885014
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.25
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8
+            ],
+            "face6": [
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8
+            ],
+            "face26": [
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8,
+              8
+            ],
+            "radius2_chebyshev": [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          519,
+          517,
+          519,
+          517,
+          522,
+          520,
+          521,
+          517
+        ],
+        "face6": [
+          508,
+          501,
+          506,
+          497,
+          505,
+          498,
+          499,
+          494
+        ],
+        "face26": [
+          486,
+          486,
+          480,
+          480,
+          480,
+          480,
+          475,
+          475
+        ],
+        "radius2_chebyshev": [
+          330,
+          330,
+          337,
+          337,
+          336,
+          336,
+          341,
+          341
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-sparse/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "A_current-static/job-00018",
+      "sequence_id": "A_current-static",
+      "layout_id": "A_current",
+      "scenario": "static",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "f93c9b7076287b0cd00e6a58babdb180f9a704293466891517e49b9d4c00cf94",
+      "source_array_sha256": "8d69afd1afe5ba07005d7720768063b8d085b4e21382b93cb500562bad30158c",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 35,
+        "selected_unmasked_valid_rays": 989,
+        "selected_in_grid_endpoint_rays": 541,
+        "selected_out_of_grid_endpoint_rays": 448
+      },
+      "current_input_cells": {
+        "unique_cells": 537,
+        "face6": 526,
+        "face26": 502,
+        "radius2_chebyshev": 339
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 541,
+        "exact_unique_coordinates": 541,
+        "euclidean_m": {
+          "min": 0.002981490572168477,
+          "p50": 0.026579449682451482,
+          "p95": 0.0623591754894456,
+          "worst": 0.13134455757424135
+        },
+        "linf_m": {
+          "min": 0.002695104829839423,
+          "p50": 0.0239776349380747,
+          "p95": 0.05806686869085609,
+          "worst": 0.1194083316932455
+        },
+        "fraction_nearest_linf_gt_010_m": 0.922365988909427,
+        "fraction_nearest_linf_gt_020_m": 0.6802218114602587
+      },
+      "canonical_eligible": {
+        "unique_cells": 537,
+        "face6": 526,
+        "face26": 502,
+        "radius2_chebyshev": 339
+      },
+      "canonical_supported": {
+        "unique_cells": 537,
+        "face6": 526,
+        "face26": 502,
+        "radius2_chebyshev": 339
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Post": {
+          "raw_valid_depth_matching_pixels": 19691,
+          "raw_valid_in_grid_matching_pixels": 19691,
+          "raw_stride_grid_valid_matching_pixels": 317,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 36,
+          "selected_unmasked_physical_hit_rays": 36,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 36,
+            "face6": 36,
+            "face26": 34,
+            "radius2_chebyshev": 17
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 36,
+            "exact_unique_coordinates": 36,
+            "euclidean_m": {
+              "min": 0.01811518648941959,
+              "p50": 0.021090197378411283,
+              "p95": 0.04844336385624455,
+              "worst": 0.07541387382364072
+            },
+            "linf_m": {
+              "min": 0.014997306186474324,
+              "p50": 0.020351772767096044,
+              "p95": 0.047488457086296176,
+              "worst": 0.07230464456892749
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.5833333333333334
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face6": [
+              36,
+              35,
+              36,
+              35,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face26": [
+              34,
+              35,
+              34,
+              35,
+              34,
+              35,
+              34,
+              35
+            ],
+            "radius2_chebyshev": [
+              17,
+              17,
+              17,
+              17,
+              16,
+              17,
+              16,
+              17
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          537,
+          535,
+          537,
+          535,
+          539,
+          537,
+          538,
+          534
+        ],
+        "face6": [
+          526,
+          518,
+          524,
+          514,
+          523,
+          516,
+          517,
+          512
+        ],
+        "face26": [
+          502,
+          503,
+          496,
+          497,
+          497,
+          498,
+          492,
+          493
+        ],
+        "radius2_chebyshev": [
+          339,
+          339,
+          345,
+          345,
+          344,
+          345,
+          348,
+          349
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/A_current-static/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-narrow/job-00018",
+      "sequence_id": "C_asymmetric_1.15_0.65-narrow",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "narrow",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "3c5d2ca0261daf84cbe78eb5804b599a4e036b9bb09e3592fd182d1309e3a41c",
+      "source_array_sha256": "9be1c5e2b169ec5306078fb38b2bca190b2587f3a25811efc51c072fab514586",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 203,
+        "selected_unmasked_valid_rays": 821,
+        "selected_in_grid_endpoint_rays": 410,
+        "selected_out_of_grid_endpoint_rays": 411
+      },
+      "current_input_cells": {
+        "unique_cells": 410,
+        "face6": 401,
+        "face26": 384,
+        "radius2_chebyshev": 286
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 410,
+        "exact_unique_coordinates": 410,
+        "euclidean_m": {
+          "min": 0.0027183365002601202,
+          "p50": 0.030178920083939857,
+          "p95": 0.07190641309061656,
+          "worst": 0.09598214878347515
+        },
+        "linf_m": {
+          "min": 0.0023994496767250073,
+          "p50": 0.026712534887621514,
+          "p95": 0.06254854049995275,
+          "worst": 0.08832181699680453
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9707317073170731,
+        "fraction_nearest_linf_gt_020_m": 0.7560975609756098
+      },
+      "canonical_eligible": {
+        "unique_cells": 410,
+        "face6": 401,
+        "face26": 384,
+        "radius2_chebyshev": 286
+      },
+      "canonical_supported": {
+        "unique_cells": 410,
+        "face6": 401,
+        "face26": 384,
+        "radius2_chebyshev": 286
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Left": {
+          "raw_valid_depth_matching_pixels": 32635,
+          "raw_valid_in_grid_matching_pixels": 32635,
+          "raw_stride_grid_valid_matching_pixels": 507,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 62,
+          "selected_unmasked_physical_hit_rays": 62,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 62,
+            "face6": 61,
+            "face26": 58,
+            "radius2_chebyshev": 28
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 62,
+            "exact_unique_coordinates": 62,
+            "euclidean_m": {
+              "min": 0.014331504898780897,
+              "p50": 0.027679552261481635,
+              "p95": 0.045449445503824445,
+              "worst": 0.06662426648560141
+            },
+            "linf_m": {
+              "min": 0.012850588537132335,
+              "p50": 0.025405794914292013,
+              "p95": 0.04453899050966659,
+              "worst": 0.06172653575346643
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.8387096774193549
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              62,
+              62,
+              62,
+              62,
+              62,
+              62,
+              62,
+              62
+            ],
+            "face6": [
+              61,
+              61,
+              62,
+              62,
+              61,
+              61,
+              62,
+              62
+            ],
+            "face26": [
+              58,
+              59,
+              58,
+              59,
+              60,
+              60,
+              60,
+              60
+            ],
+            "radius2_chebyshev": [
+              28,
+              32,
+              29,
+              33,
+              30,
+              32,
+              31,
+              33
+            ]
+          }
+        },
+        "Right": {
+          "raw_valid_depth_matching_pixels": 21190,
+          "raw_valid_in_grid_matching_pixels": 21190,
+          "raw_stride_grid_valid_matching_pixels": 333,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 37,
+          "selected_unmasked_physical_hit_rays": 37,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 37,
+            "face6": 36,
+            "face26": 36,
+            "radius2_chebyshev": 29
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 37,
+            "exact_unique_coordinates": 37,
+            "euclidean_m": {
+              "min": 0.01320051572403748,
+              "p50": 0.031724644683471546,
+              "p95": 0.04797344544012272,
+              "worst": 0.08460486854563792
+            },
+            "linf_m": {
+              "min": 0.013175933634159032,
+              "p50": 0.028700030526481957,
+              "p95": 0.0424987779929232,
+              "worst": 0.06916415116816232
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.9459459459459459
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37,
+              37
+            ],
+            "face6": [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            "face26": [
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36,
+              36
+            ],
+            "radius2_chebyshev": [
+              29,
+              29,
+              30,
+              30,
+              29,
+              32,
+              30,
+              34
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          410,
+          410,
+          410,
+          410,
+          409,
+          409,
+          407,
+          407
+        ],
+        "face6": [
+          401,
+          398,
+          403,
+          401,
+          398,
+          392,
+          402,
+          397
+        ],
+        "face26": [
+          384,
+          385,
+          386,
+          387,
+          383,
+          383,
+          383,
+          383
+        ],
+        "radius2_chebyshev": [
+          286,
+          290,
+          288,
+          292,
+          293,
+          298,
+          292,
+          298
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-narrow/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-partial/job-00018",
+      "sequence_id": "C_asymmetric_1.15_0.65-partial",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "partial",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "8ef52a6c86990fc4f07a6d4b44c24c289dfbf11ce9fb631ff9e0ee3cd74f7c32",
+      "source_array_sha256": "e53cf843baf5c66fe97579507d030d48d0b334b91751ae6c03dca12d33b6f1a9",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 203,
+        "selected_unmasked_valid_rays": 821,
+        "selected_in_grid_endpoint_rays": 398,
+        "selected_out_of_grid_endpoint_rays": 423
+      },
+      "current_input_cells": {
+        "unique_cells": 398,
+        "face6": 391,
+        "face26": 377,
+        "radius2_chebyshev": 300
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 398,
+        "exact_unique_coordinates": 398,
+        "euclidean_m": {
+          "min": 0.0027183365002601202,
+          "p50": 0.031607448314912315,
+          "p95": 0.07737091284575388,
+          "worst": 0.10990963004941753
+        },
+        "linf_m": {
+          "min": 0.0023994496767250073,
+          "p50": 0.02823322885827556,
+          "p95": 0.06879151569730374,
+          "worst": 0.09831096279122131
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9698492462311558,
+        "fraction_nearest_linf_gt_020_m": 0.7738693467336684
+      },
+      "canonical_eligible": {
+        "unique_cells": 398,
+        "face6": 391,
+        "face26": 377,
+        "radius2_chebyshev": 300
+      },
+      "canonical_supported": {
+        "unique_cells": 398,
+        "face6": 391,
+        "face26": 377,
+        "radius2_chebyshev": 300
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Post": {
+          "raw_valid_depth_matching_pixels": 22373,
+          "raw_valid_in_grid_matching_pixels": 22373,
+          "raw_stride_grid_valid_matching_pixels": 354,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 41,
+          "selected_unmasked_physical_hit_rays": 40,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 40,
+            "face6": 40,
+            "face26": 40,
+            "radius2_chebyshev": 31
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 40,
+            "exact_unique_coordinates": 40,
+            "euclidean_m": {
+              "min": 0.021009245078368995,
+              "p50": 0.030523779937964256,
+              "p95": 0.05012117681528234,
+              "worst": 0.05054390831094968
+            },
+            "linf_m": {
+              "min": 0.01924651238768893,
+              "p50": 0.029930479194575227,
+              "p95": 0.048431307675100434,
+              "worst": 0.05043061090212275
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.95
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "face6": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "face26": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "radius2_chebyshev": [
+              31,
+              34,
+              31,
+              34,
+              33,
+              35,
+              33,
+              35
+            ]
+          }
+        },
+        "Occluder": {
+          "raw_valid_depth_matching_pixels": 20318,
+          "raw_valid_in_grid_matching_pixels": 20318,
+          "raw_stride_grid_valid_matching_pixels": 324,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 34,
+          "selected_unmasked_physical_hit_rays": 34,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 34,
+            "face6": 34,
+            "face26": 34,
+            "radius2_chebyshev": 29
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 34,
+            "exact_unique_coordinates": 34,
+            "euclidean_m": {
+              "min": 0.026298716674027584,
+              "p50": 0.051562330036746595,
+              "p95": 0.0922185214440951,
+              "worst": 0.09851739151135147
+            },
+            "linf_m": {
+              "min": 0.021533275829066834,
+              "p50": 0.0376115904959029,
+              "p95": 0.06783611563023556,
+              "worst": 0.07301260005056787
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 1.0
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            "face6": [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            "face26": [
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34,
+              34
+            ],
+            "radius2_chebyshev": [
+              29,
+              27,
+              29,
+              27,
+              30,
+              29,
+              30,
+              29
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          398,
+          398,
+          398,
+          398,
+          397,
+          397,
+          395,
+          395
+        ],
+        "face6": [
+          391,
+          388,
+          392,
+          390,
+          388,
+          382,
+          391,
+          386
+        ],
+        "face26": [
+          377,
+          377,
+          379,
+          379,
+          374,
+          374,
+          374,
+          374
+        ],
+        "radius2_chebyshev": [
+          300,
+          301,
+          298,
+          299,
+          309,
+          310,
+          304,
+          305
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-partial/result.json",
+      "settings_source_proof_id": 1
+    },
+    {
+      "case_id": "C_asymmetric_1.15_0.65-static/job-00018",
+      "sequence_id": "C_asymmetric_1.15_0.65-static",
+      "layout_id": "C_asymmetric_1.15_0.65",
+      "scenario": "static",
+      "status": "MEASURED_ACTUAL_SELECTED_RAYS",
+      "source_input_sha256": "de037d9eacbc0dcd411694dc186d1efde0a8a80aa530c75339dc222fd77dd78b",
+      "source_array_sha256": "8466ddbc87e9cce152ecb28b15c5f0a89cae2d2717ec6cc3d90a2c830ca342c4",
+      "profile_sha256": "da92a890d9539957d52a3fa2f0d91fed45ee940382b9bb1bc5d0ca3fbae93e25",
+      "settings": {
+        "max_depth_m": 5.0,
+        "ray_budget": 1024,
+        "stride": 8,
+        "voxel_size_m": 0.01
+      },
+      "actual_selected": {
+        "recorded_selected_pixels": 1024,
+        "automatic_masked_selected": 203,
+        "selected_unmasked_valid_rays": 821,
+        "selected_in_grid_endpoint_rays": 367,
+        "selected_out_of_grid_endpoint_rays": 454
+      },
+      "current_input_cells": {
+        "unique_cells": 367,
+        "face6": 360,
+        "face26": 346,
+        "radius2_chebyshev": 274
+      },
+      "current_input_continuous_nn": {
+        "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+        "endpoints": 367,
+        "exact_unique_coordinates": 367,
+        "euclidean_m": {
+          "min": 0.0027183365002601202,
+          "p50": 0.030741493508451487,
+          "p95": 0.07557548528898826,
+          "worst": 0.10636461973299811
+        },
+        "linf_m": {
+          "min": 0.0023994496767250073,
+          "p50": 0.028012116952926602,
+          "p95": 0.06703884385462153,
+          "worst": 0.09484265546851112
+        },
+        "fraction_nearest_linf_gt_010_m": 0.9673024523160763,
+        "fraction_nearest_linf_gt_020_m": 0.7547683923705722
+      },
+      "canonical_eligible": {
+        "unique_cells": 367,
+        "face6": 360,
+        "face26": 346,
+        "radius2_chebyshev": 274
+      },
+      "canonical_supported": {
+        "unique_cells": 367,
+        "face6": 360,
+        "face26": 346,
+        "radius2_chebyshev": 274
+      },
+      "actual_integration_cell_set_matches": true,
+      "physical_objects": {
+        "Post": {
+          "raw_valid_depth_matching_pixels": 22373,
+          "raw_valid_in_grid_matching_pixels": 22373,
+          "raw_stride_grid_valid_matching_pixels": 354,
+          "recorded_selected_physical_hit_rays_before_automatic_mask": 41,
+          "selected_unmasked_physical_hit_rays": 40,
+          "current_selected_endpoint_cells": {
+            "unique_cells": 40,
+            "face6": 40,
+            "face26": 40,
+            "radius2_chebyshev": 31
+          },
+          "continuous_selected_endpoint_nn": {
+            "status": "MEASURED_CONTINUOUS_CURRENT_INPUT",
+            "endpoints": 40,
+            "exact_unique_coordinates": 40,
+            "euclidean_m": {
+              "min": 0.021009245078368995,
+              "p50": 0.030523779937964256,
+              "p95": 0.05012117681528234,
+              "worst": 0.05054390831094968
+            },
+            "linf_m": {
+              "min": 0.01924651238768893,
+              "p50": 0.029930479194575227,
+              "p95": 0.048431307675100434,
+              "worst": 0.05043061090212275
+            },
+            "fraction_nearest_linf_gt_010_m": 1.0,
+            "fraction_nearest_linf_gt_020_m": 0.95
+          },
+          "evaluation_only_origin_phases": {
+            "unique_cells": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "face6": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "face26": [
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40,
+              40
+            ],
+            "radius2_chebyshev": [
+              31,
+              34,
+              31,
+              34,
+              33,
+              35,
+              33,
+              35
+            ]
+          }
+        }
+      },
+      "evaluation_only_current_cloud_origin_phases": {
+        "unique_cells": [
+          367,
+          367,
+          367,
+          367,
+          366,
+          366,
+          364,
+          364
+        ],
+        "face6": [
+          360,
+          357,
+          361,
+          359,
+          357,
+          351,
+          360,
+          355
+        ],
+        "face26": [
+          346,
+          346,
+          348,
+          348,
+          343,
+          343,
+          343,
+          343
+        ],
+        "radius2_chebyshev": [
+          274,
+          277,
+          272,
+          275,
+          282,
+          284,
+          277,
+          279
+        ]
+      },
+      "physical_reference_status": "ACTUAL_STATIC_KINEMATIC_REFERENCE",
+      "settings_case_result": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/obstacle-representation-v3/baseline-captures/C_asymmetric_1.15_0.65-static/result.json",
+      "settings_source_proof_id": 1
+    }
+  ]
+}
