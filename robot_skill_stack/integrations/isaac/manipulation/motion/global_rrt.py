@@ -62,6 +62,13 @@ class GlobalRrtStrategy:
         self._active_planner = self._last_action = None
         self._state = "ready"
         self._details, self.last_plan_trace = {}, {}
+        # Home's reference was measured by the backend at this same startup
+        # state. Retain its IK branch as a goal hint, never as an unchecked path.
+        home = getattr(backend, "named_poses", {}).get("home")
+        self._home_reference = (None if home is None else
+            (np.asarray(home.position).copy(), np.asarray(home.orientation).copy()))
+        self._startup_joint_names = tuple(backend.robot.dof_names)
+        self._startup_joints = np.asarray(backend.robot.get_joint_positions(), dtype=float).copy()
 
     @property
     def diagnostics(self):
@@ -90,6 +97,20 @@ class GlobalRrtStrategy:
             joint_positions=np.asarray(action.joint_positions).copy(),
             joint_velocities=np.zeros_like(action.joint_positions, dtype=float),
             joint_indices=np.asarray(action.joint_indices).copy()))
+
+    def _goal_hint(self, target, names):
+        if self._home_reference is None or target.orientation is None:
+            return None
+        position, orientation = self._home_reference
+        if (np.linalg.norm(target.position-position) > 1e-9
+                or min(np.linalg.norm(target.orientation-orientation),
+                       np.linalg.norm(target.orientation+orientation)) > 1e-8):
+            return None
+        if (self._startup_joints.shape != (len(self._startup_joint_names),)
+                or not np.isfinite(self._startup_joints).all()):
+            return None
+        indices = map_arm_joints(names, self._startup_joint_names)
+        return self._startup_joints[list(indices)].copy()
 
     async def move_to_pose_async(self, target, position_tolerance=None,
                                  orientation_tolerance=None, grasp_check=None):
@@ -132,9 +153,13 @@ class GlobalRrtStrategy:
             self._state = "planning"
             started = self._clock()
             self._details["planning_blocks_owner_loop"] = True
+            preferred = self._goal_hint(target, names)
+            self._details["goal_configuration_hint"] = (
+                "recorded_startup_configuration_for_named_home" if preferred is not None else "none")
             try:
                 plan = planner.plan(target, start_q, snapshot,
-                    position_tolerance=pos_tol, orientation_tolerance=ori_tol)
+                    position_tolerance=pos_tol, orientation_tolerance=ori_tol,
+                    preferred_goal_configuration=preferred)
             finally:
                 self._details["planning_and_validation_wall_seconds"] = self._clock()-started
             self._details.update(plan.diagnostics)

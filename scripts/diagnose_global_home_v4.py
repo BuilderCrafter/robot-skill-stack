@@ -220,8 +220,8 @@ def time_scaled_planner_factory(original_factory, factor, capture):
         planner = original_factory(backend, **options)
         original_plan = planner.plan
 
-        def plan(target, start_q, snapshot, position_tolerance, orientation_tolerance):
-            result = original_plan(target, start_q, snapshot, position_tolerance, orientation_tolerance)
+        def plan(target, start_q, snapshot, position_tolerance, orientation_tolerance, **kwargs):
+            result = original_plan(target, start_q, snapshot, position_tolerance, orientation_tolerance, **kwargs)
             if result.duration <= 0.:
                 raise RuntimeError('The causal time-warp probe requires a moving Home trajectory')
             wrapped = TimeScaledTrajectory(result.trajectory, factor=factor)

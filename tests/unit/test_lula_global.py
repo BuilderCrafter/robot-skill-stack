@@ -127,6 +127,45 @@ class LulaGlobalTests(unittest.TestCase):
         np.testing.assert_array_equal(ik[3],[1,0,0,0])
         self.assertEqual(result.diagnostics['trajectory_validation']['collision_validation'],'PASS_SAMPLED_SDK_MODEL')
         self.assertEqual(result.diagnostics['ik_candidates_attempted'],1)
+        self.assertFalse(result.diagnostics['preferred_goal_configuration_used'])
+        np.testing.assert_array_equal(ik[4]['warm_start'], np.zeros(7))
+
+    def test_validated_preference_only_changes_first_ik_warm_start(self):
+        fixture=self.fixture()
+        preferred=np.zeros(7);preferred[:2]=[.2,.4]
+        planner=LulaGlobalPlanner(fixture.backend,_sdk=fixture.sdk)
+        self.addCleanup(planner.close)
+        result=planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1,
+            preferred_goal_configuration=preferred)
+        ik=next(row for row in fixture.events if row[0]=='ik')
+        np.testing.assert_array_equal(ik[4]['warm_start'],preferred)
+        self.assertTrue(result.diagnostics['preferred_goal_is_warm_start_only'])
+        # The fake IK solves a different redundant configuration; the hint is not
+        # substituted directly for the solver's independently checked output.
+        self.assertEqual(result.route[-1,1],0.)
+
+    def test_preference_cannot_bypass_full_pose_or_joint_limit_validation(self):
+        for preferred in (np.full(7,2.), np.full(7,float('nan')),
+                          np.zeros(6), np.array([.6,0,0,0,0,0,0])):
+            fixture=self.fixture()
+            planner=LulaGlobalPlanner(fixture.backend,_sdk=fixture.sdk)
+            self.addCleanup(planner.close)
+            with self.subTest(preferred=preferred), self.assertRaises(PlanningFailure) as caught:
+                planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1,
+                    preferred_goal_configuration=preferred)
+            self.assertEqual(caught.exception.code,'invalid_goal')
+            self.assertFalse(any(row[0]=='ik' for row in fixture.events))
+
+    def test_preference_does_not_bypass_goal_collision_or_attempt_bound(self):
+        fixture=self.fixture(collision=lambda q:q[0]>.15)
+        planner=LulaGlobalPlanner(fixture.backend,_sdk=fixture.sdk)
+        self.addCleanup(planner.close)
+        with self.assertRaises(PlanningFailure) as caught:
+            planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1,
+                preferred_goal_configuration=np.array([.2,0,0,0,0,0,0]))
+        self.assertEqual(caught.exception.code,'invalid_goal')
+        self.assertEqual(planner.diagnostics['ik_candidates_attempted'],4)
+        self.assertFalse(any(row[0]=='rrt_call' for row in fixture.events))
 
     def test_colliding_start_never_searches_or_generates_trajectory(self):
         fixture=self.fixture(collision=lambda q:True)

@@ -233,6 +233,20 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(self.planner.closed)
         self.strategy.close()
 
+    async def test_home_hint_preserves_recorded_branch_without_affecting_other_goals(self):
+        backend = Backend()
+        backend.named_poses = {"home": Pose([0., 0, 0], [1., 0, 0, 0])}
+        strategy = GlobalRrtStrategy(backend, action_factory=lambda **kwargs: SimpleNamespace(**kwargs))
+        backend.robot.q[1:8] = .2
+        hint = strategy._goal_hint(backend.named_poses["home"], ARM)
+        self.assertTrue(np.array_equal(hint, np.zeros(7)))
+        hint[:] = 9.
+        self.assertTrue(np.array_equal(strategy._goal_hint(backend.named_poses["home"], ARM), np.zeros(7)))
+        self.assertTrue(np.array_equal(strategy._goal_hint(Pose([0., 0, 0], [-1., 0, 0, 0]), ARM), np.zeros(7)))
+        self.assertIsNone(strategy._goal_hint(self.target, ARM))
+        backend.named_poses["home"].position[0] = .1
+        self.assertIsNone(strategy._goal_hint(backend.named_poses["home"], ARM))
+
 
 if __name__ == "__main__":
     unittest.main()
