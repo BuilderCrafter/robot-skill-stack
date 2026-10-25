@@ -60,8 +60,10 @@ async def wait_for_moving_home(observer, row, task, *, clock=time.monotonic, tim
                 active=True, task_complete=False)
         if clock()-began > timeout:
             raise RuntimeError('Home did not begin measured nonzero movement within bounded wait')
-        # The executing backend owns physics updates; no second update loop is added.
-        await asyncio.sleep(0)
+        # Isaac's Kit scheduler requires an actual frame await. A repeatedly
+        # ready sleep(0) task can starve native frame delivery indefinitely.
+        # This is the existing backend Kit await, never a direct world.step.
+        await observer.backend._next_update()
     return dict(actual_joint_displacement_rad=maximum_observed_displacement(
         row['before']['feedback']['positions'], observer.samples[row['first_sample']:], observer.indices),
         commanded=len(observer.actions) > row['first_action'], active=False, task_complete=True)
@@ -346,15 +348,19 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=MODES, required=True)
     parser.add_argument('--seed', type=int)
+    parser.add_argument('--obstacle-scenario', choices=('static', 'near'),
+        help='Existing fixture for obstacle_home only; default static. Near checks obstacle presence, not a forced detour.')
     parser.add_argument('--cycles', type=int, choices=(2, 3), default=3)
     parser.add_argument('--max-iterations', type=int, default=10000)
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--result', required=True)
     parser.add_argument('--artifacts-dir', required=True)
     args = parser.parse_args(argv)
+    if args.mode != 'obstacle_home' and args.obstacle_scenario is not None:
+        parser.error('--obstacle-scenario applies only to --mode obstacle_home')
     seed = args.seed if args.seed is not None else (345678 if args.mode == 'obstacle_home' else 123456)
     options = SimpleNamespace(**{**vars(args), 'seed': seed}, strategy='global',
-        scenario='static' if args.mode == 'obstacle_home' else 'empty', enable_mapping=False,
+        scenario=(args.obstacle_scenario or 'static') if args.mode == 'obstacle_home' else 'empty', enable_mapping=False,
         lifecycle=True, witness=False, reference_result=None)
     from robot_skill_stack.integrations.isaac.config import MotionConfig
     MotionConfig(strategy='global', rrt_seed=seed, rrt_max_iterations=args.max_iterations)
@@ -390,6 +396,21 @@ def main(argv=None):
         operations, raw = [], []
         for index, (observer, startup) in enumerate(zip(state['observers'], state['startup_captures'])):
             capture = state.get('physical_capture') if index == 0 else startup
+            # Preserve observations even when the fixture fails before returning
+            # its final world capture. Missing reference data must not erase the
+            # actual states/actions that explain an invalid attempt.
+            arrays = {}
+            for mesh_index, mesh in enumerate(startup['meshes']):
+                arrays[f'vertices_{mesh_index}'] = mesh.mesh.vertices
+                arrays[f'triangles_{mesh_index}'] = mesh.mesh.triangles
+                arrays[f'body_from_mesh_{mesh_index}'] = mesh.body_from_mesh
+            geometry_path = output/f'acceptance_geometry_{index}.npz'
+            np.savez_compressed(geometry_path, **arrays)
+            raw.append(dict(runtime_generation=index, metadata=observer.metadata,
+                samples=observer.samples, actions=observer.actions, operations=observer.operations,
+                startup_world=fixture.serial(startup['snapshot']), cooking=startup['cooking'],
+                cooked_artifact=dict(path=str(geometry_path),
+                    sha256=hashlib.sha256(geometry_path.read_bytes()).hexdigest())))
             if capture is None:
                 continue
             # Original setup occurs with fixture actors parked far away, before
@@ -404,18 +425,6 @@ def main(argv=None):
                 if 'hold_observation' in row:
                     reduced['hold_observation'] = row['hold_observation']
                 operations.append(reduced)
-            arrays = {}
-            for mesh_index, mesh in enumerate(startup['meshes']):
-                arrays[f'vertices_{mesh_index}'] = mesh.mesh.vertices
-                arrays[f'triangles_{mesh_index}'] = mesh.mesh.triangles
-                arrays[f'body_from_mesh_{mesh_index}'] = mesh.body_from_mesh
-            geometry_path = output/f'acceptance_geometry_{index}.npz'
-            np.savez_compressed(geometry_path, **arrays)
-            raw.append(dict(runtime_generation=index, metadata=observer.metadata,
-                samples=observer.samples, actions=observer.actions, operations=observer.operations,
-                startup_world=fixture.serial(startup['snapshot']), cooking=startup['cooking'],
-                cooked_artifact=dict(path=str(geometry_path),
-                    sha256=hashlib.sha256(geometry_path.read_bytes()).hexdigest())))
         controlled._json(output/'acceptance_trace.json', raw)
         after = source_hashes()
         valid = dict(source_unchanged=before == after, callback_complete=state.get('callback_complete', False),

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "status": "MEASURED_BOUNDED_COUNTERFACTUAL_HOME_FIXTURE_CLEARANCE",
+  "method": "Independent copied PhysX-cooked convex robot solids at one actual recorded startup/named-Home configuration against the unchanged existing declared V4 fixture boxes; all 11 robot bodies, 55 body-box pairs in total.",
+  "interpretation": "Counterfactual final-fixture goal geometry, not observed contact: fixtures were parked away at startup. Zero solid distance cannot distinguish touching from overlap. This is not route validation or a continuous-safety guarantee.",
+  "scenarios": [
+    {
+      "scenario": "static",
+      "minimum_fixture_distance_m": 0.0,
+      "zero_distance_pairs": [
+        {
+          "robot_body": "/Franka/panda_link5",
+          "fixture": "Post"
+        },
+        {
+          "robot_body": "/Franka/panda_link6",
+          "fixture": "Post"
+        }
+      ],
+      "closest_positive_pair": {
+        "robot_body": "/Franka/panda_link7",
+        "fixture": "Post",
+        "distance_m": 0.00568426424560731
+      },
+      "assessment": "Recorded Home has zero cooked-solid clearance; positive obstacle-avoidance Home is not established by this fixture."
+    },
+    {
+      "scenario": "narrow",
+      "minimum_fixture_distance_m": 0.0,
+      "zero_distance_pairs": [
+        {
+          "robot_body": "/Franka/panda_hand",
+          "fixture": "Right"
+        },
+        {
+          "robot_body": "/Franka/panda_rightfinger",
+          "fixture": "Right"
+        },
+        {
+          "robot_body": "/Franka/panda_link7",
+          "fixture": "Right"
+        }
+      ],
+      "closest_positive_pair": {
+        "robot_body": "/Franka/panda_leftfinger",
+        "fixture": "Right",
+        "distance_m": 0.005091051473957289
+      },
+      "assessment": "Recorded Home has zero cooked-solid clearance; positive obstacle-avoidance Home is not established by this fixture."
+    },
+    {
+      "scenario": "large",
+      "minimum_fixture_distance_m": 0.0,
+      "zero_distance_pairs": [
+        {
+          "robot_body": "/Franka/panda_hand",
+          "fixture": "Wall"
+        },
+        {
+          "robot_body": "/Franka/panda_link5",
+          "fixture": "Wall"
+        },
+        {
+          "robot_body": "/Franka/panda_link6",
+          "fixture": "Wall"
+        },
+        {
+          "robot_body": "/Franka/panda_link7",
+          "fixture": "Wall"
+        }
+      ],
+      "closest_positive_pair": null,
+      "assessment": "Recorded Home has zero cooked-solid clearance; positive obstacle-avoidance Home is not established by this fixture."
+    },
+    {
+      "scenario": "near",
+      "minimum_fixture_distance_m": 0.10370356687211849,
+      "zero_distance_pairs": [],
+      "closest_positive_pair": {
+        "robot_body": "/Franka/panda_leftfinger",
+        "fixture": "OffRoute",
+        "distance_m": 0.10370356687211849
+      },
+      "assessment": "Existing off-route obstacle is clear at recorded Home; does not establish a forced-detour route."
+    }
+  ],
+  "goal_and_fixture_models_changed": false,
+  "acceptance_limit": "Static/narrow/large retain clean colliding-goal rejection evidence. A clear near-fixture Home test is additional obstacle-presence regression and does not satisfy a positive forced-avoidance Home requirement.",
+  "source_artifacts": {
+    "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1/acceptance_trace.json": "7ac9cdaa0eb9c3777f5ae9e219db9fe8eb7fdbf44e71cf355c9be9cfe465b726",
+    "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1/acceptance_geometry_0.npz": "32b3539ef0eb9c692194141ad6a23b49339e9050fc5400e5d7da21d3a65628d9",
+    "scripts/diagnose_reactive_motion.py": "a6ec7a9c3113a267e11c89bb0fe881ca8a99880e4349fdc464ef2b29ff0b3a1b",
+    "outputs/motion-planning-v4-1/collision-audit/home-fixture-clearance.json": "61e4c40d7c0bc2607f0c1f306890815e7b461fe92d2e1b29a9514491dd935f5a"
+  },
+  "source_state": "First runtime generation, first actual setup_start sample (physics step 32); named-Home target equals recorded startup TCP in acceptance_trace.json.",
+  "raw_coordinates_published": false
+}

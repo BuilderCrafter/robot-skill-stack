@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "reason": "Retain all original r1 results. Repeat four invalid fixture captures with corrected Kit frame wait; add unchanged near-scene Home test after measured original Home intersections in static/narrow/large. Near is not substituted for forced obstacle-avoidance Home acceptance.",
+  "jobs": [
+    {
+      "label": "cancel-r2-frame-await",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/cancel/r2",
+      "result": "outputs/motion-planning-v4-1/acceptance/cancel/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "cancel",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/cancel/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/cancel/r2"
+      ]
+    },
+    {
+      "label": "stop-r2-frame-await",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/stop/r2",
+      "result": "outputs/motion-planning-v4-1/acceptance/stop/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "stop",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/stop/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/stop/r2"
+      ]
+    },
+    {
+      "label": "reset-r2-frame-await",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/reset/r2",
+      "result": "outputs/motion-planning-v4-1/acceptance/reset/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "reset",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/reset/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/reset/r2"
+      ]
+    },
+    {
+      "label": "close-r2-frame-await",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/close/r2",
+      "result": "outputs/motion-planning-v4-1/acceptance/close/r2/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "close",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/close/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/close/r2"
+      ]
+    },
+    {
+      "label": "near-home-additional-no-forced-detour",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/near_home/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/near_home/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "obstacle_home",
+        "--obstacle-scenario",
+        "near",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/near_home/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/near_home/r1"
+      ]
+    }
+  ]
+}

@@ -1,9 +1,11 @@
 import asyncio
+from contextlib import redirect_stderr
+import io
 from types import SimpleNamespace
 import unittest
 
 from scripts.benchmark_global_acceptance_v4_1 import (
-    acceptance_checks, maximum_observed_displacement, physical_motion_passed,
+    acceptance_checks, main, maximum_observed_displacement, physical_motion_passed,
     post_cancel_hold_metrics, wait_for_moving_home,
 )
 
@@ -15,6 +17,14 @@ def successful(label, displacement=.3):
 
 
 class AcceptanceTests(unittest.TestCase):
+    def test_unrelated_lifecycle_mode_rejects_obstacle_override_before_isaac_launch(self):
+        stderr = io.StringIO()
+        with redirect_stderr(stderr), self.assertRaises(SystemExit) as raised:
+            main(['--mode', 'reset', '--obstacle-scenario', 'near',
+                '--result', '/tmp/not-written-result.json', '--artifacts-dir', '/tmp/not-created-artifacts'])
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn('applies only to --mode obstacle_home', stderr.getvalue())
+
     def test_nonzero_home_requires_actual_motion_and_physical_clearance(self):
         row = successful('home')
         self.assertTrue(physical_motion_passed(row, moving=True))
@@ -86,7 +96,9 @@ class AcceptanceTests(unittest.TestCase):
 
 class MotionGateTests(unittest.IsolatedAsyncioTestCase):
     def observer(self):
-        return SimpleNamespace(backend=SimpleNamespace(_motion_active=True), indices=tuple(range(7)),
+        async def next_update():
+            await asyncio.sleep(0)
+        return SimpleNamespace(backend=SimpleNamespace(_motion_active=True, _next_update=next_update), indices=tuple(range(7)),
             samples=[dict(feedback=dict(positions=[0.]*9))], actions=[])
 
     def row(self):
@@ -126,6 +138,36 @@ class MotionGateTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(condition['task_complete'])
         self.assertFalse(condition['active'])
         self.assertEqual(condition['actual_joint_displacement_rad'], 0.)
+
+    async def test_native_progress_requires_public_kit_frame_await(self):
+        observer, row = self.observer(), self.row()
+        hold = asyncio.Event()
+        frames = []
+
+        async def next_update():
+            # The fake native physics state changes only on a Kit frame await,
+            # not merely because the coroutine scheduler runs a ready task.
+            frames.append(len(frames)+1)
+            observer.samples.append(dict(feedback=dict(positions=[len(frames)*.01]+[0.]*8)))
+            await asyncio.sleep(0)
+
+        async def execution():
+            observer.actions.append(dict(requested_positions=[1.]*7))
+            await hold.wait()
+
+        observer.backend._next_update = next_update
+        task = asyncio.create_task(execution())
+        ticks = iter(step/10 for step in range(30))
+        try:
+            condition = await wait_for_moving_home(observer, row, task,
+                clock=lambda: next(ticks), timeout=1.)
+            self.assertTrue(condition['active'])
+            self.assertEqual(len(frames), 3)
+            self.assertAlmostEqual(condition['actual_joint_displacement_rad'], .03)
+        finally:
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await task
 
     async def test_nonmoving_active_request_has_bounded_wait(self):
         observer, row = self.observer(), self.row()
