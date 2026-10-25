@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_CONTROL_ONLY_FINALIZATION_BEFORE_ANY_CANDIDATE_RRT",
+  "main_geometry_must_remain_identical": true,
+  "main_selection_rerun_allowed": false,
+  "candidate_RRT_calls": 0,
+  "original_design_source_sha256": {
+    "scripts/design_global_detour_exact_v4_3.py": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+    "docs/assets/motion_planning_v4_3/design_exact_protocol.json": "9d78b956f7d6e47bdc70092f6f1d580611c12a7d8328dc0f2a8220cacd54ba9a",
+    "docs/assets/motion_planning_v4_3/main_design_lock.json": "701772c27bbfc7ecedc061f5f9e5b74ce6fd59c6826d1bfa641ca2753dc0dc07",
+    "outputs/motion-planning-v4-3/fixture-design-exact/design_proof.json": "2bcc968738d79f5b8d9f7ac690202a3ab9b1dc8dfa2123371725597cd1141cb0",
+    "outputs/motion-planning-v4-3/fixture-design-exact/independent_witness.npz": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636"
+  },
+  "goal_blocked_control": {
+    "position": "Exact fixed baseline target position",
+    "candidate_cube_edge_lengths_m": [
+      0.08,
+      0.06,
+      0.04
+    ],
+    "orientation_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "selection": "Use the first cube in declared largest-first order whose all-body actual Home clearance is at least10mm, enhanced native inspector at the unchanged start is clear, selected fixed goal has a verified positive-volume cooked-solid intersection ball of at least3mm and enhanced native inspector reports the fixed goal blocked. No RRT search is constructed or queried."
+  },
+  "near_control": "Retain the originally declared historical off-route box unchanged.",
+  "unchanged_criteria": {
+    "minimum_actual_home_clearance_m": 0.01,
+    "minimum_goal_intersection_ball_radius_m": 0.003,
+    "minimum_independent_main_witness_continuous_external_clearance_m": 0.01,
+    "minimum_main_planned_and_actual_obstruction_ball_radius_m": 0.003
+  },
+  "permitted_protocol_overrides": [
+    "negative_controls.goal_blocked.dimensions_m"
+  ],
+  "historical_control_limitation": "The original180mm goal-centered cube overlaps actual startup Home and is unsuitable for this matched negative control. Its failed validation remains retained; this revision changes only independent control geometry.",
+  "emitter": "Invoke unchanged design_global_detour_exact_v4_3.freeze_document with original locked main selection/witness; assert every protocol field except negative_controls remains identical. Bind exact emitter, finalizer producer, override and control protocol separately."
+}
