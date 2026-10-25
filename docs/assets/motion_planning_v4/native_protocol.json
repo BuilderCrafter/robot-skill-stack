@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_BEFORE_PRIMARY_NATIVE_MATRIX",
+  "pilot_separate": "outputs/motion-planning-v4/pilot/global-empty-seed123456-r1/result.json; implementation182b743; measurement PASS, no contact",
+  "primary_scenes": [
+    "empty",
+    "near",
+    "static",
+    "narrow",
+    "large"
+  ],
+  "primary_strategies": [
+    "direct",
+    "reactive",
+    "global"
+  ],
+  "failure_only_global": [
+    "blocked",
+    "unreachable"
+  ],
+  "global_seeds_primary": [
+    123456
+  ],
+  "additional_seeds_difficult_scenes": [
+    234567,
+    345678
+  ],
+  "seed_repeat_scenes": [
+    "static",
+    "narrow",
+    "large"
+  ],
+  "rrt_max_iterations_per_ik_candidate": 10000,
+  "maximum_ik_warm_starts": 4,
+  "iteration_escalation": false,
+  "position_tolerance_m": 0.025,
+  "orientation_tolerance_rad": 0.1,
+  "trajectory_and_route_validation": "All route segments <=.01rad; generatedtrajectory <=1/240s and <=.01rad, jointposition+velocity+acceleration+jerk limits and SDKexternal+nonadjacentselfcollision checks. Sampled, not continuous meshcertificate.",
+  "execution_tracking_rad": {
+    "limit": 0.15,
+    "grace_sim_seconds": 0.25,
+    "immediate_abort": 0.4
+  },
+  "backend_max_control_updates": 1000,
+  "observation_sources": {
+    "global": "Frozen actualstaticCollisionAPI scene inclsupport; no mapping/cameras required",
+    "reactive": "Existing2Hz ground_truth occupancy worker and unchanged64proxy strategy",
+    "direct": "Existing obstacle-unaware RMPflow"
+  },
+  "workload_matching_limit": "Samephysicalrobot/start/goal/fixtures/tolerances/hardjointlimits andindependentcollisionevidence; strategyrepresentations/backgroundmapping andtemporalparameterizations differ, no purealgorithmCPUisolation claimed.",
+  "native_queue_cases": 26,
+  "cohorts": {
+    "primary": 17,
+    "seeds": 6,
+    "witness": 2,
+    "lifecycle": 1
+  },
+  "failure_policy": "Retain every failedseed, timeout, invalidmeasurement and blockedrequest. Never silentlyfallback, increaseiterations, alterphysicalfixtures or relaxcriteria.",
+  "timing": "SerializefreshIsaacprocesses; noCPUplots/replays/tests duringnativewindows; separateRRT/IK/validation/trajectory/executiontimes.",
+  "feasibility": "Predeclaredmanualnon-RRT witnesssamephysicalnarrow/large scene, fixedheight.85m; failedwitness meansfeasibilityunproven, notimpossible."
+}

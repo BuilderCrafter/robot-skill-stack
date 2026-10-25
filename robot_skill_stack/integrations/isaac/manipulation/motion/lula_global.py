@@ -239,10 +239,33 @@ class LulaGlobalPlanner:
             maximum_jerk_rad_s3=maxima[2].tolist(), collision_validation='PASS_SAMPLED_SDK_MODEL')
 
     def plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance):
+        result = failure = None
+        try:
+            result = self._plan(target, start_q, snapshot, position_tolerance, orientation_tolerance)
+            return result
+        except Exception as error:
+            failure = error
+            self._last_diagnostics['state'] = 'failed'
+            raise
+        finally:
+            attempts = self._last_diagnostics.get('ik_attempts', ())
+            self._last_diagnostics.update(ik_candidates_attempted=len(attempts),
+                ik_seconds=sum(row.get('ik_seconds', 0.) for row in attempts),
+                rrt_seconds=sum(row.get('rrt_seconds', 0.) for row in attempts),
+                trajectory_generation_seconds=sum(row.get('trajectory_generation_seconds', 0.) for row in attempts),
+                trajectory_validation_seconds=sum(row.get('trajectory_validation_seconds', 0.) for row in attempts))
+            if result is not None:
+                result.diagnostics.update(self._last_diagnostics)
+            if isinstance(failure, PlanningFailure):
+                failure.details.update(self._last_diagnostics)
+
+    def _plan(self, target, start_q, snapshot, position_tolerance, orientation_tolerance):
         self._assert_owner()
         self.clear()
         self._last_diagnostics = dict(seed=self.seed, max_iterations=self.max_iterations,
-                                      rrt_step_size_rad=.05, state='initializing')
+            rrt_step_size_rad=.05, state='initializing', ik_candidates_attempted=0,
+            ik_seconds=0., rrt_seconds=0., rrt_waypoints=0,
+            trajectory_generation_seconds=0., trajectory_validation_seconds=0.)
         if target.orientation is None:
             raise PlanningFailure('ik_failed', 'Global planning requires a full end-effector orientation')
         names = self.joint_names
@@ -307,11 +330,14 @@ class LulaGlobalPlanner:
             entry = dict(index=index, warm_start=np.asarray(seed).tolist())
             attempts.append(entry)
             started = time.perf_counter()
-            q, success = solver.compute_inverse_kinematics(self.backend.end_effector_frame,
-                np.asarray(target.position, float), np.asarray(target.orientation, float),
-                warm_start=np.asarray(seed), position_tolerance=min(float(position_tolerance), .001),
-                orientation_tolerance=min(float(orientation_tolerance), .005))
-            entry['ik_seconds'], entry['ik_success'] = time.perf_counter()-started, bool(success)
+            try:
+                q, success = solver.compute_inverse_kinematics(self.backend.end_effector_frame,
+                    np.asarray(target.position, float), np.asarray(target.orientation, float),
+                    warm_start=np.asarray(seed), position_tolerance=min(float(position_tolerance), .001),
+                    orientation_tolerance=min(float(orientation_tolerance), .005))
+            finally:
+                entry['ik_seconds'] = time.perf_counter()-started
+            entry['ik_success'] = bool(success)
             if not success:
                 continue
             try:
@@ -331,11 +357,15 @@ class LulaGlobalPlanner:
                     base_position=base_position, base_rotation=base_rotation, excluded_pairs=excluded_pairs)
                 self._planner.set_cspace_target(q)
                 started = time.perf_counter()
-                route = self._planner.compute_path(start_q, np.empty(0, dtype=float))
-                entry['rrt_seconds'] = time.perf_counter()-started
+                try:
+                    route = self._planner.compute_path(start_q, np.empty(0, dtype=float))
+                finally:
+                    entry['rrt_seconds'] = time.perf_counter()-started
                 if route is None:
                     raise PlanningFailure('search_exhausted', 'Bounded RRT search returned no route')
                 route = route_array(route)
+                entry['rrt_waypoints'] = len(route)
+                self._last_diagnostics['rrt_waypoints'] = len(route)
                 if np.max(np.abs(route[0]-start_q)) > 1e-6 or np.max(np.abs(route[-1]-q)) > 1e-6:
                     raise PlanningFailure('route_invalid', 'RRT route endpoints differ from the validated joint states')
                 entry['route_validation_samples'] = self._validate_route(route, snapshot,
@@ -344,8 +374,10 @@ class LulaGlobalPlanner:
                 if tuple(self._generator.get_active_joints()) != names:
                     raise PlanningFailure('joint_mapping_failed', 'Trajectory and RRT joint orders differ')
                 started = time.perf_counter()
-                trajectory = self._generator.compute_c_space_trajectory(route)
-                entry['trajectory_generation_seconds'] = time.perf_counter()-started
+                try:
+                    trajectory = self._generator.compute_c_space_trajectory(route)
+                finally:
+                    entry['trajectory_generation_seconds'] = time.perf_counter()-started
                 if trajectory is None:
                     raise PlanningFailure('trajectory_failed', 'Lula could not generate a joint trajectory')
                 first_command, _ = trajectory.get_joint_targets(float(trajectory.start_time))
@@ -356,9 +388,11 @@ class LulaGlobalPlanner:
                         or np.max(np.abs(np.asarray(last_command)-route[-1])) > 1e-6):
                     raise PlanningFailure('trajectory_failed', 'Generated trajectory changed the selected joint-space endpoints')
                 started = time.perf_counter()
-                entry['trajectory_validation'] = self._validate_trajectory(trajectory, snapshot,
-                    base_position, base_rotation, excluded_pairs, lower, upper, velocity, acceleration, jerk)
-                entry['trajectory_validation_seconds'] = time.perf_counter()-started
+                try:
+                    entry['trajectory_validation'] = self._validate_trajectory(trajectory, snapshot,
+                        base_position, base_rotation, excluded_pairs, lower, upper, velocity, acceleration, jerk)
+                finally:
+                    entry['trajectory_validation_seconds'] = time.perf_counter()-started
                 entry['status'] = 'planned'
                 self._last_diagnostics.update(state='planned', ik_candidates_attempted=len(attempts), rrt_waypoints=len(route),
                     geometric_joint_path_length=float(np.linalg.norm(np.diff(route, axis=0), axis=1).sum()),

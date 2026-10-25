@@ -141,6 +141,7 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
             result = await self.strategy.move_to_pose_async(self.target)
             self.assertFalse(result.ok)
             self.assertEqual(result.details["failure_code"], code)
+            self.assertGreaterEqual(result.details["planning_and_validation_wall_seconds"], 0.)
             self.assertFalse(result.details["final_hold"])
             self.assertTrue(self.planner.closed)
         self.assertEqual(self.backend.robot.actions, [])

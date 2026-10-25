@@ -157,9 +157,27 @@ class LulaGlobalTests(unittest.TestCase):
 
     def test_exhausted_search_has_no_direct_or_trajectory_fallback(self):
         fixture=self.fixture(search_success=False)
-        with self.assertRaises(PlanningFailure) as caught:self.plan(fixture)
+        planner=LulaGlobalPlanner(fixture.backend,seed=17,max_iterations=500,_sdk=fixture.sdk)
+        self.addCleanup(planner.close)
+        with self.assertRaises(PlanningFailure) as caught:
+            planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1)
         self.assertEqual(caught.exception.code,'search_exhausted')
         self.assertFalse(any(row[0]=='trajectory' for row in fixture.events))
+        diagnostics=planner.diagnostics
+        self.assertEqual(diagnostics['state'],'failed')
+        self.assertEqual(diagnostics['ik_candidates_attempted'],len(diagnostics['ik_attempts']))
+        self.assertEqual(diagnostics['rrt_seconds'],sum(row.get('rrt_seconds',0.) for row in diagnostics['ik_attempts']))
+        self.assertGreater(diagnostics['rrt_seconds'],0.)
+        self.assertEqual(diagnostics['trajectory_generation_seconds'],0.)
+
+    def test_failed_start_records_zero_phase_counts(self):
+        fixture=self.fixture(collision=lambda q:True)
+        planner=LulaGlobalPlanner(fixture.backend,_sdk=fixture.sdk)
+        self.addCleanup(planner.close)
+        with self.assertRaises(PlanningFailure):planner.plan(fixture.target,np.zeros(7),fixture.snapshot,.025,.1)
+        self.assertEqual(planner.diagnostics['state'],'failed')
+        for key in ('ik_candidates_attempted','rrt_seconds','trajectory_generation_seconds'):
+            self.assertEqual(planner.diagnostics[key],0)
 
     def test_midsegment_collision_is_rejected_before_trajectory_generation(self):
         fixture=self.fixture(trajectory_collision=True)

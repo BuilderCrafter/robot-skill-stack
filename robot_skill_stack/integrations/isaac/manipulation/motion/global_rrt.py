@@ -131,11 +131,13 @@ class GlobalRrtStrategy:
             base_position, base_orientation = backend.robot.get_world_pose()
             self._state = "planning"
             started = self._clock()
-            plan = planner.plan(target, start_q, snapshot,
-                position_tolerance=pos_tol, orientation_tolerance=ori_tol)
-            self._details.update(plan.diagnostics)
-            self._details["planning_and_validation_wall_seconds"] = self._clock()-started
             self._details["planning_blocks_owner_loop"] = True
+            try:
+                plan = planner.plan(target, start_q, snapshot,
+                    position_tolerance=pos_tol, orientation_tolerance=ori_tol)
+            finally:
+                self._details["planning_and_validation_wall_seconds"] = self._clock()-started
+            self._details.update(plan.diagnostics)
             self._live(epoch)
             if tuple(plan.joint_names) != names:
                 raise PlanningFailure("joint_mapping_failure", "Planner changed joint order during the request.")
