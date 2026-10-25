@@ -1,0 +1,569 @@
+{
+  "schema_version": 1,
+  "joint_names": [
+    "panda_joint1",
+    "panda_joint2",
+    "panda_joint3",
+    "panda_joint4",
+    "panda_joint5",
+    "panda_joint6",
+    "panda_joint7"
+  ],
+  "q": [
+    -0.15918263827987078,
+    -0.11882434967510531,
+    -0.3362481290927299,
+    -2.149789761099588,
+    -0.044544735115996506,
+    2.0376946621228664,
+    0.31093756212348445
+  ],
+  "target": {
+    "position": [
+      0.45,
+      -0.25,
+      0.35
+    ],
+    "orientation": [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    "frame": "world"
+  },
+  "baseline_route_goal_q": [
+    -0.15918263827987078,
+    -0.11882434967510531,
+    -0.3362481290927299,
+    -2.149789761099588,
+    -0.044544735115996506,
+    2.0376946621228664,
+    0.31093756212348445
+  ],
+  "selected_ik_index": 0,
+  "end_effector_frame": "right_gripper",
+  "initial_state": {
+    "simulation_time": 0.5333333611488342,
+    "physics_step": 32,
+    "feedback": {
+      "positions": [
+        -0.16536663472652435,
+        -0.029043084010481834,
+        0.06232651323080063,
+        -2.1479387283325195,
+        -0.441255122423172,
+        2.485304832458496,
+        1.340412974357605,
+        0.0022974847815930843,
+        0.0022974845487624407
+      ],
+      "velocities": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "measured_efforts": [
+        0.011724472045898438,
+        -24.884490966796875,
+        -0.048151493072509766,
+        19.568140029907227,
+        0.10712593048810959,
+        0.9412045478820801,
+        -9.737908840179443e-06,
+        0.02156202122569084,
+        -0.02156214974820614
+      ],
+      "explicit_applied_efforts": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "incoming_joint_wrenches": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          149.00347900390625,
+          0.025602340698242188,
+          0.022671759128570557,
+          0.011724472045898438,
+          -24.894041061401367,
+          -1.7169357538223267
+        ],
+        [
+          0.026966094970703125,
+          -125.79229736328125,
+          -3.6603469848632812,
+          -24.884490966796875,
+          0.038132667541503906,
+          -1.7160921096801758
+        ],
+        [
+          102.45893096923828,
+          -0.18253421783447266,
+          -2.97057843208313,
+          -0.048151493072509766,
+          -25.885168075561523,
+          -0.10930430889129639
+        ],
+        [
+          0.1324329376220703,
+          -39.866050720214844,
+          65.27950286865234,
+          19.568140029907227,
+          0.11234378814697266,
+          0.029452800750732422
+        ],
+        [
+          -26.093666076660156,
+          -18.31672477722168,
+          38.607601165771484,
+          0.10712593048810959,
+          -0.9421359300613403,
+          -0.37457358837127686
+        ],
+        [
+          7.6128926277160645,
+          18.3800048828125,
+          -6.0933732986450195,
+          0.9412045478820801,
+          -0.3134176731109619,
+          0.23137250542640686
+        ],
+        [
+          -8.596639633178711,
+          -1.961435317993164,
+          -4.117453098297119,
+          -9.737908840179443e-06,
+          0.26742005348205566,
+          -0.12728360295295715
+        ],
+        [
+          5.085996627807617,
+          -1.1616472005844116,
+          2.434269905090332,
+          1.2381497072055936e-07,
+          0.0068129003047943115,
+          0.0032505751587450504
+        ],
+        [
+          0.02156202122569084,
+          -0.060954004526138306,
+          -0.12190145999193192,
+          6.000699503266871e-12,
+          -2.982082462910096e-12,
+          -9.022745658254783e-13
+        ],
+        [
+          -0.02156214974820614,
+          0.06095358356833458,
+          -0.12190192192792892,
+          -6.000700370628609e-12,
+          2.982081161867489e-12,
+          -9.022745116153696e-13
+        ]
+      ],
+      "action": {
+        "joint_positions": [
+          -0.16406096518039703,
+          -0.03141592815518379,
+          0.0593411959707737,
+          -2.1467549800872803,
+          -0.4415683150291443,
+          2.48534893989563,
+          1.3404128551483154,
+          0.002297478262335062,
+          0.0022634919732809067
+        ],
+        "joint_velocities": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joint_efforts": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joint_indices": null
+      },
+      "controller_velocity_feedback": null,
+      "errors": {}
+    },
+    "live_drive_feedback": {
+      "robot_applied_action": {
+        "available": true,
+        "value": {
+          "joint_positions": [
+            -0.16406096518039703,
+            -0.03141592815518379,
+            0.0593411959707737,
+            -2.1467549800872803,
+            -0.4415683150291443,
+            2.48534893989563,
+            1.3404128551483154,
+            0.002297478262335062,
+            0.0022634919732809067
+          ],
+          "joint_velocities": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "joint_efforts": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "joint_indices": null
+        }
+      },
+      "get_joint_position_targets": {
+        "available": false,
+        "error": "Public method unavailable"
+      },
+      "get_joint_velocity_targets": {
+        "available": false,
+        "error": "Public method unavailable"
+      },
+      "get_max_efforts": {
+        "available": false,
+        "error": "Public method unavailable"
+      },
+      "get_effort_modes": {
+        "available": false,
+        "error": "Public method unavailable"
+      },
+      "controller_get_applied_action": {
+        "available": true,
+        "value": {
+          "joint_positions": [
+            -0.16406096518039703,
+            -0.03141592815518379,
+            0.0593411959707737,
+            -2.1467549800872803,
+            -0.4415683150291443,
+            2.48534893989563,
+            1.3404128551483154,
+            0.002297478262335062,
+            0.0022634919732809067
+          ],
+          "joint_velocities": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "joint_efforts": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "joint_indices": null
+        }
+      },
+      "controller_get_gains": {
+        "available": true,
+        "value": [
+          [
+            22918.3125,
+            22918.3125,
+            22918.3125,
+            22918.3125,
+            22918.3125,
+            22918.3125,
+            22918.3125,
+            400.0,
+            0.0
+          ],
+          [
+            4583.66259765625,
+            4583.66259765625,
+            4583.66259765625,
+            4583.66259765625,
+            4583.66259765625,
+            4583.66259765625,
+            4583.66259765625,
+            80.0,
+            0.0
+          ]
+        ]
+      },
+      "controller_get_effort_modes": {
+        "available": true,
+        "value": [
+          "force",
+          "force",
+          "force",
+          "force",
+          "force",
+          "force",
+          "force",
+          "force",
+          "force"
+        ]
+      }
+    },
+    "tcp_pose": {
+      "position": [
+        0.5974912637910632,
+        -0.08603929056981253,
+        0.3644922301295057
+      ],
+      "orientation": [
+        0.20977957952881227,
+        0.1715124171490509,
+        0.955105209887572,
+        -0.11979172267741134
+      ],
+      "frame": "world"
+    },
+    "gripper": {
+      "state": "free",
+      "width": 0.004594969330355525,
+      "details": {
+        "joint_positions": [
+          0.0022974847815930843,
+          0.0022974845487624407
+        ],
+        "estimated_width_m": 0.004594969330355525,
+        "minimum_grasp_width_m": 0.005,
+        "maximum_grasp_width_m": 0.075,
+        "finger_lower_limits_m": [
+          0.0,
+          0.0
+        ],
+        "finger_upper_limits_m": [
+          0.03999999910593033,
+          0.03999999910593033
+        ],
+        "nominal_open_positions_m": [
+          0.05,
+          0.05
+        ],
+        "grasp_state": "free"
+      }
+    },
+    "robot_base_pose": [
+      [
+        -2.38418573772492e-09,
+        2.98023217215615e-10,
+        2.384185648907078e-08
+      ],
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "arm_motion_active": false,
+    "articulation_ready": true,
+    "playing": true,
+    "actual_minus_applied_target_arm_rad": [
+      -0.0013056695461273193,
+      0.0023728441447019577,
+      0.0029853172600269318,
+      -0.0011837482452392578,
+      0.00031319260597229004,
+      -4.410743713378906e-05,
+      1.1920928955078125e-07
+    ]
+  },
+  "named_home": {
+    "position": [
+      0.5974912637910632,
+      -0.08603929056981253,
+      0.3644922301295057
+    ],
+    "orientation": [
+      0.20977957952881227,
+      0.1715124171490509,
+      0.955105209887572,
+      -0.11979172267741134
+    ],
+    "frame": "world"
+  },
+  "robot_dof_names": [
+    "panda_joint1",
+    "panda_joint2",
+    "panda_joint3",
+    "panda_joint4",
+    "panda_joint5",
+    "panda_joint6",
+    "panda_joint7",
+    "panda_finger_joint1",
+    "panda_finger_joint2"
+  ],
+  "cooked_fingerprints": {
+    "/Franka/panda_hand": {
+      "vertices": "03b4142e74c2dc12bed86fe78d0340840ca3f76a4aaf19e9cf746ae378cea760",
+      "triangles": "77463d2af5ee0deedf1727130a6703dad93213877fc3a886ddd7aca6c174bdca",
+      "transform": "79594dd66f46338c70c272ec1e71601b1a5799bcf897cdfef5b3d28992acca60"
+    },
+    "/Franka/panda_rightfinger": {
+      "vertices": "f840d1bd7b047111d21e4fb71d31b2162942f3a6d8f49dcde2ed4840cf16913a",
+      "triangles": "d41e9e9aa3ca0230e43d15f4dc85e2c32127ec0a016edda36219953f2283aa23",
+      "transform": "282a8f3cb4cd3e5af06acecc4261754ac41d25e88dd103a43021beb170edc474"
+    },
+    "/Franka/panda_leftfinger": {
+      "vertices": "74aa9260dd6c7a398208e04e8eacf20fd1f277c041007bcdd4633459d8313861",
+      "triangles": "092e2be75e8f2b549f78b23a4aada94c4c26127053f42c224b97bb830cb3bb4b",
+      "transform": "47452577ca9d781074bd9b0ecede25388416c0a8258a25c3172dfe69f2ff01db"
+    },
+    "/Franka/panda_link0": {
+      "vertices": "a8bf37fcecb5b2256d886c0478d11c6463407ee3aa26ee69495be8e77261fb85",
+      "triangles": "9edbee941cdb1183ff7abfe2c1415bba276edb74245347e9bc86b87189144908",
+      "transform": "5bec9a1a99fa800dc99230493637b4db386f7dd7fbc60812aa0c0e0ffa0fd43c"
+    },
+    "/Franka/panda_link1": {
+      "vertices": "b4800a1568306503861c2ad813d38da71b7813629bd041261fc253b418ffd318",
+      "triangles": "297cf86542271b8b6ffa70e6504f2fd7e12ae7f64426ca913c0f5d9445d00640",
+      "transform": "6dc16684123812b95e53fee6d11e1f31745ff1faade2b3eabccb98e475e5fc05"
+    },
+    "/Franka/panda_link2": {
+      "vertices": "6253dda10585e880de977c7103c51b0d279ac0dbfd51ad7163187c332dab396d",
+      "triangles": "297cf86542271b8b6ffa70e6504f2fd7e12ae7f64426ca913c0f5d9445d00640",
+      "transform": "80ee974eb09efeb3b6d3b5ceddff17584e2bab9bca261000e418df2ba7b548ff"
+    },
+    "/Franka/panda_link3": {
+      "vertices": "481444bc746899a814d02ceb625cbda46d02bcc989c0d72ea494e23018743db1",
+      "triangles": "a7d76798addec99806ad185c69c99ddacaa1535039c90bfef084c9188ad141f5",
+      "transform": "6eb5fca280469b1bc1cdc5e5ab6a31bc26b47a86a4602a8ec56c60f7a50bad97"
+    },
+    "/Franka/panda_link4": {
+      "vertices": "80832f8423dc5b575d123ed29089baf156a53fe49d75ff383279b9fa0c6689d1",
+      "triangles": "a6665bd6c044dc9083abb3bd091b979586498c0a2bbc38b594140a7a25296983",
+      "transform": "cd78174bf89655544ab72c4a3a104c054432e2d3c75fbad0c139630d9cfa1770"
+    },
+    "/Franka/panda_link5": {
+      "vertices": "d2e5c9d37f19251b2c0409c5b8412191eea30cfff183a70c3392a7e44c3a44a1",
+      "triangles": "15f31f53747b73282434d5c0d29dbf72b60033de39a735b881133c3fda4bcfc4",
+      "transform": "0ceb3fc9597264f97e9a40c8401a7499a4fefa9f7e4b0ef5176b06bbda0dc0a4"
+    },
+    "/Franka/panda_link6": {
+      "vertices": "ac71d9579c40a64bdb65399836818d6c992a7d6279fae24285b6d2eb067a16cf",
+      "triangles": "be4137184b4638186184b02be3907112a8addf20073822a95928210af61f96f6",
+      "transform": "02ad448ee9242f9493b63fc5f162043fd3ceaf33dc1ba3a1d42b99e73538dd50"
+    },
+    "/Franka/panda_link7": {
+      "vertices": "488c22d812b3435087f2adb8358779843ac0d1f189de96eb775f53b9eaf2575e",
+      "triangles": "d09a758ddd01faa83b86606f937170c0270f9ba0a3a958e12bd759be7ef874e1",
+      "transform": "b6bdae9692ed860796429051dd09175fd795c5d2b054630911cbbca1129652f1"
+    }
+  },
+  "model_sha256": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+  "planning_limits": {
+    "lower_limits": [
+      -2.8973,
+      -1.7628,
+      -2.8973,
+      -3.0718,
+      -2.8973,
+      -0.0175,
+      -2.8973
+    ],
+    "upper_limits": [
+      2.8973,
+      1.7628,
+      2.8973,
+      -0.0698,
+      2.8973,
+      3.7525,
+      2.8973
+    ],
+    "velocity_limits": [
+      2.175,
+      2.175,
+      2.175,
+      2.175,
+      2.61,
+      2.61,
+      2.61
+    ],
+    "acceleration_limits": [
+      15.0,
+      7.5,
+      10.0,
+      12.5,
+      15.0,
+      20.0,
+      20.0
+    ],
+    "jerk_limits": [
+      7500.0,
+      3750.0,
+      5000.0,
+      6250.0,
+      7500.0,
+      10000.0,
+      10000.0
+    ]
+  },
+  "rrt_max_iterations": 10000,
+  "source_result": {
+    "path": "outputs/motion-planning-v4-3/baseline-free/r1/result.json",
+    "sha256": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477"
+  },
+  "source_trace": {
+    "path": "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json",
+    "sha256": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931"
+  },
+  "source_geometry": {
+    "path": "outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz",
+    "sha256": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4"
+  }
+}

@@ -42,6 +42,32 @@ def source_hashes(args):
     return result
 
 
+def verify_frozen_design(fixture, *, expected_sha256, path):
+    """Fail closed on changed pre-RRT geometry, witness or source artifacts."""
+    if not expected_sha256 or shared.digest(path) != expected_sha256:
+        raise ValueError('Frozen fixture differs from its predeclared job-plan SHA256')
+    witness = fixture['witness']
+    if (witness['status'] != 'INDEPENDENT_NUMERIC_CONTINUOUS_WITNESS_CERTIFIED'
+            or witness['independent_of_candidate_rrt'] is not True
+            or witness['planning_model_sampled_self_and_original_world_clear'] is not True):
+        raise ValueError('Independent geometric/model witness was not established')
+    bounds = [witness['numericcontinuousexternal_lower_bound_m'], witness['self_lower_bound_m'],
+        witness['planning_model_continuous_external_lower_bound_m']]
+    if not np.isfinite(bounds).all() or bounds[0] < .01 or min(bounds[1:]) <= 0.:
+        raise ValueError('Frozen witness does not meet its declared positive clearance bounds')
+    alignment = witness['maximum_native_sphere_alignment_error_m']
+    if not np.isfinite(alignment) or not 0. <= alignment <= 1e-9:
+        raise ValueError('Native sphere alignment exceeds the witness numeric allowance')
+    sources = {**fixture['baseline']['source_sha256'], **witness['source_sha256']}
+    for name, expected in sources.items():
+        if shared.digest(name) != expected:
+            raise ValueError('Frozen independent-design source changed: '+name)
+    for name in ('raw_artifact', 'proof_artifact'):
+        ref = witness[name]
+        if shared.digest(ref['path']) != ref['sha256']:
+            raise ValueError('Frozen independent witness artifact changed: '+name)
+
+
 def load_inputs(args):
     target = None if args.fixed_target is None else json.loads(Path(args.fixed_target).read_text())
     fixture = None if args.fixture is None else json.loads(Path(args.fixture).read_text())
@@ -54,6 +80,7 @@ def load_inputs(args):
             if shared.digest(target[name]['path']) != target[name]['sha256']:
                 raise ValueError('Fixed-goal baseline source changed: '+name)
     if fixture is not None:
+        verify_frozen_design(fixture, expected_sha256=getattr(args, 'fixture_sha256', None), path=args.fixture)
         if (fixture['candidate_RRT_calls_before_freeze'] != 0
                 or fixture['fixture_revision_after_candidate_RRT_allowed'] is not False):
             raise ValueError('Candidate fixture must be frozen before candidate RRT evaluation')
@@ -61,6 +88,8 @@ def load_inputs(args):
             raise ValueError('Fixture and fixed target use different obstacle-free baselines')
     if args.condition in ('obstacle', 'near', 'goal_blocked') and fixture is None:
         raise ValueError('Obstacle conditions require an independently frozen fixture')
+    if args.condition == 'free' and fixture is None:
+        raise ValueError('Matched free condition requires the same frozen design source cohort')
     item = None
     if args.condition in ('obstacle', 'near', 'goal_blocked'):
         item = fixture['fixture'] if args.condition == 'obstacle' else fixture['controls'][args.condition]
@@ -335,6 +364,7 @@ def main(argv=None):
     parser.add_argument('--condition', choices=CONDITIONS, required=True)
     parser.add_argument('--fixed-target')
     parser.add_argument('--fixture')
+    parser.add_argument('--fixture-sha256')
     parser.add_argument('--seed', type=int, default=123456)
     parser.add_argument('--max-iterations', type=int, default=10000)
     parser.add_argument('--headless', action='store_true')

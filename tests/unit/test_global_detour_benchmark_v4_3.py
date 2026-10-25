@@ -1,10 +1,14 @@
 import copy
+import hashlib
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from types import SimpleNamespace as NS
 import unittest
 
 import numpy as np
 
-from scripts.benchmark_global_detour_v4_3 import load_inputs, match_initial, observe_planner
+from scripts.benchmark_global_detour_v4_3 import load_inputs, match_initial, observe_planner, verify_frozen_design
 
 
 class DetourBenchmarkTests(unittest.TestCase):
@@ -63,6 +67,46 @@ class DetourBenchmarkTests(unittest.TestCase):
     def test_paired_free_case_cannot_silently_use_normal_ik(self):
         args = NS(fixed_target=None,fixture=None,condition='free',seed=123456,max_iterations=10000)
         with self.assertRaises(ValueError):load_inputs(args)
+
+    def frozen(self, folder):
+        source = Path(folder)/'source.bin'
+        source.write_bytes(b'independent geometry')
+        sha = hashlib.sha256(source.read_bytes()).hexdigest()
+        ref = dict(path=str(source), sha256=sha)
+        value = dict(baseline=dict(source_sha256={str(source):sha}), witness=dict(
+            status='INDEPENDENT_NUMERIC_CONTINUOUS_WITNESS_CERTIFIED', independent_of_candidate_rrt=True,
+            planning_model_sampled_self_and_original_world_clear=True, numericcontinuousexternal_lower_bound_m=.02,
+            self_lower_bound_m=.004, planning_model_continuous_external_lower_bound_m=.003,
+            maximum_native_sphere_alignment_error_m=1e-15,source_sha256={},raw_artifact=ref,proof_artifact=ref))
+        path = Path(folder)/'fixture.json'
+        path.write_text(json.dumps(value))
+        return value, path, hashlib.sha256(path.read_bytes()).hexdigest(), source
+
+    def test_fixture_cannot_change_between_declared_matched_conditions(self):
+        with TemporaryDirectory() as folder:
+            value, path, digest, source = self.frozen(folder)
+            verify_frozen_design(value, expected_sha256=digest, path=path)
+            path.write_text(path.read_text()+' ')
+            with self.assertRaisesRegex(ValueError, 'job-plan SHA256'):
+                verify_frozen_design(value, expected_sha256=digest, path=path)
+
+    def test_source_bound_witness_cannot_survive_changed_geometry(self):
+        with TemporaryDirectory() as folder:
+            value, path, digest, source = self.frozen(folder)
+            source.write_bytes(b'changed geometry')
+            with self.assertRaisesRegex(ValueError, 'source changed'):
+                verify_frozen_design(value, expected_sha256=digest, path=path)
+
+    def test_unestablished_or_insufficient_geometric_witness_fails_before_native(self):
+        with TemporaryDirectory() as folder:
+            value, path, digest, source = self.frozen(folder)
+            for field, bad in (('numericcontinuousexternal_lower_bound_m', .009),
+                               ('self_lower_bound_m', 0.),
+                               ('maximum_native_sphere_alignment_error_m', 2e-9)):
+                changed = copy.deepcopy(value)
+                changed['witness'][field] = bad
+                with self.subTest(field=field), self.assertRaises(ValueError):
+                    verify_frozen_design(changed, expected_sha256=digest, path=path)
 
 
 if __name__ == '__main__':unittest.main()

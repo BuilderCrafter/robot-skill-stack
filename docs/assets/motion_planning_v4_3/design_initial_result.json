@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "status": "BOUNDED_DESIGN_INFEASIBLE",
+  "candidate_RRT_calls": 0,
+  "source_sha256": {
+    "outputs/motion-planning-v4-3/baseline-free/r1/result.json": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+    "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931",
+    "outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_protocol.json": "d06972c91c0b843e6ae244083736785e96b7b9d9c778aeffa8ed9cc57018d297",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_v4_3.py": "b64fc40e1ad505a476233793deff751ba37e5a2d82d5787a8c5bcda28f71c410",
+    "outputs/motion-planning-v4-3/baseline-free/r1/frozen_target.json": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da"
+  },
+  "elapsed_seconds": 275.4965270422399,
+  "witnesses": [
+    {
+      "witness": "retained_v4_1_home_goal_start_polyline_with_new_endpoint_bridges",
+      "candidates": 6154,
+      "tested": 6154,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 6154
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint1_plus_0.6_rad",
+      "candidates": 6596,
+      "tested": 6596,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 6596
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint1_minus_0.6_rad",
+      "candidates": 7090,
+      "tested": 7090,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 7090
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint3_plus_0.6_rad",
+      "candidates": 6716,
+      "tested": 6716,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 6716
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint3_minus_0.6_rad",
+      "candidates": 7297,
+      "tested": 7297,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 7297
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint1_plus_1.0_rad",
+      "candidates": 6529,
+      "tested": 6529,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 6529
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    },
+    {
+      "witness": "midpoint_panda_joint1_minus_1.0_rad",
+      "candidates": 7097,
+      "tested": 7097,
+      "rejection_counts": {
+        "ORIGINAL_PLANNED_GLOBAL_ROUTE_VOLUME_OBSTRUCTION_NOT_ESTABLISHED": 7097
+      },
+      "error": null,
+      "recorded_loop_status": "STARTED"
+    }
+  ],
+  "raw_artifact": {
+    "path": "outputs/motion-planning-v4-3/fixture-design/summary.json",
+    "sha256": "2b77236c4e449a711baa144274c269254966fddc8241d8a73f3412f054bdddc2"
+  },
+  "interpretation": "Completed bounded conservative AABB design pass; no fixture selected and no candidate RRT called. This is not proof that exact physical geometry has no feasible box. Inner STARTED statuses are retained from the original loop; completed negative status belongs to the outer summary."
+}
