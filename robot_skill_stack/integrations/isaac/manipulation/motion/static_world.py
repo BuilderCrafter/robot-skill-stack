@@ -6,9 +6,11 @@ geometry fails the complete request instead of disappearing from the world.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, fields, is_dataclass
 import math
 import time
+from types import MappingProxyType
 
 import numpy as np
 
@@ -17,6 +19,26 @@ from robot_skill_stack.common.rotations import quat_matrix
 
 class StaticWorldError(ValueError):
     """The physical scene cannot be represented by the static planner."""
+
+
+def _freeze_metadata(value):
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_metadata(item) for key, item in value.items()})
+    if isinstance(value, np.ndarray):
+        return _freeze_metadata(value.tolist())
+    if isinstance(value, (tuple, list)):
+        return tuple(_freeze_metadata(item) for item in value)
+    return value
+
+
+def _plain(value):
+    if is_dataclass(value):
+        return {item.name:_plain(getattr(value, item.name)) for item in fields(value)}
+    if isinstance(value, Mapping):
+        return {key:_plain(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list)):
+        return type(value)(_plain(item) for item in value)
+    return value
 
 
 def _usd_modules():
@@ -150,10 +172,12 @@ class StaticWorldSnapshot:
     excluded_colliders: int = 0
     disabled_colliders: int = 0
     plane_domains: tuple = ()
+    source_metadata: object = None
 
     def __post_init__(self):
         object.__setattr__(self, 'obstacles', tuple(self.obstacles))
         object.__setattr__(self, 'plane_domains', tuple(self.plane_domains))
+        object.__setattr__(self, 'source_metadata', _freeze_metadata(self.source_metadata))
         if (not math.isfinite(self.timestamp) or self.timestamp < 0 or
                 not math.isfinite(self.meters_per_unit) or self.meters_per_unit <= 0):
             raise StaticWorldError('Static world needs valid capture time and stage units')
@@ -167,7 +191,10 @@ class StaticWorldSnapshot:
             domain.assert_contains(world_sphere_centers, sphere_radii)
 
     def as_dict(self):
-        return asdict(self)
+        values = _plain(self)
+        if self.source_metadata is None:
+            values.pop('source_metadata')
+        return values
 
 
 def obstacle_from_primitive(path, primitive_type, transform, *, size=None, radius=None,

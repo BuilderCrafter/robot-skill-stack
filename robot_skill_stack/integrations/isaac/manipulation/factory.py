@@ -29,15 +29,22 @@ def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
         max_obstacles=64 if motion is None else getattr(motion, 'max_obstacles', 64),
         rrt_seed=123456 if motion is None else getattr(motion, 'rrt_seed', 123456),
         rrt_max_iterations=10000 if motion is None else getattr(motion, 'rrt_max_iterations', 10000),
-        global_collision_model='stock' if motion is None else getattr(motion, 'global_collision_model', 'stock'))
+        global_collision_model='stock' if motion is None else getattr(motion, 'global_collision_model', 'stock'),
+        global_obstacle_source='static' if motion is None else getattr(motion, 'global_obstacle_source', 'static'))
     if selected.strategy == 'reactive' and not callable(mapping_source_provider):
         raise ValueError('Reactive motion requires enabled Spatial Mapping access')
+    if (selected.strategy == 'global' and selected.global_obstacle_source == 'frozen_rgbd'
+            and not callable(mapping_source_provider)):
+        raise ValueError('Frozen RGB-D global motion requires enabled Spatial Mapping access')
 
     def strategy_factory(backend):
         if selected.strategy == 'global':
             from .motion.global_rrt import GlobalRrtStrategy
             model = ({} if selected.global_collision_model == 'stock' else
                 dict(collision_model=selected.global_collision_model))
+            if selected.global_obstacle_source == 'frozen_rgbd':
+                model.update(obstacle_source=selected.global_obstacle_source,
+                    mapping_source_provider=mapping_source_provider, max_obstacles=selected.max_obstacles)
             return GlobalRrtStrategy(backend, seed=selected.rrt_seed,
                 max_iterations=selected.rrt_max_iterations, **model)
         if selected.strategy == 'reactive':

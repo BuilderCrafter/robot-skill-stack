@@ -107,6 +107,7 @@ class MotionConfig:
     rrt_seed: int = 123456
     rrt_max_iterations: int = 10000
     global_collision_model: str = 'stock'
+    global_obstacle_source: str = 'static'
 
     def __post_init__(self):
         if not isinstance(self.strategy, str):
@@ -126,6 +127,12 @@ class MotionConfig:
         if (not isinstance(self.global_collision_model, str)
                 or self.global_collision_model not in ('stock', 'enhanced')):
             raise ValueError("motion.global_collision_model must be 'stock' or 'enhanced'")
+        if (not isinstance(self.global_obstacle_source, str)
+                or self.global_obstacle_source not in ('static', 'frozen_rgbd')):
+            raise ValueError("motion.global_obstacle_source must be 'static' or 'frozen_rgbd'")
+        if (self.strategy == 'global' and self.global_obstacle_source == 'frozen_rgbd'
+                and self.global_collision_model != 'enhanced'):
+            raise ValueError('Frozen RGB-D global motion requires the enhanced collision model')
 
 
 @dataclass(frozen=True)
@@ -140,6 +147,13 @@ class SceneConfig:
     motion: MotionConfig = field(default_factory=MotionConfig)
 
     def __post_init__(self):
+        if self.motion.strategy == 'global' and self.motion.global_obstacle_source == 'frozen_rgbd':
+            if not self.spatial_mapping.enabled:
+                raise ValueError('Frozen RGB-D global motion requires enabled Spatial Mapping')
+            if self.spatial_mapping.source != 'rgbd':
+                raise ValueError('Frozen RGB-D global motion requires the rgbd mapping source')
+            if not self.spatial_mapping.automatic_robot_filter:
+                raise ValueError('Frozen RGB-D global motion requires automatic robot self-filtering')
         if self.motion.strategy != 'reactive':
             return
         if not self.spatial_mapping.enabled:

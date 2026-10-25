@@ -34,6 +34,11 @@ def _planner(backend, **kwargs):
     return LulaGlobalPlanner(backend, **kwargs)
 
 
+def _frozen_rgbd_snapshot(backend, provider, *, max_obstacles):
+    from .frozen_rgbd import capture_frozen_rgbd_world
+    return capture_frozen_rgbd_world(backend, provider, max_obstacles=max_obstacles)
+
+
 def _distribution(values):
     return dict(count=len(values), **({} if not values else {
         key: float(np.percentile(values, percentile))
@@ -43,8 +48,9 @@ def _distribution(values):
 class GlobalRrtStrategy:
     """Plan once, validate before moving, and preserve the seven-joint route.
 
-    Static geometry is not refreshed during execution. No mapping source,
-    Cartesian RMPflow fallback, worker thread or joint teleport is used.
+    The selected static or camera-derived world is captured once. Mapping may
+    continue publishing independently, but never refreshes the active plan.
+    No Cartesian RMPflow fallback, worker thread or joint teleport is used.
     """
     supports_contact_motion = False
     tracking_limit_rad = .15
@@ -57,12 +63,22 @@ class GlobalRrtStrategy:
 
     def __init__(self, backend, *, seed=123456, max_iterations=10000,
                  collision_model='stock',
+                 obstacle_source='static', mapping_source_provider=None, max_obstacles=64,
                  planner_factory=_planner, world_capture=_snapshot,
+                 rgbd_world_capture=_frozen_rgbd_snapshot,
                  action_factory=_action, clock=time.perf_counter,
                  solver_scope_factory=execution_solver_scope):
         self._backend = backend
         self.seed, self.max_iterations = seed, max_iterations
         self.collision_model = validate_model_selection(collision_model)
+        if not isinstance(obstacle_source, str) or obstacle_source not in ('static', 'frozen_rgbd'):
+            raise ValueError("global obstacle_source must be 'static' or 'frozen_rgbd'")
+        if obstacle_source == 'frozen_rgbd' and self.collision_model != 'enhanced':
+            raise ValueError('Frozen RGB-D global motion requires the enhanced collision model')
+        if type(max_obstacles) is not int or not 1 <= max_obstacles <= 128:
+            raise ValueError('global max_obstacles must be an integer between 1 and 128')
+        self.obstacle_source, self.max_obstacles = obstacle_source, max_obstacles
+        self._mapping_source_provider, self._rgbd_world_capture = mapping_source_provider, rgbd_world_capture
         self._planner_factory, self._world_capture = planner_factory, world_capture
         self._action, self._clock = action_factory, clock
         self._solver_scope_factory, self._solver_scope = solver_scope_factory, None
@@ -75,7 +91,22 @@ class GlobalRrtStrategy:
     def diagnostics(self):
         return dict(self._details, state=self._state, closed=self._closed,
                     motion_strategy="global", seed=self.seed, max_iterations=self.max_iterations,
-                    global_collision_model=self.collision_model)
+                    global_collision_model=self.collision_model, global_obstacle_source=self.obstacle_source)
+
+    @property
+    def mapping_source_provider(self):
+        return self._mapping_source_provider
+
+    def _capture_world(self):
+        self._details['planning_source_captures'] = self._details.get('planning_source_captures', 0)+1
+        if self.obstacle_source == 'static':
+            return self._world_capture(self._backend)
+        snapshot, frozen = self._rgbd_world_capture(self._backend, self._mapping_source_provider,
+            max_obstacles=self.max_obstacles)
+        self.last_plan_trace['frozen_rgbd'] = frozen
+        self._details['planning_source'] = snapshot.source_metadata
+        self._details['planning_source_frozen'] = True
+        return snapshot
 
     def _assert_owner(self):
         if threading.get_ident() != self._owner:
@@ -113,7 +144,8 @@ class GlobalRrtStrategy:
         initial_time = initial_index = None
         pos_tol = backend.position_tolerance if position_tolerance is None else position_tolerance
         ori_tol = backend.orientation_tolerance if orientation_tolerance is None else orientation_tolerance
-        self._details.update(position_tolerance_m=pos_tol, orientation_tolerance_rad=ori_tol)
+        self._details.update(position_tolerance_m=pos_tol, orientation_tolerance_rad=ori_tol,
+            planning_source_captures=0, active_world_obstacle_refreshes=0)
         try:
             self._live(epoch)
             if self._solver_scope is not None:
@@ -137,9 +169,10 @@ class GlobalRrtStrategy:
                 self._details['gripper_contract'] = model.check_gripper(backend.robot)
             self._state = "capturing_world"
             started = self._clock()
-            snapshot = self._world_capture(backend)
+            snapshot = self._capture_world()
             self._details["snapshot_seconds"] = self._clock()-started
             self.last_plan_trace["snapshot"] = snapshot
+            self._live(epoch)
             model_options = {} if model is None else dict(collision_model=self.collision_model)
             planner = self._planner_factory(backend, seed=self.seed, max_iterations=self.max_iterations,
                 **model_options)

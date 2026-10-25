@@ -120,6 +120,15 @@ class MappingProcessor:
             diagnostics = dict(self.mapper.diagnostics)
             if provider is not None:
                 diagnostics['robot_filter'] = dict(self.filter.diagnostics)
+            if accepted:
+                # Preserve the original accepted exposure identity alongside
+                # the worker publication. These small calibration records do
+                # not copy image buffers or add another acquisition pipeline.
+                diagnostics.update(source_type='rgbd', accepted_frame_count=len(payload.frames),
+                    source_frames=tuple(dict(camera_id=frame.camera_id, token=tuple(frame.token),
+                        acquired_at=frame.acquired_at, depth_shape=tuple(frame.depth.shape),
+                        intrinsics=frame.intrinsics, world_from_camera=frame.world_from_camera)
+                        for frame in payload.frames))
         snapshot = self.map.snapshot(now=self.clock())
         obstacles = (None if self._extractor is None else self._extractor.extract(
             snapshot, now=self.clock(), evidence_ttl=self.settings.evidence_ttl))

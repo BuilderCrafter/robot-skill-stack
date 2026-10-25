@@ -338,7 +338,9 @@ async def create_observation_runtime(world, config, updater, app):
         if settings.enabled:
             from robot_skill_stack.world.spatial_mapping.runtime import MappingService
             motion = getattr(config, 'motion', None)
-            if getattr(motion, 'strategy', 'direct') == 'reactive':
+            if (getattr(motion, 'strategy', 'direct') == 'reactive'
+                    or (getattr(motion, 'strategy', 'direct') == 'global'
+                        and getattr(motion, 'global_obstacle_source', 'static') == 'frozen_rgbd')):
                 from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
                 service = MappingService(settings, worker_factory=ProcessWorker,
                     obstacle_settings=ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,

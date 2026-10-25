@@ -62,6 +62,27 @@ class MotionConfigTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'global_collision_model'):
                 MotionConfig(global_collision_model=value)
 
+    def test_global_obstacle_source_defaults_static_and_rejects_implicit_fallbacks(self):
+        self.assertEqual(MotionConfig(strategy='global').global_obstacle_source,'static')
+        for value in ('rgbd','ground_truth','empty','Frozen_rgbd',None,True,1):
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,'global_obstacle_source'):
+                MotionConfig(global_obstacle_source=value)
+
+    def test_frozen_rgbd_global_requires_enabled_rgbd_automatic_filter(self):
+        with self.assertRaisesRegex(ValueError,'enhanced collision model'):
+            MotionConfig(strategy='global',global_obstacle_source='frozen_rgbd')
+        base = self.load('')
+        motion = MotionConfig(strategy='global',global_collision_model='enhanced',global_obstacle_source='frozen_rgbd')
+        with self.assertRaisesRegex(ValueError,'enabled Spatial Mapping'):
+            replace(base,motion=motion)
+        with self.assertRaisesRegex(ValueError,'rgbd mapping source'):
+            replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='ground_truth'))
+        with self.assertRaisesRegex(ValueError,'automatic robot self-filtering'):
+            replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='rgbd',automatic_robot_filter=False))
+        selected=replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='rgbd',automatic_robot_filter=True))
+        self.assertEqual(selected.motion.max_obstacles,64)
+        self.assertEqual(replace(selected,motion=replace(motion,max_obstacles=128)).motion.max_obstacles,128)
+
     def test_global_search_settings_reject_invalid_programmatic_values(self):
         for value in (0, -1, 2**31, True, 1.5, None, '4'):
             with self.subTest(seed=value), self.assertRaisesRegex(ValueError, 'rrt_seed'):

@@ -20,6 +20,55 @@ def direct_double():
 
 
 class MotionCompositionTests(unittest.TestCase):
+    def test_frozen_global_provider_is_late_bound_and_never_resolved_at_construction(self):
+        with bootstrap_fixture() as (bootstrap,env):
+            config=bootstrap.load_scene_config('profile.toml')
+            module_name=DIRECT_MODULE.replace('.direct','.global_rrt')
+            module=ModuleType(module_name)
+            module.GlobalRrtStrategy=Mock(return_value=object())
+            provider=Mock(side_effect=AssertionError('No mapping access during construction'))
+            with patch.dict('sys.modules',{module_name:module}):
+                backend,_=bootstrap.create_backend('world','robot',config.robot,
+                    motion=MotionConfig(strategy='global',global_collision_model='enhanced',
+                        global_obstacle_source='frozen_rgbd',max_obstacles=128),mapping_source_provider=provider)
+                env.backend_calls[-1]['strategy_factory'](backend)
+            module.GlobalRrtStrategy.assert_called_once_with(backend,seed=123456,max_iterations=10000,
+                collision_model='enhanced',obstacle_source='frozen_rgbd',mapping_source_provider=provider,max_obstacles=128)
+            provider.assert_not_called()
+
+    def test_frozen_global_missing_provider_rejects_before_backend_resources(self):
+        with bootstrap_fixture() as (bootstrap,env):
+            config=bootstrap.load_scene_config('profile.toml')
+            with self.assertRaisesRegex(ValueError,'Spatial Mapping access'):
+                bootstrap.create_backend('world','robot',config.robot,
+                    motion=MotionConfig(strategy='global',global_collision_model='enhanced',global_obstacle_source='frozen_rgbd'))
+            self.assertEqual(env.backend_calls,[])
+
+    def test_frozen_global_enables_existing_worker_product_without_second_mapper(self):
+        async def run():
+            with bootstrap_fixture() as (bootstrap,env):
+                from robot_skill_stack.integrations.isaac.observation_runtime import create_observation_runtime
+                config=bootstrap.load_scene_config('profile.toml')
+                config=replace(config,spatial_mapping=replace(config.spatial_mapping,enabled=True,source='rgbd',camera_prim_paths=('/CameraA','/CameraB'),automatic_robot_filter=True),
+                    motion=MotionConfig(strategy='global',global_collision_model='enhanced',global_obstacle_source='frozen_rgbd',max_obstacles=64))
+                service=NS(close=Mock())
+                # Source acquisition itself is already tested by the existing
+                # observation runtime. Borrow a pre-existing camera pool here.
+                updater=NS(provider=NS(rig=NS(cameras={'/CameraA':object(),'/CameraB':object()}),
+                    acquire=lambda:None,processor=NS(compute=lambda payload:None)))
+                config=replace(config,world=replace(config.world,provider='multi_view'))
+                fake_filter=NS(close=Mock())
+                with patch('robot_skill_stack.world.spatial_mapping.runtime.MappingService',return_value=service) as build, \
+                        patch('robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter.IsaacRobotSelfFilter',return_value=fake_filter), \
+                        patch('robot_skill_stack.integrations.isaac.world.multiview.IsaacMultiViewCamera',
+                            NS(get_frame_token=lambda camera:None)):
+                    runtime=await create_observation_runtime(NS(is_playing=lambda:True),config,updater,None)
+                self.assertEqual(build.call_count,1)
+                self.assertEqual(build.call_args.kwargs['obstacle_settings'].max_obstacles,64)
+                self.assertEqual(build.call_args.kwargs['obstacle_settings'].support_plane_z,config.scene.support_plane_z)
+                runtime.close()
+        asyncio.run(run())
+
     def test_enhanced_model_is_passed_only_to_selected_global_strategy(self):
         with bootstrap_fixture() as (bootstrap, env):
             config = bootstrap.load_scene_config('profile.toml')
