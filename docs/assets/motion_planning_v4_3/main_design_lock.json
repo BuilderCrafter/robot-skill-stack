@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "status": "MAIN_GEOMETRY_CERTIFIED_CONTROL_FINALIZATION_FAILED",
+  "candidate_RRT_calls": 0,
+  "locked_main_fixture": {
+    "position_m": [
+      0.55,
+      -0.225,
+      0.30000000000000004
+    ],
+    "dimensions_m": [
+      0.06,
+      0.06,
+      0.12
+    ],
+    "orientation_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "planned_obstruction": {
+    "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+    "positive_ball_radius_lower_bound_m": 0.003091044922642005,
+    "robot_body": "/Franka/panda_leftfinger",
+    "baseline_sample": 35,
+    "planned_time": 0.34864754916715596,
+    "physics_step": null,
+    "ball_center_m": [
+      0.5396062446081415,
+      -0.198091045922642,
+      0.356908954077358
+    ],
+    "maximum_constraint_residual_m": -9.99999999907325e-10,
+    "reference": "independentFKplannedtrajectory",
+    "planned_q": [
+      -0.1625864844794425,
+      -0.06940620680236166,
+      -0.11686139541296542,
+      -2.1487709004155917,
+      -0.26290533021253354,
+      2.28407193454369,
+      0.8775898879639814
+    ]
+  },
+  "actual_obstruction": {
+    "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+    "positive_ball_radius_lower_bound_m": 0.003741559360246421,
+    "robot_body": "/Franka/panda_leftfinger",
+    "baseline_sample": 49,
+    "planned_time": null,
+    "physics_step": 57,
+    "ball_center_m": [
+      0.5263233640833068,
+      -0.19874156036024648,
+      0.35625843963975357
+    ],
+    "maximum_constraint_residual_m": -9.99999999907325e-10,
+    "reference": "actualNativeBaselineCookedBodyPoses"
+  },
+  "endpoint_lower_bound_m": 0.03127869589220559,
+  "planning_model_witness_margin_m": 0.015443136475535824,
+  "physical_witness_minimum_continuous_lower_bound_m": 0.010125650070438466,
+  "producer_sha256": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+  "source_sha256": {
+    "outputs/motion-planning-v4-3/baseline-free/r1/result.json": "ba95f025eebcdee0ff25ee391800b5fe1750e8ec52c2fef43e5ce0422b9ef477",
+    "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931",
+    "outputs/motion-planning-v4-3/baseline-free/r1/geometry_reference.npz": "b3c86ff94de446021b724cf52e9e06c8a5e8be2258a2f224df9bf8459ae9e5c4",
+    "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/motion_policy_configs/franka/lula_franka_gen.urdf": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_protocol.json": "d06972c91c0b843e6ae244083736785e96b7b9d9c778aeffa8ed9cc57018d297",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_v4_3.py": "b64fc40e1ad505a476233793deff751ba37e5a2d82d5787a8c5bcda28f71c410",
+    "outputs/motion-planning-v4-3/baseline-free/r1/frozen_target.json": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/scripts/design_global_detour_exact_v4_3.py": "41015c8e168c60954f02bcb8012ea8b592f5e16ceba5984af010977cfdf4dbfc",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/docs/assets/motion_planning_v4_3/design_exact_protocol.json": "9d78b956f7d6e47bdc70092f6f1d580611c12a7d8328dc0f2a8220cacd54ba9a",
+    "outputs/motion-planning-v4-3/fixture-design/summary.json": "2b77236c4e449a711baa144274c269254966fddc8241d8a73f3412f054bdddc2",
+    "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v4-1/acceptance/cycles/r1/acceptance_trace.json": "1599f4662719abfe27d773ee4ba4d940f31459db599441df8aa8b5ccc24bdf57"
+  },
+  "raw_proof": {
+    "path": "outputs/motion-planning-v4-3/fixture-design-exact/design_proof.json",
+    "sha256": "2bcc968738d79f5b8d9f7ac690202a3ab9b1dc8dfa2123371725597cd1141cb0"
+  },
+  "raw_pool": {
+    "path": "outputs/motion-planning-v4-3/fixture-design-exact/candidate_pool.json",
+    "sha256": "6ad3be6a6754cbfe59d312492ef9a2c515a20f11b0b691c3fa688a4d265c309a"
+  },
+  "raw_witness": {
+    "path": "outputs/motion-planning-v4-3/fixture-design-exact/independent_witness.npz",
+    "sha256": "3c321412134aa74f93116018675e5e513a2875e22a56e1922cecf000e7a4f636"
+  },
+  "finalization_failure": "Historical180mmgoal-blocker overlaps startupHome. Mainfixturegeometry is locked; separately declared control-only geometric finalization follows before any candidate RRT."
+}
