@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "jobs": [
+    {
+      "label": "A",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/A/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/A/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "A",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/A/r1"
+      ]
+    },
+    {
+      "label": "B",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/B/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/B/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "B",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/B/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/B/r1",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json"
+      ]
+    },
+    {
+      "label": "C",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/C/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/C/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/C/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/C/r1",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json"
+      ]
+    },
+    {
+      "label": "D",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/D/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/D/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "D",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/D/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/D/r1",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json"
+      ]
+    },
+    {
+      "label": "E",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/E/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/E/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "E",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/E/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/E/r1",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json"
+      ]
+    },
+    {
+      "label": "E_cancel",
+      "timeout": 240.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/reproduction/E_cancel/r1",
+      "result": "outputs/motion-planning-v4-1/reproduction/E_cancel/r1/result.json",
+      "arguments": [
+        "scripts/diagnose_global_stabilization_v4_1.py",
+        "--mode",
+        "E_cancel",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/reproduction/E_cancel/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/reproduction/E_cancel/r1",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/reproduction/A/r1/result.json"
+      ]
+    }
+  ]
+}

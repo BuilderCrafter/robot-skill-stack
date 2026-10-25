@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_BEFORE_NEW_A_TO_E_REPRODUCTIONS",
+  "baseline_commit": "8725b48978d0096a1e759453d9a64bb1e4c80f35",
+  "branch": "feature/global-motion-planning-v4-1",
+  "production_changes_before_reproduction": false,
+  "fresh_process_each": true,
+  "modes": {
+    "A": "Global ordinary START to GOAL",
+    "B": "Global START to GOAL then nonzero Home, without cancellation",
+    "C": "Exact global GOAL then cancelSTART after first arm command then nonzero Home",
+    "D": "Same global cancellation then different reachable full pose [0.50,0.10,0.45]",
+    "E": "Unchanged direct GOAL then Home",
+    "E_cancel": "Unchanged direct GOAL then cancelSTART then Home"
+  },
+  "seed": 123456,
+  "rrt_max_iterations_per_ik": 10000,
+  "original_start_m": [
+    0.45,
+    -0.25,
+    0.35
+  ],
+  "original_goal_m": [
+    0.45,
+    0.25,
+    0.35
+  ],
+  "orientation_wxyz": [
+    0.0,
+    0.0,
+    1.0,
+    0.0
+  ],
+  "position_tolerance_m": 0.025,
+  "orientation_tolerance_rad": 0.1,
+  "tracking_limits_unchanged": {
+    "sustained_rad": 0.15,
+    "sustained_sim_seconds": 0.25,
+    "immediate_abort_rad": 0.4,
+    "final_joint_rad": 0.05
+  },
+  "retained_v4_rejected_probes_not_repeated": [
+    "2x timeparameterization",
+    "startupHomeIKpreference"
+  ],
+  "causal_priority": [
+    "actualPhysXbodymotion vs nativejointreadback/modelFK",
+    "Home target vs general execution",
+    "normalcompletion vs cancellation/latchedhold",
+    "samephysicaldrives and hardlimits, actual targetbuffers and q/qd/dynamics observations"
+  ],
+  "source_policy": "No production changes until the failing sequence is reproduced and controlled evidence supports a correction; all negativeoutcomes and rawcaptures retained.",
+  "metrics_policy": "Capture validity is separate from operation success. Proximity reports remain distinct from physical contacts; no contact/tracking thresholds weakened."
+}
