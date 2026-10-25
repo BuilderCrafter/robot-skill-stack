@@ -13,6 +13,7 @@ from robot_skill_stack.manipulation.backend import BackendResult
 from robot_skill_stack.manipulation.motion.joint_route import (
     PlanningFailure, map_arm_joints, simulation_progress,
 )
+from .global_solver import execution_solver_scope
 
 
 def _action(**kwargs):
@@ -50,14 +51,18 @@ class GlobalRrtStrategy:
     tracking_abort_rad = .40
     settle_seconds = 3.
     physics_stall_seconds = 2.
+    terminal_velocity_limit_rad_s = .01
+    terminal_settle_seconds = .25
 
     def __init__(self, backend, *, seed=123456, max_iterations=10000,
                  planner_factory=_planner, world_capture=_snapshot,
-                 action_factory=_action, clock=time.perf_counter):
+                 action_factory=_action, clock=time.perf_counter,
+                 solver_scope_factory=execution_solver_scope):
         self._backend = backend
         self.seed, self.max_iterations = seed, max_iterations
         self._planner_factory, self._world_capture = planner_factory, world_capture
         self._action, self._clock = action_factory, clock
+        self._solver_scope_factory, self._solver_scope = solver_scope_factory, None
         self._owner, self._closed, self._epoch = threading.get_ident(), False, 0
         self._active_planner = self._last_action = None
         self._state = "ready"
@@ -97,6 +102,7 @@ class GlobalRrtStrategy:
         backend = self._backend
         self._details, self.last_plan_trace = {}, {}
         epoch, planner, last_action, primary = self._epoch, None, None, None
+        solver_scope = None
         result, wall_start = None, None
         intervals, tracking, elapsed = [], [], 0.
         initial_time = initial_index = None
@@ -105,6 +111,12 @@ class GlobalRrtStrategy:
         self._details.update(position_tolerance_m=pos_tol, orientation_tolerance_rad=ori_tol)
         try:
             self._live(epoch)
+            if self._solver_scope is not None:
+                try:
+                    self._solver_scope.close()
+                except Exception as error:
+                    raise PlanningFailure("cleanup_failure", f"Previous solver cleanup remains incomplete: {error}") from error
+                self._solver_scope = None
             if (target.frame != "world" or target.orientation is None
                     or not np.isfinite(target.position).all()
                     or not np.isfinite(target.orientation).all()
@@ -167,6 +179,8 @@ class GlobalRrtStrategy:
                 tracking_limit_rad=self.tracking_limit_rad,
                 tracking_grace_seconds=self.tracking_grace_seconds,
                 tracking_abort_rad=self.tracking_abort_rad,
+                terminal_velocity_limit_rad_s=self.terminal_velocity_limit_rad_s,
+                terminal_settle_seconds=self.terminal_settle_seconds,
                 execution_uses_physics_time=True, static_snapshot_refreshes=0,
                 maximum_control_updates=backend.max_motion_steps)
             self.last_plan_trace.update(joint_names=names, joint_indices=indices.tolist(),
@@ -175,10 +189,14 @@ class GlobalRrtStrategy:
                 q, qd = plan.trajectory.get_joint_targets(float(stamp))
                 self.last_plan_trace["trajectory"].append(dict(time=float(stamp),
                     q=np.asarray(q).tolist(), qd=np.asarray(qd).tolist()))
+            solver_scope = self._solver_scope_factory(backend)
+            self._solver_scope = solver_scope
+            self._details["execution_solver"] = dict(solver_scope.diagnostics)
             self._state = "executing"
             wall_start = last_wall = self._clock()
             last_progress_wall, previous_time, previous_index = wall_start, initial_time, initial_index
             bad_tracking_since = None
+            terminal_settled_since = None
             complete = False
             terminal_commanded = False
             elapsed = 0.
@@ -214,6 +232,11 @@ class GlobalRrtStrategy:
                 if q.shape != (7,) or qd.shape != (7,) or not np.isfinite(q).all() or not np.isfinite(qd).all():
                     raise PlanningFailure("execution_failure", "Trajectory returned an invalid joint command.")
                 actual = np.asarray(backend.robot.get_joint_positions(), dtype=float)[indices]
+                actual_velocity = np.asarray(backend.robot.get_joint_velocities(), dtype=float)[indices]
+                if actual_velocity.shape != (7,) or not np.isfinite(actual_velocity).all():
+                    raise PlanningFailure("execution_failure", "Measured arm joint velocity is unavailable.")
+                velocity_error = float(np.max(np.abs(actual_velocity)))
+                self._details["measured_arm_velocity_rad_s"] = velocity_error
                 error = float(np.max(np.abs(actual-q)))
                 if not np.isfinite(actual).all() or error > self.tracking_abort_rad:
                     raise PlanningFailure("tracking_failure", "Joint tracking exceeded the immediate abort bound.",
@@ -233,11 +256,17 @@ class GlobalRrtStrategy:
                 self.last_plan_trace["actual"].append(dict(sim_time=sim_time,
                     q=actual.tolist(), tcp=np.asarray(current.position).tolist(),
                     tracking_error_rad=error))
-                if (terminal_commanded and elapsed >= duration and pos_error <= pos_tol
-                        and ori_error <= ori_tol and error <= .05):
-                    complete = True
-                    exhausted_updates = False
-                    break
+                terminal_valid = (terminal_commanded and elapsed >= duration and pos_error <= pos_tol
+                        and ori_error <= ori_tol and error <= .05
+                        and velocity_error <= self.terminal_velocity_limit_rad_s)
+                if terminal_valid:
+                    terminal_settled_since = sim_time if terminal_settled_since is None else terminal_settled_since
+                    if sim_time-terminal_settled_since >= self.terminal_settle_seconds:
+                        complete = True
+                        exhausted_updates = False
+                        break
+                else:
+                    terminal_settled_since = None
                 last_action = self._action(joint_positions=q, joint_velocities=qd, joint_indices=indices)
                 backend.robot.apply_action(last_action)
                 terminal_commanded = terminal_commanded or elapsed >= duration
@@ -259,7 +288,7 @@ class GlobalRrtStrategy:
             if not complete:
                 if exhausted_updates:
                     raise PlanningFailure("execution_timeout", "Trajectory exceeded the backend's control-update budget.")
-                raise PlanningFailure("final_pose_failure", "Trajectory ended without reaching the requested full pose.")
+                raise PlanningFailure("final_pose_failure", "Trajectory ended without satisfying final joint, pose and velocity checks.")
             self._state = "succeeded"
             result = BackendResult(True, "Global joint trajectory reached the requested pose.", details=self.diagnostics)
             return result
@@ -294,6 +323,14 @@ class GlobalRrtStrategy:
                     errors.append(error)
             else:
                 self._details["final_hold"] = False
+            if solver_scope is not None:
+                try:
+                    solver_scope.close()
+                    self._details["execution_solver"] = dict(solver_scope.diagnostics)
+                    if self._solver_scope is solver_scope:
+                        self._solver_scope = None
+                except Exception as error:
+                    errors.append(error)
             self._last_action = None
             if planner is not None:
                 self._details.update(planner.diagnostics)
@@ -323,6 +360,9 @@ class GlobalRrtStrategy:
     def close(self):
         self._assert_owner()
         if self._closed:
+            if self._solver_scope is not None:
+                self._solver_scope.close()
+                self._solver_scope = None
             return
         # Invalidate first: even a failed final hold must not leave a live plan.
         self._closed, self._epoch, self._state = True, self._epoch+1, "closed"
@@ -339,6 +379,12 @@ class GlobalRrtStrategy:
         if self._active_planner is not None:
             try:
                 self._active_planner.close()
+            except Exception as error:
+                errors.append(error)
+        if self._solver_scope is not None:
+            try:
+                self._solver_scope.close()
+                self._solver_scope = None
             except Exception as error:
                 errors.append(error)
         if errors:

@@ -18,6 +18,7 @@ class Robot:
     prim_path = "/Franka"
     def __init__(self):
         self.q = np.zeros(9)
+        self.qd = np.zeros(9)
         self.q[[0, 8]] = .04
         self.actions, self.follow = [], True
 
@@ -26,6 +27,9 @@ class Robot:
 
     def get_world_pose(self):
         return np.zeros(3), np.array([1., 0, 0, 0])
+
+    def get_joint_velocities(self):
+        return self.qd.copy()
 
     def apply_action(self, action):
         self.actions.append(action)
@@ -88,19 +92,40 @@ class Planner:
             raise RuntimeError("cleanup test failure")
 
 
+class SolverScope:
+    def __init__(self):
+        self.closed, self.closes = False, 0
+
+    @property
+    def diagnostics(self):
+        return dict(requested_position_iterations_during=255,
+            original_session_opinion_restored=self.closed)
+
+    def close(self):
+        if not self.closed:
+            self.closed = True
+            self.closes += 1
+
+
 class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.backend, self.planner = Backend(), Planner()
         self.factory_calls = []
         self.snapshot_calls = 0
+        self.solver_scopes = []
         def factory(backend, **kwargs):
             self.factory_calls.append(kwargs)
             return self.planner
         def snapshot(backend):
             self.snapshot_calls += 1
             return SimpleNamespace(meters_per_unit=1.)
+        def scope(backend):
+            lease = SolverScope()
+            self.solver_scopes.append(lease)
+            return lease
         self.strategy = GlobalRrtStrategy(self.backend, planner_factory=factory,
-            world_capture=snapshot, action_factory=lambda **kwargs: SimpleNamespace(**kwargs))
+            world_capture=snapshot, action_factory=lambda **kwargs: SimpleNamespace(**kwargs),
+            solver_scope_factory=scope)
         self.target = Pose([.1, 0, 0], [1., 0, 0, 0])
 
     async def test_joint_execution_uses_physics_time_and_preserves_gripper(self):
@@ -116,6 +141,7 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(np.all(self.backend.robot.actions[-1].joint_velocities == 0))
         self.assertTrue(np.allclose(self.backend.robot.actions[-1].joint_positions, .1))
         self.assertGreaterEqual(result.details["execution_sim_seconds"], 1.)
+        self.assertTrue(result.details["execution_solver"]["original_session_opinion_restored"])
         self.assertEqual(self.planner.calls[0][0].orientation.tolist(), [1., 0, 0, 0])
 
     async def test_invalid_full_pose_rejected_before_snapshot_or_action(self):
@@ -126,6 +152,7 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result.details["failure_code"], "invalid_target")
         self.assertEqual(self.snapshot_calls, 0)
         self.assertEqual(self.backend.robot.actions, [])
+        self.assertEqual(self.solver_scopes, [])
 
     async def test_payload_or_uncertain_grasp_rejected_without_planning(self):
         for state in (GripperState.HELD, GripperState.UNCERTAIN):
@@ -164,6 +191,7 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.strategy.diagnostics["state"], "cancelled")
         self.assertTrue(self.planner.closed)
         self.assertTrue(np.all(self.backend.robot.actions[-1].joint_velocities == 0))
+        self.assertTrue(self.solver_scopes[0].closed)
 
     async def test_stop_reset_or_handle_invalidation_prevents_stale_hold(self):
         for mode in ("stop", "reset", "handle"):
@@ -182,6 +210,7 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
                 self.assertFalse(result.details["final_hold"])
                 self.assertEqual(len(self.backend.robot.actions), 1)
                 self.assertTrue(self.planner.closed)
+                self.assertTrue(self.solver_scopes[0].closed)
 
     async def test_tracking_failure_stops_and_preserves_hold(self):
         self.backend.robot.follow = False
@@ -207,6 +236,112 @@ class GlobalMotionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result.details["commanded_updates"], 0)
         self.assertEqual(self.backend.robot.actions, [])
         self.assertTrue(self.planner.closed)
+        self.assertEqual(self.solver_scopes, [])
+
+    async def test_success_waits_for_measured_velocity_within_original_settle_window(self):
+        self.backend.robot.qd[1:8] = .2
+        def settle(backend):
+            if backend.world.current_time >= 2.5:
+                backend.robot.qd[:] = 0.
+        self.backend.on_update = settle
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertTrue(result.ok, result.message)
+        self.assertGreaterEqual(result.details['execution_sim_seconds'], 1.5)
+        self.assertEqual(result.details['terminal_velocity_limit_rad_s'], .01)
+        self.assertEqual(result.details['measured_arm_velocity_rad_s'], 0.)
+        self.assertEqual(self.strategy.settle_seconds, 3.)
+        self.assertTrue(self.solver_scopes[0].closed)
+
+    async def test_pose_reach_with_persistent_velocity_cannot_report_success(self):
+        self.backend.robot.qd[1:8] = .2
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertFalse(result.ok)
+        self.assertEqual(result.details['failure_code'], 'final_pose_failure')
+        self.assertGreater(result.details['measured_arm_velocity_rad_s'], .01)
+        self.assertTrue(result.details['final_hold'])
+        self.assertTrue(self.solver_scopes[0].closed)
+
+    async def test_brief_low_velocity_at_a_turning_point_does_not_complete_motion(self):
+        self.backend.robot.qd[1:8] = .2
+        def oscillation(backend):
+            elapsed = backend.world.current_time-1.
+            backend.robot.qd[1:8] = 0. if 1.1 <= elapsed < 1.2 or elapsed >= 1.6 else .2
+        self.backend.on_update = oscillation
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertTrue(result.ok, result.message)
+        self.assertGreaterEqual(result.details['execution_sim_seconds'], 1.85)
+        self.assertEqual(result.details['terminal_settle_seconds'], .25)
+        self.assertEqual(self.strategy.settle_seconds, 3.)
+
+    async def test_invalid_measured_velocity_fails_before_first_command_and_restores_scope(self):
+        self.backend.robot.qd[:] = np.nan
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'execution_failure')
+        self.assertEqual(self.backend.robot.actions, [])
+        self.assertTrue(self.solver_scopes[0].closed)
+
+    async def test_solver_activation_failure_rejects_before_first_command(self):
+        def unavailable(backend):
+            raise PlanningFailure('solver_configuration_failure', 'Required accuracy unavailable')
+        self.strategy._solver_scope_factory = unavailable
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'solver_configuration_failure')
+        self.assertEqual(self.backend.robot.actions, [])
+        self.assertTrue(self.planner.closed)
+
+    async def test_close_during_execution_restores_scope_once_and_prevents_stale_hold(self):
+        self.backend.on_update = lambda backend: self.strategy.close()
+        result = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(result.details['failure_code'], 'lifecycle_invalidated')
+        self.assertTrue(self.solver_scopes[0].closed)
+        self.assertEqual(self.solver_scopes[0].closes, 1)
+        self.assertFalse(result.details['final_hold'])
+
+    async def test_failed_solver_cleanup_is_retained_and_blocks_new_commands_until_recovered(self):
+        lease = SolverScope()
+        attempts = 0
+        def cleanup():
+            nonlocal attempts
+            attempts += 1
+            if attempts <= 2:
+                raise RuntimeError('Transient cleanup failure')
+            lease.closed = True
+        lease.close = cleanup
+        original_factory = self.strategy._solver_scope_factory
+        self.strategy._solver_scope_factory = lambda backend: lease
+        first = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(first.details['failure_code'], 'cleanup_failure')
+        self.assertIs(self.strategy._solver_scope, lease)
+        before = len(self.backend.robot.actions)
+        second = await self.strategy.move_to_pose_async(self.target)
+        self.assertEqual(second.details['failure_code'], 'cleanup_failure')
+        self.assertEqual(len(self.backend.robot.actions), before)
+        self.assertIs(self.strategy._solver_scope, lease)
+        self.strategy._solver_scope_factory = original_factory
+        third = await self.strategy.move_to_pose_async(self.target)
+        self.assertTrue(third.ok, third.message)
+        self.assertEqual(attempts, 3)
+        self.assertIsNone(self.strategy._solver_scope)
+
+    async def test_repeated_close_retries_failed_solver_cleanup(self):
+        lease = SolverScope()
+        attempts = 0
+        def cleanup():
+            nonlocal attempts
+            attempts += 1
+            if attempts == 1:
+                raise RuntimeError('Transient cleanup failure')
+            lease.closed = True
+        lease.close = cleanup
+        self.strategy._solver_scope = lease
+        with self.assertRaises(RuntimeError):
+            self.strategy.close()
+        self.assertTrue(self.strategy.diagnostics['closed'])
+        self.assertIs(self.strategy._solver_scope, lease)
+        self.strategy.close()
+        self.strategy.close()
+        self.assertEqual(attempts, 2)
+        self.assertIsNone(self.strategy._solver_scope)
 
     async def test_cleanup_failure_cannot_report_success(self):
         self.planner.close_error = True

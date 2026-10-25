@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "meaning": "Measurement validity is separate from behavioral acceptance; preserve strict contact reports alongside physical-contact classification.",
+  "jobs": [
+    {
+      "label": "obstacle_home",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "obstacle_home",
+        "--headless",
+        "--seed",
+        "345678",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/obstacle_home/r1"
+      ]
+    },
+    {
+      "label": "cycles",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/cycles/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/cycles/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "cycles",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/cycles/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/cycles/r1"
+      ]
+    },
+    {
+      "label": "cancel",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/cancel/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/cancel/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "cancel",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/cancel/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/cancel/r1"
+      ]
+    },
+    {
+      "label": "stop",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/stop/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/stop/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "stop",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/stop/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/stop/r1"
+      ]
+    },
+    {
+      "label": "reset",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/reset/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/reset/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "reset",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/reset/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/reset/r1"
+      ]
+    },
+    {
+      "label": "close",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/acceptance/close/r1",
+      "result": "outputs/motion-planning-v4-1/acceptance/close/r1/result.json",
+      "arguments": [
+        "scripts/benchmark_global_acceptance_v4_1.py",
+        "--mode",
+        "close",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/acceptance/close/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/acceptance/close/r1"
+      ]
+    }
+  ]
+}

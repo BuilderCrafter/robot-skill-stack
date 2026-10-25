@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "scope": "Production strategy only: ordinary B and five fresh C repetitions, each followed by a separate one-second read-only nominal-count hold. B establishes the source-matching physical/config reference.",
+  "jobs": [
+    {
+      "label": "B-production-r1-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/B/r1",
+      "result": "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "B",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/B/r1"
+      ]
+    },
+    {
+      "label": "C-production-r1-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/C/r1",
+      "result": "outputs/motion-planning-v4-1/stabilized/C/r1/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/C/r1/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/C/r1"
+      ]
+    },
+    {
+      "label": "C-production-r2-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/C/r2",
+      "result": "outputs/motion-planning-v4-1/stabilized/C/r2/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/C/r2/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/C/r2"
+      ]
+    },
+    {
+      "label": "C-production-r3-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/C/r3",
+      "result": "outputs/motion-planning-v4-1/stabilized/C/r3/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/C/r3/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/C/r3"
+      ]
+    },
+    {
+      "label": "C-production-r4-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/C/r4",
+      "result": "outputs/motion-planning-v4-1/stabilized/C/r4/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/C/r4/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/C/r4"
+      ]
+    },
+    {
+      "label": "C-production-r5-posthold1s",
+      "timeout": 300.0,
+      "artifacts_dir": "outputs/motion-planning-v4-1/stabilized/C/r5",
+      "result": "outputs/motion-planning-v4-1/stabilized/C/r5/result.json",
+      "arguments": [
+        "scripts/validate_global_stabilization_v4_1.py",
+        "--mode",
+        "C",
+        "--headless",
+        "--seed",
+        "123456",
+        "--max-iterations",
+        "10000",
+        "--reference-result",
+        "outputs/motion-planning-v4-1/stabilized/B/r1/result.json",
+        "--result",
+        "outputs/motion-planning-v4-1/stabilized/C/r5/result.json",
+        "--artifacts-dir",
+        "outputs/motion-planning-v4-1/stabilized/C/r5"
+      ]
+    }
+  ]
+}
