@@ -121,8 +121,30 @@ class SummaryTests(unittest.TestCase):
         lifecycle = self.case('empty-lifecycle', lifecycle=True)
         report = summarize([witness, lifecycle])
         self.assertEqual(report['modes'], {'witness': 1, 'primary': 1})
+        self.assertEqual(report['cohort_counts'], {'witness': 1, 'lifecycle': 1})
         self.assertEqual(len(report['cases'][0]['witness_segments']), 3)
         self.assertEqual(report['cases'][1]['lifecycle']['status'], 'PASS')
+
+    def test_lifecycle_compact_keeps_failures_and_counts_without_raw_trajectories(self):
+        path = self.case('failed-lifecycle', lifecycle=True)
+        def add_episode(raw):
+            raw['metrics']['lifecycle'].update(status='FAIL', checks={'home_completed': False},
+                episodes=[dict(name='home', actions=[{'q': ['RAW_TARGET_SENTINEL']}, {'q': [1, 2]}],
+                    result=dict(status='failed', failure_code='path_blocked', message='Tracking failed',
+                        details=dict(failure_code='tracking_failure', execution_wall_seconds=.2,
+                            ik_attempts=[{'warm_start': ['RAW_IK_SENTINEL']}])) )])
+        self.mutate(path, add_episode)
+        row, _, _ = load_attempt(path)
+        lifecycle = row['lifecycle']
+        self.assertEqual(lifecycle['status'], 'FAIL')
+        self.assertFalse(lifecycle['checks']['home_completed'])
+        episode = lifecycle['episodes'][0]
+        self.assertEqual(episode['recorded_action_count'], 2)
+        self.assertEqual(episode['internal_failure_code'], 'tracking_failure')
+        self.assertEqual(episode['timing']['execution_wall_seconds'], .2)
+        self.assertEqual(lifecycle['source']['sha256'], digest(path))
+        self.assertNotIn('RAW_TARGET_SENTINEL', json.dumps(row))
+        self.assertNotIn('RAW_IK_SENTINEL', json.dumps(row))
 
     def test_duplicate_requested_artifacts_do_not_inflate_counts(self):
         path = self.case('once')

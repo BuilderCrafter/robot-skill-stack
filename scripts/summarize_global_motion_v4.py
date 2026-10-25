@@ -86,6 +86,34 @@ def _artifact(path):
     return (path/'result.json' if path.is_dir() else path).resolve()
 
 
+def compact_lifecycle(value, *, artifact, artifact_sha256):
+    """Keep episode outcomes, never copy recorded joint-action trajectories."""
+    if not value:
+        return None
+    episodes = []
+    for index, episode in enumerate(value.get('episodes') or []):
+        result = episode.get('result') or {}
+        details = dict(result.get('details') or {})
+        details.update(episode.get('strategy') or {})
+        actions = episode.get('actions')
+        episodes.append(dict(index=index, name=episode.get('name'),
+            result_status=result.get('status'), backend_ok=result.get('ok'),
+            public_failure_code=result.get('failure_code'),
+            internal_failure_code=details.get('failure_code'),
+            message=result.get('message') or details.get('failure_message'),
+            strategy_state=details.get('state'), strategy_closed=details.get('closed'),
+            recorded_action_count=len(actions) if isinstance(actions, list) else None,
+            timing={key: details[key] for key in ('planning_and_validation_wall_seconds',
+                'rrt_seconds', 'trajectory_generation_seconds', 'trajectory_duration_seconds',
+                'execution_wall_seconds', 'execution_sim_seconds') if key in details},
+            flags={key: item for key, item in episode.items() if isinstance(item, bool)}))
+    return dict(status=value.get('status'), checks=value.get('checks'), episodes=episodes,
+        excluded_from_primary_timing=value.get('excluded_from_primary_timing'),
+        limitation=value.get('limitation'),
+        source=dict(artifact=artifact, sha256=artifact_sha256),
+        scope='Recorded episode outcomes/checks and action counts only; raw action targets and verbose plan traces remain in the hashed ignored native result.')
+
+
 def load_attempt(path):
     path = _artifact(path)
     errors, raw = [], {}
@@ -125,6 +153,8 @@ def load_attempt(path):
     witness = bool(config.get('witness') or metrics.get('witness') or launch.get('witness'))
     lifecycle = metrics.get('lifecycle') or {}
     mode = 'witness' if witness else 'primary'
+    cohort = ('witness' if witness else 'lifecycle' if lifecycle else
+        'pilot' if 'pilot' in path.parts else 'seeds' if path.parent.parent.name == 'seeds' else 'primary')
     signature = dict(source_manifest_sha256=fingerprint(raw['hashes']) if raw.get('hashes') else None,
         physical_world_sha256=fingerprint(metrics['physical_world']) if metrics.get('physical_world') is not None else None,
         scenario=config.get('scenario'), start=config.get('start'), goal=config.get('goal'),
@@ -135,7 +165,7 @@ def load_attempt(path):
     row = dict(id=path.parent.name, artifact=label(path), artifact_sha256=result_sha,
         measurement_status=raw.get('status', 'UNAVAILABLE'), measurement_valid=bool(valid),
         scenario=config.get('scenario'), strategy=config.get('strategy'), seed=config.get('seed'),
-        max_iterations=config.get('max_iterations'), mode=mode,
+        max_iterations=config.get('max_iterations'), mode=mode, cohort=cohort,
         initial_joints=metrics.get('initial_joints'),
         declared_reference=launch.get('reference'), launch_sha256=launch.get('launch_sha256'),
         reference_runtime_match=match.get('matched'),
@@ -189,7 +219,8 @@ def load_attempt(path):
         sampled_physical_contact_seconds=severity.get('sampled_physical_contact_duration_s'),
         physical_contact_classification=severity.get('physical_classification'),
         contact_acceptability='UNVALIDATED_NO_THRESHOLD',
-        lifecycle=lifecycle or None, witness_segments=metrics.get('witness_segments') or None,
+        lifecycle=compact_lifecycle(lifecycle, artifact=label(path), artifact_sha256=result_sha),
+        witness_segments=metrics.get('witness_segments') or None,
         witness_protocol_sha256=config.get('witness_protocol_sha256'),
         source_unchanged=contracts.get('source_unchanged'),
         snapshot=metrics.get('physical_world'), errors=errors or ([raw['error']] if raw.get('error') else None))
@@ -253,7 +284,17 @@ def summarize(paths):
         strict_successes=sum(row['strict_success'] is True for row in rows),
         declared_reference_edges=len(edges), eligible_reference_edges=sum(edge['comparison_eligible'] for edge in edges),
         unique_declared_baselines=len({edge['reference'] for edge in edges}))
+    cohort_counts = dict(Counter(row['cohort'] for row in rows))
+    cohort_outcomes = {}
+    for cohort in cohort_counts:
+        selected = [row for row in rows if row['cohort'] == cohort]
+        cohort_outcomes[cohort] = dict(attempts=len(selected),
+            valid_measurements=sum(row['measurement_valid'] for row in selected),
+            reported_goals_reached=sum(row['reported_goal_reached'] is True for row in selected),
+            valid_goal_completions=sum(row['reported_goal_reached'] is True and row['measurement_valid'] for row in selected),
+            strict_successes=sum(row['strict_success'] is True for row in selected))
     return dict(schema_version=1, status='COMPACT_NATIVE_V4_EVIDENCE', counts=counts,
+        cohort_counts=cohort_counts, cohort_outcomes=cohort_outcomes,
         modes=dict(Counter(row['mode'] for row in rows)),
         strategy_attempts=dict(Counter(row['strategy'] or 'unknown' for row in rows)),
         cases=rows, declared_comparisons=edges, condition_fingerprints=conditions, contract_sets=contract_sets,
@@ -261,7 +302,8 @@ def summarize(paths):
         scope=['Every distinct requested attempt is retained, including failed seeds and invalid measurements.',
             'Process exit/status alone does not establish motion or collision-free success.',
             'Only explicit launch reference-result edges are paired; repeats do not form Cartesian joins.',
-            'Witness/lifecycle episodes are separate from primary motion comparisons.',
+            'Explicit cohorts, not mode labels, define denominators; the original request inside a lifecycle artifact is preserved but excluded from primary comparisons.',
+            'Witness/lifecycle/pilot artifacts remain separate from valid primary and additional-seed comparison figures.',
             'Reported proximity, penetration, impulse and sampled geometry remain separate, without a safe-contact threshold.',
             'Minimum clearance is sampled full-robot cooked geometry, not TCP-only or continuous swept clearance.',
             'Planning and execution timings have different boundaries; no missing duration is replaced by an estimate.'],
@@ -319,7 +361,7 @@ def figures(report, destination):
             sources=[dict(artifact=row['artifact'], sha256=row['artifact_sha256'],
                 raw_artifacts=row['raw_artifacts']) for row in selected]))
 
-    primary = [row for row in rows if row['mode'] == 'primary']
+    primary = [row for row in rows if row['cohort'] in ('primary', 'seeds') and row['measurement_valid']]
     scenes = list(dict.fromkeys(row['scenario'] for row in primary))
     if scenes:
         figure = plt.figure(figsize=(15, 5*math.ceil(len(scenes)/3)))
@@ -340,9 +382,9 @@ def figures(report, destination):
                     axis.plot(*edge.T, color='#555555', alpha=.45, lw=.8)
             axis.set(title=scene, xlabel='World X (m)', ylabel='World Y (m)', zlabel='World Z (m)')
             axis.legend(fontsize=7)
-        figure.suptitle('Recorded primary TCP paths and actual static collision boxes\n✓ strict success; × failure or non-strict outcome; all requested seeds retained')
+        figure.suptitle('Recorded primary and additional-seed TCP paths with actual collision boxes\n✓ strict success; × failure or non-strict outcome; all valid requested seeds retained')
         save(figure, 'tcp_trajectories.png', primary,
-            'Every recorded primary TCP trace; fixed physical boxes are drawn from the matched snapshot. '
+            'Every valid primary/additional-seed TCP trace; fixed physical boxes are drawn from the matched snapshot. '
             'No planned Cartesian path is invented. Curves are sampled TCP motion, not whole-arm swept clearance.')
 
     globals_ = [row for row in primary if row['strategy'] == 'global']
@@ -422,7 +464,7 @@ def figures(report, destination):
             'direct/reactive request durations include their controller work and global request durations also include preplanning. Missing values are absent, '
             'not zero estimates. Worst Kit interval captures owner-loop responsiveness and is not a planning deadline guarantee.')
     return dict(schema_version=1, reducer_sha256=digest(__file__), figures=bound,
-        selection='All primary attempts in TCP/contact/timing panels; one deterministic available route in joint panels.',
+        selection='All valid primary and additional-seed attempts in TCP/contact/timing panels; lifecycle/witness/pilot and invalid attempts remain in compact JSON. One deterministic available route in joint panels.',
         limitations='Figures use recorded raw artifacts bound by SHA256. No new native execution, collision query, IK, FK, or timing benchmark is performed.')
 
 
