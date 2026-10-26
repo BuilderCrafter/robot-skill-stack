@@ -8,7 +8,7 @@ from pathlib import Path
 from statistics import median
 
 
-def render(directory):
+def render(directory, raw_root):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -85,11 +85,51 @@ def render(directory):
     fig.suptitle('Measured primary64 timings: source age overlaps worker time; counterplanning and GT veto waits are experimental')
     fig.savefig(directory/'source_to_plan_timing.png',dpi=180);plt.close(fig)
 
+    # Draw the exact packet cuboids, rather than enlarging center markers.
+    # Red outlines are omitted voxel cells, not newly packed candidates.
+    from matplotlib.patches import Rectangle
+    fig, axes=plt.subplots(2,2,figsize=(12,8),layout='constrained')
+    for index,scene in enumerate(('narrow','large')):
+        for column,(cohort,budget) in enumerate((('primary64',64),('diagnostic128',128))):
+            folder=Path(raw_root)/cohort/scene/f'static-b{budget}'
+            archive=json.loads((folder/'occupancy.json').read_text())
+            result=json.loads((folder/'result.json').read_text())
+            with np.load(folder/'occupancy.npz',allow_pickle=False) as arrays:
+                indices=np.argwhere(arrays['states']==2)
+            spec=archive['snapshot'];lower=np.asarray(spec['bounds_min']);upper=np.asarray(spec['bounds_max'])
+            cell_min=lower+indices*spec['voxel_size'];cell_max=np.minimum(cell_min+spec['voxel_size'],upper)
+            centers=(cell_min+cell_max)/2;selected=np.zeros(len(indices),dtype=bool)
+            ax=axes[index,column]
+            for box in archive['packet']['boxes']:
+                first=np.asarray(box['center'])-np.asarray(box['dimensions'])/2
+                last=np.asarray(box['center'])+np.asarray(box['dimensions'])/2
+                selected|=((centers>=first-1e-10)&(centers<=last+1e-10)).all(axis=1)
+                ax.add_patch(Rectangle(first[[0,2]],last[0]-first[0],last[2]-first[2],
+                    fill=False,edgecolor='#174478',linewidth=.8,zorder=3))
+            for first,last in zip(cell_min[~selected],cell_max[~selected]):
+                ax.add_patch(Rectangle(first[[0,2]],last[0]-first[0],last[2]-first[2],
+                    fill=False,edgecolor='#bf7777',linewidth=.45,alpha=.55))
+            for obstacle in result['paired_plans']['static']['snapshot']['obstacles']:
+                if obstacle['source_kind']!='Cube':continue
+                half=np.asarray(obstacle['dimensions'])/2;center=np.asarray(obstacle['position'])
+                ax.add_patch(Rectangle((center-half)[[0,2]],2*half[0],2*half[2],
+                    fill=False,edgecolor='black',linewidth=1.4))
+            diagnostics=archive['packet']['diagnostics']
+            ax.set(xlim=(lower[0],upper[0]),ylim=(-.025,.8),xlabel='world x (m)',ylabel='world z (m)',
+                title=f"{scene}, budget{budget}: {diagnostics['proxy_count']} cuboids / "
+                    f"{diagnostics['selected_floor_boxes']} floor; {diagnostics['omitted_voxels']} cells omitted")
+            ax.grid(alpha=.15)
+    fig.suptitle('Exact native planning cuboids (blue), omitted occupied voxel boxes (red), physical GT fixtures (black)\n'
+        'Side projections; FREE/UNKNOWN space not rendered. GT is evaluation-only; no new extraction or padding.')
+    fig.savefig(directory/'cuboid_budget.png',dpi=180);plt.close(fig)
+
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--evidence-dir',type=Path,default=Path('docs/assets/motion_planning_v5'))
-    render(parser.parse_args().evidence_dir)
+    parser.add_argument('--raw-root',type=Path,default=Path('outputs/motion-planning-v5'))
+    args=parser.parse_args()
+    render(args.evidence_dir,args.raw_root)
 
 
 if __name__=='__main__':
