@@ -1,0 +1,1683 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "meaning": "Measurement validity and each fixture functional outcome are distinct; retained strict-zero-report failures are not relabeled.",
+  "driver_summary": {
+    "path": "outputs/motion-planning-v5/regressions/final-native/summary.json",
+    "sha256": "d07f2391d62b0a970e0d403fba85a3d251867e2cbe53127b86709db04f940840"
+  },
+  "native_case_count": 10,
+  "all_measurement_status_pass": true,
+  "cases": [
+    {
+      "case": "detour_free",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/detour_free/result.json",
+        "sha256": "8e36a9cea154c8732f9f309322991efd47fcfe1ac64b1e3eabf072d57aaa4731"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/detour_free/driver_result.json",
+        "sha256": "185c569af2dd218627a7b32010f17fae778eb148457365d17775fd345fb7d3ad"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_detour_v4_3.py",
+        "--condition",
+        "free",
+        "--seed",
+        "123456",
+        "--fixed-target",
+        "docs/assets/motion_planning_v4_3/fixed_target.json",
+        "--fixture",
+        "docs/assets/motion_planning_v4_3/frozen_fixture.json",
+        "--fixture-sha256",
+        "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/detour_free",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/detour_free/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "runtime_closed": true,
+        "measured_start_matches_baseline": true,
+        "all11_cooked_bodies": true,
+        "same_stage_prims": true,
+        "fixture_stationary_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "0510ded04ab187b34b6ae666325aa86fa5893430ca5a77b3717ac87f1d5352a9",
+        "runtime_manifest_entries": 44,
+        "result_runtime_hashes_match_after": true
+      },
+      "functional_acceptance": {
+        "roundtrip_acceptance": true,
+        "strict_zero_report_roundtrip": true,
+        "checks": {
+          "outward": true,
+          "home_return": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0011279426998548215,
+          "orientation_error_rad": 0.0018325743756180681,
+          "maximum_actual_joint_displacement_rad": 1.0289045870304108,
+          "action_count": 78,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 77,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 78,
+            "first": 32,
+            "last": 109,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465555243937
+        },
+        {
+          "label": "home_return",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.001937190772357919,
+          "orientation_error_rad": 0.004083142239606296,
+          "maximum_actual_joint_displacement_rad": 1.0280747711658478,
+          "action_count": 145,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 144,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 145,
+            "first": 109,
+            "last": 253,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465546766504
+        }
+      ]
+    },
+    {
+      "case": "detour_obstacle",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/detour_obstacle/result.json",
+        "sha256": "3dea70833cc9fd0d45c66f1b414e9be133588c4f75c986f02b7e4724bd46d452"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/detour_obstacle/driver_result.json",
+        "sha256": "bc63dc329d06925f47b69bbc572091bb6bf2602faf8d7eb2bb9c252c0bb2a5d7"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_detour_v4_3.py",
+        "--condition",
+        "obstacle",
+        "--seed",
+        "123456",
+        "--fixed-target",
+        "docs/assets/motion_planning_v4_3/fixed_target.json",
+        "--fixture",
+        "docs/assets/motion_planning_v4_3/frozen_fixture.json",
+        "--fixture-sha256",
+        "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/detour_obstacle",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/detour_obstacle/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "runtime_closed": true,
+        "measured_start_matches_baseline": true,
+        "all11_cooked_bodies": true,
+        "same_stage_prims": true,
+        "fixture_stationary_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "0510ded04ab187b34b6ae666325aa86fa5893430ca5a77b3717ac87f1d5352a9",
+        "runtime_manifest_entries": 44,
+        "result_runtime_hashes_match_after": true
+      },
+      "functional_acceptance": {
+        "roundtrip_acceptance": true,
+        "strict_zero_report_roundtrip": true,
+        "checks": {
+          "outward": true,
+          "home_return": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0010601430998975457,
+          "orientation_error_rad": 0.0016997776122312466,
+          "maximum_actual_joint_displacement_rad": 1.0289399325847626,
+          "action_count": 78,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 77,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 78,
+            "first": 32,
+            "last": 109,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.015922272221248483
+        },
+        {
+          "label": "home_return",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0018308895485222635,
+          "orientation_error_rad": 0.0038927981067946606,
+          "maximum_actual_joint_displacement_rad": 1.0281130969524384,
+          "action_count": 143,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 142,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 143,
+            "first": 109,
+            "last": 251,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.017494325096491656
+        }
+      ]
+    },
+    {
+      "case": "direct",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/direct/result.json",
+        "sha256": "bc324698a64fd5ed4f3b7375b4dc26f494241a7a192395abc93132a2470b2063"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/direct/driver_result.json",
+        "sha256": "4e0d351b0b0aed773fea7c1d8900b01d1d91f0017d549fb6f1d3381f39826e83"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "tests/isaac/test_motion_strategy.py",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/direct",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/direct/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "explicit_direct_selected": true,
+        "mapping_provider_resolves_current_service": true,
+        "pick_succeeded": true,
+        "actual_lift": true,
+        "held_identity": true,
+        "ordinary_held_home_succeeded": true,
+        "place_succeeded": true,
+        "release_cleared_held": true,
+        "placed_identity_reacquired": true,
+        "unsupported_frame_and_ik_rejected_without_actions": true,
+        "competing_motion_rejected_without_actions": true,
+        "cancellation_propagated": true,
+        "cancelled_motion_applied_final_hold": true,
+        "cancelled_motion_released_ownership": true,
+        "home_after_cancellation_succeeded": true,
+        "ordinary_released_home_succeeded": true,
+        "all_requested_steps_completed": true,
+        "final_service_closed": true,
+        "all_executed_motions_applied_final_hold": true,
+        "held_motion_grasp_checks_preserved": true,
+        "normal_home_routed_through_strategy": true,
+        "source_and_saved_scenes_unchanged": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "babd4cadeec5b36acdbf41d22245cdeb5f2e74fc354f4661a8cf215c7a94c304",
+        "runtime_manifest_entries": 19,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Existing Pick/held Home/Place/released Home and lifecycle behavior; includes intended contact.",
+        "all_checks_pass": true,
+        "checks": {
+          "explicit_direct_selected": true,
+          "mapping_provider_resolves_current_service": true,
+          "pick_succeeded": true,
+          "actual_lift": true,
+          "held_identity": true,
+          "ordinary_held_home_succeeded": true,
+          "place_succeeded": true,
+          "release_cleared_held": true,
+          "placed_identity_reacquired": true,
+          "unsupported_frame_and_ik_rejected_without_actions": true,
+          "competing_motion_rejected_without_actions": true,
+          "cancellation_propagated": true,
+          "cancelled_motion_applied_final_hold": true,
+          "cancelled_motion_released_ownership": true,
+          "home_after_cancellation_succeeded": true,
+          "ordinary_released_home_succeeded": true,
+          "all_requested_steps_completed": true,
+          "final_service_closed": true,
+          "all_executed_motions_applied_final_hold": true,
+          "held_motion_grasp_checks_preserved": true,
+          "normal_home_routed_through_strategy": true,
+          "source_and_saved_scenes_unchanged": true
+        }
+      },
+      "operations": []
+    },
+    {
+      "case": "global_cancel",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_cancel/result.json",
+        "sha256": "98391b281e7aaef06cdc4e0f903a1d8e125aeeb977193ca499a34ad8871f35ee"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_cancel/driver_result.json",
+        "sha256": "698704422a8046518a5972a526ee36469a856882ad1b0c3df780086529d6b3fe"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--mode",
+        "cancel",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_cancel",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_cancel/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "f6f2733422c5350c81434239c1c13dcf4e592cedcd52415b75252b5ac966c829",
+        "runtime_manifest_entries": 32,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Established V4.1 lifecycle fixture using enhanced V4.2 model.",
+        "acceptance_passed": true,
+        "checks": {
+          "setup_start": true,
+          "move_to_goal": true,
+          "home_after_cancel": true,
+          "genuinely_moving_home": true,
+          "competing_request_rejected": true,
+          "runtime_competing_request_rejected": true,
+          "ownership_released": true,
+          "request_interrupted": true,
+          "no_stale_commands_after_completion": true,
+          "pre_fault_geometry_clear": true,
+          "cancel_final_velocity_zero": true,
+          "cancel_hold_one_second_observed": true,
+          "cancel_hold_tracking_within_original_bounds": true,
+          "cancel_hold_no_additional_arm_commands": true,
+          "cancel_hold_ownership_released_throughout": true,
+          "cancel_hold_zero_velocity_target": true,
+          "cancel_hold_geometry_clear": true
+        },
+        "observation_checks": {
+          "source_unchanged": true,
+          "callback_complete": true,
+          "physical_capture_available": true,
+          "observers_available": true,
+          "no_contact_overflow": true,
+          "owner_thread": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        },
+        "raw_trace": {
+          "path": "outputs/motion-planning-v5/regressions/final-native/global_cancel/acceptance_trace.json",
+          "sha256": "19f00b1a0910da30f7cd88328df06082a5217780402b9d9da9f339b62e5923e9"
+        }
+      },
+      "operations": [
+        {
+          "label": "setup_start",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "action_count": 85,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {},
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465549047302
+        },
+        {
+          "label": "move_to_goal",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465560337218
+        },
+        {
+          "label": "interrupted_home",
+          "cancelled": true,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.346528853381713,
+          "orientation_error_rad": 0.5677339932319422,
+          "maximum_actual_joint_displacement_rad": 0.024906128644943237,
+          "action_count": 11,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 10,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465593304802
+        },
+        {
+          "label": "post_cancel_hold",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": null,
+          "position_error_m": null,
+          "orientation_error_rad": null,
+          "maximum_actual_joint_displacement_rad": 0.014690279960632324,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 10,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465592938878
+        },
+        {
+          "label": "home_after_cancel",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0014480090820865558,
+          "orientation_error_rad": 0.0031383711973132647,
+          "maximum_actual_joint_displacement_rad": 0.5684324949979782,
+          "action_count": 134,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 133,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465587726925
+        }
+      ]
+    },
+    {
+      "case": "global_close",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_close/result.json",
+        "sha256": "e98c6378ada8bf38fdf26b3a5cd28e5a9b1f7565110a5e2241a70da3166b3f0f"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_close/driver_result.json",
+        "sha256": "0a9fa6558224fc513637a28db09884121b2a15c6649e7b36723fc1f89e8e95d0"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--mode",
+        "close",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_close",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_close/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "f6f2733422c5350c81434239c1c13dcf4e592cedcd52415b75252b5ac966c829",
+        "runtime_manifest_entries": 32,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Established V4.1 lifecycle fixture using enhanced V4.2 model.",
+        "acceptance_passed": true,
+        "checks": {
+          "setup_start": true,
+          "move_to_goal": true,
+          "genuinely_moving_home": true,
+          "competing_request_rejected": true,
+          "runtime_competing_request_rejected": true,
+          "ownership_released": true,
+          "request_interrupted": true,
+          "no_stale_commands_after_completion": true,
+          "pre_fault_geometry_clear": true,
+          "lifecycle_failure_code": true,
+          "no_trajectory_restart_after_play": true,
+          "strategy_closed": true
+        },
+        "observation_checks": {
+          "source_unchanged": true,
+          "callback_complete": true,
+          "physical_capture_available": true,
+          "observers_available": true,
+          "no_contact_overflow": true,
+          "owner_thread": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        },
+        "raw_trace": {
+          "path": "outputs/motion-planning-v5/regressions/final-native/global_close/acceptance_trace.json",
+          "sha256": "aa6e6cf8859374c61569bf069df5806fa1bb57e772cf35d868305a39e61cf241"
+        }
+      },
+      "operations": [
+        {
+          "label": "setup_start",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "action_count": 85,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {},
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465549047302
+        },
+        {
+          "label": "move_to_goal",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465560337218
+        },
+        {
+          "label": "interrupted_home",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "action_count": 10,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": false,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": false,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465593304802
+        }
+      ]
+    },
+    {
+      "case": "global_large",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_large/result.json",
+        "sha256": "1f43f0bef9b88dc2d04357ed963cbb059738c6a5e3f836a6907a0d91dcb2154b"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_large/driver_result.json",
+        "sha256": "aedfd4d844440428eb852af0dac0284769b6c9333b5c660bc60c6de2e2a92d82"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_models_v4_2.py",
+        "--scenario",
+        "large",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_large",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_large/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "833654398fed6c22273c4b5bf969e9df8e1bf223cabed19bd39e1092cc360933",
+        "runtime_manifest_entries": 36,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Unchanged large-obstruction global goal fixture; positive-separation reports remain a strict-zero-report failure.",
+        "goal_reached": true,
+        "strict_success": false,
+        "classification": "target_reached_with_reports_or_reference_intersection",
+        "contacts": {
+          "reported_points": 4,
+          "penetrating_pairs": 0,
+          "minimum_reported_separation_m": 0.023148320615291595,
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "contact_buffer_saturated": false
+        },
+        "observed_physical_contact_steps": 0,
+        "runtime_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "operations": []
+    },
+    {
+      "case": "global_reset",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_reset/result.json",
+        "sha256": "cef9eee819caf93b3d64d3861bdc53607f8a04b09e67b74cd31d877f8201afbd"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_reset/driver_result.json",
+        "sha256": "a34ed78ea489af2d700cdf2435314fbf42e1b7d7848238b24fdca23364565474"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--mode",
+        "reset",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_reset",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_reset/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "f6f2733422c5350c81434239c1c13dcf4e592cedcd52415b75252b5ac966c829",
+        "runtime_manifest_entries": 32,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Established V4.1 lifecycle fixture using enhanced V4.2 model.",
+        "acceptance_passed": true,
+        "checks": {
+          "setup_start": true,
+          "move_to_goal": true,
+          "home_after_rebuild": true,
+          "genuinely_moving_home": true,
+          "competing_request_rejected": true,
+          "runtime_competing_request_rejected": true,
+          "ownership_released": true,
+          "request_interrupted": true,
+          "no_stale_commands_after_completion": true,
+          "pre_fault_geometry_clear": true,
+          "lifecycle_failure_code": true,
+          "no_trajectory_restart_after_play": true,
+          "rebuild_new_strategy": true,
+          "old_strategy_closed": true,
+          "move_away_after_rebuild": true
+        },
+        "observation_checks": {
+          "source_unchanged": true,
+          "callback_complete": true,
+          "physical_capture_available": true,
+          "observers_available": true,
+          "no_contact_overflow": true,
+          "owner_thread": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        },
+        "raw_trace": {
+          "path": "outputs/motion-planning-v5/regressions/final-native/global_reset/acceptance_trace.json",
+          "sha256": "dc5de9c479a0910d0212e485e3d45569b24b0be755b99d8c5a721ae6da40401f"
+        }
+      },
+      "operations": [
+        {
+          "label": "setup_start",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "action_count": 85,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {},
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465549047302
+        },
+        {
+          "label": "move_to_goal",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465560337218
+        },
+        {
+          "label": "interrupted_home",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "action_count": 10,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": false,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": false,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465593304802
+        },
+        {
+          "label": "move_away_after_rebuild",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009452386411831261,
+          "orientation_error_rad": 0.001907139706695262,
+          "maximum_actual_joint_displacement_rad": 0.5884856954216957,
+          "action_count": 71,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 70,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.1409646555676188
+        },
+        {
+          "label": "home_after_rebuild",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0016930748336920632,
+          "orientation_error_rad": 0.003588255252021025,
+          "maximum_actual_joint_displacement_rad": 0.5898859351873398,
+          "action_count": 143,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 142,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465553564688
+        }
+      ]
+    },
+    {
+      "case": "global_roundtrip",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_roundtrip/result.json",
+        "sha256": "321b39ba1bc78e8cef6ba525c186f634a7b049117a41e6cfae3e0561c7a66058"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_roundtrip/driver_result.json",
+        "sha256": "e32014e7ac2cc4010d1bb724a8938b299a83d80956fe363ae37b25e01e1eec3a"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_roundtrip_v4_2.py",
+        "--mode",
+        "roundtrip",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_roundtrip",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_roundtrip/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "independently_valid_preflight": true,
+        "runtime_closed": true,
+        "same_stage_prims": true,
+        "frozen_fixture_every_observed_step": true,
+        "world_geometry_unchanged": true,
+        "owner_thread": true,
+        "contact_buffer_unsaturated": true,
+        "complete_physics_steps": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "069d97a3c37fdca3751c05d5c9c2189d8fe722c617d7604d05a93d81529122f0",
+        "runtime_manifest_entries": 40,
+        "result_runtime_hashes_match_after": true
+      },
+      "functional_acceptance": {
+        "roundtrip_acceptance": true,
+        "strict_zero_report_roundtrip": true,
+        "checks": {
+          "outward": true,
+          "home_return": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        }
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0011279426998548215,
+          "orientation_error_rad": 0.0018325743756180681,
+          "maximum_actual_joint_displacement_rad": 1.0289045870304108,
+          "action_count": 78,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 77,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 78,
+            "first": 32,
+            "last": 109,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04051110247712943
+        },
+        {
+          "label": "home_return",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.001937190772357919,
+          "orientation_error_rad": 0.004083142239606296,
+          "maximum_actual_joint_displacement_rad": 1.0280747711658478,
+          "action_count": 145,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 144,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 145,
+            "first": 109,
+            "last": 253,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04426123972535042
+        }
+      ]
+    },
+    {
+      "case": "global_stop",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_stop/result.json",
+        "sha256": "be41fa85a6bb0e0ba8e1e11b8d4696f1758a1f06ece75cbe1126463ee5a29194"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/global_stop/driver_result.json",
+        "sha256": "cbeff73294193b47874f9db9348ed637049baab273ec576d5d1eeecb21b725ce"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_lifecycle_v4_2.py",
+        "--mode",
+        "stop",
+        "--collision-model",
+        "enhanced",
+        "--seed",
+        "123456",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/global_stop",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/global_stop/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "physical_reference_captured": true,
+        "runtime_closed": true,
+        "no_added_scene_prims": true,
+        "owner_thread_cooked_reference": true,
+        "cooking_no_added_prims": true,
+        "contact_buffer_unsaturated": true,
+        "lifecycle_pass": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "f6f2733422c5350c81434239c1c13dcf4e592cedcd52415b75252b5ac966c829",
+        "runtime_manifest_entries": 32,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Established V4.1 lifecycle fixture using enhanced V4.2 model.",
+        "acceptance_passed": true,
+        "checks": {
+          "setup_start": true,
+          "move_to_goal": true,
+          "home_after_rebuild": true,
+          "genuinely_moving_home": true,
+          "competing_request_rejected": true,
+          "runtime_competing_request_rejected": true,
+          "ownership_released": true,
+          "request_interrupted": true,
+          "no_stale_commands_after_completion": true,
+          "pre_fault_geometry_clear": true,
+          "lifecycle_failure_code": true,
+          "no_trajectory_restart_after_play": true,
+          "rebuild_new_strategy": true,
+          "old_strategy_closed": true,
+          "move_away_after_rebuild": true
+        },
+        "observation_checks": {
+          "source_unchanged": true,
+          "callback_complete": true,
+          "physical_capture_available": true,
+          "observers_available": true,
+          "no_contact_overflow": true,
+          "owner_thread": true
+        },
+        "final_strategy_closed": true,
+        "final_solver": {
+          "solver_type": "TGS",
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "changed": true,
+          "original_session_opinion_restored": true,
+          "count_provenance": "USD requested count; native effective island count is not read here"
+        },
+        "raw_trace": {
+          "path": "outputs/motion-planning-v5/regressions/final-native/global_stop/acceptance_trace.json",
+          "sha256": "de37a71dafc7a69d061828893fcc958f7ffd63c8e444d7a7a6c898a807bfd036"
+        }
+      },
+      "operations": [
+        {
+          "label": "setup_start",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.023805669013672644,
+          "orientation_error_rad": 0.01027368596945958,
+          "maximum_actual_joint_displacement_rad": 0.9890591502189636,
+          "action_count": 85,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {},
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465549047302
+        },
+        {
+          "label": "move_to_goal",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465560337218
+        },
+        {
+          "label": "interrupted_home",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.3519297356103541,
+          "orientation_error_rad": 0.5734757203250956,
+          "maximum_actual_joint_displacement_rad": 0.025665879249572754,
+          "action_count": 10,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": false,
+          "commanded_updates": null,
+          "failure_code": null,
+          "final_hold": null,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": false,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465593304802
+        },
+        {
+          "label": "move_away_after_rebuild",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009452386411831261,
+          "orientation_error_rad": 0.001907139706695262,
+          "maximum_actual_joint_displacement_rad": 0.5884856954216957,
+          "action_count": 71,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 70,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.1409646555676188
+        },
+        {
+          "label": "home_after_rebuild",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0016930748336920632,
+          "orientation_error_rad": 0.003588255252021025,
+          "maximum_actual_joint_displacement_rad": 0.5898859351873398,
+          "action_count": 143,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 142,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {},
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465553564688
+        }
+      ]
+    },
+    {
+      "case": "reactive",
+      "result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/reactive/result.json",
+        "sha256": "404a92c548143326c4a6fa75ecb136edbf6341eeec91e700c3e3152ccf6e0836"
+      },
+      "driver_result": {
+        "path": "outputs/motion-planning-v5/regressions/final-native/reactive/driver_result.json",
+        "sha256": "a76f84aed72a8ad1b072d3e1a9217f4c6e198ad0127110ff6b8d167eecc72247"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "tests/isaac/test_reactive_motion.py",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/regressions/final-native/reactive",
+        "--result",
+        "outputs/motion-planning-v5/regressions/final-native/reactive/result.json"
+      ],
+      "measurement_status": "PASS",
+      "measurement_contracts": {
+        "source_unchanged": true,
+        "ordinary_async_motion": true,
+        "numeric_proxies_did_not_add_scene_prims": true,
+        "mapping_closed": true,
+        "physical_reference_captured": true,
+        "cooking_did_not_add_scene_prims": true,
+        "contact_buffer_not_saturated": true
+      },
+      "provenance": {
+        "runtime_manifest_sha256": "b45f8903d9988f7d14016000e74d0557c7a4725092a78cbf9f2d08101d9f0628",
+        "runtime_manifest_entries": 22,
+        "result_runtime_hashes_match_after": null
+      },
+      "functional_acceptance": {
+        "scope": "Existing reactive ordinary movement/Home and lifecycle fixture.",
+        "valid_measurement": true,
+        "ordinary_move_reached_without_contact": true,
+        "ordinary_home_succeeded": true,
+        "lifecycle_complete": true,
+        "lifecycle_all_checks_pass": true
+      },
+      "operations": []
+    }
+  ],
+  "v43_obstacle_induced_detour": {
+    "scope": "Replay of the predeclared V4.3 known-geometry fixture, separate from the V5 RGB-D study.",
+    "fixed_target": {
+      "path": "docs/assets/motion_planning_v4_3/fixed_target.json",
+      "sha256": "c38daa00d06958076cba111dc45ba0af8aa80c4890beadc08e2dc30d52ef83da"
+    },
+    "fixture": {
+      "path": "docs/assets/motion_planning_v4_3/frozen_fixture.json",
+      "sha256": "d5c78c58343f40f559ff174ded89814493ac147d62aad1e00327657efd08680f"
+    },
+    "historical_reference_trace": {
+      "path": "outputs/motion-planning-v4-3/baseline-free/r1/roundtrip_trace.json",
+      "sha256": "53dbbd473f5da473e1b48db5d5a681e092ef6403b1e9416f4a35280247d59931"
+    },
+    "historical_reference_trace_binding_verified": true,
+    "exact_free_joint_route_matches_original_obstructed_reference": true,
+    "exact_free_validated_trajectory_matches_original_obstructed_reference": true,
+    "exact_free_command_stream_matches_original_obstructed_reference": true,
+    "historical_original_trajectory_obstruction": {
+      "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+      "positive_ball_radius_lower_bound_m": 0.003091044922642005,
+      "robot_body": "/Franka/panda_leftfinger",
+      "baseline_sample": 35,
+      "planned_time": 0.34864754916715596,
+      "reference": "independentFKplannedtrajectory"
+    },
+    "historical_original_actual_motion_obstruction": {
+      "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+      "positive_ball_radius_lower_bound_m": 0.003741559360246421,
+      "robot_body": "/Franka/panda_leftfinger",
+      "baseline_sample": 49,
+      "physics_step": 57,
+      "reference": "actualNativeBaselineCookedBodyPoses"
+    },
+    "same_start_q": true,
+    "same_fixed_goal_q": true,
+    "same_full_pose_target": true,
+    "frozen_fixture_sha_matches_both": true,
+    "free_rrt_waypoints": 2,
+    "obstacle_rrt_waypoints": 3,
+    "maximum_obstacle_waypoint_distance_from_free_chord_rad": 0.08092821412023558,
+    "free_joint_path_length_rad": 1.258776274673916,
+    "obstacle_joint_path_length_rad": 1.2705546140758006,
+    "both_strict_outward_home_roundtrips": true,
+    "qualification": "Obstruction comes from the retained source-bound independent positive-intersection proof. This audit compares exact arrays/hashes and scalar outcomes; it does not recompute geometry or assert continuous safety of the new detour.",
+    "predeclared_meaningful_deviation_threshold_rad": 0.05,
+    "obstacle_induced_route_selection_demonstrated": true
+  },
+  "qualifications": [
+    "The large global regression reaches the goal with four positive-separation reports and zero observed physical-contact steps; strict_success remains false.",
+    "Direct Pick/Place regression includes intended contact; its PASS is behavioral preservation.",
+    "Stop/reset/close transient operation snapshots end before post-fault cleanup. Their in-flight restoration flag can be false; awaited final strategy solver restoration is checked separately.",
+    "Solver iteration counts are requested USD/native articulation settings, not independently measured effective island counts."
+  ]
+}

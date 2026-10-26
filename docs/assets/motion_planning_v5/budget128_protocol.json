@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "primary_lock_sha256": "e1294e95ef1aaf5bf6fcd137338e36eaa38537256641c5c661a22e6416f4f881",
+  "scenes": [
+    "partial",
+    "narrow",
+    "large"
+  ],
+  "budget": 128,
+  "rationale": {
+    "partial": {
+      "hazard_candidates": 113,
+      "fixtures": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "near_surface_or_volume_occupied_cells": 36,
+          "selected": 36,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "near_surface_or_volume_occupied_cells": 77,
+          "selected": 28,
+          "omitted": 49,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "primary_plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "primary_physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      }
+    },
+    "narrow": {
+      "hazard_candidates": 71,
+      "fixtures": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "near_surface_or_volume_occupied_cells": 34,
+          "selected": 34,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "near_surface_or_volume_occupied_cells": 39,
+          "selected": 32,
+          "omitted": 7,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "primary_plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "primary_physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      }
+    },
+    "large": {
+      "hazard_candidates": 215,
+      "fixtures": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "near_surface_or_volume_occupied_cells": 218,
+          "selected": 67,
+          "omitted": 151,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "primary_plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "primary_physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      }
+    }
+  },
+  "primary_results_remain64": true,
+  "no_other_candidate_budgets": true,
+  "conditions": "Same declared physical fixtures, authored cameras, sampling, full-pose target, seed, limits and enhanced model. Fresh native128 cohorts; compare actual starts and frozen occupied-cell hashes and report any differences. GT andRGBD still paired at each exact physics instant.",
+  "floor_hypothesis": "Current policy retains floor cuboids after hazards;128 may add floor boxes and reintroduce finite-box fixed-base rejection. No silent floor discard or geometry changes."
+}

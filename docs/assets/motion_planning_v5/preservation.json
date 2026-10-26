@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "aef5f2fe0af0229a1c69c64035b7de0b07173b0b",
+  "baseline_files": 692,
+  "unchanged_original_files": 684,
+  "intended_modified_original_files": [
+    "robot_skill_stack/integrations/isaac/config.py",
+    "robot_skill_stack/integrations/isaac/manipulation/factory.py",
+    "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py",
+    "robot_skill_stack/integrations/isaac/manipulation/motion/static_world.py",
+    "robot_skill_stack/integrations/isaac/observation_runtime.py",
+    "robot_skill_stack/world/spatial_mapping/runtime.py",
+    "tests/unit/test_motion_composition.py",
+    "tests/unit/test_motion_config.py"
+  ],
+  "missing_original_files": [],
+  "unexpected_original_changes": [],
+  "original_refs_checked": 47,
+  "original_user_ref_changes": {},
+  "platform_managed_codex_ref_changes": {},
+  "main_preserved": true,
+  "main_sha": "34baab2bb2028274c525d8ca9f34164fb65a9c77",
+  "preexisting_models": "Left untracked and untouched; no enumeration or content operations performed",
+  "generated_raw_outputs_ignored": "outputs/motion-planning-v5/primary64/empty/static-b64/result.json"
+}

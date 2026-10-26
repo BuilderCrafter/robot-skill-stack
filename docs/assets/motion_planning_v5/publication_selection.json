@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "policy": "One representative frame/world/clearance set per primary scene: GT-execution capture except narrow RGBD-execution.128 retains three world comparisons only. Original data/outcomes are never altered.",
+  "cohorts": {
+    "primary64": {
+      "full_summary_sha256": "913271796db49f8c295f8a2cdd5884309143c2a692a14e7d012b7455bdb101cf",
+      "full_summary_archive": "outputs/motion-planning-v5/offline-full/primary64/summary.json",
+      "compact_summary_sha256": "01dc83fb7fa16ce19e743dae6ea86fe029937cbc7fbf6fda63b763d76e071fb4",
+      "retained_figures": [
+        {
+          "scenario": "empty",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/empty-frames.png",
+          "sha256": "de3f37b155acb978eda2dd5a085b4afca0b33ee37da809e35be11c84f32293a5",
+          "bytes": 191023,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/empty-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "empty",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/empty-worlds-routes.png",
+          "sha256": "93ca5bc67f26d8a1cd69667d91c3cb328b93d37ee4f03681bec4362a78d67494",
+          "bytes": 133965,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/empty-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "empty",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/empty-clearance.png",
+          "sha256": "d1874f4c3878a950f421f671448025fd126e29b9055fbd28a25e89ce82f565a3",
+          "bytes": 72179,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/empty-static-b64-static-b64-clearance.png"
+        },
+        {
+          "scenario": "static",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/static-frames.png",
+          "sha256": "2c05662e122e5d602d286dc7bb4d1965f64d05585cb67dd6d6296800dd6fe79e",
+          "bytes": 218595,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/static-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "static",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/static-worlds-routes.png",
+          "sha256": "90b5736a0e8f1ca2fd3b067b6c0f232a4650c18ad521dafd74e30cd334061557",
+          "bytes": 154324,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/static-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "static",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/static-clearance.png",
+          "sha256": "84744415d6f6fcdb3d65080affa439de487934afc735324005126629cfbb1ac8",
+          "bytes": 112752,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/static-static-b64-static-b64-clearance.png"
+        },
+        {
+          "scenario": "sparse",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/sparse-frames.png",
+          "sha256": "0b67d7889191659d9c3c4f632147680fd4fea20e6fba7e2e979d5d41e0273958",
+          "bytes": 207095,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/sparse-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "sparse",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/sparse-worlds-routes.png",
+          "sha256": "14f0e2f88f6d92a0e02ccba55dcec4f2eff8c3d322231a0dd3597185f3895091",
+          "bytes": 169093,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/sparse-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "sparse",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/sparse-clearance.png",
+          "sha256": "e5b93ce56e3866e2bbbbba39e82ff73ad0ee9a1d2f3ed836580d5334e87b8098",
+          "bytes": 104623,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/sparse-static-b64-static-b64-clearance.png"
+        },
+        {
+          "scenario": "partial",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/partial-frames.png",
+          "sha256": "ec639e9643d1dbcecccf9669afe54c8c0bd9eee2764715be6954e1bebd2324d8",
+          "bytes": 260073,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/partial-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "partial",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/partial-worlds-routes.png",
+          "sha256": "b9cd6b9b1937df781351324c8de091398dacffb5429ea43ab754102a456b0f9f",
+          "bytes": 155129,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/partial-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "partial",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/partial-clearance.png",
+          "sha256": "a46ec71a5c1213817ff313a670278dd19a3cf55af9ee79031e3c979c8e35ddf5",
+          "bytes": 146289,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/partial-static-b64-static-b64-clearance.png"
+        },
+        {
+          "scenario": "narrow",
+          "execution_condition": "frozen_rgbd",
+          "path": "docs/assets/motion_planning_v5/primary64/narrow-frames.png",
+          "sha256": "1b132ac5d733e480951c5e995be274ae518e38dd9bb0bf0aa9cdf40ff91fba10",
+          "bytes": 251615,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/narrow-frozen_rgbd-b64-frozen_rgbd-b64-native-frames.png"
+        },
+        {
+          "scenario": "narrow",
+          "execution_condition": "frozen_rgbd",
+          "path": "docs/assets/motion_planning_v5/primary64/narrow-worlds-routes.png",
+          "sha256": "942f1fb602cc077f4089507aa295e2ac230cb9f4319b16574bf8f500cc4ecbc3",
+          "bytes": 132804,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/narrow-frozen_rgbd-b64-frozen_rgbd-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "narrow",
+          "execution_condition": "frozen_rgbd",
+          "path": "docs/assets/motion_planning_v5/primary64/narrow-clearance.png",
+          "sha256": "34753af1ceee9dfdeb612ef53efc6162b4b73f2797ec04b3fc019654ee5aac3f",
+          "bytes": 116582,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/narrow-frozen_rgbd-b64-frozen_rgbd-b64-clearance.png"
+        },
+        {
+          "scenario": "large",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/large-frames.png",
+          "sha256": "9c53772c0876e90b10fe2cda2e83e6cfefaada6e71e87689d1a4a3dcb47e3284",
+          "bytes": 362318,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/large-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "large",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/large-worlds-routes.png",
+          "sha256": "c4074673731b9829ad9b8d63b1bb461035ff8196998276d2b9b1b80b3cb9907c",
+          "bytes": 171182,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/large-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "large",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/large-clearance.png",
+          "sha256": "de9c04d019522dc477be3dcb6bc910dc577742cf8c98153f56ab156fa8070bdc",
+          "bytes": 147878,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/large-static-b64-static-b64-clearance.png"
+        },
+        {
+          "scenario": "v43",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/v43-frames.png",
+          "sha256": "9fefc444f0d9feeb167051d659585f2829be603e4d5dde12d6bafee5d4ba6f70",
+          "bytes": 218560,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/v43-static-b64-static-b64-native-frames.png"
+        },
+        {
+          "scenario": "v43",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/v43-worlds-routes.png",
+          "sha256": "d2e1cb4c93238be00868eedf37b2dd2378cbac40ea397b760715cba0ca12b1f5",
+          "bytes": 140270,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/v43-static-b64-static-b64-occupancy-routes.png"
+        },
+        {
+          "scenario": "v43",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/primary64/v43-clearance.png",
+          "sha256": "4145952c3244440f398b113560b54349ebb70ffc0a76ea9b5d1c9ce62662ff37",
+          "bytes": 106242,
+          "original": "outputs/motion-planning-v5/offline-full/primary64/v43-static-b64-static-b64-clearance.png"
+        }
+      ]
+    },
+    "diagnostic128": {
+      "full_summary_sha256": "0350b8dfe29c17499e85fbe19617c8267c3a395d096dbc9f090b1c887c68c6b3",
+      "full_summary_archive": "outputs/motion-planning-v5/offline-full/diagnostic128/summary.json",
+      "compact_summary_sha256": "ca4b699c52c0ff5d4203ac27c9c8bf31a8728056343178a88de1fbc0fb2380ee",
+      "retained_figures": [
+        {
+          "scenario": "partial",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/diagnostic128/partial-worlds-routes.png",
+          "sha256": "55fe25f0571fafd3cfd0896f94cf38341864e8980ee8b40b60d798f4a0fa1e5d",
+          "bytes": 157938,
+          "original": "outputs/motion-planning-v5/offline-full/diagnostic128/partial-static-b128-static-b128-occupancy-routes.png"
+        },
+        {
+          "scenario": "narrow",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/diagnostic128/narrow-worlds-routes.png",
+          "sha256": "75617fb80a8a8cf35b1c377422d42d7c341ad7763e48c23942fc52f6bc67462c",
+          "bytes": 145776,
+          "original": "outputs/motion-planning-v5/offline-full/diagnostic128/narrow-static-b128-static-b128-occupancy-routes.png"
+        },
+        {
+          "scenario": "large",
+          "execution_condition": "static",
+          "path": "docs/assets/motion_planning_v5/diagnostic128/large-worlds-routes.png",
+          "sha256": "4cc669182f9f2b62657e437be70d012eb472a3137cfa0b02eaf48019bbc4f997",
+          "bytes": 174231,
+          "original": "outputs/motion-planning-v5/offline-full/diagnostic128/large-static-b128-static-b128-occupancy-routes.png"
+        }
+      ]
+    }
+  },
+  "additional_measured_figures": [
+    {
+      "path": "docs/assets/motion_planning_v5/cuboid_budget.png",
+      "sha256": "cd2d65f0707859f9bd41fc421d116f1f0bcfa998dbef2048bff0dd2d0eccc768",
+      "bytes": 191099
+    },
+    {
+      "path": "docs/assets/motion_planning_v5/outcomes.png",
+      "sha256": "3a655fef2d46a99f36064a3cc7e155e490cd23d74a83adbe8408aecb490040e2",
+      "bytes": 147459
+    },
+    {
+      "path": "docs/assets/motion_planning_v5/source_to_plan_timing.png",
+      "sha256": "d35825063f523d61397292fbbfe7a81e6de2287450abf96e1d32ea6b5a1e92e3",
+      "bytes": 215441
+    },
+    {
+      "path": "docs/assets/motion_planning_v5/verified_occlusion/clearance.png",
+      "sha256": "5931398feaee17a4116c24a9b4ac5980a0948df1d74c52260da4190cab336aec",
+      "bytes": 154246
+    },
+    {
+      "path": "docs/assets/motion_planning_v5/verified_occlusion/frames.png",
+      "sha256": "0b32111be48180b409f05966de926b70caedccc1c0ffd15e164150b6ce828ef7",
+      "bytes": 296195
+    },
+    {
+      "path": "docs/assets/motion_planning_v5/verified_occlusion/worlds-routes.png",
+      "sha256": "3ef0c72699331211ed3d972cc97648638b2c1d8b200cdc6dfbecfcc2a8e84071",
+      "bytes": 162502
+    }
+  ]
+}

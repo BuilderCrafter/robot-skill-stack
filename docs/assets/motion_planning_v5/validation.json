@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "full_offline_suites": [
+    {
+      "path": "outputs/motion-planning-v5/unit-pre-native/run-53ff7po1/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+      "checks": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    {
+      "path": "outputs/motion-planning-v5/unit-final/run-hkbcqr0u/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+      "checks": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    },
+    {
+      "path": "outputs/motion-planning-v5/unit-final-after-analysis/run-nx8bsbej/summary.json",
+      "sha256": "6ff60386996963a1b37b1c1cf8f07009c3a38cb3e33920a9a2cb0368edd5a759",
+      "checks": {
+        "architecture": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "unit_discovery": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_async_runtime": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_grasp_planning": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_placement": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_primitive_perception": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_reactive_pick": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_update_rate": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        },
+        "test_world_model_view": {
+          "status": "PASS",
+          "return_code": 0,
+          "error": null
+        }
+      }
+    }
+  ],
+  "authoritative_latest": "outputs/motion-planning-v5/unit-final-after-analysis/run-nx8bsbej/summary.json",
+  "latest_code_content_commit": "a6d942f92708f6da98f4d8cdee4de69a039fbb0b",
+  "native_measurement_counts": {
+    "primary64": 14,
+    "diagnostic128": 6,
+    "verified_occlusion64": 2,
+    "preservation_regressions": 10
+  },
+  "excluded_pilot": {
+    "path": "outputs/motion-planning-v5/pilot01",
+    "attempts": 2,
+    "reason": "Research wrapper lacked diagnostics during cleanup; GT actually moved, but both pilot results excluded. Later harness flags internal errors as invalid measurements."
+  },
+  "launcher": "Unchanged ./run_isaac_python.sh; NumPy1.26.4; no --no-ros-env, dependency installation or SDK edits",
+  "unit_discovery_cases": 1373,
+  "unit_count_method": "./run_isaac_python.sh: unittest.defaultTestLoader.discover(\"tests/unit\").countTestCases(); independent count after passing complete suite, no redundant test run",
+  "plot_only_final_check": {
+    "commit": "13347fe3f06fc7b171abd6c0a51d0433cc498091",
+    "architecture_and_python_syntax": "PASS",
+    "native_packet_render": "PASS; inspected exact blue cuboids/red omitted cells/GT-only reference",
+    "runtime_or_planner_changed": false
+  }
+}

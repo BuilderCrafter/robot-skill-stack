@@ -1,0 +1,1595 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 20,
+        "timestamp": 3334261.562890264,
+        "evaluated_at": 3334262.05903994,
+        "canonical_arrays_sha256": "dc9a1adb992adc53b603587a8a50afa980553221be855906aedaf20adfd8fae2"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "5c4c2a7790cc016fc5b7b15c6d94073de881fc1eabfab42b5331e35bbf11f701"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "27fefde6e3b9f4cc41bdac5b7951e55254fb71e76b43a66f0c676c08422e49a4"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 20,
+        "timestamp": 3334234.006213754,
+        "evaluated_at": 3334234.521751534,
+        "canonical_arrays_sha256": "31d6dfc3437a2568e160c0630705c1b4443ff61762930c2a17fc24aedcc011f5"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "9210f41f28a3aae34b7ba2d26802936344630a555221719b1d4a65d766cc176f"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "f60ef7f65a826e44771dcfd16645267a4ea06b77068707ca66d458f61f798e73"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334540.994368739,
+        "evaluated_at": 3334541.470677378,
+        "canonical_arrays_sha256": "c91a277b8e349bb57fea059f40eaab3050067b1fe4962df26119e4689b089bfa"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "076a7ac7640240aa574d48d6cf79480ff468185d48db343d691498636ae2b0a4"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "8dd65a03edc6ebb17fd1c0cbb4054d8d7a5df2948eec861221aec0876cbc2e1e"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "076a7ac7640240aa574d48d6cf79480ff468185d48db343d691498636ae2b0a4"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 381,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 380,
+              "UNKNOWN_EXPIRED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 273,
+                "UNKNOWN_EXPIRED": 1
+              },
+              "trajectory": {
+                "UNKNOWN_NEVER_OBSERVED": 107
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              },
+              "trajectory": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 478,
+                "time": 0.4096228196509937,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.3002466946387473,
+                    -0.009753304020148195,
+                    0.6450828724579112
+                  ],
+                  "radius_m": 0.00024669363874726903,
+                  "raw_radius_m": 0.0002466946387472953,
+                  "maximum_constraint_residual_m": -1.0000000000157452e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "8dd65a03edc6ebb17fd1c0cbb4054d8d7a5df2948eec861221aec0876cbc2e1e"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334510.005181651,
+        "evaluated_at": 3334510.659150907,
+        "canonical_arrays_sha256": "5110720e9381a69296922576564e299ca20272fe249b3e235f35c9b1b02cde82"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "ef9f55b6b09a6318114540245a0e18887d5b83abad4f65c1954d40e5791534fa"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "0f1769c21f8d63258fc444dd3efff8769251c5ec83a4efb7e6a90da9a5927304"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "ef9f55b6b09a6318114540245a0e18887d5b83abad4f65c1954d40e5791534fa"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 381,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 380,
+              "UNKNOWN_EXPIRED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 273,
+                "UNKNOWN_EXPIRED": 1
+              },
+              "trajectory": {
+                "UNKNOWN_NEVER_OBSERVED": 107
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              },
+              "trajectory": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 478,
+                "time": 0.4096228196509937,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.3002466946387473,
+                    -0.009753304020148195,
+                    0.6450828724579112
+                  ],
+                  "radius_m": 0.00024669363874726903,
+                  "raw_radius_m": 0.0002466946387472953,
+                  "maximum_constraint_residual_m": -1.0000000000157452e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "0f1769c21f8d63258fc444dd3efff8769251c5ec83a4efb7e6a90da9a5927304"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334482.350894434,
+        "evaluated_at": 3334482.86433595,
+        "canonical_arrays_sha256": "d90f838350889f9cfa6844e6a4ad4a6900f9557868a3817a99c2010f7e2854f4"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4e1d7f4e248c121f3227c2087ec74888623213059e54cf29a840f3bf9ba64060"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4174116ab9e5606093adbe5ff3c71f3747781b997bb71d7aade960de6bf98d43"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4e1d7f4e248c121f3227c2087ec74888623213059e54cf29a840f3bf9ba64060"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4174116ab9e5606093adbe5ff3c71f3747781b997bb71d7aade960de6bf98d43"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334454.461217379,
+        "evaluated_at": 3334454.978819746,
+        "canonical_arrays_sha256": "56ba0a3df92aa8d993ef518cd875b6c23f5699414703db2248d379886eb2c78b"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "ae2751e113a39fe0efb59f7f9ce0cbd8295e7b6cd4772fd2034e99e23b2f17ee"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "55db7352063107c97d0a1279117a257de2e64ca6b494923da93531c5a948cdfe"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "ae2751e113a39fe0efb59f7f9ce0cbd8295e7b6cd4772fd2034e99e23b2f17ee"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "55db7352063107c97d0a1279117a257de2e64ca6b494923da93531c5a948cdfe"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334428.717998595,
+        "evaluated_at": 3334429.245004637,
+        "canonical_arrays_sha256": "6dc55996b7187bea73501a87eacc95e6d350fe3808fd08b2a0a1b7bcea5c0d6a"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "cc76085aea096ecb82dfbc35682268b811ceeffaa4f5b926e52de416c455e4a9"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "5517d4755c1cc636fdf6a3146a100524d1ea70510c908c83a0fb1ad93c565f22"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "cc76085aea096ecb82dfbc35682268b811ceeffaa4f5b926e52de416c455e4a9"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 7,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 7
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 7
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "5517d4755c1cc636fdf6a3146a100524d1ea70510c908c83a0fb1ad93c565f22"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334398.922523405,
+        "evaluated_at": 3334399.448024155,
+        "canonical_arrays_sha256": "b59cab944fa865e96fede3f5463062456753f52f797f7d3295b681f41b1d06a4"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "f34756e4fa62113a6eabb5ec527ec1dc1543c693b8dc6dc6a6866bfc097d650f"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "7072987dc17500b0fd7c3c64e0dab9a8b9deacf7f7134df8a09e400c186eb050"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "f34756e4fa62113a6eabb5ec527ec1dc1543c693b8dc6dc6a6866bfc097d650f"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 7,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 7
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 7
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "7072987dc17500b0fd7c3c64e0dab9a8b9deacf7f7134df8a09e400c186eb050"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334373.368596479,
+        "evaluated_at": 3334373.879188171,
+        "canonical_arrays_sha256": "f87bd6c36dbfe0d4752f84f961e445b6994ad1f423a6fada0ad0978209a721d2"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "3bd47fc5689da7c1daede7c8b1e3c3282253984ab380ddf98214f4b95a7e89d6"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "8d6bf0b98b2060f373945cf2fbf4a36b5670e376f916435894efbdf5a3cd209a"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334342.64938968,
+        "evaluated_at": 3334343.147825287,
+        "canonical_arrays_sha256": "70577e235ad206bd66eb1928a4cb9f87080dc95d08507308a70edf494e27da35"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4f3c6acdee2c9af5d74cfab9518023503187ad14362fb438cbfe5df6ccf52a24"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "ff42ed8398ba5197dee7a2385f2314f327ef42b0eb3cf4714e77aa31773ac6fc"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334316.69445924,
+        "evaluated_at": 3334317.206594205,
+        "canonical_arrays_sha256": "f33292594f9d0b32d512f4245ddefa37625af794b3f0821c8dca045226c29e3a"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "dadd6cb5c44972714d1e2214b3abe6ca1f48e7a478e6da46f42c87fb5639c177"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "ad097f4ddac121a509aa0751c37cc9a0e318d862d3b364936a1b1532056dc5e9"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334286.199316473,
+        "evaluated_at": 3334286.71594447,
+        "canonical_arrays_sha256": "b41494ebb4005b5c3cace848265943f7a25dd36e1c45633648cc8d8eed59939b"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "4f4b264190bceed0a161397f9d259b883d9d2e3c3e9410e82e54909d95978212"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "eafe9572f38c93e6510543cbbc508b304863c2c9f400d85edc23446624403c2f"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 17,
+        "timestamp": 3334591.269429909,
+        "evaluated_at": 3334591.700213856,
+        "canonical_arrays_sha256": "962e6464d955873fc3d1835bca66e4f5e2438b837a14c7a0566915a4fd20277d"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "cca515bc208a721329d78be296ffdd7f3c3762510e31858ef6afe70306589194"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "9c8d14ac7b51ccf9f9dfc437ea361cbfc3a69cfd7a782936d9137679d8a9fda9"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 17,
+        "timestamp": 3334565.472549275,
+        "evaluated_at": 3334565.912201566,
+        "canonical_arrays_sha256": "7ca6f11eccaa4b34e3a5fe3c6590601dd0103788dcc2fe04c009f73b01a9b1b0"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "3f435da64b9a4f96282e71eb5f985d250e7fcca353c6dbe509a7c0514f36774f"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "3dd1bae3558dae1aae1252fae0a08f986fea427f5914d740734d08ad884f65fa"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334811.652174129,
+        "evaluated_at": 3334812.088307398,
+        "canonical_arrays_sha256": "f30452bf6f8a44ebb04f9d9c24a94968563af5545e87a92f4bdc28a794f59a47"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "9ebb6ed389e389d70fad4db691ffc75dba03556d6be8a71fc23871d614483450"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "63431c2d3e1ff189403a7f23e03f316f1a441c64d94d70f9b5579b845af41f71"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "9ebb6ed389e389d70fad4db691ffc75dba03556d6be8a71fc23871d614483450"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 197,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 197
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 92
+              },
+              "trajectory": {
+                "UNKNOWN_NEVER_OBSERVED": 105
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              },
+              "trajectory": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 476,
+                "time": 0.4019632993358497,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.3003752478825744,
+                    -0.009624750776321103,
+                    0.6450518345813522
+                  ],
+                  "radius_m": 0.0003752468825743699,
+                  "raw_radius_m": 0.00037524788257438786,
+                  "maximum_constraint_residual_m": -1.0000000000157452e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "63431c2d3e1ff189403a7f23e03f316f1a441c64d94d70f9b5579b845af41f71"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334780.94518695,
+        "evaluated_at": 3334781.439751238,
+        "canonical_arrays_sha256": "f22d1884e810b54bf2e0a7c90ecb17b974be44c84438b580f7b76238c876c4e6"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "6ed076426073ca72c5efe31f784daea7dfead2bc497e20658e27f93d117f6466"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "63caa6677e06d6b33e406aafa66054b7429aa38331fc09a86e62e25ecbb24222"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "6ed076426073ca72c5efe31f784daea7dfead2bc497e20658e27f93d117f6466"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 197,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 197
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 92
+              },
+              "trajectory": {
+                "UNKNOWN_NEVER_OBSERVED": 105
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 48,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.30007695154609637,
+                    -0.009923047112799151,
+                    0.6451371933540674
+                  ],
+                  "radius_m": 7.695054609632659e-05,
+                  "raw_radius_m": 7.695154609633942e-05,
+                  "maximum_constraint_residual_m": -1.0000000000021927e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              },
+              "trajectory": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_link5",
+                "physical_obstacle": "/World/ReactiveEvaluation/Wall",
+                "sample": 476,
+                "time": 0.4019632993358497,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.3003752478825744,
+                    -0.009624750776321103,
+                    0.6450518345813522
+                  ],
+                  "radius_m": 0.0003752468825743699,
+                  "raw_radius_m": 0.00037524788257438786,
+                  "maximum_constraint_residual_m": -1.0000000000157452e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  60,
+                  59,
+                  66
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "63caa6677e06d6b33e406aafa66054b7429aa38331fc09a86e62e25ecbb24222"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334756.20430459,
+        "evaluated_at": 3334756.642679466,
+        "canonical_arrays_sha256": "d4c23110e0036daa5c33dccf7b6b351456951da66afc7ff91f270727d812a1f7"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "22902a433a22c0349a686b6a36d3ba119291e3f21bb2c3f0b62768ddc32a6ed4"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "32f3ab17634605e54144f73c8e6c0c239d8363eeaaf577c3c32b31db29a68ac9"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334728.355090838,
+        "evaluated_at": 3334728.893528092,
+        "canonical_arrays_sha256": "484a904b8d5030d9813967427d1da29769778d7ce1b739470d804eab3ef0576b"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "a906cf8e411403968fac5ee5ce2a56e0d81c281c5d888878e3e8077b7303d7ab"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "6e6959862bf05f9debd4283a8c8af5c1adebfef911d807ab4552ac622d1db1f3"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334702.52104394,
+        "evaluated_at": 3334702.992251662,
+        "canonical_arrays_sha256": "9ef9c732e66f023906cf0f7d204b55e6e1a2b77585dffd03826d1481cbb9d22f"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "9409b01e6d27f8c09d40ed96157e8e9252ca38d282ec8432d206d7484ed5c692"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "f34a449df953cc15abfcf82a8b4335aa87463a28b11ed84904185a4d1b042cc1"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "9409b01e6d27f8c09d40ed96157e8e9252ca38d282ec8432d206d7484ed5c692"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 7,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 7
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 7
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "f34a449df953cc15abfcf82a8b4335aa87463a28b11ed84904185a4d1b042cc1"
+          }
+        }
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "execution_condition": "static",
+      "source": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334672.835567307,
+        "evaluated_at": 3334673.326252028,
+        "canonical_arrays_sha256": "7c3dad831b5cc523c4f009aaab7fdb1016aa8b13c11b0f70ea586f51c7bd4ce8"
+      },
+      "conditions": {
+        "static": {
+          "native_preexecution": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "0671f3fb8dcee58eb2aba0fa1771fb45ce07daea2ec2af14135c70be7096eed6"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "witness_pairs": 0,
+            "counts": {},
+            "phase_counts": {},
+            "first_verified_witness_by_phase": {},
+            "raw_evaluation_sha256": "68de70c8aa6e7debfa1ce871503c52acccf4f5f1b04c3ea30c62a8fe7d06fd0e"
+          }
+        },
+        "frozen_rgbd": {
+          "native_preexecution": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": false,
+            "witness_pairs": 1,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 1
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 1
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "0671f3fb8dcee58eb2aba0fa1771fb45ce07daea2ec2af14135c70be7096eed6"
+          },
+          "posthoc_complete_sampling": {
+            "evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "witness_pairs": 7,
+            "counts": {
+              "UNKNOWN_NEVER_OBSERVED": 7
+            },
+            "phase_counts": {
+              "route": {
+                "UNKNOWN_NEVER_OBSERVED": 7
+              }
+            },
+            "first_verified_witness_by_phase": {
+              "route": {
+                "classification": "UNKNOWN_NEVER_OBSERVED",
+                "robot_body": "panda_hand",
+                "physical_obstacle": "/World/ReactiveEvaluation/Post",
+                "sample": 37,
+                "time": null,
+                "verified_intersection_ball": {
+                  "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+                  "center_m": [
+                    0.49497656829384346,
+                    -0.05997656516459959,
+                    0.4799765617373325
+                  ],
+                  "radius_m": 2.3432494295897072e-05,
+                  "raw_radius_m": 2.343349429589707e-05,
+                  "maximum_constraint_residual_m": -1.000000002065565e-09,
+                  "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+                },
+                "frozen_cell_index": [
+                  79,
+                  54,
+                  49
+                ],
+                "frozen_state": "UNKNOWN",
+                "observed": false,
+                "expired": false,
+                "original_cell_last_observed": null,
+                "selected_proxy_ids": []
+              }
+            },
+            "raw_evaluation_sha256": "68de70c8aa6e7debfa1ce871503c52acccf4f5f1b04c3ea30c62a8fe7d06fd0e"
+          }
+        }
+      }
+    }
+  ],
+  "planner_world_modified": false,
+  "scope": "GT-only posthoc evaluation of verified positive-volume intersection-ball centers against the original immutable frozen RGBD occupancy and exact selected proxy boxes. Native preexecution and later complete numerical samples are distinguished. Counts are witness/body-obstacle/sample pairs, not independent collisions or a swept-volume fraction. A center in UNKNOWN or mapped FREE does not establish complete causation; selected OCCUPIED centers may indicate planner collision-model coverage limits. No GT reaches planning."
+}

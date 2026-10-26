@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "scenario": "empty",
+      "accepted_input_sha256": "0bba6b2110fc1a42b4663eca514dcbf60736de58651b3ded4de2f1f0d9262e18",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334234.006213754,
+      "rows": [],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "static",
+      "accepted_input_sha256": "de030b73e6feb89b857cea0ced69a60f2f198385300745207da36b7cf8f1abe6",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334286.199316473,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Post",
+          "original_timestamp": 3334286.199316473,
+          "frame_token": [
+            31.3,
+            15.11666745506227
+          ],
+          "potential_stride_grid_rays": 82,
+          "visible_stride_grid_returns": 82,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Post",
+          "original_timestamp": 3334286.199316473,
+          "frame_token": [
+            31.3,
+            15.11666745506227
+          ],
+          "potential_stride_grid_rays": 235,
+          "visible_stride_grid_returns": 235,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "sparse",
+      "accepted_input_sha256": "cd133325e19dd89a68f97e9e0830d80fe8b5154e1f8a244959654b50d7d32d28",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334342.64938968,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "ThinPost",
+          "original_timestamp": 3334342.64938968,
+          "frame_token": [
+            31.8,
+            15.350000800564885
+          ],
+          "potential_stride_grid_rays": 27,
+          "visible_stride_grid_returns": 27,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "ThinPost",
+          "original_timestamp": 3334342.64938968,
+          "frame_token": [
+            31.8,
+            15.350000800564885
+          ],
+          "potential_stride_grid_rays": 73,
+          "visible_stride_grid_returns": 73,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "partial",
+      "accepted_input_sha256": "f46cb09f5cddbcfcfe9f381c0e0eb1fde6ef155bd90606b90923ee08a93c4e51",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334398.922523405,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Post",
+          "original_timestamp": 3334398.922523405,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 82,
+          "visible_stride_grid_returns": 82,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Occluder",
+          "original_timestamp": 3334398.922523405,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 734,
+          "visible_stride_grid_returns": 734,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Post",
+          "original_timestamp": 3334398.922523405,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 235,
+          "visible_stride_grid_returns": 235,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Occluder",
+          "original_timestamp": 3334398.922523405,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 0,
+          "visible_stride_grid_returns": 0,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "narrow",
+      "accepted_input_sha256": "cd34d39981a000d439811031c6a41b3af131b6940202644b91484fc703ab39c9",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334454.461217379,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Left",
+          "original_timestamp": 3334454.461217379,
+          "frame_token": [
+            31.266666666666666,
+            15.083334119990468
+          ],
+          "potential_stride_grid_rays": 75,
+          "visible_stride_grid_returns": 45,
+          "occluded_stride_grid_returns": 30,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Right",
+          "original_timestamp": 3334454.461217379,
+          "frame_token": [
+            31.266666666666666,
+            15.083334119990468
+          ],
+          "potential_stride_grid_rays": 110,
+          "visible_stride_grid_returns": 110,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Left",
+          "original_timestamp": 3334454.461217379,
+          "frame_token": [
+            31.266666666666666,
+            15.083334119990468
+          ],
+          "potential_stride_grid_rays": 286,
+          "visible_stride_grid_returns": 286,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Right",
+          "original_timestamp": 3334454.461217379,
+          "frame_token": [
+            31.266666666666666,
+            15.083334119990468
+          ],
+          "potential_stride_grid_rays": 249,
+          "visible_stride_grid_returns": 249,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "large",
+      "accepted_input_sha256": "64d591c2a0c86c4ec6d6d41a6c3069aa007ab97ab0a0f5adb832438dc47a3da8",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334510.005181651,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "Wall",
+          "original_timestamp": 3334510.005181651,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 317,
+          "visible_stride_grid_returns": 317,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "Wall",
+          "original_timestamp": 3334510.005181651,
+          "frame_token": [
+            30.1,
+            14.533334091305733
+          ],
+          "potential_stride_grid_rays": 1711,
+          "visible_stride_grid_returns": 1711,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    },
+    {
+      "scenario": "v43",
+      "accepted_input_sha256": "cd9b20e25282c1df66d44a3014f309c2f76b9091179f4d7f7b140c1f487a7c56",
+      "generation": 0,
+      "original_minimum_frame_timestamp": 3334565.472549275,
+      "rows": [
+        {
+          "camera_id": "/World/PerceptionCamera",
+          "obstacle": "GlobalRouteDetourV43",
+          "original_timestamp": 3334565.472549275,
+          "frame_token": [
+            28.8,
+            13.86666738986969
+          ],
+          "potential_stride_grid_rays": 24,
+          "visible_stride_grid_returns": 24,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        },
+        {
+          "camera_id": "/World/PerceptionCameraSide",
+          "obstacle": "GlobalRouteDetourV43",
+          "original_timestamp": 3334565.472549275,
+          "frame_token": [
+            28.8,
+            13.86666738986969
+          ],
+          "potential_stride_grid_rays": 42,
+          "visible_stride_grid_returns": 42,
+          "occluded_stride_grid_returns": 0,
+          "invalid_stride_grid_returns": 0
+        }
+      ],
+      "stride": 8,
+      "depth_match_tolerance_m": 0.015,
+      "meaning": "Camera stride-grid visibility only; not the mapper ray allocation, a completed volume, or a clearance proof."
+    }
+  ],
+  "scope": "Evaluation-only known exact fixture boxes intersected with ORIGINAL retained native depth frames. Full stride8 candidate raster visibility is not the mapper shared1024 allocation, occupied-cell reconstruction, or physical clearance."
+}

@@ -1,0 +1,937 @@
+{
+  "schema_version": 1,
+  "budget": 64,
+  "source_checkpoint": "febe6670bf1e0d396712f98df40acc225ab78b17",
+  "primary_results_frozen_before_secondary": true,
+  "case_count": 14,
+  "cases": [
+    {
+      "scenario": "empty",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/empty/static-b64/result.json",
+      "result_sha256": "482464cc67d6bc979cb1400c10d7a05e6ee7893631253c8b8ee1d87d7bcff6c4",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 512,
+        "supported_voxels": 512,
+        "spatial_supported_voxels": 162,
+        "strong_sparse_retained": 350,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 501,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 437,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 501,
+        "hazard_candidate_boxes": 0,
+        "selected_floor_boxes": 64,
+        "selected_hazard_boxes": 0,
+        "represented_floor_voxels": 75,
+        "omitted_floor_voxels": 437,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011018771212548018
+      },
+      "voxel_counts": {
+        "0": 1474717,
+        "1": 97971,
+        "2": 512
+      },
+      "fixture_evidence": [],
+      "occupied_indices_sha256": "fed4a27ab7a1b647491d9e47ddb52be4c919e3b0df4264244749c06b40a16f1b",
+      "canonical_arrays_sha256": "31d6dfc3437a2568e160c0630705c1b4443ff61762930c2a17fc24aedcc011f5"
+    },
+    {
+      "scenario": "empty",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/result.json",
+      "result_sha256": "caa2ff8fe126456b42f522159aaf712d7470d57147801fc9479964f6a22eba8a",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 512,
+        "supported_voxels": 512,
+        "spatial_supported_voxels": 162,
+        "strong_sparse_retained": 350,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 501,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 437,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 501,
+        "hazard_candidate_boxes": 0,
+        "selected_floor_boxes": 64,
+        "selected_hazard_boxes": 0,
+        "represented_floor_voxels": 75,
+        "omitted_floor_voxels": 437,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011248279828578234
+      },
+      "voxel_counts": {
+        "0": 1474717,
+        "1": 97971,
+        "2": 512
+      },
+      "fixture_evidence": [],
+      "occupied_indices_sha256": "fed4a27ab7a1b647491d9e47ddb52be4c919e3b0df4264244749c06b40a16f1b",
+      "canonical_arrays_sha256": "dc9a1adb992adc53b603587a8a50afa980553221be855906aedaf20adfd8fae2"
+    },
+    {
+      "scenario": "static",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/static/static-b64/result.json",
+      "result_sha256": "1aac609f962f5b9ea0bf35c6c7c20d96831c99bac6cf0f95b056f9b65097fb64",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 537,
+        "supported_voxels": 537,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 358,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 526,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 462,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 490,
+        "hazard_candidate_boxes": 36,
+        "selected_floor_boxes": 28,
+        "selected_hazard_boxes": 36,
+        "represented_floor_voxels": 39,
+        "omitted_floor_voxels": 462,
+        "padding_m": 0.0,
+        "extract_seconds": 0.01299689570441842
+      },
+      "voxel_counts": {
+        "0": 1477369,
+        "1": 95294,
+        "2": 537
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "near_surface_or_volume_occupied_cells": 36,
+          "selected": 36,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "d2c87e42c8a09b26805786a59b362cc6adaa7a04bf766d66c9b8e62f251b0004",
+      "canonical_arrays_sha256": "b41494ebb4005b5c3cace848265943f7a25dd36e1c45633648cc8d8eed59939b"
+    },
+    {
+      "scenario": "static",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/result.json",
+      "result_sha256": "cdd824881ee86af62acd2b3a58c2f362b03094eecb43f06298ea3bb5d8ae0047",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 537,
+        "supported_voxels": 537,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 358,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 526,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 462,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 490,
+        "hazard_candidate_boxes": 36,
+        "selected_floor_boxes": 28,
+        "selected_hazard_boxes": 36,
+        "represented_floor_voxels": 39,
+        "omitted_floor_voxels": 462,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011303531937301159
+      },
+      "voxel_counts": {
+        "0": 1477369,
+        "1": 95294,
+        "2": 537
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "near_surface_or_volume_occupied_cells": 36,
+          "selected": 36,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "d2c87e42c8a09b26805786a59b362cc6adaa7a04bf766d66c9b8e62f251b0004",
+      "canonical_arrays_sha256": "f33292594f9d0b32d512f4245ddefa37625af794b3f0821c8dca045226c29e3a"
+    },
+    {
+      "scenario": "sparse",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/sparse/static-b64/result.json",
+      "result_sha256": "af3629827e6ac645deab2e89792cc47b937a5f60cf019c1f71ace2eda94724a2",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 519,
+        "supported_voxels": 519,
+        "spatial_supported_voxels": 169,
+        "strong_sparse_retained": 350,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 508,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 444,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 500,
+        "hazard_candidate_boxes": 8,
+        "selected_floor_boxes": 56,
+        "selected_hazard_boxes": 8,
+        "represented_floor_voxels": 67,
+        "omitted_floor_voxels": 444,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011471285950392485
+      },
+      "voxel_counts": {
+        "0": 1475375,
+        "1": 97306,
+        "2": 519
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/ThinPost",
+          "near_surface_or_volume_occupied_cells": 8,
+          "selected": 8,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "2dcf31a47a4f08486da91ce5d3be9b22b86ebd3bc8f7fede5d039b75e142705a",
+      "canonical_arrays_sha256": "70577e235ad206bd66eb1928a4cb9f87080dc95d08507308a70edf494e27da35"
+    },
+    {
+      "scenario": "sparse",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/result.json",
+      "result_sha256": "87a2630cf4c1bcf7434f49610da2d9ff8794ed9cda44250965f76dcd93413bf6",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 519,
+        "supported_voxels": 519,
+        "spatial_supported_voxels": 169,
+        "strong_sparse_retained": 350,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 508,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 444,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 500,
+        "hazard_candidate_boxes": 8,
+        "selected_floor_boxes": 56,
+        "selected_hazard_boxes": 8,
+        "represented_floor_voxels": 67,
+        "omitted_floor_voxels": 444,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011738514993339777
+      },
+      "voxel_counts": {
+        "0": 1475375,
+        "1": 97306,
+        "2": 519
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/ThinPost",
+          "near_surface_or_volume_occupied_cells": 8,
+          "selected": 8,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "2dcf31a47a4f08486da91ce5d3be9b22b86ebd3bc8f7fede5d039b75e142705a",
+      "canonical_arrays_sha256": "f87bd6c36dbfe0d4752f84f961e445b6994ad1f423a6fada0ad0978209a721d2"
+    },
+    {
+      "scenario": "partial",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/partial/static-b64/result.json",
+      "result_sha256": "f6ac172fbe5960d4f2f148b208fa8cc7edcfd1ce9ab2d68e4497485865398172",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 589,
+        "supported_voxels": 589,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 410,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 578,
+        "proxy_count": 64,
+        "represented_voxels": 64,
+        "omitted_voxels": 525,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 465,
+        "hazard_candidate_boxes": 113,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 476,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011148292571306229
+      },
+      "voxel_counts": {
+        "0": 1484776,
+        "1": 87835,
+        "2": 589
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "near_surface_or_volume_occupied_cells": 36,
+          "selected": 36,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "near_surface_or_volume_occupied_cells": 77,
+          "selected": 28,
+          "omitted": 49,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "2da743dad9a8b419b886a9dc5b1fa20dfd1f3caa63550755f7d486ec096a2068",
+      "canonical_arrays_sha256": "b59cab944fa865e96fede3f5463062456753f52f797f7d3295b681f41b1d06a4"
+    },
+    {
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/result.json",
+      "result_sha256": "e4575dd7a90bdd99f7ede0b3ad0dd83adea6d90fd0efdc1a7c7f8ad2a283525d",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 589,
+        "supported_voxels": 589,
+        "spatial_supported_voxels": 179,
+        "strong_sparse_retained": 410,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 578,
+        "proxy_count": 64,
+        "represented_voxels": 64,
+        "omitted_voxels": 525,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 465,
+        "hazard_candidate_boxes": 113,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 476,
+        "padding_m": 0.0,
+        "extract_seconds": 0.013903538696467876
+      },
+      "voxel_counts": {
+        "0": 1484776,
+        "1": 87835,
+        "2": 589
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "near_surface_or_volume_occupied_cells": 36,
+          "selected": 36,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "near_surface_or_volume_occupied_cells": 77,
+          "selected": 28,
+          "omitted": 49,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "2da743dad9a8b419b886a9dc5b1fa20dfd1f3caa63550755f7d486ec096a2068",
+      "canonical_arrays_sha256": "6dc55996b7187bea73501a87eacc95e6d350fe3808fd08b2a0a1b7bcea5c0d6a"
+    },
+    {
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/narrow/static-b64/result.json",
+      "result_sha256": "b26d51a1d534c16dcc01eb3ac4aa1bd5c6aa8b12b316a6219b48e701eb7ce42b",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 562,
+        "supported_voxels": 562,
+        "spatial_supported_voxels": 202,
+        "strong_sparse_retained": 360,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 550,
+        "proxy_count": 64,
+        "represented_voxels": 66,
+        "omitted_voxels": 496,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 479,
+        "hazard_candidate_boxes": 71,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 489,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011754365172237158
+      },
+      "voxel_counts": {
+        "0": 1480151,
+        "1": 92487,
+        "2": 562
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "near_surface_or_volume_occupied_cells": 34,
+          "selected": 34,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "near_surface_or_volume_occupied_cells": 39,
+          "selected": 32,
+          "omitted": 7,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "423ddb2924536f039f08adb377aa510b9263dd23078d9adbbc3ac17adcd516fe",
+      "canonical_arrays_sha256": "56ba0a3df92aa8d993ef518cd875b6c23f5699414703db2248d379886eb2c78b"
+    },
+    {
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/result.json",
+      "result_sha256": "5fbde63fc601e3e54e78fae04aa2595ea2367d4a4cd13d990eb935fa4abff296",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 562,
+        "supported_voxels": 562,
+        "spatial_supported_voxels": 202,
+        "strong_sparse_retained": 360,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 550,
+        "proxy_count": 64,
+        "represented_voxels": 66,
+        "omitted_voxels": 496,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 479,
+        "hazard_candidate_boxes": 71,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 489,
+        "padding_m": 0.0,
+        "extract_seconds": 0.012060786597430706
+      },
+      "voxel_counts": {
+        "0": 1480151,
+        "1": 92487,
+        "2": 562
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "near_surface_or_volume_occupied_cells": 34,
+          "selected": 34,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "near_surface_or_volume_occupied_cells": 39,
+          "selected": 32,
+          "omitted": 7,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "423ddb2924536f039f08adb377aa510b9263dd23078d9adbbc3ac17adcd516fe",
+      "canonical_arrays_sha256": "d90f838350889f9cfa6844e6a4ad4a6900f9557868a3817a99c2010f7e2854f4"
+    },
+    {
+      "scenario": "large",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/large/static-b64/result.json",
+      "result_sha256": "2496497f1a25fc7ebefd270cc71174f8d86158faa07e073abc4219e1aaf431de",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 617,
+        "supported_voxels": 617,
+        "spatial_supported_voxels": 239,
+        "strong_sparse_retained": 378,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 608,
+        "proxy_count": 64,
+        "represented_voxels": 67,
+        "omitted_voxels": 550,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 393,
+        "hazard_candidate_boxes": 215,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 399,
+        "padding_m": 0.0,
+        "extract_seconds": 0.013602776918560266
+      },
+      "voxel_counts": {
+        "0": 1490171,
+        "1": 82412,
+        "2": 617
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "near_surface_or_volume_occupied_cells": 218,
+          "selected": 67,
+          "omitted": 151,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "d82524df3d2579bf4d9817bc28ac0631748fcaf5819d4bbbbcf71db36b72ce94",
+      "canonical_arrays_sha256": "5110720e9381a69296922576564e299ca20272fe249b3e235f35c9b1b02cde82"
+    },
+    {
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/result.json",
+      "result_sha256": "ed28beceae232c765868f85b2e8a89b3c91d3c28911fdc5d7aa7ff3fabf5b9e5",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure": null
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+        "frozen_rgbd": "VETO_PREDICTED_PHYSICAL_COLLISION"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 617,
+        "supported_voxels": 617,
+        "spatial_supported_voxels": 239,
+        "strong_sparse_retained": 378,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 608,
+        "proxy_count": 64,
+        "represented_voxels": 67,
+        "omitted_voxels": 550,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 393,
+        "hazard_candidate_boxes": 215,
+        "selected_floor_boxes": 0,
+        "selected_hazard_boxes": 64,
+        "represented_floor_voxels": 0,
+        "omitted_floor_voxels": 399,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011610856745392084
+      },
+      "voxel_counts": {
+        "0": 1490171,
+        "1": 82412,
+        "2": 617
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "near_surface_or_volume_occupied_cells": 218,
+          "selected": 67,
+          "omitted": 151,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "d82524df3d2579bf4d9817bc28ac0631748fcaf5819d4bbbbcf71db36b72ce94",
+      "canonical_arrays_sha256": "c91a277b8e349bb57fea059f40eaab3050067b1fe4962df26119e4689b089bfa"
+    },
+    {
+      "scenario": "v43",
+      "execution_condition": "static",
+      "result_artifact": "outputs/motion-planning-v5/primary64/v43/static-b64/result.json",
+      "result_sha256": "8886910b10d01253002cb7f18c814176d60ff457b026bacb9843353f462cbeaa",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "success",
+      "packet": {
+        "occupied_voxels": 516,
+        "supported_voxels": 516,
+        "spatial_supported_voxels": 165,
+        "strong_sparse_retained": 351,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 505,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 441,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 498,
+        "hazard_candidate_boxes": 7,
+        "selected_floor_boxes": 57,
+        "selected_hazard_boxes": 7,
+        "represented_floor_voxels": 68,
+        "omitted_floor_voxels": 441,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011422805022448301
+      },
+      "voxel_counts": {
+        "0": 1473796,
+        "1": 98888,
+        "2": 516
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+          "near_surface_or_volume_occupied_cells": 7,
+          "selected": 7,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "86e3671ddfcb68df9dd4113e9c377207343e5e9a9d5110e70f07168f618e020c",
+      "canonical_arrays_sha256": "7ca6f11eccaa4b34e3a5fe3c6590601dd0103788dcc2fe04c009f73b01a9b1b0"
+    },
+    {
+      "scenario": "v43",
+      "execution_condition": "frozen_rgbd",
+      "result_artifact": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/result.json",
+      "result_sha256": "8ec24ea38c70a9cec0eadf4acb75a0af838fe56c94522f51958731f576a750dd",
+      "status": "PASS",
+      "plans": {
+        "static": {
+          "success": true,
+          "failure": null
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure": "base_geometry_rejected"
+        }
+      },
+      "physical": {
+        "static": "ALLOW_SAMPLED_NUMERIC_CLEARANCE"
+      },
+      "native_result": "failed",
+      "packet": {
+        "occupied_voxels": 516,
+        "supported_voxels": 516,
+        "spatial_supported_voxels": 165,
+        "strong_sparse_retained": 351,
+        "temporal_probabilities": true,
+        "temporal_support_probability": 0.95,
+        "rejected_sparse_voxels": 0,
+        "candidate_boxes": 505,
+        "proxy_count": 64,
+        "represented_voxels": 75,
+        "omitted_voxels": 441,
+        "run_budget_omitted_voxels": 0,
+        "truncated": true,
+        "max_obstacles": 64,
+        "minimum_component_voxels": 3,
+        "support_radius_voxels": 2,
+        "support_neighborhood": "Chebyshev",
+        "support_plane_z": 0.0,
+        "floor_candidate_boxes": 498,
+        "hazard_candidate_boxes": 7,
+        "selected_floor_boxes": 57,
+        "selected_hazard_boxes": 7,
+        "represented_floor_voxels": 68,
+        "omitted_floor_voxels": 441,
+        "padding_m": 0.0,
+        "extract_seconds": 0.011117214802652597
+      },
+      "voxel_counts": {
+        "0": 1473796,
+        "1": 98888,
+        "2": 516
+      },
+      "fixture_evidence": [
+        {
+          "path": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+          "near_surface_or_volume_occupied_cells": 7,
+          "selected": 7,
+          "omitted": 0,
+          "qualification": "Independent exact box expanded by one10mm cell; evidence attribution, not solid reconstruction"
+        }
+      ],
+      "occupied_indices_sha256": "86e3671ddfcb68df9dd4113e9c377207343e5e9a9d5110e70f07168f618e020c",
+      "canonical_arrays_sha256": "962e6464d955873fc3d1835bca66e4f5e2438b837a14c7a0566915a4fd20277d"
+    }
+  ]
+}

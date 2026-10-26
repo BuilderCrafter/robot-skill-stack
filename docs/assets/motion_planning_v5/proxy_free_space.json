@@ -1,0 +1,1488 @@
+{
+  "schema_version": 1,
+  "status": "FINITE_QUADRATURE_EVALUATED",
+  "method": {
+    "selected_geometry": "Exact archived worker-selected occupied-cell cuboid descriptors; no new extraction or dense occupancy read",
+    "probes_per_cuboid_axis": 4,
+    "probes_per_cuboid": 64,
+    "normalized_interior_coordinates": [
+      0.125,
+      0.375,
+      0.625,
+      0.875
+    ],
+    "volume_weights": "cuboid_volume/64 per probe",
+    "physical_scene": "Union of declared native-captured analytic fixture cuboids, analytic physical support halfspace, and all11 copied PhysX-cooked robot body convex hulls transformed by ORIGINAL actual_start_body_poses from the same request",
+    "hull_method": "scipy.spatial.ConvexHull.equations, normalized outward facet normals; exact numeric copied hull vertices",
+    "ambiguity_band_m": 1e-07,
+    "point_partition": "OCCUPIED if strictly inside any solid by more than band; BOUNDARY if not OCCUPIED and within band of any facet maximum/physical plane; FREE otherwise",
+    "all_gt_reference_data_evaluation_only": true,
+    "planning_world_changed": false,
+    "fixture_distance": "Existing convex_distance_details GJK; at most128 iterations/query,1e-9m convergence tolerance; unresolved errors retain conservative AABB lower and vertex-pair upper bounds"
+  },
+  "trial_count": 20,
+  "primary64_trials": 14,
+  "diagnostic128_trials": 6,
+  "total_probes": 106496,
+  "all_probe_partitions_complete": true,
+  "all_gjk_fixture_queries_converged": false,
+  "rows": [
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2688,
+        "occupied": 1408,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 5.1000000000000074e-05,
+        "occupied": 2.4e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.6800000000000004,
+        "occupied": 0.31999999999999973,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 43,
+      "boxes_with_all_free_probes": 41,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 0,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 20,
+        "timestamp": 3334261.562890264
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/result.json",
+          "sha256": "caa2ff8fe126456b42f522159aaf712d7470d57147801fc9479964f6a22eba8a"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/occupancy.json",
+          "sha256": "2ca130591c0c3fe0a94765026bf265f199b1a34692448192ccd70ac7965711d2"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "b92c51a716f26360be9b90faf2366a55bd892e8b448aff54db23aed08d5285ed"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "6fbf9765dea9356c44056addbcc79b6cddf4184c6ca8ad475ab4ff8f7f3d1042"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": []
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2688,
+        "occupied": 1408,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 5.1000000000000074e-05,
+        "occupied": 2.4e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.6800000000000004,
+        "occupied": 0.31999999999999973,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 43,
+      "boxes_with_all_free_probes": 41,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 0,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 20,
+        "timestamp": 3334234.006213754
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/empty/static-b64/result.json",
+          "sha256": "482464cc67d6bc979cb1400c10d7a05e6ee7893631253c8b8ee1d87d7bcff6c4"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/empty/static-b64/occupancy.json",
+          "sha256": "678a88da2aeceda44259965acfa727443d86cd9fb7c2e7765711d0e5d65bfbdb"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/empty/static-b64/geometry_reference.json",
+          "sha256": "b92c51a716f26360be9b90faf2366a55bd892e8b448aff54db23aed08d5285ed"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/empty/static-b64/motion_payloads.json",
+          "sha256": "6fbf9765dea9356c44056addbcc79b6cddf4184c6ca8ad475ab4ff8f7f3d1042"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": []
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 1440,
+        "occupied": 2656,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.699999999999965e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 2.300000000000003e-05,
+        "occupied": 4.399999999999962e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.3432835820895545,
+        "occupied": 0.6567164179104455,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 23,
+      "boxes_with_all_free_probes": 22,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334540.994368739
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/result.json",
+          "sha256": "ed28beceae232c765868f85b2e8a89b3c91d3c28911fdc5d7aa7ff3fabf5b9e5"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/occupancy.json",
+          "sha256": "bfac30cdefde8fcca27855f43bac81656383a69f66164d3b21b195bc23dfb975"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "43d7fd4be1996e3648b61cda632e2bc2c178a795d222a11776ca1d395c3cbc36"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2516784214709243e-17,
+          "minimum_distance_interval_width_m": 1.2516784214709243e-17,
+          "closest_upper_bound_cuboid_id": "63:64:70:71:39:40",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 17,
+          "unresolved_reasons": [
+            "RuntimeError: GJK repeated support without a valid distance certificate"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 1440,
+        "occupied": 2656,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.699999999999965e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 2.300000000000003e-05,
+        "occupied": 4.399999999999962e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.3432835820895545,
+        "occupied": 0.6567164179104455,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 23,
+      "boxes_with_all_free_probes": 22,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334510.005181651
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/large/static-b64/result.json",
+          "sha256": "2496497f1a25fc7ebefd270cc71174f8d86158faa07e073abc4219e1aaf431de"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/large/static-b64/occupancy.json",
+          "sha256": "1f90dfd1e5d25f7b74be6f0fb0a82167ebeb606ff46ee55e68c6d6c6fb0ffd07"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/large/static-b64/geometry_reference.json",
+          "sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/large/static-b64/motion_payloads.json",
+          "sha256": "43d7fd4be1996e3648b61cda632e2bc2c178a795d222a11776ca1d395c3cbc36"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2516784214709243e-17,
+          "minimum_distance_interval_width_m": 1.2516784214709243e-17,
+          "closest_upper_bound_cuboid_id": "63:64:70:71:39:40",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 17,
+          "unresolved_reasons": [
+            "RuntimeError: GJK repeated support without a valid distance certificate"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 768,
+        "occupied": 3328,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.600000000000003e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 1.2000000000000005e-05,
+        "occupied": 5.4000000000000025e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.18181818181818182,
+        "occupied": 0.8181818181818181,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 12,
+      "boxes_with_all_free_probes": 12,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334482.350894434
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/result.json",
+          "sha256": "5fbde63fc601e3e54e78fae04aa2595ea2367d4a4cd13d990eb935fa4abff296"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/occupancy.json",
+          "sha256": "0657789372440d81c673470234d8e6369ad2d87b9b8b62f2efebcae0df386334"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "43fae270b84d0551a1e21c28714d5de96cea33ae453819e2735b5f8cd3ed3aa7"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1924252457720941e-17,
+          "minimum_distance_interval_width_m": 1.1924252457720941e-17,
+          "closest_upper_bound_cuboid_id": "63:64:58:59:45:46",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.8303439293869117e-18,
+          "minimum_distance_interval_width_m": 1.8303439293869117e-18,
+          "closest_upper_bound_cuboid_id": "86:87:66:67:25:26",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 768,
+        "occupied": 3328,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.600000000000003e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 1.2000000000000005e-05,
+        "occupied": 5.4000000000000025e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.18181818181818182,
+        "occupied": 0.8181818181818181,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 12,
+      "boxes_with_all_free_probes": 12,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334454.461217379
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/result.json",
+          "sha256": "b26d51a1d534c16dcc01eb3ac4aa1bd5c6aa8b12b316a6219b48e701eb7ce42b"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/occupancy.json",
+          "sha256": "8ddfb9931aaea894115d194ca74d5b778b4b77d4965d9be51266e6ae93e2ea35"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/geometry_reference.json",
+          "sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/motion_payloads.json",
+          "sha256": "43fae270b84d0551a1e21c28714d5de96cea33ae453819e2735b5f8cd3ed3aa7"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1924252457720941e-17,
+          "minimum_distance_interval_width_m": 1.1924252457720941e-17,
+          "closest_upper_bound_cuboid_id": "63:64:58:59:45:46",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.8303439293869117e-18,
+          "minimum_distance_interval_width_m": 1.8303439293869117e-18,
+          "closest_upper_bound_cuboid_id": "86:87:66:67:25:26",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 864,
+        "occupied": 3232,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.399999999999996e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 1.349999999999995e-05,
+        "occupied": 5.0499999999999994e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.21093749999999936,
+        "occupied": 0.7890625000000004,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 22,
+      "boxes_with_all_free_probes": 5,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334428.717998595
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/result.json",
+          "sha256": "e4575dd7a90bdd99f7ede0b3ad0dd83adea6d90fd0efdc1a7c7f8ad2a283525d"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/occupancy.json",
+          "sha256": "b13d94ab2363827eeb0861685b4c64d70bc6267f593eb41753a32d48828b0cce"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "b56adc0bd0210c3eae178702bef5b7ef1b5276916836fabbc6d002357fdac4e9"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2267346840886949e-17,
+          "minimum_distance_interval_width_m": 1.2267346840886949e-17,
+          "closest_upper_bound_cuboid_id": "105:106:15:16:75:76",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 1,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.3573513642180842"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 864,
+        "occupied": 3232,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 6.399999999999996e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 1.349999999999995e-05,
+        "occupied": 5.0499999999999994e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.21093749999999936,
+        "occupied": 0.7890625000000004,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 22,
+      "boxes_with_all_free_probes": 5,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334398.922523405
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/partial/static-b64/result.json",
+          "sha256": "f6ac172fbe5960d4f2f148b208fa8cc7edcfd1ce9ab2d68e4497485865398172"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/partial/static-b64/occupancy.json",
+          "sha256": "da8feca176e0318f01c0f51dca4a20cdebca3d438949b52b0fd2bc825cb2ef35"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/partial/static-b64/geometry_reference.json",
+          "sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/partial/static-b64/motion_payloads.json",
+          "sha256": "b56adc0bd0210c3eae178702bef5b7ef1b5276916836fabbc6d002357fdac4e9"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2267346840886949e-17,
+          "minimum_distance_interval_width_m": 1.2267346840886949e-17,
+          "closest_upper_bound_cuboid_id": "105:106:15:16:75:76",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 1,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.3573513642180842"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2672,
+        "occupied": 1424,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 5.075000000000007e-05,
+        "occupied": 2.4250000000000003e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.676666666666667,
+        "occupied": 0.32333333333333314,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 45,
+      "boxes_with_all_free_probes": 40,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334373.368596479
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/result.json",
+          "sha256": "87a2630cf4c1bcf7434f49610da2d9ff8794ed9cda44250965f76dcd93413bf6"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/occupancy.json",
+          "sha256": "9fe9e6d3c58306604dcbaad130f76d9ca0e4bf14d4f8abec375bae025527b9ff"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "4fefb149e34951bc2c32e55203190e0cbcecde384a42a9559ecd35430cbaa1ef"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "5bface70a7db1287b5e3c074ff3e34e2e70f8acf0fd4073a099fb69159673ac4"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/ThinPost",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1452711399517055e-17,
+          "minimum_distance_interval_width_m": 1.1452711399517055e-17,
+          "closest_upper_bound_cuboid_id": "73:74:59:60:39:40",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2672,
+        "occupied": 1424,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 5.075000000000007e-05,
+        "occupied": 2.4250000000000003e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.676666666666667,
+        "occupied": 0.32333333333333314,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 45,
+      "boxes_with_all_free_probes": 40,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334342.64938968
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/result.json",
+          "sha256": "af3629827e6ac645deab2e89792cc47b937a5f60cf019c1f71ace2eda94724a2"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/occupancy.json",
+          "sha256": "809dffd10095c5ea11a5b61786be5c8721915e26be9e47abb108f6d929ab8cf0"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/geometry_reference.json",
+          "sha256": "4fefb149e34951bc2c32e55203190e0cbcecde384a42a9559ecd35430cbaa1ef"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/motion_payloads.json",
+          "sha256": "5bface70a7db1287b5e3c074ff3e34e2e70f8acf0fd4073a099fb69159673ac4"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/ThinPost",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1452711399517055e-17,
+          "minimum_distance_interval_width_m": 1.1452711399517055e-17,
+          "closest_upper_bound_cuboid_id": "73:74:59:60:39:40",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 1632,
+        "occupied": 2464,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.499999999999995e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 3.449999999999998e-05,
+        "occupied": 4.0499999999999975e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.46,
+        "occupied": 0.54,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 35,
+      "boxes_with_all_free_probes": 16,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334316.69445924
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/result.json",
+          "sha256": "cdd824881ee86af62acd2b3a58c2f362b03094eecb43f06298ea3bb5d8ae0047"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/occupancy.json",
+          "sha256": "c29f2b949ce5c1a792156ce3bf0c13ae4f6c5b20122994429828d79b996ce104"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "84190d1a5afe93db63f0a479d4ef5dafe8b10c735e8fef60df7c463931f899e5"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "5aabba6d3f3759aa70b31caa526c3f5a13aa9ec33bb8c491af0dd5c9951a76cd"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 1632,
+        "occupied": 2464,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.499999999999995e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 3.449999999999998e-05,
+        "occupied": 4.0499999999999975e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.46,
+        "occupied": 0.54,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 35,
+      "boxes_with_all_free_probes": 16,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334286.199316473
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/static/static-b64/result.json",
+          "sha256": "1aac609f962f5b9ea0bf35c6c7c20d96831c99bac6cf0f95b056f9b65097fb64"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/static/static-b64/occupancy.json",
+          "sha256": "f6edf31fb1234d922f6304e9bdb6c85ad2c37979df12459be0123424d2075a25"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/static/static-b64/geometry_reference.json",
+          "sha256": "84190d1a5afe93db63f0a479d4ef5dafe8b10c735e8fef60df7c463931f899e5"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/static/static-b64/motion_payloads.json",
+          "sha256": "5aabba6d3f3759aa70b31caa526c3f5a13aa9ec33bb8c491af0dd5c9951a76cd"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "execution_condition": "frozen_rgbd",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2592,
+        "occupied": 1504,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.9500000000000065e-05,
+        "occupied": 2.5499999999999996e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.6600000000000004,
+        "occupied": 0.3399999999999997,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 43,
+      "boxes_with_all_free_probes": 38,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 17,
+        "timestamp": 3334591.269429909
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/result.json",
+          "sha256": "8ec24ea38c70a9cec0eadf4acb75a0af838fe56c94522f51958731f576a750dd"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/occupancy.json",
+          "sha256": "677ad1742baa17530d4356797f6ad4aa90ce3e819802024edf98625a397edb5c"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/geometry_reference.json",
+          "sha256": "dab6b4fb58f816a1690a23584cb92dfa9b17f32570d36360f57d7495460c8836"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/motion_payloads.json",
+          "sha256": "2c11193be23186bbe0fd25a62a26b15ec19aee32c1afd5f09f5d2eeabbc15564"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 4.613456216392257e-18,
+          "minimum_distance_interval_width_m": 4.613456216392257e-18,
+          "closest_upper_bound_cuboid_id": "87:88:40:41:26:27",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "execution_condition": "static",
+      "budget": 64,
+      "selected_boxes": 64,
+      "probe_count": 4096,
+      "probe_counts": {
+        "free": 2592,
+        "occupied": 1504,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 7.500000000000006e-05,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.9500000000000065e-05,
+        "occupied": 2.5499999999999996e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.6600000000000004,
+        "occupied": 0.3399999999999997,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 43,
+      "boxes_with_all_free_probes": 38,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 17,
+        "timestamp": 3334565.472549275
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/primary64/v43/static-b64/result.json",
+          "sha256": "8886910b10d01253002cb7f18c814176d60ff457b026bacb9843353f462cbeaa"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/primary64/v43/static-b64/occupancy.json",
+          "sha256": "05d5d941d3b726b4c5c07412914bfd1405cf65e157214cf61f9e12061c885ad6"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/primary64/v43/static-b64/geometry_reference.json",
+          "sha256": "dab6b4fb58f816a1690a23584cb92dfa9b17f32570d36360f57d7495460c8836"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/primary64/v43/static-b64/motion_payloads.json",
+          "sha256": "2c11193be23186bbe0fd25a62a26b15ec19aee32c1afd5f09f5d2eeabbc15564"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+          "selected_cuboid_queries": 64,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 4.613456216392257e-18,
+          "minimum_distance_interval_width_m": 4.613456216392257e-18,
+          "closest_upper_bound_cuboid_id": "87:88:40:41:26:27",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 2912,
+        "occupied": 5280,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00013099999999999934,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.600000000000007e-05,
+        "occupied": 8.499999999999926e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.35114503816794124,
+        "occupied": 0.6488549618320587,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 46,
+      "boxes_with_all_free_probes": 45,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334811.652174129
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/result.json",
+          "sha256": "6373a3f3b288c4839b20d01d29807d1f6d748c82f35f655b2b41c2ddb3f0b912"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/occupancy.json",
+          "sha256": "6656f48886d0c0c45a89b0fdc0f2ce5a69c3409bf7cef00f0afaf041bee9b988"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/geometry_reference.json",
+          "sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/motion_payloads.json",
+          "sha256": "0a1d0ed4c76bc9f27d978de0e7fcf3e56b5cd336d6e78cc6fd1a21a31cbfd8ee"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2516784214709243e-17,
+          "minimum_distance_interval_width_m": 1.2516784214709243e-17,
+          "closest_upper_bound_cuboid_id": "63:64:70:71:39:40",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 40,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.0",
+            "RuntimeError: GJK repeated support without a valid distance certificate"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "execution_condition": "static",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 2912,
+        "occupied": 5280,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00013099999999999934,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.600000000000007e-05,
+        "occupied": 8.499999999999926e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.35114503816794124,
+        "occupied": 0.6488549618320587,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 46,
+      "boxes_with_all_free_probes": 45,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 1,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334780.94518695
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/result.json",
+          "sha256": "49d2773bcfa9991ee9106eb3210ecaf4bbaeab24f469cc0573b0d1bd6c92889d"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/occupancy.json",
+          "sha256": "e576d1fc41437f8511402f6a7c6239bef8dc9b8157a0f4d94ddab7fb546ecd0c"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/geometry_reference.json",
+          "sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/motion_payloads.json",
+          "sha256": "0a1d0ed4c76bc9f27d978de0e7fcf3e56b5cd336d6e78cc6fd1a21a31cbfd8ee"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Wall",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.2516784214709243e-17,
+          "minimum_distance_interval_width_m": 1.2516784214709243e-17,
+          "closest_upper_bound_cuboid_id": "63:64:70:71:39:40",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 40,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.0",
+            "RuntimeError: GJK repeated support without a valid distance certificate"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 3584,
+        "occupied": 4608,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00014000000000000004,
+      "quadrature_estimated_volume_m3": {
+        "free": 6.400000000000006e-05,
+        "occupied": 7.600000000000003e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.45714285714285746,
+        "occupied": 0.5428571428571429,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 57,
+      "boxes_with_all_free_probes": 55,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334756.20430459
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/result.json",
+          "sha256": "87c1a0506861a24ea6309eef306b62c460528b20d8f1f21c16da153040036ade"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/occupancy.json",
+          "sha256": "febd31a087ac492f89989dfe5661c010c0f24c609d12dad3145e26b18fb76d5b"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/geometry_reference.json",
+          "sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/motion_payloads.json",
+          "sha256": "6fbf9765dea9356c44056addbcc79b6cddf4184c6ca8ad475ab4ff8f7f3d1042"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1924252457720941e-17,
+          "minimum_distance_interval_width_m": 1.1924252457720941e-17,
+          "closest_upper_bound_cuboid_id": "63:64:58:59:45:46",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.8303439293869117e-18,
+          "minimum_distance_interval_width_m": 1.8303439293869117e-18,
+          "closest_upper_bound_cuboid_id": "86:87:66:67:25:26",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 3584,
+        "occupied": 4608,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00014000000000000004,
+      "quadrature_estimated_volume_m3": {
+        "free": 6.400000000000006e-05,
+        "occupied": 7.600000000000003e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.45714285714285746,
+        "occupied": 0.5428571428571429,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 57,
+      "boxes_with_all_free_probes": 55,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334728.355090838
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/result.json",
+          "sha256": "162dd25dec2b3188c473df36c1263c78d882abd9fb06aefe19c172f4a0109912"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/occupancy.json",
+          "sha256": "fcdd3b2438fb829d476e6ed467bb2ab89be2bdf098670ee5d55a52e58790826a"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/geometry_reference.json",
+          "sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/motion_payloads.json",
+          "sha256": "6fbf9765dea9356c44056addbcc79b6cddf4184c6ca8ad475ab4ff8f7f3d1042"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Left",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.1924252457720941e-17,
+          "minimum_distance_interval_width_m": 1.1924252457720941e-17,
+          "closest_upper_bound_cuboid_id": "63:64:58:59:45:46",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Right",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 1.8303439293869117e-18,
+          "minimum_distance_interval_width_m": 1.8303439293869117e-18,
+          "closest_upper_bound_cuboid_id": "86:87:66:67:25:26",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 2336,
+        "occupied": 5856,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00013900000000000002,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.5499999999999995e-05,
+        "occupied": 9.350000000000001e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.3273381294964028,
+        "occupied": 0.6726618705035972,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 46,
+      "boxes_with_all_free_probes": 27,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334702.52104394
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/result.json",
+          "sha256": "ced27f635a561e1a1e89a61170923fff430817fb4cf66bc165ae4c9a1d68bd84"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/occupancy.json",
+          "sha256": "4247ccff9d495aea82d6420356afabe1d893daf98ba91d98d76d3ebfc49f7fd9"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/geometry_reference.json",
+          "sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/motion_payloads.json",
+          "sha256": "b56adc0bd0210c3eae178702bef5b7ef1b5276916836fabbc6d002357fdac4e9"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 7.757919228897728e-18,
+          "minimum_distance_interval_width_m": 7.757919228897728e-18,
+          "closest_upper_bound_cuboid_id": "112:113:29:30:64:65",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 1,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.3573513642180842"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "execution_condition": "static",
+      "budget": 128,
+      "selected_boxes": 128,
+      "probe_count": 8192,
+      "probe_counts": {
+        "free": 2336,
+        "occupied": 5856,
+        "boundary": 0
+      },
+      "total_selected_cuboid_volume_m3": 0.00013900000000000002,
+      "quadrature_estimated_volume_m3": {
+        "free": 4.5499999999999995e-05,
+        "occupied": 9.350000000000001e-05,
+        "boundary": 0.0
+      },
+      "quadrature_estimated_volume_fraction": {
+        "free": 0.3273381294964028,
+        "occupied": 0.6726618705035972,
+        "boundary": 0.0
+      },
+      "boxes_with_any_free_probe": 46,
+      "boxes_with_all_free_probes": 27,
+      "boxes_with_ambiguous_probe": 0,
+      "original_native_robot_body_count": 11,
+      "physical_fixture_count": 2,
+      "known_support_plane_count": 1,
+      "paired_payloads_original_native_body_poses_equal": true,
+      "source_identity": {
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334672.835567307
+      },
+      "input_artifacts": {
+        "result": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/result.json",
+          "sha256": "4f0c1a47d74b6f93cf16d171caa6cbd2ec309f39bd0ce1f79e9d329aaa1eb6fc"
+        },
+        "selected_packet": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/occupancy.json",
+          "sha256": "b41c6cf4ec4deb92b57422801ef8cf4b8180bf9061ad9e10e6aa62e0c6a5fdd1"
+        },
+        "physical_geometry": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/geometry_reference.json",
+          "sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb"
+        },
+        "original_native_initial_poses": {
+          "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/motion_payloads.json",
+          "sha256": "b56adc0bd0210c3eae178702bef5b7ef1b5276916836fabbc6d002357fdac4e9"
+        }
+      },
+      "per_fixture_minimum_selected_cuboid_distance": [
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 7.757919228897728e-18,
+          "minimum_distance_interval_width_m": 7.757919228897728e-18,
+          "closest_upper_bound_cuboid_id": "112:113:29:30:64:65",
+          "all_gjk_queries_converged": false,
+          "unresolved_queries": 1,
+          "unresolved_reasons": [
+            "RuntimeError: GJK did not converge within 128 iterations; last lower bound 0.3573513642180842"
+          ],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "selected_cuboid_queries": 128,
+          "minimum_distance_lower_bound_m": 0.0,
+          "minimum_distance_upper_bound_m": 3.602423855278284e-18,
+          "minimum_distance_interval_width_m": 3.602423855278284e-18,
+          "closest_upper_bound_cuboid_id": "76:77:65:66:49:50",
+          "all_gjk_queries_converged": true,
+          "unresolved_queries": 0,
+          "unresolved_reasons": [],
+          "interpretation": "Unsigned convex-solid distance interval; zero lower bound is not a penetration certificate. Unresolved queries retain AABB lower/vertex-pair upper bounds."
+        }
+      ]
+    }
+  ],
+  "calculation_script_sha256": "e956b8eaedc45c5691d4bacb5c90e9488eb46e10543a836d59f91d00f648407b",
+  "qualification": [
+    "Fractions and volumes are finite4x4x4 interior quadrature estimates of selected proxy space relative to this declared numeric physical scene at the original native start pose. They are not exact overlap volumes, continuous certificates or a whole-object false-positive rate.",
+    "The ambiguity band applies to signed facet/plane residuals. Boundary probes are retained separately and never counted as verified physical FREE.",
+    "A cuboid intersecting an observed physical surface can contain substantial physical FREE volume; zero wholly-free cuboids would not imply zero free-space intrusion.",
+    "Robot initial bodies use recorded native PhysX poses, not FK, later final poses, or source-inferred robot occupancy. Cooked hull fidelity, contact/rest offsets and unmodeled scene geometry remain limitations.",
+    "GJK distances describe numeric selected cuboid convex solids versus complete physical fixture boxes; zero distance bounds do not establish positive-volume penetration.",
+    "GT references, native body poses and these classifications enter evaluation only and never alter planning geometry or execution."
+  ]
+}

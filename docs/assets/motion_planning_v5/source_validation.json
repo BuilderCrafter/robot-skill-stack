@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "unit_test_source_inventory",
+  "scope": "Read-only mapping of implemented checks to existing unit-test assertions. This artifact is not a test-execution receipt or a native source-failure injection result.",
+  "execution_status": {
+    "tests_run_to_create_this_artifact": false,
+    "unit_assertions": "Test definitions and implementation were inspected; consult final validation receipts for executed suite outcomes.",
+    "native_failure_injection": "Not assessed by this inventory. Native scene measurement PASS, planner success, physical validity and fault-injection coverage are separate claims."
+  },
+  "implementation": {
+    "capture": "robot_skill_stack/world/spatial_mapping/frozen.py::capture_frozen_rgbd",
+    "geometry": "robot_skill_stack/world/spatial_mapping/frozen.py::_boxes",
+    "camera_identity": "robot_skill_stack/world/spatial_mapping/frozen.py::_camera_metadata",
+    "source_translation": "robot_skill_stack/integrations/isaac/manipulation/motion/frozen_rgbd.py::capture_frozen_rgbd_world",
+    "support": "robot_skill_stack/integrations/isaac/manipulation/motion/frozen_rgbd.py::capture_known_support",
+    "world_translation": "robot_skill_stack/integrations/isaac/manipulation/motion/frozen_rgbd.py::planning_world_from_frozen",
+    "strategy": "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py::GlobalRrtStrategy.move_to_pose_async",
+    "configuration": "robot_skill_stack/integrations/isaac/config.py::MotionConfig,SceneConfig",
+    "publication": "robot_skill_stack/world/spatial_mapping/runtime.py::MappingService.poll,snapshot,note_source_failure,reset,close"
+  },
+  "source_failure_cases": [
+    {
+      "case": "mapping_disabled",
+      "failure": "planning_source_disabled; incompatible frozen-RGB-D SceneConfig also raises ValueError",
+      "check": "capture requires settings.enabled is True; configuration requires enabled Spatial Mapping",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_disabled_wrong_source_and_missing_filter_fail_without_fallback",
+        "tests.unit.test_motion_config.MotionConfigTests.test_frozen_rgbd_global_requires_enabled_rgbd_automatic_filter"
+      ]
+    },
+    {
+      "case": "service_unavailable",
+      "failure": "planning_source_unavailable",
+      "check": "Absent service or failed provider access rejects capture before known-support access",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_disabled_wrong_source_and_missing_filter_fail_without_fallback",
+        "tests.unit.test_global_frozen_rgbd_v5.SourceAdapterTests.test_rejected_source_retains_distinct_reason_and_never_reads_known_support"
+      ]
+    },
+    {
+      "case": "wrong_mapping_source_or_missing_robot_filter",
+      "failure": "planning_source_wrong_source or planning_source_filter_required; incompatible configuration raises ValueError",
+      "check": "Configured source must be rgbd; automatic robot filtering must be enabled and accepted filter diagnostics ready for every exposure",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_disabled_wrong_source_and_missing_filter_fail_without_fallback",
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_robot_filter_and_camera_identity_mismatch_are_not_accepted",
+        "tests.unit.test_motion_config.MotionConfigTests.test_frozen_rgbd_global_requires_enabled_rgbd_automatic_filter"
+      ]
+    },
+    {
+      "case": "no_accepted_mapping_publication_or_missing_prepared_packet",
+      "failure": "planning_source_no_publication",
+      "check": "An original publication timestamp and matching prepared worker ObstaclePacket are required",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_no_accepted_publication_cannot_be_an_empty_planning_world",
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_packet_missing_and_zero_usable_evidence_are_explicit_source_failures"
+      ]
+    },
+    {
+      "case": "stale_or_future_original_timestamp",
+      "failure": "planning_source_stale",
+      "check": "Original acquisition timestamp is finite, nonnegative, not future-dated and younger than min(stale_after,max_frame_age); never refreshed to capture time",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_stale_and_future_original_timestamps_are_not_refreshed",
+        "tests.unit.test_global_frozen_rgbd_v5.SourceAdapterTests.test_rejected_source_retains_distinct_reason_and_never_reads_known_support"
+      ]
+    },
+    {
+      "case": "mapping_generation_changed_before_snapshot_acceptance",
+      "failure": "planning_source_generation_changed",
+      "check": "Current service generation must match the captured view before and after bounded acceptance checks",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_generation_change_during_capture_is_rejected_before_acceptance"
+      ]
+    },
+    {
+      "case": "snapshot_packet_revision_generation_or_timestamp_mismatch",
+      "failure": "planning_source_product_mismatch",
+      "check": "Worker packet and occupancy view must identify the same generation, revision and original timestamp",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_packet_revision_generation_and_timestamp_must_match_one_publication"
+      ]
+    },
+    {
+      "case": "selected_occupied_evidence_expired_at_capture",
+      "failure": "planning_source_expired_evidence",
+      "check": "Every selected cuboid's original oldest-cell expiry must be strictly later than the fixed capture time, even when the publication timestamp remains fresh",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_selected_evidence_expiry_rejects_even_when_source_timestamp_is_fresh"
+      ]
+    },
+    {
+      "case": "mapping_worker_failure",
+      "failure": "planning_source_unhealthy; captured health.reason=worker_failure",
+      "check": "Authoritative failed worker health blocks older otherwise fresh evidence",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_worker_failure_and_camera_failure_are_authoritative_over_old_fresh_evidence"
+      ]
+    },
+    {
+      "case": "camera_acquisition_failure",
+      "failure": "planning_source_unhealthy; captured health.reason=acquisition_failure",
+      "check": "MappingService.note_source_failure invalidates pending work and marks authoritative source health error",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_worker_failure_and_camera_failure_are_authoritative_over_old_fresh_evidence"
+      ]
+    },
+    {
+      "case": "no_frame_or_closed_mapping_service_before_capture",
+      "failure": "planning_source_unhealthy",
+      "check": "Initial acceptance requires captured health.status=ok and fresh=True; no_frame and closed cannot borrow an old fresh world",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_no_new_frame_and_closed_service_are_not_initially_healthy"
+      ]
+    },
+    {
+      "case": "snapshot_with_no_usable_selected_occupied_evidence",
+      "failure": "planning_source_no_usable_evidence",
+      "check": "A valid but empty selected packet is rejected rather than treated as proof of an empty physical scene",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_packet_missing_and_zero_usable_evidence_are_explicit_source_failures"
+      ]
+    },
+    {
+      "case": "prepared_budget_mismatch",
+      "failure": "planning_source_budget_mismatch",
+      "check": "The worker extraction maximum must equal the selected bound; no truncation, repacking or relabeling between64 and128",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_wrong_budget_is_not_silently_truncated_or_repacked"
+      ]
+    },
+    {
+      "case": "malformed_duplicate_overlapping_or_expanded_geometry",
+      "failure": "planning_source_invalid_product",
+      "check": "Canonical cell bounds, exact center/dimensions, integer voxel counts, unique IDs, disjoint selected cells and consistent worker accounting are required",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_duplicate_cuboids_and_inflated_voxel_dimensions_fail_closed",
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_distinct_ids_must_not_double_count_overlapping_occupied_cells"
+      ]
+    },
+    {
+      "case": "known_support_unavailable_or_invalid",
+      "failure": "planning_source_support",
+      "check": "Only the exact allowlisted enabled static Plane collider and its certified domain may be appended after source acceptance",
+      "tests": [
+        "tests.unit.test_global_frozen_rgbd_v5.SourceAdapterTests.test_support_failure_has_its_own_source_diagnostic",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_fixture_cube_named_like_floor_is_rejected_instead_of_leaking_geometry",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_unknown_plane_name_or_missing_domain_cannot_expand_support_allowlist"
+      ]
+    }
+  ],
+  "lifecycle_cases": [
+    {
+      "case": "stopped_or_closed_before_source_access",
+      "failure": "lifecycle_invalidated; no source access, planner construction or arm commands",
+      "tests": [
+        "tests.unit.test_global_frozen_rgbd_v5.FrozenExecutionTests.test_stopped_or_closed_strategy_does_not_touch_source"
+      ]
+    },
+    {
+      "case": "stop_during_source_acceptance",
+      "failure": "lifecycle_invalidated after capture and before planner construction; zero arm commands",
+      "tests": [
+        "tests.unit.test_global_frozen_rgbd_v5.FrozenExecutionTests.test_stop_during_source_acceptance_fails_before_creating_planner"
+      ]
+    },
+    {
+      "case": "stop_reset_or_invalid_handle_during_execution",
+      "failure": "lifecycle_invalidated; suppress stale hold commands, release planner and restore solver scope",
+      "tests": [
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_stop_reset_or_handle_invalidation_prevents_stale_hold",
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_close_during_execution_restores_scope_once_and_prevents_stale_hold"
+      ]
+    },
+    {
+      "case": "task_cancellation_during_execution",
+      "failure": "asyncio.CancelledError propagates; strategy cancelled; final stationary hold and planner/solver cleanup",
+      "tests": [
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_cancellation_propagates_and_holds_last_arm_target"
+      ]
+    },
+    {
+      "case": "mapping_changes_after_successful_capture",
+      "failure": "No new source failure is consumed by the active static plan; snapshot identity remains frozen. This does not override Stop/reset of the robot/runtime.",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_later_map_publications_reset_or_close_cannot_change_frozen_world",
+        "tests.unit.test_global_frozen_rgbd_v5.FrozenExecutionTests.test_mapping_publications_failure_and_reset_after_capture_cannot_refresh_active_world"
+      ]
+    }
+  ],
+  "boundary_contracts": [
+    {
+      "contract": "exactly_one_existing_clock_and_snapshot_no_dense_owner_processing",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_capture_uses_one_service_clock_and_snapshot_without_dense_access_or_extraction",
+        "tests.unit.test_global_frozen_rgbd_v5.SourceAdapterTests.test_actual_worker_publication_is_translated_once_and_retained_after_source_reset"
+      ]
+    },
+    {
+      "contract": "immutable_original_camera_identity_world_and_fixed_time_queries",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_real_worker_metadata_retains_original_camera_exposure_and_calibration",
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_metadata_box_and_camera_buffers_are_deeply_immutable",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_exact_camera_box_preserves_world_meters_ids_boundaries_and_source_time"
+      ]
+    },
+    {
+      "contract": "exact_boundary_cells_no_inflation_and_no_silent_floor_removal",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_short_boundary_voxel_dimensions_are_preserved_exactly",
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_support_priority_does_not_silently_remove_selected_camera_cells"
+      ]
+    },
+    {
+      "contract": "UNKNOWN_FREE_OCCUPIED_OUT_OF_BOUNDS_remain_distinct",
+      "tests": [
+        "tests.unit.test_frozen_rgbd_world.FrozenRgbdWorldTests.test_unknown_free_occupied_and_out_of_bounds_remain_distinct",
+        "tests.unit.test_global_rgbd_evaluation_v5.OccupancyExposureTests.test_unknown_and_oob_are_not_relabelled_free"
+      ]
+    },
+    {
+      "contract": "no_GT_scene_traversal_or_fixture_geometry_in_known_support",
+      "support_allowlist": ["/World/GroundPlane/CollisionPlane"],
+      "tests": [
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_known_support_never_traverses_or_reads_fixture_prims",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_broad_gt_snapshot_cannot_be_substituted_for_known_support",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_fixture_cube_named_like_floor_is_rejected_instead_of_leaking_geometry"
+      ]
+    },
+    {
+      "contract": "source_failure_never_creates_GT_empty_world_or_direct_fallback",
+      "tests": [
+        "tests.unit.test_global_frozen_rgbd_v5.FrozenExecutionTests.test_source_failure_issues_no_arm_commands_or_planner_fallback",
+        "tests.unit.test_global_rgbd_v5_pair.MatchedPairTests.test_source_rejection_remains_a_source_error_without_substituting_gt_into_camera_plan",
+        "tests.unit.test_lula_global.LulaGlobalTests.test_exhausted_search_has_no_direct_or_trajectory_fallback"
+      ]
+    },
+    {
+      "contract": "late_binding_one_mapper_and_existing_static_default",
+      "tests": [
+        "tests.unit.test_motion_composition.MotionCompositionTests.test_frozen_global_provider_is_late_bound_and_never_resolved_at_construction",
+        "tests.unit.test_motion_composition.MotionCompositionTests.test_frozen_global_missing_provider_rejects_before_backend_resources",
+        "tests.unit.test_motion_composition.MotionCompositionTests.test_frozen_global_enables_existing_worker_product_without_second_mapper",
+        "tests.unit.test_motion_config.MotionConfigTests.test_global_obstacle_source_defaults_static_and_rejects_implicit_fallbacks",
+        "tests.unit.test_global_frozen_rgbd_v5.NumericSourceTests.test_existing_static_serialization_stays_camera_free"
+      ]
+    },
+    {
+      "contract": "unchanged_gripper_payload_and_post_plan_validation_barriers",
+      "tests": [
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_enhanced_range_is_checked_before_capture_and_stock_stays_available",
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_enhanced_fingers_changed_during_planning_reject_before_commands",
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_gripper_change_during_execution_stops_at_measured_arm_and_restores_solver",
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_payload_or_uncertain_grasp_rejected_without_planning",
+        "tests.unit.test_global_motion_strategy.GlobalMotionTests.test_planning_failures_never_apply_an_arm_command"
+      ]
+    },
+    {
+      "contract": "research_counterplan_and_physical_veto_stay_outside_RGBD_world",
+      "tests": [
+        "tests.unit.test_global_rgbd_v5_pair.MatchedPairTests.test_same_start_uses_distinct_worlds_and_only_validated_joint_goal_crosses_boundary",
+        "tests.unit.test_global_rgbd_v5_pair.MatchedPairTests.test_rgbd_selected_world_never_recaptures_and_physical_veto_retains_planner_success",
+        "tests.unit.test_global_rgbd_evaluation_v5.PhysicalVetoTests.test_positive_volume_collision_is_veto_not_rgbd_avoidance",
+        "tests.unit.test_global_rgbd_evaluation_v5.OccupancyExposureTests.test_rejected_source_archive_does_not_manufacture_a_world_or_fk"
+      ]
+    }
+  ],
+  "coverage_limits": [
+    "Tests listed here use SDK-free synthetic fixtures, fakes or actual SDK-free mapping workers; they do not by themselves establish native hardware behavior or physical safety.",
+    "The invalid_clock and invalid_budget rejection branches exist in capture_frozen_rgbd; no dedicated direct-capture test for those two branches is claimed by this inventory.",
+    "No dedicated Stop/reset injection inside synchronous native Lula search is claimed here. Existing checks revalidate lifecycle after planning; listed unit cases exercise before capture, during source acceptance, cancellation and execution invalidation.",
+    "Immutability after mapping reset does not authorize execution after a robot/runtime reset; executor lifecycle checks remain authoritative.",
+    "UNKNOWN traversal and bounded cuboid omissions remain possible; passing boundary tests does not establish complete scene reconstruction or continuous collision-free motion."
+  ]
+}

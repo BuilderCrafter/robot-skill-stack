@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "status": "PREDECLARED_GEOMETRIC_PREFLIGHT_PASSED_NO_CANDIDATE_RRT",
+  "candidate_name": "verified_partial_occlusion_v1",
+  "purpose": "Separately labeled secondary diagnostic; original seven primary64 scenarios and all diagnostic128 results are retained unchanged.",
+  "candidate_geometry": [
+    {
+      "path": "/World/ReactiveEvaluation/Post",
+      "center_m": [
+        0.45,
+        0.0,
+        0.35
+      ],
+      "dimensions_m": [
+        0.09,
+        0.12,
+        0.26
+      ],
+      "orientation_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "path": "/World/ReactiveEvaluation/Occluder",
+      "center_m": [
+        0.79,
+        -0.015,
+        0.4
+      ],
+      "dimensions_m": [
+        0.08,
+        0.4,
+        0.4
+      ],
+      "orientation_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "camera_conditions": "Original two authored cameras and accepted native640x480 START exposure calibration; no camera movement, new frame capture, render, RRT, controller command, or scene change in this preflight.",
+  "source_artifacts": {
+    "original_native_result": {
+      "path": "outputs/motion-planning-v5/primary64/static/static-b64/result.json",
+      "sha256": "1aac609f962f5b9ea0bf35c6c7c20d96831c99bac6cf0f95b056f9b65097fb64"
+    },
+    "accepted_mapping_input": {
+      "path": "outputs/motion-planning-v5/primary64/static/static-b64/accepted_mapping_input.pickle",
+      "sha256": "de030b73e6feb89b857cea0ced69a60f2f198385300745207da36b7cf8f1abe6"
+    },
+    "physical_geometry": {
+      "path": "outputs/motion-planning-v5/primary64/static/static-b64/geometry_reference.json",
+      "sha256": "84190d1a5afe93db63f0a479d4ef5dafe8b10c735e8fef60df7c463931f899e5"
+    },
+    "original_native_initial_pose_context": {
+      "path": "outputs/motion-planning-v5/primary64/static/static-b64/motion_payloads.json",
+      "sha256": "5aabba6d3f3759aa70b31caa526c3f5a13aa9ec33bb8c491af0dd5c9951a76cd"
+    },
+    "urdf": {
+      "path": "/home/etfrobotics/isaacsim/exts/isaacsim.robot_motion.motion_generation/path_planner_configs/franka/rrt/../../../motion_policy_configs/franka/lula_franka_gen.urdf",
+      "sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6"
+    }
+  },
+  "source_sha256": {
+    "scripts/evaluate_global_rgbd_v5.py": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+    "scripts/audit_rejected_ik_v4_2.py": "2777d80cdb3590a24a7ea5465733f4908fa86be78324c08c24e54fa2042d4b22",
+    "scripts/obstacle_representation_v3_cylinder.py": "e791414876337077abea06e6ac54930991209cb06cbec6a174593a589f48e262",
+    "scripts/global_rgbd_v5_protocol.py": "41e4dd08509e76419d315abe2c20a2063c141160fcfec35f221a61443abd32a3"
+  },
+  "numeric_environment": {
+    "numpy": "1.26.4",
+    "scipy": "1.15.3"
+  },
+  "checks": {
+    "original_post_visible_in_both_native_frames": true,
+    "main_camera_partially_occluded": true,
+    "side_camera_unoccluded": true,
+    "no_ambiguous_optical_depth_order": true,
+    "all11_original_native_robot_bodies_retained": true,
+    "complete_scene_initial_physical_clearance_accepted": true,
+    "new_occluder_initial_physical_clearance_accepted": true,
+    "independent_native_pose_fk_alignment_passed": true,
+    "candidate_rrt_calls_before_protocol_freeze_zero": true,
+    "native_sdk_construction_guard_passed": true
+  },
+  "optical_method": {
+    "pixel_centers": "(x+.5,y+.5) on original stride8 grid; optical-depth parameterized rays transformed by captured world_from_camera",
+    "reference": "Analytic ray/AABB entry for unchanged Post and proposed new Occluder",
+    "depth_order_ambiguity_m": 1e-07,
+    "original_native_depth_match_tolerance_m": 0.015,
+    "qualification": "Counterfactual geometric line-of-sight preflight using retained native calibration; new rendered occlusion and mapping evidence still require a separately labeled native capture. These are not mapper ray-budget counts or observed new-scene returns."
+  },
+  "optical_counts": [
+    {
+      "camera_id": "/World/PerceptionCamera",
+      "original_frame_token": [
+        31.3,
+        15.11666745506227
+      ],
+      "original_acquisition_timestamp": 3334286.199316473,
+      "depth_shape": [
+        480,
+        640
+      ],
+      "stride": 8,
+      "stride_grid_rays": 4800,
+      "potential_post_stride_rays": 82,
+      "original_native_depth_matches_post": 82,
+      "would_be_occluded_post_rays": 62,
+      "would_remain_unoccluded_post_rays": 20,
+      "ambiguous_occlusion_depth_order_rays": 0,
+      "would_be_occluded_fraction": 0.7560975609756098,
+      "native_post_visible_rays_would_be_occluded": 62,
+      "native_post_visible_rays_would_remain": 20
+    },
+    {
+      "camera_id": "/World/PerceptionCameraSide",
+      "original_frame_token": [
+        31.3,
+        15.11666745506227
+      ],
+      "original_acquisition_timestamp": 3334286.199316473,
+      "depth_shape": [
+        480,
+        640
+      ],
+      "stride": 8,
+      "stride_grid_rays": 4800,
+      "potential_post_stride_rays": 235,
+      "original_native_depth_matches_post": 235,
+      "would_be_occluded_post_rays": 0,
+      "would_remain_unoccluded_post_rays": 235,
+      "ambiguous_occlusion_depth_order_rays": 0,
+      "would_be_occluded_fraction": 0.0,
+      "native_post_visible_rays_would_be_occluded": 0,
+      "native_post_visible_rays_would_remain": 235
+    }
+  ],
+  "zero_motion_physical_preflight": {
+    "complete_declared_scene": {
+      "schema_version": 1,
+      "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+      "planner_world_modified": false,
+      "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "alignment": {
+        "maximum_translation_error_m": 3.032360257732049e-07,
+        "maximum_rotation_matrix_error": 3.148733415721944e-07,
+        "passed": true,
+        "frame_allowance_m": 1e-05,
+        "rotation_matrix_allowance": 1e-05
+      },
+      "total_samples": 2,
+      "evaluated_samples": 2,
+      "phases_requested": {
+        "route": 1,
+        "trajectory": 1
+      },
+      "phases_evaluated": {
+        "route": 1,
+        "trajectory": 1
+      },
+      "queries": 66,
+      "broadphase_separations": 44,
+      "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+      "minimum_nonmount_clearance_lower_bound_m": 0.018235050017446353,
+      "collision_witnesses": [],
+      "unresolved": [],
+      "self_evaluated": false,
+      "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+      "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+      "samples_complete": true,
+      "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+      "execution_allowed": true,
+      "elapsed_seconds": 0.0025367452763020992
+    },
+    "new_occluder_only": {
+      "schema_version": 1,
+      "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+      "planner_world_modified": false,
+      "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+      "alignment": {
+        "maximum_translation_error_m": 3.032360257732049e-07,
+        "maximum_rotation_matrix_error": 3.148733415721944e-07,
+        "passed": true,
+        "frame_allowance_m": 1e-05,
+        "rotation_matrix_allowance": 1e-05
+      },
+      "total_samples": 2,
+      "evaluated_samples": 2,
+      "phases_requested": {
+        "route": 1,
+        "trajectory": 1
+      },
+      "phases_evaluated": {
+        "route": 1,
+        "trajectory": 1
+      },
+      "queries": 22,
+      "broadphase_separations": 22,
+      "minimum_external_clearance_lower_bound_m": 0.26938478534326327,
+      "minimum_nonmount_clearance_lower_bound_m": 0.26938478534326327,
+      "collision_witnesses": [],
+      "unresolved": [],
+      "self_evaluated": false,
+      "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+      "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+      "samples_complete": true,
+      "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+      "execution_allowed": true,
+      "elapsed_seconds": 0.0016140257939696312
+    },
+    "zero_motion_payload": {
+      "route_samples": 1,
+      "trajectory_samples": 1,
+      "times": [
+        0.0
+      ],
+      "initial_feedback_and_body_poses": "Original native START recorded context; no new FK-derived initial body pose substituted"
+    },
+    "scope": "All11 cooked body solids with measured fixed fingers; external known fixtures plus physical support for complete scene. No independent self-collision evaluation or future trajectory safety claim."
+  },
+  "candidate_RRT_calls_before_freeze": 0,
+  "candidate_fixture_revision_after_RRT_allowed": false,
+  "original_primary64_changed": false,
+  "original_diagnostic128_changed": false,
+  "qualification": [
+    "Initial positive sampled physical clearance and partial optical occlusion are prerequisites only; they do not establish candidate path feasibility, planner success, continuous motion safety, rendered visibility, or successful mapping.",
+    "Candidate geometry is frozen before any new candidate RRT call. Native rendering and planning results must use a new secondary diagnostic label and must not replace primary outcomes.",
+    "GT geometry is used only to declare physical test actors and evaluate the experiment; no GT obstacle geometry is supplied to frozen RGB-D planning.",
+    "Complete-scene minimum clearance retains the mounted base/support separation; the new-occluder-only lower bound is recorded separately."
+  ]
+}

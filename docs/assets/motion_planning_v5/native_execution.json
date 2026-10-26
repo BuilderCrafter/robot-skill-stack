@@ -1,0 +1,2646 @@
+{
+  "schema_version": 1,
+  "status": "AUDIT_PASS_WITH_LIMITED_RGBD_COMPLETION",
+  "meaning": "Read-only scalar/result and exact command audit. PASS measurement is separate from planned path acceptance, independent veto, native target completion, and strict zero-report success.",
+  "summary": {
+    "primary_trials": 14,
+    "diagnostic128_trials": 6,
+    "primary_gt_successes": 7,
+    "primary_rgbd_successes": 1,
+    "primary_rgbd_failures": 6,
+    "primary_moving_trials": 8,
+    "all_cohort_moving_trials": 11,
+    "all_runtime_closed": true,
+    "all_strategies_closed": true,
+    "all_ownership_released": true,
+    "all_physics_coverage_complete": true,
+    "all_executed_tgs_requested_32_255": true,
+    "all_executed_solver_opinions_restored": true,
+    "all_zero_active_world_refreshes": true,
+    "all_one_selected_source_capture": true,
+    "all_observed_physical_contact_steps_zero": true,
+    "all_executed_final_holds": true,
+    "all_executed_native_targets_within_original_tolerances": true,
+    "all_failed_selected_requests_issue_zero_observed_arm_actions": true,
+    "all_measurement_status_pass": true,
+    "all_no_internal_runtime_error_contracts": true
+  },
+  "runtime_manifests": {
+    "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c": {
+      "entries": 248,
+      "critical": {
+        "robot_skill_stack/integrations/isaac/manipulation/motion/global_rrt.py": "7c1bb77a8c292cd4604d1d0b0b74f2b18e0206948b3cf02d0d0c44139da5c964",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/global_solver.py": "83f133fc1ffb7d089218c843385a1b0ad1698638d84231631060976be90cbf4e",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/lula_global.py": "ec8c5c4b2f9c4b579fd43cf0f6f227ea0ac04a10ac3bf3b8ff2f85c9d5e0a445",
+        "robot_skill_stack/integrations/isaac/manipulation/motion/frozen_rgbd.py": "e27f38fd3be2a5e91e34b74b37ec1ab2e4bf460f889dca7fa9875899c28babe9",
+        "scripts/global_rgbd_v5_pair.py": "6fe8739ff4b2d0dfa255cfd8f727d70f746feb9b659a94f92038f9a2d7bfc1c3",
+        "scripts/benchmark_global_rgbd_v5.py": "5ea9b9042d7a48b3f833d3ef6ea1f265212a5a08d75488717f48cc1779139809"
+      }
+    }
+  },
+  "rows": [
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/result.json",
+        "sha256": "caa2ff8fe126456b42f522159aaf712d7470d57147801fc9479964f6a22eba8a"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "b91bd36c60835a24f69756af3c3ea278f7815b9140d0df17678c67e374555640"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "empty",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/empty/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "base_geometry_rejected",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 969,
+            "last": 969,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.1409647748077474
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.1409647345550782,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": false,
+        "failure_code": "base_geometry_rejected"
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "empty",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/empty/static-b64/result.json",
+        "sha256": "482464cc67d6bc979cb1400c10d7a05e6ee7893631253c8b8ee1d87d7bcff6c4"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/empty/static-b64/motion_trace.json",
+        "sha256": "b084f27d69be9ccf1b183cc2b39fe2cc92fcf2e81770b9085adabe15a094a7b7"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "empty",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/empty/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/empty/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 87,
+            "first": 960,
+            "last": 1046,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.14096465560337218
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.1409647345550782,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/result.json",
+        "sha256": "ed28beceae232c765868f85b2e8a89b3c91d3c28911fdc5d7aa7ff3fabf5b9e5"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "8af16a0166171bc64c62b84c347ada7eeda7a16e68e8cfcc0be42e53a0275107"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "large",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/large/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "research_physical_veto",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 921,
+            "last": 921,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04349861605125192
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 882,
+          "evaluated_samples": 882,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 955,
+          "evaluated_samples": 49,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "large",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/large/static-b64/result.json",
+        "sha256": "2496497f1a25fc7ebefd270cc71174f8d86158faa07e073abc4219e1aaf431de"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/large/static-b64/motion_trace.json",
+        "sha256": "78d4232fcaa56a1a9b0f3aa80f77cce945270b5565df02175806b034a61e84aa"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "large",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/large/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/large/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0008452851523117995,
+          "orientation_error_rad": 0.0028841129377113746,
+          "maximum_actual_joint_displacement_rad": 1.5177174806594849,
+          "action_count": 160,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 159,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 160,
+            "first": 926,
+            "last": 1085,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 4,
+            "reported_pairs": 3,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.023148320615291595,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.023148320530149504
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 882,
+          "evaluated_samples": 882,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 955,
+          "evaluated_samples": 49,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/result.json",
+        "sha256": "5fbde63fc601e3e54e78fae04aa2595ea2367d4a4cd13d990eb935fa4abff296"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "0c0a8d539032ceb4689014f9e9a4a1e18af3874060d8eaa767879957542a6ee3"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "narrow",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/narrow/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 87,
+            "first": 962,
+            "last": 1048,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 44,
+            "reported_pairs": 12,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.014435973018407822,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.01443594730190756
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "narrow",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/result.json",
+        "sha256": "b26d51a1d534c16dcc01eb3ac4aa1bd5c6aa8b12b316a6219b48e701eb7ce42b"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/narrow/static-b64/motion_trace.json",
+        "sha256": "77d45982317ad4f41dd7d05b0e98e97c69079931e0e9ee09dc59c062512de7ca"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "narrow",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/narrow/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/narrow/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 87,
+            "first": 949,
+            "last": 1035,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 44,
+            "reported_pairs": 12,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.014435973018407822,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.01443594730190756
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/result.json",
+        "sha256": "e4575dd7a90bdd99f7ede0b3ad0dd83adea6d90fd0efdc1a7c7f8ad2a283525d"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "71e61f06c2c916e89e88b3a2572bb3f09898f8de82f2a24596a8633ec9203752"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "partial",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/partial/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "research_physical_veto",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 962,
+            "last": 962,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04233694710861646
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 466,
+          "evaluated_samples": 38,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "partial",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/partial/static-b64/result.json",
+        "sha256": "f6ac172fbe5960d4f2f148b208fa8cc7edcfd1ce9ab2d68e4497485865398172"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/partial/static-b64/motion_trace.json",
+        "sha256": "ae5b1168faa3c49934fd16bb81e4677a7c94cd890e4aea455441c5a0c3ec96e7"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "partial",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/partial/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/partial/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009416623811485178,
+          "orientation_error_rad": 0.0024968004007449494,
+          "maximum_actual_joint_displacement_rad": 1.3511797189712524,
+          "action_count": 164,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 163,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 164,
+            "first": 913,
+            "last": 1076,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.028213134745305204
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 466,
+          "evaluated_samples": 38,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/result.json",
+        "sha256": "87a2630cf4c1bcf7434f49610da2d9ff8794ed9cda44250965f76dcd93413bf6"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "5b3c29adf098d39a06358b9a5692dca2eda53197592b58777d98a2dede6ceb10"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "sparse",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/sparse/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "base_geometry_rejected",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 970,
+            "last": 970,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.08971403891954842
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 1108,
+          "evaluated_samples": 1108,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0005825779335806441,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": false,
+        "failure_code": "base_geometry_rejected"
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "sparse",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/result.json",
+        "sha256": "af3629827e6ac645deab2e89792cc47b937a5f60cf019c1f71ace2eda94724a2"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/sparse/static-b64/motion_trace.json",
+        "sha256": "16d57e8c0b6084b238d64e2c8bab1b013989d299b67024bf128c6a99d82d8b94"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "sparse",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/sparse/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/sparse/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.000970177346428213,
+          "orientation_error_rad": 0.0025509189336387797,
+          "maximum_actual_joint_displacement_rad": 1.7215901017189026,
+          "action_count": 188,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 187,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 188,
+            "first": 964,
+            "last": 1151,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 15,
+            "reported_pairs": 6,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.013567976653575897,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.01356616417248699
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 1108,
+          "evaluated_samples": 1108,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0005825779335806441,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/result.json",
+        "sha256": "cdd824881ee86af62acd2b3a58c2f362b03094eecb43f06298ea3bb5d8ae0047"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "18f960ff18d478847cb971a2425645a5c50c16c4fe6a93057266d090d62dfd8a"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "static",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/static/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "base_geometry_rejected",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 967,
+            "last": 967,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04233694710861646
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": false,
+        "failure_code": "base_geometry_rejected"
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "static",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/static/static-b64/result.json",
+        "sha256": "1aac609f962f5b9ea0bf35c6c7c20d96831c99bac6cf0f95b056f9b65097fb64"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/static/static-b64/motion_trace.json",
+        "sha256": "8b71e6acc894b6568aec212bacf1d08a3852b126ef6898b83400f649ccb035d2"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "static",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/static/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/static/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009416623811485178,
+          "orientation_error_rad": 0.0024968004007449494,
+          "maximum_actual_joint_displacement_rad": 1.3511797189712524,
+          "action_count": 164,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 163,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 164,
+            "first": 955,
+            "last": 1118,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.028213134745305204
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "selected_source": "frozen_rgbd",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/result.json",
+        "sha256": "8ec24ea38c70a9cec0eadf4acb75a0af838fe56c94522f51958731f576a750dd"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/motion_trace.json",
+        "sha256": "9e8ccca8e0592bcec7d1a89cdfa19c1d0fc7337d452408b2bdc15c1405175c18"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "v43",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/v43/frozen_rgbd-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.221013148626189,
+          "orientation_error_rad": 0.6015632598190308,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "base_geometry_rejected",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 875,
+            "last": 875,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.05883505911019724
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 286,
+          "evaluated_samples": 286,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.013304683812538055,
+          "alignment": {
+            "maximum_translation_error_m": 2.6828582156623423e-07,
+            "maximum_rotation_matrix_error": 4.1428474861771036e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": false,
+        "failure_code": "base_geometry_rejected"
+      }
+    },
+    {
+      "cohort": "primary64",
+      "scenario": "v43",
+      "selected_source": "static",
+      "budget": 64,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/primary64/v43/static-b64/result.json",
+        "sha256": "8886910b10d01253002cb7f18c814176d60ff457b026bacb9843353f462cbeaa"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/primary64/v43/static-b64/motion_trace.json",
+        "sha256": "0107788ff0cfa3e281f77cf5db1c288a200e4dc75aee11a84b1d5ff8dec172ee"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "v43",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "64",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/primary64/v43/static-b64",
+        "--result",
+        "outputs/motion-planning-v5/primary64/v43/static-b64/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0010601430998975457,
+          "orientation_error_rad": 0.0016997776122312466,
+          "maximum_actual_joint_displacement_rad": 1.0289399325847626,
+          "action_count": 78,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 77,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 78,
+            "first": 874,
+            "last": 951,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.015922272221248483
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 286,
+          "evaluated_samples": 286,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.013304683812538055,
+          "alignment": {
+            "maximum_translation_error_m": 2.6828582156623423e-07,
+            "maximum_rotation_matrix_error": 4.1428474861771036e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "selected_source": "frozen_rgbd",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/result.json",
+        "sha256": "6373a3f3b288c4839b20d01d29807d1f6d748c82f35f655b2b41c2ddb3f0b912"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/motion_trace.json",
+        "sha256": "b03acdf6f064901267f7f4e35569820fef99c3d6660e87b6e8b74710999d220d"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "large",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "research_physical_veto",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 930,
+            "last": 930,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04349861605125192
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 882,
+          "evaluated_samples": 882,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 952,
+          "evaluated_samples": 49,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "large",
+      "selected_source": "static",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/result.json",
+        "sha256": "49d2773bcfa9991ee9106eb3210ecaf4bbaeab24f469cc0573b0d1bd6c92889d"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/large/static-b128/motion_trace.json",
+        "sha256": "42d9c31b520e3c7ceb1914c3d81528a34d07715b85dea93d0029751189f24caf"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "large",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/large/static-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/large/static-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0008452851523117995,
+          "orientation_error_rad": 0.0028841129377113746,
+          "maximum_actual_joint_displacement_rad": 1.5177174806594849,
+          "action_count": 160,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 159,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 160,
+            "first": 949,
+            "last": 1108,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 4,
+            "reported_pairs": 3,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.023148320615291595,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.023148320530149504
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 882,
+          "evaluated_samples": 882,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 952,
+          "evaluated_samples": 49,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "selected_source": "frozen_rgbd",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/result.json",
+        "sha256": "87c1a0506861a24ea6309eef306b62c460528b20d8f1f21c16da153040036ade"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/motion_trace.json",
+        "sha256": "680a51b002b7b6129c0be3192f81376f261040ef097e505286ca47bb3a3168f8"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "narrow",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "base_geometry_rejected",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 965,
+            "last": 965,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04424319442409638
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": false,
+        "failure_code": "base_geometry_rejected"
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "narrow",
+      "selected_source": "static",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/result.json",
+        "sha256": "162dd25dec2b3188c473df36c1263c78d882abd9fb06aefe19c172f4a0109912"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/motion_trace.json",
+        "sha256": "d0c6b3d747b8fec69e1fe765617fee515a96ebba7aa870ec69a2c4ef3e5c1672"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "narrow",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/narrow/static-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/narrow/static-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009896916369831444,
+          "orientation_error_rad": 0.002203610972778534,
+          "maximum_actual_joint_displacement_rad": 1.1071349382400513,
+          "action_count": 87,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 86,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 87,
+            "first": 957,
+            "last": 1043,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 44,
+            "reported_pairs": 12,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": 0.014435973018407822,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "contact_offset_proximity",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.01443594730190756
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 384,
+          "evaluated_samples": 384,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "selected_source": "frozen_rgbd",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/result.json",
+        "sha256": "ced27f635a561e1a1e89a61170923fff430817fb4cf66bc165ae4c9a1d68bd84"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/motion_trace.json",
+        "sha256": "d238c79990b05e17aa5321283f3a8ff3aa97e37624e28423df981cac35e4da07"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "partial",
+        "--execution-condition",
+        "frozen_rgbd",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "failed",
+        "failure_code": "path_blocked",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution"
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {},
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": false,
+          "measured_full_pose_within_tolerances": false,
+          "position_error_m": 0.48363846455981807,
+          "orientation_error_rad": 0.01514796489102461,
+          "maximum_actual_joint_displacement_rad": 0.0,
+          "action_count": 0,
+          "observed_physical_contact_steps": 0,
+          "strict_success": false,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": null,
+          "failure_code": "research_physical_veto",
+          "final_hold": false,
+          "execution_solver": {},
+          "physics_step_coverage": {
+            "unique_steps": 1,
+            "first": 963,
+            "last": 963,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.04233694710861646
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 466,
+          "evaluated_samples": 38,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    },
+    {
+      "cohort": "diagnostic128",
+      "scenario": "partial",
+      "selected_source": "static",
+      "budget": 128,
+      "measurement_status": "PASS",
+      "contracts": {
+        "runtime_closed": true,
+        "source_unchanged": true,
+        "no_internal_runtime_error": true,
+        "all11_cooked_bodies": true,
+        "frozen_scene": true
+      },
+      "result": {
+        "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/result.json",
+        "sha256": "4f0c1a47d74b6f93cf16d171caa6cbd2ec309f39bd0ce1f79e9d329aaa1eb6fc"
+      },
+      "motion_trace": {
+        "path": "outputs/motion-planning-v5/diagnostic128/partial/static-b128/motion_trace.json",
+        "sha256": "1e44b745ad8679694b0b743e14d41d8544ad11fa0bffc703ca65f778cddcde4a"
+      },
+      "command": [
+        "./run_isaac_python.sh",
+        "scripts/benchmark_global_rgbd_v5.py",
+        "--scenario",
+        "partial",
+        "--execution-condition",
+        "static",
+        "--budget",
+        "128",
+        "--headless",
+        "--artifacts-dir",
+        "outputs/motion-planning-v5/diagnostic128/partial/static-b128",
+        "--result",
+        "outputs/motion-planning-v5/diagnostic128/partial/static-b128/result.json"
+      ],
+      "runtime_manifest_sha256": "73f0746175fd1b0c9611ca590878b25d4ebe64b9cfb71ea7c285fafead9d4a9c",
+      "selected_result": {
+        "status": "success",
+        "failure_code": null,
+        "message": "End effector reached target pose."
+      },
+      "matched_joint_goal": true,
+      "matched_start_and_physics_instant": true,
+      "runtime_closed": true,
+      "strategy_closed": true,
+      "strategy_state_after_close": "closed",
+      "arm_motion_active_after": false,
+      "planning_source_captures": 1,
+      "active_world_obstacle_refreshes": 0,
+      "final_solver": {
+        "solver_type": "TGS",
+        "requested_position_iterations_before": 32,
+        "requested_position_iterations_during": 255,
+        "changed": true,
+        "original_session_opinion_restored": true,
+        "count_provenance": "USD requested count; native effective island count is not read here"
+      },
+      "operations": [
+        {
+          "label": "outward",
+          "cancelled": false,
+          "returned_success": true,
+          "measured_full_pose_within_tolerances": true,
+          "position_error_m": 0.0009416623811485178,
+          "orientation_error_rad": 0.0024968004007449494,
+          "maximum_actual_joint_displacement_rad": 1.3511797189712524,
+          "action_count": 164,
+          "observed_physical_contact_steps": 0,
+          "strict_success": true,
+          "final_applied_arm_velocity_zero": true,
+          "commanded_updates": 163,
+          "failure_code": null,
+          "final_hold": true,
+          "execution_solver": {
+            "solver_type": "TGS",
+            "requested_position_iterations_before": 32,
+            "requested_position_iterations_during": 255,
+            "changed": true,
+            "original_session_opinion_restored": true,
+            "count_provenance": "USD requested count; native effective island count is not read here"
+          },
+          "physics_step_coverage": {
+            "unique_steps": 164,
+            "first": 953,
+            "last": 1116,
+            "complete": true
+          },
+          "contacts": {
+            "reported_points": 0,
+            "reported_pairs": 0,
+            "penetrating_pairs": 0,
+            "minimum_reported_separation_m": null,
+            "maximum_normal_pair_impulse_ns": 0.0,
+            "contact_buffer_saturated": false
+          },
+          "contact_classification": "no_physical_contact_observed",
+          "sum_observed_pair_normal_impulses_ns": 0.0,
+          "minimum_sampled_clearance_m": 2.384185648907078e-08,
+          "minimum_sampled_moving_arm_clearance_m": 0.028213134745305204
+        }
+      ],
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "total_samples": 923,
+          "evaluated_samples": 923,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "total_samples": 466,
+          "evaluated_samples": 38,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "planner_world_modified": false
+        }
+      },
+      "selected_planner": {
+        "success": true,
+        "failure_code": null
+      }
+    }
+  ],
+  "primary_narrow_rgbd_qualification": "The only successful primary RGB-D move reaches full-pose tolerances and independently sampled physical external clearance. It has44 positive-separation proximity reports, minimum separation14.436mm, zero normal impulse and zero observed physical-contact steps. strict_success remains false. This is not strict zero-report acceptance or a general safety result.",
+  "qualifications": [
+    "Native contact reports include positive-separation contact-offset proximity. Zero observed physical-contact steps does not prove continuous absence of contact.",
+    "Whole-body sampled physical clearance includes the fixed base, hand and both fingers. Independent pre-execution evaluator does not evaluate self collision; production sampled enhanced-model self validation remains separate.",
+    "The all-body minimum is dominated by mounted-base support separation approximately23.84nm; moving-arm clearance is reported separately.",
+    "No root/source runtime data, frames, depth arrays, geometry vertices, poses, joint paths, or contact traces are copied into this compact summary.",
+    "Original V5 pilot01 wrapper-cleanup failures remain retained raw and are excluded from primary64.",
+    "Diagnostic128 remains a separate cohort and does not replace primary64."
+  ]
+}

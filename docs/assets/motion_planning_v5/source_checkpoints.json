@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "baseline": "aef5f2fe0af0229a1c69c64035b7de0b07173b0b",
+  "publication_method": "Connected GitHub Git-data API; every uploaded blob and tree checked against local Git objects. Canonical commit metadata changes commit IDs without changing trees.",
+  "checkpoints": [
+    {
+      "local_commit": "0c74b5658ecf5d78249a32776a6c33ee1ffc4fbb",
+      "published_commit": "cf865c1e6be6667ca7b37b1068349c455d5896da",
+      "tree": "a8711084d4cd325e9fa73a8d9aa285d445b6d821",
+      "message": "Add opt-in global planning from frozen RGB-D mapping publications",
+      "scope": "implementation and focused tests"
+    },
+    {
+      "local_commit": "febe6670bf1e0d396712f98df40acc225ab78b17",
+      "published_commit": "decb9538360e22ff225cb4d795f7e0baf2446629",
+      "tree": "2a782c029271de602bfc92878382bc3adf4e3fde",
+      "message": "Add matched native RGB-D global-planning study and physical execution veto",
+      "scope": "native benchmark and independent numeric evaluation as used by all V5 native measurements"
+    },
+    {
+      "local_commit": "a6d942f92708f6da98f4d8cdee4de69a039fbb0b",
+      "published_commit": "67c4bdb2665238233e91deb1879f4de9a7d9ff92",
+      "tree": "f327dc68a1ac61ae7bfd733edb71603b7b87ac24",
+      "message": "Qualify native RGB-D evidence and add explicit occlusion diagnostic",
+      "scope": "Posthoc evidence/plots and separately labelled verified-occlusion diagnostic. Original primary and128 checkpoints remain unchanged."
+    },
+    {
+      "local_commit": "13347fe3f06fc7b171abd6c0a51d0433cc498091",
+      "published_commit": "a498377d37bf94941fadb3744d282f888aae1742",
+      "tree": "50d4170aeac698c7d46103fd1d4e10cae20b40b8",
+      "message": "Render exact native cuboids in obstacle-budget comparison",
+      "scope": "Offline plot-only extension: exact selected cuboids and omitted occupied voxel boxes. Native runtime and measured benchmark code unchanged; rendered from archived native packets, visually checked, architecture/syntax PASS."
+    }
+  ]
+}

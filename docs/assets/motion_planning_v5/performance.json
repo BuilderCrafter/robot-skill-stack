@@ -1,0 +1,1614 @@
+{
+  "schema_version": 1,
+  "cohort": "primary64",
+  "qualification": [
+    "Source age overlaps acquisition/mapping/publication: do not add it to worker time.",
+    "compute_seconds includes self-filtering/extraction; worker_seconds includes transport.",
+    "planner_plus_research_sampling_seconds includes dense SDK target sampling for independent veto. Internal phase timers are production planner measurements.",
+    "Instrumented Kit gap and request-to-command include both source plans and separate GT physical-veto waits; these are not production-only latency.",
+    "GPU rendering time and native RRT internal collision-query counts are not exposed by these measurements.",
+    "Execution control timing exists only for executed motions."
+  ],
+  "cases": [
+    {
+      "scenario": "empty",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "caa2ff8fe126456b42f522159aaf712d7470d57147801fc9479964f6a22eba8a",
+      "source_age_seconds": 0.49614967592060566,
+      "capture_seconds": 0.006850194185972214,
+      "extraction_seconds": 0.011248279828578234,
+      "mapping_at_capture": {
+        "worker_seconds": 0.19157958589494228,
+        "queue_seconds": 0.0012591718696057796,
+        "compute_seconds": 0.1019316497258842,
+        "filter_seconds": 0.013255538884550333,
+        "transport_seconds": 0.08964793616905808,
+        "worker_to_publication_seconds": 0.006776898168027401,
+        "publish_age_seconds": 0.20605180691927671,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04345168800730454,
+            "p50": 0.04226900637149811,
+            "p95": 0.048037944361567456,
+            "p99": 0.06331547163426876,
+            "worst": 0.06713485345244408
+          }
+        },
+        "semantic": {
+          "calls": 46,
+          "successful_batches": 46,
+          "advancing_batches": 46,
+          "elapsed_ms": {
+            "count": 46,
+            "mean": 6.499593530822059,
+            "p50": 5.624570418149233,
+            "p95": 8.918455918319523,
+            "p99": 12.151394411921487,
+            "worst": 14.277178328484297
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.0947193494066596,
+          "phases_seconds": {
+            "world_update_seconds": 0.00027907127514481544,
+            "ik_seconds": 0.00011706864461302757,
+            "rrt_seconds": 0.0003900788724422455,
+            "route_validation_seconds": 0.015067093074321747,
+            "trajectory_generation_seconds": 0.00011235987767577171,
+            "trajectory_validation_seconds": 0.06867961073294282
+          },
+          "registered_primitives": 1,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.010395236313343048,
+          "phases_seconds": {
+            "world_update_seconds": 0.0021854322403669357,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.1428680312819779,
+          "queue_seconds": 3.331201151013374e-05,
+          "experimental_owner_wait_seconds": 0.14314168179407716
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "empty",
+      "execution_condition": "static",
+      "result_sha256": "482464cc67d6bc979cb1400c10d7a05e6ee7893631253c8b8ee1d87d7bcff6c4",
+      "source_age_seconds": 0.5155377802439034,
+      "capture_seconds": 0.0020443489775061607,
+      "extraction_seconds": 0.011018771212548018,
+      "mapping_at_capture": {
+        "worker_seconds": 0.17020954005420208,
+        "queue_seconds": 0.001085217110812664,
+        "compute_seconds": 0.10112955095246434,
+        "filter_seconds": 0.01244948385283351,
+        "transport_seconds": 0.06907998910173774,
+        "worker_to_publication_seconds": 0.004227345809340477,
+        "publish_age_seconds": 0.18220043694600463,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04325971301448973,
+            "p50": 0.040906015783548355,
+            "p95": 0.05109100602567194,
+            "p99": 0.05761916749179363,
+            "worst": 0.05925120785832405
+          }
+        },
+        "semantic": {
+          "calls": 54,
+          "successful_batches": 54,
+          "advancing_batches": 54,
+          "elapsed_ms": {
+            "count": 54,
+            "mean": 7.01325704102163,
+            "p50": 5.680685630068183,
+            "p95": 14.818474068306386,
+            "p99": 16.558697791770097,
+            "worst": 17.896366771310568
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.09284725226461887,
+          "phases_seconds": {
+            "world_update_seconds": 0.00025866320356726646,
+            "ik_seconds": 0.00010134978219866753,
+            "rrt_seconds": 0.00037623289972543716,
+            "route_validation_seconds": 0.015394133049994707,
+            "trajectory_generation_seconds": 9.200209751725197e-05,
+            "trajectory_validation_seconds": 0.06681088078767061
+          },
+          "registered_primitives": 1,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.01033072592690587,
+          "phases_seconds": {
+            "world_update_seconds": 0.002029240131378174,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.14399953512474895,
+          "queue_seconds": 3.82009893655777e-05,
+          "experimental_owner_wait_seconds": 0.14428649097681046
+        }
+      },
+      "request_to_first_command_seconds": 0.27808002196252346,
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 21.946795360553402,
+        "p50": 17.411466920748353,
+        "p95": 25.464129983447492,
+        "p99": 70.8860586863027,
+        "worst": 308.40652622282505
+      },
+      "execution_control_interval_ms": {
+        "count": 85,
+        "p50": 15.985297970473766,
+        "p95": 25.885738246142864,
+        "p99": 29.653954952955182,
+        "worst": 45.8659790456295
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "ed28beceae232c765868f85b2e8a89b3c91d3c28911fdc5d7aa7ff3fabf5b9e5",
+      "source_age_seconds": 0.47630863916128874,
+      "capture_seconds": 0.010130783077329397,
+      "extraction_seconds": 0.011610856745392084,
+      "mapping_at_capture": {
+        "worker_seconds": 0.18501950288191438,
+        "queue_seconds": 0.00021939026191830635,
+        "compute_seconds": 0.09116698382422328,
+        "filter_seconds": 0.012179658748209476,
+        "transport_seconds": 0.0938525190576911,
+        "worker_to_publication_seconds": 0.011375346686691046,
+        "publish_age_seconds": 0.20572107983753085,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.05439847805782368,
+            "p50": 0.04325108602643013,
+            "p95": 0.07289508357644066,
+            "p99": 0.12316638603806497,
+            "worst": 0.135734211653471
+          }
+        },
+        "semantic": {
+          "calls": 46,
+          "successful_batches": 46,
+          "advancing_batches": 46,
+          "elapsed_ms": {
+            "count": 46,
+            "mean": 8.092573874265604,
+            "p50": 6.909740855917335,
+            "p95": 16.7293269187212,
+            "p99": 18.154387245886028,
+            "worst": 18.379429820924997
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.22964638797566295,
+          "phases_seconds": {
+            "world_update_seconds": 0.00039490777999162674,
+            "ik_seconds": 0.00040750065818428993,
+            "rrt_seconds": 0.005532804876565933,
+            "route_validation_seconds": 0.1085887448862195,
+            "trajectory_generation_seconds": 0.00010137911885976791,
+            "trajectory_validation_seconds": 0.10045515233650804
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 1222,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.373760848625087
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.1770943901501596,
+          "phases_seconds": {
+            "world_update_seconds": 0.0014101644046604633,
+            "ik_seconds": 9.130081161856651e-05,
+            "rrt_seconds": 0.006489111110568047,
+            "route_validation_seconds": 0.04918281501159072,
+            "trajectory_generation_seconds": 7.065199315547943e-05,
+            "trajectory_validation_seconds": 0.10794087406247854
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 957,
+          "native_rrt_collision_queries": null,
+          "waypoints": 5,
+          "joint_path_length_rad": 5.2850876578128325
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.6338906432501972,
+          "queue_seconds": 2.5988556444644928e-05,
+          "experimental_owner_wait_seconds": 0.6376055832952261
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "worker_seconds": 0.06511441199108958,
+          "queue_seconds": 2.5317072868347168e-05,
+          "experimental_owner_wait_seconds": 0.06980344001203775
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "large",
+      "execution_condition": "static",
+      "result_sha256": "2496497f1a25fc7ebefd270cc71174f8d86158faa07e073abc4219e1aaf431de",
+      "source_age_seconds": 0.6539692557416856,
+      "capture_seconds": 0.003664134070277214,
+      "extraction_seconds": 0.013602776918560266,
+      "mapping_at_capture": {
+        "worker_seconds": 0.17600092804059386,
+        "queue_seconds": 5.317898467183113e-05,
+        "compute_seconds": 0.08421595999971032,
+        "filter_seconds": 0.009608116932213306,
+        "transport_seconds": 0.09178496804088354,
+        "worker_to_publication_seconds": 0.00415802700445056,
+        "publish_age_seconds": 0.18658171081915498,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04720288377843405,
+            "p50": 0.04359101876616478,
+            "p95": 0.06214096210896969,
+            "p99": 0.06275351159274578,
+            "worst": 0.0629066489636898
+          }
+        },
+        "semantic": {
+          "calls": 62,
+          "successful_batches": 62,
+          "advancing_batches": 62,
+          "elapsed_ms": {
+            "count": 62,
+            "mean": 7.22635975257764,
+            "p50": 6.018737098202109,
+            "p95": 15.250179381109756,
+            "p99": 19.547597598284483,
+            "worst": 19.83996806666255
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.18930924497544765,
+          "phases_seconds": {
+            "world_update_seconds": 0.00027368078008294106,
+            "ik_seconds": 0.00020248768851161003,
+            "rrt_seconds": 0.004331960808485746,
+            "route_validation_seconds": 0.07429176429286599,
+            "trajectory_generation_seconds": 0.00010335305705666542,
+            "trajectory_validation_seconds": 0.10012132814154029
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 1222,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.373760848625087
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.17737275082617998,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013504321686923504,
+            "ik_seconds": 8.909683674573898e-05,
+            "rrt_seconds": 0.006356843281537294,
+            "route_validation_seconds": 0.050581075716763735,
+            "trajectory_generation_seconds": 7.127411663532257e-05,
+            "trajectory_validation_seconds": 0.10746089788153768
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 957,
+          "native_rrt_collision_queries": null,
+          "waypoints": 5,
+          "joint_path_length_rad": 5.2850876578128325
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.6529969200491905,
+          "queue_seconds": 2.53370963037014e-05,
+          "experimental_owner_wait_seconds": 0.6559974439442158
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "worker_seconds": 0.06761043425649405,
+          "queue_seconds": 3.937305882573128e-05,
+          "experimental_owner_wait_seconds": 0.07285441784188151
+        }
+      },
+      "request_to_first_command_seconds": 1.1407316396944225,
+      "kit_interval_ms": {
+        "count": 159,
+        "mean": 26.65458524997973,
+        "p50": 17.32609188184142,
+        "p95": 26.78938927128909,
+        "p99": 39.04841557145113,
+        "worst": 1170.7216356880963
+      },
+      "execution_control_interval_ms": {
+        "count": 158,
+        "p50": 17.190293641760945,
+        "p95": 26.504694530740384,
+        "p99": 35.69130163639785,
+        "worst": 45.849828980863094
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 160,
+        "p50": 0.020392431948334927,
+        "p95": 0.03340435436686266,
+        "p99": 0.03396676057981762,
+        "worst": 0.03400224751072689
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "5fbde63fc601e3e54e78fae04aa2595ea2367d4a4cd13d990eb935fa4abff296",
+      "source_age_seconds": 0.5134415160864592,
+      "capture_seconds": 0.006630975287407637,
+      "extraction_seconds": 0.012060786597430706,
+      "mapping_at_capture": {
+        "worker_seconds": 0.19946815120056272,
+        "queue_seconds": 0.00021103397011756897,
+        "compute_seconds": 0.10582862887531519,
+        "filter_seconds": 0.014249957166612148,
+        "transport_seconds": 0.09363952232524753,
+        "worker_to_publication_seconds": 0.010335565079003572,
+        "publish_age_seconds": 0.21678907331079245,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04212065648875738,
+            "p50": 0.04156818613409996,
+            "p95": 0.045222323387861224,
+            "p99": 0.054369326680898666,
+            "worst": 0.05665607750415802
+          }
+        },
+        "semantic": {
+          "calls": 55,
+          "successful_batches": 55,
+          "advancing_batches": 55,
+          "elapsed_ms": {
+            "count": 55,
+            "mean": 6.463527755642479,
+            "p50": 5.692922975867987,
+            "p95": 9.681749669834971,
+            "p99": 10.32954943366349,
+            "worst": 11.052394285798073
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.08751845825463533,
+          "phases_seconds": {
+            "world_update_seconds": 0.00030387844890356064,
+            "ik_seconds": 0.00010298192501068115,
+            "rrt_seconds": 0.00046182190999388695,
+            "route_validation_seconds": 0.014097962994128466,
+            "trajectory_generation_seconds": 0.00010558683425188065,
+            "trajectory_validation_seconds": 0.062020333018153906
+          },
+          "registered_primitives": 3,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.08929063891991973,
+          "phases_seconds": {
+            "world_update_seconds": 0.0023835222236812115,
+            "ik_seconds": 0.00012098625302314758,
+            "rrt_seconds": 0.0012527289800345898,
+            "route_validation_seconds": 0.01948620704934001,
+            "trajectory_generation_seconds": 6.60829246044159e-05,
+            "trajectory_validation_seconds": 0.05351491691544652
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.21826013969257474,
+          "queue_seconds": 3.286125138401985e-05,
+          "experimental_owner_wait_seconds": 0.22118009487167
+        },
+        "frozen_rgbd": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.21516927797347307,
+          "queue_seconds": 2.2953376173973083e-05,
+          "experimental_owner_wait_seconds": 0.21670558582991362
+        }
+      },
+      "request_to_first_command_seconds": 0.6425684220157564,
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 26.582123744193204,
+        "p50": 16.864560544490814,
+        "p95": 27.912322664633393,
+        "p99": 128.2511797966472,
+        "worst": 669.8010982945561
+      },
+      "execution_control_interval_ms": {
+        "count": 85,
+        "p50": 16.397808212786913,
+        "p95": 28.81089188158512,
+        "p99": 32.21164533868428,
+        "worst": 41.88409075140953
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "result_sha256": "b26d51a1d534c16dcc01eb3ac4aa1bd5c6aa8b12b316a6219b48e701eb7ce42b",
+      "source_age_seconds": 0.517602366860956,
+      "capture_seconds": 0.0030143801122903824,
+      "extraction_seconds": 0.011754365172237158,
+      "mapping_at_capture": {
+        "worker_seconds": 0.18278793478384614,
+        "queue_seconds": 0.0012622969225049019,
+        "compute_seconds": 0.10598349804058671,
+        "filter_seconds": 0.014803511090576649,
+        "transport_seconds": 0.07680443674325943,
+        "worker_to_publication_seconds": 0.011472849175333977,
+        "publish_age_seconds": 0.2026966498233378,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.043066243003857765,
+            "p50": 0.04173768684267998,
+            "p95": 0.047441245988011325,
+            "p99": 0.05935796536505223,
+            "worst": 0.06233714520931244
+          }
+        },
+        "semantic": {
+          "calls": 55,
+          "successful_batches": 55,
+          "advancing_batches": 55,
+          "elapsed_ms": {
+            "count": 55,
+            "mean": 6.72645511274988,
+            "p50": 6.011307705193758,
+            "p95": 9.288220759481188,
+            "p99": 13.282835893332962,
+            "worst": 15.472971368581057
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.09381752414628863,
+          "phases_seconds": {
+            "world_update_seconds": 0.0002979370765388012,
+            "ik_seconds": 0.0001328280195593834,
+            "rrt_seconds": 0.000550669152289629,
+            "route_validation_seconds": 0.014311831910163164,
+            "trajectory_generation_seconds": 9.786291047930717e-05,
+            "trajectory_validation_seconds": 0.06831831578165293
+          },
+          "registered_primitives": 3,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.0933686257340014,
+          "phases_seconds": {
+            "world_update_seconds": 0.002127282787114382,
+            "ik_seconds": 0.00011814991012215614,
+            "rrt_seconds": 0.0012392150238156319,
+            "route_validation_seconds": 0.022515064105391502,
+            "trajectory_generation_seconds": 4.955194890499115e-05,
+            "trajectory_validation_seconds": 0.054619950242340565
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 386,
+          "native_rrt_collision_queries": null,
+          "waypoints": 2,
+          "joint_path_length_rad": 1.4131578784760566
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.21319753490388393,
+          "queue_seconds": 2.6308931410312653e-05,
+          "experimental_owner_wait_seconds": 0.21670483518391848
+        },
+        "frozen_rgbd": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.21395835606381297,
+          "queue_seconds": 2.209097146987915e-05,
+          "experimental_owner_wait_seconds": 0.21490730764344335
+        }
+      },
+      "request_to_first_command_seconds": 0.6510106902569532,
+      "kit_interval_ms": {
+        "count": 86,
+        "mean": 27.548984072149494,
+        "p50": 18.157269107177854,
+        "p95": 30.371613684110343,
+        "p99": 128.31932043191415,
+        "worst": 677.7384132146835
+      },
+      "execution_control_interval_ms": {
+        "count": 85,
+        "p50": 17.844029236584902,
+        "p95": 28.05434837937355,
+        "p99": 34.25199495628473,
+        "worst": 41.91707307472825
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 87,
+        "p50": 0.008069944169681875,
+        "p95": 0.03099931019179204,
+        "p99": 0.031325588079907526,
+        "worst": 0.03136763534431575
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "e4575dd7a90bdd99f7ede0b3ad0dd83adea6d90fd0efdc1a7c7f8ad2a283525d",
+      "source_age_seconds": 0.5270060421898961,
+      "capture_seconds": 0.01038577826693654,
+      "extraction_seconds": 0.013903538696467876,
+      "mapping_at_capture": {
+        "worker_seconds": 0.1483002882450819,
+        "queue_seconds": 4.2018014937639236e-05,
+        "compute_seconds": 0.0858057988807559,
+        "filter_seconds": 0.008988558780401945,
+        "transport_seconds": 0.062494489364326,
+        "worker_to_publication_seconds": 0.0019026841036975384,
+        "publish_age_seconds": 0.15687115723267198,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04372071768892439,
+            "p50": 0.04180893301963806,
+            "p95": 0.058713415637612336,
+            "p99": 0.06090645678341389,
+            "worst": 0.06145471706986427
+          }
+        },
+        "semantic": {
+          "calls": 46,
+          "successful_batches": 46,
+          "advancing_batches": 46,
+          "elapsed_ms": {
+            "count": 46,
+            "mean": 6.39827334848435,
+            "p50": 5.747264949604869,
+            "p95": 9.884980623610318,
+            "p99": 11.322096851654345,
+            "worst": 12.143973261117935
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.18676333036273718,
+          "phases_seconds": {
+            "world_update_seconds": 0.001495824195444584,
+            "ik_seconds": 0.0003357469104230404,
+            "rrt_seconds": 0.0024345270358026028,
+            "route_validation_seconds": 0.06423396710306406,
+            "trajectory_generation_seconds": 0.00010492606088519096,
+            "trajectory_validation_seconds": 0.09914028597995639
+          },
+          "registered_primitives": 3,
+          "explicit_configuration_validation_calls": 925,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.490132636994018
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.09424358000978827,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013820817694067955,
+            "ik_seconds": 0.00010702991858124733,
+            "rrt_seconds": 0.004934015218168497,
+            "route_validation_seconds": 0.02132572280243039,
+            "trajectory_generation_seconds": 4.956219345331192e-05,
+            "trajectory_validation_seconds": 0.05475752707570791
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 468,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 2.297994947697674
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.5185495461337268,
+          "queue_seconds": 2.5067012757062912e-05,
+          "experimental_owner_wait_seconds": 0.5188406398519874
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "worker_seconds": 0.06141122477129102,
+          "queue_seconds": 2.4045351892709732e-05,
+          "experimental_owner_wait_seconds": 0.06385893654078245
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "partial",
+      "execution_condition": "static",
+      "result_sha256": "f6ac172fbe5960d4f2f148b208fa8cc7edcfd1ce9ab2d68e4497485865398172",
+      "source_age_seconds": 0.525500750169158,
+      "capture_seconds": 0.002758711576461792,
+      "extraction_seconds": 0.011148292571306229,
+      "mapping_at_capture": {
+        "worker_seconds": 0.20490173995494843,
+        "queue_seconds": 6.59930519759655e-05,
+        "compute_seconds": 0.07966828579083085,
+        "filter_seconds": 0.009994007181376219,
+        "transport_seconds": 0.12523345416411757,
+        "worker_to_publication_seconds": 0.009954331908375025,
+        "publish_age_seconds": 0.22510033613070846,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.047123402749237264,
+            "p50": 0.04308996722102165,
+            "p95": 0.060351938009262085,
+            "p99": 0.060488730669021606,
+            "worst": 0.06052292883396149
+          }
+        },
+        "semantic": {
+          "calls": 62,
+          "successful_batches": 62,
+          "advancing_batches": 62,
+          "elapsed_ms": {
+            "count": 62,
+            "mean": 8.096789422955725,
+            "p50": 6.362428655847907,
+            "p95": 16.715487185865637,
+            "p99": 18.25530803296715,
+            "worst": 18.61315593123436
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.21221686294302344,
+          "phases_seconds": {
+            "world_update_seconds": 0.0003468180075287819,
+            "ik_seconds": 0.00011962419375777245,
+            "rrt_seconds": 0.001429039053618908,
+            "route_validation_seconds": 0.07549773622304201,
+            "trajectory_generation_seconds": 0.00014311820268630981,
+            "trajectory_validation_seconds": 0.12303125998005271
+          },
+          "registered_primitives": 3,
+          "explicit_configuration_validation_calls": 925,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.490132636994018
+        },
+        "frozen_rgbd": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.0941311800852418,
+          "phases_seconds": {
+            "world_update_seconds": 0.0014114156365394592,
+            "ik_seconds": 8.973712101578712e-05,
+            "rrt_seconds": 0.004890594631433487,
+            "route_validation_seconds": 0.02149815484881401,
+            "trajectory_generation_seconds": 5.370099097490311e-05,
+            "trajectory_validation_seconds": 0.05449044797569513
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 468,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 2.297994947697674
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.5302309850230813,
+          "queue_seconds": 2.4585984647274017e-05,
+          "experimental_owner_wait_seconds": 0.5337085309438407
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "worker_seconds": 0.0724985240958631,
+          "queue_seconds": 3.495486453175545e-05,
+          "experimental_owner_wait_seconds": 0.0752302361652255
+        }
+      },
+      "request_to_first_command_seconds": 0.9488756069913507,
+      "kit_interval_ms": {
+        "count": 163,
+        "mean": 25.04966004917318,
+        "p50": 17.012666910886765,
+        "p95": 27.48209065757692,
+        "p99": 37.94332701712847,
+        "worst": 974.6101242490113
+      },
+      "execution_control_interval_ms": {
+        "count": 162,
+        "p50": 16.758522018790245,
+        "p95": 26.750336005352423,
+        "p99": 38.05413057561964,
+        "worst": 41.063238866627216
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 164,
+        "p50": 0.021944123646103486,
+        "p95": 0.03979635570111104,
+        "p99": 0.04034945604251466,
+        "worst": 0.04038661950502109
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "sparse",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "87a2630cf4c1bcf7434f49610da2d9ff8794ed9cda44250965f76dcd93413bf6",
+      "source_age_seconds": 0.5105916922912002,
+      "capture_seconds": 0.006553050130605698,
+      "extraction_seconds": 0.011738514993339777,
+      "mapping_at_capture": {
+        "worker_seconds": 0.18945754179731011,
+        "queue_seconds": 0.001161940861493349,
+        "compute_seconds": 0.0995449023321271,
+        "filter_seconds": 0.012711793649941683,
+        "transport_seconds": 0.08991263946518302,
+        "worker_to_publication_seconds": 0.009504131972789764,
+        "publish_age_seconds": 0.20679339300841093,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04152492865135795,
+            "p50": 0.04066620022058487,
+            "p95": 0.04642885178327558,
+            "p99": 0.05329597741365433,
+            "worst": 0.05501275882124901
+          }
+        },
+        "semantic": {
+          "calls": 46,
+          "successful_batches": 46,
+          "advancing_batches": 46,
+          "elapsed_ms": {
+            "count": 46,
+            "mean": 6.741559446748832,
+            "p50": 5.665092030540109,
+            "p95": 13.860438368283212,
+            "p99": 15.584342926740643,
+            "worst": 16.066107898950577
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.2083055069670081,
+          "phases_seconds": {
+            "world_update_seconds": 0.00028786715120077133,
+            "ik_seconds": 0.0001061377115547657,
+            "rrt_seconds": 0.0014059157110750675,
+            "route_validation_seconds": 0.06889175809919834,
+            "trajectory_generation_seconds": 0.00013205688446760178,
+            "trajectory_validation_seconds": 0.12696182075887918
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 1110,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 5.571453895386755
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.009474516846239567,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013618739321827888,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.508970133960247,
+          "queue_seconds": 2.4985987693071365e-05,
+          "experimental_owner_wait_seconds": 0.5092620691284537
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "sparse",
+      "execution_condition": "static",
+      "result_sha256": "af3629827e6ac645deab2e89792cc47b937a5f60cf019c1f71ace2eda94724a2",
+      "source_age_seconds": 0.49843560717999935,
+      "capture_seconds": 0.0024322927929461002,
+      "extraction_seconds": 0.011471285950392485,
+      "mapping_at_capture": {
+        "worker_seconds": 0.19771047728136182,
+        "queue_seconds": 0.0013989326544106007,
+        "compute_seconds": 0.10092851612716913,
+        "filter_seconds": 0.012237617280334234,
+        "transport_seconds": 0.09678196115419269,
+        "worker_to_publication_seconds": 0.00376633508130908,
+        "publish_age_seconds": 0.20990460412576795,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04315525783519996,
+            "p50": 0.04198774695396423,
+            "p95": 0.05427938885986804,
+            "p99": 0.05570800043642521,
+            "worst": 0.0560651533305645
+          }
+        },
+        "semantic": {
+          "calls": 64,
+          "successful_batches": 64,
+          "advancing_batches": 64,
+          "elapsed_ms": {
+            "count": 64,
+            "mean": 6.520848677610047,
+            "p50": 5.69531787186861,
+            "p95": 9.310688055120409,
+            "p99": 13.782430314458903,
+            "worst": 14.56619706004858
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.21659800503402948,
+          "phases_seconds": {
+            "world_update_seconds": 0.000288128387182951,
+            "ik_seconds": 9.65408980846405e-05,
+            "rrt_seconds": 0.0014041331596672535,
+            "route_validation_seconds": 0.05377608397975564,
+            "trajectory_generation_seconds": 0.00010621827095746994,
+            "trajectory_validation_seconds": 0.15056345518678427
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 1110,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 5.571453895386755
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.009429573081433773,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013906769454479218,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.5147628127597272,
+          "queue_seconds": 2.99159437417984e-05,
+          "experimental_owner_wait_seconds": 0.5163324950262904
+        }
+      },
+      "request_to_first_command_seconds": 0.7779432949610054,
+      "kit_interval_ms": {
+        "count": 187,
+        "mean": 22.94144770977172,
+        "p50": 16.462889965623617,
+        "p95": 26.72583255916834,
+        "p99": 29.07823265530168,
+        "worst": 808.3950341679156
+      },
+      "execution_control_interval_ms": {
+        "count": 186,
+        "p50": 16.339364228770137,
+        "p95": 26.779509615153074,
+        "p99": 28.99967250414193,
+        "worst": 45.46266607940197
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 188,
+        "p50": 0.02405830827393468,
+        "p95": 0.04062165047999298,
+        "p99": 0.04112573179638684,
+        "worst": 0.041155731261944384
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "static",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "cdd824881ee86af62acd2b3a58c2f362b03094eecb43f06298ea3bb5d8ae0047",
+      "source_age_seconds": 0.512134965043515,
+      "capture_seconds": 0.007210907991975546,
+      "extraction_seconds": 0.011303531937301159,
+      "mapping_at_capture": {
+        "worker_seconds": 0.19732566783204675,
+        "queue_seconds": 0.0010800380259752274,
+        "compute_seconds": 0.09942623972892761,
+        "filter_seconds": 0.012863487005233765,
+        "transport_seconds": 0.09789942810311913,
+        "worker_to_publication_seconds": 0.0071792700327932835,
+        "publish_age_seconds": 0.21230643009766936,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.0446729460044911,
+            "p50": 0.04297960549592972,
+            "p95": 0.04998161457478997,
+            "p99": 0.05963320843875409,
+            "worst": 0.0620461069047451
+          }
+        },
+        "semantic": {
+          "calls": 46,
+          "successful_batches": 46,
+          "advancing_batches": 46,
+          "elapsed_ms": {
+            "count": 46,
+            "mean": 7.022050249835719,
+            "p50": 5.7579700369387865,
+            "p95": 13.733334373682737,
+            "p99": 15.63782470766455,
+            "worst": 15.691529028117657
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.18217473896220326,
+          "phases_seconds": {
+            "world_update_seconds": 0.0003480399027466774,
+            "ik_seconds": 0.00015895720571279526,
+            "rrt_seconds": 0.0013278909027576447,
+            "route_validation_seconds": 0.061132234055548906,
+            "trajectory_generation_seconds": 0.0001111980527639389,
+            "trajectory_validation_seconds": 0.10780505975708365
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 925,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.490132636994018
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.010113480035215616,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013994029723107815,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.4283475046977401,
+          "queue_seconds": 2.345442771911621e-05,
+          "experimental_owner_wait_seconds": 0.4321955218911171
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "static",
+      "execution_condition": "static",
+      "result_sha256": "1aac609f962f5b9ea0bf35c6c7c20d96831c99bac6cf0f95b056f9b65097fb64",
+      "source_age_seconds": 0.5166279966942966,
+      "capture_seconds": 0.0025602919049561024,
+      "extraction_seconds": 0.01299689570441842,
+      "mapping_at_capture": {
+        "worker_seconds": 0.17357912426814437,
+        "queue_seconds": 0.0010079429484903812,
+        "compute_seconds": 0.10401138383895159,
+        "filter_seconds": 0.013217086903750896,
+        "transport_seconds": 0.06956774042919278,
+        "worker_to_publication_seconds": 0.0017055757343769073,
+        "publish_age_seconds": 0.1829325146973133,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 19,
+          "successful_batches": 19,
+          "advancing_batches": 19,
+          "elapsed_ms": {
+            "count": 19,
+            "mean": 0.04311619130404372,
+            "p50": 0.0425390899181366,
+            "p95": 0.050875777378678315,
+            "p99": 0.0534000713378191,
+            "worst": 0.054031144827604294
+          }
+        },
+        "semantic": {
+          "calls": 62,
+          "successful_batches": 62,
+          "advancing_batches": 62,
+          "elapsed_ms": {
+            "count": 62,
+            "mean": 6.336549296975136,
+            "p50": 5.691244965419173,
+            "p95": 9.523575170896946,
+            "p99": 13.044119160622362,
+            "worst": 17.886218149214983
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.18095600279048085,
+          "phases_seconds": {
+            "world_update_seconds": 0.0002813548780977726,
+            "ik_seconds": 0.00010477611795067787,
+            "rrt_seconds": 0.001358316745609045,
+            "route_validation_seconds": 0.052936706226319075,
+            "trajectory_generation_seconds": 0.00011665793135762215,
+            "trajectory_validation_seconds": 0.11608555680140853
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 925,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 4.490132636994018
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.010139358695596457,
+          "phases_seconds": {
+            "world_update_seconds": 0.0013751187361776829,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.4209564789198339,
+          "queue_seconds": 2.823304384946823e-05,
+          "experimental_owner_wait_seconds": 0.4235555650666356
+        }
+      },
+      "request_to_first_command_seconds": 0.6449228380806744,
+      "kit_interval_ms": {
+        "count": 163,
+        "mean": 22.683946207234282,
+        "p50": 16.5245751850307,
+        "p95": 24.365432932972908,
+        "p99": 31.00333929061886,
+        "worst": 672.366748098284
+      },
+      "execution_control_interval_ms": {
+        "count": 162,
+        "p50": 16.16915059275925,
+        "p95": 25.184097117744386,
+        "p99": 31.89474715385568,
+        "worst": 42.60630114004016
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 164,
+        "p50": 0.021944123646103486,
+        "p95": 0.03979635570111104,
+        "p99": 0.04034945604251466,
+        "worst": 0.04038661950502109
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "v43",
+      "execution_condition": "frozen_rgbd",
+      "result_sha256": "8ec24ea38c70a9cec0eadf4acb75a0af838fe56c94522f51958731f576a750dd",
+      "source_age_seconds": 0.4307839469984174,
+      "capture_seconds": 0.006407809443771839,
+      "extraction_seconds": 0.011117214802652597,
+      "mapping_at_capture": {
+        "worker_seconds": 0.21786199696362019,
+        "queue_seconds": 0.0020431061275303364,
+        "compute_seconds": 0.10819019982591271,
+        "filter_seconds": 0.015486796852201223,
+        "transport_seconds": 0.10967179713770747,
+        "worker_to_publication_seconds": 0.007239842787384987,
+        "publish_age_seconds": 0.23596374783664942,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 16,
+          "successful_batches": 16,
+          "advancing_batches": 16,
+          "elapsed_ms": {
+            "count": 16,
+            "mean": 0.04437737516127527,
+            "p50": 0.04163803532719612,
+            "p95": 0.058163655921816826,
+            "p99": 0.06300895474851131,
+            "worst": 0.06422027945518494
+          }
+        },
+        "semantic": {
+          "calls": 40,
+          "successful_batches": 40,
+          "advancing_batches": 40,
+          "elapsed_ms": {
+            "count": 40,
+            "mean": 6.616367108654231,
+            "p50": 5.84761705249548,
+            "p95": 9.400847577489913,
+            "p99": 12.598697557114061,
+            "worst": 14.56742873415351
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.0559488027356565,
+          "phases_seconds": {
+            "world_update_seconds": 0.0002695429138839245,
+            "ik_seconds": 7.432792335748672e-05,
+            "rrt_seconds": 0.0007242830470204353,
+            "route_validation_seconds": 0.013067127205431461,
+            "trajectory_generation_seconds": 0.00010017771273851395,
+            "trajectory_validation_seconds": 0.0323307178914547
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 288,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 1.2705546140758006
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.009567350149154663,
+          "phases_seconds": {
+            "world_update_seconds": 0.0014484748244285583,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.12928628409281373,
+          "queue_seconds": 2.2791791707277298e-05,
+          "experimental_owner_wait_seconds": 0.13143465667963028
+        }
+      },
+      "request_to_first_command_seconds": null,
+      "kit_interval_ms": {
+        "count": 0
+      },
+      "execution_control_interval_ms": null,
+      "trajectory_tracking_error_rad": null,
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    },
+    {
+      "scenario": "v43",
+      "execution_condition": "static",
+      "result_sha256": "8886910b10d01253002cb7f18c814176d60ff457b026bacb9843353f462cbeaa",
+      "source_age_seconds": 0.43965229112654924,
+      "capture_seconds": 0.002356220968067646,
+      "extraction_seconds": 0.011422805022448301,
+      "mapping_at_capture": {
+        "worker_seconds": 0.1928546680137515,
+        "queue_seconds": 0.0013518254272639751,
+        "compute_seconds": 0.10159228602424264,
+        "filter_seconds": 0.012682279106229544,
+        "transport_seconds": 0.09126238198950887,
+        "worker_to_publication_seconds": 0.01058213459327817,
+        "publish_age_seconds": 0.21138107078149915,
+        "failures": 0,
+        "rejected": 0
+      },
+      "camera_acquisition": {
+        "mapping": {
+          "calls": 16,
+          "successful_batches": 16,
+          "advancing_batches": 16,
+          "elapsed_ms": {
+            "count": 16,
+            "mean": 0.04375373828224838,
+            "p50": 0.042594969272613525,
+            "p95": 0.05454441998153925,
+            "p99": 0.057796877808868885,
+            "worst": 0.058609992265701294
+          }
+        },
+        "semantic": {
+          "calls": 48,
+          "successful_batches": 48,
+          "advancing_batches": 48,
+          "elapsed_ms": {
+            "count": 48,
+            "mean": 6.404185725841671,
+            "p50": 5.755239864811301,
+            "p95": 9.051242168061435,
+            "p99": 9.717142893932762,
+            "worst": 10.192617774009705
+          }
+        }
+      },
+      "planning": {
+        "static": {
+          "success": true,
+          "failure_code": null,
+          "planner_plus_research_sampling_seconds": 0.05492088198661804,
+          "phases_seconds": {
+            "world_update_seconds": 0.0002827378921210766,
+            "ik_seconds": 7.559126242995262e-05,
+            "rrt_seconds": 0.0007315259426832199,
+            "route_validation_seconds": 0.012908560689538717,
+            "trajectory_generation_seconds": 9.651994332671165e-05,
+            "trajectory_validation_seconds": 0.0314657730050385
+          },
+          "registered_primitives": 2,
+          "explicit_configuration_validation_calls": 288,
+          "native_rrt_collision_queries": null,
+          "waypoints": 3,
+          "joint_path_length_rad": 1.2705546140758006
+        },
+        "frozen_rgbd": {
+          "success": false,
+          "failure_code": "base_geometry_rejected",
+          "planner_plus_research_sampling_seconds": 0.009132428094744682,
+          "phases_seconds": {
+            "world_update_seconds": 0.0014011370949447155,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          },
+          "registered_primitives": 65,
+          "explicit_configuration_validation_calls": 0,
+          "native_rrt_collision_queries": null,
+          "waypoints": 0,
+          "joint_path_length_rad": null
+        }
+      },
+      "experimental_veto": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "worker_seconds": 0.1275632749311626,
+          "queue_seconds": 2.4386215955018997e-05,
+          "experimental_owner_wait_seconds": 0.1304129483178258
+        }
+      },
+      "request_to_first_command_seconds": 0.22124652890488505,
+      "kit_interval_ms": {
+        "count": 77,
+        "mean": 21.57817751943291,
+        "p50": 16.357142943888903,
+        "p95": 26.40677653253079,
+        "p99": 86.27358490601071,
+        "worst": 249.71371982246637
+      },
+      "execution_control_interval_ms": {
+        "count": 76,
+        "p50": 15.888402005657554,
+        "p95": 25.534130516462028,
+        "p99": 35.819265991449356,
+        "worst": 43.221198953688145
+      },
+      "trajectory_tracking_error_rad": {
+        "count": 78,
+        "p50": 0.007273769331713642,
+        "p95": 0.03598655641565485,
+        "p99": 0.036509607640805006,
+        "worst": 0.0365212430928018
+      },
+      "new_mapping_publications": 0,
+      "source_captures": 1,
+      "active_world_refreshes": 0
+    }
+  ]
+}

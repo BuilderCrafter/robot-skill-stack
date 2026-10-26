@@ -1,0 +1,3951 @@
+{
+  "schema_version": 2,
+  "scope": "Offline reduction of archived native results only. This process does not launch Isaac, simulate performance, alter occupancy labels, refresh evidence or supply ground truth to a planner.",
+  "cohort": "diagnostic128",
+  "native_cases": 6,
+  "full_analysis_archive": "outputs/motion-planning-v5/offline-full/diagnostic128/summary.json",
+  "full_analysis_sha256": "0350b8dfe29c17499e85fbe19617c8267c3a395d096dbc9f090b1c887c68c6b3",
+  "cases": [
+    {
+      "case_id": "large-frozen_rgbd-b128-frozen_rgbd-b128",
+      "scenario": "large",
+      "execution_condition": "frozen_rgbd",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": true
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334811.652174129,
+          "evaluated_at": 3334812.088307398
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1490171,
+          "free": 82412,
+          "occupied": 617
+        },
+        "eligible_occupied_cells": 617,
+        "spatial_supported_cells": 239,
+        "strong_sparse_cells": 378,
+        "supported_cells": 617,
+        "selected_proxy_count": 128,
+        "selected_cells": 131,
+        "eligible_occupied_cell_mask_sha256": "8a747523d40ea5b284cc15621e81c9809176def85924da2930c73ab0db67ab0f",
+        "supported_cell_mask_sha256": "8a747523d40ea5b284cc15621e81c9809176def85924da2930c73ab0db67ab0f",
+        "selected_cell_mask_sha256": "ad59827abe1c362372665c47cf7f0b0d693624065782124289600e6737d6bec4",
+        "supported_omitted_cells": 486,
+        "supported_selected_fraction": 0.21231766612641814,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 617,
+          "supported_voxels": 617,
+          "spatial_supported_voxels": 239,
+          "strong_sparse_retained": 378,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 608,
+          "proxy_count": 128,
+          "represented_voxels": 131,
+          "omitted_voxels": 486,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 393,
+          "hazard_candidate_boxes": 215,
+          "selected_floor_boxes": 0,
+          "selected_hazard_boxes": 128,
+          "represented_floor_voxels": 0,
+          "omitted_floor_voxels": 399,
+          "padding_m": 0.0,
+          "extract_seconds": 0.012424326967447996
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Wall": {
+            "depth_attributed_cells": 7276,
+            "eligible_occupied_cells": 218,
+            "supported_cells": 218,
+            "selected_cells": 131,
+            "omitted_supported_cells": 87,
+            "selected_fraction_of_observed_occupied": 0.6009174311926605,
+            "selected_fraction_of_supported": 0.6009174311926605,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 299,
+              "poses_sampled": 299,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 34640,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 34156,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 34156,
+                "counts": {
+                  "unknown": 33522,
+                  "free": 634,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9814381075067338,
+                  "free": 0.018561892493266192,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 34156,
+                "never_observed_unknown_samples": 33319,
+                "expired_unknown_samples": 203,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 157872,
+                "counts": {
+                  "unknown": 155367,
+                  "free": 2505,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.984132715110976,
+                  "free": 0.01586728488902402,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9912520512806408,
+                  "free": 0.008747948719359298,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 154247,
+                "expired_unknown_samples": 1120
+              },
+              "interior": {
+                "samples": 119002,
+                "counts": {
+                  "unknown": 117440,
+                  "free": 1562,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9868741701820137,
+                  "free": 0.013125829817986252,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 299,
+                "counts": {
+                  "unknown": 284,
+                  "free": 15,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9498327759197325,
+                  "free": 0.05016722408026756,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 583,
+              "poses_sampled": 583,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 37570,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 37086,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 37086,
+                "counts": {
+                  "unknown": 36468,
+                  "free": 618,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9833360297686459,
+                  "free": 0.01666397023135415,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 37086,
+                "never_observed_unknown_samples": 36292,
+                "expired_unknown_samples": 176,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 307824,
+                "counts": {
+                  "unknown": 301092,
+                  "free": 6712,
+                  "occupied": 0,
+                  "out_of_bounds": 20
+                },
+                "fractions": {
+                  "unknown": 0.9781303602058319,
+                  "free": 0.02180466760226623,
+                  "occupied": 0.0,
+                  "out_of_bounds": 6.497219190186601e-05
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.990287416933896,
+                  "free": 0.009684281784535785,
+                  "occupied": 0.0,
+                  "out_of_bounds": 2.8301281568095576e-05
+                },
+                "never_observed_unknown_samples": 298744,
+                "expired_unknown_samples": 2348
+              },
+              "interior": {
+                "samples": 232034,
+                "counts": {
+                  "unknown": 226147,
+                  "free": 5887,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9746287182050907,
+                  "free": 0.025371281794909366,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 583,
+                "counts": {
+                  "unknown": 527,
+                  "free": 56,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9039451114922813,
+                  "free": 0.09605488850771869,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334811.652174129
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        },
+        "frozen_rgbd": {
+          "phases": {
+            "route": {
+              "poses_requested": 371,
+              "poses_sampled": 371,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 20497,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 20013,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 20013,
+                "counts": {
+                  "unknown": 19225,
+                  "free": 788,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9606255933643132,
+                  "free": 0.0393744066356868,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 20013,
+                "never_observed_unknown_samples": 19003,
+                "expired_unknown_samples": 222,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 195888,
+                "counts": {
+                  "unknown": 189772,
+                  "free": 6116,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9687780772686433,
+                  "free": 0.031221922731356693,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9846104231291531,
+                  "free": 0.015389576870846858,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 188526,
+                "expired_unknown_samples": 1246
+              },
+              "interior": {
+                "samples": 147658,
+                "counts": {
+                  "unknown": 143218,
+                  "free": 4440,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9699305151092389,
+                  "free": 0.030069484890761083,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 371,
+                "counts": {
+                  "unknown": 347,
+                  "free": 24,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9353099730458221,
+                  "free": 0.0646900269541779,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 581,
+              "poses_sampled": 581,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 24943,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 24459,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 24459,
+                "counts": {
+                  "unknown": 23364,
+                  "free": 1095,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9552312032380719,
+                  "free": 0.044768796761928124,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 24459,
+                "never_observed_unknown_samples": 23155,
+                "expired_unknown_samples": 209,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 306768,
+                "counts": {
+                  "unknown": 293450,
+                  "free": 13318,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9565860845981328,
+                  "free": 0.04341391540186721,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9829525039471458,
+                  "free": 0.01704749605285408,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 291229,
+                "expired_unknown_samples": 2221
+              },
+              "interior": {
+                "samples": 231238,
+                "counts": {
+                  "unknown": 220393,
+                  "free": 10845,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9531002689869312,
+                  "free": 0.04689973101306879,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 581,
+                "counts": {
+                  "unknown": 562,
+                  "free": 19,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9672977624784854,
+                  "free": 0.03270223752151463,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "actual": {
+              "poses_requested": 2,
+              "poses_sampled": 2,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 484,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 0,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 0,
+                "counts": {
+                  "unknown": 0,
+                  "free": 0,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": null
+              },
+              "surface": {
+                "samples": 1056,
+                "counts": {
+                  "unknown": 1042,
+                  "free": 14,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9867424242424242,
+                  "free": 0.013257575757575758,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9979907754743601,
+                  "free": 0.0020092245256398827,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 1018,
+                "expired_unknown_samples": 24
+              },
+              "interior": {
+                "samples": 796,
+                "counts": {
+                  "unknown": 784,
+                  "free": 12,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9849246231155779,
+                  "free": 0.01507537688442211,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 2,
+                "counts": {
+                  "unknown": 2,
+                  "free": 0,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 1.0,
+                  "free": 0.0,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334811.652174129
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "research_veto": true,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/large/frozen_rgbd-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 882,
+            "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+            "self_evaluated": false
+          },
+          "frozen_rgbd": {
+            "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "evaluated_samples": 952,
+            "minimum_nonmount_clearance_lower_bound_m": 0.0,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 882,
+          "total_samples": 882,
+          "phases_requested": {
+            "route": 299,
+            "trajectory": 583
+          },
+          "phases_evaluated": {
+            "route": 299,
+            "trajectory": 583
+          },
+          "queries": 19404,
+          "broadphase_separations": 9549,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.6120586358010769,
+          "queue_seconds": 2.468610182404518e-05,
+          "experimental_owner_wait_seconds": 0.6128598521463573,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "evaluated_samples": 49,
+          "total_samples": 952,
+          "phases_requested": {
+            "route": 371,
+            "trajectory": 581
+          },
+          "phases_evaluated": {
+            "route": 49,
+            "trajectory": 0
+          },
+          "queries": 1078,
+          "broadphase_separations": 530,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.06353001296520233,
+          "queue_seconds": 2.512708306312561e-05,
+          "experimental_owner_wait_seconds": 0.06653937324881554,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 1
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.2267083227705338,
+          "planner_wall_seconds": 0.18454852420836687,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 2,
+            "selected_ik_index": 1,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 4.373760848625087,
+            "static_obstacles": 2,
+            "ik_seconds": 0.00022782571613788605,
+            "rrt_seconds": 0.004197459667921066,
+            "world_update_seconds": 0.0002989978529512882,
+            "route_validation_seconds": 0.07373462431132793,
+            "trajectory_generation_seconds": 9.683100506663322e-05,
+            "trajectory_validation_seconds": 0.0964409951120615
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.220368701093265,
+          "planner_wall_seconds": 0.1954712150618434,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 5,
+            "geometric_joint_path_length": 5.316365244171106,
+            "static_obstacles": 129,
+            "ik_seconds": 8.923700079321861e-05,
+            "rrt_seconds": 0.014227564912289381,
+            "world_update_seconds": 0.0024222140200436115,
+            "route_validation_seconds": 0.05531347589567304,
+            "trajectory_generation_seconds": 6.570341065526009e-05,
+            "trajectory_validation_seconds": 0.11060514068230987
+          }
+        }
+      },
+      "native_execution": {
+        "status": "failed",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution",
+        "failure_code": "path_blocked",
+        "request_to_first_command_seconds": null
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334811.652174129,
+        "original_acquisition_timestamp": 3334811.652174129,
+        "evaluated_at": 3334812.088307398,
+        "map_age_seconds": 0.4361332687549293,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "PARTIAL_UNRESOLVED_QUERIES",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 256,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 88,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 40
+      }
+    },
+    {
+      "case_id": "large-static-b128-static-b128",
+      "scenario": "large",
+      "execution_condition": "static",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": null
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334780.94518695,
+          "evaluated_at": 3334781.439751238
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1490171,
+          "free": 82412,
+          "occupied": 617
+        },
+        "eligible_occupied_cells": 617,
+        "spatial_supported_cells": 239,
+        "strong_sparse_cells": 378,
+        "supported_cells": 617,
+        "selected_proxy_count": 128,
+        "selected_cells": 131,
+        "eligible_occupied_cell_mask_sha256": "8a747523d40ea5b284cc15621e81c9809176def85924da2930c73ab0db67ab0f",
+        "supported_cell_mask_sha256": "8a747523d40ea5b284cc15621e81c9809176def85924da2930c73ab0db67ab0f",
+        "selected_cell_mask_sha256": "ad59827abe1c362372665c47cf7f0b0d693624065782124289600e6737d6bec4",
+        "supported_omitted_cells": 486,
+        "supported_selected_fraction": 0.21231766612641814,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 617,
+          "supported_voxels": 617,
+          "spatial_supported_voxels": 239,
+          "strong_sparse_retained": 378,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 608,
+          "proxy_count": 128,
+          "represented_voxels": 131,
+          "omitted_voxels": 486,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 393,
+          "hazard_candidate_boxes": 215,
+          "selected_floor_boxes": 0,
+          "selected_hazard_boxes": 128,
+          "represented_floor_voxels": 0,
+          "omitted_floor_voxels": 399,
+          "padding_m": 0.0,
+          "extract_seconds": 0.012379433028399944
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Wall": {
+            "depth_attributed_cells": 7276,
+            "eligible_occupied_cells": 218,
+            "supported_cells": 218,
+            "selected_cells": 131,
+            "omitted_supported_cells": 87,
+            "selected_fraction_of_observed_occupied": 0.6009174311926605,
+            "selected_fraction_of_supported": 0.6009174311926605,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 299,
+              "poses_sampled": 299,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 34640,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 34156,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 34156,
+                "counts": {
+                  "unknown": 33522,
+                  "free": 634,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9814381075067338,
+                  "free": 0.018561892493266192,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 34156,
+                "never_observed_unknown_samples": 33319,
+                "expired_unknown_samples": 203,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 157872,
+                "counts": {
+                  "unknown": 155367,
+                  "free": 2505,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.984132715110976,
+                  "free": 0.01586728488902402,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9912520512806408,
+                  "free": 0.008747948719359298,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 154247,
+                "expired_unknown_samples": 1120
+              },
+              "interior": {
+                "samples": 119002,
+                "counts": {
+                  "unknown": 117440,
+                  "free": 1562,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9868741701820137,
+                  "free": 0.013125829817986252,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 299,
+                "counts": {
+                  "unknown": 284,
+                  "free": 15,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9498327759197325,
+                  "free": 0.05016722408026756,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 583,
+              "poses_sampled": 583,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 37570,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 37086,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 37086,
+                "counts": {
+                  "unknown": 36468,
+                  "free": 618,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9833360297686459,
+                  "free": 0.01666397023135415,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 37086,
+                "never_observed_unknown_samples": 36292,
+                "expired_unknown_samples": 176,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 307824,
+                "counts": {
+                  "unknown": 301092,
+                  "free": 6712,
+                  "occupied": 0,
+                  "out_of_bounds": 20
+                },
+                "fractions": {
+                  "unknown": 0.9781303602058319,
+                  "free": 0.02180466760226623,
+                  "occupied": 0.0,
+                  "out_of_bounds": 6.497219190186601e-05
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.990287416933896,
+                  "free": 0.009684281784535785,
+                  "occupied": 0.0,
+                  "out_of_bounds": 2.8301281568095576e-05
+                },
+                "never_observed_unknown_samples": 298744,
+                "expired_unknown_samples": 2348
+              },
+              "interior": {
+                "samples": 232034,
+                "counts": {
+                  "unknown": 226147,
+                  "free": 5887,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9746287182050907,
+                  "free": 0.025371281794909366,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 583,
+                "counts": {
+                  "unknown": 527,
+                  "free": 56,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9039451114922813,
+                  "free": 0.09605488850771869,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "actual": {
+              "poses_requested": 320,
+              "poses_sampled": 320,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 25503,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 25019,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 25019,
+                "counts": {
+                  "unknown": 24523,
+                  "free": 496,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9801750669491187,
+                  "free": 0.01982493305088133,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 25019,
+                "never_observed_unknown_samples": 24388,
+                "expired_unknown_samples": 135,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 168960,
+                "counts": {
+                  "unknown": 162736,
+                  "free": 6218,
+                  "occupied": 0,
+                  "out_of_bounds": 6
+                },
+                "fractions": {
+                  "unknown": 0.9631628787878788,
+                  "free": 0.03680160984848485,
+                  "occupied": 0.0,
+                  "out_of_bounds": 3.5511363636363635e-05
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9850933789921018,
+                  "free": 0.014891152588691184,
+                  "occupied": 0.0,
+                  "out_of_bounds": 1.5468419207061918e-05
+                },
+                "never_observed_unknown_samples": 161601,
+                "expired_unknown_samples": 1135
+              },
+              "interior": {
+                "samples": 127360,
+                "counts": {
+                  "unknown": 122018,
+                  "free": 5342,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.958055904522613,
+                  "free": 0.041944095477386936,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 320,
+                "counts": {
+                  "unknown": 274,
+                  "free": 46,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.85625,
+                  "free": 0.14375,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334780.94518695
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        },
+        "frozen_rgbd": {
+          "phases": {
+            "route": {
+              "poses_requested": 371,
+              "poses_sampled": 371,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 20497,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 20013,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 20013,
+                "counts": {
+                  "unknown": 19225,
+                  "free": 788,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9606255933643132,
+                  "free": 0.0393744066356868,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 20013,
+                "never_observed_unknown_samples": 19003,
+                "expired_unknown_samples": 222,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 195888,
+                "counts": {
+                  "unknown": 189772,
+                  "free": 6116,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9687780772686433,
+                  "free": 0.031221922731356693,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9846104231291531,
+                  "free": 0.015389576870846858,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 188526,
+                "expired_unknown_samples": 1246
+              },
+              "interior": {
+                "samples": 147658,
+                "counts": {
+                  "unknown": 143218,
+                  "free": 4440,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9699305151092389,
+                  "free": 0.030069484890761083,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 371,
+                "counts": {
+                  "unknown": 347,
+                  "free": 24,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9353099730458221,
+                  "free": 0.0646900269541779,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 581,
+              "poses_sampled": 581,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 24943,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 24459,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 24459,
+                "counts": {
+                  "unknown": 23364,
+                  "free": 1095,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9552312032380719,
+                  "free": 0.044768796761928124,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 24459,
+                "never_observed_unknown_samples": 23155,
+                "expired_unknown_samples": 209,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 306768,
+                "counts": {
+                  "unknown": 293450,
+                  "free": 13318,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9565860845981328,
+                  "free": 0.04341391540186721,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9829525039471458,
+                  "free": 0.01704749605285408,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 291229,
+                "expired_unknown_samples": 2221
+              },
+              "interior": {
+                "samples": 231238,
+                "counts": {
+                  "unknown": 220393,
+                  "free": 10845,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9531002689869312,
+                  "free": 0.04689973101306879,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 581,
+                "counts": {
+                  "unknown": 562,
+                  "free": 19,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9672977624784854,
+                  "free": 0.03270223752151463,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334780.94518695
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": true,
+          "native_trajectory_commands": 159,
+          "executed": true,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "research_veto": true,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/large/static-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "86ac9e03d8db955cf67e212ef108e69163954dcd56c6645e221b8f8fdba069a3",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 882,
+            "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+            "self_evaluated": false
+          },
+          "frozen_rgbd": {
+            "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "evaluated_samples": 952,
+            "minimum_nonmount_clearance_lower_bound_m": 0.0,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 882,
+          "total_samples": 882,
+          "phases_requested": {
+            "route": 299,
+            "trajectory": 583
+          },
+          "phases_evaluated": {
+            "route": 299,
+            "trajectory": 583
+          },
+          "queries": 19404,
+          "broadphase_separations": 9549,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00022453136228872683,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.620145610999316,
+          "queue_seconds": 2.378411591053009e-05,
+          "experimental_owner_wait_seconds": 0.6249340451322496,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "evaluated_samples": 49,
+          "total_samples": 952,
+          "phases_requested": {
+            "route": 371,
+            "trajectory": 581
+          },
+          "phases_evaluated": {
+            "route": 49,
+            "trajectory": 0
+          },
+          "queries": 1078,
+          "broadphase_separations": 530,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.06382581498473883,
+          "queue_seconds": 2.571800723671913e-05,
+          "experimental_owner_wait_seconds": 0.06696378719061613,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 1
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.2267083227705338,
+          "planner_wall_seconds": 0.24866846902295947,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 2,
+            "selected_ik_index": 1,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 4.373760848625087,
+            "static_obstacles": 2,
+            "ik_seconds": 0.00027822935953736305,
+            "rrt_seconds": 0.004365674220025539,
+            "world_update_seconds": 0.00027963193133473396,
+            "route_validation_seconds": 0.11523813428357244,
+            "trajectory_generation_seconds": 0.00017526699230074883,
+            "trajectory_validation_seconds": 0.11622733203694224
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.220368701093265,
+          "planner_wall_seconds": 0.19884532736614347,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 5,
+            "geometric_joint_path_length": 5.316365244171106,
+            "static_obstacles": 129,
+            "ik_seconds": 8.953781798481941e-05,
+            "rrt_seconds": 0.014439289923757315,
+            "world_update_seconds": 0.0025444133207201958,
+            "route_validation_seconds": 0.05561819486320019,
+            "trajectory_generation_seconds": 8.256407454609871e-05,
+            "trajectory_validation_seconds": 0.1130589940585196
+          }
+        }
+      },
+      "native_execution": {
+        "status": "success",
+        "message": "End effector reached target pose.",
+        "failure_code": null,
+        "request_to_first_command_seconds": 1.1774313407950103
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334780.94518695,
+        "original_acquisition_timestamp": 3334780.94518695,
+        "evaluated_at": 3334781.439751238,
+        "map_age_seconds": 0.49456428829580545,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "PARTIAL_UNRESOLVED_QUERIES",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 256,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 88,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 40
+      }
+    },
+    {
+      "case_id": "narrow-frozen_rgbd-b128-frozen_rgbd-b128",
+      "scenario": "narrow",
+      "execution_condition": "frozen_rgbd",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": true
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334756.20430459,
+          "evaluated_at": 3334756.642679466
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1480151,
+          "free": 92487,
+          "occupied": 562
+        },
+        "eligible_occupied_cells": 562,
+        "spatial_supported_cells": 202,
+        "strong_sparse_cells": 360,
+        "supported_cells": 562,
+        "selected_proxy_count": 128,
+        "selected_cells": 140,
+        "eligible_occupied_cell_mask_sha256": "b3c9b771afb47aa2c3788e656ebd3697153ea1192b1fd41e719e51ef1f4a57b1",
+        "supported_cell_mask_sha256": "b3c9b771afb47aa2c3788e656ebd3697153ea1192b1fd41e719e51ef1f4a57b1",
+        "selected_cell_mask_sha256": "1718a3428e6bf36dcfe296f835a99972c1deef5478210ea742fa5925e9a4c0c1",
+        "supported_omitted_cells": 422,
+        "supported_selected_fraction": 0.2491103202846975,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 562,
+          "supported_voxels": 562,
+          "spatial_supported_voxels": 202,
+          "strong_sparse_retained": 360,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 550,
+          "proxy_count": 128,
+          "represented_voxels": 140,
+          "omitted_voxels": 422,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 479,
+          "hazard_candidate_boxes": 71,
+          "selected_floor_boxes": 57,
+          "selected_hazard_boxes": 71,
+          "represented_floor_voxels": 67,
+          "omitted_floor_voxels": 422,
+          "padding_m": 0.0,
+          "extract_seconds": 0.012176604010164738
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Left": {
+            "depth_attributed_cells": 1497,
+            "eligible_occupied_cells": 34,
+            "supported_cells": 34,
+            "selected_cells": 34,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          },
+          "/World/ReactiveEvaluation/Right": {
+            "depth_attributed_cells": 1661,
+            "eligible_occupied_cells": 39,
+            "supported_cells": 39,
+            "selected_cells": 39,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 112,
+              "poses_sampled": 112,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 10241,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 9757,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 9757,
+                "counts": {
+                  "unknown": 9226,
+                  "free": 531,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9455775340780977,
+                  "free": 0.054422465921902224,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 9757,
+                "never_observed_unknown_samples": 9144,
+                "expired_unknown_samples": 82,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 59136,
+                "counts": {
+                  "unknown": 56330,
+                  "free": 2806,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9525500541125541,
+                  "free": 0.04744994588744589,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9848220163586077,
+                  "free": 0.015177983641392273,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 55931,
+                "expired_unknown_samples": 399
+              },
+              "interior": {
+                "samples": 44576,
+                "counts": {
+                  "unknown": 42198,
+                  "free": 2378,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9466529073941135,
+                  "free": 0.053347092605886576,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 112,
+                "counts": {
+                  "unknown": 110,
+                  "free": 2,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9821428571428571,
+                  "free": 0.017857142857142856,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 272,
+              "poses_sampled": 272,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 10548,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 10064,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 10064,
+                "counts": {
+                  "unknown": 9518,
+                  "free": 546,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9457472178060413,
+                  "free": 0.05425278219395867,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 10064,
+                "never_observed_unknown_samples": 9431,
+                "expired_unknown_samples": 87,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 143616,
+                "counts": {
+                  "unknown": 135563,
+                  "free": 8053,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9439268605169341,
+                  "free": 0.056073139483065956,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9812920555726571,
+                  "free": 0.018707944427342922,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 134289,
+                "expired_unknown_samples": 1274
+              },
+              "interior": {
+                "samples": 108256,
+                "counts": {
+                  "unknown": 101580,
+                  "free": 6676,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9383313626958321,
+                  "free": 0.0616686373041679,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 272,
+                "counts": {
+                  "unknown": 269,
+                  "free": 3,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9889705882352942,
+                  "free": 0.011029411764705883,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334756.20430459
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": false,
+          "planning_failure_code": "base_geometry_rejected",
+          "physical_evaluation_status": "UNMEASURED_NO_PLANNED_ROUTE",
+          "research_veto": false,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/narrow/frozen_rgbd-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 384,
+            "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 384,
+          "total_samples": 384,
+          "phases_requested": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "phases_evaluated": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "queries": 12672,
+          "broadphase_separations": 8448,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.21503597917035222,
+          "queue_seconds": 2.4485867470502853e-05,
+          "experimental_owner_wait_seconds": 0.21537160594016314,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 1.0373968004413578,
+          "planner_wall_seconds": 0.07420799694955349,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "static_obstacles": 3,
+            "ik_seconds": 0.00011423323303461075,
+            "rrt_seconds": 0.0004361341707408428,
+            "world_update_seconds": 0.0002837907522916794,
+            "route_validation_seconds": 0.01411495404317975,
+            "trajectory_generation_seconds": 0.00010063778609037399,
+            "trajectory_validation_seconds": 0.04964850516989827
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": false,
+          "failure_code": "base_geometry_rejected",
+          "failure_message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle",
+          "duration": null,
+          "planner_wall_seconds": 0.011811952106654644,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 0,
+            "selected_ik_index": null,
+            "rrt_waypoints": 0,
+            "geometric_joint_path_length": null,
+            "static_obstacles": 129,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "world_update_seconds": 0.0025006411597132683,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          }
+        }
+      },
+      "native_execution": {
+        "status": "failed",
+        "message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle",
+        "failure_code": "path_blocked",
+        "request_to_first_command_seconds": null
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334756.20430459,
+        "original_acquisition_timestamp": 3334756.20430459,
+        "evaluated_at": 3334756.642679466,
+        "map_age_seconds": 0.4383748760446906,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "MEASURED_DECLARED_COMPLETE_PHYSICAL_REFERENCE",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 238,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 128,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 0
+      }
+    },
+    {
+      "case_id": "narrow-static-b128-static-b128",
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": null
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334728.355090838,
+          "evaluated_at": 3334728.893528092
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1480151,
+          "free": 92487,
+          "occupied": 562
+        },
+        "eligible_occupied_cells": 562,
+        "spatial_supported_cells": 202,
+        "strong_sparse_cells": 360,
+        "supported_cells": 562,
+        "selected_proxy_count": 128,
+        "selected_cells": 140,
+        "eligible_occupied_cell_mask_sha256": "b3c9b771afb47aa2c3788e656ebd3697153ea1192b1fd41e719e51ef1f4a57b1",
+        "supported_cell_mask_sha256": "b3c9b771afb47aa2c3788e656ebd3697153ea1192b1fd41e719e51ef1f4a57b1",
+        "selected_cell_mask_sha256": "1718a3428e6bf36dcfe296f835a99972c1deef5478210ea742fa5925e9a4c0c1",
+        "supported_omitted_cells": 422,
+        "supported_selected_fraction": 0.2491103202846975,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 562,
+          "supported_voxels": 562,
+          "spatial_supported_voxels": 202,
+          "strong_sparse_retained": 360,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 550,
+          "proxy_count": 128,
+          "represented_voxels": 140,
+          "omitted_voxels": 422,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 479,
+          "hazard_candidate_boxes": 71,
+          "selected_floor_boxes": 57,
+          "selected_hazard_boxes": 71,
+          "represented_floor_voxels": 67,
+          "omitted_floor_voxels": 422,
+          "padding_m": 0.0,
+          "extract_seconds": 0.01301370793953538
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Left": {
+            "depth_attributed_cells": 1497,
+            "eligible_occupied_cells": 34,
+            "supported_cells": 34,
+            "selected_cells": 34,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          },
+          "/World/ReactiveEvaluation/Right": {
+            "depth_attributed_cells": 1661,
+            "eligible_occupied_cells": 39,
+            "supported_cells": 39,
+            "selected_cells": 39,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 112,
+              "poses_sampled": 112,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 10241,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 9757,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 9757,
+                "counts": {
+                  "unknown": 9226,
+                  "free": 531,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9455775340780977,
+                  "free": 0.054422465921902224,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 9757,
+                "never_observed_unknown_samples": 9144,
+                "expired_unknown_samples": 82,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 59136,
+                "counts": {
+                  "unknown": 56330,
+                  "free": 2806,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9525500541125541,
+                  "free": 0.04744994588744589,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9848220163586077,
+                  "free": 0.015177983641392273,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 55931,
+                "expired_unknown_samples": 399
+              },
+              "interior": {
+                "samples": 44576,
+                "counts": {
+                  "unknown": 42198,
+                  "free": 2378,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9466529073941135,
+                  "free": 0.053347092605886576,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 112,
+                "counts": {
+                  "unknown": 110,
+                  "free": 2,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9821428571428571,
+                  "free": 0.017857142857142856,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 272,
+              "poses_sampled": 272,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 10548,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 10064,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 10064,
+                "counts": {
+                  "unknown": 9518,
+                  "free": 546,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9457472178060413,
+                  "free": 0.05425278219395867,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 10064,
+                "never_observed_unknown_samples": 9431,
+                "expired_unknown_samples": 87,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 143616,
+                "counts": {
+                  "unknown": 135563,
+                  "free": 8053,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9439268605169341,
+                  "free": 0.056073139483065956,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9812920555726571,
+                  "free": 0.018707944427342922,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 134289,
+                "expired_unknown_samples": 1274
+              },
+              "interior": {
+                "samples": 108256,
+                "counts": {
+                  "unknown": 101580,
+                  "free": 6676,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9383313626958321,
+                  "free": 0.0616686373041679,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 272,
+                "counts": {
+                  "unknown": 269,
+                  "free": 3,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9889705882352942,
+                  "free": 0.011029411764705883,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "actual": {
+              "poses_requested": 174,
+              "poses_sampled": 174,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 8696,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 8212,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 8212,
+                "counts": {
+                  "unknown": 7738,
+                  "free": 474,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9422795908426692,
+                  "free": 0.05772040915733073,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 8212,
+                "never_observed_unknown_samples": 7673,
+                "expired_unknown_samples": 65,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 91872,
+                "counts": {
+                  "unknown": 85199,
+                  "free": 6673,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9273663357715082,
+                  "free": 0.07263366422849181,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9745676087660262,
+                  "free": 0.025432391233973818,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 84562,
+                "expired_unknown_samples": 637
+              },
+              "interior": {
+                "samples": 69252,
+                "counts": {
+                  "unknown": 63698,
+                  "free": 5554,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9198001501761682,
+                  "free": 0.0801998498238318,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 174,
+                "counts": {
+                  "unknown": 154,
+                  "free": 20,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.8850574712643678,
+                  "free": 0.11494252873563218,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334728.355090838
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": true,
+          "native_trajectory_commands": 86,
+          "executed": true,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": false,
+          "planning_failure_code": "base_geometry_rejected",
+          "physical_evaluation_status": "UNMEASURED_NO_PLANNED_ROUTE",
+          "research_veto": false,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/narrow/static-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "c336858686783cc112f767fdda4199ab42ba4fe6b51c1a122d87ad6f4fd78d6e",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 384,
+            "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 384,
+          "total_samples": 384,
+          "phases_requested": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "phases_evaluated": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "queries": 12672,
+          "broadphase_separations": 8448,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.014461732018405393,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.21388694271445274,
+          "queue_seconds": 2.5838147848844528e-05,
+          "experimental_owner_wait_seconds": 0.21451309183612466,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 1.0373968004413578,
+          "planner_wall_seconds": 0.09171304386109114,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 2,
+            "geometric_joint_path_length": 1.4131578784760566,
+            "static_obstacles": 3,
+            "ik_seconds": 0.00014765514060854912,
+            "rrt_seconds": 0.00065196817740798,
+            "world_update_seconds": 0.0003467579372227192,
+            "route_validation_seconds": 0.020358034875243902,
+            "trajectory_generation_seconds": 0.00010816240683197975,
+            "trajectory_validation_seconds": 0.05952807702124119
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": false,
+          "failure_code": "base_geometry_rejected",
+          "failure_message": "Fixed-base enclosure cannot establish clearance from the frozen obstacle",
+          "duration": null,
+          "planner_wall_seconds": 0.013759661000221968,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 0,
+            "selected_ik_index": null,
+            "rrt_waypoints": 0,
+            "geometric_joint_path_length": null,
+            "static_obstacles": 129,
+            "ik_seconds": 0,
+            "rrt_seconds": 0,
+            "world_update_seconds": 0.002669746056199074,
+            "route_validation_seconds": 0,
+            "trajectory_generation_seconds": 0,
+            "trajectory_validation_seconds": 0
+          }
+        }
+      },
+      "native_execution": {
+        "status": "success",
+        "message": "End effector reached target pose.",
+        "failure_code": null,
+        "request_to_first_command_seconds": 0.35850102500990033
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334728.355090838,
+        "original_acquisition_timestamp": 3334728.355090838,
+        "evaluated_at": 3334728.893528092,
+        "map_age_seconds": 0.5384372542612255,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "MEASURED_DECLARED_COMPLETE_PHYSICAL_REFERENCE",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 238,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 128,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 0
+      }
+    },
+    {
+      "case_id": "partial-frozen_rgbd-b128-frozen_rgbd-b128",
+      "scenario": "partial",
+      "execution_condition": "frozen_rgbd",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": true
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334702.52104394,
+          "evaluated_at": 3334702.992251662
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1484776,
+          "free": 87835,
+          "occupied": 589
+        },
+        "eligible_occupied_cells": 589,
+        "spatial_supported_cells": 179,
+        "strong_sparse_cells": 410,
+        "supported_cells": 589,
+        "selected_proxy_count": 128,
+        "selected_cells": 139,
+        "eligible_occupied_cell_mask_sha256": "f5b10d4a381b713e497bf3f3af346f5aebfb469dc1602085eeae2a6f774d06f6",
+        "supported_cell_mask_sha256": "f5b10d4a381b713e497bf3f3af346f5aebfb469dc1602085eeae2a6f774d06f6",
+        "selected_cell_mask_sha256": "398378f0ed1f35644e32105e1ac839d5b1fb48944b25260c1940623597c29312",
+        "supported_omitted_cells": 450,
+        "supported_selected_fraction": 0.23599320882852293,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 589,
+          "supported_voxels": 589,
+          "spatial_supported_voxels": 179,
+          "strong_sparse_retained": 410,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 578,
+          "proxy_count": 128,
+          "represented_voxels": 139,
+          "omitted_voxels": 450,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 465,
+          "hazard_candidate_boxes": 113,
+          "selected_floor_boxes": 15,
+          "selected_hazard_boxes": 113,
+          "represented_floor_voxels": 26,
+          "omitted_floor_voxels": 450,
+          "padding_m": 0.0,
+          "extract_seconds": 0.013229500968009233
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Occluder": {
+            "depth_attributed_cells": 3746,
+            "eligible_occupied_cells": 77,
+            "supported_cells": 77,
+            "selected_cells": 77,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          },
+          "/World/ReactiveEvaluation/Post": {
+            "depth_attributed_cells": 1062,
+            "eligible_occupied_cells": 36,
+            "supported_cells": 36,
+            "selected_cells": 36,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 345,
+              "poses_sampled": 345,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 19292,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 18808,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 18808,
+                "counts": {
+                  "unknown": 18084,
+                  "free": 724,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9615057422373459,
+                  "free": 0.03849425776265419,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 18808,
+                "never_observed_unknown_samples": 17935,
+                "expired_unknown_samples": 149,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 182160,
+                "counts": {
+                  "unknown": 175728,
+                  "free": 6432,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9646903820816864,
+                  "free": 0.03530961791831357,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9814617617390975,
+                  "free": 0.01853823826090254,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 174863,
+                "expired_unknown_samples": 865
+              },
+              "interior": {
+                "samples": 137310,
+                "counts": {
+                  "unknown": 132741,
+                  "free": 4569,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9667249289927901,
+                  "free": 0.033275071007209965,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 345,
+                "counts": {
+                  "unknown": 339,
+                  "free": 6,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9826086956521739,
+                  "free": 0.017391304347826087,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 578,
+              "poses_sampled": 578,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 22989,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 22505,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 22505,
+                "counts": {
+                  "unknown": 21673,
+                  "free": 832,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9630304376805154,
+                  "free": 0.03696956231948456,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 22505,
+                "never_observed_unknown_samples": 21490,
+                "expired_unknown_samples": 183,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 305184,
+                "counts": {
+                  "unknown": 293355,
+                  "free": 11829,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9612397766593268,
+                  "free": 0.03876022334067317,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9814762568231084,
+                  "free": 0.0185237431768916,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 291294,
+                "expired_unknown_samples": 2061
+              },
+              "interior": {
+                "samples": 230044,
+                "counts": {
+                  "unknown": 220938,
+                  "free": 9106,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.960416268192172,
+                  "free": 0.039583731807828065,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 578,
+                "counts": {
+                  "unknown": 512,
+                  "free": 66,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.8858131487889274,
+                  "free": 0.11418685121107267,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334702.52104394
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        },
+        "frozen_rgbd": {
+          "phases": {
+            "route": {
+              "poses_requested": 164,
+              "poses_sampled": 164,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 14207,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 13723,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 13723,
+                "counts": {
+                  "unknown": 13172,
+                  "free": 551,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9598484296436639,
+                  "free": 0.040151570356336076,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 13723,
+                "never_observed_unknown_samples": 13014,
+                "expired_unknown_samples": 158,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 86592,
+                "counts": {
+                  "unknown": 83834,
+                  "free": 2758,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9681494826311899,
+                  "free": 0.031850517368810054,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9869320703536074,
+                  "free": 0.01306792964639256,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 83198,
+                "expired_unknown_samples": 636
+              },
+              "interior": {
+                "samples": 65272,
+                "counts": {
+                  "unknown": 63203,
+                  "free": 2069,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9683018752298076,
+                  "free": 0.031698124770192425,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 164,
+                "counts": {
+                  "unknown": 160,
+                  "free": 4,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.975609756097561,
+                  "free": 0.024390243902439025,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 302,
+              "poses_sampled": 302,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 15299,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 14815,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 14815,
+                "counts": {
+                  "unknown": 14207,
+                  "free": 608,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9589605129935875,
+                  "free": 0.04103948700641242,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 14815,
+                "never_observed_unknown_samples": 14006,
+                "expired_unknown_samples": 201,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 159456,
+                "counts": {
+                  "unknown": 153627,
+                  "free": 5829,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9634444611679711,
+                  "free": 0.036555538832028896,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9847889001954026,
+                  "free": 0.015211099804597545,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 151636,
+                "expired_unknown_samples": 1991
+              },
+              "interior": {
+                "samples": 120196,
+                "counts": {
+                  "unknown": 115398,
+                  "free": 4798,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9600818662850678,
+                  "free": 0.039918133714932275,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 302,
+                "counts": {
+                  "unknown": 298,
+                  "free": 4,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9867549668874173,
+                  "free": 0.013245033112582781,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "actual": {
+              "poses_requested": 2,
+              "poses_sampled": 2,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 484,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 0,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 0,
+                "counts": {
+                  "unknown": 0,
+                  "free": 0,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": null
+              },
+              "surface": {
+                "samples": 1056,
+                "counts": {
+                  "unknown": 1056,
+                  "free": 0,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 1.0,
+                  "free": 0.0,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 1.0,
+                  "free": 0.0,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 1018,
+                "expired_unknown_samples": 38
+              },
+              "interior": {
+                "samples": 796,
+                "counts": {
+                  "unknown": 794,
+                  "free": 2,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9974874371859297,
+                  "free": 0.002512562814070352,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 2,
+                "counts": {
+                  "unknown": 2,
+                  "free": 0,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 1.0,
+                  "free": 0.0,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334702.52104394
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "research_veto": true,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/partial/frozen_rgbd-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 923,
+            "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+            "self_evaluated": false
+          },
+          "frozen_rgbd": {
+            "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "evaluated_samples": 466,
+            "minimum_nonmount_clearance_lower_bound_m": 0.0,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 923,
+          "total_samples": 923,
+          "phases_requested": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "phases_evaluated": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "queries": 30459,
+          "broadphase_separations": 20299,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.5171065619215369,
+          "queue_seconds": 2.5989022105932236e-05,
+          "experimental_owner_wait_seconds": 0.5218556732870638,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "evaluated_samples": 38,
+          "total_samples": 466,
+          "phases_requested": {
+            "route": 164,
+            "trajectory": 302
+          },
+          "phases_evaluated": {
+            "route": 38,
+            "trajectory": 0
+          },
+          "queries": 1254,
+          "broadphase_separations": 830,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.062429436948150396,
+          "queue_seconds": 2.529798075556755e-05,
+          "experimental_owner_wait_seconds": 0.06498190527781844,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 1
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.2096414822209307,
+          "planner_wall_seconds": 0.1935032089240849,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 4.490132636994018,
+            "static_obstacles": 3,
+            "ik_seconds": 0.00013867858797311783,
+            "rrt_seconds": 0.0020316848531365395,
+            "world_update_seconds": 0.0004417048767209053,
+            "route_validation_seconds": 0.05586610734462738,
+            "trajectory_generation_seconds": 0.00012085633352398872,
+            "trajectory_validation_seconds": 0.12082667276263237
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 1.1496777730551868,
+          "planner_wall_seconds": 0.10267646098509431,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 2.297994947697674,
+            "static_obstacles": 129,
+            "ik_seconds": 9.195227175951004e-05,
+            "rrt_seconds": 0.00912627624347806,
+            "world_update_seconds": 0.0024607861414551735,
+            "route_validation_seconds": 0.022478716913610697,
+            "trajectory_generation_seconds": 5.36101870238781e-05,
+            "trajectory_validation_seconds": 0.055350775830447674
+          }
+        }
+      },
+      "native_execution": {
+        "status": "failed",
+        "message": "Independent physical evaluation vetoed this planner-success route; no execution",
+        "failure_code": "path_blocked",
+        "request_to_first_command_seconds": null
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334702.52104394,
+        "original_acquisition_timestamp": 3334702.52104394,
+        "evaluated_at": 3334702.992251662,
+        "map_age_seconds": 0.4712077220901847,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "MEASURED_DECLARED_COMPLETE_PHYSICAL_REFERENCE",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 277,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 128,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 0
+      }
+    },
+    {
+      "case_id": "partial-static-b128-static-b128",
+      "scenario": "partial",
+      "execution_condition": "static",
+      "evidence_kind": "RECORDED_NATIVE_ISAAC_HARNESS",
+      "native_harness_status": "PASS",
+      "native_harness_error": null,
+      "source_status": null,
+      "physical_scene_unchanged": true,
+      "frozen_planning_world": {
+        "planning_source_captures": 1,
+        "active_world_obstacle_refreshes": 0,
+        "planning_source_frozen": null
+      },
+      "attribution": {
+        "status": "MEASURED_NATIVE_DEPTH_ATTRIBUTION",
+        "optical_depth_tolerance_m": 0.015,
+        "matched_reference_frames": 2,
+        "total_frames": 2,
+        "reference": {
+          "source": "Actual matched GT snapshot exact boxes; posthoc evaluation only"
+        },
+        "scope": "Evaluation-only primitive or actual cooked-convex face-halfspace first-hit intersections. Cooked-plane queries are floating numeric face representations, not a vertex-hull distance certificate. Counts are current eligible occupied cells also supported by a matching current native depth endpoint; historical-only occupied surfaces and full-solid IoU are unmeasured."
+      },
+      "occupancy": {
+        "source_identity": {
+          "generation": 0,
+          "revision": 21,
+          "timestamp": 3334672.835567307,
+          "evaluated_at": 3334673.326252028
+        },
+        "grid_cells": 1573200,
+        "states": {
+          "unknown": 1484776,
+          "free": 87835,
+          "occupied": 589
+        },
+        "eligible_occupied_cells": 589,
+        "spatial_supported_cells": 179,
+        "strong_sparse_cells": 410,
+        "supported_cells": 589,
+        "selected_proxy_count": 128,
+        "selected_cells": 139,
+        "eligible_occupied_cell_mask_sha256": "f5b10d4a381b713e497bf3f3af346f5aebfb469dc1602085eeae2a6f774d06f6",
+        "supported_cell_mask_sha256": "f5b10d4a381b713e497bf3f3af346f5aebfb469dc1602085eeae2a6f774d06f6",
+        "selected_cell_mask_sha256": "398378f0ed1f35644e32105e1ac839d5b1fb48944b25260c1940623597c29312",
+        "supported_omitted_cells": 450,
+        "supported_selected_fraction": 0.23599320882852293,
+        "invariants": {
+          "source_identity_mismatch": 0,
+          "overlapping_selected_cells": 0,
+          "selected_free_cells": 0,
+          "selected_unknown_cells": 0,
+          "selected_ineligible_cells": 0,
+          "selected_unsupported_cells": 0,
+          "expired_selected_boxes": 0,
+          "wrong_voxel_count_boxes": 0
+        },
+        "packet_diagnostics": {
+          "occupied_voxels": 589,
+          "supported_voxels": 589,
+          "spatial_supported_voxels": 179,
+          "strong_sparse_retained": 410,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 0,
+          "candidate_boxes": 578,
+          "proxy_count": 128,
+          "represented_voxels": 139,
+          "omitted_voxels": 450,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 128,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 465,
+          "hazard_candidate_boxes": 113,
+          "selected_floor_boxes": 15,
+          "selected_hazard_boxes": 113,
+          "represented_floor_voxels": 26,
+          "omitted_floor_voxels": 450,
+          "padding_m": 0.0,
+          "extract_seconds": 0.015377011150121689
+        },
+        "fixtures": {
+          "/World/ReactiveEvaluation/Occluder": {
+            "depth_attributed_cells": 3746,
+            "eligible_occupied_cells": 77,
+            "supported_cells": 77,
+            "selected_cells": 77,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          },
+          "/World/ReactiveEvaluation/Post": {
+            "depth_attributed_cells": 1062,
+            "eligible_occupied_cells": 36,
+            "supported_cells": 36,
+            "selected_cells": 36,
+            "omitted_supported_cells": 0,
+            "selected_fraction_of_observed_occupied": 1.0,
+            "selected_fraction_of_supported": 1.0,
+            "scope": "Native current first-hit depth-attributed occupancy, not complete physical fixture recall"
+          }
+        },
+        "qualification": "Counts are original 1cm occupancy cells, not reconstructed physical solid volume. UNKNOWN retains its own denominator; no dilation, hole filling or fixture dimensions enter the planner.",
+        "source_usable": true
+      },
+      "motion_exposure": {
+        "static": {
+          "phases": {
+            "route": {
+              "poses_requested": 345,
+              "poses_sampled": 345,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 19292,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 18808,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 18808,
+                "counts": {
+                  "unknown": 18084,
+                  "free": 724,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9615057422373459,
+                  "free": 0.03849425776265419,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 18808,
+                "never_observed_unknown_samples": 17935,
+                "expired_unknown_samples": 149,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 182160,
+                "counts": {
+                  "unknown": 175728,
+                  "free": 6432,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9646903820816864,
+                  "free": 0.03530961791831357,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9814617617390975,
+                  "free": 0.01853823826090254,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 174863,
+                "expired_unknown_samples": 865
+              },
+              "interior": {
+                "samples": 137310,
+                "counts": {
+                  "unknown": 132741,
+                  "free": 4569,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9667249289927901,
+                  "free": 0.033275071007209965,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 345,
+                "counts": {
+                  "unknown": 339,
+                  "free": 6,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9826086956521739,
+                  "free": 0.017391304347826087,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 578,
+              "poses_sampled": 578,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 22989,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 22505,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 22505,
+                "counts": {
+                  "unknown": 21673,
+                  "free": 832,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9630304376805154,
+                  "free": 0.03696956231948456,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 22505,
+                "never_observed_unknown_samples": 21490,
+                "expired_unknown_samples": 183,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 305184,
+                "counts": {
+                  "unknown": 293355,
+                  "free": 11829,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9612397766593268,
+                  "free": 0.03876022334067317,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9814762568231084,
+                  "free": 0.0185237431768916,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 291294,
+                "expired_unknown_samples": 2061
+              },
+              "interior": {
+                "samples": 230044,
+                "counts": {
+                  "unknown": 220938,
+                  "free": 9106,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.960416268192172,
+                  "free": 0.039583731807828065,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 578,
+                "counts": {
+                  "unknown": 512,
+                  "free": 66,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.8858131487889274,
+                  "free": 0.11418685121107267,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "actual": {
+              "poses_requested": 328,
+              "poses_sampled": 328,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 18493,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 18009,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 18009,
+                "counts": {
+                  "unknown": 17301,
+                  "free": 708,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9606863235049142,
+                  "free": 0.03931367649508579,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 18009,
+                "never_observed_unknown_samples": 17174,
+                "expired_unknown_samples": 127,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 173184,
+                "counts": {
+                  "unknown": 163882,
+                  "free": 9302,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9462883407243163,
+                  "free": 0.053711659275683665,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9764719227650406,
+                  "free": 0.023528077234959532,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 162828,
+                "expired_unknown_samples": 1054
+              },
+              "interior": {
+                "samples": 130544,
+                "counts": {
+                  "unknown": 123007,
+                  "free": 7537,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9422646770437554,
+                  "free": 0.05773532295624464,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 328,
+                "counts": {
+                  "unknown": 296,
+                  "free": 32,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9024390243902439,
+                  "free": 0.0975609756097561,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334672.835567307
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        },
+        "frozen_rgbd": {
+          "phases": {
+            "route": {
+              "poses_requested": 164,
+              "poses_sampled": 164,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 14207,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 13723,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 13723,
+                "counts": {
+                  "unknown": 13172,
+                  "free": 551,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9598484296436639,
+                  "free": 0.040151570356336076,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 13723,
+                "never_observed_unknown_samples": 13014,
+                "expired_unknown_samples": 158,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 86592,
+                "counts": {
+                  "unknown": 83834,
+                  "free": 2758,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9681494826311899,
+                  "free": 0.031850517368810054,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9869320703536074,
+                  "free": 0.01306792964639256,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 83198,
+                "expired_unknown_samples": 636
+              },
+              "interior": {
+                "samples": 65272,
+                "counts": {
+                  "unknown": 63203,
+                  "free": 2069,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9683018752298076,
+                  "free": 0.031698124770192425,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 164,
+                "counts": {
+                  "unknown": 160,
+                  "free": 4,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.975609756097561,
+                  "free": 0.024390243902439025,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            },
+            "trajectory": {
+              "poses_requested": 302,
+              "poses_sampled": 302,
+              "pose_sampling": "ALL",
+              "sampled_robot_surface_unique_voxels": 15299,
+              "initial_surface_unique_voxels": 484,
+              "newly_traversed_surface_unique_voxels": 14815,
+              "newly_traversed_surface_cell_labels": {
+                "samples": 14815,
+                "counts": {
+                  "unknown": 14207,
+                  "free": 608,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9589605129935875,
+                  "free": 0.04103948700641242,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "unique_in_bounds_cells": 14815,
+                "never_observed_unknown_samples": 14006,
+                "expired_unknown_samples": 201,
+                "qualification": "Fractions describe these explicit sampled points at the frozen read time, not continuous swept volume or physical FREE-space certification."
+              },
+              "surface": {
+                "samples": 159456,
+                "counts": {
+                  "unknown": 153627,
+                  "free": 5829,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9634444611679711,
+                  "free": 0.036555538832028896,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "area_weighted_state_fractions": {
+                  "unknown": 0.9847889001954026,
+                  "free": 0.015211099804597545,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                },
+                "never_observed_unknown_samples": 151636,
+                "expired_unknown_samples": 1991
+              },
+              "interior": {
+                "samples": 120196,
+                "counts": {
+                  "unknown": 115398,
+                  "free": 4798,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9600818662850678,
+                  "free": 0.039918133714932275,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              },
+              "hand_origin": {
+                "samples": 302,
+                "counts": {
+                  "unknown": 298,
+                  "free": 4,
+                  "occupied": 0,
+                  "out_of_bounds": 0
+                },
+                "fractions": {
+                  "unknown": 0.9867549668874173,
+                  "free": 0.013245033112582781,
+                  "occupied": 0.0,
+                  "out_of_bounds": 0.0
+                }
+              }
+            }
+          },
+          "actual_pose_source": "INDEPENDENT_URDF_FK_FROM_MEASURED_NAMED_JOINT_FEEDBACK; fixed measured initial base, not actual rigid-body pose samples",
+          "grid_source": {
+            "generation": 0,
+            "revision": 21,
+            "timestamp": 3334672.835567307
+          },
+          "qualification": "Sampled cooked surfaces and explicitly nonuniform interior probes at the frozen map read time. Hand origin is reported separately. These fractions are not continuous swept-volume fractions, not physical FREE certification and not a global safety guarantee. Initial self-filtered robot voxels are separated from newly traversed sampled voxels."
+        }
+      },
+      "condition_outcomes": {
+        "static": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "research_veto": false,
+          "execution_eligible": true,
+          "native_trajectory_commands": 163,
+          "executed": true,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "planning_failure_code": null,
+          "physical_evaluation_status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "research_veto": true,
+          "execution_eligible": false,
+          "native_trajectory_commands": null,
+          "executed": false,
+          "qualification": "Execution eligibility is distinct from observed movement completion; research veto is not RGBD avoidance."
+        }
+      },
+      "conclusion_scope": "Measured source, planner, GT evaluation veto and executed outcome remain separate. A research veto is never credited as RGBD avoidance. Missing metrics are unmeasured; no synthetic measurements are substituted.",
+      "posthoc_clearance": {
+        "status": "POSTHOC_NATIVE_GEOMETRY_NUMERIC_EVALUATION",
+        "raw_path": "/home/etfrobotics/Projects/ga253315m/robot-skill-stack/outputs/motion-planning-v5/diagnostic128/partial/static-b128/posthoc_physical_evaluation.json",
+        "evaluator_sha256": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+        "geometry_reference_sha256": "f1ac1b4c2f543b796256b1f3d734f6e77791bd4a8c77bd08efefa09e0590aafb",
+        "native_veto_outcomes_modified": false,
+        "conditions": {
+          "static": {
+            "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+            "samples_complete": true,
+            "evaluated_samples": 923,
+            "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+            "self_evaluated": false
+          },
+          "frozen_rgbd": {
+            "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+            "samples_complete": true,
+            "evaluated_samples": 466,
+            "minimum_nonmount_clearance_lower_bound_m": 0.0,
+            "self_evaluated": false
+          }
+        }
+      },
+      "physical_evaluation": {
+        "static": {
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "execution_allowed": true,
+          "samples_complete": true,
+          "evaluated_samples": 923,
+          "total_samples": 923,
+          "phases_requested": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "phases_evaluated": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "queries": 30459,
+          "broadphase_separations": 20299,
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.513719636015594,
+          "queue_seconds": 3.365287557244301e-05,
+          "experimental_owner_wait_seconds": 0.5184482489712536,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 0
+        },
+        "frozen_rgbd": {
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "execution_allowed": false,
+          "samples_complete": false,
+          "evaluated_samples": 38,
+          "total_samples": 466,
+          "phases_requested": {
+            "route": 164,
+            "trajectory": 302
+          },
+          "phases_evaluated": {
+            "route": 38,
+            "trajectory": 0
+          },
+          "queries": 1254,
+          "broadphase_separations": 830,
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "alignment": {
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "passed": true,
+            "frame_allowance_m": 1e-05,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "self_evaluated": false,
+          "worker_seconds": 0.06097908830270171,
+          "queue_seconds": 2.615898847579956e-05,
+          "experimental_owner_wait_seconds": 0.06339456932619214,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "collision_witness_count": 1
+        }
+      },
+      "planning": {
+        "static": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 2.2096414822209307,
+          "planner_wall_seconds": 0.19275178480893373,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 4.490132636994018,
+            "static_obstacles": 3,
+            "ik_seconds": 0.00025011738762259483,
+            "rrt_seconds": 0.0020265751518309116,
+            "world_update_seconds": 0.000435663852840662,
+            "route_validation_seconds": 0.07185047306120396,
+            "trajectory_generation_seconds": 0.0001087128184735775,
+            "trajectory_validation_seconds": 0.1034582108259201
+          }
+        },
+        "frozen_rgbd": {
+          "planner_success": true,
+          "failure_code": null,
+          "failure_message": null,
+          "duration": 1.1496777730551868,
+          "planner_wall_seconds": 0.10196430096402764,
+          "diagnostics": {
+            "seed": 123456,
+            "max_iterations": 10000,
+            "global_collision_model": "enhanced",
+            "rrt_step_size_rad": 0.05,
+            "ik_candidates_attempted": 1,
+            "selected_ik_index": 0,
+            "rrt_waypoints": 3,
+            "geometric_joint_path_length": 2.297994947697674,
+            "static_obstacles": 129,
+            "ik_seconds": 8.91759991645813e-05,
+            "rrt_seconds": 0.008601606823503971,
+            "world_update_seconds": 0.002702157013118267,
+            "route_validation_seconds": 0.02229174692183733,
+            "trajectory_generation_seconds": 5.088513717055321e-05,
+            "trajectory_validation_seconds": 0.05492297559976578
+          }
+        }
+      },
+      "native_execution": {
+        "status": "success",
+        "message": "End effector reached target pose.",
+        "failure_code": null,
+        "request_to_first_command_seconds": 0.9276607129722834
+      },
+      "source_identity": {
+        "source_type": "rgbd",
+        "generation": 0,
+        "revision": 21,
+        "timestamp": 3334672.835567307,
+        "original_acquisition_timestamp": 3334672.835567307,
+        "evaluated_at": 3334673.326252028,
+        "map_age_seconds": 0.4906847206875682,
+        "camera_ids": [
+          "/World/PerceptionCamera",
+          "/World/PerceptionCameraSide"
+        ],
+        "accepted_frame_count": 2,
+        "bounds_min": [
+          -0.3,
+          -0.6,
+          -0.02
+        ],
+        "bounds_max": [
+          0.85,
+          0.6,
+          1.12
+        ],
+        "voxel_size": 0.01,
+        "snapshot_policy": "frozen_worker_prepared_exact_occupied_cuboids",
+        "uncertainty_policy": "UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct"
+      },
+      "whole_proxy_free_audit": {
+        "status": "MEASURED_DECLARED_COMPLETE_PHYSICAL_REFERENCE",
+        "whole_proxy_boxes_in_physical_free": 0,
+        "selected_cells_in_wholly_free_proxies": 0,
+        "queries": 277,
+        "qualification": "Conservative lower bound on false obstacle cells: only entire voxel-face-aligned proxy boxes positively separated from all copied reference solids are counted. Mixed boxes, unknown physical objects and per-cell exact false-positive recall are not inferred.",
+        "wholly_free_boxes_count": 0,
+        "touching_or_intersecting_boxes_count": 128,
+        "unprocessed_boxes_count": 0,
+        "unresolved_boxes_count": 0
+      }
+    }
+  ],
+  "representative_figures": [
+    {
+      "scenario": "partial",
+      "execution_condition": "static",
+      "path": "docs/assets/motion_planning_v5/diagnostic128/partial-worlds-routes.png",
+      "sha256": "55fe25f0571fafd3cfd0896f94cf38341864e8980ee8b40b60d798f4a0fa1e5d",
+      "bytes": 157938,
+      "original": "outputs/motion-planning-v5/offline-full/diagnostic128/partial-static-b128-static-b128-occupancy-routes.png"
+    },
+    {
+      "scenario": "narrow",
+      "execution_condition": "static",
+      "path": "docs/assets/motion_planning_v5/diagnostic128/narrow-worlds-routes.png",
+      "sha256": "75617fb80a8a8cf35b1c377422d42d7c341ad7763e48c23942fc52f6bc67462c",
+      "bytes": 145776,
+      "original": "outputs/motion-planning-v5/offline-full/diagnostic128/narrow-static-b128-static-b128-occupancy-routes.png"
+    },
+    {
+      "scenario": "large",
+      "execution_condition": "static",
+      "path": "docs/assets/motion_planning_v5/diagnostic128/large-worlds-routes.png",
+      "sha256": "4cc669182f9f2b62657e437be70d012eb472a3137cfa0b02eaf48019bbc4f997",
+      "bytes": 174231,
+      "original": "outputs/motion-planning-v5/offline-full/diagnostic128/large-static-b128-static-b128-occupancy-routes.png"
+    }
+  ],
+  "qualification": "Compact scalar/ratio evidence. Full original analysis, geometry, dense curves and duplicate figures remain ignored. Timing and lifecycle details are in separate receipts."
+}
