@@ -3,6 +3,11 @@
 14 November 2026 (Europe/Budapest). This task reconciles and publishes existing
 work; it introduces no planning feature, experiment, dependency or runtime change.
 
+**Publication blocked:** reconciliation and local commits are complete, but the
+normal HTTPS push failed for missing credentials. No new commit is on GitHub.
+The independently verified remote HEAD remains
+`e11a1fd2635d6b06a0de46feab07fb7b20cd4550`. See the exact failure below.
+
 ## Starting state and remote verification
 
 Repository: `https://github.com/BuilderCrafter/robot-skill-stack`.
@@ -209,41 +214,62 @@ the local recovery refs are not pushed or merged.
 
 | Commit | Content |
 | --- | --- |
-| [`ec9a110ec653ebff0a767eb43467ba6d50c39896`](https://github.com/BuilderCrafter/robot-skill-stack/commit/ec9a110ec653ebff0a767eb43467ba6d50c39896) | Byte-identical pre-existing project instructions |
-| [`61c49cafd9e61a4bfd145538472dfc30dbcd6433`](https://github.com/BuilderCrafter/robot-skill-stack/commit/61c49cafd9e61a4bfd145538472dfc30dbcd6433) | Familiarization and stopped-experiment reports with publication status notes |
-| This report's commit, parent `61c49cafd9e61a4bfd145538472dfc30dbcd6433`, subject `docs: record V5 realignment and validation` | Reconciliation, recovery, test results and publication handover |
+| `ec9a110ec653ebff0a767eb43467ba6d50c39896` | Byte-identical pre-existing project instructions |
+| `61c49cafd9e61a4bfd145538472dfc30dbcd6433` | Familiarization and stopped-experiment reports with publication status notes |
+| `37eec80233860f774eb668f13ab33095cd85898f` | Initial realignment handover; local HEAD at the failed push attempt |
+| Subsequent local commit, subject `docs: record blocked V5 publication` | Records the authentication failure and corrects publication status; exact SHA in task handoff and local receipt |
 
-**Final pushed remote HEAD is the commit introducing this report**, identified
-uniquely by its parent and subject above. Its exact SHA is included in the task
-handoff and `.git/recovery/v5-realignment-20261114/publication.json`; embedding
-a commit's own SHA inside its file would change that SHA. It is also available
-in [the report's GitHub commit history](https://github.com/BuilderCrafter/robot-skill-stack/commits/feature/global-rgbd-planning-v5/reports/finalization/v5-realignment.md).
-
-Publication verification, executed after creating that commit:
+Attempted exactly once, from local HEAD `37eec80233860f774eb668f13ab33095cd85898f`:
 
 ```bash
-git push origin HEAD:refs/heads/feature/global-rgbd-planning-v5
+GIT_TERMINAL_PROMPT=0 git push origin HEAD:refs/heads/feature/global-rgbd-planning-v5
+# Exit 128:
+# fatal: could not read Username for 'https://github.com': terminal prompts disabled
+```
+
+Stopped publication attempts as requested; did not try another account,
+credential mechanism, remote, force push or automatic PR. Independent read-only
+verification after failure:
+
+```bash
 git ls-remote --exit-code origin refs/heads/feature/global-rgbd-planning-v5
-git fetch origin feature/global-rgbd-planning-v5
+# e11a1fd2635d6b06a0de46feab07fb7b20cd4550 refs/heads/feature/global-rgbd-planning-v5
 git rev-parse HEAD origin/feature/global-rgbd-planning-v5
+# Local HEAD is ahead; remote-tracking HEAD remains e11a1fd.
 git merge-base --is-ancestor e11a1fd2635d6b06a0de46feab07fb7b20cd4550 HEAD
 git merge-base --is-ancestor aef5f2fe0af0229a1c69c64035b7de0b07173b0b HEAD
 git status --porcelain=v1 --untracked-files=all
 ```
 
-Acceptance requires the independently advertised remote SHA to equal local
-HEAD, both publication-parent commits and the original V5/V4.3 commits to remain
-ancestors, a clean worktree, and a branch diff containing **only `AGENTS.md`
-and these three report files**. The local publication receipt records the exact
-push/verification result and commit list; no recovery or ignored artifact is
-part of that push. No automatic PR is created.
+**Final pushed remote HEAD: unchanged at
+`e11a1fd2635d6b06a0de46feab07fb7b20cd4550`; publication did not succeed.**
+Both ancestry checks pass. The final local branch retains a clean worktree and
+a baseline diff containing **only `AGENTS.md` and these three report files**.
+The local receipt `.git/recovery/v5-realignment-20261114/publication.json`
+records the final local SHA/commit list and remote verification; a commit
+cannot embed its own SHA without changing that SHA. Recovery refs and ignored
+artifacts remain local. No task-related implementation is unintentionally
+uncommitted.
+
+GitHub commit/report URLs below are **intended locations only**: they will not
+resolve until an authorized authenticated push succeeds.
+
+- Commit URL format: `https://github.com/BuilderCrafter/robot-skill-stack/commit/<full-local-SHA>`.
+- [Familiarization](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/project-familiarization.md).
+- [Bounded experiment](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/rgbd-bounded-improvement.md).
+- [This handover](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/v5-realignment.md).
+
+Next operational step, after HTTPS credentials are made available, is the same
+explicit normal push to V5 and a fresh `ls-remote`/local-HEAD comparison. No
+production development is needed to complete publication. The reports are not
+yet remotely inspectable.
 
 Remaining issues: strict V4.2/V4.3 archival replay inputs/path portability;
 experimental RGB-D evidence/freshness/geometry limitations; a visible project
 GUI/GT demonstration workflow; stale current-feature documentation; and the
 already-stopped container/stream. No candidate safety behavior is awaiting
-acceptance on this published branch because it was excluded.
+acceptance on this reconciled local branch because it was excluded.
 
-Stop after publication and independent remote-HEAD verification. No PR, merge,
+Stopped at the authentication blocker after documenting it. No PR, merge,
 new RGB-D work, GUI refactor, hybrid or presentation implementation is part of
 this task.
