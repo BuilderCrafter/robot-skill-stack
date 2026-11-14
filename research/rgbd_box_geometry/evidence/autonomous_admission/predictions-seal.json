@@ -1,0 +1,12 @@
+{
+  "created_utc": "2026-11-14T19:21:16.359629+00:00",
+  "purpose": "Preserve all six sensor-derived records before posthoc numeric reference scoring",
+  "files": {
+    "admitted-0/attempt-1/autonomous.json": "24719f35488cd772fd32e243da354fc887403b152e052233bd9c52dfb593801f",
+    "admitted-300/attempt-1/autonomous.json": "18cdc04f2896693fc832b44649f796cec0ae340937d229eeb8dbe71299798636",
+    "admitted-600/attempt-1/autonomous.json": "cb57fecb93e78fc189a8aaf834a0c9dc3ca78fa5a282861dda8334b2d87cf55c",
+    "baseline-0/attempt-1/autonomous.json": "57088d8c3f95d9e40934755f3263613a4ad062e46436c89b760f9d2424604bc6",
+    "baseline-300/attempt-1/autonomous.json": "83a1534b0adc152250d80dbfe0353678785db8546aae44bb78267b1fe3d89fe4",
+    "baseline-600/attempt-1/autonomous.json": "4045593fa1067b934d0fa18040961532290f3ec72231ce41f58379c7a03ed471"
+  }
+}

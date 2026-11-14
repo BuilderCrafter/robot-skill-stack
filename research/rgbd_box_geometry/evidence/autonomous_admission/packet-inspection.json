@@ -1,0 +1,53 @@
+{
+  "fields": {
+    "states": {
+      "shape": [
+        115,
+        120,
+        114
+      ],
+      "dtype": "uint8",
+      "bytes": 1573200
+    },
+    "probabilities": {
+      "shape": [
+        115,
+        120,
+        114
+      ],
+      "dtype": "float64",
+      "bytes": 12585600
+    },
+    "observed": {
+      "shape": [
+        115,
+        120,
+        114
+      ],
+      "dtype": "bool",
+      "bytes": 1573200
+    },
+    "last_observed": {
+      "shape": [
+        115,
+        120,
+        114
+      ],
+      "dtype": "float64",
+      "bytes": 12585600
+    },
+    "expired": {
+      "shape": [
+        115,
+        120,
+        114
+      ],
+      "dtype": "bool",
+      "bytes": 1573200
+    }
+  },
+  "total_array_bytes": 29890800,
+  "shared_array_pairs": [],
+  "qualification": "Saved fixed-time occupancy fields, not an end-to-end IPC benchmark. All five source fields have distinct consumer semantics; no field dropped.",
+  "decision": "No transport correction: primary task complete; serialization-copy removal lacks measured cross-process equivalence in this task."
+}
