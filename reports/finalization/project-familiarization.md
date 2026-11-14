@@ -1,8 +1,7 @@
 # Robot Skill Stack: reconnaissance and finalization handover
 
-> Historical snapshot from 13 November 2026. Committed to local V5 during the
-> [14 November realignment](v5-realignment.md); remote publication is blocked by
-> missing HTTPS credentials. Branch,
+> Historical snapshot from 13 November 2026, published on V5 during the
+> [14 November realignment](v5-realignment.md). Branch,
 > worktree and environment statements below describe the reconnaissance task;
 > consult the realignment report for the current publication decision.
 

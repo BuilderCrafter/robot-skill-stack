@@ -3,10 +3,12 @@
 14 November 2026 (Europe/Budapest). This task reconciles and publishes existing
 work; it introduces no planning feature, experiment, dependency or runtime change.
 
-**Publication blocked:** reconciliation and local commits are complete, but the
-normal HTTPS push failed for missing credentials. No new commit is on GitHub.
-The independently verified remote HEAD remains
-`e11a1fd2635d6b06a0de46feab07fb7b20cd4550`. See the exact failure below.
+**Publication succeeded:** after the user completed GitHub browser login, the
+authorized normal HTTPS push fast-forwarded remote V5 from `e11a1fd` to
+`cef145d8e08773cbc299a3f2c40ad0bd6e85aa4a`. That advertised remote SHA was
+independently verified. This documentation-status follow-up is its direct
+child; final local/remote tip verification is recorded in the task handoff and
+local publication receipt. Production behavior remains unchanged.
 
 ## Starting state and remote verification
 
@@ -217,9 +219,10 @@ the local recovery refs are not pushed or merged.
 | `ec9a110ec653ebff0a767eb43467ba6d50c39896` | Byte-identical pre-existing project instructions |
 | `61c49cafd9e61a4bfd145538472dfc30dbcd6433` | Familiarization and stopped-experiment reports with publication status notes |
 | `37eec80233860f774eb668f13ab33095cd85898f` | Initial realignment handover; local HEAD at the failed push attempt |
-| Subsequent local commit, subject `docs: record blocked V5 publication` | Records the authentication failure and corrects publication status; exact SHA in task handoff and local receipt |
+| `cef145d8e08773cbc299a3f2c40ad0bd6e85aa4a` | Records the initial authentication blocker; subsequently pushed successfully after user login |
+| This status-follow-up commit, subject `docs: record successful V5 publication` | Replaces obsolete blocked-publication notes; exact final SHA in handoff and local receipt |
 
-Attempted exactly once, from local HEAD `37eec80233860f774eb668f13ab33095cd85898f`:
+The initial unauthenticated attempt, from local HEAD `37eec80233860f774eb668f13ab33095cd85898f`:
 
 ```bash
 GIT_TERMINAL_PROMPT=0 git push origin HEAD:refs/heads/feature/global-rgbd-planning-v5
@@ -227,9 +230,10 @@ GIT_TERMINAL_PROMPT=0 git push origin HEAD:refs/heads/feature/global-rgbd-planni
 # fatal: could not read Username for 'https://github.com': terminal prompts disabled
 ```
 
-Stopped publication attempts as requested; did not try another account,
-credential mechanism, remote, force push or automatic PR. Independent read-only
-verification after failure:
+Stopped at the initial failure as requested. After the user explicitly
+completed login as `BuilderCrafter` and requested a retry, reused the same
+HTTPS remote and normal branch push. No alternate account, force push or PR
+was used. The initial read-only verification before authentication was:
 
 ```bash
 git ls-remote --exit-code origin refs/heads/feature/global-rgbd-planning-v5
@@ -241,28 +245,36 @@ git merge-base --is-ancestor aef5f2fe0af0229a1c69c64035b7de0b07173b0b HEAD
 git status --porcelain=v1 --untracked-files=all
 ```
 
-**Final pushed remote HEAD: unchanged at
-`e11a1fd2635d6b06a0de46feab07fb7b20cd4550`; publication did not succeed.**
-Both ancestry checks pass. The final local branch retains a clean worktree and
-a baseline diff containing **only `AGENTS.md` and these three report files**.
-The local receipt `.git/recovery/v5-realignment-20261114/publication.json`
-records the final local SHA/commit list and remote verification; a commit
-cannot embed its own SHA without changing that SHA. Recovery refs and ignored
-artifacts remain local. No task-related implementation is unintentionally
-uncommitted.
+### Authenticated publication and verification
 
-GitHub commit/report URLs below are **intended locations only**: they will not
-resolve until an authorized authenticated push succeeds.
+After confirming `gh auth status` reported the expected account and HTTPS,
+retried the original authorized push:
 
-- Commit URL format: `https://github.com/BuilderCrafter/robot-skill-stack/commit/<full-local-SHA>`.
+```bash
+GIT_TERMINAL_PROMPT=0 git push origin HEAD:refs/heads/feature/global-rgbd-planning-v5
+# Exit 0: e11a1fd..cef145d HEAD -> feature/global-rgbd-planning-v5
+git ls-remote --exit-code origin refs/heads/feature/global-rgbd-planning-v5
+# cef145d8e08773cbc299a3f2c40ad0bd6e85aa4a refs/heads/feature/global-rgbd-planning-v5
+```
+
+This follow-up removes obsolete blocked-publication notes and is committed and
+pushed normally to the same branch. Final acceptance requires independently
+advertised remote HEAD to equal local HEAD, original V5/V4.3 ancestry, a clean
+worktree, and a baseline diff containing **only `AGENTS.md` and the three
+report files**. The exact final SHA and all verification results are retained
+in `.git/recovery/v5-realignment-20261114/publication.json` and the final task
+handoff; a commit cannot embed its own SHA without changing that SHA. The
+previous failure receipt is preserved locally as `publication-blocked.json`.
+Recovery refs and ignored native artifacts remain local and untouched.
+
+Published reports:
+
 - [Familiarization](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/project-familiarization.md).
 - [Bounded experiment](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/rgbd-bounded-improvement.md).
 - [This handover](https://github.com/BuilderCrafter/robot-skill-stack/blob/feature/global-rgbd-planning-v5/reports/finalization/v5-realignment.md).
 
-Next operational step, after HTTPS credentials are made available, is the same
-explicit normal push to V5 and a fresh `ls-remote`/local-HEAD comparison. No
-production development is needed to complete publication. The reports are not
-yet remotely inspectable.
+Authentication is no longer a publication blocker. No implementation was
+reintroduced and no additional native or planning experiment was performed.
 
 Remaining issues: strict V4.2/V4.3 archival replay inputs/path portability;
 experimental RGB-D evidence/freshness/geometry limitations; a visible project
@@ -270,6 +282,6 @@ GUI/GT demonstration workflow; stale current-feature documentation; and the
 already-stopped container/stream. No candidate safety behavior is awaiting
 acceptance on this reconciled local branch because it was excluded.
 
-Stopped at the authentication blocker after documenting it. No PR, merge,
+Stop after final publication verification. No PR, merge,
 new RGB-D work, GUI refactor, hybrid or presentation implementation is part of
 this task.
