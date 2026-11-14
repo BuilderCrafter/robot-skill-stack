@@ -1,0 +1,48 @@
+{
+  "syntax": "PASS",
+  "architecture": "PASS",
+  "git_diff_check": "PASS",
+  "baseline_existing_files": 286,
+  "unchanged_existing_files": 285,
+  "approved_existing_changes": [
+    "scripts/benchmark_global_rgbd_v5.py"
+  ],
+  "prior_published_files_unchanged": 48,
+  "external_archived_files_unchanged": 16,
+  "recovery_ref": "edc1b467c6bf03c192d0d9dccce2b538309a024f refs/recovery/v5-realignment-20261114-worktree",
+  "tests": [
+    {
+      "stage": "host_before_native",
+      "count": 97,
+      "seconds": 1.047,
+      "result": "PASS",
+      "log_sha256": "528720534c06cd92c88cc71a7f0af0801fc9c7741e28291a819bbc3371e183b4"
+    },
+    {
+      "stage": "container_before_native",
+      "count": 11,
+      "seconds": 0.13,
+      "result": "PASS",
+      "log_sha256": "bd83c8ee25b9456d1b12e5a04495a23daa4e49ff4f74de0f35590aad6dff591b"
+    },
+    {
+      "stage": "host_after_receipt_fix",
+      "count": 98,
+      "seconds": 1.031,
+      "result": "PASS",
+      "log_sha256": "3aacfc1b61b3506db5b17af6b049d6a74335e2cc0e200d9293fe84a29cb0be79"
+    }
+  ],
+  "code_lines_before_native": 427,
+  "code_lines_after_receipt_fix": 441,
+  "implementation_sha256": {
+    "research/rgbd_box_geometry/rrt_bridge.py": "f5209e8de44a592b7e73c0d2f006b45f84c6507e29138239605f2e3c666ee582",
+    "research/rgbd_box_geometry/native_trial.py": "1b52e59635027307f6244876c5a8d0cb7e06e8f7380dc9d447dfa109ff2f4f83",
+    "research/rgbd_box_geometry/test_rrt_bridge.py": "798f97b6b20d69b8ed67f2b287f4b8051a92ae98ccfc0a4e402a63c45594530e",
+    "scripts/benchmark_global_rgbd_v5.py": "7c79b16fd6d8413fb5bd3b6d6540ed1f4af3da3e6aafb5c93e139e2e8cec85f3"
+  },
+  "attempt_patch_applies": true,
+  "attempt_patch_apply_flags": [
+    "--unidiff-zero"
+  ]
+}

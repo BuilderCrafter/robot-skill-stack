@@ -133,6 +133,13 @@ def camera_timing_summary(rows):
         for selected in ([row for row in rows if row['consumer']==consumer],)}
 
 
+def restore_strategy_hooks(strategy):
+    capture, factory = strategy._rgbd_world_capture, strategy._planner_factory
+    def restore():
+        strategy._rgbd_world_capture, strategy._planner_factory = capture, factory
+    return restore
+
+
 def run_native(args, app, state):
     import omni.kit.app
     from pxr import Gf, UsdGeom
@@ -150,6 +157,7 @@ def run_native(args, app, state):
     async def evaluate():
         bundle = observer = subscription = None
         restore_camera_timing = lambda:None
+        restore_strategy = lambda:None
         callback = False
         try:
             path = protocol.write_profile(Path(args.artifacts_dir)/'runtime_profile.toml', args.execution_condition, args.budget)
@@ -157,6 +165,7 @@ def run_native(args, app, state):
             restore_camera_timing = install_camera_timing(bundle.observation_runtime.pool,state)
             backend, service = bundle.backend, bundle.spatial_mapping
             strategy = backend.motion_strategy
+            restore_strategy = restore_strategy_hooks(strategy)
             state['bundle'] = bundle
             if args.scenario != 'v43':
                 backend._motion_strategy = DirectRmpflowStrategy(backend)
@@ -226,6 +235,8 @@ def run_native(args, app, state):
                     if frozen is not None:
                         strategy.last_plan_trace['frozen_rgbd'] = frozen
             observer.end_operation = serializable_end
+            if state.get('research_prepare') is not None:
+                await state['research_prepare'](bundle, state)
             observer.sample()
             matrices = capture['pose_matrices'](observer.samples[-1]['poses'],capture['snapshot'].meters_per_unit)
             actual_poses = dict(zip(capture['body_paths'],matrices))
@@ -240,7 +251,10 @@ def run_native(args, app, state):
             def capture_rgbd():
                 state['capturing_rgbd'] = True
                 try:
-                    world, frozen = capture_frozen_rgbd_world(backend,lambda:service,max_obstacles=args.budget)
+                    if state.get('research_capture') is None:
+                        world, frozen = capture_frozen_rgbd_world(backend,lambda:service,max_obstacles=args.budget)
+                    else:
+                        world, frozen = state['research_capture'](backend, service, state, capture_frozen_rgbd_world)
                     state['frozen_world'] = frozen
                     state['selected_mapping_input'] = next((p for p in reversed(state['mapping_inputs'])
                         if p.generation==frozen.generation and p.frames and
@@ -261,7 +275,7 @@ def run_native(args, app, state):
                 world = capture_rgbd()
                 return world,state['frozen_world']
             strategy._rgbd_world_capture = audited_capture
-            strategy._planner_factory = lambda backend,**options:MatchedSourcePlanner(backend,state=state,
+            strategy._planner_factory = lambda backend,**options:state.get('research_planner_factory',MatchedSourcePlanner)(backend,state=state,
                 selected_source=args.execution_condition,capture_rgbd=capture_rgbd,
                 gt_snapshot=capture['snapshot'],physical_context=physical_context,**options)
             update = backend._next_update
@@ -297,6 +311,7 @@ def run_native(args, app, state):
             strategy._rgbd_world_capture=original_rgbd_capture
         finally:
             subscription=None
+            restore_strategy()
             restore_camera_timing()
             if bundle is not None:
                 if callback:
@@ -373,10 +388,11 @@ def save_capture(args,state):
     return operations,archive
 
 
-def execute(args,app):
+def execute(args,app,*,research=None):
     before=source_hashes()
     state=dict(mapping_inputs=deque(maxlen=16),mapping_submissions=[],mapping_publications=[],
         paired_plans={},motion_payloads={},physical_evaluation={})
+    state.update(research or {})
     error=None
     try:
         run_native(args,app,state)

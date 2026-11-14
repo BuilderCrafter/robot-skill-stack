@@ -1,0 +1,17 @@
+{
+  "original_attempt": {
+    "research/rgbd_box_geometry/rrt_bridge.py": "f5209e8de44a592b7e73c0d2f006b45f84c6507e29138239605f2e3c666ee582",
+    "research/rgbd_box_geometry/native_trial.py": "37ac71a2486064811634dc98c45be8e8b11fbcf000a98fd2ad1f08db0a4564f5",
+    "research/rgbd_box_geometry/test_rrt_bridge.py": "156878482c4e84648e4ecf63678b41684313106dc12ae9713d99b29e6338c50c",
+    "scripts/benchmark_global_rgbd_v5.py": "7c79b16fd6d8413fb5bd3b6d6540ed1f4af3da3e6aafb5c93e139e2e8cec85f3"
+  },
+  "current_published": {
+    "research/rgbd_box_geometry/rrt_bridge.py": "f5209e8de44a592b7e73c0d2f006b45f84c6507e29138239605f2e3c666ee582",
+    "research/rgbd_box_geometry/native_trial.py": "1b52e59635027307f6244876c5a8d0cb7e06e8f7380dc9d447dfa109ff2f4f83",
+    "research/rgbd_box_geometry/test_rrt_bridge.py": "798f97b6b20d69b8ed67f2b287f4b8051a92ae98ccfc0a4e402a63c45594530e",
+    "scripts/benchmark_global_rgbd_v5.py": "7c79b16fd6d8413fb5bd3b6d6540ed1f4af3da3e6aafb5c93e139e2e8cec85f3"
+  },
+  "patch_verified": true,
+  "scope": "Only receipt write order and its regression test changed after the single native attempt",
+  "patch_format": "Zero-context unified diff; recovery in an isolated checkout uses git apply --unidiff-zero"
+}

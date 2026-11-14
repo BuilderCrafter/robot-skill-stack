@@ -1,0 +1,31 @@
+--- a/research/rgbd_box_geometry/native_trial.py
++++ b/research/rgbd_box_geometry/native_trial.py
+@@ -120,3 +120,5 @@
+-        record['research_sources_unchanged']=all(ref.digest(Path(__file__).parent/n)==h for n,h in hashes.items())
+-        ref.save(args.output/'research.json',record)
+-        if app is not None:app.close()
++        try:
++            if app is not None:app.close()
++        finally:
++            record['research_sources_unchanged']=all(ref.digest(Path(__file__).parent/n)==h for n,h in hashes.items())
++            ref.save(args.output/'research.json',record)
+--- a/research/rgbd_box_geometry/test_rrt_bridge.py
++++ b/research/rgbd_box_geometry/test_rrt_bridge.py
+@@ -5,3 +4,0 @@
+-import json
+-from pathlib import Path
+-from tempfile import TemporaryDirectory
+@@ -141,13 +137,0 @@
+-    def test_receipt_precedes_nonreturning_sdk_close(self):
+-        app=NS(close=Mock(side_effect=SystemExit(0)))
+-        sdk=ModuleType('isaacsim');sdk.SimulationApp=Mock(return_value=app)
+-        with TemporaryDirectory() as tmp:
+-            output=Path(tmp)/'attempt'
+-            with patch.dict(sys.modules,{'isaacsim':sdk}),patch.object(sys,'argv',['native_trial','--output',str(output)]), \
+-                 patch.object(native_trial.bench,'execute',return_value=False) as execute:
+-                with self.assertRaises(SystemExit):native_trial.main()
+-                execute.assert_called_once()
+-            receipt=json.loads((output/'research.json').read_text())
+-            self.assertFalse(receipt['measurement_pass']);self.assertTrue(receipt['research_sources_unchanged'])
+-            app.close.assert_called_once()
+-
