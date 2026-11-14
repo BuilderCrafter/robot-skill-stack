@@ -84,3 +84,38 @@ Then original partial through normal autonomous runtime plus independent physica
 veto. If a valid planning world is reached, run up to two identical repeats,
 recording every result. One GT native control next; secondary geometry only if
 primary path works and budget remains. No seed/fixture/threshold search.
+
+## B — minimal implementation and offline coverage
+
+Implemented checked integer-key grouping inside the existing `voxelize` function:
+**15 added / one removed production line, one file**. Ordinary mapping/source
+capture, continuous-inference scheduling, immutable publications, generation and
+camera association, failure propagation, cancellation, reset, Stop/Play and
+shutdown contracts are unchanged. No extra reader or worker is involved. Existing
+inference and all six-face/visibility/robot/FREE guards execute unchanged.
+
+New focused tests compare exact output arrays over 45 randomized size/voxel/cap
+combinations (including duplicates/nonfinite observations), negative offsets,
+voxel boundaries, degenerate axes and checked overflow fallback. Eight original
+archived scene inputs are hash-verified and replayed under both old structured
+and new integer grouping: every status, reason, numeric model, face witness,
+FREE contradiction check and robot diagnostic is exactly equal (timing fields
+excluded). No physical reference is used by these comparisons. The existing
+trusted successful partial numeric test also still passes.
+
+**24 focused tests PASS in 6.674 s** before native work. Full suite and architecture
+checks follow; exact commands and logs are retained under
+`outputs/motion-planning-v5/autonomous-performance-20261114`.
+
+- 18:13–18:16: implemented Option A, kept old structured sorting only for integer
+  range overflow, and validated exact archived evidence rather than geometry
+  tolerance alone. No numerical qualification rule changed. Container startup
+  reuses the saved configuration after verifying it was stopped with no GPU job.
+
+Full package-qualified host discovery: **1,401 tests PASS in 110.922 s**.
+Architecture boundary and Python syntax checks PASS. Existing historical fixture
+expectations were unchanged, including GT/direct, semantic old/new equivalence,
+source and robot-model invalidation, mapping worker transport, frozen publication,
+reset/cancellation/shutdown and skills/BT tests. The four new tests add exhaustive
+integer-key and eight-scene numeric/evidence equivalence, rather than changing
+existing baselines.

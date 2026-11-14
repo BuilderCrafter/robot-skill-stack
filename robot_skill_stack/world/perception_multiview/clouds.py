@@ -1,6 +1,7 @@
 """Bounded, deterministic NumPy point-cloud operations in metres."""
 from pathlib import Path
 from itertools import product
+import math
 
 import numpy as np
 
@@ -58,7 +59,20 @@ def voxelize(points, voxel=.002, max_points=6000):
     points = points[np.isfinite(points).all(1)]
     if not len(points):
         return points
-    keys, inverse = np.unique(np.floor(points/voxel+1e-9).astype(np.int64), axis=0, return_inverse=True)
+    keys = np.floor(points/voxel+1e-9).astype(np.int64)
+    lower, upper = keys.min(0), keys.max(0)
+    widths = tuple(int(hi)-int(lo)+1 for lo, hi in zip(lower, upper))
+    if math.prod(widths) <= np.iinfo(np.int64).max:
+        # Checked mixed-radix keys preserve XYZ lexicographic group order.
+        # Keep accumulation in original point order for identical centroids.
+        codes = keys[:, 0]-lower[0]
+        codes *= widths[1]
+        codes += keys[:, 1]-lower[1]
+        codes *= widths[2]
+        codes += keys[:, 2]-lower[2]
+        _, inverse = np.unique(codes, return_inverse=True)
+    else:
+        _, inverse = np.unique(keys, axis=0, return_inverse=True)
     counts = np.bincount(inverse)
     result = np.column_stack([np.bincount(inverse, weights=points[:, i])/counts for i in range(3)])
     if len(result) > max_points:
