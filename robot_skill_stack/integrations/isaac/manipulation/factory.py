@@ -30,7 +30,8 @@ def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
         rrt_seed=123456 if motion is None else getattr(motion, 'rrt_seed', 123456),
         rrt_max_iterations=10000 if motion is None else getattr(motion, 'rrt_max_iterations', 10000),
         global_collision_model='stock' if motion is None else getattr(motion, 'global_collision_model', 'stock'),
-        global_obstacle_source='static' if motion is None else getattr(motion, 'global_obstacle_source', 'static'))
+        global_obstacle_source='static' if motion is None else getattr(motion, 'global_obstacle_source', 'static'),
+        global_rgbd_representation='occupied' if motion is None else getattr(motion, 'global_rgbd_representation', 'occupied'))
     if selected.strategy == 'reactive' and not callable(mapping_source_provider):
         raise ValueError('Reactive motion requires enabled Spatial Mapping access')
     if (selected.strategy == 'global' and selected.global_obstacle_source == 'frozen_rgbd'
@@ -45,6 +46,8 @@ def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
             if selected.global_obstacle_source == 'frozen_rgbd':
                 model.update(obstacle_source=selected.global_obstacle_source,
                     mapping_source_provider=mapping_source_provider, max_obstacles=selected.max_obstacles)
+                if selected.global_rgbd_representation == 'reconstructed':
+                    model['rgbd_representation'] = 'reconstructed'
             return GlobalRrtStrategy(backend, seed=selected.rrt_seed,
                 max_iterations=selected.rrt_max_iterations, **model)
         if selected.strategy == 'reactive':

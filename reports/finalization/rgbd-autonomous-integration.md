@@ -68,6 +68,46 @@ different geometry and floor/base cases. Continue past scene-specific rejection.
 Native research instrumentation may independently veto motion, but it must not
 provide geometry or an IK goal to the selected production planner.
 
-Current status: `NOT_IMPLEMENTED` (architecture checkpoint only). No production
-readiness claim. Subsequent checkpoints append measured outcomes and remaining
-limitations here.
+## Checkpoint B — opt-in worker/capture integration
+
+Implemented an optional immutable `InferredGeometry` attached to the existing
+`MappingCompleted` and `MappingReadView`. The service publishes it only with the
+same accepted completion and clears it at reset. It never pairs an old qualified
+result with a newer occupied world. Source capture checks generation, revision,
+timestamp and every camera token/time/calibration field before assembly.
+
+The numerical reference/visibility modules were copied into SDK-free
+`world/spatial_mapping/box_geometry`; AST regression confirms all code after the
+module docstring is identical to the frozen research originals. No production
+module imports research. The worker receives only whitelisted workspace/support
+values, raw frames and synchronized robot snapshots, never fixture identities.
+
+Configuration example (existing RGB-D mapping/self-filter configuration required):
+
+```toml
+[motion]
+strategy = "global"
+global_collision_model = "enhanced"
+global_obstacle_source = "frozen_rgbd"
+global_rgbd_representation = "reconstructed"
+max_obstacles = 64
+```
+
+Default representation remains `occupied`. GT/direct/reactive defaults are
+unchanged. Global strategy changes only pass the opt-in representation into the
+existing capture boundary; Lula, IK, executor and motion skills are untouched.
+Empty inference retains all observed cuboids; zero selected occupancy still
+receives the existing explicit no-usable-evidence refusal rather than treating
+UNKNOWN as free. Unqualified or mixed robot-connected components reject capture.
+
+103 targeted offline tests pass, covering initial geometry/source assembly,
+mapping defaults, global strategy, observer and configuration regressions.
+Further lifecycle/source-adapter and trusted archive checks follow at checkpoint
+C. Native behavior and inference throughput are not yet measured.
+
+- 16:28–16:35 decision: preserve the existing empty-source and floor guards.
+  Evidence: their contracts require observed selected cuboids; inference alone
+  cannot certify free space. Implemented explicit empty-inference status while
+  retaining occupancy. Reversible opt-in; empty/floor scenes may safely refuse.
+
+Current status: `PARTIALLY_INTEGRATED`; no production readiness claim.

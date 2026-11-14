@@ -34,9 +34,9 @@ def _planner(backend, **kwargs):
     return LulaGlobalPlanner(backend, **kwargs)
 
 
-def _frozen_rgbd_snapshot(backend, provider, *, max_obstacles):
+def _frozen_rgbd_snapshot(backend, provider, *, max_obstacles, representation='occupied'):
     from .frozen_rgbd import capture_frozen_rgbd_world
-    return capture_frozen_rgbd_world(backend, provider, max_obstacles=max_obstacles)
+    return capture_frozen_rgbd_world(backend, provider, max_obstacles=max_obstacles, representation=representation)
 
 
 def _distribution(values):
@@ -64,6 +64,7 @@ class GlobalRrtStrategy:
     def __init__(self, backend, *, seed=123456, max_iterations=10000,
                  collision_model='stock',
                  obstacle_source='static', mapping_source_provider=None, max_obstacles=64,
+                 rgbd_representation='occupied',
                  planner_factory=_planner, world_capture=_snapshot,
                  rgbd_world_capture=_frozen_rgbd_snapshot,
                  action_factory=_action, clock=time.perf_counter,
@@ -78,6 +79,10 @@ class GlobalRrtStrategy:
         if type(max_obstacles) is not int or not 1 <= max_obstacles <= 128:
             raise ValueError('global max_obstacles must be an integer between 1 and 128')
         self.obstacle_source, self.max_obstacles = obstacle_source, max_obstacles
+        if rgbd_representation not in ('occupied', 'reconstructed') or (
+                rgbd_representation == 'reconstructed' and (obstacle_source != 'frozen_rgbd' or max_obstacles != 64)):
+            raise ValueError('Invalid RGB-D representation/source/budget')
+        self.rgbd_representation = rgbd_representation
         self._mapping_source_provider, self._rgbd_world_capture = mapping_source_provider, rgbd_world_capture
         self._planner_factory, self._world_capture = planner_factory, world_capture
         self._action, self._clock = action_factory, clock
@@ -91,7 +96,8 @@ class GlobalRrtStrategy:
     def diagnostics(self):
         return dict(self._details, state=self._state, closed=self._closed,
                     motion_strategy="global", seed=self.seed, max_iterations=self.max_iterations,
-                    global_collision_model=self.collision_model, global_obstacle_source=self.obstacle_source)
+                    global_collision_model=self.collision_model, global_obstacle_source=self.obstacle_source,
+                    global_rgbd_representation=self.rgbd_representation)
 
     @property
     def mapping_source_provider(self):
@@ -102,7 +108,8 @@ class GlobalRrtStrategy:
         if self.obstacle_source == 'static':
             return self._world_capture(self._backend)
         snapshot, frozen = self._rgbd_world_capture(self._backend, self._mapping_source_provider,
-            max_obstacles=self.max_obstacles)
+            max_obstacles=self.max_obstacles,
+            **({'representation':'reconstructed'} if self.rgbd_representation == 'reconstructed' else {}))
         self.last_plan_trace['frozen_rgbd'] = frozen
         self._details['planning_source'] = snapshot.source_metadata
         self._details['planning_source_frozen'] = True

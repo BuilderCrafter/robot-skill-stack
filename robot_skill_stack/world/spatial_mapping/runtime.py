@@ -7,6 +7,7 @@ sparse queries age just the requested cells.
 from dataclasses import dataclass, replace
 import time
 from types import MappingProxyType
+from types import SimpleNamespace
 
 import numpy as np
 
@@ -69,15 +70,18 @@ class MappingCompleted:
     generation: int
     input_timestamp: float | None = None
     obstacles: object = None
+    inferred: object = None
 
 
 class MappingProcessor:
     """One mutable map, touched only by the single computation worker."""
-    def __init__(self, settings, *, clock=time.monotonic, obstacle_settings=None):
+    def __init__(self, settings, *, clock=time.monotonic, obstacle_settings=None, reconstruction_scene=None):
         self.settings, self.clock = settings, clock
         self.map = self.mapper = self.filter = None
         self.generation = None
         self._obstacle_settings, self._extractor = obstacle_settings, None
+        self._reconstruction_scene = (None if reconstruction_scene is None else SimpleNamespace(
+            **{k:getattr(reconstruction_scene,k) for k in ('workspace_min','workspace_max','support_plane_z')}))
 
     def _reset(self, generation):
         cfg = self.settings
@@ -135,21 +139,29 @@ class MappingProcessor:
         if obstacles is not None:
             diagnostics['obstacle_extraction'] = dict(obstacles.diagnostics)
         diagnostics.update(accepted=accepted, compute_seconds=time.perf_counter()-started)
+        inferred = None
+        if accepted and self._reconstruction_scene is not None:
+            from .reconstruction import infer
+            inferred = infer(payload, self._reconstruction_scene, snapshot)
+            diagnostics['reconstruction'] = dict(status=inferred.status, reason=inferred.reason,
+                elapsed_seconds=inferred.diagnostics['elapsed_seconds'])
+            diagnostics['mapping_compute_seconds'] = diagnostics['compute_seconds']
+            diagnostics['compute_seconds'] = time.perf_counter()-started
         return MappingCompleted(snapshot, freeze(diagnostics), accepted, payload.generation,
-                                _input_timestamp(payload), obstacles)
+                                _input_timestamp(payload), obstacles, inferred)
 
 
 @dataclass(frozen=True, init=False, eq=False)
 class MappingReadView:
     """Immutable fixed-time facade over an already immutable worker snapshot."""
-    def __init__(self, snapshot, *, now, evidence_ttl, stale_after, health=None, obstacles=None):
+    def __init__(self, snapshot, *, now, evidence_ttl, stale_after, health=None, obstacles=None, inferred=None):
         now = float(now)
         if not np.isfinite(now) or now < 0:
             raise ValueError('Read time must be finite and nonnegative')
         for key, value in dict(_snapshot=snapshot, evaluated_at=now,
                 evidence_ttl=evidence_ttl, stale_after=stale_after, spec=snapshot.spec,
                 timestamp=snapshot.timestamp, revision=snapshot.revision,
-                generation=snapshot.generation, obstacles=obstacles).items():
+                generation=snapshot.generation, obstacles=obstacles, inferred=inferred).items():
             object.__setattr__(self, key, value)
         values = dict(snapshot.health if health is None else health)
         age = None if self.timestamp is None else max(0., now-self.timestamp)
@@ -212,15 +224,17 @@ class MappingReadView:
 class MappingService:
     """Owner-thread admission/publication; no SDK calls and no map access on poll."""
     def __init__(self, settings, *, worker_factory=BoundedWorker, clock=time.monotonic,
-                 obstacle_settings=None):
+                 obstacle_settings=None, reconstruction_scene=None):
         self.settings, self.clock = settings, clock
-        self._processor = MappingProcessor(settings, clock=clock, obstacle_settings=obstacle_settings)
+        self._processor = MappingProcessor(settings, clock=clock, obstacle_settings=obstacle_settings,
+                                          reconstruction_scene=reconstruction_scene)
         self._worker = worker_factory(self._processor.compute, name='spatial-mapping')
         # Allocate the empty publication once at construction, never on reads.
         self._empty = OccupancyMap(settings.grid_spec(), clock=clock,
             stale_after=settings.stale_after, evidence_ttl=settings.evidence_ttl).snapshot(now=clock())
         self._published = None
         self._published_obstacles = None
+        self._published_inferred = None
         self.generation, self._barrier, self._closed = 0, 0, False
         self._status, self._reason, self._last_error = 'waiting', None, None
         self.last_result, self.diagnostics = None, MappingProxyType({})
@@ -287,6 +301,7 @@ class MappingService:
         if fresh:
             self._published = completed.snapshot
             self._published_obstacles = completed.obstacles
+            self._published_inferred = completed.inferred
             self._status, self._reason, self._last_error = 'ok', None, None
             self._counts['published'] += 1
         else:
@@ -327,6 +342,7 @@ class MappingService:
         self._worker.invalidate()
         self._published, self.last_result = None, None
         self._published_obstacles = None
+        self._published_inferred = None
         self.diagnostics = MappingProxyType({})
         self._completion = {}
         self._status, self._reason, self._last_error = 'waiting', 'reset', None
@@ -339,7 +355,7 @@ class MappingService:
         return MappingReadView(base, now=self.clock() if now is None else now,
             evidence_ttl=self.settings.evidence_ttl, stale_after=self.settings.stale_after,
             health=dict(status=self._status, reason=self._reason, last_error=self._last_error),
-            obstacles=self._published_obstacles)
+            obstacles=self._published_obstacles, inferred=self._published_inferred)
 
     @property
     def health(self):

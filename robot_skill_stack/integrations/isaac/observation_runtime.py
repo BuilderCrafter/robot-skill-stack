@@ -344,7 +344,9 @@ async def create_observation_runtime(world, config, updater, app):
                 from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
                 service = MappingService(settings, worker_factory=ProcessWorker,
                     obstacle_settings=ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,
-                        support_plane_z=config.scene.support_plane_z))
+                        support_plane_z=config.scene.support_plane_z),
+                    **({'reconstruction_scene':config.scene} if
+                       getattr(motion, 'global_rgbd_representation', 'occupied') == 'reconstructed' else {}))
             else:
                 service = MappingService(settings, worker_factory=ProcessWorker)
             if settings.source == 'rgbd' and settings.automatic_robot_filter:

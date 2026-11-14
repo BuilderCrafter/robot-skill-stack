@@ -108,6 +108,7 @@ class MotionConfig:
     rrt_max_iterations: int = 10000
     global_collision_model: str = 'stock'
     global_obstacle_source: str = 'static'
+    global_rgbd_representation: str = 'occupied'
 
     def __post_init__(self):
         if not isinstance(self.strategy, str):
@@ -133,6 +134,12 @@ class MotionConfig:
         if (self.strategy == 'global' and self.global_obstacle_source == 'frozen_rgbd'
                 and self.global_collision_model != 'enhanced'):
             raise ValueError('Frozen RGB-D global motion requires the enhanced collision model')
+        if self.global_rgbd_representation not in ('occupied', 'reconstructed'):
+            raise ValueError("motion.global_rgbd_representation must be 'occupied' or 'reconstructed'")
+        if self.global_rgbd_representation == 'reconstructed' and (
+                self.strategy != 'global' or self.global_obstacle_source != 'frozen_rgbd'
+                or self.max_obstacles != 64):
+            raise ValueError('Reconstructed RGB-D requires global frozen_rgbd with the 64-proxy budget')
 
 
 @dataclass(frozen=True)
