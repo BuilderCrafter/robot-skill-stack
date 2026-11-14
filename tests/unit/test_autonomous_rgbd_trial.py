@@ -70,6 +70,19 @@ class AutonomousTrialTests(unittest.TestCase):
         self.assertNotIn('fixed_joint_target',state)
         wrapper.close()
 
+    def test_ordinary_request_resamples_physical_start_before_planning(self):
+        wrapper,state,plan,_=self.fixture()
+        state.update(ordinary_request_timing=True,observer=object(),capture=object())
+        fresh={'actual_start_q':[.2]*9}
+        def run(*a,**k):
+            self.assertIs(wrapper.context,fresh)
+            return None,PlanningFailure('rrt_failed','test')
+        wrapper._run=run
+        with patch('research.rgbd_box_geometry.autonomous_trial.bench.physical_context_from_observer',return_value=fresh) as refresh:
+            with self.assertRaises(PlanningFailure):wrapper.plan(Pose([.45,.25,.35],[0.,0.,1.,0.]),np.zeros(7),support())
+            refresh.assert_called_once_with(wrapper.backend,state['observer'],state['capture'])
+        wrapper.close()
+
 
 class OrdinaryDelayTests(unittest.IsolatedAsyncioTestCase):
     async def test_declared_delays_do_not_consult_mapping_or_wait_for_publication(self):

@@ -103,13 +103,73 @@ class GlobalRrtStrategy:
     def mapping_source_provider(self):
         return self._mapping_source_provider
 
-    def _capture_world(self):
+    async def _await_rgbd_source(self, epoch):
+        """Select the first new accepted observation; never inspect its boxes."""
+        started = self._clock()
+        audit = dict(policy='first_new_accepted_publication', timeout_seconds=5., updates=0)
+        self._details['rgbd_source_admission'] = audit
+        try:
+            source = self._mapping_source_provider()
+            generation = source.generation
+            health = source.health
+            first, failures = health['published'], health['failures']
+            view = source.snapshot()
+            audit['initial_identity'] = (generation, view.revision, view.timestamp)
+            while True:
+                self._live(epoch)
+                health = source.health
+                if source.generation != generation or health['published'] < first:
+                    raise PlanningFailure('planning_source_generation_changed',
+                        'RGB-D mapping changed generation while awaiting a source.')
+                if (health.get('closed') or health.get('status') == 'error'
+                        or health['failures'] != failures):
+                    raise PlanningFailure('planning_source_unavailable',
+                        'RGB-D mapping became unavailable during source admission.')
+                remaining = 5.-(self._clock()-started)
+                if remaining <= 0:
+                    raise PlanningFailure('planning_source_timeout',
+                        'No new accepted RGB-D publication within five seconds.')
+                if health['published'] > first:
+                    if health['published'] != first+1 or health.get('fresh') is not True:
+                        raise PlanningFailure('planning_source_changed',
+                            'The first new RGB-D publication is no longer uniquely usable.')
+                    view = source.snapshot()
+                    identity = (view.generation, view.revision, view.timestamp)
+                    if view.generation != generation:
+                        raise PlanningFailure('planning_source_generation_changed',
+                            'RGB-D mapping changed generation during source selection.')
+                    audit['selected_identity'] = identity
+                    return source, identity
+                try:
+                    async with asyncio.timeout(remaining):
+                        await self._backend._next_update()
+                except asyncio.TimeoutError as error:
+                    raise PlanningFailure('planning_source_timeout',
+                        'No new accepted RGB-D publication within five seconds.') from error
+                audit['updates'] += 1
+        except PlanningFailure:
+            raise
+        except Exception as error:
+            raise PlanningFailure('planning_source_unavailable',
+                f'RGB-D source admission failed: {type(error).__name__}: {error}') from error
+        finally:
+            audit['wait_seconds'] = self._clock()-started
+
+    def _capture_world(self, admitted=None):
         self._details['planning_source_captures'] = self._details.get('planning_source_captures', 0)+1
         if self.obstacle_source == 'static':
             return self._world_capture(self._backend)
-        snapshot, frozen = self._rgbd_world_capture(self._backend, self._mapping_source_provider,
+        provider, expected = self._mapping_source_provider, None
+        if admitted is not None:
+            source, expected = admitted
+            if provider() is not source:
+                raise PlanningFailure('planning_source_changed', 'RGB-D mapping service changed during admission.')
+            provider = lambda: source
+        snapshot, frozen = self._rgbd_world_capture(self._backend, provider,
             max_obstacles=self.max_obstacles,
             **({'representation':'reconstructed'} if self.rgbd_representation == 'reconstructed' else {}))
+        if expected is not None and (frozen.generation, frozen.revision, frozen.timestamp) != expected:
+            raise PlanningFailure('planning_source_changed', 'RGB-D publication changed after source admission.')
         self.last_plan_trace['frozen_rgbd'] = frozen
         self._details['planning_source'] = snapshot.source_metadata
         self._details['planning_source_frozen'] = True
@@ -174,9 +234,17 @@ class GlobalRrtStrategy:
             if self.collision_model == 'enhanced':
                 model = load_enhanced_collision_model()
                 self._details['gripper_contract'] = model.check_gripper(backend.robot)
+            admitted = None
+            if self.rgbd_representation == 'reconstructed':
+                self._state = 'waiting_for_rgbd'
+                admitted = await self._await_rgbd_source(epoch)
+                self._live(epoch)
+                if backend.gripper_feedback().state != GripperState.FREE:
+                    raise PlanningFailure('unsupported_payload', 'Grasp state changed during RGB-D source admission.')
+                self._details['gripper_contract'] = model.check_gripper(backend.robot)
             self._state = "capturing_world"
             started = self._clock()
-            snapshot = self._capture_world()
+            snapshot = self._capture_world(admitted)
             self._details["snapshot_seconds"] = self._clock()-started
             self.last_plan_trace["snapshot"] = snapshot
             self._live(epoch)
