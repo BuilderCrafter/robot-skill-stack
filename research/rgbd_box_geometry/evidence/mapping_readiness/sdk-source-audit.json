@@ -1,0 +1,33 @@
+{
+  "file_sha256": {
+    "/isaac-sim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/single_articulation.py": "086c94ac60aa4f8f1ffac0c921fe8eb4a5b118604d4e108b891d827635382234",
+    "/isaac-sim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/articulation.py": "65901a45bd1852c0e126581ed2bb75105b6e221128e24f2202d138c822b119a5"
+  },
+  "getter_authoring_sites": [
+    {
+      "path": "/isaac-sim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/articulation.py",
+      "function": "get_effort_modes",
+      "definition_line": 2580,
+      "drive_api_apply_lines": [
+        2642
+      ]
+    },
+    {
+      "path": "/isaac-sim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/articulation.py",
+      "function": "get_max_efforts",
+      "definition_line": 2790,
+      "drive_api_apply_lines": [
+        2874
+      ]
+    },
+    {
+      "path": "/isaac-sim/exts/isaacsim.core.prims/isaacsim/core/prims/impl/articulation.py",
+      "function": "get_gains",
+      "definition_line": 3114,
+      "drive_api_apply_lines": [
+        3216
+      ]
+    }
+  ],
+  "qualification": "Read-only inspection of installed SDK source after the sole diagnostic run; no getters invoked or SDK files modified. Exact subcall triggering the notice was not stack-instrumented."
+}

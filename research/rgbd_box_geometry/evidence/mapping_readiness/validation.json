@@ -1,0 +1,42 @@
+{
+  "baseline_tracked_files_unchanged": 825,
+  "previous_native_raw_artifacts_unchanged": 24,
+  "source_sha256": {
+    "research/rgbd_box_geometry/mapping_diagnostic.py": "f14b285cc57cce4f85428a7104c63810772c49561a4278cf9dc8e49950b5b134",
+    "research/rgbd_box_geometry/test_mapping_diagnostic.py": "b4d3f426ee73358c211534b4de6b8a94239b7e380d1ae34f3efedd7304313781"
+  },
+  "architecture": "PASS",
+  "syntax": "PASS",
+  "tests": [
+    {
+      "stage": "host_before_native",
+      "count": 62,
+      "seconds": 0.328,
+      "result": "PASS",
+      "log_sha256": "4c1ca3133a22cb796370b1398eddfe50e80a38bb3c77429fbaf18b6f59a4b3e6"
+    },
+    {
+      "stage": "container_before_native",
+      "count": 3,
+      "seconds": 0.018,
+      "result": "PASS",
+      "log_sha256": "a7e46e8e026abd5215e806737c23ebdd15f3545969f0fe191634a864431e73a9"
+    },
+    {
+      "stage": "host_robot_source_regressions",
+      "count": 13,
+      "seconds": 0.074,
+      "result": "PASS",
+      "log_sha256": "b2a03d42d4c51bed58c78c6690cb65e24d7fb71ac30b354e555e4e2ba4afbe4f"
+    }
+  ],
+  "production_files_changed": [],
+  "existing_research_files_changed": [],
+  "native_diagnostic_attempts": 1,
+  "full_rrt_retries": 0,
+  "instrumentation_bounded": true,
+  "observed_instrumentation_errors": 0,
+  "original_archived_input_files_unchanged": 16,
+  "report_links": "PASS",
+  "git_diff_check": "PASS"
+}
