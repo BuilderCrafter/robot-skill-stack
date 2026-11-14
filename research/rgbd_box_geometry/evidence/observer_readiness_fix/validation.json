@@ -1,0 +1,63 @@
+{
+  "host_tests": {
+    "count": 83,
+    "seconds": 0.209,
+    "result": "PASS",
+    "log_sha256": "e355a0b0159937a2d81f22af9cd39b31cd23890f0bfd925f6deaced36eaad5c1"
+  },
+  "native_python_offline_tests": {
+    "count": 83,
+    "seconds": 0.424,
+    "result": "PASS",
+    "log_sha256": "d871b9f74ced6306cc113e69f0f98c3e2c1399d2a49f36a4c7b06b5bd55f2db1"
+  },
+  "architecture": "PASS",
+  "syntax": "PASS",
+  "baseline_files": 832,
+  "unchanged_baseline_files": 826,
+  "authorized_existing_changes": [
+    "research/rgbd_box_geometry/mapping_diagnostic.py",
+    "research/rgbd_box_geometry/test_mapping_diagnostic.py",
+    "scripts/diagnose_global_home_v4.py",
+    "scripts/diagnose_global_stabilization_v4_1.py",
+    "tests/unit/test_global_home_v4_diagnostic.py",
+    "tests/unit/test_global_stabilization_v4_1.py"
+  ],
+  "previous_raw_artifacts_unchanged": {
+    "native_partial": 24,
+    "mapping_readiness": 21
+  },
+  "source_sha256": {
+    "research/rgbd_box_geometry/mapping_diagnostic.py": "2e403de08ffc14544f0789bcbb6d9bf8cd0e37bf34e6c094a97c49c165a40790",
+    "research/rgbd_box_geometry/test_mapping_diagnostic.py": "2013e0d4199846c18ce417f62fcb0b0551929cd941c2f1539d4447bd0c735940",
+    "scripts/diagnose_global_home_v4.py": "d63b63d2c7bcfa03826fb0cedbd86706e6a1edb13f348324696b5863fff71a6b",
+    "scripts/diagnose_global_stabilization_v4_1.py": "65b36d59ca0ff48d044f6608806d1675e26459e67f1bef699014103a9b4800c8",
+    "tests/unit/test_global_home_v4_diagnostic.py": "621d30616365045b5380ac020f65d7a889882f57898ba4254ef9c16fedce9a2f",
+    "tests/unit/test_global_stabilization_v4_1.py": "89ad39b20e296f4b8b8e3cb12e9e0db6ca97b04fc909bedf15a76bc821637538"
+  },
+  "native_readiness_checks": {
+    "schemas_available": true,
+    "schemas_identical": true,
+    "no_robot_filter_notice": true,
+    "no_filter_error": true,
+    "no_invalidation_barrier": true,
+    "submissions_continue": true,
+    "worker_completions_continue": true,
+    "new_first_accepted_publication": true,
+    "accepted_identity_new": true,
+    "original_input_timestamp_preserved": true,
+    "exactly_two_original_cameras": true,
+    "exposure_and_calibration_associated": true,
+    "within_five_seconds": true,
+    "fresh_original_age": true,
+    "semantic_continues": true,
+    "no_instrumentation_errors": true,
+    "no_selected_goal": true,
+    "runtime_closed": true,
+    "source_unchanged_during_native": true
+  },
+  "production_core_changes": [],
+  "report_links": "PASS",
+  "git_diff_check": "PASS",
+  "no_unsafe_aggregate_attribute_access": "PASS"
+}

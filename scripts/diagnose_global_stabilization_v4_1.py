@@ -20,7 +20,7 @@ from unittest.mock import patch
 import numpy as np
 
 from scripts import benchmark_global_motion_v4 as fixture
-from scripts.diagnose_global_home_v4 import _read, authored_drive_properties, public_drive_feedback
+from scripts.diagnose_global_home_v4 import _read, authored_drive_properties, dof_properties_feedback, public_drive_feedback
 from robot_skill_stack.manipulation.motion.joint_route import map_arm_joints
 from tests.support.reactive_contact_metrics import analyze_contact_samples, capture_joint_feedback
 
@@ -290,8 +290,7 @@ def make_observer(bundle):
         drive_model_property_order=['speed_effort_gradient', 'max_actuator_velocity', 'velocity_dependent_resistance'],
         authored_drive_properties=authored_drive_properties(stage, robot_root),
         robot_dof_names=list(bundle.backend.robot.dof_names),
-        robot_dof_properties=dict(columns=list(bundle.backend.robot.dof_properties.dtype.names),
-            values=fixture.serial(bundle.backend.robot.dof_properties)),
+        robot_dof_properties=dof_properties_feedback(),
         actual_body_pose_convention='PhysX world positions plus quaternion xyzw; meters_per_unit recorded separately',
         initial_dynamics=dynamics_feedback(bundle.backend.robot))
     observer = Observer(bundle, contact_view=contacts, body_view=bodies,

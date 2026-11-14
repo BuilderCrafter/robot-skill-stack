@@ -27,6 +27,8 @@ from tests.support.reactive_contact_metrics import capture_joint_feedback
 def _read(call):
     try:
         value = call()
+        if value is None:
+            return dict(available=False, error='SDK getter returned no feedback')
         if hasattr(value, 'joint_positions'):
             value = {field: getattr(value, field, None) for field in (
                 'joint_positions', 'joint_velocities', 'joint_efforts', 'joint_indices')}
@@ -36,17 +38,28 @@ def _read(call):
 
 
 def public_drive_feedback(robot):
-    """Public SDK readings only; USD authored targets are separately qualified."""
-    values = {'robot_applied_action': _read(robot.get_applied_action)}
-    for name in ('get_joint_position_targets', 'get_joint_velocity_targets',
-                 'get_max_efforts', 'get_effort_modes'):
-        method = getattr(robot, name, None)
-        values[name] = _read(method) if callable(method) else dict(available=False, error='Public method unavailable')
-    controller = robot.get_articulation_controller()
-    for name in ('get_applied_action', 'get_gains', 'get_effort_modes'):
-        method = getattr(controller, name, None)
-        values['controller_'+name] = _read(method) if callable(method) else dict(available=False, error='Public method unavailable')
+    """Live action/target feedback; omit SDK getters with USD-authoring fallbacks."""
+    def safe(obj, name):
+        method = getattr(obj, name, None)
+        return _read(method) if callable(method) else dict(available=False, error='Public method unavailable')
+    values = {'robot_applied_action': safe(robot, 'get_applied_action')}
+    for name in ('get_joint_position_targets', 'get_joint_velocity_targets'):
+        values[name] = safe(robot, name)
+    try:
+        controller = robot.get_articulation_controller()
+    except Exception as error:
+        values['controller_get_applied_action'] = dict(available=False, error=f'{type(error).__name__}: {error}')
+    else:
+        values['controller_get_applied_action'] = safe(controller, 'get_applied_action')
+    for name in ('get_max_efforts', 'get_effort_modes', 'controller_get_gains', 'controller_get_effort_modes'):
+        values[name] = dict(available=False, error='Not sampled: SDK getter can author missing USD DriveAPI')
     return values
+
+
+def dof_properties_feedback():
+    """The SDK aggregate calls the same unsafe gains/maximum-effort getters."""
+    return dict(available=False, columns=None, values=None,
+                error='Not sampled: SDK dof_properties can author USD through gain/effort getters')
 
 
 def _usd_number(value):
@@ -94,8 +107,7 @@ def lifecycle_probe(capture):
             current_before_cancel=benchmark.serial(backend.get_end_effector_pose()),
             initial_drive_feedback=public_drive_feedback(robot),
             authored_drives=authored_drive_properties(stage, root),
-            robot_dof_properties=dict(columns=list(robot.dof_properties.dtype.names),
-                values=benchmark.serial(robot.dof_properties)),
+            robot_dof_properties=dof_properties_feedback(),
             self_contact_reference=dict(sensor_paths=benchmark.serial(view.sensor_paths),
                 filter_paths=benchmark.serial(view.filter_paths), capacity=4096,
                 meaning='All robot rigid bodies paired with all robot rigid bodies. Existing PhysX collision filtering remains unchanged.'),

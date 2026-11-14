@@ -2,10 +2,12 @@
 import argparse
 from collections import deque
 from contextlib import contextmanager, ExitStack
+import hashlib
 import json
 from pathlib import Path
 import threading
 import time
+import traceback
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -32,6 +34,19 @@ class Timeline:
             self.event_count += 1
             self.events.append(dict(event='instrumentation_error', phase=self.phase,
                                     observed_event=event, error=repr(exc)))
+
+    def robot_schemas(self):
+        """Bounded preparation-only USD reads; never run during per-tick sampling."""
+        try:
+            from pxr import Usd
+            runtime = self.runtime
+            root = runtime.stage.GetPrimAtPath(runtime.robot_filter.robot_prim_path)
+            rows = sorted((str(p.GetPath()), p.GetTypeName(), tuple(p.GetAppliedSchemas()))
+                for p in Usd.PrimRange(root, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)))
+            return dict(available=True, prims=len(rows),
+                        sha256=hashlib.sha256(json.dumps(rows).encode()).hexdigest())
+        except Exception as exc:
+            return dict(available=False, error=repr(exc))
 
     def _record(self, event, *, force=False, **extra):
         now = self.clock()
@@ -107,15 +122,16 @@ class Timeline:
                 if filt.source_error != before:
                     self.record('robot_filter_notice', force=True, source_error=filt.source_error,
                         resynced=[str(p) for p in notice.GetResyncedPaths()][:20],
-                        changed_info=[str(p) for p in notice.GetChangedInfoOnlyPaths()][:20])
+                        changed_info=[str(p) for p in notice.GetChangedInfoOnlyPaths()][:20],
+                        triggering_stack=traceback.format_stack(limit=16))
 
         def step(name, function, bundle):
             self.runtime, self.phase = bundle.observation_runtime, name
-            self.record('before_'+name, force=True)
+            self.record('before_'+name, force=True, robot_schemas=self.robot_schemas())
             try:
                 return function(bundle)
             finally:
-                self.record('after_'+name, force=True)
+                self.record('after_'+name, force=True, robot_schemas=self.robot_schemas())
 
         with ExitStack() as stack:
             for obj, name, replacement in (
@@ -142,9 +158,11 @@ class Timeline:
                     if health['published'] != first+1 or health.get('fresh') is not True:
                         self.outcome = 'first_publication_invalid'
                         raise DiagnosticStop(self.outcome)
-                    view, _ = bridge.associate(source, state['mapping_inputs'])
+                    view, payload = bridge.associate(source, state['mapping_inputs'])
                     self.outcome = 'fresh_matching_publication'
-                    self.record(self.outcome, force=True, publication=bridge.identity(view))
+                    self.record(self.outcome, force=True, publication=bridge.identity(view),
+                        associated_input_generation=payload.generation, original_age_s=source.clock()-view.timestamp,
+                        source_frames=bench.baseline.serial(source.diagnostics.get('source_frames', ())))
                     raise DiagnosticStop(self.outcome)
                 filt = self.runtime.robot_filter
                 if (filt is not None and filt.source_error is not None

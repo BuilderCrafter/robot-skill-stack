@@ -1,9 +1,11 @@
 """Observation validity must not become a synthetic motion success."""
 import asyncio
 import copy
-from types import SimpleNamespace
+import json
+import sys
+from types import ModuleType, SimpleNamespace
 import unittest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 import numpy as np
 
@@ -13,9 +15,82 @@ from scripts.diagnose_global_stabilization_v4_1 import (
     ARM, DIFFERENT_GOAL, MODES, arm_target_error, callback_for, cancel_start,
     controlled_acceptance, dynamics_feedback, reduce_observations,
 )
+from scripts import diagnose_global_stabilization_v4_1 as controlled
 
 
 class ControlledObservationTests(unittest.TestCase):
+    def test_observer_preserves_missing_drive_schema_filter_model_and_pose_history(self):
+        from tests.unit.test_spatial_mapping_robot_adapter import Scene, Prim, boundaries, usd_modules, frame
+        from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter
+        scene = Scene()
+        joint = Prim(scene.root.path+'/panda_hand/panda_finger_joint2', parent=scene.body, kind='joint')
+        joint.GetAttributes = lambda: []
+        joint.GetTypeName = lambda: 'PhysicsPrismaticJoint'
+        scene.prims.append(joint)
+        scene.Traverse = lambda: scene.prims
+        for prim in scene.prims:
+            prim.IsPseudoRoot = lambda: False
+        schemas = {prim.path: () for prim in scene.prims}
+        original_schemas = copy.deepcopy(schemas)
+        unsafe = Mock(side_effect=BaseException('Diagnostic attempted USD authoring'))
+        class Robot(SimpleNamespace):
+            @property
+            def dof_properties(self):
+                raise BaseException('Unsafe aggregate property accessed')
+        action = SimpleNamespace(joint_positions=np.zeros(9), joint_velocities=np.zeros(9))
+        controller = SimpleNamespace(get_applied_action=lambda: action, get_gains=unsafe, get_effort_modes=unsafe)
+        robot = Robot(prim_path=scene.root.path, dof_names=[*ARM, 'panda_finger_joint1', 'panda_finger_joint2'],
+            apply_action=Mock(), get_applied_action=lambda: action, get_articulation_controller=lambda: controller,
+            get_max_efforts=unsafe, get_effort_modes=unsafe, get_world_pose=lambda: (np.zeros(3), np.array([1.,0,0,0])),
+            **{name:(lambda: np.zeros(9)) for name in ('get_joint_positions', 'get_joint_velocities',
+                'get_measured_joint_efforts', 'get_applied_joint_efforts', 'get_measured_joint_forces')})
+        backend = SimpleNamespace(robot=robot, _next_update=AsyncMock(), _motion_active=False, is_ready=True,
+            get_end_effector_pose=lambda: Pose([.45,0,.35]), gripper_feedback=lambda: {}, named_poses={})
+        bundle = SimpleNamespace(backend=backend, runtime=SimpleNamespace(execute_async=AsyncMock()),
+            world=SimpleNamespace(current_time=1., current_time_step_index=60, is_playing=lambda: True))
+        usd, geom, _, _ = usd_modules(scene)
+        collision = lambda prim: SimpleNamespace(GetCollisionEnabledAttr=lambda: SimpleNamespace(Get=lambda: True))
+        physics = SimpleNamespace(RigidBodyAPI=object(), CollisionAPI=collision, Joint='joint',
+                                  DriveAPI=SimpleNamespace(Apply=unsafe))
+        contacts = SimpleNamespace(sensor_paths=[scene.body.path], filter_paths=[[scene.body.path]])
+        bodies = SimpleNamespace(prim_paths=[scene.body.path], get_coms=lambda: np.zeros((1,7)))
+        simulation = SimpleNamespace(create_rigid_contact_view=lambda *a, **k: contacts,
+                                     create_rigid_body_view=lambda *a, **k: bodies)
+        modules = {name:ModuleType(name) for name in ('omni', 'omni.usd', 'pxr', 'isaacsim',
+                    'isaacsim.core', 'isaacsim.core.simulation_manager')}
+        modules['omni'].usd = modules['omni.usd']
+        modules['omni.usd'].get_context = lambda: SimpleNamespace(get_stage=lambda: scene)
+        modules['pxr'].Usd, modules['pxr'].UsdGeom, modules['pxr'].UsdPhysics = usd, geom, physics
+        modules['isaacsim.core.simulation_manager'].SimulationManager = SimpleNamespace(get_physics_sim_view=lambda: simulation)
+        with boundaries(scene), patch.dict(sys.modules, modules):
+            source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
+            try:
+                source.prepare((frame(),))
+                parts, history = source._parts, tuple(source._history)
+                observer = controlled.make_observer(bundle)
+                try:
+                    state = observer.state()
+                    self.assertFalse(state['live_drive_feedback']['controller_get_gains']['available'])
+                    self.assertFalse(observer.metadata['robot_dof_properties']['available'])
+                    self.assertEqual(schemas, original_schemas)
+                    unsafe.assert_not_called()
+                    self.assertIsNone(source.source_error)
+                    self.assertIs(source._parts, parts)
+                    self.assertEqual(len(source._history), len(history))
+                    self.assertIs(source._history[0][1], history[0][1])
+                    source.prepare((frame(),))
+                    json.dumps(state, allow_nan=False)
+                finally:
+                    observer.restore()
+                notice = SimpleNamespace(GetResyncedPaths=lambda: [joint.path], GetChangedInfoOnlyPaths=lambda: [])
+                source._model_changed(notice, scene)
+                self.assertIn('reinitialize', source.source_error)
+                self.assertFalse(source._history)
+                with self.assertRaisesRegex(RuntimeError, 'reinitialize'):
+                    source.prepare((frame(),))
+            finally:
+                source.close()
+
     def test_ahead_hold_target_has_negative_actual_minus_target_sign(self):
         positions = np.arange(9, dtype=float)
         targets = positions.copy(); targets[0] += .03; targets[8] += 7.

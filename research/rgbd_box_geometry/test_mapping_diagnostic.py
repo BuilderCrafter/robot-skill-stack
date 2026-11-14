@@ -14,7 +14,8 @@ from . import mapping_diagnostic as d
 def fixture(error=None):
     filt = NS(source_error=error, _model_error=error, _capture_error=None, _closed=False,
         _generation=0, _history=[], _pose_capture_calls=3, diagnostics={'state': 'prepared'})
-    source = NS(health={'published': 23, 'fresh': True, 'reason': 'acquisition_failure' if error else None})
+    source = NS(health={'published': 23, 'fresh': True, 'reason': 'acquisition_failure' if error else None},
+                clock=lambda:10., diagnostics={'source_frames': ()})
     runtime = NS(robot_filter=filt, spatial_mapping=source, _owner=threading.get_ident(),
         config=NS(world=NS(provider='multi_view'), multi_view=NS(camera_prim_paths=('a','b'))),
         _mapping_settings=NS(source='rgbd', camera_prim_paths=('a','b')),
@@ -27,6 +28,22 @@ def fixture(error=None):
 
 
 class DiagnosticTests(unittest.TestCase):
+    def test_schema_audit_is_deterministic_and_detects_api_addition(self):
+        bundle=fixture();timeline=d.Timeline();timeline.runtime=bundle.observation_runtime
+        schemas=[]
+        prim=NS(GetPath=lambda:'/Franka/joint',GetTypeName=lambda:'PhysicsPrismaticJoint',GetAppliedSchemas=lambda:schemas)
+        timeline.runtime.stage=NS(GetPrimAtPath=lambda path:prim)
+        timeline.runtime.robot_filter.robot_prim_path='/Franka'
+        pxr=ModuleType('pxr')
+        pxr.Usd=NS(PrimRange=lambda *a:[prim],TraverseInstanceProxies=lambda p:p,PrimAllPrimsPredicate=object())
+        with patch.dict(sys.modules,{'pxr':pxr}):
+            before=timeline.robot_schemas()
+            self.assertTrue(before['available'])
+            self.assertEqual(before,timeline.robot_schemas())
+            self.assertEqual(schemas,[])
+            schemas.append('PhysicsDriveAPI:linear')
+            self.assertNotEqual(before['sha256'],timeline.robot_schemas()['sha256'])
+
     def test_sampling_is_bounded_and_only_reads_owner_state(self):
         bundle=fixture();timeline=d.Timeline(clock=lambda:10.);timeline.runtime=bundle.observation_runtime
         original=dict(vars(bundle.observation_runtime))
@@ -79,7 +96,7 @@ class ReadinessTests(unittest.IsolatedAsyncioTestCase):
                 bundle=fixture(error);timeline=d.Timeline(clock=Mock(side_effect=clock))
                 with patch.dict(sys.modules,{'omni':omni,'omni.kit':kit,'omni.kit.app':app}), \
                      patch.object(d.bench,'retain_mapping_publication',return_value=health) as retain, \
-                     patch.object(d.bridge,'associate',return_value=(NS(generation=0,revision=30,timestamp=9.),object())) as associate:
+                     patch.object(d.bridge,'associate',return_value=(NS(generation=0,revision=30,timestamp=9.),NS(generation=0))) as associate:
                     with self.assertRaises(d.DiagnosticStop):await timeline.ready(bundle,{'mapping_inputs':[]})
                     self.assertEqual(timeline.outcome,outcome)
                     self.assertFalse(any(r['event']=='instrumentation_error' for r in timeline.events))

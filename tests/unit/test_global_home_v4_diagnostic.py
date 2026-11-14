@@ -1,4 +1,5 @@
 """A causal timing probe must retain geometry, limits and collision validation."""
+import json
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -6,7 +7,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.manipulation.motion.lula_global import LulaPlanResult
-from scripts.diagnose_global_home_v4 import time_scaled_planner_factory
+from scripts.diagnose_global_home_v4 import dof_properties_feedback, public_drive_feedback, time_scaled_planner_factory
 
 
 class PolynomialTrajectory:
@@ -24,6 +25,52 @@ class PolynomialTrajectory:
 
 
 class GlobalHomeDiagnosticTests(unittest.TestCase):
+    def test_feedback_never_invokes_usd_authoring_getters(self):
+        unsafe = [Mock(side_effect=BaseException('USD DriveAPI authoring getter invoked')) for _ in range(4)]
+        action = SimpleNamespace(joint_positions=np.arange(9), joint_velocities=np.zeros(9),
+                                 joint_efforts=None, joint_indices=None)
+        controller = SimpleNamespace(get_applied_action=lambda: action,
+            get_gains=unsafe[2], get_effort_modes=unsafe[3])
+        robot = SimpleNamespace(get_applied_action=lambda: action,
+            get_joint_position_targets=lambda: np.arange(9),
+            get_joint_velocity_targets=lambda: np.zeros(9),
+            get_articulation_controller=lambda: controller,
+            get_max_efforts=unsafe[0], get_effort_modes=unsafe[1])
+        values = public_drive_feedback(robot)
+        for name in ('get_max_efforts', 'get_effort_modes', 'controller_get_gains', 'controller_get_effort_modes'):
+            self.assertFalse(values[name]['available'])
+            self.assertIn('USD', values[name]['error'])
+            self.assertNotIn('value', values[name])
+        for method in unsafe:
+            method.assert_not_called()
+        for name in ('robot_applied_action', 'controller_get_applied_action'):
+            self.assertTrue(values[name]['available'])
+            self.assertEqual(values[name]['value']['joint_positions'], list(range(9)))
+        self.assertEqual(values['get_joint_position_targets']['value'], list(range(9)))
+        self.assertEqual(values['get_joint_velocity_targets']['value'], [0.]*9)
+        json.dumps(values, allow_nan=False)
+
+    def test_missing_failed_and_none_feedback_are_explicit(self):
+        robot = SimpleNamespace(get_applied_action=lambda: None,
+            get_joint_position_targets=Mock(side_effect=RuntimeError('invalid view')),
+            get_articulation_controller=Mock(side_effect=RuntimeError('closed controller')))
+        values = public_drive_feedback(robot)
+        self.assertFalse(any(v['available'] for v in values.values()))
+        self.assertIn('no feedback', values['robot_applied_action']['error'])
+        self.assertIn('invalid view', values['get_joint_position_targets']['error'])
+        self.assertIn('closed controller', values['controller_get_applied_action']['error'])
+        missing = public_drive_feedback(SimpleNamespace())
+        self.assertFalse(any(v['available'] for v in missing.values()))
+        json.dumps([values, missing], allow_nan=False)
+
+    def test_unsafe_aggregate_properties_have_no_fabricated_values(self):
+        properties = dof_properties_feedback()
+        self.assertFalse(properties['available'])
+        self.assertIsNone(properties['columns'])
+        self.assertIsNone(properties['values'])
+        self.assertIn('gain/effort', properties['error'])
+        json.dumps(properties, allow_nan=False)
+
     def fixture(self, *, duration=1.):
         route = np.array([[0.]*7, [1.]*7])
         limits = [np.full(7, value) for value in (-2., 2., 4., 8., 10.)]

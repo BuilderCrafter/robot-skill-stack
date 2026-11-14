@@ -1,0 +1,151 @@
+{
+  "files": {
+    "articulation.py": "65901a45bd1852c0e126581ed2bb75105b6e221128e24f2202d138c822b119a5",
+    "single_articulation.py": "086c94ac60aa4f8f1ffac0c921fe8eb4a5b118604d4e108b891d827635382234",
+    "articulation_controller.py": "4783273d1c96e55a423ebb1a8489c0015e87a7c681d90ee46142b2334bb6f388"
+  },
+  "paths": [
+    {
+      "file": "articulation.py",
+      "function": "get_drive_types",
+      "line": 478,
+      "relevant_calls": [
+        [
+          489,
+          "self._physics_view.get_drive_types"
+        ]
+      ]
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_effort_modes",
+      "line": 2580,
+      "relevant_calls": [
+        [
+          2642,
+          "UsdPhysics.DriveAPI.Apply"
+        ]
+      ]
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_max_efforts",
+      "line": 2790,
+      "relevant_calls": [
+        [
+          2874,
+          "UsdPhysics.DriveAPI.Apply"
+        ]
+      ]
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_gains",
+      "line": 3114,
+      "relevant_calls": [
+        [
+          3216,
+          "UsdPhysics.DriveAPI.Apply"
+        ]
+      ]
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_solver_position_iteration_counts",
+      "line": 3471,
+      "relevant_calls": []
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_solver_velocity_iteration_counts",
+      "line": 3550,
+      "relevant_calls": []
+    },
+    {
+      "file": "articulation.py",
+      "function": "get_enabled_self_collisions",
+      "line": 3695,
+      "relevant_calls": []
+    },
+    {
+      "file": "single_articulation.py",
+      "function": "dof_properties",
+      "line": 181,
+      "relevant_calls": [
+        [
+          270,
+          "self._articulation_view.get_gains"
+        ],
+        [
+          267,
+          "self._articulation_view.get_drive_types"
+        ],
+        [
+          268,
+          "self._articulation_view.get_max_efforts"
+        ]
+      ]
+    },
+    {
+      "file": "single_articulation.py",
+      "function": "get_applied_action",
+      "line": 982,
+      "relevant_calls": [
+        [
+          999,
+          "self._articulation_controller.get_applied_action"
+        ]
+      ]
+    },
+    {
+      "file": "single_articulation.py",
+      "function": "get_enabled_self_collisions",
+      "line": 1134,
+      "relevant_calls": [
+        [
+          1147,
+          "self._articulation_view.get_enabled_self_collisions"
+        ]
+      ]
+    },
+    {
+      "file": "articulation_controller.py",
+      "function": "get_gains",
+      "line": 120,
+      "relevant_calls": [
+        [
+          129,
+          "self._articulation_view.get_gains"
+        ]
+      ]
+    },
+    {
+      "file": "articulation_controller.py",
+      "function": "get_max_efforts",
+      "line": 172,
+      "relevant_calls": [
+        [
+          181,
+          "self._articulation_view.get_max_efforts"
+        ]
+      ]
+    },
+    {
+      "file": "articulation_controller.py",
+      "function": "get_effort_modes",
+      "line": 200,
+      "relevant_calls": [
+        [
+          210,
+          "self._articulation_view.get_effort_modes"
+        ]
+      ]
+    },
+    {
+      "file": "articulation_controller.py",
+      "function": "get_applied_action",
+      "line": 231,
+      "relevant_calls": []
+    }
+  ]
+}
