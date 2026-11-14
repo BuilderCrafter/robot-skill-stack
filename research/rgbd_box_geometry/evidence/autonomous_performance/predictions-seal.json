@@ -1,0 +1,10 @@
+{
+  "created_utc": "2026-11-14T18:25:05.482502+00:00",
+  "purpose": "Freeze all completed sensor-derived predictions before independent numeric scoring",
+  "files": {
+    "partial/attempt-1/autonomous.json": "8b6895a682d1344065488757f4a88f5e018aeb149e1af152123e9a1298f6262c",
+    "partial/attempt-2/autonomous.json": "660c04a1c4c303b2a84bae216359d5736cdee40f15e8f3d7b9d7aa0d8812480f",
+    "partial/attempt-3/autonomous.json": "57404eb401f3edbef9a663233d851a2d5a3571fca4f2e8c39a02b15b51e0d475",
+    "sparse/attempt-1/autonomous.json": "12fb77bf3368b198bfd3098a3f00700134bad2e704303d076d0e3d2eb67ccef5"
+  }
+}

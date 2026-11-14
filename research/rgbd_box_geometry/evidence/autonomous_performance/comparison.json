@@ -1,0 +1,90 @@
+{
+  "before": {
+    "trials": 4,
+    "fresh_captures": 0,
+    "successful_motions": 0,
+    "source_ages_ms": [
+      1028.4646389991394,
+      1006.7554930028564,
+      1005.9051630014437,
+      1062.561310001911
+    ],
+    "mapping_rates_hz": [
+      0.5697823789344059,
+      0.44165867131725434,
+      0.5758649879099674,
+      0.5376804115618019
+    ],
+    "selected_inference_ms": [
+      318.5098100002506,
+      286.66339499977767,
+      302.2493520002172,
+      284.4504679997044
+    ],
+    "accepted_compute_p50_ms": [
+      559.8560479993466,
+      573.7484359997325,
+      571.1597720001009,
+      564.0422389988089
+    ],
+    "semantic_audit_hz": [
+      1.749396590867923,
+      1.709368686165688,
+      1.7026502629910476,
+      1.6660718763887783
+    ],
+    "source_ages_ms_median": 1017.6100660009979,
+    "source_ages_ms_mean": 1025.9216512513376,
+    "mapping_rates_hz_median": 0.5537313952481039,
+    "mapping_rates_hz_mean": 0.5312466124308574,
+    "selected_inference_ms_median": 294.4563734999974,
+    "selected_inference_ms_mean": 297.96825624998746,
+    "accepted_compute_p50_ms_median": 567.6010054994549,
+    "accepted_compute_p50_ms_mean": 567.2016237494972,
+    "semantic_audit_hz_median": 1.7060094745783678,
+    "semantic_audit_hz_mean": 1.7068718541033592
+  },
+  "after": {
+    "trials": 3,
+    "fresh_captures": 3,
+    "successful_motions": 3,
+    "source_ages_ms": [
+      906.8681040007505,
+      766.3122430021758,
+      748.799433997192
+    ],
+    "mapping_rates_hz": [
+      1.1911166834586255,
+      0.8944587177775201,
+      0.8673354449486608
+    ],
+    "selected_inference_ms": [
+      216.8922319979174,
+      232.16899500403088,
+      215.96227400004864
+    ],
+    "accepted_compute_p50_ms": [
+      467.84349999870756,
+      465.5145669967169,
+      467.3555550034507
+    ],
+    "semantic_audit_hz": [
+      2.073032821647939,
+      1.951517816448869,
+      1.9697195762125794
+    ],
+    "source_ages_ms_median": 766.3122430021758,
+    "source_ages_ms_mean": 807.3265936667061,
+    "mapping_rates_hz_median": 0.8944587177775201,
+    "mapping_rates_hz_mean": 0.9843036153949355,
+    "selected_inference_ms_median": 216.8922319979174,
+    "selected_inference_ms_mean": 221.67450033399896,
+    "accepted_compute_p50_ms_median": 467.3555550034507,
+    "accepted_compute_p50_ms_mean": 466.9045406662917,
+    "semantic_audit_hz_median": 1.9697195762125794,
+    "semantic_audit_hz_mean": 1.9980900714364624
+  },
+  "mean_mapping_rate_improvement_percent": 85.2818620133873,
+  "median_inference_reduction_percent": 26.34147143093871,
+  "qualification": "Small observational fixed-condition samples. Baseline includes three original and one corrected-harness trial; all new trials use the corrected unchanged harness. No statistical reliability or steady-state guarantee."
+}

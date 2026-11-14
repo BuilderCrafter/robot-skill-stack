@@ -1,0 +1,715 @@
+{
+  "rows": [
+    {
+      "label": "whole_worker_0",
+      "seconds": 0.4899804460001178
+    },
+    {
+      "label": "input_pickle_decode",
+      "seconds": 0.006339970001135953
+    },
+    {
+      "label": "input_pickle_encode",
+      "seconds": 0.025172718000249006,
+      "bytes": 20411990
+    },
+    {
+      "label": "result_pickle_encode",
+      "seconds": 0.038606783004070166,
+      "bytes": 29924959
+    },
+    {
+      "label": "result_pickle_decode",
+      "seconds": 0.01944742400519317
+    },
+    {
+      "label": "worker_diagnostics",
+      "value": {
+        "state": "updated",
+        "rays": 1000,
+        "allocated_rays": 1024,
+        "retained_rays": 1000,
+        "automatic_masked_selected": 24,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 496,
+            "allocated_rays": 512,
+            "retained_rays": 496,
+            "automatic_masked_selected": 16,
+            "free_voxels": 29966,
+            "occupied_voxels": 211
+          },
+          "/World/PerceptionCameraSide": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 504,
+            "allocated_rays": 512,
+            "retained_rays": 504,
+            "automatic_masked_selected": 8,
+            "free_voxels": 59785,
+            "occupied_voxels": 379
+          }
+        },
+        "voxel_visits": 96495,
+        "voxel_visit_budget": 500000,
+        "free_voxels": 87835,
+        "occupied_voxels": 589,
+        "robot_filter": {
+          "state": "ready",
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 16,
+              "behind_withheld": 0,
+              "foreground_kept": 17,
+              "no_hit": 479,
+              "masked_pixels": 16,
+              "pose_skew_seconds": 0.0
+            },
+            "/World/PerceptionCameraSide": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 8,
+              "behind_withheld": 0,
+              "foreground_kept": 0,
+              "no_hit": 504,
+              "masked_pixels": 8,
+              "pose_skew_seconds": 0.0
+            }
+          },
+          "elapsed_seconds": 0.028220363004948013
+        },
+        "source_type": "rgbd",
+        "accepted_frame_count": 2,
+        "source_frames": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                554.2562255859375,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                554.2562866210938,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                0.015999969094991684,
+                0.6062406301498413,
+                -0.7951202988624573,
+                1.658959984779358
+              ],
+              [
+                0.9998406171798706,
+                -0.015999969094991684,
+                0.007920295931398869,
+                -0.05281348153948784
+              ],
+              [
+                -0.007920295931398869,
+                -0.7951202988624573,
+                -0.6064000129699707,
+                1.1035808324813843
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                732.999267578125,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                732.999267578125,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                -0.9474923014640808,
+                -0.18726836144924164,
+                0.2592082917690277,
+                0.17999999225139618
+              ],
+              [
+                -0.3197786509990692,
+                0.5548692345619202,
+                -0.7680245637893677,
+                0.8000000715255737
+              ],
+              [
+                -4.832380273711578e-09,
+                -0.8105866312980652,
+                -0.5856187343597412,
+                0.6500000357627869
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "obstacle_extraction": {
+          "occupied_voxels": 589,
+          "supported_voxels": 179,
+          "spatial_supported_voxels": 179,
+          "strong_sparse_retained": 0,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 410,
+          "candidate_boxes": 175,
+          "proxy_count": 64,
+          "represented_voxels": 68,
+          "omitted_voxels": 111,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 155,
+          "hazard_candidate_boxes": 20,
+          "selected_floor_boxes": 44,
+          "selected_hazard_boxes": 20,
+          "represented_floor_voxels": 48,
+          "omitted_floor_voxels": 111,
+          "padding_m": 0.0,
+          "extract_seconds": 0.031037804001243785
+        },
+        "accepted": true,
+        "compute_seconds": 0.48509735500556417,
+        "reconstruction": {
+          "status": "qualified",
+          "reason": "all_eligible_components_qualified",
+          "elapsed_seconds": 0.2367748360047699
+        },
+        "mapping_compute_seconds": 0.23712609000358498
+      }
+    },
+    {
+      "label": "whole_worker_1",
+      "seconds": 0.45256092899944633
+    },
+    {
+      "label": "input_pickle_decode",
+      "seconds": 0.004638500002329238
+    },
+    {
+      "label": "input_pickle_encode",
+      "seconds": 0.009045535000041127,
+      "bytes": 20411990
+    },
+    {
+      "label": "result_pickle_encode",
+      "seconds": 0.07759335300215753,
+      "bytes": 29924959
+    },
+    {
+      "label": "result_pickle_decode",
+      "seconds": 0.006363221000356134
+    },
+    {
+      "label": "worker_diagnostics",
+      "value": {
+        "state": "updated",
+        "rays": 1000,
+        "allocated_rays": 1024,
+        "retained_rays": 1000,
+        "automatic_masked_selected": 24,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 496,
+            "allocated_rays": 512,
+            "retained_rays": 496,
+            "automatic_masked_selected": 16,
+            "free_voxels": 29966,
+            "occupied_voxels": 211
+          },
+          "/World/PerceptionCameraSide": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 504,
+            "allocated_rays": 512,
+            "retained_rays": 504,
+            "automatic_masked_selected": 8,
+            "free_voxels": 59785,
+            "occupied_voxels": 379
+          }
+        },
+        "voxel_visits": 96495,
+        "voxel_visit_budget": 500000,
+        "free_voxels": 87835,
+        "occupied_voxels": 589,
+        "robot_filter": {
+          "state": "ready",
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 16,
+              "behind_withheld": 0,
+              "foreground_kept": 17,
+              "no_hit": 479,
+              "masked_pixels": 16,
+              "pose_skew_seconds": 0.0
+            },
+            "/World/PerceptionCameraSide": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 8,
+              "behind_withheld": 0,
+              "foreground_kept": 0,
+              "no_hit": 504,
+              "masked_pixels": 8,
+              "pose_skew_seconds": 0.0
+            }
+          },
+          "elapsed_seconds": 0.02633909099677112
+        },
+        "source_type": "rgbd",
+        "accepted_frame_count": 2,
+        "source_frames": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                554.2562255859375,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                554.2562866210938,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                0.015999969094991684,
+                0.6062406301498413,
+                -0.7951202988624573,
+                1.658959984779358
+              ],
+              [
+                0.9998406171798706,
+                -0.015999969094991684,
+                0.007920295931398869,
+                -0.05281348153948784
+              ],
+              [
+                -0.007920295931398869,
+                -0.7951202988624573,
+                -0.6064000129699707,
+                1.1035808324813843
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                732.999267578125,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                732.999267578125,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                -0.9474923014640808,
+                -0.18726836144924164,
+                0.2592082917690277,
+                0.17999999225139618
+              ],
+              [
+                -0.3197786509990692,
+                0.5548692345619202,
+                -0.7680245637893677,
+                0.8000000715255737
+              ],
+              [
+                -4.832380273711578e-09,
+                -0.8105866312980652,
+                -0.5856187343597412,
+                0.6500000357627869
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "obstacle_extraction": {
+          "occupied_voxels": 589,
+          "supported_voxels": 179,
+          "spatial_supported_voxels": 179,
+          "strong_sparse_retained": 0,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 410,
+          "candidate_boxes": 175,
+          "proxy_count": 64,
+          "represented_voxels": 68,
+          "omitted_voxels": 111,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 155,
+          "hazard_candidate_boxes": 20,
+          "selected_floor_boxes": 44,
+          "selected_hazard_boxes": 20,
+          "represented_floor_voxels": 48,
+          "omitted_floor_voxels": 111,
+          "padding_m": 0.0,
+          "extract_seconds": 0.029828957995050587
+        },
+        "accepted": true,
+        "compute_seconds": 0.44861098600085825,
+        "reconstruction": {
+          "status": "qualified",
+          "reason": "all_eligible_components_qualified",
+          "elapsed_seconds": 0.23791884400270646
+        },
+        "mapping_compute_seconds": 0.20608163800352486
+      }
+    },
+    {
+      "label": "whole_worker_2",
+      "seconds": 0.4462962580000749
+    },
+    {
+      "label": "input_pickle_decode",
+      "seconds": 0.004640336999727879
+    },
+    {
+      "label": "input_pickle_encode",
+      "seconds": 0.012057785002980381,
+      "bytes": 20411990
+    },
+    {
+      "label": "result_pickle_encode",
+      "seconds": 0.06690363000234356,
+      "bytes": 29924959
+    },
+    {
+      "label": "result_pickle_decode",
+      "seconds": 0.006384168002114166
+    },
+    {
+      "label": "worker_diagnostics",
+      "value": {
+        "state": "updated",
+        "rays": 1000,
+        "allocated_rays": 1024,
+        "retained_rays": 1000,
+        "automatic_masked_selected": 24,
+        "cameras": {
+          "/World/PerceptionCamera": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 496,
+            "allocated_rays": 512,
+            "retained_rays": 496,
+            "automatic_masked_selected": 16,
+            "free_voxels": 29966,
+            "occupied_voxels": 211
+          },
+          "/World/PerceptionCameraSide": {
+            "sampled_pixels": 4800,
+            "masked_pixels": 0,
+            "candidate_rays": 4800,
+            "rays": 504,
+            "allocated_rays": 512,
+            "retained_rays": 504,
+            "automatic_masked_selected": 8,
+            "free_voxels": 59785,
+            "occupied_voxels": 379
+          }
+        },
+        "voxel_visits": 96495,
+        "voxel_visit_budget": 500000,
+        "free_voxels": 87835,
+        "occupied_voxels": 589,
+        "robot_filter": {
+          "state": "ready",
+          "cameras": {
+            "/World/PerceptionCamera": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 16,
+              "behind_withheld": 0,
+              "foreground_kept": 17,
+              "no_hit": 479,
+              "masked_pixels": 16,
+              "pose_skew_seconds": 0.0
+            },
+            "/World/PerceptionCameraSide": {
+              "sampled_pixels": 512,
+              "valid_pixels": 512,
+              "self_match": 8,
+              "behind_withheld": 0,
+              "foreground_kept": 0,
+              "no_hit": 504,
+              "masked_pixels": 8,
+              "pose_skew_seconds": 0.0
+            }
+          },
+          "elapsed_seconds": 0.026283523999154568
+        },
+        "source_type": "rgbd",
+        "accepted_frame_count": 2,
+        "source_frames": [
+          {
+            "camera_id": "/World/PerceptionCamera",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                554.2562255859375,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                554.2562866210938,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                0.015999969094991684,
+                0.6062406301498413,
+                -0.7951202988624573,
+                1.658959984779358
+              ],
+              [
+                0.9998406171798706,
+                -0.015999969094991684,
+                0.007920295931398869,
+                -0.05281348153948784
+              ],
+              [
+                -0.007920295931398869,
+                -0.7951202988624573,
+                -0.6064000129699707,
+                1.1035808324813843
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          {
+            "camera_id": "/World/PerceptionCameraSide",
+            "token": [
+              20.766666666666666,
+              9.98333385400474
+            ],
+            "acquired_at": 30274.131613855,
+            "depth_shape": [
+              480,
+              640
+            ],
+            "intrinsics": [
+              [
+                732.999267578125,
+                0.0,
+                320.0
+              ],
+              [
+                0.0,
+                732.999267578125,
+                240.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world_from_camera": [
+              [
+                -0.9474923014640808,
+                -0.18726836144924164,
+                0.2592082917690277,
+                0.17999999225139618
+              ],
+              [
+                -0.3197786509990692,
+                0.5548692345619202,
+                -0.7680245637893677,
+                0.8000000715255737
+              ],
+              [
+                -4.832380273711578e-09,
+                -0.8105866312980652,
+                -0.5856187343597412,
+                0.6500000357627869
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        ],
+        "obstacle_extraction": {
+          "occupied_voxels": 589,
+          "supported_voxels": 179,
+          "spatial_supported_voxels": 179,
+          "strong_sparse_retained": 0,
+          "temporal_probabilities": true,
+          "temporal_support_probability": 0.95,
+          "rejected_sparse_voxels": 410,
+          "candidate_boxes": 175,
+          "proxy_count": 64,
+          "represented_voxels": 68,
+          "omitted_voxels": 111,
+          "run_budget_omitted_voxels": 0,
+          "truncated": true,
+          "max_obstacles": 64,
+          "minimum_component_voxels": 3,
+          "support_radius_voxels": 2,
+          "support_neighborhood": "Chebyshev",
+          "support_plane_z": 0.0,
+          "floor_candidate_boxes": 155,
+          "hazard_candidate_boxes": 20,
+          "selected_floor_boxes": 44,
+          "selected_hazard_boxes": 20,
+          "represented_floor_voxels": 48,
+          "omitted_floor_voxels": 111,
+          "padding_m": 0.0,
+          "extract_seconds": 0.028693008003756404
+        },
+        "accepted": true,
+        "compute_seconds": 0.44251909099693876,
+        "reconstruction": {
+          "status": "qualified",
+          "reason": "all_eligible_components_qualified",
+          "elapsed_seconds": 0.2391226980034844
+        },
+        "mapping_compute_seconds": 0.1988610839980538
+      }
+    }
+  ],
+  "input_bytes": 20411990,
+  "unique_input_arrays_bytes": 20406880,
+  "input_sha256": "9fa9c060bbaaec6ef00e28529336eacc4263d695b1b8adbab36c73dd514d487d"
+}

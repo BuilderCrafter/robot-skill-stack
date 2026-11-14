@@ -1,0 +1,20 @@
+{
+  "utc": "2026-11-14T18:28:36.802668+00:00",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 137,
+    "Error": "",
+    "StartedAt": "2026-11-14T18:16:01.091632732Z",
+    "FinishedAt": "2026-11-14T18:27:00.352125838Z"
+  },
+  "configuration_sha256": "8ba65b71c877882bdbae47aef4293b87aef89627f49856616ffce347defa4918",
+  "image": "nvcr.io/nvidia/isaac-sim:5.1.0",
+  "gpu_processes": "",
+  "original_stopped_state_restored": true
+}

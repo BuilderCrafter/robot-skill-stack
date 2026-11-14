@@ -1,0 +1,63 @@
+{
+  "utc": "2026-11-14T18:37:34.805256+00:00",
+  "status": "FUNCTIONAL_BUT_PERFORMANCE_LIMITED",
+  "starting_commit": "99be1540b98986d8836c9238247f060b4216a74b",
+  "design_commit": "11fbf62564a3ae8d661d0f7e64671d243f48bcfa",
+  "production_commit": "8844cf0346deaf75e4b51faf92ee281c2cfc3f4a",
+  "production_diff": {
+    "files": 1,
+    "added": 15,
+    "removed": 1
+  },
+  "host_tests": {
+    "count": 1401,
+    "seconds": 110.922,
+    "result": "PASS",
+    "log_sha256": "fb586701ad3bd0892843ebc19ee972985ed8d5d3028b0cc89f809ef3034bc62e",
+    "command": [
+      "/home/ubuntu/.local/bin/uv",
+      "run",
+      "--offline",
+      "--no-project",
+      "--python",
+      "3.12",
+      "--with",
+      "numpy==1.26.4",
+      "--with",
+      "py_trees==2.6.0",
+      "--with",
+      "scipy==1.15.3",
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unit",
+      "-t",
+      ".",
+      "-q"
+    ]
+  },
+  "native_tests": {
+    "count": 69,
+    "seconds": 10.758,
+    "result": "PASS",
+    "log_sha256": "1d1cc4ee28b6caf0c10d561d73d40c990d5624bb2104dbd1bdad402ffb433589"
+  },
+  "architecture": "PASS",
+  "syntax": "PASS",
+  "new_native_runs": 5,
+  "partial_fresh_captures": 3,
+  "partial_successful_executions": 3,
+  "unsafe_controls_executed": 0,
+  "all_native_contracts_pass": true,
+  "all_native_cooked_bodies": 11,
+  "all_original_source_age_limits_preserved": true,
+  "all_qualified_geometry_and_face_evidence_bitwise_equivalent_on_eight_archives": true,
+  "all_primary_sources_original_timestamped": true,
+  "gt_control_pass": true,
+  "sparse_proxy_rejection_preserved": true,
+  "new_persistent_workers": 0,
+  "new_mandatory_dependencies": 0,
+  "historical_fixture_expectations_changed": false
+}

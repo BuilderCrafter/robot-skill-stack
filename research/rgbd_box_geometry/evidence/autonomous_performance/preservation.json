@@ -1,0 +1,16 @@
+{
+  "utc": "2026-11-14T18:30:03.623506+00:00",
+  "original_published_package_files_unchanged": 48,
+  "previous_autonomous_raw_files_unchanged": 242,
+  "previous_raw_artifacts_unchanged": {
+    "native_partial": 24,
+    "mapping_readiness": 21,
+    "observer_readiness_fix": 21,
+    "native_partial_postfix": 29
+  },
+  "original_static_v43_files_unchanged": 16,
+  "v5_local_head": "71c07f815410a308dc7ea176148c017055c7fd7a",
+  "v5_remote_head": "71c07f815410a308dc7ea176148c017055c7fd7a",
+  "recovery_ref": "edc1b467c6bf03c192d0d9dccce2b538309a024f",
+  "previous_autonomous_report_unchanged": true
+}

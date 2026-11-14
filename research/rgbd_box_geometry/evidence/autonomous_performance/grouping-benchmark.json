@@ -1,0 +1,90 @@
+[
+  {
+    "variant": "original",
+    "trial": 0,
+    "seconds": 0.290083155996399,
+    "timing_ms": {
+      "robot_envelopes": 9.687793004559353,
+      "existing_projection_fusion_clustering": 209.7486399943591,
+      "qualification": 64.14081900584279,
+      "total": 283.57725200476125
+    }
+  },
+  {
+    "variant": "original",
+    "trial": 1,
+    "seconds": 0.28068090599845164,
+    "timing_ms": {
+      "robot_envelopes": 9.41668599989498,
+      "existing_projection_fusion_clustering": 199.07252200209768,
+      "qualification": 66.76194800093072,
+      "total": 275.2511560029234
+    }
+  },
+  {
+    "variant": "original",
+    "trial": 2,
+    "seconds": 0.2818320529986522,
+    "timing_ms": {
+      "robot_envelopes": 9.654565998062026,
+      "existing_projection_fusion_clustering": 203.82365100522293,
+      "qualification": 62.97697699483251,
+      "total": 276.45519399811747
+    }
+  },
+  {
+    "variant": "original",
+    "trial": 3,
+    "seconds": 0.2768555069997092,
+    "timing_ms": {
+      "robot_envelopes": 9.425982003449462,
+      "existing_projection_fusion_clustering": 198.59975299914367,
+      "qualification": 63.509480001812335,
+      "total": 271.5352150044055
+    }
+  },
+  {
+    "variant": "candidate",
+    "trial": 0,
+    "seconds": 0.2222460479970323,
+    "timing_ms": {
+      "robot_envelopes": 9.777986000699457,
+      "existing_projection_fusion_clustering": 127.8767549956683,
+      "qualification": 79.23161800135858,
+      "total": 216.88635899772635
+    }
+  },
+  {
+    "variant": "candidate",
+    "trial": 1,
+    "seconds": 0.21568065699830186,
+    "timing_ms": {
+      "robot_envelopes": 9.46056800603401,
+      "existing_projection_fusion_clustering": 120.35485499654897,
+      "qualification": 80.53830100107007,
+      "total": 210.35372400365304
+    }
+  },
+  {
+    "variant": "candidate",
+    "trial": 2,
+    "seconds": 0.21828064599685604,
+    "timing_ms": {
+      "robot_envelopes": 9.4656350047444,
+      "existing_projection_fusion_clustering": 116.93874099728419,
+      "qualification": 86.3829270019778,
+      "total": 212.7873030040064
+    }
+  },
+  {
+    "variant": "candidate",
+    "trial": 3,
+    "seconds": 0.22612846400443232,
+    "timing_ms": {
+      "robot_envelopes": 9.678300004452467,
+      "existing_projection_fusion_clustering": 131.03662099456415,
+      "qualification": 79.95403400127543,
+      "total": 220.66895500029204
+    }
+  }
+]

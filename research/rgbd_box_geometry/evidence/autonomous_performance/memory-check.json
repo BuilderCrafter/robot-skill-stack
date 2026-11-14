@@ -1,0 +1,19 @@
+{
+  "points": 100000,
+  "result": "exactly_equal",
+  "qualification": "Traced allocator peak for voxel utility only, not full process RSS",
+  "rows": [
+    {
+      "variant": "structured",
+      "peak_traced_bytes": 14503916,
+      "current_traced_bytes": 290371,
+      "seconds_with_tracing": 0.12226020800153492
+    },
+    {
+      "variant": "integer",
+      "peak_traced_bytes": 12802424,
+      "current_traced_bytes": 289280,
+      "seconds_with_tracing": 0.024759438005276024
+    }
+  ]
+}

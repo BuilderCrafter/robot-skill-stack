@@ -1,0 +1,68 @@
+         75220 function calls (70559 primitive calls) in 0.507 seconds
+
+   Ordered by: cumulative time
+   List reduced from 385 to 60 due to restriction <60>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.507    0.507 /home/ubuntu/projects/robot-skill-stack/outputs/motion-planning-v5/autonomous-performance-20261114/profile_path.py:13(timed)
+        1    0.000    0.000    0.507    0.507 /home/ubuntu/projects/robot-skill-stack/outputs/motion-planning-v5/autonomous-performance-20261114/profile_path.py:17(<lambda>)
+        1    0.000    0.000    0.507    0.507 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/runtime.py:102(compute)
+        1    0.000    0.000    0.301    0.301 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/reconstruction.py:46(infer)
+        1    0.000    0.000    0.291    0.291 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:295(reconstruct)
+        1    0.002    0.002    0.146    0.146 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/rgbd.py:153(update)
+        1    0.000    0.000    0.146    0.146 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:79(project_clouds)
+       61    0.000    0.000    0.139    0.002 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/arraysetops.py:138(unique)
+       61    0.008    0.000    0.137    0.002 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/arraysetops.py:323(_unique1d)
+       20    0.123    0.006    0.123    0.006 {method 'argsort' of 'numpy.ndarray' objects}
+        3    0.005    0.002    0.106    0.035 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/clouds.py:54(voxelize)
+        2    0.071    0.035    0.095    0.048 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/rgbd.py:9(_traverse_rays)
+     4024    0.069    0.000    0.069    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        7    0.001    0.000    0.064    0.009 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:247(qualify)
+        1    0.001    0.001    0.062    0.062 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/segmentation.py:50(cluster_points)
+     1922    0.002    0.000    0.040    0.000 {method 'all' of 'numpy.ndarray' objects}
+     1956    0.001    0.000    0.038    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/_methods.py:61(_all)
+        1    0.010    0.010    0.029    0.029 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/obstacles.py:151(extract)
+        1    0.009    0.009    0.027    0.027 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/segmentation.py:14(_component_labels)
+        2    0.001    0.000    0.027    0.013 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:86(hypothesis)
+        1    0.000    0.000    0.027    0.027 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/runtime.py:120(provider)
+        1    0.001    0.001    0.027    0.027 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/robot_filter.py:255(masks)
+        1    0.000    0.000    0.026    0.026 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:358(snapshot)
+        2    0.008    0.004    0.025    0.012 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/clouds.py:47(crop_workspace)
+       22    0.012    0.001    0.024    0.001 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/robot_filter.py:167(_mesh_depth)
+      930    0.001    0.000    0.021    0.000 {method 'min' of 'numpy.ndarray' objects}
+        6    0.004    0.001    0.021    0.003 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/fitting.py:131(_box_search)
+      930    0.000    0.000    0.021    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/_methods.py:43(_amin)
+       24    0.009    0.000    0.020    0.001 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:131(boundary)
+       14    0.009    0.001    0.018    0.001 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:74(robot_overlap)
+    18398    0.014    0.000    0.018    0.000 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/segmentation.py:57(<genexpr>)
+      3/2    0.012    0.004    0.015    0.007 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/clouds.py:8(project_depth)
+     1023    0.001    0.000    0.013    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/fromnumeric.py:53(_wrapfunc)
+       38    0.000    0.000    0.012    0.000 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:19(_readonly)
+       38    0.012    0.000    0.012    0.000 {method 'tobytes' of 'numpy.ndarray' objects}
+        1    0.002    0.002    0.012    0.012 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:289(integrate)
+       23    0.000    0.000    0.011    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/function_base.py:3992(percentile)
+        1    0.000    0.000    0.010    0.010 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:354(_arrays)
+        1    0.010    0.010    0.010    0.010 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:346(_classify)
+       25    0.000    0.000    0.010    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/function_base.py:3763(_ureduce)
+       23    0.000    0.000    0.010    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/function_base.py:4547(_quantile_unchecked)
+      807    0.001    0.000    0.010    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/fromnumeric.py:1881(nonzero)
+       23    0.000    0.000    0.010    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/function_base.py:4697(_quantile_ureduce_func)
+        1    0.002    0.002    0.010    0.010 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:60(robot_envelopes)
+        1    0.001    0.001    0.009    0.009 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/obstacles.py:101(_cuboids)
+       23    0.001    0.000    0.009    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/lib/function_base.py:4765(_quantile)
+      807    0.008    0.000    0.008    0.000 {method 'nonzero' of 'numpy.ndarray' objects}
+        1    0.007    0.007    0.008    0.008 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/obstacles.py:70(_supported)
+        2    0.007    0.004    0.008    0.004 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/occupancy.py:249(expire)
+        2    0.000    0.000    0.007    0.004 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/numeric.py:561(argwhere)
+      214    0.000    0.000    0.007    0.000 {method 'max' of 'numpy.ndarray' objects}
+      214    0.000    0.000    0.007    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/_methods.py:39(_amax)
+      803    0.002    0.000    0.006    0.000 /ephemeral/cache/uv/archive-v0/IHlIZbd6enAnnSIp/lib/python3.12/site-packages/numpy/core/numeric.py:615(flatnonzero)
+       25    0.005    0.000    0.005    0.000 {method 'partition' of 'numpy.ndarray' objects}
+       12    0.002    0.000    0.005    0.000 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/reference.py:113(face_support)
+   3067/4    0.003    0.000    0.005    0.001 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/geometry.py:8(freeze)
+        1    0.000    0.000    0.005    0.005 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/reconstruction.py:23(__post_init__)
+  1621/28    0.000    0.000    0.005    0.000 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/geometry.py:12(<genexpr>)
+       15    0.001    0.000    0.004    0.000 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/perception_multiview/observability.py:25(_unique_pixels)
+        7    0.000    0.000    0.004    0.001 /home/ubuntu/projects/robot-skill-stack/robot_skill_stack/world/spatial_mapping/box_geometry/visibility.py:98(qualify)
+
+
