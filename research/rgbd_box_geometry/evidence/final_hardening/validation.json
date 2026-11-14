@@ -1,0 +1,107 @@
+{
+  "all_four_native_measurement_contracts_pass": true,
+  "all_three_native_starts_routes_and_splines_exact_to_previous_baseline": true,
+  "branch": "feature/rgbd-rrt-autonomous",
+  "exact_archived_input_scene_count": 8,
+  "exact_completion_and_collision_descriptor_equality": true,
+  "final_classification": "RGBD_DEMO_CANDIDATE",
+  "fixed_camera_ray_voxel_proxy_freshness_and_qualification_budgets": true,
+  "implementation_and_all_native_commit": "1054ac54edd3ff6438fe9c56751dadc6b77decc8",
+  "independent_physical_veto_preserved": true,
+  "later_research_only_archive_fix": "Retain capture_view.inferred on rejected follow-up; tested offline and native Python, no execution change or favorable-exposure rerun",
+  "logs": {
+    "architecture-final.log": {
+      "sha256": "422c41a5a89db570dce53929807e130ccf892ed564afc74aeb9d7feb2fd8448e",
+      "text": "Architecture boundary: PASS\nPython syntax: PASS\n"
+    },
+    "architecture.log": {
+      "sha256": "422c41a5a89db570dce53929807e130ccf892ed564afc74aeb9d7feb2fd8448e",
+      "text": "Architecture boundary: PASS\nPython syntax: PASS\n"
+    },
+    "profile-native-replay.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "return-replay.log": {
+      "sha256": "bbb0ac787d380463c47dff01d062542032fa59dbdc49d6f0e27fa9d8ac4a5089",
+      "text": "rejected component_1: insufficient_observed_three_axis_patch_or_residual\n0 5095 0 all_six_empirical_model_bounds\n1 2624 0 unsupported_or_merged_box_surface\n2 2510 2510 possible_robot_component\n3 592 592 possible_robot_component\n4 443 443 possible_robot_component\n5 255 255 possible_robot_component\n6 237 237 possible_robot_component\n7 155 155 possible_robot_component\n"
+    },
+    "world-transport-check.log": {
+      "sha256": "ffbed2535cba4b42410e89bd3ccd14a5796ffc249d7bddc59ac48580690facbc",
+      "text": "Exact completion fields, descriptors and union audit; sparse requires 65 proxies\n"
+    }
+  },
+  "new_dependencies": 0,
+  "new_workers": 0,
+  "no_gt_goal_or_obstacle_injection_into_selected_planner": true,
+  "no_gt_or_direct_fallback": true,
+  "no_mutable_memory_sharing": true,
+  "no_unsafe_control_executed": true,
+  "optional_other_original_scenes": [
+    "sparse"
+  ],
+  "persistent_harness_final_sha256": "d494ca782c005669a41e7c352ff65c6869c8fb9e10f0ec768d5ea53f573ce244",
+  "persistent_repeat_success_not_established": true,
+  "persistent_requests_attempted": 2,
+  "persistent_successful_requests": 1,
+  "production_diff": {
+    "added": 9,
+    "files": 1,
+    "removed": 1
+  },
+  "production_file_sha256": "c051d700a1a11acabef6b1c3387a0d2da2152d2ffadd5ce6495963133e9fbb53",
+  "recommendation": "NO-GO for demo-ready promotion",
+  "starting_commit": "84585b777afc98b86d0e4e9bdb565420dae643c1",
+  "successful_partial_requests": 3,
+  "tests": {
+    "buffer-tests.log": {
+      "count": 7,
+      "result": "PASS",
+      "seconds": 8.214,
+      "sha256": "2e8a9c54e488fe3ef606467e23306b11798a7ea8adc827a6debe56f7439ab658"
+    },
+    "focused-tests.log": {
+      "count": 68,
+      "result": "PASS",
+      "seconds": 18.456,
+      "sha256": "751bbddbfeb0bd0c35310c574d35ece38614f3914e12632a9e42109cf36e37f3"
+    },
+    "full-unit-after-archive-fix.log": {
+      "count": 1434,
+      "result": "PASS",
+      "seconds": 122.514,
+      "sha256": "59a6b1dd6fe85ce5b35492626808077b465d2ffb8f72a1c4f948d2ff3b70ca03"
+    },
+    "full-unit-final.log": {
+      "count": 1434,
+      "result": "PASS",
+      "seconds": 122.803,
+      "sha256": "7658042ac74efbc74d16ded132d0b356c398ec001d4c4d534cf96cdaf753530c"
+    },
+    "full-unit-first.log": {
+      "count": 1431,
+      "result": "PASS",
+      "seconds": 120.826,
+      "sha256": "d45cc39464c841b48211cd5c166ef3b7bf409da95e3648705144e5fbd024d315"
+    },
+    "native-final-focused.log": {
+      "count": 10,
+      "result": "PASS",
+      "seconds": 10.352,
+      "sha256": "6b255edfd271209e1d5c2de5098beb693e3f2c269ff8dadb2c7c5574c593445d"
+    },
+    "native-python-unit.log": {
+      "count": 68,
+      "result": "PASS",
+      "seconds": 25.581,
+      "sha256": "23a3f908fa10b3071d95a8bc3c902143bb070dddae022ab32ffbb09b82cfa628"
+    },
+    "persistent-unit.log": {
+      "count": 3,
+      "result": "PASS",
+      "seconds": 0.007,
+      "sha256": "845d0e24db4bba50f872c2ce18de295089baf93c94fa57d7325789ca728242a3"
+    }
+  },
+  "utc": "2026-11-14T20:25:30.506907+00:00"
+}

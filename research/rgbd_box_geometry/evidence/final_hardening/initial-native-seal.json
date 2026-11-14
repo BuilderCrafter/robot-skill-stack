@@ -1,0 +1,12 @@
+{
+  "purpose": "Preserve completed D1 and persistent receipts/inputs before separate diagnostic replay",
+  "files": {
+    "independent/attempt-1/accepted_mapping_input.pickle": "809543d5f1ce5cd4df925f41348acbf4f0e99023f190579c401d01652b2c4664",
+    "persistent/attempt-1/accepted_mapping_input.pickle": "bba5fece10323a35fda5f0ebe03b5062e0ce931b5265351117d25c0e460c5ddf",
+    "persistent/attempt-1/request-1/accepted_mapping_input.pickle": "df982b1da530f96ed06f1747d7eb3b5435a9c419db00c495df0ef5fe47d66fff",
+    "persistent/attempt-1/request-2/accepted_mapping_input.pickle": "bba5fece10323a35fda5f0ebe03b5062e0ce931b5265351117d25c0e460c5ddf",
+    "independent/attempt-1/autonomous.json": "b022b6d99d8eb904279bd02aa605c4c36f570bacdc978f2a5e5ecdc81f766e2d",
+    "persistent/attempt-1/request-1/request.json": "fbcd97ddaffd0fea6ceba337114c48fb34104977782f9615c942d43eeebcc509",
+    "persistent/attempt-1/request-2/request.json": "a9eff517defd48a460508aebe77f69633a125b853c31fdaa03a97df66d59a591"
+  }
+}

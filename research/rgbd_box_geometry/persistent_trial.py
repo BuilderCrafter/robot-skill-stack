@@ -58,6 +58,7 @@ async def followups(bundle,state,observer,*,settle=None,motion=None):
         state['selected_result']=bench.baseline.serial(result)
         if state.get('frozen_world') is None:
             state['capture_view']=bundle.spatial_mapping.snapshot()
+            state['research_record']['_selected_inferred']=state['capture_view'].inferred
         retain(label)
 
 

@@ -1,0 +1,281 @@
+{
+  "input_sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525",
+  "rows": [
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 0,
+      "seconds": 0.027610283003014047,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 0,
+      "seconds": 0.020516825999948196,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 1,
+      "seconds": 0.027622171000984963,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 1,
+      "seconds": 0.008114365002256818,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 2,
+      "seconds": 0.035098160995403305,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 2,
+      "seconds": 0.016873719003342558,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 3,
+      "seconds": 0.03444679499807535,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 3,
+      "seconds": 0.016877955000381917,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 4,
+      "seconds": 0.033528562998981215,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 4,
+      "seconds": 0.017013003998727072,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 5,
+      "seconds": 0.033883296004205476,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 5,
+      "seconds": 0.01756271900376305,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 6,
+      "seconds": 0.03926953899645014,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 6,
+      "seconds": 0.0170250729934196,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 7,
+      "seconds": 0.03315677599312039,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "trial": 7,
+      "seconds": 0.016502116995980032,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "peak_traced_bytes": 42146190
+    },
+    {
+      "kind": "input",
+      "variant": "optimized",
+      "peak_traced_bytes": 21734690
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 0,
+      "seconds": 0.043186720002267975,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 0,
+      "seconds": 0.0259358789990074,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 1,
+      "seconds": 0.06698881900229026,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 1,
+      "seconds": 0.04288543199800188,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 2,
+      "seconds": 0.06341639699530788,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 2,
+      "seconds": 0.0443683699995745,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 3,
+      "seconds": 0.06320622000203002,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 3,
+      "seconds": 0.042774857000040356,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 4,
+      "seconds": 0.06319620300200768,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 4,
+      "seconds": 0.04410839199408656,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 5,
+      "seconds": 0.06368549600301776,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 5,
+      "seconds": 0.04252163499768358,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 6,
+      "seconds": 0.06286051600181963,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 6,
+      "seconds": 0.04414683600043645,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 7,
+      "seconds": 0.0633394969991059,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "trial": 7,
+      "seconds": 0.04264317599881906,
+      "bytes": 29924959,
+      "sha256": "0c7fa82718cb9423fbc3604c8fb5e352ad4dbf680ca91b0e22c6a1cf968b20a8"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "peak_traced_bytes": 62039020
+    },
+    {
+      "kind": "completion",
+      "variant": "optimized",
+      "peak_traced_bytes": 32144926
+    }
+  ]
+}

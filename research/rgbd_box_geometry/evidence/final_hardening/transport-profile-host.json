@@ -1,0 +1,281 @@
+{
+  "input_sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525",
+  "rows": [
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 0,
+      "seconds": 0.02822360600112006,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 0,
+      "seconds": 0.022632950996921863,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 1,
+      "seconds": 0.030109848994470667,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 1,
+      "seconds": 0.009474464997765608,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 2,
+      "seconds": 0.03596263999497751,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 2,
+      "seconds": 0.019361905004188884,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 3,
+      "seconds": 0.03604168699530419,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 3,
+      "seconds": 0.01962091199675342,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 4,
+      "seconds": 0.040992768001160584,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 4,
+      "seconds": 0.01909354500094196,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 5,
+      "seconds": 0.03518566000275314,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 5,
+      "seconds": 0.01862464199803071,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 6,
+      "seconds": 0.03589748599915765,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 6,
+      "seconds": 0.01935629099898506,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "trial": 7,
+      "seconds": 0.03568754899606574,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "trial": 7,
+      "seconds": 0.019345259002875537,
+      "bytes": 20411990,
+      "sha256": "9ee7e9f0d74c67d12e948e272cf4d416c590ba871cd15a0c589dbb32ca398525"
+    },
+    {
+      "kind": "input",
+      "variant": "original",
+      "peak_traced_bytes": 42146034
+    },
+    {
+      "kind": "input",
+      "variant": "candidate",
+      "peak_traced_bytes": 21734534
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 0,
+      "seconds": 0.055764549993909895,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 0,
+      "seconds": 0.02860652999515878,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 1,
+      "seconds": 0.06979057099670172,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 1,
+      "seconds": 0.045637486000487115,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 2,
+      "seconds": 0.06447766699420754,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 2,
+      "seconds": 0.0451584750044276,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 3,
+      "seconds": 0.06532342400169,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 3,
+      "seconds": 0.046661697000672575,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 4,
+      "seconds": 0.06516922200535191,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 4,
+      "seconds": 0.0453954119948321,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 5,
+      "seconds": 0.06548088399722474,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 5,
+      "seconds": 0.045870868998463266,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 6,
+      "seconds": 0.0644250129989814,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 6,
+      "seconds": 0.0451996159972623,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "trial": 7,
+      "seconds": 0.06539023000368616,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "trial": 7,
+      "seconds": 0.04576784999517258,
+      "bytes": 29924959,
+      "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+    },
+    {
+      "kind": "completion",
+      "variant": "original",
+      "peak_traced_bytes": 62038940
+    },
+    {
+      "kind": "completion",
+      "variant": "candidate",
+      "peak_traced_bytes": 32144846
+    }
+  ]
+}

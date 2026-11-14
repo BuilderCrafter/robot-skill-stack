@@ -9,7 +9,7 @@ from scripts import benchmark_global_rgbd_v5 as bench
 class PersistentTrialTests(unittest.IsolatedAsyncioTestCase):
     async def exercise(self,*,initial='success',veto=True,return_status='success'):
         observer=NS(actions=[],operations=[{}])
-        view=NS(generation=7,revision=22,timestamp=1.)
+        view=NS(generation=7,revision=22,timestamp=1.,inferred='original rejected publication')
         mapping=NS(snapshot=lambda **kw:view,health={'generation':7,'published':22})
         bundle=NS(spatial_mapping=mapping,backend=NS(motion_strategy=NS(diagnostics={'closed':True})),
             observation_runtime=NS(diagnostics={'robot_filter_ready':True}))
@@ -50,6 +50,8 @@ class PersistentTrialTests(unittest.IsolatedAsyncioTestCase):
         state,calls,settles=await self.exercise(return_status='failure')
         self.assertEqual(len(calls),1);self.assertEqual(len(settles),1)
         self.assertEqual(len(state['session_requests']),2)
+        self.assertEqual(state['session_requests'][1]['research_record']['_selected_inferred'],
+            'original rejected publication')
 
 
 if __name__=='__main__':unittest.main()

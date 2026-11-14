@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-14T20:20:56.798618+00:00",
+  "initial_status": "exited",
+  "initial_exit_code": 137,
+  "restored_status": "exited",
+  "restored_exit_code": 137,
+  "initial_configuration_sha256": "8ba65b71c877882bdbae47aef4293b87aef89627f49856616ffce347defa4918",
+  "restored_configuration_sha256": "8ba65b71c877882bdbae47aef4293b87aef89627f49856616ffce347defa4918",
+  "gpu_compute_processes": "",
+  "config_hostconfig_mounts_unchanged": true,
+  "no_stream_initially_or_finally": true
+}

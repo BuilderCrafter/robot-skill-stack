@@ -1,0 +1,3590 @@
+{
+  "completed_partial_outward_requests": 3,
+  "completed_persistent_return_requests": 0,
+  "conservative_refusals": [
+    "persistent return: insufficient measured surface support",
+    "sparse: 65 camera proxies required"
+  ],
+  "final_classification": "RGBD_DEMO_CANDIDATE",
+  "qualification": "Fixed-time sampled physical validation; no continuous safety certificate or general scene support.",
+  "raw_root": "outputs/motion-planning-v5/final-hardening-20261114",
+  "recommendation": "NO-GO for demo-ready promotion; retain measured optimization and opt-in nominal candidate; GT is primary demo",
+  "requests": [
+    {
+      "actual_commands": 110,
+      "admission": {
+        "initial_identity": [
+          0,
+          26,
+          41535.660477944
+        ],
+        "policy": "first_new_accepted_publication",
+        "selected_identity": [
+          0,
+          27,
+          41536.075163375
+        ],
+        "timeout_seconds": 5.0,
+        "updates": 6,
+        "wait_seconds": 0.42617068399704294
+      },
+      "base_preflight": {
+        "all_configurations": true,
+        "checks": [
+          {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace",
+            "path": "/World/GroundPlane/CollisionPlane"
+          },
+          {
+            "clearance_lower_bound_m": 0.7085501638522762,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/27/0"
+          },
+          {
+            "clearance_lower_bound_m": 0.3455791551690177,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/27/1"
+          },
+          {
+            "clearance_lower_bound_m": 0.4043046255777893,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:55:56:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3921411311985284,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:35:36"
+          },
+          {
+            "clearance_lower_bound_m": 0.4028786291771171,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3770832666787968,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:32:33"
+          },
+          {
+            "clearance_lower_bound_m": 0.3869698951856167,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:34:35"
+          },
+          {
+            "clearance_lower_bound_m": 0.3738487554503475,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:64:65:31:32"
+          },
+          {
+            "clearance_lower_bound_m": 0.3616131643643404,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.370202039913276,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:30:31"
+          },
+          {
+            "clearance_lower_bound_m": 0.47729296004537686,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:36:37"
+          },
+          {
+            "clearance_lower_bound_m": 0.4969394177524645,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:40:41"
+          },
+          {
+            "clearance_lower_bound_m": 0.5228854576976885,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:45:46"
+          },
+          {
+            "clearance_lower_bound_m": 0.5465544070474126,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:49:50"
+          },
+          {
+            "clearance_lower_bound_m": 0.4421899887418436,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:60:61:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.46209846559283113,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:62:63:33:34"
+          },
+          {
+            "clearance_lower_bound_m": 0.506186771976713,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:63:64:42:43"
+          },
+          {
+            "clearance_lower_bound_m": 0.48609918231926824,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:64:65:38:39"
+          },
+          {
+            "clearance_lower_bound_m": 0.5356997003009185,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:65:66:47:48"
+          },
+          {
+            "clearance_lower_bound_m": 1.0010401458950213,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/105:106:15:16:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9671765125452516,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:27:28:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9346962178091669,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:41:42:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.958114469375067,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/110:111:46:47:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 1.0475686353753046,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/112:113:16:17:75:76"
+          }
+        ],
+        "conservative_finite_obstacle_enclosure": true,
+        "fixed_base_frame": "panda_link0"
+      },
+      "case": "independent/attempt-1",
+      "category": "PASS_PLANNING_AND_EXECUTION",
+      "contracts": {
+        "all11_cooked_bodies": true,
+        "frozen_scene": true,
+        "no_internal_runtime_error": true,
+        "runtime_closed": true,
+        "source_unchanged": true
+      },
+      "detour": {
+        "deviation_rad": 1.0577491672777664,
+        "genuine": true,
+        "same_endpoints": true,
+        "unobstructed_physically_obstructed": true,
+        "waypoints": 3
+      },
+      "error": null,
+      "execution": {
+        "closed": false,
+        "commanded_updates": 109,
+        "control_interval_ms": {
+          "count": 108,
+          "p50": 76.02240550113493,
+          "p95": 120.26143969960685,
+          "p99": 133.05185157201774,
+          "worst": 146.60639700014144
+        },
+        "execution_solver": {
+          "changed": true,
+          "count_provenance": "USD requested count; native effective island count is not read here",
+          "original_session_opinion_restored": true,
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "solver_type": "TGS"
+        },
+        "execution_wall_seconds": 8.584492654001224,
+        "final_hold": true,
+        "ik_seconds": 0.0002668859960976988,
+        "joint_tracking_error_rad": {
+          "count": 110,
+          "p50": 0.018346398085886367,
+          "p95": 0.03548549500807345,
+          "p99": 0.036209471671402996,
+          "worst": 0.036278453561435
+        },
+        "max_iterations": 10000,
+        "planning_and_validation_wall_seconds": 4.380384605996369,
+        "route_validation_seconds": 0.10742866899818182,
+        "rrt_seconds": 0.005638716000248678,
+        "seed": 123456,
+        "trajectory_validation_seconds": 0.36646564900001977
+      },
+      "failure_code": null,
+      "freshness_headroom_s": 0.11779908699827502,
+      "inference": {
+        "elapsed_s": 0.20465995099948486,
+        "generation": 0,
+        "models": [
+          {
+            "component": 0,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.7875517410952835,
+                -0.3005543629053909,
+                0.5290487875422617
+              ],
+              "dimensions": [
+                0.0888973056892196,
+                0.4051089156574813,
+                0.4059035103944122
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          },
+          {
+            "component": 1,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.45000004493304324,
+                -0.000413366747039832,
+                0.34933533052464044
+              ],
+              "dimensions": [
+                0.09400110460172062,
+                0.12482745342137355,
+                0.26532997120020607
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          }
+        ],
+        "reason": "all_eligible_components_qualified",
+        "revision": 27,
+        "robot_components": [
+          {
+            "component": 2,
+            "points": 679,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 679
+          },
+          {
+            "component": 3,
+            "points": 580,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 580
+          },
+          {
+            "component": 4,
+            "points": 540,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 540
+          },
+          {
+            "component": 5,
+            "points": 181,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 181
+          },
+          {
+            "component": 6,
+            "points": 60,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 60
+          }
+        ],
+        "status": "qualified",
+        "timestamp": 41536.075163375
+      },
+      "label": "outward",
+      "mapping_after": {
+        "failures": null,
+        "generation": null,
+        "last_error": null,
+        "processing_failures": null,
+        "published": null,
+        "reason": null,
+        "resets": null,
+        "source_failures": null,
+        "status": null,
+        "worker": null,
+        "worker_failures": null
+      },
+      "mapping_before": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 13,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "ok",
+        "worker": {
+          "closed": false,
+          "completed": 21,
+          "delivered": 21,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 574,
+          "replaced": 5,
+          "result_ready": false,
+          "running": true,
+          "started": 22,
+          "submitted": 27,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "measurement_status": "PASS",
+      "message": "End effector reached target pose.",
+      "moving_arm_sampled_clearance_m": 0.04114300168436494,
+      "operation": {
+        "cancelled": false,
+        "contacts": {
+          "contact_buffer_saturated": false,
+          "links": [],
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts.",
+          "minimum_reported_separation_m": null,
+          "mounted_base_excluded": false,
+          "penetrating_pairs": 0,
+          "reported_pairs": 0,
+          "reported_points": 0
+        },
+        "id": 0,
+        "label": "outward",
+        "maximum_actual_joint_displacement_rad": 1.1077077984809875,
+        "measured_full_pose_within_tolerances": true,
+        "orientation_error_rad": 0.002424932292461383,
+        "physics_step_coverage": {
+          "complete": true,
+          "first": 418,
+          "last": 533,
+          "missing_steps": [],
+          "unique_steps": 116
+        },
+        "position_error_m": 0.0008746736666307971,
+        "returned_success": true,
+        "wall_seconds": 13.563155055999232
+      },
+      "physical_evaluation": {
+        "occupied": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 830,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 37,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.49497656829384346,
+                  -0.05997656516459959,
+                  0.4799765617373325
+                ],
+                "maximum_constraint_residual_m": -1.000000002065565e-09,
+                "radius_m": 2.3432494295897072e-05,
+                "raw_radius_m": 2.343349429589707e-05,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 9,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 37,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 3.088739573235932e-17
+            }
+          ],
+          "elapsed_seconds": 0.15902329500386259,
+          "evaluated_samples": 38,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.16440945300564636,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 38,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 164,
+            "trajectory": 302
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 1254,
+          "queue_seconds": 0.00016138199862325564,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 466,
+          "unresolved": [],
+          "worker_seconds": 0.15905266100162407
+        },
+        "reconstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 11310,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 0.9718869040007121,
+          "evaluated_samples": 517,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 0.9724449650020688,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0006452125929892194,
+          "phases_evaluated": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "phases_requested": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 17061,
+          "queue_seconds": 6.487100472440943e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 517,
+          "unresolved": [],
+          "worker_seconds": 0.9719131809979444
+        },
+        "static": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 20299,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 1.5433207800015225,
+          "evaluated_samples": 923,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 1.5440986120011075,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "phases_evaluated": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "phases_requested": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 30459,
+          "queue_seconds": 5.451499600894749e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 923,
+          "unresolved": [],
+          "worker_seconds": 1.5433470720017795
+        },
+        "unobstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 417,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 18,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.47116850793057397,
+                  -0.058508974837172226,
+                  0.44025514920005876
+                ],
+                "maximum_constraint_residual_m": -9.99999999907325e-10,
+                "radius_m": 0.001491022821723267,
+                "raw_radius_m": 0.001491023821723269,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 4,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 18,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 4.0465585757473554e-17
+            }
+          ],
+          "elapsed_seconds": 0.03822144000150729,
+          "evaluated_samples": 19,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.03909886699693743,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 19,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 627,
+          "queue_seconds": 0.00011055600043619052,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 384,
+          "unresolved": [],
+          "worker_seconds": 0.03825334199791541
+        }
+      },
+      "primary": {
+        "capture_injection": false,
+        "goal_source": "ordinary selected Lula IK; no GT goal input",
+        "planner": "LulaGlobalPlanner"
+      },
+      "request": 1,
+      "runtime_after": {
+        "cameras": {
+          "acquisitions": 226,
+          "consumers": {
+            "mapping": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  18.633333333333333,
+                  8.766667123883963
+                ],
+                "/World/PerceptionCameraSide": [
+                  18.633333333333333,
+                  8.766667123883963
+                ]
+              }
+            },
+            "semantic": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  18.8,
+                  8.850000461563468
+                ],
+                "/World/PerceptionCameraSide": [
+                  18.8,
+                  8.850000461563468
+                ]
+              }
+            }
+          },
+          "failures": 0,
+          "shared_reads": 90
+        },
+        "error": null,
+        "generation": 0,
+        "mapping": {
+          "age_seconds": 2.619461718000821,
+          "closed": false,
+          "completed_at": 41549.643189822,
+          "completion_status": "stale_completion",
+          "compute_seconds": 0.45571058899804484,
+          "failures": 0,
+          "filter_seconds": 0.045931464999739546,
+          "fresh": false,
+          "generation": 0,
+          "input_timestamp": 41548.50352249,
+          "last": {
+            "completed_at": 41549.643189822,
+            "compute_seconds": 0.45571058899804484,
+            "filter_seconds": 0.045931464999739546,
+            "input_timestamp": 41548.50352249,
+            "publish_age_seconds": 1.1589960850033094,
+            "queue_seconds": 0.5082941630025744,
+            "status": "stale_completion",
+            "timestamp": 41548.50352249,
+            "transport_seconds": 0.1606008290036698,
+            "worker_seconds": 0.6163114180017146,
+            "worker_to_publication_seconds": 0.019328752998262644
+          },
+          "last_error": null,
+          "processing_failures": 0,
+          "publish_age_seconds": 1.1589960850033094,
+          "published": 22,
+          "queue_seconds": 0.5082941630025744,
+          "reason": "stale_completion",
+          "rejected": 14,
+          "resets": 0,
+          "source_failures": 0,
+          "stale": true,
+          "status": "no_frame",
+          "submitted": 45,
+          "timestamp": 41547.558939303,
+          "transport_seconds": 0.1606008290036698,
+          "worker": {
+            "closed": false,
+            "completed": 36,
+            "delivered": 36,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": false,
+            "pid": 574,
+            "replaced": 8,
+            "result_ready": false,
+            "running": true,
+            "started": 37,
+            "submitted": 45,
+            "transport_error": null
+          },
+          "worker_failures": 0,
+          "worker_seconds": 0.6163114180017146,
+          "worker_to_publication_seconds": 0.019328752998262644
+        },
+        "semantic": {
+          "attempts": 113,
+          "last": {
+            "completed_at": 41549.658695775,
+            "compute_seconds": 0.7092173879937036,
+            "input_timestamp": 41548.887180748,
+            "publish_age_seconds": 0.7749677989995689,
+            "queue_seconds": 0.0317529719977756,
+            "status": "published",
+            "timestamp": 41548.887180748,
+            "transport_seconds": 0.009452912003325764,
+            "worker_seconds": 0.7186702999970294
+          },
+          "no_frame": 0,
+          "published": 38,
+          "rejected": 5,
+          "source_failures": 0,
+          "worker": {
+            "closed": false,
+            "completed": 44,
+            "delivered": 43,
+            "discarded": 1,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 573,
+            "replaced": 67,
+            "result_ready": false,
+            "running": true,
+            "started": 45,
+            "submitted": 113,
+            "transport_error": null
+          },
+          "worker_failures": 0
+        },
+        "state": "running"
+      },
+      "selected_status": "success",
+      "selected_union": {
+        "combined_camera_proxies": 24,
+        "inference_status": "qualified",
+        "occupied_union_preserved": true,
+        "original_selected": 64,
+        "protected_floor_ids": [],
+        "retained_selected_ids": [
+          "70:71:55:56:37:38",
+          "70:71:58:59:35:36",
+          "70:71:58:59:37:38",
+          "70:71:61:62:32:33",
+          "70:71:61:62:34:35",
+          "70:71:64:65:31:32",
+          "70:71:65:66:28:29",
+          "70:71:65:66:30:31",
+          "79:80:54:55:36:37",
+          "79:80:54:55:40:41",
+          "79:80:56:57:45:46",
+          "79:80:56:57:49:50",
+          "79:80:60:61:28:29",
+          "79:80:62:63:33:34",
+          "79:80:63:64:42:43",
+          "79:80:64:65:38:39",
+          "79:80:65:66:47:48",
+          "105:106:15:16:75:76",
+          "106:107:27:28:75:76",
+          "106:107:41:42:75:76",
+          "110:111:46:47:75:76",
+          "112:113:16:17:75:76"
+        ],
+        "subsumed": {
+          "/__rgbd_inferred__/0/27/0": [
+            "109:110:21:22:74:75",
+            "109:110:34:35:74:75",
+            "112:113:10:11:37:38",
+            "112:113:10:11:63:64",
+            "112:113:11:12:42:43",
+            "112:113:11:12:66:67",
+            "112:113:12:13:55:56",
+            "112:113:13:14:58:59",
+            "112:113:14:15:46:47",
+            "112:113:15:16:72:73",
+            "112:113:16:17:35:36",
+            "112:113:16:17:49:50",
+            "112:113:17:18:53:54",
+            "112:113:18:19:68:69",
+            "112:113:19:20:39:40",
+            "112:113:19:20:56:57",
+            "112:113:20:21:43:44",
+            "112:113:20:21:60:61",
+            "112:113:20:21:71:72",
+            "112:113:22:23:47:48",
+            "112:113:22:23:63:64",
+            "112:113:22:23:73:74",
+            "112:113:24:25:51:52"
+          ],
+          "/__rgbd_inferred__/0/27/1": [
+            "71:72:65:66:25:26",
+            "71:72:65:66:42:43",
+            "72:73:58:59:49:50",
+            "72:73:65:66:36:37",
+            "72:73:65:66:38:39",
+            "72:73:65:66:40:41",
+            "73:74:65:66:32:33",
+            "73:74:65:66:34:35",
+            "74:75:65:66:30:31",
+            "75:76:65:66:26:27",
+            "75:76:65:66:28:29",
+            "75:76:65:66:40:41",
+            "76:77:65:66:38:39",
+            "76:77:65:66:49:50",
+            "77:78:65:66:24:25",
+            "77:78:65:66:35:36",
+            "77:78:65:66:37:38",
+            "78:79:65:66:31:32",
+            "78:79:65:66:33:34"
+          ]
+        }
+      },
+      "selected_uses_fixed_joint_target": false,
+      "source_age_s": 0.882200913001725,
+      "source_captures": 1,
+      "source_identity": {
+        "evaluated_at": 41536.957364288,
+        "generation": 0,
+        "original_acquisition_timestamp": 41536.075163375,
+        "revision": 27,
+        "timestamp": 41536.075163375
+      },
+      "timing": {
+        "accepted_publication_count": 10,
+        "accepted_publication_hz": 1.0153022344590328,
+        "compute_seconds": {
+          "count": 9,
+          "p50": 0.4856750559993088,
+          "p95": 0.5239169363994733,
+          "worst": 0.5320113220004714
+        },
+        "mapping_only_compute_s": {
+          "count": 9,
+          "p50": 0.26549661299941363,
+          "p95": 0.29732362680224467,
+          "worst": 0.30682108600012725
+        },
+        "publish_age_seconds": {
+          "count": 9,
+          "p50": 0.7719488009970519,
+          "p95": 0.9555501228023786,
+          "worst": 0.9567251940025017
+        },
+        "queue_seconds": {
+          "count": 9,
+          "p50": 0.09129079199919943,
+          "p95": 0.3093082798004616,
+          "worst": 0.3258576369989896
+        },
+        "reconstruction_s": {
+          "count": 9,
+          "p50": 0.2183505229986622,
+          "p95": 0.25137589780351843,
+          "worst": 0.25669335500424495
+        },
+        "request_to_first_command_s": 4.9339612949988805,
+        "timing_records": 9,
+        "transport_seconds": {
+          "count": 9,
+          "p50": 0.1292016180086648,
+          "p95": 0.15910759499529376,
+          "worst": 0.16027689499605913
+        },
+        "worker_seconds": {
+          "count": 9,
+          "p50": 0.6105558249983005,
+          "p95": 0.6680394003997208,
+          "worst": 0.6750108920023195
+        },
+        "worker_to_publication_seconds": {
+          "count": 9,
+          "p50": 0.036304415996710304,
+          "p95": 0.06399127020267768,
+          "worst": 0.08100270900467876
+        }
+      }
+    },
+    {
+      "actual_commands": 110,
+      "admission": {
+        "initial_identity": [
+          0,
+          27,
+          41782.956652453
+        ],
+        "policy": "first_new_accepted_publication",
+        "selected_identity": [
+          0,
+          29,
+          41784.366705506
+        ],
+        "timeout_seconds": 5.0,
+        "updates": 21,
+        "wait_seconds": 1.1894964710008935
+      },
+      "base_preflight": {
+        "all_configurations": true,
+        "checks": [
+          {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace",
+            "path": "/World/GroundPlane/CollisionPlane"
+          },
+          {
+            "clearance_lower_bound_m": 0.7085501638522762,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/29/0"
+          },
+          {
+            "clearance_lower_bound_m": 0.3455791551690177,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/29/1"
+          },
+          {
+            "clearance_lower_bound_m": 0.4043046255777893,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:55:56:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3921411311985284,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:35:36"
+          },
+          {
+            "clearance_lower_bound_m": 0.4028786291771171,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3770832666787968,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:32:33"
+          },
+          {
+            "clearance_lower_bound_m": 0.3869698951856167,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:34:35"
+          },
+          {
+            "clearance_lower_bound_m": 0.3738487554503475,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:64:65:31:32"
+          },
+          {
+            "clearance_lower_bound_m": 0.3616131643643404,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.370202039913276,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:30:31"
+          },
+          {
+            "clearance_lower_bound_m": 0.47729296004537686,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:36:37"
+          },
+          {
+            "clearance_lower_bound_m": 0.4969394177524645,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:40:41"
+          },
+          {
+            "clearance_lower_bound_m": 0.5228854576976885,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:45:46"
+          },
+          {
+            "clearance_lower_bound_m": 0.5465544070474126,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:49:50"
+          },
+          {
+            "clearance_lower_bound_m": 0.4421899887418436,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:60:61:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.46209846559283113,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:62:63:33:34"
+          },
+          {
+            "clearance_lower_bound_m": 0.506186771976713,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:63:64:42:43"
+          },
+          {
+            "clearance_lower_bound_m": 0.48609918231926824,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:64:65:38:39"
+          },
+          {
+            "clearance_lower_bound_m": 0.5356997003009185,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:65:66:47:48"
+          },
+          {
+            "clearance_lower_bound_m": 1.0010401458950213,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/105:106:15:16:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9671765125452516,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:27:28:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9346962178091669,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:41:42:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.958114469375067,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/110:111:46:47:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 1.0475686353753046,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/112:113:16:17:75:76"
+          }
+        ],
+        "conservative_finite_obstacle_enclosure": true,
+        "fixed_base_frame": "panda_link0"
+      },
+      "case": "independent-confirmation/attempt-1",
+      "category": "PASS_PLANNING_AND_EXECUTION",
+      "contracts": {
+        "all11_cooked_bodies": true,
+        "frozen_scene": true,
+        "no_internal_runtime_error": true,
+        "runtime_closed": true,
+        "source_unchanged": true
+      },
+      "detour": {
+        "deviation_rad": 1.0577491672777664,
+        "genuine": true,
+        "same_endpoints": true,
+        "unobstructed_physically_obstructed": true,
+        "waypoints": 3
+      },
+      "error": null,
+      "execution": {
+        "closed": false,
+        "commanded_updates": 109,
+        "control_interval_ms": {
+          "count": 108,
+          "p50": 73.32884399875184,
+          "p95": 125.64908520325844,
+          "p99": 157.59451672056454,
+          "worst": 191.10592600191012
+        },
+        "execution_solver": {
+          "changed": true,
+          "count_provenance": "USD requested count; native effective island count is not read here",
+          "original_session_opinion_restored": true,
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "solver_type": "TGS"
+        },
+        "execution_wall_seconds": 8.490220166000654,
+        "final_hold": true,
+        "ik_seconds": 0.0002519790068618022,
+        "joint_tracking_error_rad": {
+          "count": 110,
+          "p50": 0.018346398085886367,
+          "p95": 0.03548549500807345,
+          "p99": 0.036209471671402996,
+          "worst": 0.036278453561435
+        },
+        "max_iterations": 10000,
+        "planning_and_validation_wall_seconds": 4.393925588999991,
+        "route_validation_seconds": 0.12346549799985951,
+        "rrt_seconds": 0.005633674998534843,
+        "seed": 123456,
+        "trajectory_validation_seconds": 0.2565692779971869
+      },
+      "failure_code": null,
+      "freshness_headroom_s": 0.18897929699596716,
+      "inference": {
+        "elapsed_s": 0.24157378599920776,
+        "generation": 0,
+        "models": [
+          {
+            "component": 0,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.7875517410952835,
+                -0.3005543629053909,
+                0.5290487875422617
+              ],
+              "dimensions": [
+                0.0888973056892196,
+                0.4051089156574813,
+                0.4059035103944122
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          },
+          {
+            "component": 1,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.45000004493304324,
+                -0.000413366747039832,
+                0.34933533052464044
+              ],
+              "dimensions": [
+                0.09400110460172062,
+                0.12482745342137355,
+                0.26532997120020607
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          }
+        ],
+        "reason": "all_eligible_components_qualified",
+        "revision": 29,
+        "robot_components": [
+          {
+            "component": 2,
+            "points": 679,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 679
+          },
+          {
+            "component": 3,
+            "points": 580,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 580
+          },
+          {
+            "component": 4,
+            "points": 540,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 540
+          },
+          {
+            "component": 5,
+            "points": 181,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 181
+          },
+          {
+            "component": 6,
+            "points": 60,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 60
+          }
+        ],
+        "status": "qualified",
+        "timestamp": 41784.366705506
+      },
+      "label": "outward",
+      "mapping_after": {
+        "failures": null,
+        "generation": null,
+        "last_error": null,
+        "processing_failures": null,
+        "published": null,
+        "reason": null,
+        "resets": null,
+        "source_failures": null,
+        "status": null,
+        "worker": null,
+        "worker_failures": null
+      },
+      "mapping_before": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 12,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "stale",
+        "worker": {
+          "closed": false,
+          "completed": 21,
+          "delivered": 21,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 1311,
+          "replaced": 5,
+          "result_ready": false,
+          "running": true,
+          "started": 22,
+          "submitted": 27,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "measurement_status": "PASS",
+      "message": "End effector reached target pose.",
+      "moving_arm_sampled_clearance_m": 0.04114300168436494,
+      "operation": {
+        "cancelled": false,
+        "contacts": {
+          "contact_buffer_saturated": false,
+          "links": [],
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts.",
+          "minimum_reported_separation_m": null,
+          "mounted_base_excluded": false,
+          "penetrating_pairs": 0,
+          "reported_pairs": 0,
+          "reported_points": 0
+        },
+        "id": 0,
+        "label": "outward",
+        "maximum_actual_joint_displacement_rad": 1.1077077984809875,
+        "measured_full_pose_within_tolerances": true,
+        "orientation_error_rad": 0.002424932292461383,
+        "physics_step_coverage": {
+          "complete": true,
+          "first": 450,
+          "last": 580,
+          "missing_steps": [],
+          "unique_steps": 131
+        },
+        "position_error_m": 0.0008746736666307971,
+        "returned_success": true,
+        "wall_seconds": 14.16295959299896
+      },
+      "physical_evaluation": {
+        "occupied": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 830,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 37,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.49497656829384346,
+                  -0.05997656516459959,
+                  0.4799765617373325
+                ],
+                "maximum_constraint_residual_m": -1.000000002065565e-09,
+                "radius_m": 2.3432494295897072e-05,
+                "raw_radius_m": 2.343349429589707e-05,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 9,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 37,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 3.088739573235932e-17
+            }
+          ],
+          "elapsed_seconds": 0.15896893400349654,
+          "evaluated_samples": 38,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.16222051999648102,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 38,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 164,
+            "trajectory": 302
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 1254,
+          "queue_seconds": 5.551799404202029e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 466,
+          "unresolved": [],
+          "worker_seconds": 0.1590014810062712
+        },
+        "reconstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 11310,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 0.9888590070040664,
+          "evaluated_samples": 517,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 0.993824149001739,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0006452125929892194,
+          "phases_evaluated": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "phases_requested": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 17061,
+          "queue_seconds": 6.386599852703512e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 517,
+          "unresolved": [],
+          "worker_seconds": 0.9888837620019331
+        },
+        "static": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 20299,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 1.5711671020035283,
+          "evaluated_samples": 923,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 1.5738151609984925,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "phases_evaluated": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "phases_requested": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 30459,
+          "queue_seconds": 4.6872999519109726e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 923,
+          "unresolved": [],
+          "worker_seconds": 1.57119961999706
+        },
+        "unobstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 417,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 18,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.47116850793057397,
+                  -0.058508974837172226,
+                  0.44025514920005876
+                ],
+                "maximum_constraint_residual_m": -9.99999999907325e-10,
+                "radius_m": 0.001491022821723267,
+                "raw_radius_m": 0.001491023821723269,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 4,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 18,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 4.0465585757473554e-17
+            }
+          ],
+          "elapsed_seconds": 0.03827535000164062,
+          "evaluated_samples": 19,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.03953769700456178,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 19,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 627,
+          "queue_seconds": 8.797799819149077e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 384,
+          "unresolved": [],
+          "worker_seconds": 0.03830171200388577
+        }
+      },
+      "primary": {
+        "capture_injection": false,
+        "goal_source": "ordinary selected Lula IK; no GT goal input",
+        "planner": "LulaGlobalPlanner"
+      },
+      "request": 1,
+      "runtime_after": {
+        "cameras": {
+          "acquisitions": 234,
+          "consumers": {
+            "mapping": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  20.033333333333335,
+                  9.550000498071313
+                ],
+                "/World/PerceptionCameraSide": [
+                  20.033333333333335,
+                  9.550000498071313
+                ]
+              }
+            },
+            "semantic": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  20.233333333333334,
+                  9.65000050328672
+                ],
+                "/World/PerceptionCameraSide": [
+                  20.233333333333334,
+                  9.65000050328672
+                ]
+              }
+            }
+          },
+          "failures": 0,
+          "shared_reads": 94
+        },
+        "error": null,
+        "generation": 0,
+        "mapping": {
+          "age_seconds": 1.9245990540002822,
+          "closed": false,
+          "completed_at": 41797.675999324,
+          "completion_status": "stale_completion",
+          "compute_seconds": 0.4689461200032383,
+          "failures": 0,
+          "filter_seconds": 0.052800368997850455,
+          "fresh": false,
+          "generation": 0,
+          "input_timestamp": 41796.678898285,
+          "last": {
+            "completed_at": 41797.675999324,
+            "compute_seconds": 0.4689461200032383,
+            "filter_seconds": 0.052800368997850455,
+            "input_timestamp": 41796.678898285,
+            "publish_age_seconds": 1.0271415460010758,
+            "queue_seconds": 0.38481936000607675,
+            "status": "stale_completion",
+            "timestamp": 41796.678898285,
+            "transport_seconds": 0.12858464899181854,
+            "worker_seconds": 0.5975307689950569,
+            "worker_to_publication_seconds": 0.030040507001103833
+          },
+          "last_error": null,
+          "processing_failures": 0,
+          "publish_age_seconds": 1.0271415460010758,
+          "published": 21,
+          "queue_seconds": 0.38481936000607675,
+          "reason": "stale_completion",
+          "rejected": 16,
+          "resets": 0,
+          "source_failures": 0,
+          "stale": true,
+          "status": "no_frame",
+          "submitted": 47,
+          "timestamp": 41796.324942676,
+          "transport_seconds": 0.12858464899181854,
+          "worker": {
+            "closed": false,
+            "completed": 37,
+            "delivered": 37,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 1311,
+            "replaced": 8,
+            "result_ready": false,
+            "running": true,
+            "started": 38,
+            "submitted": 47,
+            "transport_error": null
+          },
+          "worker_failures": 0,
+          "worker_seconds": 0.5975307689950569,
+          "worker_to_publication_seconds": 0.030040507001103833
+        },
+        "semantic": {
+          "attempts": 117,
+          "last": {
+            "completed_at": 41797.274173541,
+            "compute_seconds": 0.9842154520010808,
+            "input_timestamp": 41796.105958003,
+            "publish_age_seconds": 1.2291844450010103,
+            "queue_seconds": 0.1604844659959781,
+            "status": "rejected",
+            "timestamp": 41796.105958003,
+            "transport_seconds": 0.011297461001959164,
+            "worker_seconds": 0.99551291300304
+          },
+          "no_frame": 0,
+          "published": 38,
+          "rejected": 4,
+          "source_failures": 0,
+          "worker": {
+            "closed": false,
+            "completed": 44,
+            "delivered": 42,
+            "discarded": 1,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": false,
+            "pid": 1310,
+            "replaced": 72,
+            "result_ready": true,
+            "running": true,
+            "started": 45,
+            "submitted": 117,
+            "transport_error": null
+          },
+          "worker_failures": 0
+        },
+        "state": "running"
+      },
+      "selected_status": "success",
+      "selected_union": {
+        "combined_camera_proxies": 24,
+        "inference_status": "qualified",
+        "occupied_union_preserved": true,
+        "original_selected": 64,
+        "protected_floor_ids": [],
+        "retained_selected_ids": [
+          "70:71:55:56:37:38",
+          "70:71:58:59:35:36",
+          "70:71:58:59:37:38",
+          "70:71:61:62:32:33",
+          "70:71:61:62:34:35",
+          "70:71:64:65:31:32",
+          "70:71:65:66:28:29",
+          "70:71:65:66:30:31",
+          "79:80:54:55:36:37",
+          "79:80:54:55:40:41",
+          "79:80:56:57:45:46",
+          "79:80:56:57:49:50",
+          "79:80:60:61:28:29",
+          "79:80:62:63:33:34",
+          "79:80:63:64:42:43",
+          "79:80:64:65:38:39",
+          "79:80:65:66:47:48",
+          "105:106:15:16:75:76",
+          "106:107:27:28:75:76",
+          "106:107:41:42:75:76",
+          "110:111:46:47:75:76",
+          "112:113:16:17:75:76"
+        ],
+        "subsumed": {
+          "/__rgbd_inferred__/0/29/0": [
+            "109:110:21:22:74:75",
+            "109:110:34:35:74:75",
+            "112:113:10:11:37:38",
+            "112:113:10:11:63:64",
+            "112:113:11:12:42:43",
+            "112:113:11:12:66:67",
+            "112:113:12:13:55:56",
+            "112:113:13:14:58:59",
+            "112:113:14:15:46:47",
+            "112:113:15:16:72:73",
+            "112:113:16:17:35:36",
+            "112:113:16:17:49:50",
+            "112:113:17:18:53:54",
+            "112:113:18:19:68:69",
+            "112:113:19:20:39:40",
+            "112:113:19:20:56:57",
+            "112:113:20:21:43:44",
+            "112:113:20:21:60:61",
+            "112:113:20:21:71:72",
+            "112:113:22:23:47:48",
+            "112:113:22:23:63:64",
+            "112:113:22:23:73:74",
+            "112:113:24:25:51:52"
+          ],
+          "/__rgbd_inferred__/0/29/1": [
+            "71:72:65:66:25:26",
+            "71:72:65:66:42:43",
+            "72:73:58:59:49:50",
+            "72:73:65:66:36:37",
+            "72:73:65:66:38:39",
+            "72:73:65:66:40:41",
+            "73:74:65:66:32:33",
+            "73:74:65:66:34:35",
+            "74:75:65:66:30:31",
+            "75:76:65:66:26:27",
+            "75:76:65:66:28:29",
+            "75:76:65:66:40:41",
+            "76:77:65:66:38:39",
+            "76:77:65:66:49:50",
+            "77:78:65:66:24:25",
+            "77:78:65:66:35:36",
+            "77:78:65:66:37:38",
+            "78:79:65:66:31:32",
+            "78:79:65:66:33:34"
+          ]
+        }
+      },
+      "selected_uses_fixed_joint_target": false,
+      "source_age_s": 0.8110207030040328,
+      "source_captures": 1,
+      "source_identity": {
+        "evaluated_at": 41785.177726209,
+        "generation": 0,
+        "original_acquisition_timestamp": 41784.366705506,
+        "revision": 29,
+        "timestamp": 41784.366705506
+      },
+      "timing": {
+        "accepted_publication_count": 9,
+        "accepted_publication_hz": 0.8374669681348871,
+        "compute_seconds": {
+          "count": 9,
+          "p50": 0.5181978260006872,
+          "p95": 0.5560741074004909,
+          "worst": 0.561713517003227
+        },
+        "mapping_only_compute_s": {
+          "count": 9,
+          "p50": 0.2774109650054015,
+          "p95": 0.3120557023983565,
+          "worst": 0.3148349559996859
+        },
+        "publish_age_seconds": {
+          "count": 9,
+          "p50": 0.8698985379960504,
+          "p95": 0.9835685611964436,
+          "worst": 0.9995252859953325
+        },
+        "queue_seconds": {
+          "count": 9,
+          "p50": 0.13979729100537952,
+          "p95": 0.286587614796008,
+          "worst": 0.2899761699954979
+        },
+        "reconstruction_s": {
+          "count": 9,
+          "p50": 0.23810396999760997,
+          "p95": 0.25360610840289155,
+          "worst": 0.2545294700030354
+        },
+        "request_to_first_command_s": 5.649670840000908,
+        "timing_records": 9,
+        "transport_seconds": {
+          "count": 9,
+          "p50": 0.1408381970031769,
+          "p95": 0.18693000900530024,
+          "worst": 0.19008384300832404
+        },
+        "worker_seconds": {
+          "count": 9,
+          "p50": 0.6583838160004234,
+          "p95": 0.7158870568033308,
+          "worst": 0.7207728960056556
+        },
+        "worker_to_publication_seconds": {
+          "count": 9,
+          "p50": 0.027370083997084294,
+          "p95": 0.0490838130004704,
+          "worst": 0.04921568700228818
+        }
+      }
+    },
+    {
+      "actual_commands": 110,
+      "admission": {
+        "initial_identity": [
+          0,
+          24,
+          41640.585718809
+        ],
+        "policy": "first_new_accepted_publication",
+        "selected_identity": [
+          0,
+          25,
+          41640.990684172
+        ],
+        "timeout_seconds": 5.0,
+        "updates": 6,
+        "wait_seconds": 0.43006305000017164
+      },
+      "base_preflight": {
+        "all_configurations": true,
+        "checks": [
+          {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace",
+            "path": "/World/GroundPlane/CollisionPlane"
+          },
+          {
+            "clearance_lower_bound_m": 0.7085501638522762,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/25/0"
+          },
+          {
+            "clearance_lower_bound_m": 0.3455791551690177,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_inferred__/0/25/1"
+          },
+          {
+            "clearance_lower_bound_m": 0.4043046255777893,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:55:56:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3921411311985284,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:35:36"
+          },
+          {
+            "clearance_lower_bound_m": 0.4028786291771171,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:58:59:37:38"
+          },
+          {
+            "clearance_lower_bound_m": 0.3770832666787968,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:32:33"
+          },
+          {
+            "clearance_lower_bound_m": 0.3869698951856167,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:61:62:34:35"
+          },
+          {
+            "clearance_lower_bound_m": 0.3738487554503475,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:64:65:31:32"
+          },
+          {
+            "clearance_lower_bound_m": 0.3616131643643404,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.370202039913276,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/70:71:65:66:30:31"
+          },
+          {
+            "clearance_lower_bound_m": 0.47729296004537686,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:36:37"
+          },
+          {
+            "clearance_lower_bound_m": 0.4969394177524645,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:54:55:40:41"
+          },
+          {
+            "clearance_lower_bound_m": 0.5228854576976885,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:45:46"
+          },
+          {
+            "clearance_lower_bound_m": 0.5465544070474126,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:56:57:49:50"
+          },
+          {
+            "clearance_lower_bound_m": 0.4421899887418436,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:60:61:28:29"
+          },
+          {
+            "clearance_lower_bound_m": 0.46209846559283113,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:62:63:33:34"
+          },
+          {
+            "clearance_lower_bound_m": 0.506186771976713,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:63:64:42:43"
+          },
+          {
+            "clearance_lower_bound_m": 0.48609918231926824,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:64:65:38:39"
+          },
+          {
+            "clearance_lower_bound_m": 0.5356997003009185,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/79:80:65:66:47:48"
+          },
+          {
+            "clearance_lower_bound_m": 1.0010401458950213,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/105:106:15:16:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9671765125452516,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:27:28:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.9346962178091669,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/106:107:41:42:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 0.958114469375067,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/110:111:46:47:75:76"
+          },
+          {
+            "clearance_lower_bound_m": 1.0475686353753046,
+            "method": "cooked-base enclosing sphere versus finite obstacle",
+            "path": "/__rgbd_occupied__/112:113:16:17:75:76"
+          }
+        ],
+        "conservative_finite_obstacle_enclosure": true,
+        "fixed_base_frame": "panda_link0"
+      },
+      "case": "persistent/attempt-1",
+      "category": "PASS_PLANNING_AND_EXECUTION",
+      "contracts": {
+        "all11_cooked_bodies": true,
+        "frozen_scene": true,
+        "no_internal_runtime_error": true,
+        "runtime_closed": true,
+        "source_unchanged": true
+      },
+      "detour": {
+        "deviation_rad": 1.0577491672777664,
+        "genuine": true,
+        "same_endpoints": true,
+        "unobstructed_physically_obstructed": true,
+        "waypoints": 3
+      },
+      "error": null,
+      "execution": {
+        "closed": false,
+        "commanded_updates": 109,
+        "control_interval_ms": {
+          "count": 108,
+          "p50": 72.63919299657573,
+          "p95": 115.59925530382311,
+          "p99": 136.18269348138705,
+          "worst": 160.46213999652537
+        },
+        "execution_solver": {
+          "changed": true,
+          "count_provenance": "USD requested count; native effective island count is not read here",
+          "original_session_opinion_restored": true,
+          "requested_position_iterations_before": 32,
+          "requested_position_iterations_during": 255,
+          "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+          "solver_type": "TGS"
+        },
+        "execution_wall_seconds": 8.389313779000076,
+        "final_hold": true,
+        "ik_seconds": 0.00025976900360547006,
+        "joint_tracking_error_rad": {
+          "count": 110,
+          "p50": 0.018346398085886367,
+          "p95": 0.03548549500807345,
+          "p99": 0.036209471671402996,
+          "worst": 0.036278453561435
+        },
+        "max_iterations": 10000,
+        "planning_and_validation_wall_seconds": 4.683463731998927,
+        "route_validation_seconds": 0.09403002399631077,
+        "rrt_seconds": 0.006067359005101025,
+        "seed": 123456,
+        "trajectory_validation_seconds": 0.29269557599764084
+      },
+      "failure_code": null,
+      "freshness_headroom_s": 0.027503550998517312,
+      "inference": {
+        "elapsed_s": 0.24258878599357558,
+        "generation": 0,
+        "models": [
+          {
+            "component": 0,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.7875517410952835,
+                -0.3005543629053909,
+                0.5290487875422617
+              ],
+              "dimensions": [
+                0.0888973056892196,
+                0.4051089156574813,
+                0.4059035103944122
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          },
+          {
+            "component": 1,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.45000004493304324,
+                -0.000413366747039832,
+                0.34933533052464044
+              ],
+              "dimensions": [
+                0.09400110460172062,
+                0.12482745342137355,
+                0.26532997120020607
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          }
+        ],
+        "reason": "all_eligible_components_qualified",
+        "revision": 25,
+        "robot_components": [
+          {
+            "component": 2,
+            "points": 679,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 679
+          },
+          {
+            "component": 3,
+            "points": 580,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 580
+          },
+          {
+            "component": 4,
+            "points": 540,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 540
+          },
+          {
+            "component": 5,
+            "points": 181,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 181
+          },
+          {
+            "component": 6,
+            "points": 60,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 60
+          }
+        ],
+        "status": "qualified",
+        "timestamp": 41640.990684172
+      },
+      "label": "outward",
+      "mapping_after": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 22,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "stale",
+        "worker": {
+          "closed": false,
+          "completed": 33,
+          "delivered": 33,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": true,
+          "pid": 943,
+          "replaced": 8,
+          "result_ready": false,
+          "running": true,
+          "started": 34,
+          "submitted": 43,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "mapping_before": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 13,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "ok",
+        "worker": {
+          "closed": false,
+          "completed": 19,
+          "delivered": 19,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 943,
+          "replaced": 5,
+          "result_ready": false,
+          "running": true,
+          "started": 20,
+          "submitted": 25,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "measurement_status": "PASS",
+      "message": "End effector reached target pose.",
+      "moving_arm_sampled_clearance_m": 0.04114300168436494,
+      "operation": {
+        "cancelled": false,
+        "contacts": {
+          "contact_buffer_saturated": false,
+          "links": [],
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts.",
+          "minimum_reported_separation_m": null,
+          "mounted_base_excluded": false,
+          "penetrating_pairs": 0,
+          "reported_pairs": 0,
+          "reported_points": 0
+        },
+        "id": 0,
+        "label": "outward",
+        "maximum_actual_joint_displacement_rad": 1.1077077984809875,
+        "measured_full_pose_within_tolerances": true,
+        "orientation_error_rad": 0.002424932292461383,
+        "physics_step_coverage": {
+          "complete": true,
+          "first": 399,
+          "last": 514,
+          "missing_steps": [],
+          "unique_steps": 116
+        },
+        "position_error_m": 0.0008746736666307971,
+        "returned_success": true,
+        "wall_seconds": 13.60240022999642
+      },
+      "physical_evaluation": {
+        "occupied": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 830,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 37,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.49497656829384346,
+                  -0.05997656516459959,
+                  0.4799765617373325
+                ],
+                "maximum_constraint_residual_m": -1.000000002065565e-09,
+                "radius_m": 2.3432494295897072e-05,
+                "raw_radius_m": 2.343349429589707e-05,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 9,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 37,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 3.088739573235932e-17
+            }
+          ],
+          "elapsed_seconds": 0.1699988590044086,
+          "evaluated_samples": 38,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.1721101520015509,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 38,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 164,
+            "trajectory": 302
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 1254,
+          "queue_seconds": 5.811099981656298e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 466,
+          "unresolved": [],
+          "worker_seconds": 0.1700340769966715
+        },
+        "reconstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 11310,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 1.0840338279958814,
+          "evaluated_samples": 517,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 1.0873929830049747,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0006452125929892194,
+          "phases_evaluated": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "phases_requested": {
+            "route": 183,
+            "trajectory": 334
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 17061,
+          "queue_seconds": 5.6787001085467637e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 517,
+          "unresolved": [],
+          "worker_seconds": 1.084059350003372
+        },
+        "static": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 20299,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "obstacle": "/World/GroundPlane/CollisionPlane",
+            "phase": "route",
+            "qualified_mount": true,
+            "robot_body": "panda_link0",
+            "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+            "sample": 0,
+            "time": null
+          },
+          "collision_witnesses": [],
+          "elapsed_seconds": 1.5806463330009137,
+          "evaluated_samples": 923,
+          "execution_allowed": true,
+          "experimental_owner_wait_seconds": 1.5831509630006622,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+          "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+          "phases_evaluated": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "phases_requested": {
+            "route": 345,
+            "trajectory": 578
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 30459,
+          "queue_seconds": 9.465599578106776e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": true,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+          "total_samples": 923,
+          "unresolved": [],
+          "worker_seconds": 1.5806728490060777
+        },
+        "unobstructed": {
+          "alignment": {
+            "frame_allowance_m": 1e-05,
+            "maximum_rotation_matrix_error": 3.148733415721944e-07,
+            "maximum_translation_error_m": 3.032360257732049e-07,
+            "passed": true,
+            "rotation_matrix_allowance": 1e-05
+          },
+          "broadphase_separations": 417,
+          "closest_bound_pair": {
+            "clearance_lower_bound_m": 0.0,
+            "obstacle": "/World/ReactiveEvaluation/Post",
+            "phase": "route",
+            "qualified_mount": false,
+            "robot_body": "panda_hand",
+            "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+            "sample": 18,
+            "time": null
+          },
+          "collision_witnesses": [
+            {
+              "collision_proven": true,
+              "converged": true,
+              "distance_m": 0.0,
+              "intersection_ball": {
+                "center_m": [
+                  0.47116850793057397,
+                  -0.058508974837172226,
+                  0.44025514920005876
+                ],
+                "maximum_constraint_residual_m": -9.99999999907325e-10,
+                "radius_m": 0.001491022821723267,
+                "raw_radius_m": 0.001491023821723269,
+                "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact.",
+                "status": "VERIFIED_POSITIVE_INTERSECTION_BALL"
+              },
+              "iterations": 4,
+              "lower_bound_m": 0.0,
+              "method": "COOKED_VERTEX_HULL_GJK",
+              "obstacle": "/World/ReactiveEvaluation/Post",
+              "phase": "route",
+              "qualified_mount": false,
+              "robot_body": "panda_hand",
+              "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+              "sample": 18,
+              "time": null,
+              "unresolved": false,
+              "upper_bound_m": 4.0465585757473554e-17
+            }
+          ],
+          "elapsed_seconds": 0.05665839399443939,
+          "evaluated_samples": 19,
+          "execution_allowed": false,
+          "experimental_owner_wait_seconds": 0.059837685999809764,
+          "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+          "minimum_external_clearance_lower_bound_m": 0.0,
+          "minimum_nonmount_clearance_lower_bound_m": 0.0,
+          "phases_evaluated": {
+            "route": 19,
+            "trajectory": 0
+          },
+          "phases_requested": {
+            "route": 112,
+            "trajectory": 272
+          },
+          "planner_world_modified": false,
+          "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+          "queries": 627,
+          "queue_seconds": 9.357599628856406e-05,
+          "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+          "samples_complete": false,
+          "schema_version": 1,
+          "self_evaluated": false,
+          "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+          "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+          "total_samples": 384,
+          "unresolved": [],
+          "worker_seconds": 0.05669160600518808
+        }
+      },
+      "primary": {
+        "capture_injection": false,
+        "goal_source": "ordinary selected Lula IK; no GT goal input",
+        "planner": "LulaGlobalPlanner"
+      },
+      "request": 1,
+      "runtime_after": {
+        "cameras": {
+          "acquisitions": 212,
+          "consumers": {
+            "mapping": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  17.833333333333332,
+                  8.483333775773644
+                ],
+                "/World/PerceptionCameraSide": [
+                  17.833333333333332,
+                  8.483333775773644
+                ]
+              }
+            },
+            "semantic": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  17.933333333333334,
+                  8.533333778381348
+                ],
+                "/World/PerceptionCameraSide": [
+                  17.933333333333334,
+                  8.533333778381348
+                ]
+              }
+            }
+          },
+          "failures": 0,
+          "shared_reads": 86
+        },
+        "error": null,
+        "generation": 0,
+        "mapping": {
+          "age_seconds": 1.4683133620055742,
+          "closed": false,
+          "completed_at": 41654.501081349,
+          "completion_status": "published",
+          "compute_seconds": 0.4921476099989377,
+          "failures": 0,
+          "filter_seconds": 0.0460849800001597,
+          "fresh": false,
+          "generation": 0,
+          "input_timestamp": 41653.748469627,
+          "last": {
+            "completed_at": 41654.501081349,
+            "compute_seconds": 0.4921476099989377,
+            "filter_seconds": 0.0460849800001597,
+            "input_timestamp": 41653.748469627,
+            "publish_age_seconds": 0.8194697890066891,
+            "queue_seconds": 0.0492429229998379,
+            "status": "published",
+            "timestamp": 41653.748469627,
+            "transport_seconds": 0.19383664400083944,
+            "worker_seconds": 0.6859842539997771,
+            "worker_to_publication_seconds": 0.0668580670026131
+          },
+          "last_error": null,
+          "processing_failures": 0,
+          "publish_age_seconds": 0.8194697890066891,
+          "published": 22,
+          "queue_seconds": 0.0492429229998379,
+          "reason": null,
+          "rejected": 11,
+          "resets": 0,
+          "source_failures": 0,
+          "stale": true,
+          "status": "stale",
+          "submitted": 43,
+          "timestamp": 41653.748469627,
+          "transport_seconds": 0.19383664400083944,
+          "worker": {
+            "closed": false,
+            "completed": 33,
+            "delivered": 33,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 943,
+            "replaced": 8,
+            "result_ready": false,
+            "running": true,
+            "started": 34,
+            "submitted": 43,
+            "transport_error": null
+          },
+          "worker_failures": 0,
+          "worker_seconds": 0.6859842539997771,
+          "worker_to_publication_seconds": 0.0668580670026131
+        },
+        "semantic": {
+          "attempts": 107,
+          "last": {
+            "completed_at": 41654.738834953,
+            "compute_seconds": 0.7488717290034401,
+            "input_timestamp": 41653.748469627,
+            "publish_age_seconds": 0.9963220429999637,
+            "queue_seconds": 0.2143742919943179,
+            "status": "published",
+            "timestamp": 41653.748469627,
+            "transport_seconds": 0.012791850000212435,
+            "worker_seconds": 0.7616635790036526
+          },
+          "no_frame": 1,
+          "published": 38,
+          "rejected": 3,
+          "source_failures": 0,
+          "worker": {
+            "closed": false,
+            "completed": 42,
+            "delivered": 41,
+            "discarded": 1,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 942,
+            "replaced": 62,
+            "result_ready": false,
+            "running": true,
+            "started": 43,
+            "submitted": 106,
+            "transport_error": null
+          },
+          "worker_failures": 0
+        },
+        "state": "running"
+      },
+      "selected_status": "success",
+      "selected_union": {
+        "combined_camera_proxies": 24,
+        "inference_status": "qualified",
+        "occupied_union_preserved": true,
+        "original_selected": 64,
+        "protected_floor_ids": [],
+        "retained_selected_ids": [
+          "70:71:55:56:37:38",
+          "70:71:58:59:35:36",
+          "70:71:58:59:37:38",
+          "70:71:61:62:32:33",
+          "70:71:61:62:34:35",
+          "70:71:64:65:31:32",
+          "70:71:65:66:28:29",
+          "70:71:65:66:30:31",
+          "79:80:54:55:36:37",
+          "79:80:54:55:40:41",
+          "79:80:56:57:45:46",
+          "79:80:56:57:49:50",
+          "79:80:60:61:28:29",
+          "79:80:62:63:33:34",
+          "79:80:63:64:42:43",
+          "79:80:64:65:38:39",
+          "79:80:65:66:47:48",
+          "105:106:15:16:75:76",
+          "106:107:27:28:75:76",
+          "106:107:41:42:75:76",
+          "110:111:46:47:75:76",
+          "112:113:16:17:75:76"
+        ],
+        "subsumed": {
+          "/__rgbd_inferred__/0/25/0": [
+            "109:110:21:22:74:75",
+            "109:110:34:35:74:75",
+            "112:113:10:11:37:38",
+            "112:113:10:11:63:64",
+            "112:113:11:12:42:43",
+            "112:113:11:12:66:67",
+            "112:113:12:13:55:56",
+            "112:113:13:14:58:59",
+            "112:113:14:15:46:47",
+            "112:113:15:16:72:73",
+            "112:113:16:17:35:36",
+            "112:113:16:17:49:50",
+            "112:113:17:18:53:54",
+            "112:113:18:19:68:69",
+            "112:113:19:20:39:40",
+            "112:113:19:20:56:57",
+            "112:113:20:21:43:44",
+            "112:113:20:21:60:61",
+            "112:113:20:21:71:72",
+            "112:113:22:23:47:48",
+            "112:113:22:23:63:64",
+            "112:113:22:23:73:74",
+            "112:113:24:25:51:52"
+          ],
+          "/__rgbd_inferred__/0/25/1": [
+            "71:72:65:66:25:26",
+            "71:72:65:66:42:43",
+            "72:73:58:59:49:50",
+            "72:73:65:66:36:37",
+            "72:73:65:66:38:39",
+            "72:73:65:66:40:41",
+            "73:74:65:66:32:33",
+            "73:74:65:66:34:35",
+            "74:75:65:66:30:31",
+            "75:76:65:66:26:27",
+            "75:76:65:66:28:29",
+            "75:76:65:66:40:41",
+            "76:77:65:66:38:39",
+            "76:77:65:66:49:50",
+            "77:78:65:66:24:25",
+            "77:78:65:66:35:36",
+            "77:78:65:66:37:38",
+            "78:79:65:66:31:32",
+            "78:79:65:66:33:34"
+          ]
+        }
+      },
+      "selected_uses_fixed_joint_target": false,
+      "source_age_s": 0.9724964490014827,
+      "source_captures": 1,
+      "source_identity": {
+        "evaluated_at": 41641.963180621,
+        "generation": 0,
+        "original_acquisition_timestamp": 41640.990684172,
+        "revision": 25,
+        "timestamp": 41640.990684172
+      },
+      "timing": {
+        "accepted_publication_count": 10,
+        "accepted_publication_hz": 1.118377030499945,
+        "compute_seconds": {
+          "count": 9,
+          "p50": 0.49051933299779193,
+          "p95": 0.5363022241988802,
+          "worst": 0.548768075001135
+        },
+        "mapping_only_compute_s": {
+          "count": 9,
+          "p50": 0.2543871300003957,
+          "p95": 0.30393203579878897,
+          "worst": 0.32380339699739125
+        },
+        "publish_age_seconds": {
+          "count": 9,
+          "p50": 0.8179758969999966,
+          "p95": 0.9621767368007568,
+          "worst": 0.9646442960001878
+        },
+        "queue_seconds": {
+          "count": 9,
+          "p50": 0.1404596220017993,
+          "p95": 0.29425754420517475,
+          "worst": 0.32870728100533597
+        },
+        "reconstruction_s": {
+          "count": 9,
+          "p50": 0.22310923899931367,
+          "p95": 0.25328244479896966,
+          "worst": 0.26275994000025094
+        },
+        "request_to_first_command_s": 5.178318853999372,
+        "timing_records": 9,
+        "transport_seconds": {
+          "count": 9,
+          "p50": 0.14844606001133798,
+          "p95": 0.20884906239662085,
+          "worst": 0.21360349399765255
+        },
+        "worker_seconds": {
+          "count": 9,
+          "p50": 0.6287513659990509,
+          "p95": 0.7238427446020068,
+          "worst": 0.7623715689987876
+        },
+        "worker_to_publication_seconds": {
+          "count": 9,
+          "p50": 0.03025898300256813,
+          "p95": 0.05549011100229108,
+          "worst": 0.06110991900641238
+        }
+      }
+    },
+    {
+      "actual_commands": 0,
+      "admission": {
+        "initial_identity": [
+          0,
+          57,
+          41661.356173555
+        ],
+        "policy": "first_new_accepted_publication",
+        "selected_identity": [
+          0,
+          59,
+          41662.752491684
+        ],
+        "timeout_seconds": 5.0,
+        "updates": 3,
+        "wait_seconds": 0.22328485799516784
+      },
+      "base_preflight": null,
+      "case": "persistent/attempt-1",
+      "category": "RECONSTRUCTION_FAILURE",
+      "contracts": {
+        "all11_cooked_bodies": true,
+        "frozen_scene": true,
+        "no_internal_runtime_error": true,
+        "runtime_closed": true,
+        "source_unchanged": true
+      },
+      "detour": null,
+      "error": null,
+      "execution": {
+        "closed": false,
+        "commanded_updates": null,
+        "control_interval_ms": null,
+        "execution_solver": null,
+        "execution_wall_seconds": null,
+        "final_hold": false,
+        "ik_seconds": null,
+        "joint_tracking_error_rad": null,
+        "max_iterations": 10000,
+        "planning_and_validation_wall_seconds": null,
+        "route_validation_seconds": null,
+        "rrt_seconds": null,
+        "seed": 123456,
+        "trajectory_validation_seconds": null
+      },
+      "failure_code": "planning_source_reconstruction",
+      "freshness_headroom_s": null,
+      "inference": null,
+      "label": "return_start",
+      "mapping_after": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 32,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "ok",
+        "worker": {
+          "closed": false,
+          "completed": 47,
+          "delivered": 47,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 943,
+          "replaced": 12,
+          "result_ready": false,
+          "running": true,
+          "started": 48,
+          "submitted": 60,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "mapping_before": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 31,
+        "reason": "stale_completion",
+        "resets": 0,
+        "source_failures": 0,
+        "status": "no_frame",
+        "worker": {
+          "closed": false,
+          "completed": 46,
+          "delivered": 46,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 943,
+          "replaced": 12,
+          "result_ready": false,
+          "running": true,
+          "started": 47,
+          "submitted": 59,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "measurement_status": "PASS",
+      "message": "Reconstruction rejected: component_1: insufficient_observed_three_axis_patch_or_residual",
+      "moving_arm_sampled_clearance_m": 0.09385130454424978,
+      "operation": {
+        "cancelled": false,
+        "contacts": {
+          "contact_buffer_saturated": false,
+          "links": [],
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts.",
+          "minimum_reported_separation_m": null,
+          "mounted_base_excluded": false,
+          "penetrating_pairs": 0,
+          "reported_pairs": 0,
+          "reported_points": 0
+        },
+        "id": 1,
+        "label": "return_start",
+        "maximum_actual_joint_displacement_rad": 0.0,
+        "measured_full_pose_within_tolerances": false,
+        "orientation_error_rad": 0.010687060420407414,
+        "physics_step_coverage": {
+          "complete": true,
+          "first": 671,
+          "last": 674,
+          "missing_steps": [],
+          "unique_steps": 4
+        },
+        "position_error_m": 0.5043850374986287,
+        "returned_success": false,
+        "wall_seconds": 0.27911627700086683
+      },
+      "physical_evaluation": {},
+      "primary": null,
+      "request": 2,
+      "runtime_after": {
+        "cameras": {
+          "acquisitions": 296,
+          "consumers": {
+            "mapping": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  23.266666666666666,
+                  11.200000584125519
+                ],
+                "/World/PerceptionCameraSide": [
+                  23.266666666666666,
+                  11.200000584125519
+                ]
+              }
+            },
+            "semantic": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  23.266666666666666,
+                  11.200000584125519
+                ],
+                "/World/PerceptionCameraSide": [
+                  23.266666666666666,
+                  11.200000584125519
+                ]
+              }
+            }
+          },
+          "failures": 0,
+          "shared_reads": 120
+        },
+        "error": null,
+        "generation": 0,
+        "mapping": {
+          "age_seconds": 0.7710765689989785,
+          "closed": false,
+          "completed_at": 41663.438421821,
+          "completion_status": "published",
+          "compute_seconds": 0.4624349709993112,
+          "failures": 0,
+          "filter_seconds": 0.04198041899508098,
+          "fresh": true,
+          "generation": 0,
+          "input_timestamp": 41662.752491684,
+          "last": {
+            "completed_at": 41663.438421821,
+            "compute_seconds": 0.4624349709993112,
+            "filter_seconds": 0.04198041899508098,
+            "input_timestamp": 41662.752491684,
+            "publish_age_seconds": 0.7017373199996655,
+            "queue_seconds": 0.020148014998994768,
+            "status": "published",
+            "timestamp": 41662.752491684,
+            "transport_seconds": 0.18617285400250694,
+            "worker_seconds": 0.6486078250018181,
+            "worker_to_publication_seconds": 0.015807182993739843
+          },
+          "last_error": null,
+          "processing_failures": 0,
+          "publish_age_seconds": 0.7017373199996655,
+          "published": 32,
+          "queue_seconds": 0.020148014998994768,
+          "reason": null,
+          "rejected": 15,
+          "resets": 0,
+          "source_failures": 0,
+          "stale": false,
+          "status": "ok",
+          "submitted": 60,
+          "timestamp": 41662.752491684,
+          "transport_seconds": 0.18617285400250694,
+          "worker": {
+            "closed": false,
+            "completed": 47,
+            "delivered": 47,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": false,
+            "pid": 943,
+            "replaced": 12,
+            "result_ready": false,
+            "running": true,
+            "started": 48,
+            "submitted": 60,
+            "transport_error": null
+          },
+          "worker_failures": 0,
+          "worker_seconds": 0.6486078250018181,
+          "worker_to_publication_seconds": 0.015807182993739843
+        },
+        "semantic": {
+          "attempts": 149,
+          "last": {
+            "completed_at": 41662.989977185,
+            "compute_seconds": 0.7965875410009176,
+            "input_timestamp": 41662.157052039,
+            "publish_age_seconds": 0.8745482219965197,
+            "queue_seconds": 0.006915332000062335,
+            "status": "published",
+            "timestamp": 41662.157052039,
+            "transport_seconds": 0.010087294998811558,
+            "worker_seconds": 0.8066748359997291
+          },
+          "no_frame": 1,
+          "published": 44,
+          "rejected": 7,
+          "source_failures": 0,
+          "worker": {
+            "closed": false,
+            "completed": 52,
+            "delivered": 51,
+            "discarded": 1,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 942,
+            "replaced": 94,
+            "result_ready": false,
+            "running": true,
+            "started": 53,
+            "submitted": 148,
+            "transport_error": null
+          },
+          "worker_failures": 0
+        },
+        "state": "running"
+      },
+      "selected_status": "failed",
+      "selected_union": null,
+      "selected_uses_fixed_joint_target": null,
+      "source_age_s": null,
+      "source_captures": 1,
+      "source_identity": {
+        "evaluated_at": null,
+        "generation": null,
+        "original_acquisition_timestamp": null,
+        "revision": null,
+        "timestamp": null
+      },
+      "timing": {
+        "accepted_publication_count": 9,
+        "accepted_publication_hz": 1.1774305489202463,
+        "compute_seconds": {
+          "count": 9,
+          "p50": 0.4650486140017165,
+          "p95": 0.5680833860009443,
+          "worst": 0.5777798880008049
+        },
+        "mapping_only_compute_s": {
+          "count": 9,
+          "p50": 0.2464608610025607,
+          "p95": 0.3362051802032511,
+          "worst": 0.3573369930018089
+        },
+        "publish_age_seconds": {
+          "count": 9,
+          "p50": 0.8346442919937545,
+          "p95": 0.9659453799991752,
+          "worst": 0.972666321998986
+        },
+        "queue_seconds": {
+          "count": 9,
+          "p50": 0.13627269500284456,
+          "p95": 0.24544024320057356,
+          "worst": 0.2838011519997963
+        },
+        "reconstruction_s": {
+          "count": 9,
+          "p50": 0.2190226620004978,
+          "p95": 0.24377032939810306,
+          "worst": 0.24759593099588528
+        },
+        "request_to_first_command_s": null,
+        "timing_records": 9,
+        "transport_seconds": {
+          "count": 9,
+          "p50": 0.141609594997135,
+          "p95": 0.20930625919718293,
+          "worst": 0.23139405599795282
+        },
+        "worker_seconds": {
+          "count": 9,
+          "p50": 0.6257540110018454,
+          "p95": 0.7525240518007195,
+          "worst": 0.7849326889991062
+        },
+        "worker_to_publication_seconds": {
+          "count": 9,
+          "p50": 0.036824969996814616,
+          "p95": 0.08747401760629145,
+          "worst": 0.0971379720067489
+        }
+      }
+    },
+    {
+      "actual_commands": 0,
+      "admission": {
+        "initial_identity": [
+          0,
+          28,
+          41931.706935058
+        ],
+        "policy": "first_new_accepted_publication",
+        "selected_identity": [
+          0,
+          29,
+          41932.323283129
+        ],
+        "timeout_seconds": 5.0,
+        "updates": 6,
+        "wait_seconds": 0.5180543519963976
+      },
+      "base_preflight": null,
+      "case": "sparse/attempt-1",
+      "category": "COLLISION_WORLD_FAILURE",
+      "contracts": {
+        "all11_cooked_bodies": true,
+        "frozen_scene": true,
+        "no_internal_runtime_error": true,
+        "runtime_closed": true,
+        "source_unchanged": true
+      },
+      "detour": null,
+      "error": null,
+      "execution": {
+        "closed": false,
+        "commanded_updates": null,
+        "control_interval_ms": null,
+        "execution_solver": null,
+        "execution_wall_seconds": null,
+        "final_hold": false,
+        "ik_seconds": null,
+        "joint_tracking_error_rad": null,
+        "max_iterations": 10000,
+        "planning_and_validation_wall_seconds": null,
+        "route_validation_seconds": null,
+        "rrt_seconds": null,
+        "seed": 123456,
+        "trajectory_validation_seconds": null
+      },
+      "failure_code": "planning_source_reconstruction",
+      "freshness_headroom_s": null,
+      "inference": {
+        "elapsed_s": 0.15713600999879418,
+        "generation": 0,
+        "models": [
+          {
+            "component": 1,
+            "geometry": {
+              "approximation": "rgbd_inferred_box",
+              "center": [
+                0.4499994278460027,
+                -0.0004979762232352825,
+                0.3493869156738152
+              ],
+              "dimensions": [
+                0.03900089329338996,
+                0.06499791928774425,
+                0.2052270681700647
+              ],
+              "occupancy_completion": false,
+              "rotation": [
+                [
+                  1.0,
+                  1.9377047211159066e-18,
+                  0.0
+                ],
+                [
+                  -1.9377047211159066e-18,
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "yaw_rad": -1.9377047211159066e-18
+            },
+            "status": "qualified"
+          }
+        ],
+        "reason": "all_eligible_components_qualified",
+        "revision": 29,
+        "robot_components": [
+          {
+            "component": 0,
+            "points": 2348,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 2348
+          },
+          {
+            "component": 2,
+            "points": 1341,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 1341
+          },
+          {
+            "component": 3,
+            "points": 1289,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 1289
+          },
+          {
+            "component": 4,
+            "points": 322,
+            "reason": "possible_robot_component",
+            "robot_envelope_points": 322
+          }
+        ],
+        "status": "qualified",
+        "timestamp": 41932.323283129
+      },
+      "label": "outward",
+      "mapping_after": {
+        "failures": null,
+        "generation": null,
+        "last_error": null,
+        "processing_failures": null,
+        "published": null,
+        "reason": null,
+        "resets": null,
+        "source_failures": null,
+        "status": null,
+        "worker": null,
+        "worker_failures": null
+      },
+      "mapping_before": {
+        "failures": 0,
+        "generation": 0,
+        "last_error": null,
+        "processing_failures": 0,
+        "published": 16,
+        "reason": null,
+        "resets": 0,
+        "source_failures": 0,
+        "status": "ok",
+        "worker": {
+          "closed": false,
+          "completed": 22,
+          "delivered": 22,
+          "discarded": 0,
+          "epoch": 0,
+          "errors": 0,
+          "execution": "process",
+          "pending": false,
+          "pid": 1726,
+          "replaced": 3,
+          "result_ready": false,
+          "running": true,
+          "started": 23,
+          "submitted": 26,
+          "transport_error": null
+        },
+        "worker_failures": 0
+      },
+      "measurement_status": "PASS",
+      "message": "Combined inferred/observed world exceeds 64 camera proxies",
+      "moving_arm_sampled_clearance_m": 0.08971403891954842,
+      "operation": {
+        "cancelled": false,
+        "contacts": {
+          "contact_buffer_saturated": false,
+          "links": [],
+          "maximum_normal_pair_impulse_ns": 0.0,
+          "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts.",
+          "minimum_reported_separation_m": null,
+          "mounted_base_excluded": false,
+          "penetrating_pairs": 0,
+          "reported_pairs": 0,
+          "reported_points": 0
+        },
+        "id": 0,
+        "label": "outward",
+        "maximum_actual_joint_displacement_rad": 0.0,
+        "measured_full_pose_within_tolerances": false,
+        "orientation_error_rad": 0.01514796489102461,
+        "physics_step_coverage": {
+          "complete": true,
+          "first": 414,
+          "last": 420,
+          "missing_steps": [],
+          "unique_steps": 7
+        },
+        "position_error_m": 0.48363846455981807,
+        "returned_success": false,
+        "wall_seconds": 0.5805097390039009
+      },
+      "physical_evaluation": {},
+      "primary": null,
+      "request": 1,
+      "runtime_after": {
+        "cameras": {
+          "acquisitions": 136,
+          "consumers": {
+            "mapping": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  14.766666666666667,
+                  6.916667027398944
+                ],
+                "/World/PerceptionCameraSide": [
+                  14.766666666666667,
+                  6.916667027398944
+                ]
+              }
+            },
+            "semantic": {
+              "skew_seconds": 0.0,
+              "state": "synchronized",
+              "tokens": {
+                "/World/PerceptionCamera": [
+                  14.9,
+                  6.983333697542548
+                ],
+                "/World/PerceptionCameraSide": [
+                  14.9,
+                  6.983333697542548
+                ]
+              }
+            }
+          },
+          "failures": 0,
+          "shared_reads": 54
+        },
+        "error": null,
+        "generation": 0,
+        "mapping": {
+          "age_seconds": 0.9050685379988863,
+          "closed": false,
+          "completed_at": 41933.090196141,
+          "completion_status": "published",
+          "compute_seconds": 0.46923160000005737,
+          "failures": 0,
+          "filter_seconds": 0.02972436400159495,
+          "fresh": true,
+          "generation": 0,
+          "input_timestamp": 41932.323283129,
+          "last": {
+            "completed_at": 41933.090196141,
+            "compute_seconds": 0.46923160000005737,
+            "filter_seconds": 0.02972436400159495,
+            "input_timestamp": 41932.323283129,
+            "publish_age_seconds": 0.8171173829978216,
+            "queue_seconds": 0.1047318519995315,
+            "status": "published",
+            "timestamp": 41932.323283129,
+            "transport_seconds": 0.1689842959967791,
+            "worker_seconds": 0.6382158959968365,
+            "worker_to_publication_seconds": 0.05020437100029085
+          },
+          "last_error": null,
+          "processing_failures": 0,
+          "publish_age_seconds": 0.8171173829978216,
+          "published": 17,
+          "queue_seconds": 0.1047318519995315,
+          "reason": null,
+          "rejected": 6,
+          "resets": 0,
+          "source_failures": 0,
+          "stale": false,
+          "status": "ok",
+          "submitted": 27,
+          "timestamp": 41932.323283129,
+          "transport_seconds": 0.1689842959967791,
+          "worker": {
+            "closed": false,
+            "completed": 23,
+            "delivered": 23,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": false,
+            "pid": 1726,
+            "replaced": 3,
+            "result_ready": false,
+            "running": true,
+            "started": 24,
+            "submitted": 27,
+            "transport_error": null
+          },
+          "worker_failures": 0,
+          "worker_seconds": 0.6382158959968365,
+          "worker_to_publication_seconds": 0.05020437100029085
+        },
+        "semantic": {
+          "attempts": 68,
+          "last": {
+            "completed_at": 41932.926505455,
+            "compute_seconds": 0.395272488000046,
+            "input_timestamp": 41932.323283129,
+            "publish_age_seconds": 0.6323453799996059,
+            "queue_seconds": 0.17782000800070819,
+            "status": "published",
+            "timestamp": 41932.323283129,
+            "transport_seconds": 0.0108422769990284,
+            "worker_seconds": 0.4061147649990744
+          },
+          "no_frame": 0,
+          "published": 34,
+          "rejected": 0,
+          "source_failures": 0,
+          "worker": {
+            "closed": false,
+            "completed": 34,
+            "delivered": 34,
+            "discarded": 0,
+            "epoch": 0,
+            "errors": 0,
+            "execution": "process",
+            "pending": true,
+            "pid": 1725,
+            "replaced": 32,
+            "result_ready": false,
+            "running": true,
+            "started": 35,
+            "submitted": 68,
+            "transport_error": null
+          },
+          "worker_failures": 0
+        },
+        "state": "running"
+      },
+      "selected_status": "failed",
+      "selected_union": null,
+      "selected_uses_fixed_joint_target": null,
+      "source_age_s": null,
+      "source_captures": 1,
+      "source_identity": {
+        "evaluated_at": null,
+        "generation": null,
+        "original_acquisition_timestamp": null,
+        "revision": null,
+        "timestamp": null
+      },
+      "timing": {
+        "accepted_publication_count": 12,
+        "accepted_publication_hz": 1.2675621952100031,
+        "compute_seconds": {
+          "count": 12,
+          "p50": 0.40434213600019575,
+          "p95": 0.4321618108479015,
+          "worst": 0.43307589599862695
+        },
+        "mapping_only_compute_s": {
+          "count": 12,
+          "p50": 0.2600268319984025,
+          "p95": 0.28295252350071676,
+          "worst": 0.2889110530013568
+        },
+        "publish_age_seconds": {
+          "count": 12,
+          "p50": 0.8337663224956486,
+          "p95": 0.9510495079986867,
+          "worst": 0.9522735330028809
+        },
+        "queue_seconds": {
+          "count": 12,
+          "p50": 0.2634416915025213,
+          "p95": 0.39376344904994764,
+          "worst": 0.3983796259999508
+        },
+        "reconstruction_s": {
+          "count": 12,
+          "p50": 0.15228670449869242,
+          "p95": 0.16426206915202785,
+          "worst": 0.16431513700081268
+        },
+        "request_to_first_command_s": null,
+        "timing_records": 12,
+        "transport_seconds": {
+          "count": 12,
+          "p50": 0.13137451400325517,
+          "p95": 0.1554862155480805,
+          "worst": 0.1570202419970883
+        },
+        "worker_seconds": {
+          "count": 12,
+          "p50": 0.5375163274984516,
+          "p95": 0.563493570051287,
+          "worst": 0.5648779580005794
+        },
+        "worker_to_publication_seconds": {
+          "count": 12,
+          "p50": 0.02191116050016717,
+          "p95": 0.04805015349629684,
+          "worst": 0.050666420997004025
+        }
+      }
+    }
+  ],
+  "third_persistent_outward_not_run": true
+}

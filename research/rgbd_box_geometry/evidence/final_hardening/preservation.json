@@ -1,0 +1,25 @@
+{
+  "utc": "2026-11-14T20:17:55.710615+00:00",
+  "original_published_package_files_unchanged": 48,
+  "archived_static_v43_files_unchanged": 16,
+  "previous_autonomous_raw_files_unchanged": {
+    "autonomous_integration": 242,
+    "autonomous_performance": 112,
+    "autonomous_admission": 131
+  },
+  "previous_native_raw_files_unchanged": {
+    "native_partial": 24,
+    "mapping_readiness": 21,
+    "observer_readiness_fix": 21,
+    "native_partial_postfix": 29
+  },
+  "previous_reports_unchanged": {
+    "rgbd-autonomous-integration.md": "93e37df2f26e54ffc4fc7308be92eb60e102da8b41c6cdc93d683a8be7c38767",
+    "rgbd-autonomous-performance.md": "d2bb6fec9b3d1af8fa1de3ea1f2c75aa65097cfd0cd60ddbcab5c945b89e5ee9",
+    "rgbd-autonomous-admission-reliability.md": "5c37be0d473aba1a1096bddde66208be9625740bb8833515fec1fc34c7e22fdb",
+    "rgbd-rrt-native-postfix.md": "0e6c18008b48e781de7964eb21309bf6726c17d4199a4b10b966ef74f0f0e436"
+  },
+  "v5_local_head": "71c07f815410a308dc7ea176148c017055c7fd7a",
+  "v5_remote_head": "71c07f815410a308dc7ea176148c017055c7fd7a",
+  "recovery_ref": "edc1b467c6bf03c192d0d9dccce2b538309a024f"
+}

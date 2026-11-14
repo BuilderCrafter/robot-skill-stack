@@ -1,0 +1,14 @@
+{
+  "original_raw": {
+    "bytes": 29924959,
+    "sha256": "a8e59ffd13c7c8743fa035eb294191d3dcbaa12181b145b633b2d6135487adb7"
+  },
+  "old_reencoded": {
+    "bytes": 29925060,
+    "sha256": "a2b51af2f7893de10176113c5676febd431aa72c7106a8aa64edcb139a9ab254"
+  },
+  "new_reencoded": {
+    "bytes": 29925060,
+    "sha256": "a2b51af2f7893de10176113c5676febd431aa72c7106a8aa64edcb139a9ab254"
+  }
+}

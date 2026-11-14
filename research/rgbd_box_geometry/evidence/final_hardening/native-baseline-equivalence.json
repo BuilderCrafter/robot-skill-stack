@@ -1,0 +1,26 @@
+{
+  "baseline": "autonomous-admission-20261114/admitted-0/attempt-1",
+  "exact_json_numeric_equality": {
+    "independent": {
+      "actual_start_q": true,
+      "route_joint_names": true,
+      "route": true,
+      "trajectory_times": true,
+      "trajectory_q": true
+    },
+    "confirmation": {
+      "actual_start_q": true,
+      "route_joint_names": true,
+      "route": true,
+      "trajectory_times": true,
+      "trajectory_q": true
+    },
+    "persistent_first": {
+      "actual_start_q": true,
+      "route_joint_names": true,
+      "route": true,
+      "trajectory_times": true,
+      "trajectory_q": true
+    }
+  }
+}
