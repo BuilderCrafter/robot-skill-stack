@@ -235,6 +235,8 @@ def run_native(args, app, state):
                     if frozen is not None:
                         strategy.last_plan_trace['frozen_rgbd'] = frozen
             observer.end_operation = serializable_end
+            if state.get('autonomous_runtime'):
+                state['world_before_snapshot'],state['world_before_sha256']=shared._world_signature(stage)
             if state.get('research_prepare') is not None:
                 await state['research_prepare'](bundle, state)
             observer.sample()
@@ -297,7 +299,8 @@ def run_native(args, app, state):
                 observer.metadata['kit_times'].append(time.monotonic())
                 retain_mapping_publication(state,service)
             subscription=omni.kit.app.get_app().get_update_event_stream().create_subscription_to_pop(on_update,name='v5_measurement')
-            state['world_before_snapshot'],state['world_before_sha256']=shared._world_signature(stage)
+            if not state.get('autonomous_runtime'):
+                state['world_before_snapshot'],state['world_before_sha256']=shared._world_signature(stage)
             state['request_started']=time.monotonic()
             state['acquisition_phase'] = 'measurement'
             observer.metadata['kit_times'].append(state['request_started'])

@@ -130,27 +130,39 @@ def main():
     args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=False)
     from isaacsim import SimulationApp
     app=SimulationApp({'headless':True});record=dict(scenario=args.scenario,production_goal=True)
+    inferred_product=None
     original_profile=bench.protocol.write_profile
+    original_signature=bench.shared._world_signature
+    def signature(stage):
+        started=time.monotonic()
+        value=original_signature(stage)
+        record.setdefault('test_world_signature_times',[]).append(dict(
+            started_at=started,finished_at=time.monotonic()))
+        return value
     def profile(path,source,budget=64):
         original_profile(path,source,budget)
         path.write_text(bench.protocol._set_table_values(path.read_text(),'motion',{'global_rgbd_representation':'reconstructed'}))
         return path
     async def ready(bundle,state):
+        nonlocal inferred_product
         await prepare(bundle,state)
         view=bundle.spatial_mapping.snapshot();state['capture_view']=view
         state['selected_mapping_input']=next((p for p in state['mapping_inputs']
             if p.generation==view.generation and min(f.acquired_at for f in p.frames)==view.timestamp),None)
-        record['inferred']=bench.baseline.serial(view.inferred)
+        inferred_product=view.inferred
         record['normal_configuration']=bench.baseline.serial(bundle.config.motion)
+        record['readiness_return_at']=time.monotonic()
     native=SimpleNamespace(scenario=args.scenario,execution_condition='frozen_rgbd',budget=64,
         headless=True,artifacts_dir=str(args.output),result=str(args.output/'result.json'))
     try:
-        with patch.object(bench.protocol,'write_profile',profile):
+        with patch.object(bench.protocol,'write_profile',profile), \
+             patch.object(bench.shared,'_world_signature',signature):
             bench.execute(native,app,research=dict(autonomous_runtime=True,research_prepare=ready,
                 research_planner_factory=AutonomousPlanner,research_record=record))
         result=json.loads((args.output/'result.json').read_text())
         record['category']=classify(result)
     finally:
+        record['inferred']=bench.baseline.serial(inferred_product)
         frozen_reference.save(args.output/'autonomous.json',record)
         app.close()
 

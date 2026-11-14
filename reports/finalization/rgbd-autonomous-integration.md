@@ -140,3 +140,76 @@ is not required by application/runtime configuration and adds no controller.
   path by default. Opt-in autonomous testing skips its old capture replacement
   and records that the production capture is unchanged. Decision is reversible;
   native performance and safety results remain to be measured.
+
+## Checkpoint D — native evidence (running)
+
+The Isaac-container offline subset passed **65 tests in 5.269 s**; architecture
+and syntax checks passed. Container startup reused its saved configuration;
+exclusive Kit/GPU preflight was clear. Each run uses a new directory below
+`outputs/motion-planning-v5/autonomous-integration-20261114`, original protocol
+fixtures, two cameras, unchanged rates/rays/voxel/budget, and a 600 s deadline.
+Commands and exit status are retained separately; SDK exit zero is not success.
+
+- 16:51–16:52, partial attempt 1: both boxes qualified; inference 318.510 ms.
+  First new publication age at readiness was 952.692 ms. Authoritative ordinary
+  capture correctly refused it at **1,028.465 ms**, `planning_source_stale`.
+  Selected-request action count zero; all runtime/scene/source contracts passed.
+  This is `SOURCE_FAILURE`, not a planning or geometry failure. Recent accepted
+  publication ages were 835–939 ms, compute 495–567 ms, transport 127–167 ms,
+  queue 47–248 ms. Hypothesis: inference plus existing map/transport/queue leaves
+  insufficient margin, worsened by test instrumentation between readiness and
+  request. No threshold, timestamp or scheduling change made. Continue matrix.
+- 16:52–16:53, empty attempt 1: empty inference retained all 64 selected floor
+  cuboids. Source age **789.946 ms** passed unchanged capture. Lula base preflight
+  rejected protected floor evidence with `base_geometry_rejected`; selected
+  action count zero, no physics advancement during selected request. This is
+  `EXPECTED_SAFE_REJECTION`; no floor removal or UNKNOWN-to-free conversion.
+- 16:53–16:54, static attempt 1: measured box qualified in 186.548 ms and
+  authoritative capture passed at **978.309 ms**. Protected floor evidence again
+  caused `base_geometry_rejected`, before IK/RRT/execution. No correction: this
+  is the established conservative base-guard limitation, not evidence to remove.
+- 16:55 decision: retain the unmodified implementation while finishing the scene
+  matrix. Run exactly three total `partial` trials at the same fixed planner seed
+  to measure short-run variability (attempt 1 already failed). No seed search,
+  exposure-age selection, fixture change or success-dependent stopping. Report
+  every attempt. Performance work requires measured avoidable duplication;
+  inference itself and existing transport/queue cost cannot be wished away.
+- 16:54–16:55, large attempt 1: authoritative source expired before assembly.
+  Independently retained inference was already rejected: the large component
+  qualified, but additional nonrobot components of 55 and 28 points lacked
+  sufficient box surfaces/points. Discarding these measured components would
+  hide unsupported geometry; no such change made. Inference 353.781 ms.
+- 16:55–16:57, partial attempt 2: both boxes qualified in 286.663 ms. Readiness
+  age 911.821 ms; authoritative capture age **1,006.755 ms**. Rejected stale,
+  zero selected actions. Readiness-to-capture overhead was 94.935 ms; attempt 1
+  overhead was 75.773 ms. This includes research observation and GT test-world
+  hashing before the ordinary request; it is not reconstruction owner blocking.
+- 16:57–16:58, narrow attempt 1: one component had an unqualified hidden bound.
+  Ordinary source assembly propagated `planning_source_reconstruction` with
+  `component_1: unqualified_hidden_bound`. Inference 258.550 ms; zero actions.
+- 16:58–16:59, v43 attempt 1: one box qualified in 154.247 ms; authoritative
+  source age **836.134 ms**. Existing fixed-base guard rejected retained floor
+  cuboids, before IK, RRT or execution; zero actions. No safety correction.
+- 17:00, sparse attempt 1: sensor box qualified in 167.793 ms, but the inferred
+  box plus every retained observed/floor proxy exceeded 64. Assembly correctly
+  rejected `planning_source_reconstruction` / `Combined inferred/observed world
+  exceeds 64 camera proxies`, classified `COLLISION_WORLD_FAILURE`; zero actions.
+  Preserve original selected evidence and budget; no packing/removal workaround.
+- 17:01–17:03, verified-occlusion attempt 1 rejected the occluder's insufficient
+  observed three-axis patch/residual; 295.528 ms inference, zero actions. The
+  separate native depth diagnostic did confirm its declared partial occlusion.
+- 17:02–17:03, partial attempt 3: both boxes qualified in 302.249 ms; readiness
+  age 933.064 ms, capture age **1,005.905 ms**, zero actions. Original three-trial
+  series is **0/3 authoritative capture successes**. Timing-only instrumentation
+  measured 13.232 ms between readiness recognition and callback return (including
+  JSON conversion), 8.990 ms test GT-world hashing and 30.255 ms from observer
+  operation start to capture. It did not change source/goal/physics behavior.
+- 17:04 bounded correction decision: defer immutable inference serialization to
+  post-experiment output and hash the test GT world before source readiness.
+  These are research instrumentation costs, absent from ordinary application
+  requests; they needlessly consume the source's freshness window. No production
+  change, new source selection rule, extra wait, threshold change or timestamp
+  refresh. Original three failures remain counted. Run one separately labeled
+  corrected partial trial at the same fixed seed, then stop this root-cause
+  iteration regardless of outcome. This correction is reversible and does not
+  establish runtime publication reliability even if the next trial succeeds.
