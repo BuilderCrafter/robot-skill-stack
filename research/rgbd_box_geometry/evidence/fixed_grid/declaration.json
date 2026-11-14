@@ -1,0 +1,45 @@
+{
+  "controls": "Identical to prior run-02; no negative-control parameter changes",
+  "declared_utc": "2026-11-14T11:42:34.679062+00:00",
+  "diagnosis_sha256": "b0afab21ee0e44c9df230d29b5e98da564271f2d364052a1ee09ad3bd37e532c",
+  "new_source_sha256": {
+    "alternative.py": "e0be5843eb55859af5dfd018520e560883bc1271a2efc7c79a8c1ddabc72d849",
+    "diagnose.py": "2c667ac37f1719f5de69a0319411c88a037d56896060351f2627a8316de2ec11",
+    "run_blind.py": "174f81bc658632b48aee37fe63a34ad0a47f7a169a1d546738db613caabfd407"
+  },
+  "policy": {
+    "cloud_point_max": 12000,
+    "depth_tolerance_m": 0.002,
+    "fit_point_max": 1200,
+    "hypothesis_max": 4,
+    "model": "single convex yaw box; no support-height prior; empirical uncertainty",
+    "name": "calibrated_three_axis_face_coverage",
+    "no_gt_geometry": true,
+    "no_mapping_ray_integration": true,
+    "numerical_fits_added": 0,
+    "required_columns": 3,
+    "required_direct_plane_normal_axes": [
+      "x",
+      "y",
+      "z"
+    ],
+    "required_rows": 3,
+    "required_unique_occupied_pixels_per_face_view": 6,
+    "residual_score_min": 0.65,
+    "residual_tolerance_m": 0.0015,
+    "sample_grid_fractions": [
+      -0.25,
+      0.0,
+      0.25
+    ],
+    "stop": "First fixed alternative only; any baseline/control failure stops development",
+    "unchanged_checks": [
+      "robot component exclusion",
+      "all six measured extent bounds",
+      "current calibrated free-ray contradiction rejection",
+      "finite box hypothesis and 1200-point fit"
+    ]
+  },
+  "reference_sha256": "9969eda0b98e7258c7475f9476c644e6f74b14502753d3c24b39690bd3b0dba0",
+  "stop": "First baseline rejection or invalid-control acceptance stops this only alternative"
+}

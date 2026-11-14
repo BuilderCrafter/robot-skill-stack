@@ -1,0 +1,200 @@
+{
+  "cases": {
+    "static": {
+      "actual_fitter_preprocessing_diagnostic": {
+        "combined_score": 0.0,
+        "coverage_score": 0.0,
+        "fill": 0.7663434906396469,
+        "footprint_area_m2": 0.01079748771998124,
+        "hull_area_m2": 0.008274584429469146,
+        "points": 1200,
+        "residual_p80_m": 9.477420149561766e-07,
+        "residual_score": 0.9999998003967029,
+        "top_fraction": 0.041666666666666664,
+        "top_points": 50,
+        "top_xy_max": [
+          0.49499995327962143,
+          0.056485747423999574
+        ],
+        "top_xy_min": [
+          0.4109611300388176,
+          -0.05665682683953632
+        ],
+        "top_z": 0.4799998553013866
+      },
+      "existing_full_dense_cloud_diagnostic": {
+        "combined_score": 0.5855039015540516,
+        "coverage_score": 0.5855040188369541,
+        "fill": 0.8736806430139127,
+        "footprint_area_m2": 0.01079748771998124,
+        "hull_area_m2": 0.009433556014128035,
+        "points": 4929,
+        "residual_p80_m": 9.494206889115731e-07,
+        "residual_score": 0.999999799688988,
+        "top_fraction": 0.04503956177723676,
+        "top_points": 222,
+        "top_xy_max": [
+          0.49500033577692415,
+          0.059819112155747714
+        ],
+        "top_xy_min": [
+          0.4106461069854075,
+          -0.05676134770693049
+        ],
+        "top_z": 0.4799998389592959
+      },
+      "original_face_support": {
+        "x+1": {
+          "points": 511,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "x-1": {
+          "points": 500,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "y+1": {
+          "points": 1559,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "y-1": {
+          "points": 0,
+          "qualified": true,
+          "source": "boundary"
+        },
+        "z+1": {
+          "points": 105,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "z-1": {
+          "points": 0,
+          "qualified": true,
+          "source": "boundary"
+        }
+      },
+      "reference_capped": {
+        "combined_score": 0.030929009182080535,
+        "coverage_score": 0.03092901558502184,
+        "fill": 0.7849486424936035,
+        "footprint_area_m2": 0.01079748771998124,
+        "hull_area_m2": 0.008475473328140628,
+        "points": 1200,
+        "residual_p80_m": 9.651903943419527e-07,
+        "residual_score": 0.9999997929794665,
+        "top_fraction": 0.04666666666666667,
+        "top_points": 56,
+        "top_xy_max": [
+          0.49500027876264485,
+          0.05829074416669723
+        ],
+        "top_xy_min": [
+          0.4111184095638638,
+          -0.05654973373974251
+        ],
+        "top_z": 0.4799998631850276
+      }
+    },
+    "v43": {
+      "actual_fitter_preprocessing_diagnostic": {
+        "combined_score": 0.9022150031742158,
+        "coverage_score": 0.9022150998168215,
+        "fill": 0.9243544159706915,
+        "footprint_area_m2": 0.0035967507900075187,
+        "hull_area_m2": 0.003324672475889523,
+        "points": 938,
+        "residual_p80_m": 6.942814127164354e-07,
+        "residual_score": 0.9999998928829658,
+        "top_fraction": 0.09914712153518124,
+        "top_points": 93,
+        "top_xy_max": [
+          0.5800004665911744,
+          -0.1950702778540366
+        ],
+        "top_xy_min": [
+          0.5201185667689656,
+          -0.2545363003202487
+        ],
+        "top_z": 0.360000744824037
+      },
+      "existing_full_dense_cloud_diagnostic": {
+        "combined_score": 0.9022150034028171,
+        "coverage_score": 0.9022150998168215,
+        "fill": 0.9243544159706915,
+        "footprint_area_m2": 0.0035967507900075187,
+        "hull_area_m2": 0.003324672475889523,
+        "points": 941,
+        "residual_p80_m": 6.934597891472549e-07,
+        "residual_score": 0.9999998931363437,
+        "top_fraction": 0.09883103081827843,
+        "top_points": 93,
+        "top_xy_max": [
+          0.5800004665911744,
+          -0.1950702778540366
+        ],
+        "top_xy_min": [
+          0.5201185667689656,
+          -0.2545363003202487
+        ],
+        "top_z": 0.360000744824037
+      },
+      "original_face_support": {
+        "x+1": {
+          "points": 115,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "x-1": {
+          "points": 64,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "y+1": {
+          "points": 258,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "y-1": {
+          "points": 0,
+          "qualified": true,
+          "source": "boundary"
+        },
+        "z+1": {
+          "points": 37,
+          "qualified": true,
+          "source": "direct_face"
+        },
+        "z-1": {
+          "points": 0,
+          "qualified": true,
+          "source": "boundary"
+        }
+      },
+      "reference_capped": {
+        "combined_score": 0.9022150034028171,
+        "coverage_score": 0.9022150998168215,
+        "fill": 0.9243544159706915,
+        "footprint_area_m2": 0.0035967507900075187,
+        "hull_area_m2": 0.003324672475889523,
+        "points": 941,
+        "residual_p80_m": 6.934597891472549e-07,
+        "residual_score": 0.9999998931363437,
+        "top_fraction": 0.09883103081827843,
+        "top_points": 93,
+        "top_xy_max": [
+          0.5800004665911744,
+          -0.1950702778540366
+        ],
+        "top_xy_min": [
+          0.5201185667689656,
+          -0.2545363003202487
+        ],
+        "top_z": 0.360000744824037
+      }
+    }
+  },
+  "reference_source_sha256": "9969eda0b98e7258c7475f9476c644e6f74b14502753d3c24b39690bd3b0dba0",
+  "scope": "Task A diagnosis only; no GT geometry loaded"
+}

@@ -1,0 +1,10 @@
+{
+  "all_declared_tests_pass": false,
+  "completed_cases": [
+    "static"
+  ],
+  "failures": [
+    "static: original object failed alternative"
+  ],
+  "no_gt_geometry_read": true
+}

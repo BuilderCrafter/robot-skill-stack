@@ -1,0 +1,63 @@
+{
+  "controls": [
+    "missing_lower_boundary",
+    "robot_returns",
+    "robot_connected",
+    "merged_objects",
+    "contradictory_depth"
+  ],
+  "declared_utc": "2026-11-14T12:39:17.331493+00:00",
+  "input_manifest_sha256": "0cd7e7e1104bd0522b922626e1c422d5e99390b819177029ae99682ee15915f3",
+  "method": "visibility",
+  "no_gt_input": true,
+  "policy": {
+    "added_fits": 0,
+    "all_observable_bins_must_have_support": true,
+    "assumption": "One static convex yaw box; empirical depth/plane bands, no shape guarantee",
+    "axis_families": [
+      "x",
+      "y",
+      "z"
+    ],
+    "cloud_point_max": 12000,
+    "contradiction": "Any current visible plane-probe free contradiction rejects model",
+    "depth_band_m": 0.002,
+    "direct_plane_support": "Unchanged reference minimum/span/rank/residual checks",
+    "fit_point_max": 1200,
+    "grid_fractions": [
+      -0.25,
+      0.0,
+      0.25
+    ],
+    "hypothesis_max": 4,
+    "mapping_rays_added": 0,
+    "minimum_supported_columns": 2,
+    "minimum_supported_rows": 2,
+    "name": "visibility_aware_observed_plane_patch",
+    "new_workers": 0,
+    "original_bounds_robot_free_checks": "unchanged",
+    "required_bounded_faces": 6,
+    "required_unique_supported_pixels": 6,
+    "residual_score_min": 0.65,
+    "residual_tolerance_m": 0.0015,
+    "unobserved": [
+      "outside_fov",
+      "behind_camera",
+      "occluded",
+      "invalid_depth",
+      "back_facing"
+    ]
+  },
+  "source_sha256": {
+    "__init__.py": "6243d992ceb207508a9523bf7bf5eaaca3cacaa1f0eb90cc62b8f1bfeb7428b6",
+    "controls.py": "34f3ca08d96e1e3b71c60bcf273964b04b67e50f6cd1abc30efd8833227a6483",
+    "fixed_grid.py": "7e6002327fc46e3201750a97ebbcc7fb8e01b812ec4b87053647f110b3e7e965",
+    "inputs.py": "75bc88d8ca7426fd5d767a1752ba01fe2203fbf80b888e9bac88550da7282494",
+    "reference.py": "9969eda0b98e7258c7475f9476c644e6f74b14502753d3c24b39690bd3b0dba0",
+    "run.py": "f63733049e067d2df35a0ddeb34af230f620b2d01ec5aa72c1331b7c2548a9f7",
+    "score.py": "b2902cae4a4cd397e60332ec0a4cb032cabd831b7769eb2ef30522807eae834c",
+    "test_research.py": "8ccf43fed9f7807285ac979177e26305b94cc88bbe18b7ef1f70aca88fae1b1a",
+    "visibility.py": "266949860bc86fd39dd019218b8c9a6bdfaab58695867fab8d8b41edf6d8422a"
+  },
+  "stop": "First positive-scene or negative-control failure; no new rule"
+}

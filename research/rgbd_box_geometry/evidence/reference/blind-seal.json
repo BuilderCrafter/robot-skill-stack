@@ -1,0 +1,12 @@
+{
+  "hashes": {
+    "blind-results.json": "e5c168e1b0e88af6bef52333fd5e125856fb806763d59016caafa16c747abbcc",
+    "declaration.json": "52b414c7f86ffd22ef353a29d16fb13304c79a6f2ab0c8318881ca33dbe821f3",
+    "input-manifest.json": "95ef11a237f011980172e589a944a7693de698292d42e86a4c02e0b8ccb2c73a",
+    "negative-controls.json": "7df99837b426701134f0001450b39265e2e6c1a41cd6bc852a14e74f3d981b00",
+    "static-blind.json": "e70f784e3eeebd9948487a027970b434c3a1eb7d89ffc24c1a162cf80363deed",
+    "v43-blind.json": "ca81089aba92da1b1634ab19014e7d976d6c87e9c813a720d0153877e44c6613"
+  },
+  "no_reference_geometry_loaded": true,
+  "sealed_utc": "2026-11-14T10:47:46.017364+00:00"
+}

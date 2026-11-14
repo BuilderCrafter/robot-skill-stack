@@ -1,0 +1,8 @@
+{
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/accepted_mapping_input.pickle": "36b0d55abec6b335573f76d39f35a30cd2cd5752cd3b29f1a601f06af57ce555",
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/camera_frames.npz": "957e2ef505fb8445ef780057ed7c4faa571c20ba560d842ea5c517c5fb6fc73f",
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/camera_metadata.json": "6b640079eda86cf088a80f571e050434c59df4d52c40adfed25efe053487d01c",
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/occupancy.json": "4b5f15a6c9fd29b9847ebd428ced24d5856133ec6a313f15df3ea63f81bea90b",
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/occupancy.npz": "5786d0f52c3a4c4b7ec29dbdbe5374d0fdf33c65e09e1b961d9dc71a1f54063a",
+  "outputs/motion-planning-v5/rgbd-base-clearance-20261113/static/frozen_rgbd/runtime_profile.toml": "48a7610283a2746b83b1981c50bdf5877c516eaed258087566fbffebdd7f9283"
+}

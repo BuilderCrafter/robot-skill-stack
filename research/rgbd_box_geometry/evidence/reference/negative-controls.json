@@ -1,0 +1,2523 @@
+{
+  "static": {
+    "controls": {
+      "contradictory_depth": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.042999464341617166,
+                0.04700055230086031
+              ],
+              "plane_local_m": 0.04499991148324415,
+              "points": 511,
+              "spread_m": 3.3928889089235303e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.04700055230086031,
+                -0.042999653221069356
+              ],
+              "plane_local_m": -0.045000086588454134,
+              "points": 500,
+              "spread_m": 3.192511948465343e-07,
+              "supported": true
+            },
+            "outer_local_m": -0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.05798378144423194,
+                0.06198530666797403
+              ],
+              "plane_local_m": 0.05998450047970371,
+              "points": 1559,
+              "spread_m": 5.698440928708636e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.06198530666797403,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 637,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 470,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 97,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.12798391613927185,
+                0.13198473779953124
+              ],
+              "plane_local_m": 0.1299842584203618,
+              "points": 105,
+              "spread_m": 3.457659041194993e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.13198473779953124,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 345,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 245,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 422,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          }
+        },
+        "free_rays": {
+          "contradictions": 76,
+          "tested_pixels": 76,
+          "witnesses": [
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                323,
+                137
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                323,
+                141
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                323,
+                146
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                274,
+                30
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                276,
+                82
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                283,
+                41
+              ]
+            }
+          ]
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.45000004493304324,
+            1.5095998918856173e-05,
+            0.3500156871823169
+          ],
+          "dimensions": [
+            0.09000110460172062,
+            0.11997061333594805,
+            0.2599694803334514
+          ],
+          "residual_p80_m": 9.651903943419527e-07,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.030929009182080535,
+          "top_fill": 0.7849486424936035,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 4929,
+        "reason": "contradictory_current_free_rays",
+        "robot_envelope_points": 0,
+        "status": "rejected"
+      },
+      "merged_objects": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.041538087641346255,
+                0.04700055230086031
+              ],
+              "plane_local_m": 0.04497590889905168,
+              "points": 1160,
+              "spread_m": 6.097079882921711e-05,
+              "supported": true
+            },
+            "outer_local_m": 0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.04700055230086031,
+                -0.04152173779176338
+              ],
+              "plane_local_m": -0.044967539208675994,
+              "points": 1136,
+              "spread_m": 6.708915257606571e-05,
+              "supported": true
+            },
+            "outer_local_m": -0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.09397496544501635,
+                0.09797649066875844
+              ],
+              "plane_local_m": 0.0959756844804881,
+              "points": 1559,
+              "spread_m": 5.698440928264547e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.09797649066875844,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 2,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 300,
+                "missing": 0,
+                "occupied": 339,
+                "outer_local_m": null,
+                "reason": "missing_boundary_bins",
+                "transitions": 91,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.044967539208675994,
+                      -0.09620000052812583,
+                      -0.03636613742046296
+                    ],
+                    "pixel_xy": [
+                      369,
+                      42
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.044967539208675994,
+                      -0.09629597811127888,
+                      -0.006029124345538928
+                    ],
+                    "pixel_xy": [
+                      370,
+                      18
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 234,
+                "missing": 0,
+                "occupied": 236,
+                "outer_local_m": -0.09883353841429225,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 68,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      -0.09601216443719823,
+                      -0.07070566316035731
+                    ],
+                    "pixel_xy": [
+                      312,
+                      220
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      -0.09681979246810019,
+                      0.03172982946785197
+                    ],
+                    "pixel_xy": [
+                      311,
+                      186
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      -0.09604214929756104,
+                      0.07688750999005989
+                    ],
+                    "pixel_xy": [
+                      311,
+                      170
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 41,
+                "missing": 0,
+                "occupied": 56,
+                "outer_local_m": -0.09943197113343397,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 14,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.03409246541337674,
+                      -0.09729230313567025,
+                      0.1299842503343449
+                    ],
+                    "pixel_xy": [
+                      310,
+                      135
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.007499313646423644,
+                      -0.09735537130657355,
+                      0.1299842503343449
+                    ],
+                    "pixel_xy": [
+                      310,
+                      140
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.01318986735492933,
+                      -0.09740443765322841,
+                      0.1299842503343449
+                    ],
+                    "pixel_xy": [
+                      310,
+                      144
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.09883353841429225,
+            "qualified": true,
+            "source": "boundary"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.1279838058866296,
+                0.13198474016672568
+              ],
+              "plane_local_m": 0.1299842503343449,
+              "points": 224,
+              "spread_m": 3.3257628958421876e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.13198474016672568,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 2,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 387,
+                "missing": 0,
+                "occupied": 188,
+                "outer_local_m": null,
+                "reason": "missing_boundary_bins",
+                "transitions": 57,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.044967539208675994,
+                      -0.03478164187984134,
+                      -0.13011401601097533
+                    ],
+                    "pixel_xy": [
+                      353,
+                      131
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.044967539208675994,
+                      0.003775034094212315,
+                      -0.13018825745612117
+                    ],
+                    "pixel_xy": [
+                      344,
+                      145
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 268,
+                "missing": 0,
+                "occupied": 122,
+                "outer_local_m": -0.1347360506185696,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 41,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      -0.03366945326018607,
+                      -0.13005057313156632
+                    ],
+                    "pixel_xy": [
+                      336,
+                      238
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      0.02409438703769,
+                      -0.12131161290501136
+                    ],
+                    "pixel_xy": [
+                      358,
+                      235
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044975908899051786,
+                      0.024433367569445447,
+                      -0.13121578760913954
+                    ],
+                    "pixel_xy": [
+                      358,
+                      238
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 445,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 14,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.1347360506185696,
+            "qualified": true,
+            "source": "boundary"
+          }
+        },
+        "free_rays": {
+          "contradictions": 50,
+          "tested_pixels": 81,
+          "witnesses": [
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                365,
+                198
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                365,
+                223
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                366,
+                177
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                255,
+                2
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                256,
+                46
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                259,
+                65
+              ]
+            }
+          ]
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.45000004493304324,
+            0.03600627999970327,
+            0.3500156871823169
+          ],
+          "dimensions": [
+            0.09000110460172062,
+            0.19195298133751687,
+            0.2599694803334514
+          ],
+          "residual_p80_m": 0.01082954910851325,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.0,
+          "top_fill": 0.7030663720906791,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 9858,
+        "reason": "contradictory_current_free_rays",
+        "robot_envelope_points": 0,
+        "status": "rejected"
+      },
+      "missing_lower_boundary": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.042999464341617166,
+                0.04700055230086031
+              ],
+              "plane_local_m": 0.04499990994395599,
+              "points": 497,
+              "spread_m": 3.4038087446536247e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.04700055230086031,
+                -0.042999653221069356
+              ],
+              "plane_local_m": -0.04500008476677158,
+              "points": 477,
+              "spread_m": 3.199318292804176e-07,
+              "supported": true
+            },
+            "outer_local_m": -0.04700055230086031,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.05798378144423194,
+                0.06198530666797403
+              ],
+              "plane_local_m": 0.05998449866405232,
+              "points": 1492,
+              "spread_m": 5.702173167993624e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.06198530666797403,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 2,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 295,
+                "missing": 0,
+                "occupied": 309,
+                "outer_local_m": null,
+                "reason": "missing_boundary_bins",
+                "transitions": 86,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.045000084766771586,
+                      -0.0600844101177932,
+                      -0.04034138522821462
+                    ],
+                    "pixel_xy": [
+                      369,
+                      42
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.045000084766771586,
+                      -0.06018037382008978,
+                      -0.01000875967492576
+                    ],
+                    "pixel_xy": [
+                      370,
+                      18
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 195,
+                "missing": 67,
+                "occupied": 198,
+                "outer_local_m": -0.06391437502684927,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 57,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      0.044999909943955974,
+                      -0.0618987899342982,
+                      -0.034434115879995564
+                    ],
+                    "pixel_xy": [
+                      311,
+                      207
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044999909943955974,
+                      -0.060778909154590326,
+                      0.030597276908997606
+                    ],
+                    "pixel_xy": [
+                      311,
+                      185
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.044999909943955974,
+                      -0.060050816373038586,
+                      0.07287757006330398
+                    ],
+                    "pixel_xy": [
+                      311,
+                      170
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 41,
+                "missing": 0,
+                "occupied": 56,
+                "outer_local_m": -0.06344078702133146,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 14,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.03409244929462951,
+                      -0.061301119025021805,
+                      0.1259603655785495
+                    ],
+                    "pixel_xy": [
+                      310,
+                      135
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.00749929787251169,
+                      -0.0613641871951073,
+                      0.1259603655785495
+                    ],
+                    "pixel_xy": [
+                      310,
+                      140
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.013189882860563218,
+                      -0.06141325354112591,
+                      0.1259603655785495
+                    ],
+                    "pixel_xy": [
+                      310,
+                      144
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.06344078702133146,
+            "qualified": true,
+            "source": "boundary"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.12396002329745964,
+                0.12796084495771903
+              ],
+              "plane_local_m": 0.1259603655785495,
+              "points": 105,
+              "spread_m": 3.4576590404178373e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.12796084495771903,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 263,
+                "occupied": 81,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 165,
+                "occupied": 87,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 120,
+                "occupied": 301,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          }
+        },
+        "free_rays": {
+          "contradictions": 0,
+          "tested_pixels": 71,
+          "witnesses": []
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.45000004493304324,
+            1.5095998918856173e-05,
+            0.3540395800241291
+          ],
+          "dimensions": [
+            0.09000110460172062,
+            0.11997061333594805,
+            0.25192169464982694
+          ],
+          "residual_p80_m": 9.487536325902824e-07,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.21800019419259092,
+          "top_fill": 0.8148800380478559,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 4754,
+        "reason": "unsupported_or_merged_box_surface",
+        "robot_envelope_points": 0,
+        "status": "rejected"
+      },
+      "robot_returns": {
+        "faces": {},
+        "geometry": null,
+        "hypothesis": null,
+        "points": 1200,
+        "reason": "possible_robot_component",
+        "robot_envelope_points": 1200,
+        "status": "rejected"
+      }
+    },
+    "missing_boundary_pixels": 2677,
+    "source_component": 0
+  },
+  "v43": {
+    "controls": {
+      "contradictory_depth": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.02799953056280846,
+                0.03200031098302669
+              ],
+              "plane_local_m": 0.029999925088174676,
+              "points": 115,
+              "spread_m": 2.817543715855768e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.03200031098302669,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.03200028119517029,
+                -0.02799952089695945
+              ],
+              "plane_local_m": -0.029999881705883476,
+              "points": 64,
+              "spread_m": 3.1619224361272697e-07,
+              "supported": true
+            },
+            "outer_local_m": -0.03200028119517029,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.02797116088201751,
+                0.031972515448675465
+              ],
+              "plane_local_m": 0.029971961694421078,
+              "points": 258,
+              "spread_m": 5.01974434622375e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.031972515448675465,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 195,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 232,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 91,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.05796608734698894,
+                0.06196663216886522
+              ],
+              "plane_local_m": 0.0599663768217265,
+              "points": 37,
+              "spread_m": 2.543296412568785e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.06196663216886522,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 120,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 131,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 43,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 228,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          }
+        },
+        "free_rays": {
+          "contradictions": 78,
+          "tested_pixels": 78,
+          "witnesses": [
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                231,
+                221
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                232,
+                214
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                232,
+                217
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                282,
+                2
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                282,
+                22
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                286,
+                19
+              ]
+            }
+          ]
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.5500003778456712,
+            -0.22497138483277962,
+            0.3000343372087435
+          ],
+          "dimensions": [
+            0.06000062196605338,
+            0.059945225101874056,
+            0.11993389390645381
+          ],
+          "residual_p80_m": 6.934597891472549e-07,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.9022150034028171,
+          "top_fill": 0.9243544159706915,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 941,
+        "reason": "contradictory_current_free_rays",
+        "robot_envelope_points": 0,
+        "status": "rejected"
+      },
+      "merged_objects": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.04599971715262441,
+                0.05000049757284264
+              ],
+              "plane_local_m": 0.04800011167799063,
+              "points": 115,
+              "spread_m": 2.817543715831482e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.05000049757284264,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.05000046778498635,
+                -0.04599970748677551
+              ],
+              "plane_local_m": -0.04800006829569955,
+              "points": 64,
+              "spread_m": 3.16192243628166e-07,
+              "supported": true
+            },
+            "outer_local_m": -0.05000046778498635,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.02662335067283106,
+                0.031972515448675465
+              ],
+              "plane_local_m": 0.02996454339990916,
+              "points": 560,
+              "spread_m": 1.251382406410213e-05,
+              "supported": true
+            },
+            "outer_local_m": 0.031972515448675465,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 2,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 87,
+                "missing": 0,
+                "occupied": 108,
+                "outer_local_m": null,
+                "reason": "missing_boundary_bins",
+                "transitions": 26,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.04800006829569953,
+                      -0.03236791440706033,
+                      -0.01619889851040318
+                    ],
+                    "pixel_xy": [
+                      330,
+                      7
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.04800006829569953,
+                      -0.03207688603150438,
+                      -0.005486673953874643
+                    ],
+                    "pixel_xy": [
+                      330,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 235,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 99,
+                "missing": 0,
+                "occupied": 47,
+                "outer_local_m": -0.03258800545277499,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 18,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.031388565519549605,
+                      -0.030041927939755353,
+                      0.05995911865357095
+                    ],
+                    "pixel_xy": [
+                      231,
+                      204
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.009870390886592473,
+                      -0.030044149923285107,
+                      0.05995911865357095
+                    ],
+                    "pixel_xy": [
+                      230,
+                      209
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.015444725502209877,
+                      -0.02249999491541438,
+                      0.059959118653571064
+                    ],
+                    "pixel_xy": [
+                      232,
+                      215
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 3,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.03258800545277499,
+            "qualified": true,
+            "source": "boundary"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.05763634743103618,
+                0.06196694695322691
+              ],
+              "plane_local_m": 0.059959118653571,
+              "points": 100,
+              "spread_m": 2.7675164224750723e-05,
+              "supported": true
+            },
+            "outer_local_m": 0.06196694695322691,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 60,
+                "missing": 0,
+                "occupied": 60,
+                "outer_local_m": -0.0655217664719297,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 17,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.04800006829569953,
+                      -0.008783525402372039,
+                      -0.06110371468355624
+                    ],
+                    "pixel_xy": [
+                      325,
+                      41
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.04800006829569947,
+                      0.005708862513931212,
+                      -0.06060998478542906
+                    ],
+                    "pixel_xy": [
+                      322,
+                      44
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.04800006829569953,
+                      0.019909426031073263,
+                      -0.060126196825904366
+                    ],
+                    "pixel_xy": [
+                      319,
+                      47
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 132,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 72,
+                "missing": 0,
+                "occupied": 27,
+                "outer_local_m": -0.07812347495186757,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 10,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.014612437195532735,
+                      0.02996454339990917,
+                      -0.06039392086601558
+                    ],
+                    "pixel_xy": [
+                      259,
+                      247
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.010918644872688121,
+                      0.02996454339990917,
+                      -0.0639222200414481
+                    ],
+                    "pixel_xy": [
+                      259,
+                      249
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.014399840843202671,
+                      0.02996454339990917,
+                      -0.02210633021135
+                    ],
+                    "pixel_xy": [
+                      257,
+                      242
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 231,
+                "missing": 0,
+                "occupied": 118,
+                "outer_local_m": -0.06298335512134083,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 39,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.03086380318238341,
+                      0.02996454339990917,
+                      -0.060113605343868504
+                    ],
+                    "pixel_xy": [
+                      306,
+                      48
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.005310891518327254,
+                      0.02996454339990906,
+                      -0.06015898961627936
+                    ],
+                    "pixel_xy": [
+                      290,
+                      46
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.01224031633612549,
+                      0.02996454339990906,
+                      -0.05451198046462463
+                    ],
+                    "pixel_xy": [
+                      279,
+                      41
+                    ]
+                  }
+                ]
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.06298335512134083,
+            "qualified": true,
+            "source": "boundary"
+          }
+        },
+        "free_rays": {
+          "contradictions": 43,
+          "tested_pixels": 80,
+          "witnesses": [
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                230,
+                227
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                231,
+                222
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCamera",
+              "pixel_xy": [
+                231,
+                238
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                260,
+                19
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                264,
+                16
+              ]
+            },
+            {
+              "camera_id": "/World/PerceptionCameraSide",
+              "pixel_xy": [
+                267,
+                13
+              ]
+            }
+          ]
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.5680005644354873,
+            -0.22497138483277962,
+            0.3000343372087435
+          ],
+          "dimensions": [
+            0.09600099514568539,
+            0.059945225101874056,
+            0.11993389390645381
+          ],
+          "residual_p80_m": 1.3122765991413502e-06,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.698965030762187,
+          "top_fill": 0.8918344477189936,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 1882,
+        "reason": "contradictory_current_free_rays",
+        "robot_envelope_points": 0,
+        "status": "rejected"
+      },
+      "missing_lower_boundary": {
+        "faces": {
+          "x+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.02799953056280846,
+                0.03200031098302669
+              ],
+              "plane_local_m": 0.029999934111984265,
+              "points": 112,
+              "spread_m": 2.5790517247364216e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.03200031098302669,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "x-1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                -0.03200028119517029,
+                -0.02799952089695945
+              ],
+              "plane_local_m": -0.029999887570944374,
+              "points": 54,
+              "spread_m": 3.2926026535054494e-07,
+              "supported": true
+            },
+            "outer_local_m": -0.03200028119517029,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.02797116088201751,
+                0.031972515448675465
+              ],
+              "plane_local_m": 0.029971969586389754,
+              "points": 226,
+              "spread_m": 4.96025926392113e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.031972515448675465,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "y-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 2,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 76,
+                "missing": 0,
+                "occupied": 91,
+                "outer_local_m": null,
+                "reason": "missing_boundary_bins",
+                "transitions": 22,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.02999988757094435,
+                      -0.03220117777856357,
+                      -0.014168624302838051
+                    ],
+                    "pixel_xy": [
+                      330,
+                      3
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      -0.02999988757094435,
+                      -0.03207686779725827,
+                      -0.009593000253069861
+                    ],
+                    "pixel_xy": [
+                      330,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 106,
+                "missing": 42,
+                "occupied": 75,
+                "outer_local_m": -0.03265708086075431,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 23,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      0.029999934111984317,
+                      -0.03016616789646287,
+                      -0.014548283591035327
+                    ],
+                    "pixel_xy": [
+                      232,
+                      238
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.029999934111984317,
+                      -0.030068344984506334,
+                      0.009638280083732464
+                    ],
+                    "pixel_xy": [
+                      231,
+                      230
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.029999934111984317,
+                      -0.030281830998519166,
+                      0.030380234270587336
+                    ],
+                    "pixel_xy": [
+                      230,
+                      223
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 3,
+                "bounded": true,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 46,
+                "missing": 0,
+                "occupied": 45,
+                "outer_local_m": -0.03306703239678271,
+                "reason": "three_separated_occupied_free_transition_bins",
+                "transitions": 13,
+                "witnesses": [
+                  {
+                    "intersection_local_m": [
+                      -0.013377423673274658,
+                      -0.030039954264001467,
+                      0.05586004439092329
+                    ],
+                    "pixel_xy": [
+                      231,
+                      204
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.003867656307977141,
+                      -0.03052188659511537,
+                      0.05586004439092329
+                    ],
+                    "pixel_xy": [
+                      230,
+                      208
+                    ]
+                  },
+                  {
+                    "intersection_local_m": [
+                      0.008140540920439365,
+                      -0.030042176225842404,
+                      0.05586004439092329
+                    ],
+                    "pixel_xy": [
+                      230,
+                      209
+                    ]
+                  }
+                ]
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "z+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "no_usable_ribbon",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": -0.03265708086075431,
+            "qualified": true,
+            "source": "boundary"
+          },
+          "z+1": {
+            "boundary_trials": [],
+            "direct": {
+              "interval_local_m": [
+                0.053859754916185776,
+                0.05786029973806206
+              ],
+              "plane_local_m": 0.05586004439092334,
+              "points": 37,
+              "spread_m": 2.5432964125410295e-07,
+              "supported": true
+            },
+            "outer_local_m": 0.05786029973806206,
+            "qualified": true,
+            "source": "direct_face"
+          },
+          "z-1": {
+            "boundary_trials": [
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x-1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 108,
+                "occupied": 13,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 85,
+                "occupied": 44,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "x+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 0,
+                "occupied": 0,
+                "outer_local_m": null,
+                "reason": "carrier_back_facing",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCamera",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 39,
+                "occupied": 3,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              },
+              {
+                "bins_supported": 0,
+                "bounded": false,
+                "camera_id": "/World/PerceptionCameraSide",
+                "carrier": "y+1",
+                "foreground": 0,
+                "free": 0,
+                "missing": 111,
+                "occupied": 112,
+                "outer_local_m": null,
+                "reason": "no_occupied_free_pair",
+                "transitions": 0,
+                "witnesses": []
+              }
+            ],
+            "direct": {
+              "interval_local_m": null,
+              "points": 0,
+              "spread_m": null,
+              "supported": false
+            },
+            "outer_local_m": null,
+            "qualified": false,
+            "source": "unqualified"
+          }
+        },
+        "free_rays": {
+          "contradictions": 0,
+          "tested_pixels": 62,
+          "witnesses": []
+        },
+        "geometry": null,
+        "hypothesis": {
+          "center": [
+            0.5500003778456712,
+            -0.22497138483277962,
+            0.30414066963954667
+          ],
+          "dimensions": [
+            0.06000062196605338,
+            0.059945225101874056,
+            0.11172122904484749
+          ],
+          "residual_p80_m": 6.966287615650657e-07,
+          "rotation": [
+            [
+              1.0,
+              1.9377047211159066e-18,
+              0.0
+            ],
+            [
+              -1.9377047211159066e-18,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "score": 0.9022150025196184,
+          "top_fill": 0.9243544159706915,
+          "yaw_rad": -1.9377047211159066e-18
+        },
+        "points": 863,
+        "reason": "unqualified_hidden_bound",
+        "robot_envelope_points": 0,
+        "status": "unqualified"
+      },
+      "robot_returns": {
+        "faces": {},
+        "geometry": null,
+        "hypothesis": null,
+        "points": 1200,
+        "reason": "possible_robot_component",
+        "robot_envelope_points": 1200,
+        "status": "rejected"
+      }
+    },
+    "missing_boundary_pixels": 1396,
+    "source_component": 3
+  }
+}

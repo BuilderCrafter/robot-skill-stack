@@ -1,0 +1,13 @@
+{
+  "static": {
+    "additional_coverage_cpu_ms": 2.047457,
+    "additional_coverage_wall_ms": 2.053494,
+    "reference_cpu_ms": 1874.671876,
+    "reference_wall_ms": {
+      "existing_projection_fusion_clustering": 134.8702740015142,
+      "qualification": 49.68087599991122,
+      "robot_envelopes": 9.955519999493845,
+      "total": 194.50667000091926
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "static": {
+    "allocated_rays": 1024,
+    "existing_filter_masked": 35,
+    "masked_endpoints_in_envelopes": 35,
+    "qualification": "OFFLINE ONLY; archive clock used; no live freshness claim",
+    "retained_endpoints_in_envelopes": 4
+  },
+  "v43": {
+    "allocated_rays": 1024,
+    "existing_filter_masked": 34,
+    "masked_endpoints_in_envelopes": 34,
+    "qualification": "OFFLINE ONLY; archive clock used; no live freshness claim",
+    "retained_endpoints_in_envelopes": 3
+  }
+}

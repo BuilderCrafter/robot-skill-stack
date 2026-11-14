@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "scope": "External archives only; no depth arrays or robot meshes are distributed",
+  "files": {
+    "static/frozen_rgbd/accepted_mapping_input.pickle": "36b0d55abec6b335573f76d39f35a30cd2cd5752cd3b29f1a601f06af57ce555",
+    "static/frozen_rgbd/camera_frames.npz": "957e2ef505fb8445ef780057ed7c4faa571c20ba560d842ea5c517c5fb6fc73f",
+    "static/frozen_rgbd/camera_metadata.json": "6b640079eda86cf088a80f571e050434c59df4d52c40adfed25efe053487d01c",
+    "static/frozen_rgbd/occupancy.json": "4b5f15a6c9fd29b9847ebd428ced24d5856133ec6a313f15df3ea63f81bea90b",
+    "static/frozen_rgbd/occupancy.npz": "5786d0f52c3a4c4b7ec29dbdbe5374d0fdf33c65e09e1b961d9dc71a1f54063a",
+    "static/frozen_rgbd/runtime_profile.toml": "48a7610283a2746b83b1981c50bdf5877c516eaed258087566fbffebdd7f9283",
+    "v43/static/accepted_mapping_input.pickle": "00dc6e5c38a1976aaad9ddf7db1c77efde4a52acdfe46d1fa068c72a3a5dfff5",
+    "v43/static/camera_frames.npz": "95c9a4d386ec9e8abe7d7c30e9d93d4bf788e25eb4934da1ea747616356d0da1",
+    "v43/static/camera_metadata.json": "192dae7711aab7b2e360dbd09ae7dccdcd9b105d725a74ee19b4f576574ee676",
+    "v43/static/occupancy.json": "6736512b2e15daf01637741b1c267dc9835f50e36f679045a9d47baa0448d3bc",
+    "v43/static/occupancy.npz": "3847f02479db786fd25498fc69e50444103d834e74981da8ca5b343bdebf3c95",
+    "v43/static/runtime_profile.toml": "0e3f0121d45c1988714e63e98f8049410d4a2d9a7ef0e2fdddc1decdc23a7e5c",
+    "static/frozen_rgbd/geometry_reference.json": "6db021d7d5dbea775be07fefec723f681ed2bb6c4790302b26c989c8a663f11d",
+    "static/frozen_rgbd/result.json": "99306515908489a0ae9bfa1fe8d10d990c2ec87712ce048a01fc2de86b7e1e6d",
+    "v43/static/geometry_reference.json": "4302fe33275e566f9e657da95b9b73c69682e13c1e1afa8e8aa663212979c245",
+    "v43/static/result.json": "9d3f8c4c61b8a472f2940605d3efb21ec1e75edab259f700039151a7d24ee005"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "camera": "/World/PerceptionCameraSide",
+  "face": "y+1",
+  "pixels": [
+    {
+      "grid_bin": [
+        0,
+        0
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        321,
+        100
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        0,
+        1
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        321,
+        46
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        0,
+        2
+      ],
+      "inside_image": false,
+      "pixel_xy": [
+        322,
+        -14
+      ],
+      "valid_depth": false
+    },
+    {
+      "grid_bin": [
+        1,
+        0
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        303,
+        97
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        1,
+        1
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        302,
+        43
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        1,
+        2
+      ],
+      "inside_image": false,
+      "pixel_xy": [
+        301,
+        -16
+      ],
+      "valid_depth": false
+    },
+    {
+      "grid_bin": [
+        2,
+        0
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        285,
+        95
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        2,
+        1
+      ],
+      "inside_image": true,
+      "pixel_xy": [
+        283,
+        41
+      ],
+      "valid_depth": true
+    },
+    {
+      "grid_bin": [
+        2,
+        2
+      ],
+      "inside_image": false,
+      "pixel_xy": [
+        282,
+        -18
+      ],
+      "valid_depth": false
+    }
+  ],
+  "scope": "Read-only explanation of the sealed failed grid; no changed parameters or candidate re-evaluation"
+}

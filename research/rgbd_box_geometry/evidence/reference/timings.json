@@ -1,0 +1,14 @@
+{
+  "static": {
+    "existing_projection_fusion_clustering": 135.5829359999916,
+    "qualification": 50.40393400031462,
+    "robot_envelopes": 9.582806999787863,
+    "total": 195.5696770000941
+  },
+  "v43": {
+    "existing_projection_fusion_clustering": 97.26112499993178,
+    "qualification": 59.63998100014578,
+    "robot_envelopes": 9.789013000045088,
+    "total": 166.69011900012265
+  }
+}

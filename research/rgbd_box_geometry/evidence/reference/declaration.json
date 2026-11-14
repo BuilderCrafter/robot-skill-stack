@@ -1,0 +1,32 @@
+{
+  "fixed_controls": [
+    "missing lower edge/ribbons",
+    "captured robot mesh returns",
+    "merged translated copy",
+    "depth observations shifted 50mm behind model"
+  ],
+  "policy": {
+    "boundary_bins": 3,
+    "candidate_max": 16,
+    "cloud_max": 12000,
+    "cloud_voxel_m": 0.002,
+    "depth_tolerance_m": 0.002,
+    "direct_face_min": 6,
+    "direct_face_span_fraction": 0.25,
+    "edge_samples": 48,
+    "fit_point_max": 1200,
+    "fit_tolerance_m": 0.0015,
+    "hidden_bound": "must have current calibrated occupied/free edge witnesses",
+    "model": "single convex yaw box; no support-height prior",
+    "model_max": 4,
+    "robot_envelope_margin_m": 0.005,
+    "score_min": 0.65,
+    "stride": 2
+  },
+  "source_code_sha256": {
+    "blind.py": "604076680efd81dfe64586a746c1e3dbd4d9df436b6c3c5f7979a8db0f5b3ee6",
+    "prototype.py": "9969eda0b98e7258c7475f9476c644e6f74b14502753d3c24b39690bd3b0dba0"
+  },
+  "started_utc": "2026-11-14T10:47:45.156721+00:00",
+  "stop": "No algorithm changes after hidden-bound/identification/robot gate failure"
+}

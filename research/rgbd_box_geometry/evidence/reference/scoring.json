@@ -1,0 +1,140 @@
+{
+  "blind_sha256": "e5c168e1b0e88af6bef52333fd5e125856fb806763d59016caafa16c747abbcc",
+  "cases": {
+    "static": {
+      "component": 0,
+      "hypothesis_evidence_audit_not_an_admitted_model": {
+        "archive_source_usable": false,
+        "complete_FREE_cells_strictly_in_model": 0,
+        "current_publication_freshness_not_revalidated": true,
+        "fits_64_with_whole_cuboid_preservation": true,
+        "fully_contained_nonfloor_boxes": [
+          "71:72:65:66:25:26",
+          "71:72:65:66:42:43",
+          "72:73:58:59:49:50",
+          "72:73:65:66:36:37",
+          "72:73:65:66:38:39",
+          "72:73:65:66:40:41",
+          "73:74:65:66:32:33",
+          "73:74:65:66:34:35",
+          "74:75:65:66:30:31",
+          "75:76:65:66:26:27",
+          "75:76:65:66:28:29",
+          "75:76:65:66:40:41",
+          "76:77:65:66:38:39",
+          "76:77:65:66:49:50",
+          "77:78:65:66:35:36",
+          "77:78:65:66:37:38",
+          "78:79:65:66:31:32",
+          "78:79:65:66:33:34"
+        ],
+        "grid_alias_qualification": "center hits near boundaries are not exact free-solid contradictions",
+        "original_selected_boxes": 64,
+        "raw_FREE_cell_centers_in_model": 18,
+        "selected_floor_boxes_preserved": 28,
+        "total_proxies_preserving_all_selected_boxes": 47
+      },
+      "hypothesis_scoring_only": {
+        "contains_reference_with_existing_10um_allowance": false,
+        "contains_reference_without_allowance": false,
+        "maximum_extent_error_m": 3.0942247219639674e-05,
+        "minimum_containment_slack_m": -3.0942247219639674e-05,
+        "signed_face_errors_m": [
+          [
+            -5.055796777342358e-07,
+            5.954457641954569e-07
+          ],
+          [
+            2.978798984032416e-05,
+            4.0400799738993243e-07
+          ],
+          [
+            3.0942247219639674e-05,
+            4.3211741421189664e-07
+          ]
+        ]
+      },
+      "matched_reference_path_scoring_only": "/World/ReactiveEvaluation/Post",
+      "reason": "unsupported_or_merged_box_surface",
+      "reference_sha256": "6db021d7d5dbea775be07fefec723f681ed2bb6c4790302b26c989c8a663f11d",
+      "sensor_only_nonrobot_candidates": 1,
+      "status": "rejected"
+    },
+    "v43": {
+      "admitted_geometry": {
+        "contains_reference_with_existing_10um_allowance": true,
+        "contains_reference_without_allowance": true,
+        "maximum_extent_error_m": 0.002945961560650849,
+        "minimum_containment_slack_m": 0.0019999040200513463,
+        "signed_face_errors_m": [
+          [
+            -0.0019999040200513463,
+            0.002000689499250141
+          ],
+          [
+            -0.00262846805717791,
+            0.0020011312864480907
+          ],
+          [
+            -0.002945961560650849,
+            0.002000970718713184
+          ]
+        ]
+      },
+      "admitted_geometry_evidence": {
+        "archive_source_usable": false,
+        "complete_FREE_cells_strictly_in_model": 0,
+        "current_publication_freshness_not_revalidated": true,
+        "fits_64_with_whole_cuboid_preservation": true,
+        "fully_contained_nonfloor_boxes": [
+          "82:83:35:36:29:30",
+          "82:83:39:40:28:29"
+        ],
+        "grid_alias_qualification": "center hits near boundaries are not exact free-solid contradictions",
+        "original_selected_boxes": 64,
+        "raw_FREE_cell_centers_in_model": 1,
+        "selected_floor_boxes_preserved": 57,
+        "total_proxies_preserving_all_selected_boxes": 63
+      },
+      "component": 3,
+      "hypothesis_evidence_audit_not_an_admitted_model": {
+        "archive_source_usable": false,
+        "complete_FREE_cells_strictly_in_model": 0,
+        "current_publication_freshness_not_revalidated": true,
+        "fits_64_with_whole_cuboid_preservation": false,
+        "fully_contained_nonfloor_boxes": [],
+        "grid_alias_qualification": "center hits near boundaries are not exact free-solid contradictions",
+        "original_selected_boxes": 64,
+        "raw_FREE_cell_centers_in_model": 1,
+        "selected_floor_boxes_preserved": 57,
+        "total_proxies_preserving_all_selected_boxes": 65
+      },
+      "hypothesis_scoring_only": {
+        "contains_reference_with_existing_10um_allowance": false,
+        "contains_reference_without_allowance": false,
+        "maximum_extent_error_m": 6.738891441204764e-05,
+        "minimum_containment_slack_m": -6.738891441204764e-05,
+        "signed_face_errors_m": [
+          [
+            6.619209225178224e-08,
+            6.894992501393915e-07
+          ],
+          [
+            5.600194573107675e-05,
+            1.2283887096675716e-06
+          ],
+          [
+            6.738891441204764e-05,
+            1.2855030748770702e-06
+          ]
+        ]
+      },
+      "matched_reference_path_scoring_only": "/World/ReactiveEvaluation/GlobalRouteDetourV43",
+      "reason": "all_six_empirical_model_bounds",
+      "reference_sha256": "4302fe33275e566f9e657da95b9b73c69682e13c1e1afa8e8aa663212979c245",
+      "sensor_only_nonrobot_candidates": 1,
+      "status": "qualified"
+    }
+  },
+  "scoring_started_utc": "2026-11-14T10:49:17.891790+00:00"
+}

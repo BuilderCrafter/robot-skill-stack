@@ -1,0 +1,24 @@
+{
+  "static": {
+    "additional_rule_cpu_ms": 1.674497,
+    "additional_rule_wall_ms": 1.667509,
+    "reference_cpu_ms": 1913.175148,
+    "reference_wall_ms": {
+      "existing_projection_fusion_clustering": 142.2508409996226,
+      "qualification": 48.54187700038892,
+      "robot_envelopes": 9.956183001122554,
+      "total": 200.74890100113407
+    }
+  },
+  "v43": {
+    "additional_rule_cpu_ms": 17.995886,
+    "additional_rule_wall_ms": 2.763727,
+    "reference_cpu_ms": 1787.077918,
+    "reference_wall_ms": {
+      "existing_projection_fusion_clustering": 92.52741900127148,
+      "qualification": 59.54518399994413,
+      "robot_envelopes": 9.65282200013462,
+      "total": 161.72542500135023
+    }
+  }
+}
