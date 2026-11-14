@@ -5,6 +5,8 @@ from dataclasses import replace
 import json
 from pathlib import Path
 import pickle
+import hashlib
+import tomllib
 from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import patch
@@ -147,6 +149,105 @@ class NumericalContractTests(unittest.TestCase):
         self.assertEqual(MotionConfig(**args).max_obstacles,64)
         for changed in ({'max_obstacles':128},{'strategy':'direct'},{'global_obstacle_source':'static'},{'global_rgbd_representation':'unknown'}):
             with self.assertRaises(ValueError):MotionConfig(**(args|changed))
+
+
+class PublicationTests(unittest.TestCase):
+    def source(self):
+        from tests.unit.test_frozen_rgbd_world import FrozenRgbdWorldTests
+        fixture=FrozenRgbdWorldTests();source=fixture.prepared(support=0.)
+        self.addCleanup(fixture.doCleanups)
+        view=source.snapshot()
+        source._published_inferred=rec.InferredGeometry(view.generation,view.revision,view.timestamp,
+            'qualified','ok',(model(center=(0,0,1),dimensions=(.5,.5,.5)),),
+            tuple(dict(v) for v in source.diagnostics['source_frames']),{})
+        return source,fixture
+
+    def test_real_source_adapter_is_opt_in_and_support_preserved(self):
+        from robot_skill_stack.integrations.isaac.manipulation.motion.frozen_rgbd import capture_frozen_rgbd_world
+        from tests.unit.test_global_frozen_rgbd_v5 import support
+        source,fixture=self.source()
+        occupied,old=capture_frozen_rgbd_world(None,lambda:source,support_capture=lambda *a,**k:support())
+        inferred,new=capture_frozen_rgbd_world(None,lambda:source,support_capture=lambda *a,**k:support(),representation='reconstructed')
+        self.assertEqual(occupied.obstacles[0],inferred.obstacles[0])
+        self.assertTrue(any(o.source_kind=='rgbd_inferred_box' for o in inferred.obstacles))
+        self.assertTrue(all(o.source_kind!='rgbd_inferred_box' for o in occupied.obstacles))
+        self.assertIs(old.view._snapshot,new.view._snapshot)
+        np.testing.assert_array_equal(old.view.states,new.view.states)
+        self.assertTrue(inferred.source_metadata['occupied_coverage']['occupied_union_preserved'])
+
+    def test_stale_generation_reset_and_late_completion_cannot_reuse_geometry(self):
+        from robot_skill_stack.world.spatial_mapping.frozen import capture_frozen_rgbd,FrozenRgbdSourceError
+        source,fixture=self.source();saved=source.snapshot().inferred
+        fixture.clock[0]=102.
+        with self.assertRaises(FrozenRgbdSourceError):capture_frozen_rgbd(source)
+        fixture.clock[0]=100.2
+        source.submit(fixture.payload(source,3,100.15))
+        source.reset();source._worker.finish();source.poll()
+        self.assertIsNone(source.snapshot().inferred)
+        self.assertIsNot(saved,source.snapshot().inferred)
+        self.assertEqual(source.health['published'],2)
+        with self.assertRaises(FrozenRgbdSourceError):capture_frozen_rgbd(source)
+
+    def test_source_failure_and_rejected_completion_never_enable_old_geometry(self):
+        from robot_skill_stack.world.spatial_mapping.frozen import capture_frozen_rgbd,FrozenRgbdSourceError
+        source,fixture=self.source()
+        source.note_source_failure('robot model changed')
+        with self.assertRaises(FrozenRgbdSourceError):capture_frozen_rgbd(source)
+        self.assertEqual(source.health['source_failures'],1)
+
+    def test_worker_attaches_inference_to_same_completion_and_serializes(self):
+        from tests.unit.test_frozen_rgbd_world import FrozenRgbdWorldTests
+        from robot_skill_stack.runtime.process_worker import _TransportPickler
+        import io
+        fixture=FrozenRgbdWorldTests();source=fixture.service(support=0.)
+        self.addCleanup(fixture.doCleanups)
+        source._processor._reconstruction_scene=NS(workspace_min=(-1,-1,0),workspace_max=(1,1,2),support_plane_z=0.)
+        result=fixture.publish(source)
+        # Small test cameras are not the authored 640x480 pair: geometry fails,
+        # while the original accepted occupancy publication remains intact.
+        self.assertEqual(result.inferred.status,'error')
+        self.assertIs(source.snapshot().inferred,result.inferred)
+        self.assertEqual((result.inferred.generation,result.inferred.revision,result.inferred.timestamp),
+                         (result.snapshot.generation,result.snapshot.revision,result.snapshot.timestamp))
+        stream=io.BytesIO();_TransportPickler(stream,protocol=5).dump(result)
+        copied=pickle.loads(stream.getvalue())
+        self.assertEqual(copied.inferred.status,'error')
+
+
+class ArchivedNumericalTests(unittest.TestCase):
+    def test_successful_partial_replay_matches_frozen_numerics_without_gt(self):
+        folder=Path('outputs/motion-planning-v5/reconstructed-native-proof-postfix-20261114/attempt-1')
+        if not folder.exists():self.skipTest('Trusted native RGB-D archive not on this workstation')
+        seal=json.loads((folder.parent/'sensor-result-seal.json').read_text())
+        raw=(folder/'accepted_mapping_input.pickle').read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),seal['files']['accepted_mapping_input.pickle'])
+        payload=pickle.loads(raw);cfg=tomllib.loads((folder/'runtime_profile.toml').read_text())['scene']
+        scene=NS(**{k:cfg[k] for k in ('workspace_min','workspace_max','support_plane_z')})
+        expected=json.loads((folder/'research.json').read_text())
+        product=rec.infer(payload,scene,NS(revision=32,timestamp=expected['publication'][2]))
+        self.assertEqual(product.status,'qualified');self.assertEqual(len(product.models),2)
+        for got,want in zip(product.models,[m for m in expected['models'] if m['status']=='qualified']):
+            for key in ('center','dimensions','rotation'):
+                np.testing.assert_allclose(got['geometry'][key],want['geometry'][key],atol=1e-12,rtol=0.)
+
+    def test_measured_missing_boundary_robot_merged_and_contradictory_controls(self):
+        from research.rgbd_box_geometry.inputs import load_capture
+        from research.rgbd_box_geometry.controls import make
+        root=Path('outputs/motion-planning-v5/rgbd-base-clearance-20261113')
+        if not root.exists():self.skipTest('Trusted original sensor archives unavailable')
+        for case in ('static','v43'):
+            payload,scene,_=load_capture(root,case)
+            result,clusters,envelopes=reference.reconstruct(payload.frames,scene,payload.robot_snapshots)
+            component=next(c for c in result['components'] if visibility.qualify(c,payload.frames)['status']=='qualified')
+            points=sorted(clusters,key=len,reverse=True)[component['component']]
+            for name,(cloud,frames) in make(payload.frames,points,component['hypothesis'],payload.robot_snapshots).items():
+                with self.subTest(case=case,control=name):
+                    control=reference.qualify(cloud,frames,envelopes)
+                    self.assertNotEqual(visibility.qualify(control,frames)['status'],'qualified')
+            theta=np.linspace(0,2*np.pi,40);z=np.linspace(-1,1,20)
+            sphere=np.array([[np.sqrt(max(0,1-h*h))*np.cos(t),np.sqrt(max(0,1-h*h))*np.sin(t),h] for h in z for t in theta])*.05
+            sphere+=component['hypothesis']['center']
+            self.assertNotEqual(visibility.qualify(reference.qualify(sphere,payload.frames,envelopes),payload.frames)['status'],'qualified')
 
 
 if __name__=='__main__':unittest.main()

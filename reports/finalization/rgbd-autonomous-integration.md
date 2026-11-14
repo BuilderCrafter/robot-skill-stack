@@ -111,3 +111,32 @@ C. Native behavior and inference throughput are not yet measured.
   retaining occupancy. Reversible opt-in; empty/floor scenes may safely refuse.
 
 Current status: `PARTIALLY_INTEGRATED`; no production readiness claim.
+
+## Checkpoint C — source/lifecycle regressions and native test boundary
+
+Package-qualified full unit discovery passed **1,394 tests in 106.380 s**.
+The first discovery invocation omitted `-t .`, importing subprocess test fixtures
+as unresolvable top-level modules; its eight failures/one error were command
+configuration errors. Correcting the invocation resolved them without changing
+the process worker or historical tests. Original logs remain retained.
+
+New coverage includes immutable geometry transport, exact source/calibration
+association, stale/reset/late-completion barriers, empty inference retaining all
+cells, floor/union/budget checks, invalid geometry, default occupied-only behavior
+and known-support preservation. Trusted archive replay reproduces both models
+from the successful partial capture to 1e-12 numerical tolerance without reading
+GT. Ten existing measured negative controls and a non-box cloud control reject
+geometry; missing rear/lower/top, invalid and unobservable patches are covered.
+
+The native research harness uses the normal configured production capture and
+normal Lula planner/IK. A scoped planner observer independently vetoes unsafe
+execution. Only AFTER the selected ordinary plan exists does it derive a common
+joint goal for GT, same-packet occupied-only and support-only controls. That goal
+never flows back into the selected planner. Tests cover goal-flow direction,
+selected failure before controls and mandatory physical veto. This instrumentation
+is not required by application/runtime configuration and adds no controller.
+
+- 16:38–16:46: independent test boundary added; retained the original benchmark
+  path by default. Opt-in autonomous testing skips its old capture replacement
+  and records that the production capture is unchanged. Decision is reversible;
+  native performance and safety results remain to be measured.

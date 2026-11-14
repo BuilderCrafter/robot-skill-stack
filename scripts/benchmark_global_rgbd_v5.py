@@ -274,10 +274,15 @@ def run_native(args, app, state):
             def audited_capture(*values,**options):
                 world = capture_rgbd()
                 return world,state['frozen_world']
-            strategy._rgbd_world_capture = audited_capture
+            if not state.get('autonomous_runtime'):
+                strategy._rgbd_world_capture = audited_capture
+            else:
+                state['research_record']['production_capture_unmodified'] = strategy._rgbd_world_capture is original_rgbd_capture
+            production_factory = strategy._planner_factory
             strategy._planner_factory = lambda backend,**options:state.get('research_planner_factory',MatchedSourcePlanner)(backend,state=state,
                 selected_source=args.execution_condition,capture_rgbd=capture_rgbd,
-                gt_snapshot=capture['snapshot'],physical_context=physical_context,**options)
+                gt_snapshot=capture['snapshot'],physical_context=physical_context,
+                **({'production_factory':production_factory} if state.get('autonomous_runtime') else {}),**options)
             update = backend._next_update
             async def wait():
                 started=time.monotonic()
