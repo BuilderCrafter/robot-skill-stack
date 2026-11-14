@@ -326,6 +326,8 @@ def run_native(args, app, state):
                     if p.generation==service.generation and p.frames and
                     min(f.acquired_at for f in p.frames)==state['capture_view'].timestamp),None)
                 state['research_record']['_selected_inferred']=state['capture_view'].inferred
+            if state.get('research_followups') is not None:
+                await state['research_followups'](bundle,state,observer)
             state['runtime_after']=baseline.serial(bundle.observation_runtime.diagnostics)
             state['strategy_after_motion']=baseline.serial(strategy.diagnostics)
             state['world_after_snapshot'],state['world_after_sha256']=shared._world_signature(stage)

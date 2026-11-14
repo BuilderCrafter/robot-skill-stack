@@ -35,7 +35,15 @@ class _TransportPickler(pickle.Pickler):
         if isinstance(value, np.ndarray) and not value.flags.writeable:
             if value.dtype.hasobject:
                 raise TypeError('Observation transport requires numeric, non-object arrays')
-            return _restore_readonly_array, (value.tobytes(), value.dtype, value.shape)
+            data = value
+            while isinstance(data, np.ndarray) and data.base is not None:
+                data = data.base
+            # Reuse only a complete immutable buffer; mutable-backed and
+            # partial/non-C-contiguous views still require an owned copy.
+            if not (value.flags.c_contiguous and isinstance(data, bytes)
+                    and len(data) == value.nbytes):
+                data = value.tobytes()
+            return _restore_readonly_array, (data, value.dtype, value.shape)
         return NotImplemented
 
 

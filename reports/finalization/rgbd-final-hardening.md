@@ -76,3 +76,24 @@ Chronological decisions:
   this bounded serializer optimization; no field compression/removal or geometry
   change. Predeclared persistent sensor-planned return rather than assuming direct
   START motion is collision-safe.
+- 19:59–20:10: implemented nine added/one removed production lines in the
+  existing serializer; no other production change. A new test initially assumed
+  that decoding/re-encoding must reproduce the saved original pickle memo. The
+  original encoder itself changes that packet from 29,924,959 to 29,925,060 bytes.
+  Comparing old/new encoders on the same decoded object gives identical SHA-256;
+  all decoded arrays and fields are bitwise equal. Corrected only that new test
+  oracle; no historical expectation or numerical tolerance changed. Initial
+  failing test source and diagnostic hashes remain in the new raw evidence area.
+  Seven transport tests pass, including eight hash-verified original archived
+  scene inputs, fresh MappingProcessor results and a real child-process roundtrip
+  of the complete 29.9 MB completion. First full suite: 1431 PASS / 120.826 s.
+- Added only a two-line optional research follow-up hook in the existing
+  benchmark and an isolated `persistent_trial.py`; no production session code.
+  It retains distinct source/plan/veto records per request and uses three normal
+  MoveToPose calls. Three focused sequence tests verify normal targets, distinct
+  receipts and stopping dependent requests after failure or absent physical veto.
+- 20:11: complete offline gate PASS: 1434 full host tests / 122.803 s;
+  68 focused host tests / 18.456 s; same 68 native Python 3.11 tests / 25.581 s.
+  Architecture, Python syntax and whitespace PASS. Native test gate starts only
+  after these checks, with the saved container running only `sleep infinity` and
+  no GPU compute process. No safety/numerical equivalence failure was observed.
