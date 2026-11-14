@@ -1,0 +1,17 @@
+{
+  "created_utc": "2026-11-14T17:06:08.296658+00:00",
+  "purpose": "Freeze completed sensor-derived predictions before independent numeric reference scoring",
+  "files": {
+    "empty/attempt-1/autonomous.json": "98dfbb128f53428f2bd5e178463f877c65a2172c717f0c34a137cf9de3137383",
+    "large/attempt-1/autonomous.json": "9ed8e6aa2b45bf9cb4310f2e21159b233a0586c5da4b827ddef970bbc378636c",
+    "narrow/attempt-1/autonomous.json": "8a7eadfaf4e5313cc9099699bfe14b12fa9ba40debd3e7ad54880add636fc15f",
+    "partial/attempt-1/autonomous.json": "0f6d89977cee1e1cdca3864db7c175c124b85c95a833075a6459b4cfeb833dd9",
+    "partial/attempt-2/autonomous.json": "c9baae9b5e97b277ea8828970eee7cd9d47ff42df8646baf433e44571f71697a",
+    "partial/attempt-3/autonomous.json": "5d20be8699eba789060b05c8983145a048baee0a9d0d4abc4a4d87c97e40ba0f",
+    "partial/attempt-4/autonomous.json": "9e01181adfc2265019e876104eff9c7c324a66a0ed596c3f6ca39490004e603c",
+    "sparse/attempt-1/autonomous.json": "80c2121b5a77e5897e8326ca719838b8954ff049ca8a3cf72be44ddcc2217eb4",
+    "static/attempt-1/autonomous.json": "dfb0fac28d0a8d0ebe6cd4c79d630a9636f3fe445c06db58f4a1151f4ffb6790",
+    "v43/attempt-1/autonomous.json": "6a8e40b5e435fc7d6b632f007442e697e53b916b577f5f80214dd3cdb3ca85b1",
+    "verified_occlusion/attempt-1/autonomous.json": "17f29b248e1476586bbe7d7f97b78c3a26b073f6461d543ef5983a05b0f1e71f"
+  }
+}

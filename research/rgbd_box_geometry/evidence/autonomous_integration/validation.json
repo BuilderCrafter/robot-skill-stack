@@ -1,0 +1,89 @@
+{
+  "utc": "2026-11-14T17:22:03.964632+00:00",
+  "final_status": "BLOCKED_BY_RELIABILITY",
+  "unit_tests": {
+    "count": 1397,
+    "seconds": 107.221,
+    "python": "3.12.16",
+    "result": "PASS",
+    "command": [
+      "/home/ubuntu/.local/bin/uv",
+      "run",
+      "--offline",
+      "--no-project",
+      "--python",
+      "3.12",
+      "--with",
+      "numpy==1.26.4",
+      "--with",
+      "py_trees==2.6.0",
+      "--with",
+      "scipy==1.15.3",
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/unit",
+      "-t",
+      ".",
+      "-q"
+    ],
+    "log_sha256": "c16cf57851cb19e926ea90b5c49e9dcdebe805ab328ad7b8f4594d10fb26eb06"
+  },
+  "native_integration_subset": {
+    "count": 65,
+    "seconds": 5.269,
+    "result": "PASS",
+    "log_sha256": "9ba0501d3bfd7204233aff2ae729853356ebe7895fbd427adf92fdb6c6b35372"
+  },
+  "corrected_harness_subset": {
+    "count": 20,
+    "seconds": 1.429,
+    "result": "PASS"
+  },
+  "architecture": "PASS",
+  "syntax": "PASS",
+  "native_cases": 12,
+  "selected_rgbd_requests": 11,
+  "selected_rgbd_commands": 0,
+  "selected_rgbd_successes": 0,
+  "categories": {
+    "EXPECTED_SAFE_REJECTION": 3,
+    "SOURCE_FAILURE": 5,
+    "RECONSTRUCTION_FAILURE": 2,
+    "COLLISION_WORLD_FAILURE": 1
+  },
+  "all_native_exit_codes_zero": true,
+  "all_native_contracts_pass": true,
+  "all_native_cooked_bodies": 11,
+  "selected_source_captures_each": 1,
+  "production_capture_unmodified": true,
+  "no_selected_rgbd_physics_advancement": true,
+  "gt_native_control_success": true,
+  "production_diff": {
+    "added": 666,
+    "removed": 14,
+    "files": 10,
+    "unchanged_extracted_numerics_lines": 453
+  },
+  "production_source_commit": "4e822d3",
+  "harness_checkpoint_commit": "251dbfe",
+  "corrected_harness_commit": "b11a871",
+  "timing_probe_qualification": "Partial attempt 3 used a timing-only intermediate harness; all production hashes are in each raw result. Partial attempt 4 used corrected harness content subsequently committed as b11a871.",
+  "failed_test_environment_logs": [
+    {
+      "file": "offline-full.log",
+      "sha256": "5a04137191894f45e9230a55b770da041d1f50d23edc503e2ba2332577f99370"
+    },
+    {
+      "file": "offline-full-final.log",
+      "sha256": "6daaae538667eea3d9f9063b9aaeb7d34ce75301fa3d4d6d4c0a4244a089a065"
+    },
+    {
+      "file": "offline-full-final-host.log",
+      "sha256": "04f19470d279993ae91b557d16d844aff3e35d180d883837ac991188ab492ced"
+    }
+  ],
+  "historical_fixture_expectations_changed": false
+}
