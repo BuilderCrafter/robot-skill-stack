@@ -1,0 +1,1988 @@
+{
+  "static": {
+    "source": "static",
+    "start_q": [
+      -0.18841107189655304,
+      -0.1668015420436859,
+      -0.2896445393562317,
+      -2.227001667022705,
+      -0.0571008026599884,
+      2.059159994125366,
+      0.3513098359107971
+    ],
+    "target": {
+      "position": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "frame": "world"
+    },
+    "planner_success": true,
+    "joint_names": [
+      "panda_joint1",
+      "panda_joint2",
+      "panda_joint3",
+      "panda_joint4",
+      "panda_joint5",
+      "panda_joint6",
+      "panda_joint7"
+    ],
+    "route": [
+      [
+        -0.18841107189655304,
+        -0.1668015420436859,
+        -0.2896445393562317,
+        -2.227001667022705,
+        -0.0571008026599884,
+        2.059159994125366,
+        0.3513098359107971
+      ],
+      [
+        0.180750760515919,
+        -0.3519353403142143,
+        0.09291808912480622,
+        -1.8653533384700012,
+        -1.0978382121252932,
+        2.386534941923845,
+        -0.9452149840384614
+      ],
+      [
+        -0.3454691929332799,
+        -0.16596167528149833,
+        0.8171739989689815,
+        -2.1480387772114824,
+        0.13400610336719937,
+        2.0307722988254344,
+        1.1902002371049916
+      ]
+    ],
+    "duration": 2.2096414822209307,
+    "diagnostics": {
+      "seed": 123456,
+      "max_iterations": 10000,
+      "global_collision_model": "enhanced",
+      "rrt_step_size_rad": 0.05,
+      "state": "planned",
+      "ik_candidates_attempted": 1,
+      "ik_seconds": 0.00025616000129957683,
+      "rrt_seconds": 0.003157767998345662,
+      "rrt_waypoints": 3,
+      "route_validation_seconds": 0.12893221500053187,
+      "configuration_validation_calls": 925,
+      "configuration_validation_wall_seconds": 0.3540999580764037,
+      "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+      "native_rrt_collision_query_count": null,
+      "native_rrt_collision_query_seconds": null,
+      "trajectory_generation_seconds": 0.0023431400004483294,
+      "trajectory_validation_seconds": 0.3291495070006931,
+      "static_obstacles": 3,
+      "world_update_seconds": 0.0007565769992652349,
+      "active_joint_names": [
+        "panda_joint1",
+        "panda_joint2",
+        "panda_joint3",
+        "panda_joint4",
+        "panda_joint5",
+        "panda_joint6",
+        "panda_joint7"
+      ],
+      "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+      "collision_model_fingers": {
+        "finger_joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "finger_range_m": [
+          0.001,
+          0.005
+        ],
+        "measured_positions_m": [
+          0.0022974193561822176,
+          0.0022970489226281643
+        ],
+        "joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "validated_range_m": [
+          0.001,
+          0.005
+        ],
+        "native_position_targets_m": [
+          0.002297478262335062,
+          0.0022634919732809067
+        ],
+        "target_feedback": "SingleArticulation.get_applied_action native PhysX position targets during play"
+      },
+      "base_geometry_preflight": {
+        "checks": [
+          {
+            "path": "/World/GroundPlane/CollisionPlane",
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace"
+          },
+          {
+            "path": "/World/ReactiveEvaluation/Occluder",
+            "clearance_lower_bound_m": 0.7165207642101055,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/World/ReactiveEvaluation/Post",
+            "clearance_lower_bound_m": 0.34858645730212184,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          }
+        ],
+        "fixed_base_frame": "panda_link0",
+        "all_configurations": true,
+        "conservative_finite_obstacle_enclosure": true
+      },
+      "ik_attempts": [
+        {
+          "index": 0,
+          "warm_start": [
+            -0.18841107189655304,
+            -0.1668015420436859,
+            -0.2896445393562317,
+            -2.227001667022705,
+            -0.0571008026599884,
+            2.059159994125366,
+            0.3513098359107971
+          ],
+          "ik_seconds": 0.00025616000129957683,
+          "ik_success": true,
+          "ik_q": [
+            -0.3454691929332799,
+            -0.16596167528149833,
+            0.8171739989689815,
+            -2.1480387772114824,
+            0.13400610336719937,
+            2.0307722988254344,
+            1.1902002371049916
+          ],
+          "fk_position_error": 4.0548233405264156e-07,
+          "fk_orientation_error": 0.0009162859822123548,
+          "rrt_seconds": 0.003157767998345662,
+          "rrt_waypoints": 3,
+          "route_validation_samples": 345,
+          "route_validation_seconds": 0.12893221500053187,
+          "trajectory_generation_seconds": 0.0023431400004483294,
+          "trajectory_validation": {
+            "samples": 578,
+            "maximum_time_step_seconds": 0.003831417624521073,
+            "maximum_joint_step_rad": 0.01,
+            "maximum_velocity_rad_s": [
+              0.72578066238709,
+              0.36015611777231593,
+              0.8131722083635969,
+              0.7003641302246866,
+              2.033178064483063,
+              0.6380684348989114,
+              2.609999964240119
+            ],
+            "maximum_acceleration_rad_s2": [
+              3.0981433294698344,
+              1.4922862498264837,
+              2.209838738720771,
+              2.851558915291708,
+              8.535871697289085,
+              2.6600392120540994,
+              11.107380215862166
+            ],
+            "maximum_jerk_rad_s3": [
+              24.83709469634702,
+              11.961635013945802,
+              17.688443110762158,
+              22.855274601366514,
+              68.42468292969748,
+              21.32252954510959,
+              89.05146675590522
+            ],
+            "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+          },
+          "trajectory_validation_seconds": 0.3291495070006931,
+          "status": "planned"
+        }
+      ],
+      "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+      "sdk_configuration_sha256": {
+        "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+        "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+        "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+      },
+      "collision_model": "Project Franka V4.2 spheres with validated finger-range envelope and separate frozen-base enclosure; sampled trajectory validation",
+      "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+      "certified_self_collision_exclusions": [
+        [
+          "panda_leftfinger",
+          "panda_rightfinger"
+        ]
+      ],
+      "geometric_joint_path_length": 4.490132636994018,
+      "selected_ik_index": 0,
+      "trajectory_validation": {
+        "samples": 578,
+        "maximum_time_step_seconds": 0.003831417624521073,
+        "maximum_joint_step_rad": 0.01,
+        "maximum_velocity_rad_s": [
+          0.72578066238709,
+          0.36015611777231593,
+          0.8131722083635969,
+          0.7003641302246866,
+          2.033178064483063,
+          0.6380684348989114,
+          2.609999964240119
+        ],
+        "maximum_acceleration_rad_s2": [
+          3.0981433294698344,
+          1.4922862498264837,
+          2.209838738720771,
+          2.851558915291708,
+          8.535871697289085,
+          2.6600392120540994,
+          11.107380215862166
+        ],
+        "maximum_jerk_rad_s3": [
+          24.83709469634702,
+          11.961635013945802,
+          17.688443110762158,
+          22.855274601366514,
+          68.42468292969748,
+          21.32252954510959,
+          89.05146675590522
+        ],
+        "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+      },
+      "trajectory_duration": 2.2096414822209307
+    },
+    "limits": {
+      "lower_limits": [
+        -2.8973,
+        -1.7628,
+        -2.8973,
+        -3.0718,
+        -2.8973,
+        -0.0175,
+        -2.8973
+      ],
+      "upper_limits": [
+        2.8973,
+        1.7628,
+        2.8973,
+        -0.0698,
+        2.8973,
+        3.7525,
+        2.8973
+      ],
+      "velocity_limits": [
+        2.175,
+        2.175,
+        2.175,
+        2.175,
+        2.61,
+        2.61,
+        2.61
+      ],
+      "acceleration_limits": [
+        15.0,
+        7.5,
+        10.0,
+        12.5,
+        15.0,
+        20.0,
+        20.0
+      ],
+      "jerk_limits": [
+        7500.0,
+        3750.0,
+        5000.0,
+        6250.0,
+        7500.0,
+        10000.0,
+        10000.0
+      ]
+    },
+    "planner_wall_seconds": 0.48913172199900146,
+    "snapshot": {
+      "obstacles": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "kind": "cuboid",
+          "position": [
+            0.0,
+            0.0,
+            -25.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            50.0,
+            50.0,
+            50.0
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "Plane",
+          "approximation": "plane_halfspace_clipped_to_certified_domain",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Occluder",
+          "kind": "cuboid",
+          "position": [
+            0.79,
+            -0.3,
+            0.53
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.07999999821186066,
+            0.4000000059604645,
+            0.4000000059604645
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "Cube",
+          "approximation": "exact",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/World/ReactiveEvaluation/Post",
+          "kind": "cuboid",
+          "position": [
+            0.45,
+            0.0,
+            0.35
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.09000000357627869,
+            0.11999999731779099,
+            0.25999999046325684
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "Cube",
+          "approximation": "exact",
+          "maximum_surface_error_m": 0.0
+        }
+      ],
+      "timestamp": 25444.442123259,
+      "meters_per_unit": 1.0,
+      "robot_prim_path": "/Franka",
+      "excluded_colliders": 11,
+      "disabled_colliders": 0,
+      "plane_domains": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "half_width_m": 25.0,
+          "depth_m": 50.0
+        }
+      ]
+    }
+  },
+  "frozen_rgbd": {
+    "source": "frozen_rgbd",
+    "start_q": [
+      -0.18841107189655304,
+      -0.1668015420436859,
+      -0.2896445393562317,
+      -2.227001667022705,
+      -0.0571008026599884,
+      2.059159994125366,
+      0.3513098359107971
+    ],
+    "target": {
+      "position": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "frame": "world"
+    },
+    "planner_success": true,
+    "joint_names": [
+      "panda_joint1",
+      "panda_joint2",
+      "panda_joint3",
+      "panda_joint4",
+      "panda_joint5",
+      "panda_joint6",
+      "panda_joint7"
+    ],
+    "route": [
+      [
+        -0.18841107189655304,
+        -0.1668015420436859,
+        -0.2896445393562317,
+        -2.227001667022705,
+        -0.0571008026599884,
+        2.059159994125366,
+        0.3513098359107971
+      ],
+      [
+        -0.43933355196875934,
+        -0.1737280923899648,
+        0.33828994749222746,
+        -1.9061500630631192,
+        -0.682331887441607,
+        2.384594706128625,
+        0.0051193966141496045
+      ],
+      [
+        -0.3454691929332799,
+        -0.16596167528149833,
+        0.8171739989689815,
+        -2.1480387772114824,
+        0.13400610336719937,
+        2.0307722988254344,
+        1.1902002371049916
+      ]
+    ],
+    "duration": 1.2746736802838243,
+    "diagnostics": {
+      "seed": 123456,
+      "max_iterations": 10000,
+      "global_collision_model": "enhanced",
+      "rrt_step_size_rad": 0.05,
+      "state": "planned",
+      "ik_candidates_attempted": 1,
+      "ik_seconds": 0.00029578700195997953,
+      "rrt_seconds": 0.005705214000045089,
+      "rrt_waypoints": 3,
+      "route_validation_seconds": 0.06958547400063253,
+      "configuration_validation_calls": 519,
+      "configuration_validation_wall_seconds": 0.19920444000672433,
+      "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+      "native_rrt_collision_query_count": null,
+      "native_rrt_collision_query_seconds": null,
+      "trajectory_generation_seconds": 0.00013428700185613707,
+      "trajectory_validation_seconds": 0.1878647359990282,
+      "static_obstacles": 25,
+      "world_update_seconds": 0.0019489279984554742,
+      "active_joint_names": [
+        "panda_joint1",
+        "panda_joint2",
+        "panda_joint3",
+        "panda_joint4",
+        "panda_joint5",
+        "panda_joint6",
+        "panda_joint7"
+      ],
+      "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+      "collision_model_fingers": {
+        "finger_joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "finger_range_m": [
+          0.001,
+          0.005
+        ],
+        "measured_positions_m": [
+          0.0022974193561822176,
+          0.0022970489226281643
+        ],
+        "joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "validated_range_m": [
+          0.001,
+          0.005
+        ],
+        "native_position_targets_m": [
+          0.002297478262335062,
+          0.0022634919732809067
+        ],
+        "target_feedback": "SingleArticulation.get_applied_action native PhysX position targets during play"
+      },
+      "base_geometry_preflight": {
+        "checks": [
+          {
+            "path": "/World/GroundPlane/CollisionPlane",
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:55:56:37:38",
+            "clearance_lower_bound_m": 0.4043046255777893,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:58:59:35:36",
+            "clearance_lower_bound_m": 0.3921411311985284,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:58:59:37:38",
+            "clearance_lower_bound_m": 0.4028786291771171,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:61:62:32:33",
+            "clearance_lower_bound_m": 0.3770832666787968,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:61:62:34:35",
+            "clearance_lower_bound_m": 0.3869698951856167,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:64:65:31:32",
+            "clearance_lower_bound_m": 0.3738487554503475,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:65:66:28:29",
+            "clearance_lower_bound_m": 0.3616131643643404,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/70:71:65:66:30:31",
+            "clearance_lower_bound_m": 0.370202039913276,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:54:55:36:37",
+            "clearance_lower_bound_m": 0.47729296004537686,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:54:55:40:41",
+            "clearance_lower_bound_m": 0.4969394177524645,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:56:57:45:46",
+            "clearance_lower_bound_m": 0.5228854576976885,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:56:57:49:50",
+            "clearance_lower_bound_m": 0.5465544070474126,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:60:61:28:29",
+            "clearance_lower_bound_m": 0.4421899887418436,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:62:63:33:34",
+            "clearance_lower_bound_m": 0.46209846559283113,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:63:64:42:43",
+            "clearance_lower_bound_m": 0.506186771976713,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:64:65:38:39",
+            "clearance_lower_bound_m": 0.48609918231926824,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/79:80:65:66:47:48",
+            "clearance_lower_bound_m": 0.5356997003009185,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/105:106:15:16:75:76",
+            "clearance_lower_bound_m": 1.0010401458950213,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/106:107:27:28:75:76",
+            "clearance_lower_bound_m": 0.9671765125452516,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/106:107:41:42:75:76",
+            "clearance_lower_bound_m": 0.9346962178091669,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/110:111:46:47:75:76",
+            "clearance_lower_bound_m": 0.958114469375067,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__rgbd_occupied__/112:113:16:17:75:76",
+            "clearance_lower_bound_m": 1.0475686353753046,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__research_rgbd_inferred__/0/32/0",
+            "clearance_lower_bound_m": 0.7085501638522762,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          },
+          {
+            "path": "/__research_rgbd_inferred__/0/32/1",
+            "clearance_lower_bound_m": 0.3455791551690177,
+            "method": "cooked-base enclosing sphere versus finite obstacle"
+          }
+        ],
+        "fixed_base_frame": "panda_link0",
+        "all_configurations": true,
+        "conservative_finite_obstacle_enclosure": true
+      },
+      "ik_attempts": [
+        {
+          "index": 0,
+          "warm_start": [
+            -0.18841107189655304,
+            -0.1668015420436859,
+            -0.2896445393562317,
+            -2.227001667022705,
+            -0.0571008026599884,
+            2.059159994125366,
+            0.3513098359107971
+          ],
+          "ik_seconds": 0.00029578700195997953,
+          "ik_success": true,
+          "ik_q": [
+            -0.3454691929332799,
+            -0.16596167528149833,
+            0.8171739989689815,
+            -2.1480387772114824,
+            0.13400610336719937,
+            2.0307722988254344,
+            1.1902002371049916
+          ],
+          "fk_position_error": 4.0548233405264156e-07,
+          "fk_orientation_error": 0.0009162859822123548,
+          "rrt_seconds": 0.005705214000045089,
+          "rrt_waypoints": 3,
+          "route_validation_samples": 183,
+          "route_validation_seconds": 0.06958547400063253,
+          "trajectory_generation_seconds": 0.00013428700185613707,
+          "trajectory_validation": {
+            "samples": 334,
+            "maximum_time_step_seconds": 0.003831417624521073,
+            "maximum_joint_step_rad": 0.01,
+            "maximum_velocity_rad_s": [
+              0.7265049865763937,
+              0.020887945517011394,
+              1.8152148758224846,
+              0.9465725312806524,
+              1.9762327191510307,
+              0.9792974568726756,
+              2.6079515002422204
+            ],
+            "maximum_acceleration_rad_s2": [
+              3.95633484244411,
+              0.14479196068057176,
+              8.193345738116847,
+              5.72800488918615,
+              14.027458635094263,
+              6.710886117971321,
+              13.856182609120486
+            ],
+            "maximum_jerk_rad_s3": [
+              24.608716629874607,
+              0.7567883914386802,
+              50.897311306777524,
+              33.2913392605144,
+              72.23592747529672,
+              35.39092600933388,
+              88.3222955117748
+            ],
+            "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+          },
+          "trajectory_validation_seconds": 0.1878647359990282,
+          "status": "planned"
+        }
+      ],
+      "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+      "sdk_configuration_sha256": {
+        "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+        "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+        "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+      },
+      "collision_model": "Project Franka V4.2 spheres with validated finger-range envelope and separate frozen-base enclosure; sampled trajectory validation",
+      "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+      "certified_self_collision_exclusions": [
+        [
+          "panda_leftfinger",
+          "panda_rightfinger"
+        ]
+      ],
+      "geometric_joint_path_length": 2.663699438524241,
+      "selected_ik_index": 0,
+      "trajectory_validation": {
+        "samples": 334,
+        "maximum_time_step_seconds": 0.003831417624521073,
+        "maximum_joint_step_rad": 0.01,
+        "maximum_velocity_rad_s": [
+          0.7265049865763937,
+          0.020887945517011394,
+          1.8152148758224846,
+          0.9465725312806524,
+          1.9762327191510307,
+          0.9792974568726756,
+          2.6079515002422204
+        ],
+        "maximum_acceleration_rad_s2": [
+          3.95633484244411,
+          0.14479196068057176,
+          8.193345738116847,
+          5.72800488918615,
+          14.027458635094263,
+          6.710886117971321,
+          13.856182609120486
+        ],
+        "maximum_jerk_rad_s3": [
+          24.608716629874607,
+          0.7567883914386802,
+          50.897311306777524,
+          33.2913392605144,
+          72.23592747529672,
+          35.39092600933388,
+          88.3222955117748
+        ],
+        "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+      },
+      "trajectory_duration": 1.2746736802838243,
+      "research_fixed_joint_target": {
+        "joint_names": [
+          "panda_joint1",
+          "panda_joint2",
+          "panda_joint3",
+          "panda_joint4",
+          "panda_joint5",
+          "panda_joint6",
+          "panda_joint7"
+        ],
+        "q": [
+          -0.3454691929332799,
+          -0.16596167528149833,
+          0.8171739989689815,
+          -2.1480387772114824,
+          0.13400610336719937,
+          2.0307722988254344,
+          1.1902002371049916
+        ],
+        "target": {
+          "position": [
+            0.45,
+            0.25,
+            0.35
+          ],
+          "orientation": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "end_effector_frame": "right_gripper",
+        "baseline_artifact_sha256": null,
+        "frozen_candidate_sha256": "959d514ea8cd1bb9b9c2e296cc4ecc993e56202dfb87ac4ae02dafa6c40578e2",
+        "candidate_source": "research_fixed_joint_target",
+        "normal_ik_solver_called": false,
+        "candidate_calls": [
+          {
+            "frame": "right_gripper",
+            "position": [
+              0.45,
+              0.25,
+              0.35
+            ],
+            "orientation": [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            "position_tolerance": 0.001,
+            "orientation_tolerance": 0.005,
+            "warm_start": [
+              -0.18841107189655304,
+              -0.1668015420436859,
+              -0.2896445393562317,
+              -2.227001667022705,
+              -0.0571008026599884,
+              2.059159994125366,
+              0.3513098359107971
+            ],
+            "q": [
+              -0.3454691929332799,
+              -0.16596167528149833,
+              0.8171739989689815,
+              -2.1480387772114824,
+              0.13400610336719937,
+              2.0307722988254344,
+              1.1902002371049916
+            ]
+          }
+        ],
+        "same_goal_for_all_attempts": true,
+        "production_validation_preserved": true,
+        "scope": "Only candidate IK selection replaced; real RRT, limits, full-pose FK, collision, route and spline validation are unchanged"
+      }
+    },
+    "limits": {
+      "lower_limits": [
+        -2.8973,
+        -1.7628,
+        -2.8973,
+        -3.0718,
+        -2.8973,
+        -0.0175,
+        -2.8973
+      ],
+      "upper_limits": [
+        2.8973,
+        1.7628,
+        2.8973,
+        -0.0698,
+        2.8973,
+        3.7525,
+        2.8973
+      ],
+      "velocity_limits": [
+        2.175,
+        2.175,
+        2.175,
+        2.175,
+        2.61,
+        2.61,
+        2.61
+      ],
+      "acceleration_limits": [
+        15.0,
+        7.5,
+        10.0,
+        12.5,
+        15.0,
+        20.0,
+        20.0
+      ],
+      "jerk_limits": [
+        7500.0,
+        3750.0,
+        5000.0,
+        6250.0,
+        7500.0,
+        10000.0,
+        10000.0
+      ]
+    },
+    "planner_wall_seconds": 0.2922595390009519,
+    "snapshot": {
+      "obstacles": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "kind": "cuboid",
+          "position": [
+            -2.38418573772492e-09,
+            2.98023217215615e-10,
+            -25.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            50.0,
+            50.0,
+            50.0
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "Plane",
+          "approximation": "plane_halfspace_clipped_to_certified_domain",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:55:56:37:38",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            -0.04499999999999993,
+            0.355
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:58:59:35:36",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            -0.015000000000000013,
+            0.33499999999999996
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.009999999999999953
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:58:59:37:38",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            -0.015000000000000013,
+            0.355
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:61:62:32:33",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            0.015000000000000013,
+            0.305
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:61:62:34:35",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            0.015000000000000013,
+            0.325
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:64:65:31:32",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            0.04500000000000004,
+            0.295
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:65:66:28:29",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            0.05500000000000005,
+            0.265
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.009999999999999953
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/70:71:65:66:30:31",
+          "kind": "cuboid",
+          "position": [
+            0.405,
+            0.05500000000000005,
+            0.285
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999898,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:54:55:36:37",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            -0.05499999999999994,
+            0.345
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:54:55:40:41",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            -0.05499999999999994,
+            0.385
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:56:57:45:46",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            -0.03499999999999992,
+            0.435
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:56:57:49:50",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            -0.03499999999999992,
+            0.475
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:60:61:28:29",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            0.0050000000000000044,
+            0.265
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.009999999999999953
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:62:63:33:34",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            0.025000000000000022,
+            0.315
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:63:64:42:43",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            0.03500000000000003,
+            0.40499999999999997
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:64:65:38:39",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            0.04500000000000004,
+            0.365
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/79:80:65:66:47:48",
+          "kind": "cuboid",
+          "position": [
+            0.495,
+            0.05500000000000005,
+            0.45499999999999996
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.009999999999999953,
+            0.010000000000000009,
+            0.009999999999999953
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/105:106:15:16:75:76",
+          "kind": "cuboid",
+          "position": [
+            0.755,
+            -0.44499999999999995,
+            0.735
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.010000000000000009,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/106:107:27:28:75:76",
+          "kind": "cuboid",
+          "position": [
+            0.765,
+            -0.32499999999999996,
+            0.735
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.010000000000000009,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/106:107:41:42:75:76",
+          "kind": "cuboid",
+          "position": [
+            0.765,
+            -0.18499999999999997,
+            0.735
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.010000000000000009,
+            0.009999999999999953,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/110:111:46:47:75:76",
+          "kind": "cuboid",
+          "position": [
+            0.805,
+            -0.13499999999999995,
+            0.735
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.010000000000000009,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__rgbd_occupied__/112:113:16:17:75:76",
+          "kind": "cuboid",
+          "position": [
+            0.8250000000000001,
+            -0.43499999999999994,
+            0.735
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            0.010000000000000009,
+            0.010000000000000009,
+            0.010000000000000009
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_occupied_cells",
+          "approximation": "exact_selected_occupied_cells",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__research_rgbd_inferred__/0/32/0",
+          "kind": "cuboid",
+          "position": [
+            0.7875517410952835,
+            -0.3005543629053909,
+            0.5290487875422617
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            -9.688523605579533e-19
+          ],
+          "dimensions": [
+            0.0888973056892196,
+            0.4051089156574813,
+            0.4059035103944122
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_inferred_box",
+          "approximation": "single_convex_yaw_box_empirical_bounds",
+          "maximum_surface_error_m": 0.0
+        },
+        {
+          "path": "/__research_rgbd_inferred__/0/32/1",
+          "kind": "cuboid",
+          "position": [
+            0.45000004493304324,
+            -0.000413366747039832,
+            0.34933533052464044
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            -9.688523605579533e-19
+          ],
+          "dimensions": [
+            0.09400110460172062,
+            0.12482745342137355,
+            0.26532997120020607
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "rgbd_inferred_box",
+          "approximation": "single_convex_yaw_box_empirical_bounds",
+          "maximum_surface_error_m": 0.0
+        }
+      ],
+      "timestamp": 25444.063689434,
+      "meters_per_unit": 1.0,
+      "robot_prim_path": "/Franka",
+      "excluded_colliders": 0,
+      "disabled_colliders": 0,
+      "plane_domains": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "position": [
+            -2.38418573772492e-09,
+            2.98023217215615e-10,
+            0.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "half_width_m": 25.0,
+          "depth_m": 50.0
+        }
+      ]
+    }
+  },
+  "unobstructed": {
+    "source": "unobstructed",
+    "start_q": [
+      -0.18841107189655304,
+      -0.1668015420436859,
+      -0.2896445393562317,
+      -2.227001667022705,
+      -0.0571008026599884,
+      2.059159994125366,
+      0.3513098359107971
+    ],
+    "target": {
+      "position": [
+        0.45,
+        0.25,
+        0.35
+      ],
+      "orientation": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "frame": "world"
+    },
+    "planner_success": true,
+    "joint_names": [
+      "panda_joint1",
+      "panda_joint2",
+      "panda_joint3",
+      "panda_joint4",
+      "panda_joint5",
+      "panda_joint6",
+      "panda_joint7"
+    ],
+    "route": [
+      [
+        -0.18841107189655304,
+        -0.1668015420436859,
+        -0.2896445393562317,
+        -2.227001667022705,
+        -0.0571008026599884,
+        2.059159994125366,
+        0.3513098359107971
+      ],
+      [
+        -0.3454691929332799,
+        -0.16596167528149833,
+        0.8171739989689815,
+        -2.1480387772114824,
+        0.13400610336719937,
+        2.0307722988254344,
+        1.1902002371049916
+      ]
+    ],
+    "duration": 1.0373968004413578,
+    "diagnostics": {
+      "seed": 123456,
+      "max_iterations": 10000,
+      "global_collision_model": "enhanced",
+      "rrt_step_size_rad": 0.05,
+      "state": "planned",
+      "ik_candidates_attempted": 1,
+      "ik_seconds": 0.00023736399816698395,
+      "rrt_seconds": 0.000995113998214947,
+      "rrt_waypoints": 2,
+      "route_validation_seconds": 0.04400441200050409,
+      "configuration_validation_calls": 386,
+      "configuration_validation_wall_seconds": 0.15520239597026375,
+      "configuration_validation_scope": "Explicit external/self/domain configuration checks, including failed calls; excludes native RRT internal queries",
+      "native_rrt_collision_query_count": null,
+      "native_rrt_collision_query_seconds": null,
+      "trajectory_generation_seconds": 0.00011168099808855914,
+      "trajectory_validation_seconds": 0.16134627000064938,
+      "static_obstacles": 1,
+      "world_update_seconds": 0.0007322940000449307,
+      "active_joint_names": [
+        "panda_joint1",
+        "panda_joint2",
+        "panda_joint3",
+        "panda_joint4",
+        "panda_joint5",
+        "panda_joint6",
+        "panda_joint7"
+      ],
+      "enhanced_model_metadata_sha256": "571d9a3a26db0441883765630e5f45401dbc0eb1dc8621244f12a4f0cf49c35a",
+      "collision_model_fingers": {
+        "finger_joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "finger_range_m": [
+          0.001,
+          0.005
+        ],
+        "measured_positions_m": [
+          0.0022974193561822176,
+          0.0022970489226281643
+        ],
+        "joint_names": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "validated_range_m": [
+          0.001,
+          0.005
+        ],
+        "native_position_targets_m": [
+          0.002297478262335062,
+          0.0022634919732809067
+        ],
+        "target_feedback": "SingleArticulation.get_applied_action native PhysX position targets during play"
+      },
+      "base_geometry_preflight": {
+        "checks": [
+          {
+            "path": "/World/GroundPlane/CollisionPlane",
+            "clearance_lower_bound_m": 2.384185648907078e-08,
+            "method": "cooked-base AABB corners versus certified plane halfspace"
+          }
+        ],
+        "fixed_base_frame": "panda_link0",
+        "all_configurations": true,
+        "conservative_finite_obstacle_enclosure": true
+      },
+      "ik_attempts": [
+        {
+          "index": 0,
+          "warm_start": [
+            -0.18841107189655304,
+            -0.1668015420436859,
+            -0.2896445393562317,
+            -2.227001667022705,
+            -0.0571008026599884,
+            2.059159994125366,
+            0.3513098359107971
+          ],
+          "ik_seconds": 0.00023736399816698395,
+          "ik_success": true,
+          "ik_q": [
+            -0.3454691929332799,
+            -0.16596167528149833,
+            0.8171739989689815,
+            -2.1480387772114824,
+            0.13400610336719937,
+            2.0307722988254344,
+            1.1902002371049916
+          ],
+          "fk_position_error": 4.0548233405264156e-07,
+          "fk_orientation_error": 0.0009162859822123548,
+          "rrt_seconds": 0.000995113998214947,
+          "rrt_waypoints": 2,
+          "route_validation_samples": 112,
+          "route_validation_seconds": 0.04400441200050409,
+          "trajectory_generation_seconds": 0.00011168099808855914,
+          "trajectory_validation": {
+            "samples": 272,
+            "maximum_time_step_seconds": 0.003831417624521073,
+            "maximum_joint_step_rad": 0.01,
+            "maximum_velocity_rad_s": [
+              0.3086247101319959,
+              0.0016503676111662706,
+              2.174937203530277,
+              0.15516484482502274,
+              0.3755317654861752,
+              0.05578281578453377,
+              1.6484490276088923
+            ],
+            "maximum_acceleration_rad_s2": [
+              1.1825167501863725,
+              0.006323496726281165,
+              8.333421107720383,
+              0.5945247480902733,
+              1.438875722959892,
+              0.21373568567973936,
+              6.31614554175603
+            ],
+            "maximum_jerk_rad_s3": [
+              4.8647212773838096,
+              0.02601404932907582,
+              34.28261880412042,
+              2.445798075596115,
+              5.919349001940814,
+              0.8792810230371555,
+              25.98380750479076
+            ],
+            "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+          },
+          "trajectory_validation_seconds": 0.16134627000064938,
+          "status": "planned"
+        }
+      ],
+      "self_collision_mask": "URDF rigid/adjacent links plus analytically separated physical finger pair throughout the guarded range",
+      "sdk_configuration_sha256": {
+        "robot_description_path": "6801f0c053dba1944157385ae484feb661b3edc14197bf7ba5cf01e568e04a5d",
+        "urdf_path": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+        "rrt_config_path": "7457c82c01c3cb29944171a138859426bf8adaf22a5fd646de4cc27d43434dba"
+      },
+      "collision_model": "Project Franka V4.2 spheres with validated finger-range envelope and separate frozen-base enclosure; sampled trajectory validation",
+      "rrt_self_collision_policy": "Native RRT internal policy; explicit route/trajectory inspector applies the documented mask",
+      "certified_self_collision_exclusions": [
+        [
+          "panda_leftfinger",
+          "panda_rightfinger"
+        ]
+      ],
+      "geometric_joint_path_length": 1.4131578784760566,
+      "selected_ik_index": 0,
+      "trajectory_validation": {
+        "samples": 272,
+        "maximum_time_step_seconds": 0.003831417624521073,
+        "maximum_joint_step_rad": 0.01,
+        "maximum_velocity_rad_s": [
+          0.3086247101319959,
+          0.0016503676111662706,
+          2.174937203530277,
+          0.15516484482502274,
+          0.3755317654861752,
+          0.05578281578453377,
+          1.6484490276088923
+        ],
+        "maximum_acceleration_rad_s2": [
+          1.1825167501863725,
+          0.006323496726281165,
+          8.333421107720383,
+          0.5945247480902733,
+          1.438875722959892,
+          0.21373568567973936,
+          6.31614554175603
+        ],
+        "maximum_jerk_rad_s3": [
+          4.8647212773838096,
+          0.02601404932907582,
+          34.28261880412042,
+          2.445798075596115,
+          5.919349001940814,
+          0.8792810230371555,
+          25.98380750479076
+        ],
+        "collision_validation": "PASS_SAMPLED_SDK_MODEL"
+      },
+      "trajectory_duration": 1.0373968004413578,
+      "research_fixed_joint_target": {
+        "joint_names": [
+          "panda_joint1",
+          "panda_joint2",
+          "panda_joint3",
+          "panda_joint4",
+          "panda_joint5",
+          "panda_joint6",
+          "panda_joint7"
+        ],
+        "q": [
+          -0.3454691929332799,
+          -0.16596167528149833,
+          0.8171739989689815,
+          -2.1480387772114824,
+          0.13400610336719937,
+          2.0307722988254344,
+          1.1902002371049916
+        ],
+        "target": {
+          "position": [
+            0.45,
+            0.25,
+            0.35
+          ],
+          "orientation": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "frame": "world"
+        },
+        "end_effector_frame": "right_gripper",
+        "baseline_artifact_sha256": null,
+        "frozen_candidate_sha256": "959d514ea8cd1bb9b9c2e296cc4ecc993e56202dfb87ac4ae02dafa6c40578e2",
+        "candidate_source": "research_fixed_joint_target",
+        "normal_ik_solver_called": false,
+        "candidate_calls": [
+          {
+            "frame": "right_gripper",
+            "position": [
+              0.45,
+              0.25,
+              0.35
+            ],
+            "orientation": [
+              0.0,
+              0.0,
+              1.0,
+              0.0
+            ],
+            "position_tolerance": 0.001,
+            "orientation_tolerance": 0.005,
+            "warm_start": [
+              -0.18841107189655304,
+              -0.1668015420436859,
+              -0.2896445393562317,
+              -2.227001667022705,
+              -0.0571008026599884,
+              2.059159994125366,
+              0.3513098359107971
+            ],
+            "q": [
+              -0.3454691929332799,
+              -0.16596167528149833,
+              0.8171739989689815,
+              -2.1480387772114824,
+              0.13400610336719937,
+              2.0307722988254344,
+              1.1902002371049916
+            ]
+          }
+        ],
+        "same_goal_for_all_attempts": true,
+        "production_validation_preserved": true,
+        "scope": "Only candidate IK selection replaced; real RRT, limits, full-pose FK, collision, route and spline validation are unchanged"
+      }
+    },
+    "limits": {
+      "lower_limits": [
+        -2.8973,
+        -1.7628,
+        -2.8973,
+        -3.0718,
+        -2.8973,
+        -0.0175,
+        -2.8973
+      ],
+      "upper_limits": [
+        2.8973,
+        1.7628,
+        2.8973,
+        -0.0698,
+        2.8973,
+        3.7525,
+        2.8973
+      ],
+      "velocity_limits": [
+        2.175,
+        2.175,
+        2.175,
+        2.175,
+        2.61,
+        2.61,
+        2.61
+      ],
+      "acceleration_limits": [
+        15.0,
+        7.5,
+        10.0,
+        12.5,
+        15.0,
+        20.0,
+        20.0
+      ],
+      "jerk_limits": [
+        7500.0,
+        3750.0,
+        5000.0,
+        6250.0,
+        7500.0,
+        10000.0,
+        10000.0
+      ]
+    },
+    "planner_wall_seconds": 0.2336468790017534,
+    "snapshot": {
+      "obstacles": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "kind": "cuboid",
+          "position": [
+            -2.38418573772492e-09,
+            2.98023217215615e-10,
+            -25.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "dimensions": [
+            50.0,
+            50.0,
+            50.0
+          ],
+          "radius": 0.0,
+          "height": 0.0,
+          "source_kind": "Plane",
+          "approximation": "plane_halfspace_clipped_to_certified_domain",
+          "maximum_surface_error_m": 0.0
+        }
+      ],
+      "timestamp": 25444.063689434,
+      "meters_per_unit": 1.0,
+      "robot_prim_path": "/Franka",
+      "excluded_colliders": 0,
+      "disabled_colliders": 0,
+      "plane_domains": [
+        {
+          "path": "/World/GroundPlane/CollisionPlane",
+          "position": [
+            -2.38418573772492e-09,
+            2.98023217215615e-10,
+            0.0
+          ],
+          "orientation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "half_width_m": 25.0,
+          "depth_m": 50.0
+        }
+      ]
+    }
+  }
+}

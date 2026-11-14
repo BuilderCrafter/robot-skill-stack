@@ -161,15 +161,22 @@ class ReadinessTests(unittest.IsolatedAsyncioTestCase):
         update=AsyncMock();app_module.get_app=lambda:NS(next_update_async=update)
         for published,clock,allowed in ((8,[0,0,1,1],True),(9,[0,0,1],False),(8,[0,0,5.1],False)):
             state=dict(mapping_inputs=[fixture.payload],research_record={})
+            observation=NS(diagnostics={'state':'running'},robot_filter=NS(source_error=None if allowed else 'captured source failure'))
+            bundle=NS(spatial_mapping=source,observation_runtime=observation)
             with patch.dict(sys.modules,{'omni':omni,'omni.kit':kit,'omni.kit.app':app_module}), \
                  patch.object(native_trial,'time',NS(monotonic=Mock(side_effect=clock))), \
                  patch.object(native_trial.bench,'retain_mapping_publication',return_value={'published':published,'fresh':True}):
                 if allowed:
-                    await native_trial.prepare(NS(spatial_mapping=source),state)
+                    await native_trial.prepare(bundle,state)
                     self.assertEqual(state['research_ready'],(2,3,10.))
                 else:
-                    with self.assertRaises(PlanningFailure):await native_trial.prepare(NS(spatial_mapping=source),state)
+                    with self.assertRaises(PlanningFailure):await native_trial.prepare(bundle,state)
                     self.assertNotIn('research_ready',state)
+                self.assertEqual(state['research_record']['readiness_before']['publication'],(2,3,10.))
+                diagnostic=state['research_record']['readiness_after']
+                self.assertEqual(diagnostic['robot_filter_error'],observation.robot_filter.source_error)
+                self.assertEqual(diagnostic['observation'],{'state':'running'})
+                self.assertEqual(diagnostic['source_frames'][0]['camera_id'],'0')
 
 
 if __name__=='__main__':unittest.main()

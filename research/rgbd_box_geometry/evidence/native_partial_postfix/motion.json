@@ -1,0 +1,314 @@
+{
+  "operation": {
+    "id": 0,
+    "label": "outward",
+    "kind": "motion",
+    "cancelled": false,
+    "returned_success": true,
+    "position_error_m": 0.0008746736666307971,
+    "orientation_error_rad": 0.002424932292461383,
+    "measured_full_pose_within_tolerances": true,
+    "maximum_actual_joint_displacement_rad": 1.1077077984809875,
+    "wall_seconds": 12.620316672997433,
+    "first_command_observed": null,
+    "active_before_cancel": null,
+    "ownership_released": null,
+    "overlap_rejected": null,
+    "not_exercised": null,
+    "clearance": {
+      "minimum_m": 2.384185648907078e-08,
+      "movable_arm_minimum_m": 0.04114300168436494,
+      "by_link_m": {
+        "/Franka/panda_hand": 0.04372742666538762,
+        "/Franka/panda_rightfinger": 0.09260058188912648,
+        "/Franka/panda_leftfinger": 0.09384962266010452,
+        "/Franka/panda_link0": 2.384185648907078e-08,
+        "/Franka/panda_link1": 0.1409646558157011,
+        "/Franka/panda_link2": 0.27908422008917444,
+        "/Franka/panda_link3": 0.34637829358217764,
+        "/Franka/panda_link4": 0.2952152696338255,
+        "/Franka/panda_link5": 0.04114300168436494,
+        "/Franka/panda_link6": 0.11466388771423215,
+        "/Franka/panda_link7": 0.078987170618892
+      },
+      "by_group_m": {
+        "gripper": 0.04372742666538762,
+        "upper_arm_or_base": 2.384185648907078e-08,
+        "elbow": 0.2952152696338255,
+        "forearm": 0.04114300168436494,
+        "wrist": 0.078987170618892
+      },
+      "by_obstacle_m": {
+        "/World/GroundPlane/CollisionPlane": 2.384185648907078e-08,
+        "/World/ReactiveEvaluation/Occluder": 0.09422431791534465,
+        "/World/ReactiveEvaluation/Post": 0.04114300168436494
+      },
+      "closest_pair": {
+        "sample": 0,
+        "robot_link": "/Franka/panda_link0",
+        "obstacle": "/World/GroundPlane/CollisionPlane",
+        "clearance_m": 2.384185648907078e-08
+      },
+      "sampled_poses": 220,
+      "convex_distance_queries": 596,
+      "duplicate_transforms_skipped": 1319,
+      "maximum_numerical_certificate_width_m": 5.412337245047638e-16,
+      "reference": "Copied actual PhysX cooked robot convex solids versus exact authored physical cuboids and analytic plane halfspaces",
+      "limitation": "Sampled geometry excludes contact/rest offsets and does not certify continuous swept clearance; all arm, hand, fingers and mounted base are retained."
+    },
+    "contacts": {
+      "reported_points": 0,
+      "reported_pairs": 0,
+      "penetrating_pairs": 0,
+      "minimum_reported_separation_m": null,
+      "maximum_normal_pair_impulse_ns": 0.0,
+      "links": [],
+      "contact_buffer_saturated": false,
+      "mounted_base_excluded": false,
+      "meaning": "Reported points include positive-separation contact-offset proximity; not unique physical impacts."
+    },
+    "contact_severity": {
+      "strict_v2_success": null,
+      "strict_zero_reported_contacts": true,
+      "goal_status": "success",
+      "failure_code": null,
+      "physical_classification": "no_physical_contact_observed",
+      "limited_low_severity_assessment": "UNVALIDATED_NO_ACCEPTABILITY_THRESHOLD",
+      "severity_pass": null,
+      "reported_points": 0,
+      "reported_physics_steps": 0,
+      "observed_physical_contact_steps": 0,
+      "pair_contact_episodes": 0,
+      "pair_contact_samples": 0,
+      "pairs_missing_physics_step_index": 0,
+      "unique_physics_samples": 110,
+      "duplicate_samples_removed": 110,
+      "sampled_reported_contact_duration_s": 0.0,
+      "sampled_physical_contact_duration_s": 0.0,
+      "reported_steps_with_unverified_duration": 0,
+      "physical_steps_with_unverified_duration": 0,
+      "minimum_reported_separation_m": null,
+      "sum_observed_pair_normal_impulses_ns": 0.0,
+      "depth_m": {
+        "count": 0
+      },
+      "normal_pair_impulse_ns": {
+        "count": 0
+      },
+      "normal_point_impulse_ns": {
+        "count": 0
+      },
+      "normal_pair_step_average_force_n": {
+        "count": 0
+      },
+      "force_unavailable_reasons": {},
+      "robot_contact_point_speed_m_s": {
+        "count": 0
+      },
+      "relative_contact_point_speed_m_s": {
+        "count": 0
+      },
+      "absolute_normal_relative_speed_m_s": {
+        "count": 0
+      },
+      "robot_contact_point_displacement_speed_m_s": {
+        "count": 0
+      },
+      "contact_points_with_kinematics": 0,
+      "contact_points_without_kinematics": 0,
+      "invalid_buffer_fields": {},
+      "points_by_robot_link": {},
+      "points_by_pair": [],
+      "joint_feedback": {
+        "available_samples": {
+          "positions": 110,
+          "velocities": 110,
+          "measured_efforts": 110,
+          "explicit_applied_efforts": 110,
+          "incoming_joint_wrenches": 110
+        },
+        "unavailable_samples": {},
+        "arm_position_tracking_error_rad": {
+          "count": 770,
+          "minimum": 2.9802322387695312e-08,
+          "mean": 0.002714380671197621,
+          "p50": 0.0016804933547973633,
+          "p95": 0.00870470106601715,
+          "p99": 0.0118026565015316,
+          "maximum": 0.01230505108833313
+        },
+        "raw_vs_controller_arm_velocity_error_rad_s": {
+          "count": 0
+        },
+        "arm_solver_projected_effort_abs_nm": {
+          "count": 770,
+          "minimum": 1.8510036170482635e-08,
+          "mean": 5.895158213087774,
+          "p50": 1.0117839574813843,
+          "p95": 20.636002445220946,
+          "p99": 23.19160144805908,
+          "maximum": 23.838367462158203
+        },
+        "incoming_joint_reaction_force_norm_n": {
+          "count": 1210,
+          "minimum": 0.0,
+          "mean": 49.15719951334765,
+          "p50": 20.810529076068196,
+          "p95": 148.99491265317852,
+          "p99": 156.1915176059707,
+          "maximum": 161.22178315561968
+        },
+        "contact_detector_validated": false,
+        "interpretation": "Tracking error, effort and joint reaction loads also arise from gravity, inertia, drives and friction. They do not independently identify unexpected contact or a wrist external wrench."
+      },
+      "contact_buffer_saturated": false,
+      "methods": {
+        "normal_impulse": "Sum of absolute normal point impulses per robot-link/actor pair and observed physics step; tangential friction excluded",
+        "force": "Normal pair impulse divided by verified SDK physics dt; step-average, not peak force",
+        "speed": "SDK world COM linear velocity plus angular cross contact-point offset; relative velocity subtracts actual actor point velocity",
+        "absolute_normal_speed": "Absolute projection of relative point velocity onto normalized contact normal; no unvalidated normal-orientation closing sign",
+        "depth": "Per-point negative separation clipped at zero; legacy V2 input supplies pair-minimum depth only",
+        "episode": "Consecutive observed physics steps for one explicit robot-link/actor pair; unavailable without step indices"
+      },
+      "limitations": [
+        "No calibrated material/force tolerance establishes harmless contact or a severity PASS. Depth, impulse, speed and duration remain raw experimental measurements.",
+        "Normal impulses exclude friction. Force is a last-physics-step average only for verified one-step intervals; missing/skipped intervals are not zero force.",
+        "SDK velocities are post-solver instantaneous velocities, not proven pre-impact approach speeds. Displacement velocities average captured frames.",
+        "Kit samples may miss substeps and brief contacts. Episode/point counts are sampled reports, not unique impacts. Sampled durations omit unverified intervals.",
+        "Joint tracking/effort/reaction signals are observations, not a validated unexpected-contact detector or calibrated external force/torque sensor."
+      ]
+    },
+    "observed_physical_contact_steps": 0,
+    "strict_success": true,
+    "final_applied_arm_velocity_zero": true,
+    "sample_count": 220,
+    "action_count": 110,
+    "before_simulation_time": 6.733333684504032,
+    "after_simulation_time": 8.550000445917249,
+    "before_physics_step": 404,
+    "after_physics_step": 513,
+    "before_target_gap_arm_rad": [
+      -0.0018938630819320679,
+      0.0022373944520950317,
+      -0.0024104416370391846,
+      -0.0012049674987792969,
+      -0.00047126784920692444,
+      -2.9802322387695312e-05,
+      5.930662155151367e-06
+    ],
+    "after_target_gap_arm_rad": [
+      0.00046947598457336426,
+      0.000809788703918457,
+      0.0008892416954040527,
+      -0.0006816387176513672,
+      -0.00036323070526123047,
+      0.00028228759765625,
+      -0.0005594491958618164
+    ],
+    "physics_step_coverage": {
+      "unique_steps": 110,
+      "first": 404,
+      "last": 513,
+      "missing_steps": [],
+      "complete": true
+    }
+  },
+  "execution": {
+    "position_error_m": 0.0008746736666307971,
+    "orientation_error_rad": 0.002424932292461383,
+    "execution_wall_seconds": 8.410095137001917,
+    "execution_sim_seconds": 1.8166667614132166,
+    "control_interval_ms": {
+      "count": 108,
+      "p50": 74.07962049910566,
+      "p95": 127.7543917505681,
+      "p99": 151.46371664111933,
+      "worst": 157.97358499912662
+    },
+    "joint_tracking_error_rad": {
+      "count": 110,
+      "p50": 0.018346398085886367,
+      "p95": 0.03548549500807345,
+      "p99": 0.036209471671402996,
+      "worst": 0.036278453561435
+    },
+    "commanded_updates": 109,
+    "final_hold": true,
+    "execution_solver": {
+      "solver_type": "TGS",
+      "requested_position_iterations_before": 32,
+      "requested_position_iterations_during": 255,
+      "changed": true,
+      "original_session_opinion_restored": true,
+      "scope": "Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+      "count_provenance": "USD requested count; native effective island count is not read here"
+    },
+    "measured_arm_velocity_rad_s": 0.004443326964974403,
+    "planning_source_captures": 1,
+    "active_world_obstacle_refreshes": 0,
+    "gripper_contract": {
+      "finger_joint_names": [
+        "panda_finger_joint1",
+        "panda_finger_joint2"
+      ],
+      "finger_range_m": [
+        0.001,
+        0.005
+      ],
+      "measured_positions_m": [
+        0.0023153771180659533,
+        0.002315381309017539
+      ],
+      "joint_names": [
+        "panda_finger_joint1",
+        "panda_finger_joint2"
+      ],
+      "validated_range_m": [
+        0.001,
+        0.005
+      ],
+      "native_position_targets_m": [
+        0.002297478262335062,
+        0.0022634919732809067
+      ],
+      "target_feedback": "SingleArticulation.get_applied_action native PhysX position targets during play"
+    }
+  },
+  "initial_joint_positions": [
+    -0.18841107189655304,
+    -0.1668015420436859,
+    -0.2896445393562317,
+    -2.227001667022705,
+    -0.0571008026599884,
+    2.059159994125366,
+    0.3513098359107971,
+    0.0022974193561822176,
+    0.0022970489226281643
+  ],
+  "final_joint_positions": [
+    -0.3449997305870056,
+    -0.16515187919139862,
+    0.8180632591247559,
+    -2.1487205028533936,
+    0.13364286720752716,
+    2.0310544967651367,
+    1.189640760421753,
+    0.0023153771180659533,
+    0.002315381309017539
+  ],
+  "request_to_first_command_seconds": 4.1945687150000595,
+  "raw_actions": 110,
+  "raw_samples": 221,
+  "setup_START": {
+    "status": "success",
+    "message": "End effector reached target pose.",
+    "failure_code": null,
+    "details": {
+      "steps": 84,
+      "position_error_m": 0.023805669013672644,
+      "orientation_error_rad": 0.01027368596945958,
+      "position_tolerance_m": 0.025,
+      "orientation_tolerance_rad": 0.1
+    }
+  }
+}

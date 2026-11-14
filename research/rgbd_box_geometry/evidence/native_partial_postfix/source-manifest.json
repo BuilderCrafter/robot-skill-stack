@@ -1,0 +1,37 @@
+{
+  "starting_head": "43a35d0f34def4aba503af3d39a95006967f2d5c",
+  "branch": "feature/global-rgbd-planning-v5",
+  "scenario": "partial",
+  "seed": 123456,
+  "rrt_max_iterations": 10000,
+  "camera_proxy_limit": 64,
+  "readiness_limit_seconds": 5,
+  "source_freshness_limit_seconds": 1,
+  "native_attempts_authorized": 1,
+  "timeout_seconds": 600,
+  "termination_grace_seconds": 5,
+  "source_sha256": {
+    "research/rgbd_box_geometry/native_trial.py": "bdee0adcfb756b0fe479878e3bb1cd71c790a6ba52c808acdf6cb87fbf2b759c",
+    "research/rgbd_box_geometry/rrt_bridge.py": "f5209e8de44a592b7e73c0d2f006b45f84c6507e29138239605f2e3c666ee582",
+    "research/rgbd_box_geometry/reference.py": "9969eda0b98e7258c7475f9476c644e6f74b14502753d3c24b39690bd3b0dba0",
+    "research/rgbd_box_geometry/visibility.py": "266949860bc86fd39dd019218b8c9a6bdfaab58695867fab8d8b41edf6d8422a",
+    "research/rgbd_box_geometry/test_rrt_bridge.py": "0b1715880df293d299f25467d06082d393457169ec1d5029c0d47ee86bc38fa5",
+    "scripts/benchmark_global_rgbd_v5.py": "7c79b16fd6d8413fb5bd3b6d6540ed1f4af3da3e6aafb5c93e139e2e8cec85f3",
+    "scripts/diagnose_global_home_v4.py": "d63b63d2c7bcfa03826fb0cedbd86706e6a1edb13f348324696b5863fff71a6b",
+    "scripts/diagnose_global_stabilization_v4_1.py": "65b36d59ca0ff48d044f6608806d1675e26459e67f1bef699014103a9b4800c8",
+    "scripts/global_rgbd_v5_protocol.py": "41e4dd08509e76419d315abe2c20a2063c141160fcfec35f221a61443abd32a3",
+    "scripts/global_rgbd_v5_pair.py": "6fe8739ff4b2d0dfa255cfd8f727d70f746feb9b659a94f92038f9a2d7bfc1c3",
+    "scripts/evaluate_global_rgbd_v5.py": "1440f51eb450f83db9205aad078bbc0c335cd0f5f5fc8bfa962c1ef219b657c1",
+    "scenes/multiview_perception_final.usda": "055c120c467d72231573348d700ed899efb8c65c8463fc3f872d94b26b482f54",
+    "config/scenes/multiview_perception_final.toml": "7c60b856801dd379bcd56fb272ffb4c96d8b5f7c08c46d8e642c3fc295476cf7"
+  },
+  "changed_existing_files": [
+    "research/rgbd_box_geometry/native_trial.py",
+    "research/rgbd_box_geometry/test_rrt_bridge.py"
+  ],
+  "controls": [
+    "static",
+    "frozen_rgbd_reconstructed",
+    "unobstructed"
+  ]
+}

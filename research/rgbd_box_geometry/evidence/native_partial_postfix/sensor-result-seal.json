@@ -1,0 +1,21 @@
+{
+  "sealed_utc": "2026-11-14T15:44:57.735701+00:00",
+  "scope": "Saved sensor/reconstruction results sealed before post-hoc physical-reference inspection; no new reconstruction performed",
+  "files": {
+    "result.json": "d873308c3e827b8ad65694c96e2ddae81ba89abacabe26d0645f848e3c57af63",
+    "runtime_profile.toml": "48a7610283a2746b83b1981c50bdf5877c516eaed258087566fbffebdd7f9283",
+    "camera_frames.npz": "5efb07e82fbf4b7ac1ff36c53e74e175505e774608bb683c299a6ed3a8731200",
+    "occupancy.json": "b90f9009cdd6b2a5de2fb3d372e66c3f2ff16807efef5aae9d7b39107e70fea5",
+    "camera_acquisition.json": "b839b305a6036d716fec876eef9dafda16ac8c5190991c691f7ad21508743572",
+    "motion_trace.json": "8598f292a580bc6e7314dd85b86a4361861623962aeeb7c1670fce04271186cc",
+    "research.json": "b82a41c56e7fb75d415f260915bf0e47d7f771a0b166343e8e821c258484b60c",
+    "mapping_publications.json": "a95b4aef0e3d67c404f4a8b5a96b05d0ee1d70ca70c77527e6c6e4f8671979c8",
+    "physical_evaluation.json": "c9b00c237ba8e4d8a77f0f09e4345d7d8035105a16045f0ae5d912cf45fbdeb5",
+    "camera_metadata.json": "cf2189c1ced037e3231fa3fc505d80486c63d33530df3b7f6bc14414951a9b11",
+    "accepted_mapping_input.pickle": "3aa50ac25ab06d8c95dde943423f7c0ff92eaad8aba1bd2e50277408afebf403",
+    "occupancy.npz": "084c036680b1835849d7cd4b4fd3f349311bf4f502ceafc922ba770f89b1e54a",
+    "motion_payloads.json": "a4fb7033d0149dd002bae8a95442ba27247c094f7f25a123ee7554649f0b2500",
+    "research-protocol.json": "ce38e283e43c5748dada8e2b2351f97981656d31947ab29dd0752ac3aa14bfb4",
+    "mapping_submissions.json": "05e50b1aaea1a02e86a0006e3537dacfd19a739d13165e7f61056602fdee7afe"
+  }
+}

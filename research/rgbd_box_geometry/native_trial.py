@@ -17,21 +17,31 @@ from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
 
 async def prepare(bundle,state):
     import omni.kit.app
-    source=bundle.spatial_mapping;first=source.health['published'];started=time.monotonic()
-    while time.monotonic()-started<5.:
-        await omni.kit.app.get_app().next_update_async()
-        if time.monotonic()-started>=5.:break
-        health=bench.retain_mapping_publication(state,source)
-        if health['published']>first:
-            if health['published']!=first+1 or health.get('fresh') is not True:
-                bridge.fail('readiness','First new publication is not fresh or unique')
-            view,payload=bridge.associate(source,state['mapping_inputs'])
-            state['research_ready']=bridge.identity(view)
-            state['selected_mapping_input']=payload
-            state['research_record']['readiness']=dict(publication=bridge.identity(view),
-                wait_s=time.monotonic()-started,age_s=source.clock()-view.timestamp)
-            return
-    bridge.fail('readiness','No accepted complete publication within five seconds')
+    source=bundle.spatial_mapping;first=source.health['published']
+    state['research_record']['readiness_before']=dict(publication=bridge.identity(source.snapshot()),health=dict(source.health))
+    started=time.monotonic()
+    try:
+        while time.monotonic()-started<5.:
+            await omni.kit.app.get_app().next_update_async()
+            if time.monotonic()-started>=5.:break
+            health=bench.retain_mapping_publication(state,source)
+            if health['published']>first:
+                if health['published']!=first+1 or health.get('fresh') is not True:
+                    bridge.fail('readiness','First new publication is not fresh or unique')
+                view,payload=bridge.associate(source,state['mapping_inputs'])
+                state['research_ready']=bridge.identity(view)
+                state['selected_mapping_input']=payload
+                state['research_record']['readiness']=dict(publication=bridge.identity(view),
+                    wait_s=time.monotonic()-started,age_s=source.clock()-view.timestamp)
+                return
+        bridge.fail('readiness','No accepted complete publication within five seconds')
+    finally:
+        observation=getattr(bundle,'observation_runtime',None)
+        filt=getattr(observation,'robot_filter',None)
+        state['research_record']['readiness_after']=dict(publication=bridge.identity(source.snapshot()),
+            health=dict(source.health),source_frames=bench.baseline.serial(source.diagnostics.get('source_frames',())),
+            observation=None if observation is None else bench.baseline.serial(observation.diagnostics),
+            robot_filter_error=None if filt is None else filt.source_error)
 
 
 def capture(backend,source,state,base_capture):

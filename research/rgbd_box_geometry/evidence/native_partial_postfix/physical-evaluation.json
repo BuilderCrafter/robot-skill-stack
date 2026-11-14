@@ -1,0 +1,179 @@
+{
+  "static": {
+    "schema_version": 1,
+    "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+    "planner_world_modified": false,
+    "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "alignment": {
+      "maximum_translation_error_m": 3.032360257732049e-07,
+      "maximum_rotation_matrix_error": 3.148733415721944e-07,
+      "passed": true,
+      "frame_allowance_m": 1e-05,
+      "rotation_matrix_allowance": 1e-05
+    },
+    "total_samples": 923,
+    "evaluated_samples": 923,
+    "phases_requested": {
+      "route": 345,
+      "trajectory": 578
+    },
+    "phases_evaluated": {
+      "route": 345,
+      "trajectory": 578
+    },
+    "queries": 30459,
+    "broadphase_separations": 20299,
+    "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+    "minimum_nonmount_clearance_lower_bound_m": 0.00032578490075890754,
+    "closest_bound_pair": {
+      "sample": 0,
+      "phase": "route",
+      "time": null,
+      "robot_body": "panda_link0",
+      "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+      "obstacle": "/World/GroundPlane/CollisionPlane",
+      "clearance_lower_bound_m": 2.384185648907078e-08,
+      "qualified_mount": true
+    },
+    "collision_witnesses": [],
+    "unresolved": [],
+    "self_evaluated": false,
+    "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+    "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+    "samples_complete": true,
+    "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+    "execution_allowed": true,
+    "elapsed_seconds": 1.4935491129981529,
+    "experimental_owner_wait_seconds": 1.496997366000869,
+    "worker_seconds": 1.4935754710022593,
+    "queue_seconds": 6.604599911952391e-05
+  },
+  "frozen_rgbd": {
+    "schema_version": 1,
+    "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+    "planner_world_modified": false,
+    "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "alignment": {
+      "maximum_translation_error_m": 3.032360257732049e-07,
+      "maximum_rotation_matrix_error": 3.148733415721944e-07,
+      "passed": true,
+      "frame_allowance_m": 1e-05,
+      "rotation_matrix_allowance": 1e-05
+    },
+    "total_samples": 517,
+    "evaluated_samples": 517,
+    "phases_requested": {
+      "route": 183,
+      "trajectory": 334
+    },
+    "phases_evaluated": {
+      "route": 183,
+      "trajectory": 334
+    },
+    "queries": 17061,
+    "broadphase_separations": 11310,
+    "minimum_external_clearance_lower_bound_m": 2.384185648907078e-08,
+    "minimum_nonmount_clearance_lower_bound_m": 0.0006452125929892194,
+    "closest_bound_pair": {
+      "sample": 0,
+      "phase": "route",
+      "time": null,
+      "robot_body": "panda_link0",
+      "robot_part": "/Franka/panda_link0/geometry/panda_link0#convex0:3",
+      "obstacle": "/World/GroundPlane/CollisionPlane",
+      "clearance_lower_bound_m": 2.384185648907078e-08,
+      "qualified_mount": true
+    },
+    "collision_witnesses": [],
+    "unresolved": [],
+    "self_evaluated": false,
+    "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+    "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+    "samples_complete": true,
+    "status": "ALLOW_SAMPLED_NUMERIC_CLEARANCE",
+    "execution_allowed": true,
+    "elapsed_seconds": 0.9277124410000397,
+    "experimental_owner_wait_seconds": 0.9333859100006521,
+    "worker_seconds": 0.9277469419976114,
+    "queue_seconds": 0.00017380700228386559
+  },
+  "unobstructed": {
+    "schema_version": 1,
+    "source": "GROUND_TRUTH_RESEARCH_EVALUATION_ONLY",
+    "planner_world_modified": false,
+    "reference_urdf_sha256": "e9024642e7952cbcaec0ae14425bf1cd19d674d3c98eeef3793913f63a8101b6",
+    "alignment": {
+      "maximum_translation_error_m": 3.032360257732049e-07,
+      "maximum_rotation_matrix_error": 3.148733415721944e-07,
+      "passed": true,
+      "frame_allowance_m": 1e-05,
+      "rotation_matrix_allowance": 1e-05
+    },
+    "total_samples": 384,
+    "evaluated_samples": 19,
+    "phases_requested": {
+      "route": 112,
+      "trajectory": 272
+    },
+    "phases_evaluated": {
+      "route": 19,
+      "trajectory": 0
+    },
+    "queries": 627,
+    "broadphase_separations": 417,
+    "minimum_external_clearance_lower_bound_m": 0.0,
+    "minimum_nonmount_clearance_lower_bound_m": 0.0,
+    "closest_bound_pair": {
+      "sample": 18,
+      "phase": "route",
+      "time": null,
+      "robot_body": "panda_hand",
+      "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+      "obstacle": "/World/ReactiveEvaluation/Post",
+      "clearance_lower_bound_m": 0.0,
+      "qualified_mount": false
+    },
+    "collision_witnesses": [
+      {
+        "sample": 18,
+        "phase": "route",
+        "time": null,
+        "robot_body": "panda_hand",
+        "robot_part": "/Franka/panda_hand/geometry/panda_hand#convex0:0",
+        "obstacle": "/World/ReactiveEvaluation/Post",
+        "qualified_mount": false,
+        "distance_m": 0.0,
+        "lower_bound_m": 0.0,
+        "upper_bound_m": 4.0465585757473554e-17,
+        "iterations": 4,
+        "converged": true,
+        "method": "COOKED_VERTEX_HULL_GJK",
+        "collision_proven": true,
+        "unresolved": false,
+        "intersection_ball": {
+          "status": "VERIFIED_POSITIVE_INTERSECTION_BALL",
+          "center_m": [
+            0.47116850793057397,
+            -0.058508974837172226,
+            0.44025514920005876
+          ],
+          "radius_m": 0.001491022821723267,
+          "raw_radius_m": 0.001491023821723269,
+          "maximum_constraint_residual_m": -9.99999999907325e-10,
+          "scope": "Floating-point verified halfspace witness of numeric solid intersection, not observed native contact."
+        }
+      }
+    ],
+    "unresolved": [],
+    "self_evaluated": false,
+    "finger_scope": "MEASURED_FIXED_FINGERS; future joint-range and tracking variations are not a swept-volume certificate",
+    "qualification": "Source-bound independent URDF FK and copied cooked vertex hulls at declared route/spline samples. AABB separations are lower bounds, not exact closest distances. No continuous swept-volume, contact-offset or real-robot safety claim. GT veto never counts as RGBD avoidance.",
+    "samples_complete": false,
+    "status": "VETO_PREDICTED_PHYSICAL_COLLISION",
+    "execution_allowed": false,
+    "elapsed_seconds": 0.20415340900217416,
+    "experimental_owner_wait_seconds": 0.2067560899995442,
+    "worker_seconds": 0.20418475500264321,
+    "queue_seconds": 6.685799962724559e-05
+  }
+}
