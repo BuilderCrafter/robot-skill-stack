@@ -20,6 +20,15 @@ from .native_trial import prepare
 from . import reference as frozen_reference
 
 
+async def fixed_request_delay(delay, next_update, clock=time.monotonic):
+    """Fixed timing only: no observation/qualification predicate is consulted."""
+    started=clock()
+    while clock()-started < delay:
+        await next_update()
+    return dict(preparation_completed_at=started,requested_delay_s=delay,
+                actual_delay_s=clock()-started,publication_wait=False)
+
+
 class AutonomousPlanner:
     _run = MatchedSourcePlanner._run
 
@@ -46,6 +55,10 @@ class AutonomousPlanner:
         before = (self.backend.world.current_time, self.backend.world.current_time_step_index)
         strategy = self.backend.motion_strategy
         frozen = strategy.last_plan_trace['frozen_rgbd']
+        self.state['research_record']['planning_entered_at']=time.monotonic()
+        self.state['research_record']['_selected_inferred']=frozen.view.inferred
+        if self.state.get('ordinary_request_timing'):
+            self.context=bench.physical_context_from_observer(self.backend,self.state['observer'],self.state['capture'])
         self.state['frozen_world'] = frozen
         self.state['selected_mapping_input'] = next((p for p in self.state['mapping_inputs']
             if p.generation == frozen.generation and min(f.acquired_at for f in p.frames) == frozen.timestamp), None)
@@ -127,6 +140,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--scenario',choices=bench.protocol.SCENES+bench.protocol.DIAGNOSTIC_SCENES,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--request-delay',type=float,choices=(0.,.3,.6),default=None,
+                        help='Fixed ungated delay after physical-reference preparation; omit for historical research readiness')
     args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=False)
     from isaacsim import SimulationApp
     app=SimulationApp({'headless':True});record=dict(scenario=args.scenario,production_goal=True)
@@ -145,7 +160,13 @@ def main():
         return path
     async def ready(bundle,state):
         nonlocal inferred_product
-        await prepare(bundle,state)
+        if args.request_delay is None:
+            await prepare(bundle,state)
+        else:
+            import omni.kit.app
+            record['request_timing']=await fixed_request_delay(args.request_delay,
+                omni.kit.app.get_app().next_update_async)
+            bench.retain_mapping_publication(state,bundle.spatial_mapping)
         view=bundle.spatial_mapping.snapshot();state['capture_view']=view
         state['selected_mapping_input']=next((p for p in state['mapping_inputs']
             if p.generation==view.generation and min(f.acquired_at for f in p.frames)==view.timestamp),None)
@@ -158,11 +179,12 @@ def main():
         with patch.object(bench.protocol,'write_profile',profile), \
              patch.object(bench.shared,'_world_signature',signature):
             bench.execute(native,app,research=dict(autonomous_runtime=True,research_prepare=ready,
+                ordinary_request_timing=args.request_delay is not None,
                 research_planner_factory=AutonomousPlanner,research_record=record))
         result=json.loads((args.output/'result.json').read_text())
         record['category']=classify(result)
     finally:
-        record['inferred']=bench.baseline.serial(inferred_product)
+        record['inferred']=bench.baseline.serial(record.pop('_selected_inferred',inferred_product))
         frozen_reference.save(args.output/'autonomous.json',record)
         app.close()
 

@@ -140,6 +140,25 @@ def restore_strategy_hooks(strategy):
     return restore
 
 
+def physical_context_from_observer(backend, observer, capture):
+    """Test-only actual start, sampled again after cooperative source admission."""
+    observer.sample()
+    matrices = capture['pose_matrices'](observer.samples[-1]['poses'],capture['snapshot'].meters_per_unit)
+    poses = dict(zip(capture['body_paths'],matrices))
+    q = np.asarray(backend.robot.get_joint_positions()).copy()
+    names = list(backend.robot.dof_names)
+    return dict(joint_names=names,actual_start_q=q.tolist(),
+        actual_start_body_poses={k:v.tolist() for k,v in poses.items()},
+        base_transform=poses['/Franka/panda_link0'].tolist(),
+        finger_positions=[float(q[names.index(name)]) for name in ('panda_finger_joint1','panda_finger_joint2')])
+
+
+def mapping_request_state(service, at):
+    view = service.snapshot(now=at)
+    return dict(at=at,identity=[view.generation,view.revision,view.timestamp],
+        age_s=None if view.timestamp is None else at-view.timestamp,health=dict(service.health))
+
+
 def run_native(args, app, state):
     import omni.kit.app
     from pxr import Gf, UsdGeom
@@ -239,15 +258,7 @@ def run_native(args, app, state):
                 state['world_before_snapshot'],state['world_before_sha256']=shared._world_signature(stage)
             if state.get('research_prepare') is not None:
                 await state['research_prepare'](bundle, state)
-            observer.sample()
-            matrices = capture['pose_matrices'](observer.samples[-1]['poses'],capture['snapshot'].meters_per_unit)
-            actual_poses = dict(zip(capture['body_paths'],matrices))
-            q = np.asarray(backend.robot.get_joint_positions()).copy()
-            names = list(backend.robot.dof_names)
-            physical_context = dict(joint_names=names,actual_start_q=q.tolist(),
-                actual_start_body_poses={k:v.tolist() for k,v in actual_poses.items()},
-                base_transform=actual_poses['/Franka/panda_link0'].tolist(),
-                finger_positions=[float(q[names.index(name)]) for name in ('panda_finger_joint1','panda_finger_joint2')])
+            physical_context = physical_context_from_observer(backend,observer,capture)
             state['initial_state'] = observer.state()
             state['runtime_before'] = baseline.serial(bundle.observation_runtime.diagnostics)
             def capture_rgbd():
@@ -302,11 +313,19 @@ def run_native(args, app, state):
             if not state.get('autonomous_runtime'):
                 state['world_before_snapshot'],state['world_before_sha256']=shared._world_signature(stage)
             state['request_started']=time.monotonic()
+            if state.get('ordinary_request_timing'):
+                state['research_record']['ordinary_request']=mapping_request_state(service,state['request_started'])
             state['acquisition_phase'] = 'measurement'
             observer.metadata['kit_times'].append(state['request_started'])
             result=await acceptance.motion(observer,'outward','move_to_pose',
                 target=Pose(protocol.START if args.scenario=='v43' else protocol.GOAL,protocol.ORIENTATION))
             state['selected_result']=baseline.serial(result)
+            if state.get('ordinary_request_timing') and state.get('frozen_world') is None:
+                state['capture_view']=service.snapshot()
+                state['selected_mapping_input']=next((p for p in reversed(state['mapping_inputs'])
+                    if p.generation==service.generation and p.frames and
+                    min(f.acquired_at for f in p.frames)==state['capture_view'].timestamp),None)
+                state['research_record']['_selected_inferred']=state['capture_view'].inferred
             state['runtime_after']=baseline.serial(bundle.observation_runtime.diagnostics)
             state['strategy_after_motion']=baseline.serial(strategy.diagnostics)
             state['world_after_snapshot'],state['world_after_sha256']=shared._world_signature(stage)
