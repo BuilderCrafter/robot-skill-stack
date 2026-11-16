@@ -4,7 +4,10 @@ import numpy as np
 
 from robot_skill_stack.manipulation.motion.joint_route import (
     JointRoute, PlanningFailure, check_joint_limits, interpolate_route,
-    map_arm_joints, simulation_progress,
+    map_joints, route_array, simulation_progress,
+)
+from robot_skill_stack.integrations.isaac.manipulation.motion.franka_joints import (
+    map_arm_joints,
 )
 
 
@@ -33,12 +36,34 @@ class JointRouteTests(unittest.TestCase):
         self.assertTrue(np.array_equal(dense[-1], route[-1]))
 
     def test_nonfinite_malformed_and_excessive_routes_fail_closed(self):
-        for route in ([], [[0.]*6], [[float("nan")]*7], [0.]*7):
+        for route in ([], [[float("nan")]*7], [0.]*7):
             with self.subTest(route=route), self.assertRaises(PlanningFailure):
                 interpolate_route(route)
         with self.assertRaises(PlanningFailure) as caught:
             interpolate_route([[0.]*7, [1.]*7], max_samples=10)
         self.assertEqual(caught.exception.code, "validation_budget_exhausted")
+
+    def test_generic_mapping_and_routes_support_non_franka_dof(self):
+        names = ("wrist", "elbow", "shoulder")
+        articulation = ("gripper", "shoulder", "wrist", "elbow")
+        self.assertEqual(map_joints(names, articulation), (2, 3, 1))
+        for active, dofs in ((("wrist", "wrist"), articulation),
+                             ((), articulation),
+                             (names, ("wrist", "elbow")),
+                             (names, (*articulation, "elbow"))):
+            with self.subTest(active=active, dofs=dofs), self.assertRaises(PlanningFailure):
+                map_joints(active, dofs)
+        points = [[0., 0., 0.], [.03, .01, 0.]]
+        route = JointRoute(names, points)
+        self.assertEqual(len(route.waypoints[0]), 3)
+        dense = interpolate_route(points)
+        self.assertEqual(dense.shape[1], 3)
+        self.assertTrue(np.all(np.max(np.abs(np.diff(dense, axis=0)), axis=1) <= .01+1e-12))
+        check_joint_limits(dense, [-1.]*3, [1.]*3)
+        with self.assertRaises(PlanningFailure):
+            route_array(points, expected_dof=7)
+        with self.assertRaises(PlanningFailure):
+            check_joint_limits(dense, [-1.]*7, [1.]*7)
 
     def test_joint_limits_apply_to_all_seven_coordinates(self):
         check_joint_limits([[0.]*7], [-1.]*7, [1.]*7)
