@@ -3,15 +3,18 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.manipulation.motion.joint_route import (
-    JointRoute, PlanningFailure, check_joint_limits, interpolate_route,
-    map_arm_joints, simulation_progress,
+    PlanningFailure, check_joint_limits, interpolate_route,
+    map_joints, route_array, simulation_progress,
+)
+from robot_skill_stack.integrations.isaac.manipulation.motion.franka_joints import (
+    map_arm_joints,
 )
 
 
 ARM = tuple(f"panda_joint{i}" for i in range(1, 8))
 
 
-class JointRouteTests(unittest.TestCase):
+class JointRouteUtilityTests(unittest.TestCase):
     def test_order_follows_planner_and_excludes_fingers(self):
         articulation = ("panda_finger_joint1", *reversed(ARM), "panda_finger_joint2")
         self.assertEqual(map_arm_joints(ARM, articulation), (7, 6, 5, 4, 3, 2, 1))
@@ -33,12 +36,33 @@ class JointRouteTests(unittest.TestCase):
         self.assertTrue(np.array_equal(dense[-1], route[-1]))
 
     def test_nonfinite_malformed_and_excessive_routes_fail_closed(self):
-        for route in ([], [[0.]*6], [[float("nan")]*7], [0.]*7):
+        for route in ([], [[float("nan")]*7], [0.]*7):
             with self.subTest(route=route), self.assertRaises(PlanningFailure):
                 interpolate_route(route)
         with self.assertRaises(PlanningFailure) as caught:
             interpolate_route([[0.]*7, [1.]*7], max_samples=10)
         self.assertEqual(caught.exception.code, "validation_budget_exhausted")
+
+    def test_generic_mapping_and_routes_support_non_franka_dof(self):
+        names = ("wrist", "elbow", "shoulder")
+        articulation = ("gripper", "shoulder", "wrist", "elbow")
+        self.assertEqual(map_joints(names, articulation), (2, 3, 1))
+        for active, dofs in ((("wrist", "wrist"), articulation),
+                             ((), articulation),
+                             (names, ("wrist", "elbow")),
+                             (names, (*articulation, "elbow"))):
+            with self.subTest(active=active, dofs=dofs), self.assertRaises(PlanningFailure):
+                map_joints(active, dofs)
+        points = [[0., 0., 0.], [.03, .01, 0.]]
+        self.assertEqual(route_array(points, expected_dof=3).shape, (2, 3))
+        dense = interpolate_route(points)
+        self.assertEqual(dense.shape[1], 3)
+        self.assertTrue(np.all(np.max(np.abs(np.diff(dense, axis=0)), axis=1) <= .01+1e-12))
+        check_joint_limits(dense, [-1.]*3, [1.]*3)
+        with self.assertRaises(PlanningFailure):
+            route_array(points, expected_dof=7)
+        with self.assertRaises(PlanningFailure):
+            check_joint_limits(dense, [-1.]*7, [1.]*7)
 
     def test_joint_limits_apply_to_all_seven_coordinates(self):
         check_joint_limits([[0.]*7], [-1.]*7, [1.]*7)
@@ -48,13 +72,6 @@ class JointRouteTests(unittest.TestCase):
                 check_joint_limits([q], [-1.]*7, [1.]*7)
         with self.assertRaises(PlanningFailure):
             check_joint_limits([[0.]*7], [-1.]*6, [1.]*7)
-
-    def test_immutable_route_preserves_seven_joint_geometry(self):
-        values = np.array([[0.]*7, [1., 0, 0, 0, 0, 0, 0]])
-        route = JointRoute(ARM, values)
-        values[:] = 9
-        self.assertEqual(route.length_rad, 1.)
-        self.assertEqual(route.waypoints[0], (0.,)*7)
 
     def test_simulation_reset_or_stall_invalidates_execution(self):
         self.assertTrue(simulation_progress(1., 1.1, 60, 66,

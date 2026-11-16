@@ -400,7 +400,7 @@ class LulaGlobalPlanner:
                     entry['rrt_seconds'] = time.perf_counter()-started
                 if route is None:
                     raise PlanningFailure('search_exhausted', 'Bounded RRT search returned no route')
-                route = route_array(route)
+                route = route_array(route, expected_dof=len(names))
                 entry['rrt_waypoints'] = len(route)
                 self._last_diagnostics['rrt_waypoints'] = len(route)
                 if np.max(np.abs(route[0]-start_q)) > 1e-6 or np.max(np.abs(route[-1]-q)) > 1e-6:
