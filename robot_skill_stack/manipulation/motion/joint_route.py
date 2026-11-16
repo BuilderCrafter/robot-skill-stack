@@ -1,7 +1,6 @@
 """SDK-independent joint-space routes, validation, and execution checks."""
 from __future__ import annotations
 
-from dataclasses import dataclass
 import math
 
 import numpy as np
@@ -14,25 +13,6 @@ class PlanningFailure(RuntimeError):
         super().__init__(message)
         self.code = code
         self.details = {} if details is None else dict(details)
-
-
-@dataclass(frozen=True)
-class JointRoute:
-    """Ordered joint configurations, with no SDK objects or Cartesian conversion."""
-
-    joint_names: tuple[str, ...]
-    waypoints: tuple[tuple[float, ...], ...]
-
-    def __post_init__(self):
-        names = tuple(self.joint_names)
-        map_joints(names, names)
-        points = route_array(self.waypoints, expected_dof=len(names))
-        object.__setattr__(self, "joint_names", names)
-        object.__setattr__(self, "waypoints", tuple(tuple(map(float, q)) for q in points))
-
-    @property
-    def length_rad(self) -> float:
-        return float(np.linalg.norm(np.diff(np.asarray(self.waypoints), axis=0), axis=1).sum())
 
 
 def map_joints(active_names, articulation_names) -> tuple[int, ...]:
