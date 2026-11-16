@@ -58,6 +58,7 @@ def route_array(route, *, expected_dof: int | None = None) -> np.ndarray:
         raise PlanningFailure("invalid_route", "Joint route must contain finite, consistently sized joint configurations.")
     return points.copy()
 
+
 def check_joint_limits(points, lower, upper, *, tolerance=1e-8) -> None:
     values = route_array(points)
     low, high = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
