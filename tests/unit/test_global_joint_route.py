@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.manipulation.motion.joint_route import (
-    JointRoute, PlanningFailure, check_joint_limits, interpolate_route,
+    PlanningFailure, check_joint_limits, interpolate_route,
     map_joints, route_array, simulation_progress,
 )
 from robot_skill_stack.integrations.isaac.manipulation.motion.franka_joints import (
@@ -54,8 +54,7 @@ class JointRouteTests(unittest.TestCase):
             with self.subTest(active=active, dofs=dofs), self.assertRaises(PlanningFailure):
                 map_joints(active, dofs)
         points = [[0., 0., 0.], [.03, .01, 0.]]
-        route = JointRoute(names, points)
-        self.assertEqual(len(route.waypoints[0]), 3)
+        self.assertEqual(route_array(points, expected_dof=3).shape, (2, 3))
         dense = interpolate_route(points)
         self.assertEqual(dense.shape[1], 3)
         self.assertTrue(np.all(np.max(np.abs(np.diff(dense, axis=0)), axis=1) <= .01+1e-12))
@@ -73,13 +72,6 @@ class JointRouteTests(unittest.TestCase):
                 check_joint_limits([q], [-1.]*7, [1.]*7)
         with self.assertRaises(PlanningFailure):
             check_joint_limits([[0.]*7], [-1.]*6, [1.]*7)
-
-    def test_immutable_route_preserves_seven_joint_geometry(self):
-        values = np.array([[0.]*7, [1., 0, 0, 0, 0, 0, 0]])
-        route = JointRoute(ARM, values)
-        values[:] = 9
-        self.assertEqual(route.length_rad, 1.)
-        self.assertEqual(route.waypoints[0], (0.,)*7)
 
     def test_simulation_reset_or_stall_invalidates_execution(self):
         self.assertTrue(simulation_progress(1., 1.1, 60, 66,
