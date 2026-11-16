@@ -14,7 +14,7 @@ from robot_skill_stack.integrations.isaac.manipulation.motion.franka_joints impo
 ARM = tuple(f"panda_joint{i}" for i in range(1, 8))
 
 
-class JointRouteTests(unittest.TestCase):
+class JointRouteUtilityTests(unittest.TestCase):
     def test_order_follows_planner_and_excludes_fingers(self):
         articulation = ("panda_finger_joint1", *reversed(ARM), "panda_finger_joint2")
         self.assertEqual(map_arm_joints(ARM, articulation), (7, 6, 5, 4, 3, 2, 1))
