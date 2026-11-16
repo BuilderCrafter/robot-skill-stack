@@ -11,8 +11,9 @@ import numpy as np
 from robot_skill_stack.common.types import GripperState
 from robot_skill_stack.manipulation.backend import BackendResult
 from robot_skill_stack.manipulation.motion.joint_route import (
-    PlanningFailure, map_arm_joints, simulation_progress,
+    PlanningFailure, simulation_progress,
 )
+from .franka_joints import map_arm_joints
 from .global_solver import execution_solver_scope
 from .collision_model import load_enhanced_collision_model, validate_model_selection
 
