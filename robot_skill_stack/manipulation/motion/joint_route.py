@@ -1,4 +1,4 @@
-"""Small SDK-independent contracts for seven-joint plans and execution checks."""
+"""SDK-independent joint-space routes, validation, and execution checks."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -18,15 +18,15 @@ class PlanningFailure(RuntimeError):
 
 @dataclass(frozen=True)
 class JointRoute:
-    """Ordered arm configurations, with no SDK objects or Cartesian conversion."""
+    """Ordered joint configurations, with no SDK objects or Cartesian conversion."""
 
     joint_names: tuple[str, ...]
     waypoints: tuple[tuple[float, ...], ...]
 
     def __post_init__(self):
         names = tuple(self.joint_names)
-        map_arm_joints(names, names)
-        points = route_array(self.waypoints)
+        map_joints(names, names)
+        points = route_array(self.waypoints, expected_dof=len(names))
         object.__setattr__(self, "joint_names", names)
         object.__setattr__(self, "waypoints", tuple(tuple(map(float, q)) for q in points))
 
@@ -35,30 +35,35 @@ class JointRoute:
         return float(np.linalg.norm(np.diff(np.asarray(self.waypoints), axis=0), axis=1).sum())
 
 
-def map_arm_joints(active_names, articulation_names) -> tuple[int, ...]:
-    """Retain planner order and exclude fingers even if articulation order differs."""
+def map_joints(active_names, articulation_names) -> tuple[int, ...]:
+    """Map arbitrary planner joint names to articulation indices in planner order."""
     names, dofs = tuple(active_names), tuple(articulation_names)
-    required = {f"panda_joint{i}" for i in range(1, 8)}
-    if len(names) != 7 or set(names) != required:
-        raise PlanningFailure("joint_mapping_failure", "Planner must name exactly the seven Panda arm joints.")
-    if len(dofs) != len(set(dofs)) or not required <= set(dofs):
-        raise PlanningFailure("joint_mapping_failure", "Articulation arm names are missing or ambiguous.")
+    if (not names or len(names) != len(set(names)) or
+            any(not isinstance(name, str) or not name for name in names)):
+        raise PlanningFailure("joint_mapping_failure", "Planner joint names must be unique and nonempty.")
+    if (len(dofs) != len(set(dofs)) or any(not isinstance(name, str) or not name for name in dofs)
+            or not set(names) <= set(dofs)):
+        raise PlanningFailure("joint_mapping_failure", "Articulation joint names are missing or ambiguous.")
     return tuple(dofs.index(name) for name in names)
 
 
-def route_array(route) -> np.ndarray:
-    points = np.asarray(route, dtype=float)
-    if points.ndim != 2 or points.shape[1] != 7 or len(points) < 1 or not np.isfinite(points).all():
-        raise PlanningFailure("invalid_route", "Joint route must contain finite seven-joint configurations.")
+def route_array(route, *, expected_dof: int | None = None) -> np.ndarray:
+    try:
+        points = np.asarray(route, dtype=float)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise PlanningFailure("invalid_route", "Joint route must contain finite joint configurations.") from exc
+    if (points.ndim != 2 or points.shape[1] < 1 or len(points) < 1 or
+            (expected_dof is not None and points.shape[1] != expected_dof) or
+            not np.isfinite(points).all()):
+        raise PlanningFailure("invalid_route", "Joint route must contain finite, consistently sized joint configurations.")
     return points.copy()
-
 
 def check_joint_limits(points, lower, upper, *, tolerance=1e-8) -> None:
     values = route_array(points)
     low, high = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
-    if (low.shape != (7,) or high.shape != (7,) or not np.isfinite(low).all()
-            or not np.isfinite(high).all() or np.any(low >= high)):
-        raise PlanningFailure("joint_mapping_failure", "Invalid seven-joint position limits.")
+    if (low.shape != (values.shape[1],) or high.shape != (values.shape[1],) or
+            not np.isfinite(low).all() or not np.isfinite(high).all() or np.any(low >= high)):
+        raise PlanningFailure("joint_mapping_failure", "Invalid joint position limits.")
     if np.any(values < low-tolerance) or np.any(values > high+tolerance):
         raise PlanningFailure("joint_limit_failure", "A route or trajectory sample exceeds joint limits.")
 
