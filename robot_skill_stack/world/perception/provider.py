@@ -13,6 +13,7 @@ from robot_skill_stack.world.perception.geometry import ObjectGeometryService
 
 
 def _immutable_array(value):
+    """Make an independent, read-only array for safe frame processing."""
     array = np.ascontiguousarray(value)
     base = array
     while isinstance(base, np.ndarray) and base.base is not None:
@@ -23,6 +24,7 @@ def _immutable_array(value):
 
 
 def _describe(candidate, geometry):
+    """Summarize candidate shape and fit evidence for live diagnostics."""
     return {
         'position': candidate.position.tolist(), 'size': candidate.size.tolist(),
         'pixels': int(candidate.mask.sum()), 'spawnable': candidate.spawnable,
@@ -39,6 +41,7 @@ def _describe(candidate, geometry):
 
 @dataclass(frozen=True)
 class PerceptionInput:
+    """A captured camera frame and the time spent acquiring it."""
     frame: PerceptionFrame
     acquisition_ms: float
 
@@ -49,6 +52,7 @@ class PerceptionInput:
 
 @dataclass(frozen=True)
 class PerceptionResult:
+    """Detected candidates and diagnostics computed from one camera frame."""
     frame: PerceptionFrame
     candidates: tuple
     diagnostics: tuple
@@ -67,6 +71,7 @@ class PerceptionProcessor:
         self.discoverer, self.primitive_estimator = discoverer, primitive_estimator
 
     def compute(self, prepared):
+        """Discover and classify candidates without camera or tracking access."""
         frame = prepared.frame
         started = time.perf_counter()
         candidates = self.discoverer.discover(frame)
@@ -87,6 +92,10 @@ class PerceptionProcessor:
 
 
 class PerceptionStateProvider:
+    """Bridge camera capture, object detection, and tracked observations.
+
+    Keep frame processing separate from camera reads and track association.
+    """
     def __init__(self, camera, localizer, discoverer, tracker,
                  primitive_estimator=None, *, source='rgbd_geometry_perception'):
         self.camera = camera
@@ -105,6 +114,7 @@ class PerceptionStateProvider:
         self.stage_diagnostics = {}
 
     def _current_observations(self):
+        """Convert confirmed, visible tracks into WorldModel observations."""
         observations = []
         for track in self.tracker.tracks():
             if not track.confirmed or not track.visible:
@@ -162,6 +172,7 @@ class PerceptionStateProvider:
         return PerceptionInput(frame, (time.perf_counter()-started)*1000)
 
     def associate(self, result, context=None):
+        """Update object tracks from processed candidates and publish observations."""
         if self._closed or result is None:
             return ObservationBatch()
         started = time.perf_counter()
@@ -175,6 +186,7 @@ class PerceptionStateProvider:
         return ObservationBatch(self._current_observations(), frame.timestamp)
 
     def observe(self, context=None) -> ObservationBatch:
+        """Run acquisition, processing, and tracking synchronously."""
         prepared = self.acquire()
         if prepared is None:
             return ObservationBatch()

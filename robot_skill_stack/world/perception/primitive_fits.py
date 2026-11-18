@@ -4,6 +4,7 @@ import numpy as np
 
 
 def hull2d(points):
+    """Compute the convex hull around 2D sample points."""
     points = np.unique(np.asarray(points, float), axis=0)
     if len(points) < 3:
         return points
@@ -31,6 +32,7 @@ def area(hull):
 
 
 def rectangle(hull):
+    """Find the minimum-area rotated rectangle enclosing a 2D hull."""
     if len(hull) < 3 or area(hull) < 1e-10:
         return None
     edges = np.roll(hull, -1, axis=0) - hull
@@ -50,6 +52,10 @@ def rectangle(hull):
 
 
 def box_footprint(points, top_z, tolerance):
+    """Estimate a box's XY footprint and yaw from its visible points.
+
+    Prefer side walls when available; otherwise fit the top-view hull.
+    """
     sides = points[points[:, 2] < top_z-3*tolerance, :2]
     if len(sides) < 12:
         return rectangle(hull2d(points[:, :2]))
@@ -94,6 +100,7 @@ def radial_fit(points):
 
 
 def quality(residual, tolerance):
+    """Turn the 80th-percentile fit error into a score between zero and one."""
     residual = np.asarray(residual, float)
     if not len(residual) or not np.isfinite(residual).all():
         return 0.
@@ -102,6 +109,7 @@ def quality(residual, tolerance):
 
 
 def cylinder_residual(points, center, axis, radius, length):
+    """Measure each point's distance from a finite cylinder surface."""
     delta = points-center
     axial = delta @ axis
     radial = np.linalg.norm(delta-axial[:, None]*axis, axis=1)
@@ -110,6 +118,7 @@ def cylinder_residual(points, center, axis, radius, length):
 
 
 def circle_boundary(hull):
+    """Fit a circle to sampled hull edges to test for a rounded boundary."""
     if len(hull) < 6:
         return None
     # Mid-edge samples distinguish a rectangle from a circle through its corners.

@@ -8,6 +8,10 @@ from robot_skill_stack.world.perception.primitive_fits import (
 
 
 class PrimitiveEstimator:
+    """Fit cubes, spheres, and cylinders to visible object points.
+
+    Return UNKNOWN when no shape fits confidently and unambiguously.
+    """
     def __init__(self, classification_threshold=.58, ambiguity_margin=.07, top_band=.15,
                  fit_tolerance=.0008, max_fit_points=1600):
         self.threshold = float(classification_threshold)
@@ -21,6 +25,7 @@ class PrimitiveEstimator:
             raise ValueError('fit_tolerance must be positive; max_fit_points must be >= 30')
 
     def _top(self, p, height):
+        """Estimate a horizontal top surface and how strongly points support it."""
         upper = float(np.percentile(p[:, 2], 99.5))
         band = p[p[:, 2] >= upper-max(height*self.top_band, 4*self.tolerance)]
         bins = max(3, int(np.ptp(band[:, 2])/self.tolerance)+1)
@@ -37,6 +42,7 @@ class PrimitiveEstimator:
                                  metadata={'center': center.tolist(), 'size_world': size.tolist()}, **kwargs)
 
     def _box(self, p, top, z, flatness, plane, all_area):
+        """Fit an upright box footprint and score its surface agreement."""
         rect = rectangle(hull2d(top[:, :2]))
         if rect is None or len(top) < 12:
             return None
@@ -58,6 +64,7 @@ class PrimitiveEstimator:
         return self._result(PrimitiveShape.CUBE, score, center, abs(R) @ size, box_size=size, yaw=yaw)
 
     def _sphere(self, p, plane):
+        """Fit a sphere and reject dimensions inconsistent with its visible points."""
         fit = radial_fit(p)
         if fit is None:
             return None
@@ -70,6 +77,7 @@ class PrimitiveEstimator:
         return self._result(PrimitiveShape.SPHERE, score, center, np.full(3, 2*radius), radius=radius)
 
     def _vertical(self, p, top, z, flatness, plane, all_area):
+        """Fit an upright cylinder using side points or a circular top cap."""
         side = p[p[:, 2] < z-2*self.tolerance]
         fit = radial_fit(side[:, :2]) if len(side) >= 20 else None
         cap_only = fit is None
@@ -95,6 +103,7 @@ class PrimitiveEstimator:
                             axis=axis, radius=radius, length=length)
 
     def _horizontal(self, p, plane):
+        """Search possible horizontal cylinder axes and score their surface fits."""
         # PCA alone follows sampling bias. Search axis directions against a circle fit.
         sample = p[np.linspace(0, len(p)-1, min(500, len(p)), dtype=int)]
         best = None
@@ -135,6 +144,7 @@ class PrimitiveEstimator:
         return self._result(PrimitiveShape.CYLINDER, score, center, size, axis=axis, radius=radius, length=length)
 
     def estimate(self, candidate):
+        """Compare primitive fits and return the best confident shape estimate."""
         p = np.asarray(candidate.metadata.get('points', []), float)
         if p.ndim != 2 or p.shape[1] != 3:
             return PrimitiveGeometry(PrimitiveShape.UNKNOWN, metadata={'reason': 'no_point_cloud'})
