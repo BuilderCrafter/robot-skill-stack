@@ -29,13 +29,10 @@ def result(code=0):
 
 class ProjectRunnerTests(unittest.TestCase):
     def setUp(self):
-        self.replay = load_script('replay_perception_capture')
         self.all = load_script('run_all_regressions')
         self.temp = tempfile.TemporaryDirectory(prefix='runner test ')
         self.addCleanup(self.temp.cleanup)
         self.path = Path(self.temp.name)
-        self.capture = self.path / 'capture with spaces.npz'
-        self.capture.touch()
         self.stack = contextlib.ExitStack()
         self.addCleanup(self.stack.close)
         self.stdout, self.stderr = io.StringIO(), io.StringIO()
@@ -126,53 +123,13 @@ class ProjectRunnerTests(unittest.TestCase):
             return original(name, *args, **kwargs)
         with patch('builtins.__import__', side_effect=guarded):
             load_script('run_all_regressions')
-            load_script('replay_perception_capture')
-
-    def test_replay_preserves_capture_argument_and_failure_status(self):
-        with patch.object(sys, 'argv', ['replay', str(self.capture)]):
-            with patch.object(self.replay.subprocess, 'run', return_value=result(13)) as run:
-                self.assertEqual(self.replay.main(), 13)
-        run.assert_called_once_with(
-            ['bash', str(self.replay.RUNNER), '-c', self.replay.REPLAY, str(self.capture)], cwd=ROOT,
-        )
-
-    def test_replay_help_needs_no_wrapper(self):
-        with patch.object(sys, 'argv', ['replay', '--help']):
-            with patch.object(self.replay, 'RUNNER', self.path / 'missing.sh'):
-                with patch.object(self.replay.subprocess, 'run') as run:
-                    with self.assertRaises(SystemExit) as caught:
-                        self.replay.main()
-                    self.assertEqual(caught.exception.code, 0)
-                    run.assert_not_called()
-
-    def test_replay_missing_capture_is_reported(self):
-        with patch.object(sys, 'argv', ['replay', str(self.path / 'missing.npz')]):
-            with patch.object(self.replay.subprocess, 'run') as run:
-                with self.assertRaises(SystemExit) as caught:
-                    self.replay.main()
-                self.assertEqual(caught.exception.code, 2)
-                run.assert_not_called()
-
-    def test_replay_missing_wrapper_is_reported(self):
-        with patch.object(sys, 'argv', ['replay', str(self.capture)]):
-            with patch.object(self.replay, 'RUNNER', self.path / 'missing.sh'):
-                with self.assertRaises(SystemExit) as caught:
-                    self.replay.main()
-                self.assertEqual(caught.exception.code, 2)
-        self.assertIn('wrapper not found', self.stderr.getvalue())
-
-    def test_replay_shell_error_is_reported(self):
-        with patch.object(sys, 'argv', ['replay', str(self.capture)]):
-            with patch.object(self.replay.subprocess, 'run', side_effect=OSError('no bash')):
-                self.assertEqual(self.replay.main(), 2)
 
     def sandbox(self):
         repo, isaac = self.path / 'repo with spaces', self.path / 'fake isaac'
         def write(path, text):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(text)
-        for name in ('run_all_regressions', 'replay_perception_capture'):
-            write(repo / 'scripts' / f'{name}.py', (ROOT / 'scripts' / f'{name}.py').read_text())
+        write(repo / 'scripts/run_all_regressions.py', (ROOT / 'scripts/run_all_regressions.py').read_text())
         write(repo / 'run_isaac_python.sh', (ROOT / 'run_isaac_python.sh').read_text())
         (repo / 'run_isaac_python.sh').chmod(0o600)  # ZIP extraction need not retain +x.
         write(isaac / 'python.sh', '#!/bin/bash\nexport VIA_TEST_WRAPPER=yes\n'
@@ -295,21 +252,6 @@ class ProjectRunnerTests(unittest.TestCase):
         self.assertNotEqual(process.returncode, 0)
         self.assertIn('Expected NumPy 1.26.4, got test-only', process.stderr)
         self.assertNotIn('SDK imported too early', process.stderr)
-
-    def test_real_shell_replay_preserves_relative_path_from_other_cwd(self):
-        repo, env = self.sandbox()
-        package = repo / 'robot_skill_stack/world/perception'
-        package.mkdir(parents=True)
-        for folder in (package, package.parent, package.parent.parent):
-            (folder / '__init__.py').touch()
-        (package / 'diagnostics.py').write_text(
-            "import numpy as np\ndef replay_capture(path):\n"
-            "    return {'capture': path, 'numpy': np.__version__}\n")
-        process = subprocess.run([sys.executable, str(repo / 'scripts/replay_perception_capture.py'),
-                                  self.capture.name], cwd=self.path, env=env,
-                                 capture_output=True, text=True, timeout=15)
-        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
-        self.assertEqual(json.loads(process.stdout), {'capture': str(self.capture), 'numpy': 'test-only'})
 
     def test_gui_shell_dispatch_preserves_arguments_dependencies_and_exit_status(self):
         repo, env = self.sandbox()

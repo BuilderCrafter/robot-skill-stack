@@ -10,7 +10,6 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.world.perception.diagnostics import save_capture, replay_capture
 from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.world.perception.localizer import RgbdLocalizer
@@ -145,18 +144,6 @@ load_scene_config('config/scenes/playground.toml')
                 observations = provider.observe().observations
         self.assertEqual(observations[0].class_name, 'cylinder')
         self.assertEqual(observations[0].geometry.shape.value, 'cylinder')
-
-    def test_capture_replay_round_trip(self):
-        camera = FrameCamera(render([Solid('sphere')]))
-        provider = build_perception_provider(camera, load_scene_config('config/scenes/playground.toml'))
-        provider.observe()
-        with tempfile.TemporaryDirectory() as directory:
-            path = save_capture(provider, Path(directory)/'capture.npz')
-            result = replay_capture(path)
-            self.assertEqual(result['candidates'][0]['shape'], 'sphere')
-            self.assertEqual(result['candidates'], provider.diagnostics)
-            with np.load(path, allow_pickle=False) as capture:
-                np.testing.assert_array_equal(capture['depth'], camera.frame.depth)
 
     def test_rotated_rectangular_box_not_confused_with_cylinder(self):
         solid = Solid('cube', center=(.45, 0, .02), size=(.10, .04, .04), yaw=.65)

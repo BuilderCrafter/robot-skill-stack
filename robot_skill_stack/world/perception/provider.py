@@ -8,7 +8,6 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
-from robot_skill_stack.world.perception.diagnostics import describe
 from robot_skill_stack.world.perception.frame import PerceptionFrame
 from robot_skill_stack.world.perception.geometry import ObjectGeometryService
 
@@ -21,6 +20,21 @@ def _immutable_array(value):
     if isinstance(base, bytes) and not array.flags.writeable:
         return array
     return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
+
+
+def _describe(candidate, geometry):
+    return {
+        'position': candidate.position.tolist(), 'size': candidate.size.tolist(),
+        'pixels': int(candidate.mask.sum()), 'spawnable': candidate.spawnable,
+        'shape': None if geometry is None else geometry.shape.value,
+        'scores': {} if geometry is None else geometry.scores,
+        'confidence': None if geometry is None else geometry.confidence,
+        'yaw': None if geometry is None else geometry.yaw,
+        'axis': None if geometry is None or geometry.axis is None else geometry.axis.tolist(),
+        'radius': None if geometry is None else geometry.radius,
+        'length': None if geometry is None else geometry.length,
+        'reason': None if geometry is None else geometry.metadata.get('reason'),
+    }
 
 
 @dataclass(frozen=True)
@@ -66,7 +80,7 @@ class PerceptionProcessor:
                     candidate.position = np.asarray(geometry.metadata['center'], float)
                     candidate.size = np.asarray(geometry.metadata['size_world'], float)
                     candidate.spawnable = self.discoverer.is_spawnable(candidate.size)
-            diagnostics.append(describe(candidate, geometry))
+            diagnostics.append(_describe(candidate, geometry))
         return PerceptionResult(frame, tuple(candidates), tuple(diagnostics),
             tuple(deepcopy(self.discoverer.diagnostics)), (time.perf_counter()-started)*1000,
             prepared.acquisition_ms)

@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from collections.abc import Callable
-from functools import partial
 
 import numpy as np
 import omni.kit.app
@@ -23,7 +21,6 @@ from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
 from robot_skill_stack.world.model.updater import WorldModelUpdater
-from robot_skill_stack.world.perception.diagnostics import save_capture
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
@@ -49,7 +46,6 @@ class IsaacRuntimeBundle:
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
     config: SceneConfig
-    capture_frame: Callable[[Path], Path] | None = None
     spatial_mapping: object | None = None
     observation_runtime: object | None = None
     _closed: bool = field(default=False, init=False, repr=False)
@@ -180,7 +176,6 @@ async def _build_runtime(
             world_updater=updater,
             runtime=RobotRuntime(registry, model),
             config=config,
-            capture_frame=partial(save_capture, provider) if config.world.provider == "perception" else None,
             observation_runtime=observation_runtime,
             spatial_mapping=None if observation_runtime is None else observation_runtime.spatial_mapping,
         )

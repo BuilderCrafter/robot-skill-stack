@@ -130,8 +130,7 @@ is coroutine cleanup, not an emergency stop or automatic physical recovery.
 The extension reads `WorldModelViewModel`, backend readiness, runtime busy and
 source health. Refresh is read-only. Confirmed Clear Held calls the runtime's
 software reset, which rejects active commands or changed IDs. Clear Lost uses
-the common updater with held/hint protection. Optional bundle
-`capture_frame(path)` isolates RGB-D diagnostics; GUI cleanup calls bundle
+the common updater with held/hint protection. GUI cleanup calls bundle
 `close()` instead of managing sources.
 
 ## Isaac execution and lifecycle constraints

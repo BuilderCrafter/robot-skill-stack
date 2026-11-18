@@ -188,7 +188,6 @@ class BootstrapTests(unittest.TestCase):
                 b=await m.build_runtime('rgbd.toml')
             self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
             self.assertFalse(hasattr(b,'objects'))
-            self.assertTrue(callable(b.capture_frame))
             b.close()
         self.run_case(fn)
 
@@ -235,7 +234,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_ground_truth_populates_and_ticks(self):
         async def fn(m,e):
-            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model); self.assertIsNone(b.capture_frame)
+            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model)
             count=b.world_updater.update_count; e.world.tick(); self.assertEqual(b.world_updater.update_count,count+1)
             b.close(); self.assertEqual(e.world._physics_functions,{})
         self.run_case(fn)
