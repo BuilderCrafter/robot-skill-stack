@@ -46,6 +46,7 @@ def project_depth(frame, *, stride=2, pixel_offset=.5, bounds=None):
 
 
 def crop_workspace(points, scene, *, table_clearance=.004):
+    """Keep finite world points inside the workspace and above the support plane."""
     p = np.asarray(points, float).reshape(-1, 3)
     keep = (np.isfinite(p).all(1) & (p >= scene.workspace_min).all(1) &
             (p <= scene.workspace_max).all(1) & (p[:, 2] > scene.support_plane_z+table_clearance))
@@ -53,6 +54,7 @@ def crop_workspace(points, scene, *, table_clearance=.004):
 
 
 def voxelize(points, voxel=.002, max_points=6000):
+    """Merge points within spatial voxels and bound the resulting cloud size."""
     if not np.isfinite(voxel) or voxel <= 0 or max_points < 1:
         raise ValueError('voxel and max_points must be positive')
     points = np.asarray(points, float).reshape(-1, 3)
@@ -81,6 +83,7 @@ def voxelize(points, voxel=.002, max_points=6000):
 
 
 def fuse_clouds(clouds, *, voxel=.002, max_points=6000):
+    """Balance camera point densities, then merge redundant spatial samples."""
     # First equalize density per camera, then suppress cross-camera duplicates.
     balanced = [voxelize(p, voxel, max_points) for p in clouds]
     return voxelize(np.concatenate(balanced) if balanced else np.empty((0, 3)), voxel, max_points)

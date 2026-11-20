@@ -11,11 +11,16 @@ from .acquisition import DepthFrame, FrameSynchronizer
 
 
 def _owned(values, dtype=None):
+    """Copy frame data into independent, read-only array storage."""
     values = np.ascontiguousarray(values, dtype=dtype)
     return np.frombuffer(values.tobytes(), dtype=values.dtype).reshape(values.shape)
 
 
 class SharedFramePool:
+    """Share fresh camera captures across semantic perception and mapping.
+
+    Admit synchronized batches separately for each consumer and cache copied frames.
+    """
     def __init__(self, cameras, *, token_reader=FrameSynchronizer._token, clock=time.monotonic):
         if not cameras or len({id(camera) for camera in cameras.values()}) != len(cameras):
             raise ValueError('Shared cameras must have distinct identities')
@@ -44,6 +49,7 @@ class SharedFramePool:
         return number, stamp
 
     def reset(self):
+        """Clear cached frames and reject exposures retained across timeline resets."""
         # A render buffer retained through Stop/Play is still the old exposure.
         self._blocked_tokens.update({key: value[0] for key, value in self._cache.items()})
         self._consumed.clear()
@@ -52,6 +58,7 @@ class SharedFramePool:
         self.begin_update()
 
     def batch(self, consumer, paths, *, max_skew=.025, simulation_time=None):
+        """Return a fresh synchronized frame batch for one named consumer."""
         if self._closed:
             raise RuntimeError('Shared frame pool is closed')
         paths = tuple(paths)
@@ -114,6 +121,7 @@ class SharedFramePool:
             raise
 
     def _frame(self, key, token):
+        """Reuse a cached frame or acquire and cache a new camera exposure."""
         cached = self._cache.get(key)
         if cached is not None and cached[0] == token:
             if cached[2] is not None:

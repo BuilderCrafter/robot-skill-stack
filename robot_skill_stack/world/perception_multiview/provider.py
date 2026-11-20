@@ -39,11 +39,13 @@ class _FitTimer:
 
 
 def _voxel_ids(points, voxel):
+    """Encode voxel coordinates for matching cluster points to each camera cloud."""
     keys = np.ascontiguousarray(np.floor(points/voxel+1e-9), dtype=np.int64)
     return keys.view(np.dtype((np.void, 3*keys.dtype.itemsize))).ravel()
 
 
 def _immutable_array(value):
+    """Copy an array into read-only storage for worker-safe frame processing."""
     array = np.ascontiguousarray(value)
     base = array
     while isinstance(base, np.ndarray) and base.base is not None:
@@ -55,6 +57,7 @@ def _immutable_array(value):
 
 @dataclass(frozen=True)
 class MultiViewInput:
+    """Synchronized camera frames and acquisition metadata for one update."""
     frames: tuple
     timestamp: float
     acquisition_ms: float
@@ -63,6 +66,7 @@ class MultiViewInput:
 
 @dataclass(frozen=True)
 class MultiViewResult:
+    """Object detections and diagnostics from one fused multi-camera update."""
     timestamp: float
     detections: tuple
     camera_count: int
@@ -77,6 +81,7 @@ class MultiViewProcessor:
         self.fitter = SurfaceFitter()
 
     def compute(self, prepared):
+        """Fuse depth clouds, discover clusters, fit shapes, and assess geometry."""
         frames = prepared.frames
         acquired = time.perf_counter()
         clouds = [voxelize(crop_workspace(project_depth(frame, stride=self.stride,
@@ -158,6 +163,10 @@ class MultiViewProcessor:
 
 
 class MultiViewProvider:
+    """Connect synchronized frame capture, 3D processing, and object tracking.
+
+    Publish confirmed detections as observations for the WorldModel.
+    """
     def __init__(self, rig, scene, *, voxel_size=.002, stride=2, max_points=12000):
         self.rig, self.scene = rig, scene
         self.voxel_size, self.stride, self.max_points = voxel_size, stride, max_points
@@ -232,6 +241,7 @@ class MultiViewProvider:
         self.tracker.forget(object_id)
 
     def get_point_cloud(self, object_id):
+        """Return the current fused points for a visible tracked object."""
         track = self.tracker.tracks.get(object_id)
         return None if track is None or not track.visible else track.detection.points.copy()
 

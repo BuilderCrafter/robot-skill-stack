@@ -48,6 +48,7 @@ def _neighbor_cells(keys):
 
 
 def cluster_points(points, *, cell_size=.008, min_points=25):
+    """Group neighboring occupied 3D cells into candidate object clouds."""
     points = np.asarray(points, float).reshape(-1, 3)
     if not np.isfinite(cell_size) or cell_size <= 0 or min_points < 1:
         raise ValueError('Invalid clustering settings')
@@ -114,6 +115,7 @@ def _metric_components(points, radius=.004, min_points=25):
 
 
 def supported_object_cloud(points, support_plane_z):
+    """Check whether a cluster has enough points, plausible size, and table contact."""
     if len(points) < 30:
         return False, 'insufficient_surface_samples'
     lo, hi = np.percentile(points, [1, 99], axis=0)
@@ -128,6 +130,7 @@ def supported_object_cloud(points, support_plane_z):
 
 
 def _surface_distance(points, fit, *, signed=False):
+    """Measure point distances to a fitted primitive's surface."""
     geometry = fit.geometry
     delta = points-fit.center
     if geometry.shape.value == 'sphere':
@@ -148,6 +151,7 @@ def _surface_distance(points, fit, *, signed=False):
 
 
 def _footprint(fit):
+    """Approximate a fitted primitive's horizontal footprint as a polygon."""
     geometry = fit.geometry
     if geometry.shape.value == 'sphere' or (geometry.shape.value == 'cylinder' and abs(geometry.axis[2]) > .99):
         angles = np.linspace(0, 2*np.pi, 32, endpoint=False)
@@ -185,6 +189,7 @@ def _separating_axis(first, second):
 
 
 def _distinct_models(fits):
+    """Check whether fitted primitives have sufficiently separate footprints."""
     return all(_separating_axis(first, second)[0] >= -.001
                for index, first in enumerate(fits) for second in fits[index+1:])
 
@@ -248,6 +253,7 @@ def _partition_view_evidence(parent, children, frames, plane):
 
 
 def _ambiguous_partition(points, parent_fit, evidence):
+    """Keep a cluster intact and label its single-versus-multiple fit uncertain."""
     geometry = PrimitiveGeometry('unknown', parent_fit.geometry.confidence,
         scores=dict(parent_fit.geometry.scores), metadata={
             'reason': 'ambiguous_single_or_multiple_surfaces', 'partition_view_evidence': evidence})
