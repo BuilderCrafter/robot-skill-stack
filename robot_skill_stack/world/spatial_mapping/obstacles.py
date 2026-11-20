@@ -16,6 +16,7 @@ from .occupancy import OccupancyState
 
 @dataclass(frozen=True)
 class ObstacleExtractionSettings:
+    """Limit the number of collision proxies and configure the support plane."""
     max_obstacles: int = 64
     support_plane_z: float | None = None
 
@@ -31,6 +32,7 @@ class ObstacleExtractionSettings:
 
 @dataclass(frozen=True)
 class ObstacleBox:
+    """Axis-aligned obstacle box representing exactly selected occupied cells."""
     id: str
     center: tuple
     dimensions: tuple
@@ -55,6 +57,7 @@ class ObstacleBox:
 
 @dataclass(frozen=True)
 class ObstaclePacket:
+    """Immutable obstacle boxes and extraction diagnostics for one map revision."""
     generation: int
     revision: int
     timestamp: float | None
@@ -149,6 +152,10 @@ class ObstacleExtractor:
         self._key, self._packet = None, None
 
     def extract(self, snapshot, *, now, evidence_ttl):
+        """Pack eligible occupied voxels into bounded obstacle boxes.
+
+        Preserve represented occupied cells without filling free or unknown space.
+        """
         now, evidence_ttl = float(now), float(evidence_ttl)
         if not math.isfinite(now) or now < 0 or not math.isfinite(evidence_ttl) or evidence_ttl <= 0:
             raise ValueError('Obstacle extraction requires finite time and positive evidence TTL')

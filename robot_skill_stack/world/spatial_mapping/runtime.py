@@ -31,6 +31,7 @@ def _owned(array):
 
 @dataclass(frozen=True)
 class MappingInput:
+    """Immutable input containing RGB-D frames or prepared ground-truth geometry."""
     generation: int = 0
     frames: tuple = ()
     robot_snapshots: object = None
@@ -64,6 +65,7 @@ def _input_timestamp(payload):
 
 @dataclass(frozen=True)
 class MappingCompleted:
+    """Worker result containing an occupancy snapshot and optional map products."""
     snapshot: object
     diagnostics: object
     accepted: bool
@@ -84,6 +86,7 @@ class MappingProcessor:
             **{k:getattr(reconstruction_scene,k) for k in ('workspace_min','workspace_max','support_plane_z')}))
 
     def _reset(self, generation):
+        """Create fresh mapping components for a new simulation generation."""
         cfg = self.settings
         self.map = OccupancyMap(cfg.grid_spec(), clock=self.clock,
             stale_after=cfg.stale_after, evidence_ttl=cfg.evidence_ttl)
@@ -100,6 +103,10 @@ class MappingProcessor:
                                temporal_probabilities=cfg.source == "rgbd"))
 
     def compute(self, payload):
+        """Update the occupancy grid from camera rays or ground-truth geometry.
+
+        Prepare optional obstacle and reconstruction products in the worker.
+        """
         if self.map is None or payload.generation != self.generation or payload.reset:
             self._reset(payload.generation)
         started = time.perf_counter()
@@ -174,6 +181,7 @@ class MappingReadView:
         object.__setattr__(self, 'health', MappingProxyType(values))
 
     def _age(self, states, probabilities, observed, last_observed, expired):
+        """Mark expired evidence unknown at the view's fixed evaluation time."""
         expired = expired | (observed & (self.evaluated_at-last_observed >= self.evidence_ttl))
         states, probabilities = states.copy(), probabilities.copy()
         states[expired], probabilities[expired] = OccupancyState.UNKNOWN, .5
@@ -242,6 +250,7 @@ class MappingService:
         self._completion = {}
 
     def submit(self, payload):
+        """Queue mapping work only for the current simulation generation."""
         if self._closed or payload.generation != self.generation:
             self._counts['rejected'] += 1
             return False
@@ -250,6 +259,7 @@ class MappingService:
         return accepted
 
     def poll(self, now=None):
+        """Accept a fresh worker result and publish its immutable map products."""
         if self._closed:
             return None
         result = self._worker.poll()
@@ -319,6 +329,7 @@ class MappingService:
         return completed
 
     def note_source_failure(self, error):
+        """Invalidate pending work after an acquisition or source failure."""
         if self._closed:
             return
         self._barrier += 1
@@ -332,6 +343,7 @@ class MappingService:
             self._status, self._reason = 'no_frame', str(reason)
 
     def reset(self, generation=None):
+        """Start a new generation and discard previously published map evidence."""
         if self._closed:
             return
         next_generation = self.generation+1 if generation is None else generation
@@ -349,6 +361,7 @@ class MappingService:
         self._counts['resets'] += 1
 
     def snapshot(self, now=None):
+        """Return a fixed-time read view of the latest accepted map publication."""
         base = self._published if self._published is not None else self._empty
         if base.generation != self.generation:
             base = replace(base, generation=self.generation)

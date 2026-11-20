@@ -6,6 +6,7 @@ from .occupancy import _readonly
 
 
 def freeze(value):
+    """Recursively copy and freeze geometry metadata for safe publication."""
     if isinstance(value, dict):
         return MappingProxyType({key: freeze(item) for key, item in value.items()})
     if isinstance(value, (list, tuple)):
@@ -17,6 +18,7 @@ def freeze(value):
 
 @dataclass(frozen=True)
 class _Primitive:
+    """Analytic ground-truth primitive with its world transform and dimensions."""
     kind: str
     world_from_local: np.ndarray
     dimensions: np.ndarray | None = None
@@ -31,6 +33,7 @@ class _Primitive:
 
 
 def _primitive_bounds(primitive):
+    """Compute conservative world bounds and the inverse primitive transform."""
     transform = np.asarray(primitive.world_from_local, dtype=float)
     if (transform.shape != (4, 4) or not np.isfinite(transform).all() or
             not np.allclose(transform[3], [0, 0, 0, 1], atol=1e-12, rtol=0)):
@@ -60,6 +63,7 @@ def _primitive_bounds(primitive):
 
 
 def _candidate_bounds(spec, lower, upper):
+    """Find voxel index limits intersecting the supplied world-space bounds."""
     lower, upper = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
     if (lower.shape != (3,) or upper.shape != (3,) or
             not np.isfinite([lower, upper]).all() or np.any(lower > upper)):
@@ -76,6 +80,7 @@ def _candidate_bounds(spec, lower, upper):
 
 
 def _rasterize(spec, lower, upper, *, primitive=None, inverse=None, budget=8_000_000):
+    """Select voxels intersecting a primitive or conservative bounding volume."""
     low, high, count = _candidate_bounds(spec, lower, upper)
     if count > budget:
         raise RuntimeError(f'Ground-truth candidate voxel budget exceeded: {count} > {budget}')
@@ -118,6 +123,7 @@ def primitive_voxel_indices(spec, kind, world_from_local, *, dimensions=None,
 
 @dataclass(frozen=True)
 class GeometryItem:
+    """One prepared scene geometry item awaiting voxel rasterization."""
     lower: np.ndarray
     upper: np.ndarray
     primitive: _Primitive | None = None
@@ -132,6 +138,7 @@ class GeometryItem:
 
 @dataclass(frozen=True)
 class GroundTruthInput:
+    """Timestamped scene geometry prepared outside the mapping worker."""
     timestamp: float
     items: tuple
     diagnostics: object
@@ -144,6 +151,7 @@ class GroundTruthInput:
 
 
 def rasterize_ground_truth(spec, prepared, max_candidate_voxels=8_000_000):
+    """Rasterize prepared scene items into occupied voxel indices and statistics."""
     occupied = np.zeros(spec.shape, dtype=bool)
     stats = dict(prepared.diagnostics)
     stats['candidate_voxels'] = 0

@@ -46,6 +46,7 @@ def _fail(code, message, **details):
 
 @dataclass(frozen=True)
 class FrozenRgbdBox:
+    """Immutable collision proxy for selected occupied map cells."""
     id: str
     center: tuple
     dimensions: tuple
@@ -70,6 +71,7 @@ class FrozenRgbdBox:
 
 @dataclass(frozen=True, eq=False)
 class FrozenRgbdWorld:
+    """Fixed-time occupancy and obstacle snapshot for one planning request."""
     generation: int
     revision: int
     timestamp: float
@@ -165,6 +167,7 @@ def _boxes(packet, spec, *, now, maximum):
 
 
 def _camera_metadata(diagnostics, settings, timestamp, now):
+    """Validate camera exposures and robot-filter evidence of a map publication."""
     frames = diagnostics.get('source_frames')
     count = diagnostics.get('accepted_frame_count')
     if not isinstance(frames, (tuple, list)) or type(count) is not int or count < 1 or len(frames) != count:

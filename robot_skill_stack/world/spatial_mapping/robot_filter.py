@@ -73,6 +73,7 @@ class TriangleMesh:
 
 @dataclass(frozen=True, eq=False)
 class MeshInstance:
+    """A robot part's triangle mesh with its current world transformation."""
     mesh: TriangleMesh
     world_from_local: np.ndarray
 
@@ -94,6 +95,7 @@ class MeshInstance:
 
 @dataclass(frozen=True)
 class RobotSnapshot:
+    """Robot meshes and poses captured for a matching camera exposure."""
     parts: tuple[MeshInstance, ...]
     simulation_time: float
     frame_token: tuple | None = None

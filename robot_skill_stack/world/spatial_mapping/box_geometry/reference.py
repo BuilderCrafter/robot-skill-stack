@@ -77,6 +77,7 @@ def robot_overlap(points, bounds):
 
 
 def project_clouds(frames, scene):
+    """Fuse workspace points from calibrated depth frames for box reconstruction."""
     clouds = [voxelize(crop_workspace(project_depth(f, stride=2,
               bounds=(scene.workspace_min, scene.workspace_max))[0], scene), .002, 12000)
               for f in frames]
@@ -111,6 +112,7 @@ def hypothesis(points):
 
 
 def face_support(local, size, axis, sign):
+    """Check whether visible points directly support a candidate box face."""
     other = [a for a in range(3) if a != axis]
     selected = ((abs(local[:, axis]-sign*size[axis]/2) <= TOL) &
                 (abs(local[:, other]) < .35*size[other]).all(1))
@@ -245,6 +247,7 @@ def free_ray_check(model, frames):
 
 
 def qualify(points, frames, envelopes):
+    """Reject robot-connected or weak box hypotheses and qualify measured bounds."""
     overlap = robot_overlap(points, envelopes)
     result = dict(points=len(points), robot_envelope_points=int(overlap.sum()),
                   status='rejected', reason=None, hypothesis=None, geometry=None, faces={})
@@ -293,6 +296,7 @@ def qualify(points, frames, envelopes):
 
 
 def reconstruct(frames, scene, snapshots):
+    """Reconstruct qualified box geometry from synchronized frames and robot poses."""
     start = time.perf_counter()
     envelopes = robot_envelopes(frames, snapshots)
     envelope_end = time.perf_counter()

@@ -10,6 +10,7 @@ import numpy as np
 
 
 class OccupancyState(IntEnum):
+    """Possible answers to an occupancy query, including outside the map."""
     UNKNOWN = 0
     FREE = 1
     OCCUPIED = 2
@@ -37,6 +38,7 @@ def _points(values):
 
 @dataclass(frozen=True)
 class GridSpec:
+    """Define the bounded 3D voxel grid and coordinate conversions."""
     bounds_min: tuple
     bounds_max: tuple
     voxel_size: float = .01
@@ -86,6 +88,7 @@ class GridSpec:
         return math.prod(self.shape)
 
     def world_to_indices(self, positions):
+        """Map world XYZ positions to voxel indices; use -1 outside the grid."""
         points = _points(positions)
         indices = np.full(points.shape, -1, dtype=np.int64)
         valid = (np.isfinite(points).all(1) & (points >= self.bounds_min).all(1) &
@@ -108,6 +111,7 @@ class GridSpec:
         return raw.astype(np.int64)
 
     def indices_to_centers(self, indices):
+        """Convert valid voxel indices to their world-space cell centers."""
         indices = self.validate_indices(indices)
         lower = np.asarray(self.bounds_min)+indices*self.voxel_size
         upper = np.minimum(lower+self.voxel_size, self.bounds_max)
@@ -116,6 +120,7 @@ class GridSpec:
 
 @dataclass(frozen=True)
 class OccupancyQuery:
+    """Occupancy state and evidence details for one world-space position."""
     state: OccupancyState
     probability: float
     observed: bool
@@ -126,6 +131,7 @@ class OccupancyQuery:
 
 @dataclass(frozen=True)
 class OccupancyBatch:
+    """Vectorized occupancy results for multiple queried positions."""
     states: np.ndarray
     probabilities: np.ndarray
     observed: np.ndarray
@@ -158,6 +164,7 @@ def _single(batch):
 
 @dataclass(frozen=True)
 class OccupancySnapshot:
+    """Immutable occupancy grid captured at one update and evaluation time."""
     spec: GridSpec
     _states: np.ndarray
     _probabilities: np.ndarray
@@ -194,11 +201,16 @@ class OccupancySnapshot:
         return {state.name.lower(): int(values[state]) for state in OccupancyState}
 
     def voxel_centers(self, state=None):
+        """Return world-space centers of all voxels or one occupancy state."""
         selected = np.ones(self.spec.shape, dtype=bool) if state is None else self.states == OccupancyState(state)
         return _readonly(self.spec.indices_to_centers(np.argwhere(selected)))
 
 
 class OccupancyMap:
+    """Accumulate free and occupied voxel evidence independently of its source.
+
+    Classify log-odds evidence into states and expire old measurements.
+    """
     def __init__(self, spec, *, clock=time.monotonic, hit_log_odds=.85, miss_log_odds=-.4,
                  log_odds_limit=4., p_free=.35, p_occupied=.65, stale_after=1., evidence_ttl=5.):
         if not isinstance(spec, GridSpec):
@@ -247,6 +259,7 @@ class OccupancyMap:
         return self._health(now)
 
     def expire(self, *, now=None):
+        """Invalidate voxel evidence older than its configured lifetime."""
         now = self._now(now)
         if now == self._last_expiration_time:
             return 0
@@ -287,6 +300,10 @@ class OccupancyMap:
         return np.unique(np.ravel_multi_index(indices.T, self.spec.shape))
 
     def integrate(self, free_indices, occupied_indices, *, timestamp, now=None):
+        """Accumulate fresh ray misses and hits as free and occupied evidence.
+
+        An occupied hit takes precedence when a cell receives both votes.
+        """
         now = self._now(now)
         free, occupied = self._flat_indices(free_indices), self._flat_indices(occupied_indices)
         timestamp = self._timestamp(timestamp, now)
@@ -314,6 +331,7 @@ class OccupancyMap:
         return True
 
     def replace(self, occupied_indices, unknown_indices=None, *, timestamp, now=None):
+        """Replace grid evidence with a complete ground-truth occupancy update."""
         now = self._now(now)
         occupied = self._flat_indices(occupied_indices)
         unknown = self._flat_indices([] if unknown_indices is None else unknown_indices)
@@ -333,6 +351,7 @@ class OccupancyMap:
         return True
 
     def clear(self):
+        """Reset all voxel evidence and advance the map generation."""
         self._log_odds.fill(0.)
         self._observed.fill(False)
         self._last_observed.fill(np.nan)
@@ -344,6 +363,7 @@ class OccupancyMap:
         self._last_expiration_time = None
 
     def _classify(self, log_odds, observed, expired):
+        """Convert fresh log-odds evidence to FREE, OCCUPIED, or UNKNOWN."""
         probabilities = 1/(1+np.exp(-log_odds))
         states = np.full(log_odds.shape, OccupancyState.UNKNOWN, dtype=np.uint8)
         usable = observed & ~expired
@@ -356,12 +376,14 @@ class OccupancyMap:
         return states, probabilities, self._observed, self._last_observed, self._expired
 
     def snapshot(self, *, now=None):
+        """Publish a read-only copy of the grid with health and revision details."""
         now = self._now(now)
         self.expire(now=now)
         return OccupancySnapshot(self.spec, *map(_readonly, self._arrays()), self.timestamp,
                                  self.revision, self.generation, self._health(now))
 
     def query_many(self, positions, *, now=None):
+        """Read states and evidence for selected positions without copying the grid."""
         now = self._now(now)
         self.expire(now=now)
         indices = self.world_to_indices(positions)

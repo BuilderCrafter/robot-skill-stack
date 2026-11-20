@@ -11,6 +11,7 @@ from .box_geometry import reference, visibility
 
 @dataclass(frozen=True)
 class InferredGeometry:
+    """Optional measured-box hypotheses tied to one mapping publication."""
     generation: int
     revision: int
     timestamp: float
@@ -31,6 +32,7 @@ class InferredGeometry:
 
 
 def validate_geometry(g):
+    """Validate the dimensions, pose, and yaw of an inferred box."""
     center, dimensions, rotation = (np.asarray(g[k], float) for k in ('center', 'dimensions', 'rotation'))
     yaw = float(g['yaw_rad'])
     if (center.shape != (3,) or dimensions.shape != (3,) or rotation.shape != (3, 3)
