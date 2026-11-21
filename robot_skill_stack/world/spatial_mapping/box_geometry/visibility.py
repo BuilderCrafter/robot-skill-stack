@@ -2,6 +2,7 @@
 
 Only the module documentation differs; the original research copy stays frozen.
 """
+from collections.abc import Sequence
 from itertools import product
 
 import numpy as np
@@ -40,7 +41,7 @@ def classify(inside: bool, expected: float, measured: float) -> str:
     return 'supported'
 
 
-def patch_decision(samples: list[dict]) -> dict:
+def patch_decision(samples: Sequence[dict]) -> dict:
     """Decide whether a face has enough distributed, noncontradictory pixels."""
     supported=[s for s in samples if s['state']=='supported']
     observable=[s for s in samples if s['state'] in ('supported','contradictory_free')]
@@ -98,7 +99,7 @@ def face_pixels(model: dict, face: dict, axis: int, sign: int, frame) -> dict:
                 reason='observed_spanning_patch' if decision['qualified'] else 'insufficient_or_contradictory_observed_patch')
 
 
-def qualify(reference: dict, frames) -> dict:
+def qualify(reference: dict, frames: Sequence) -> dict:
     """Require measured face patches before accepting inferred box geometry."""
     result=dict(status='rejected',reason=None,geometry=None,coverage={},
                 reference_status=reference['status'],reference_score=None,residual_score=None,

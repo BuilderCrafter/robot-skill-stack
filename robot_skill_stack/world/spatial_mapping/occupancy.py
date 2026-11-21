@@ -1,4 +1,5 @@
 """Bounded, source-independent occupancy evidence in world-coordinate voxels."""
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from enum import IntEnum
 import math
@@ -17,13 +18,13 @@ class OccupancyState(IntEnum):
     OUT_OF_BOUNDS = 3
 
 
-def _readonly(values: np.ndarray) -> np.ndarray:
+def _readonly(values: np.ndarray | Sequence) -> np.ndarray:
     """Own immutable bytes, so consumers cannot re-enable array writes."""
     array = np.ascontiguousarray(values)
     return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
-def _points(values) -> np.ndarray:
+def _points(values: np.ndarray | Sequence) -> np.ndarray:
     points = np.asarray(values, dtype=float)
     if not points.size:
         if points.shape != (0,) and not (points.ndim == 2 and points.shape[1] == 3):
@@ -44,7 +45,7 @@ class GridSpec:
     voxel_size: float = .01
     max_voxels: int = 2_000_000
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         lower, upper = np.asarray(self.bounds_min, float), np.asarray(self.bounds_max, float)
         if (lower.shape != (3,) or upper.shape != (3,) or
                 not np.isfinite(lower).all() or not np.isfinite(upper).all() or
@@ -76,18 +77,18 @@ class GridSpec:
         object.__setattr__(self, '_shape', shape)
 
     @property
-    def shape(self):
+    def shape(self) -> tuple[int, int, int]:
         return self._shape
 
     @property
-    def dimensions(self):
+    def dimensions(self) -> tuple[int, int, int]:
         return self.shape
 
     @property
-    def voxel_count(self):
+    def voxel_count(self) -> int:
         return math.prod(self.shape)
 
-    def world_to_indices(self, positions) -> np.ndarray:
+    def world_to_indices(self, positions: np.ndarray | Sequence) -> np.ndarray:
         """Map world XYZ positions to voxel indices; use -1 outside the grid."""
         points = _points(positions)
         indices = np.full(points.shape, -1, dtype=np.int64)
@@ -98,7 +99,7 @@ class GridSpec:
                                     np.asarray(self.shape)-1).astype(np.int64)
         return indices
 
-    def validate_indices(self, values) -> np.ndarray:
+    def validate_indices(self, values: np.ndarray | Sequence) -> np.ndarray:
         """Check if indices(readings) have (N, 3) dimensions and if they are integers"""
         raw = np.asarray(values)
         if not raw.size:
@@ -111,7 +112,7 @@ class GridSpec:
             raise ValueError('Voxel indices must be integer XYZ coordinates inside the grid')
         return raw.astype(np.int64)
 
-    def indices_to_centers(self, indices) -> np.ndarray:
+    def indices_to_centers(self, indices: np.ndarray | Sequence) -> np.ndarray:
         """Convert valid voxel indices to their world-space cell centers."""
         indices = self.validate_indices(indices)
         lower = np.asarray(self.bounds_min)+indices*self.voxel_size
@@ -143,7 +144,7 @@ class OccupancyBatch:
 
 def _query_many(spec: GridSpec, states: np.ndarray, probabilities: np.ndarray,
                 observed: np.ndarray, last_observed: np.ndarray, expired: np.ndarray,
-                positions) -> OccupancyBatch:
+                positions: np.ndarray | Sequence) -> OccupancyBatch:
     indices = spec.world_to_indices(positions)
     valid = (indices >= 0).all(1)
     count = len(indices)
@@ -177,7 +178,7 @@ class OccupancySnapshot:
     timestamp: float | None
     revision: int
     generation: int
-    health: object
+    health: Mapping[str, object]
 
     # Immutable V1 exports; consumers may also use queries/counts/centers.
     states = property(lambda self: self._states)
@@ -187,23 +188,23 @@ class OccupancySnapshot:
     expired = property(lambda self: self._expired)
 
     @property
-    def metadata(self):
+    def metadata(self) -> Mapping[str, object]:
         return MappingProxyType(dict(bounds_min=self.spec.bounds_min, bounds_max=self.spec.bounds_max,
             voxel_size=self.spec.voxel_size, dimensions=self.spec.shape, timestamp=self.timestamp,
             revision=self.revision, generation=self.generation, health=self.health))
 
-    def query_many(self, positions):
+    def query_many(self, positions: np.ndarray | Sequence) -> OccupancyBatch:
         return _query_many(self.spec, self.states, self.probabilities, self.observed,
                            self.last_observed, self.expired, positions)
 
-    def query(self, position):
+    def query(self, position: np.ndarray | Sequence) -> OccupancyQuery:
         return _single(self.query_many(position))
 
     def counts(self) -> dict[str, int]:
         values = np.bincount(self.states.ravel(), minlength=4)
         return {state.name.lower(): int(values[state]) for state in OccupancyState}
 
-    def voxel_centers(self, state=None):
+    def voxel_centers(self, state: OccupancyState | None = None) -> np.ndarray:
         """Return world-space centers of all voxels or one occupancy state."""
         selected = np.ones(self.spec.shape, dtype=bool) if state is None else self.states == OccupancyState(state)
         return _readonly(self.spec.indices_to_centers(np.argwhere(selected)))
@@ -214,8 +215,10 @@ class OccupancyMap:
 
     Classify log-odds evidence into states and expire old measurements.
     """
-    def __init__(self, spec, *, clock=time.monotonic, hit_log_odds=.85, miss_log_odds=-.4,
-                 log_odds_limit=4., p_free=.35, p_occupied=.65, stale_after=1., evidence_ttl=5.):
+    def __init__(self, spec: GridSpec, *, clock: Callable[[], float] = time.monotonic,
+                 hit_log_odds: float = .85, miss_log_odds: float = -.4,
+                 log_odds_limit: float = 4., p_free: float = .35, p_occupied: float = .65,
+                 stale_after: float = 1., evidence_ttl: float = 5.) -> None:
         if not isinstance(spec, GridSpec):
             raise TypeError('spec must be a validated GridSpec')
         values = (hit_log_odds, miss_log_odds, log_odds_limit, p_free, p_occupied,
@@ -236,10 +239,10 @@ class OccupancyMap:
         self._status, self._reason, self._last_error = 'waiting', None, None
         self._last_expiration_time = None
 
-    def world_to_indices(self, positions):
+    def world_to_indices(self, positions: np.ndarray | Sequence) -> np.ndarray:
         return self.spec.world_to_indices(positions)
 
-    def indices_to_centers(self, indices):
+    def indices_to_centers(self, indices: np.ndarray | Sequence) -> np.ndarray:
         return self.spec.indices_to_centers(indices)
 
     def _now(self, now: float | None) -> float:
@@ -248,7 +251,7 @@ class OccupancyMap:
             raise ValueError('Current monotonic time must be finite and nonnegative')
         return value
 
-    def _health(self, now):
+    def _health(self, now: float) -> Mapping[str, object]:
         age = None if self.timestamp is None else max(0., now-self.timestamp)
         stale = age is not None and age > self.stale_after
         status = 'stale' if stale and self._status == 'ok' else self._status
@@ -256,7 +259,7 @@ class OccupancyMap:
             age_seconds=age, timestamp=self.timestamp, reason=self._reason, last_error=self._last_error))
 
     @property
-    def health(self):
+    def health(self) -> Mapping[str, object]:
         now = self._now(None)
         self.expire(now=now)
         return self._health(now)
@@ -275,15 +278,15 @@ class OccupancyMap:
             self.revision += 1
         return count
 
-    def note_no_frame(self, reason='no_new_frame', *, now=None):
+    def note_no_frame(self, reason: str = 'no_new_frame', *, now: float | None = None) -> None:
         self.expire(now=now)
         self._status, self._reason = 'no_frame', str(reason)
 
-    def note_failure(self, error, *, now=None):
+    def note_failure(self, error: Exception | str, *, now: float | None = None) -> None:
         self.expire(now=now)
         self._status, self._reason, self._last_error = 'error', 'acquisition_failure', str(error)
 
-    def _timestamp(self, timestamp, now):
+    def _timestamp(self, timestamp: float, now: float) -> float | None:
         timestamp = float(timestamp)
         if not np.isfinite(timestamp) or timestamp < 0 or timestamp > now+1e-9:
             raise ValueError('Source timestamp must be finite, nonnegative and no later than now')
@@ -292,7 +295,7 @@ class OccupancyMap:
             return None
         return timestamp
 
-    def _accepted(self, timestamp):
+    def _accepted(self, timestamp: float) -> None:
         self.timestamp = timestamp
         self.revision += 1
         self._status, self._reason, self._last_error = 'ok', None, None
@@ -395,7 +398,8 @@ class OccupancyMap:
         return OccupancySnapshot(self.spec, *map(_readonly, self._arrays()), self.timestamp,
                                  self.revision, self.generation, self._health(now))
 
-    def query_many(self, positions, *, now: float | None = None) -> OccupancyBatch:
+    def query_many(self, positions: np.ndarray | Sequence,
+                   *, now: float | None = None) -> OccupancyBatch:
         """Read states and evidence for selected positions without copying the grid."""
         now = self._now(now)
         self.expire(now=now)
@@ -412,7 +416,8 @@ class OccupancyMap:
         observed[outside], expired[outside], last_observed[outside] = False, False, np.nan
         return OccupancyBatch(*map(_readonly, (states, probabilities, observed, last_observed, expired, indices)))
 
-    def query(self, position, *, now: float | None = None) -> OccupancyQuery:
+    def query(self, position: np.ndarray | Sequence,
+              *, now: float | None = None) -> OccupancyQuery:
         return _single(self.query_many(position, now=now))
 
     def counts(self, *, now: float | None = None) -> dict[str, int]:

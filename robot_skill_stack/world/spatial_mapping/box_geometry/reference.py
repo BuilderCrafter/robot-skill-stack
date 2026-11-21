@@ -2,7 +2,9 @@
 
 Only the module documentation differs; the original research copy stays frozen.
 """
+from collections.abc import Mapping, Sequence
 from itertools import product
+from pathlib import Path
 import hashlib
 import json
 import time
@@ -37,7 +39,7 @@ POLICY = dict(model='single convex yaw box; no support-height prior',
               hidden_bound='must have current calibrated occupied/free edge witnesses')
 
 
-def plain(value):
+def plain(value: object) -> object:
     if isinstance(value, np.ndarray):
         return value.tolist()
     if isinstance(value, np.generic):
@@ -49,15 +51,15 @@ def plain(value):
     return value
 
 
-def digest(path) -> str:
+def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def save(path, value):
+def save(path: Path, value: object) -> None:
     path.write_text(json.dumps(plain(value), indent=2, sort_keys=True, allow_nan=False)+'\n')
 
 
-def robot_envelopes(frames, snapshots):
+def robot_envelopes(frames: Sequence, snapshots: Mapping) -> tuple[tuple[np.ndarray, np.ndarray], ...]:
     """Conservative component rejection, not a claim of exact robot masking."""
     assert set(snapshots) == {f.camera_id for f in frames}
     bounds = []
@@ -71,12 +73,12 @@ def robot_envelopes(frames, snapshots):
     return tuple(bounds)
 
 
-def robot_overlap(points: np.ndarray, bounds) -> np.ndarray:
+def robot_overlap(points: np.ndarray, bounds: Sequence[tuple[np.ndarray, np.ndarray]]) -> np.ndarray:
     return np.logical_or.reduce([((points >= lo) & (points <= hi)).all(1)
                                  for lo, hi in bounds]) if bounds else np.zeros(len(points), bool)
 
 
-def project_clouds(frames, scene) -> np.ndarray:
+def project_clouds(frames: Sequence, scene) -> np.ndarray:
     """Fuse workspace points from calibrated depth frames for box reconstruction."""
     clouds = [voxelize(crop_workspace(project_depth(f, stride=2,
               bounds=(scene.workspace_min, scene.workspace_max))[0], scene), .002, 12000)
@@ -130,7 +132,8 @@ def face_support(local: np.ndarray, size: np.ndarray, axis: int, sign: int) -> d
                 interval_local_m=[float(p[:, axis].min()-DEPTH), float(p[:, axis].max()+DEPTH)])
 
 
-def boundary(model, frame, target, carrier, carrier_support):
+def boundary(model: dict, frame, target: tuple[int, int], carrier: tuple[int, int],
+             carrier_support: dict) -> dict:
     """Existing bounded ribbon method generalized to an observed carrier plane.
 
     The target's hidden face is inferred only under the single-box model.
@@ -208,7 +211,7 @@ def boundary(model, frame, target, carrier, carrier_support):
     return result
 
 
-def free_ray_check(model: dict, frames) -> dict:
+def free_ray_check(model: dict, frames: Sequence) -> dict:
     """Fixed small surface grid; check current pixels without integrating rays."""
     size, center, r = model['dimensions'], model['center'], model['rotation']
     samples = []
@@ -246,7 +249,8 @@ def free_ray_check(model: dict, frames) -> dict:
     return out
 
 
-def qualify(points: np.ndarray, frames, envelopes) -> dict:
+def qualify(points: np.ndarray, frames: Sequence,
+            envelopes: Sequence[tuple[np.ndarray, np.ndarray]]) -> dict:
     """Reject robot-connected or weak box hypotheses and qualify measured bounds."""
     overlap = robot_overlap(points, envelopes)
     result = dict(points=len(points), robot_envelope_points=int(overlap.sum()),
@@ -295,7 +299,7 @@ def qualify(points: np.ndarray, frames, envelopes) -> dict:
     return dict(result, status='qualified', reason='all_six_empirical_model_bounds', geometry=geometry)
 
 
-def reconstruct(frames, scene, snapshots) -> tuple[dict, list, list]:
+def reconstruct(frames: Sequence, scene, snapshots: Mapping) -> tuple[dict, list, list]:
     """Reconstruct qualified box geometry from synchronized frames and robot poses."""
     start = time.perf_counter()
     envelopes = robot_envelopes(frames, snapshots)

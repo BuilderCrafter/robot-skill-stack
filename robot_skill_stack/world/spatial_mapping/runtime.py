@@ -4,6 +4,7 @@ Dense processing and optional obstacle extraction run in the worker. Snapshot
 construction on the owner thread fixes the read time without a grid scan;
 sparse queries age just the requested cells.
 """
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, replace
 import time
 from types import MappingProxyType
@@ -20,7 +21,7 @@ from .robot_filter import RobotSelfFilter
 from .obstacles import ObstacleExtractor
 
 
-def _owned(array):
+def _owned(array: np.ndarray) -> np.ndarray:
     """Reuse genuinely immutable buffers from the camera pool, otherwise copy."""
     value = np.asarray(array)
     base = value
@@ -34,12 +35,12 @@ class MappingInput:
     """Immutable input containing RGB-D frames or prepared ground-truth geometry."""
     generation: int = 0                 # In case of a restart, reject old mapping generation
     frames: tuple[DepthFrame, ...] = ()
-    robot_snapshots: object = None
-    exclusion_masks: object = None
+    robot_snapshots: Mapping[str, object] | None = None
+    exclusion_masks: Mapping[str, np.ndarray] | None = None
     ground_truth: object = None         # Used when we are using Isaac ground truth
     reset: bool = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         frames = tuple(DepthFrame(frame.camera_id, tuple(frame.token), _owned(frame.depth),
             _owned(frame.intrinsics), _owned(frame.world_from_camera), frame.acquired_at,
             None if frame.rgb is None else _owned(frame.rgb)) for frame in self.frames)
@@ -67,7 +68,7 @@ def _input_timestamp(payload: MappingInput) -> float | None:
 class MappingCompleted:
     """Worker result containing an occupancy snapshot and optional map products."""
     snapshot: object
-    diagnostics: object
+    diagnostics: Mapping[str, object]
     accepted: bool
     generation: int
     input_timestamp: float | None = None
@@ -76,8 +77,13 @@ class MappingCompleted:
 
 
 class MappingProcessor:
-    """One mutable map, touched only by the single computation worker."""
-    def __init__(self, settings, *, clock=time.monotonic, obstacle_settings=None, reconstruction_scene=None):
+    """One mutable map, touched only by the single computation worker.
+
+    ``settings`` is the spatial mapping configuration supplied by the Isaac adapter.
+    """
+    def __init__(self, settings, *, clock: Callable[[], float] = time.monotonic,
+                 obstacle_settings=None,
+                 reconstruction_scene=None) -> None:
         self.settings, self.clock = settings, clock
         self.map = self.mapper = self.filter = None
         self.generation = None
@@ -85,22 +91,22 @@ class MappingProcessor:
         self._reconstruction_scene = (None if reconstruction_scene is None else SimpleNamespace(
             **{k:getattr(reconstruction_scene,k) for k in ('workspace_min','workspace_max','support_plane_z')}))
 
-    def _reset(self, generation):
+    def _reset(self, generation: int) -> None:
         """Create fresh mapping components for a new simulation generation."""
-        cfg = self.settings
-        self.map = OccupancyMap(cfg.grid_spec(), clock=self.clock,
-            stale_after=cfg.stale_after, evidence_ttl=cfg.evidence_ttl)
+        mapping_config = self.settings
+        self.map = OccupancyMap(mapping_config.grid_spec(), clock=self.clock,
+            stale_after=mapping_config.stale_after, evidence_ttl=mapping_config.evidence_ttl)
         self.map.generation = generation
-        self.mapper = RgbdMapper(self.map, stride=cfg.stride, max_rays=cfg.max_rays,
-            max_voxel_visits=cfg.max_voxel_visits, max_depth=cfg.max_depth,
-            max_skew=cfg.max_skew, max_frame_age=cfg.max_frame_age,
-            expected_camera_ids=cfg.camera_prim_paths or None, clock=self.clock)
-        self.filter = RobotSelfFilter(stride=cfg.stride,
-            depth_tolerance=cfg.robot_depth_tolerance, pose_tolerance=cfg.robot_pose_tolerance)
+        self.mapper = RgbdMapper(self.map, stride=mapping_config.stride, max_rays=mapping_config.max_rays,
+            max_voxel_visits=mapping_config.max_voxel_visits, max_depth=mapping_config.max_depth,
+            max_skew=mapping_config.max_skew, max_frame_age=mapping_config.max_frame_age,
+            expected_camera_ids=mapping_config.camera_prim_paths or None, clock=self.clock)
+        self.filter = RobotSelfFilter(stride=mapping_config.stride,
+            depth_tolerance=mapping_config.robot_depth_tolerance, pose_tolerance=mapping_config.robot_pose_tolerance)
         self.generation = generation
         self._extractor = (None if self._obstacle_settings is None else
                            ObstacleExtractor(self._obstacle_settings,
-                               temporal_probabilities=cfg.source == "rgbd"))
+                               temporal_probabilities=mapping_config.source == "rgbd"))
 
     def compute(self, payload: MappingInput) -> MappingCompleted:
         """Update the occupancy grid from camera rays or ground-truth geometry.
@@ -125,7 +131,8 @@ class MappingProcessor:
             if self.settings.automatic_robot_filter:
                 if mapping_input.robot_snapshots is None:
                     raise ValueError('Automatic filtering requires exposure-matched robot snapshots')
-                def provider(frames, pixels):
+                def provider(frames: tuple[DepthFrame, ...],
+                             pixels: dict[str, tuple[np.ndarray, np.ndarray]]) -> dict[str, np.ndarray]:
                     return self.filter.masks(frames, mapping_input.robot_snapshots, pixels_by_camera=pixels)
             accepted = self.mapper.update(mapping_input.frames, exclusion_masks=mapping_input.exclusion_masks,
                                           mask_provider=provider)
@@ -161,9 +168,13 @@ class MappingProcessor:
 
 @dataclass(frozen=True, init=False, eq=False)
 class MappingReadView:
-    """Immutable fixed-time facade over an already immutable worker snapshot."""
+    """Immutable fixed-time facade over an ``OccupancySnapshot``.
+
+    ``snapshot`` is the worker's occupancy grid; this view applies read-time aging.
+    """
     def __init__(self, snapshot, *, now: float, evidence_ttl: float,
-                 stale_after: float, health=None, obstacles=None, inferred=None):
+                 stale_after: float, health: Mapping[str, object] | None = None,
+                 obstacles=None, inferred=None) -> None:
         now = float(now)
         if not np.isfinite(now) or now < 0:
             raise ValueError('Read time must be finite and nonnegative')
@@ -183,35 +194,36 @@ class MappingReadView:
                       fresh=status == 'ok' and not stale, timestamp=self.timestamp)
         object.__setattr__(self, 'health', MappingProxyType(values))
 
-    def _age(self, states, probabilities, observed, last_observed, expired):
+    def _age(self, states: np.ndarray, probabilities: np.ndarray, observed: np.ndarray,
+             last_observed: np.ndarray, expired: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Mark expired evidence unknown at the view's fixed evaluation time."""
         expired = expired | (observed & (self.evaluated_at-last_observed >= self.evidence_ttl))
         states, probabilities = states.copy(), probabilities.copy()
         states[expired], probabilities[expired] = OccupancyState.UNKNOWN, .5
         return states, probabilities, expired
 
-    def query_many(self, positions) -> OccupancyBatch:
+    def query_many(self, positions: np.ndarray | Sequence) -> OccupancyBatch:
         base = self._snapshot.query_many(positions)
         states, probabilities, expired = self._age(base.states, base.probabilities,
             base.observed, base.last_observed, base.expired)
         return OccupancyBatch(_readonly(states), _readonly(probabilities), base.observed,
                               base.last_observed, _readonly(expired), base.indices)
 
-    def query(self, position):
+    def query(self, position: np.ndarray | Sequence):
         return _single(self.query_many(position))
 
     @property
-    def states(self):
+    def states(self) -> np.ndarray:
         return _readonly(self._age(self._snapshot.states, self._snapshot.probabilities,
             self.observed, self.last_observed, self._snapshot.expired)[0])
 
     @property
-    def probabilities(self):
+    def probabilities(self) -> np.ndarray:
         return _readonly(self._age(self._snapshot.states, self._snapshot.probabilities,
             self.observed, self.last_observed, self._snapshot.expired)[1])
 
     @property
-    def expired(self):
+    def expired(self) -> np.ndarray:
         return _readonly(self._snapshot.expired | (self.observed &
             (self.evaluated_at-self.last_observed >= self.evidence_ttl)))
 
@@ -219,23 +231,28 @@ class MappingReadView:
     last_observed = property(lambda self: self._snapshot.last_observed)
 
     @property
-    def metadata(self):
+    def metadata(self) -> Mapping[str, object]:
         return MappingProxyType(dict(self._snapshot.metadata, generation=self.generation,
                                      health=self.health, evaluated_at=self.evaluated_at))
 
-    def counts(self):
+    def counts(self) -> dict[str, int]:
         values = np.bincount(self.states.ravel(), minlength=4)
         return {state.name.lower(): int(values[state]) for state in OccupancyState}
 
-    def voxel_centers(self, state=None):
+    def voxel_centers(self, state: OccupancyState | None = None) -> np.ndarray:
         selected = np.ones(self.spec.shape, bool) if state is None else self.states == OccupancyState(state)
         return _readonly(self.spec.indices_to_centers(np.argwhere(selected)))
 
 
 class MappingService:
-    """Owner-thread admission/publication; no SDK calls and no map access on poll."""
-    def __init__(self, settings, *, worker_factory=BoundedWorker, clock=time.monotonic,
-                 obstacle_settings=None, reconstruction_scene=None):
+    """Owner-thread admission/publication; no SDK calls and no map access on poll.
+
+    ``settings`` configures spatial mapping, not the semantic observation source.
+    """
+    def __init__(self, settings, *, worker_factory: Callable = BoundedWorker,
+                 clock: Callable[[], float] = time.monotonic,
+                 obstacle_settings=None,
+                 reconstruction_scene=None) -> None:
         self.settings, self.clock = settings, clock
         self._processor = MappingProcessor(settings, clock=clock, obstacle_settings=obstacle_settings,
                                           reconstruction_scene=reconstruction_scene)
@@ -331,7 +348,7 @@ class MappingService:
         self.last_result = mapping_result
         return mapping_result
 
-    def note_source_failure(self, error):
+    def note_source_failure(self, error: Exception | str) -> None:
         """Invalidate pending work after an acquisition or source failure."""
         if self._closed:
             return
@@ -341,11 +358,11 @@ class MappingService:
         self._counts['failures'] += 1
         self._counts['source_failures'] += 1
 
-    def note_no_frame(self, reason='no_new_frame'):
+    def note_no_frame(self, reason: str = 'no_new_frame') -> None:
         if not self._closed:
             self._status, self._reason = 'no_frame', str(reason)
 
-    def reset(self, generation=None):
+    def reset(self, generation: int | None = None) -> None:
         """Start a new generation and discard previously published map evidence."""
         if self._closed:
             return
@@ -374,7 +391,7 @@ class MappingService:
             obstacles=self._published_obstacles, inferred=self._published_inferred)
 
     @property
-    def health(self):
+    def health(self) -> dict[str, object]:
         values = dict(self.snapshot().health)
         values.update(self._counts, generation=self.generation,
                       closed=self._closed, worker=self._worker.health)
@@ -386,7 +403,7 @@ class MappingService:
         values['last'] = dict(self._completion)
         return values
 
-    def close(self):
+    def close(self) -> None:
         if not self._closed:
             self._closed = True
             self._barrier += 1

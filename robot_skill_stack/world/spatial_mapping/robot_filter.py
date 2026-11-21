@@ -1,4 +1,5 @@
 """Model-based depth exclusion using immutable meshes; no simulator dependencies."""
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 import time
 
@@ -7,12 +8,12 @@ import numpy as np
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 
 
-def _readonly(values: np.ndarray, dtype=None) -> np.ndarray:
+def _readonly(values: np.ndarray | Sequence, dtype=None) -> np.ndarray:
     array = np.ascontiguousarray(values, dtype=dtype)
     return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
-def _token(value) -> tuple[float, float]:
+def _token(value: Sequence[float]) -> tuple[float, float]:
     try:
         token = tuple(float(item) for item in value)
     except (TypeError, ValueError) as exc:
@@ -44,7 +45,7 @@ class TriangleMesh:
         centers = (low+high)/2
         nodes, permutation = [], []
 
-        def build(indices):
+        def build(indices: np.ndarray) -> int:
             """Build the BVH (Bounding Volume Hierarchy)"""
             # BVH is basically a tree  of bounding boxes in a hierarchy (parents children) for an arbitrary shape.
             # If the ray misses that we skip the individual triangle check. If we hit a bounding box, we iteratively
@@ -256,7 +257,8 @@ class RobotSelfFilter:
     Masks skip whole rays; they neither add occupied robot volumes nor prove
     any space in front of or behind the robot free.
     """
-    def __init__(self, *, depth_tolerance=.005, pose_tolerance=.01, stride=8):
+    def __init__(self, *, depth_tolerance: float = .005,
+                 pose_tolerance: float = .01, stride: int = 8) -> None:
         if any(type(value) not in (int, float) or not np.isfinite(value) or value <= 0
                for value in (depth_tolerance, pose_tolerance)):
             raise ValueError('Robot depth/pose tolerances must be finite and positive')
@@ -265,8 +267,10 @@ class RobotSelfFilter:
         self.depth_tolerance, self.pose_tolerance, self.stride = depth_tolerance, pose_tolerance, stride
         self.diagnostics = {'state': 'waiting'}
 
-    def masks(self, frames: tuple[DepthFrame, ...], snapshots_by_camera,
-              *, pixels_by_camera=None) -> dict[str, np.ndarray]:
+    def masks(self, frames: Sequence[DepthFrame],
+              snapshots_by_camera: Mapping[str, RobotSnapshot],
+              *, pixels_by_camera: Mapping[str, tuple[np.ndarray, np.ndarray]] | None = None
+              ) -> dict[str, np.ndarray]:
         """Return depth-shaped masks for all stride pixels or an explicit subset.
 
         Explicit pixel selections are complete camera-ID mappings to ``(ys,xs)``
@@ -278,11 +282,11 @@ class RobotSelfFilter:
         self.diagnostics = dict(state='validating', cameras={})
         # This entire section is just validating inputs
         try:
-            frames, snapshots = tuple(frames), dict(snapshots_by_camera)
+            frames, robot_snapshots_by_camera = tuple(frames), dict(snapshots_by_camera)
             ids = tuple(frame.camera_id for frame in frames)
             if (not frames or any(not isinstance(frame, DepthFrame) for frame in frames)
                     or any(not isinstance(key, str) or not key for key in ids)
-                    or len(set(ids)) != len(ids) or set(snapshots) != set(ids)):
+                    or len(set(ids)) != len(ids) or set(robot_snapshots_by_camera) != set(ids)):
                 raise ValueError('Robot snapshots must match every distinct depth camera')
             selections = None if pixels_by_camera is None else dict(pixels_by_camera)
             if selections is not None and set(selections) != set(ids):
@@ -291,7 +295,7 @@ class RobotSelfFilter:
                 key, token = frame.camera_id, _token(frame.token)
                 DepthFrame(key, frame.token, frame.depth, frame.intrinsics,
                            frame.world_from_camera, frame.acquired_at)
-                robot_snapshot = snapshots[key]
+                robot_snapshot = robot_snapshots_by_camera[key]
                 if not isinstance(robot_snapshot, RobotSnapshot):
                     raise ValueError(f'Missing validated robot snapshot: {key}')
                 if (abs(robot_snapshot.simulation_time-token[1]) > self.pose_tolerance
@@ -314,7 +318,7 @@ class RobotSelfFilter:
             # This is where we are generating the masks
             masks = {}
             for frame in frames:
-                key, robot_snapshot = frame.camera_id, snapshots[frame.camera_id]
+                key, robot_snapshot = frame.camera_id, robot_snapshots_by_camera[frame.camera_id]
                 mask = np.zeros(frame.depth.shape, bool)
                 if selections is None:
                     y, x = np.indices(frame.depth[::self.stride, ::self.stride].shape)

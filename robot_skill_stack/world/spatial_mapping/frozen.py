@@ -17,7 +17,7 @@ from .obstacles import ObstaclePacket
 from .runtime import MappingReadView
 
 
-def _freeze(value):
+def _freeze(value: object) -> object:
     """Own small source metadata even when an adapter supplied mutable values."""
     if isinstance(value, Mapping):
         return MappingProxyType({key:_freeze(item) for key, item in value.items()})
@@ -34,13 +34,13 @@ def _freeze(value):
 
 class FrozenRgbdSourceError(RuntimeError):
     """Explicit source rejection; callers must not substitute a fallback world."""
-    def __init__(self, code, message, details=None):
+    def __init__(self, code: str, message: str, details: Mapping | None = None) -> None:
         self.code = str(code)
         self.details = _freeze({} if details is None else details)
         super().__init__(message)
 
 
-def _fail(code, message, **details):
+def _fail(code: str, message: str, **details: object) -> None:
     raise FrozenRgbdSourceError(code, message, details)
 
 
@@ -78,7 +78,7 @@ class FrozenRgbdWorld:
     evaluated_at: float
     spec: GridSpec
     boxes: tuple[FrozenRgbdBox, ...]
-    metadata: object
+    metadata: Mapping[str, object]
     view: MappingReadView = field(repr=False)
 
     def __post_init__(self) -> None:
@@ -99,14 +99,14 @@ class FrozenRgbdWorld:
         object.__setattr__(self, 'metadata', _freeze(self.metadata))
 
     @property
-    def age_seconds(self):
+    def age_seconds(self) -> float:
         return max(0., self.evaluated_at-self.timestamp)
 
-    def query_many(self, positions):
+    def query_many(self, positions: np.ndarray | list | tuple):
         """Sparse fixed-time occupancy queries; UNKNOWN stays distinct from FREE."""
         return self.view.query_many(positions)
 
-    def query(self, position):
+    def query(self, position: np.ndarray | list | tuple):
         return self.view.query(position)
 
 
@@ -167,7 +167,8 @@ def _boxes(packet: ObstaclePacket, spec: GridSpec, *, now: float,
     return tuple(output)
 
 
-def _camera_metadata(diagnostics, settings, timestamp, now):
+def _camera_metadata(diagnostics: Mapping[str, object], mapping_config,
+                     timestamp: float, now: float) -> tuple[tuple[str, ...], tuple[dict, ...]]:
     """Validate camera exposures and robot-filter evidence of a map publication."""
     frames = diagnostics.get('source_frames')
     count = diagnostics.get('accepted_frame_count')
@@ -191,7 +192,7 @@ def _camera_metadata(diagnostics, settings, timestamp, now):
             _fail('invalid_product', 'Accepted RGB-D camera metadata is invalid: '+str(error))
         ids.append(camera)
         stamps.append(stamp)
-    expected = tuple(settings.camera_prim_paths)
+    expected = tuple(mapping_config.camera_prim_paths)
     if expected and set(ids) != set(expected):
         _fail('invalid_product', 'Accepted cameras differ from the configured mapping cameras')
     if min(stamps) != timestamp or set(diagnostics.get('cameras', ())) != set(ids):
@@ -205,6 +206,7 @@ def _camera_metadata(diagnostics, settings, timestamp, now):
 def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
     """Capture one current accepted RGB-D publication for one static request.
 
+    ``source`` is the current mapping service, not a camera or a semantic provider.
     The service's existing clock fixes read time. Any source problem rejects
     the whole capture, including an empty product or expired selected cuboid.
     Counts are worker/extraction-time diagnostics, explicitly not a new dense

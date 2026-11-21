@@ -4,6 +4,7 @@ No FREE or UNKNOWN cell is filled to simplify geometry. A proxy budget can omit
 occupied detail; diagnostics report that undercoverage instead of joining gaps.
 All public records contain only immutable SDK-independent values.
 """
+from collections.abc import Mapping
 from dataclasses import dataclass
 import math
 import time
@@ -20,7 +21,7 @@ class ObstacleExtractionSettings:
     max_obstacles: int = 64
     support_plane_z: float | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if type(self.max_obstacles) is not int or not 1 <= self.max_obstacles <= 128:
             raise ValueError('max_obstacles must be an integer between 1 and 128')
         if self.support_plane_z is not None:
@@ -34,12 +35,12 @@ class ObstacleExtractionSettings:
 class ObstacleBox:
     """Axis-aligned obstacle box representing exactly selected occupied cells."""
     id: str
-    center: tuple
-    dimensions: tuple
+    center: tuple[float, float, float]
+    dimensions: tuple[float, float, float]
     expires_at: float
     voxel_count: int
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         center, dimensions = tuple(map(float, self.center)), tuple(map(float, self.dimensions))
         if (not isinstance(self.id, str) or not self.id or len(center) != 3 or len(dimensions) != 3 or
                 not np.isfinite(center+dimensions).all() or any(value <= 0 for value in dimensions) or
@@ -51,7 +52,7 @@ class ObstacleBox:
         object.__setattr__(self, 'expires_at', float(self.expires_at))
 
     @property
-    def obstacle_id(self):
+    def obstacle_id(self) -> str:
         return self.id
 
 
@@ -63,9 +64,9 @@ class ObstaclePacket:
     timestamp: float | None
     extracted_at: float
     boxes: tuple[ObstacleBox, ...]
-    diagnostics: object
+    diagnostics: Mapping[str, object]
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         object.__setattr__(self, 'boxes', tuple(self.boxes))
         object.__setattr__(self, 'diagnostics', MappingProxyType(dict(self.diagnostics)))
 
@@ -156,6 +157,7 @@ class ObstacleExtractor:
         """Pack eligible occupied voxels into bounded obstacle boxes.
 
         Preserve represented occupied cells without filling free or unknown space.
+        ``snapshot`` is the current ``OccupancySnapshot`` produced by the mapper.
         """
         occupancy_snapshot = snapshot
         obstacle_settings = self.settings

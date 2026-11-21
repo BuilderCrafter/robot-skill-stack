@@ -1,12 +1,14 @@
 """Bounded calibrated depth rays; independent of semantic perception and SDKs."""
 import time
+from collections.abc import Callable, Iterator, Mapping, Sequence
 
 import numpy as np
 
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from .occupancy import GridSpec, OccupancyMap
 
 
-def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec,
+def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec: GridSpec,
                    max_visits: int) -> tuple[np.ndarray, int]:
     """Return flat cells and visit count for bounded batches of finite rays.
 
@@ -82,7 +84,8 @@ def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec,
     return output[:used], used
 
 
-def _ray_voxels(origin: np.ndarray, endpoint: np.ndarray, spec):
+def _ray_voxels(origin: np.ndarray, endpoint: np.ndarray,
+                spec: GridSpec) -> Iterator[tuple[int, int, int]]:
     """Yield one finite segment's cells, preserving the scalar helper contract."""
     # For single rays instead of a bundle of rays
     flat, _ = _traverse_rays(origin, np.asarray(endpoint, float).reshape(1, 3),
@@ -99,10 +102,11 @@ class RgbdMapper:
     Automatic robot masking is the caller's responsibility. Measurements past
     ``max_depth`` are ignored, never converted into artificial free-space rays.
     """
-    def __init__(self, occupancy_map, *, stride: int = 8, max_rays: int = 1024,
+    def __init__(self, occupancy_map: OccupancyMap, *, stride: int = 8, max_rays: int = 1024,
                  max_voxel_visits: int = 500_000, max_depth: float = 5.,
-                 max_skew: float = .025, max_frame_age: float = 1., expected_camera_ids=None,
-                 clock=time.monotonic):
+                 max_skew: float = .025, max_frame_age: float = 1.,
+                 expected_camera_ids: Sequence[str] | None = None,
+                 clock: Callable[[], float] = time.monotonic) -> None:
         if type(stride) is not int or stride < 1 or type(max_rays) is not int or max_rays < 1:
             raise ValueError('stride and max_rays must be positive integers')
         if type(max_voxel_visits) is not int or max_voxel_visits < 1:
@@ -158,7 +162,11 @@ class RgbdMapper:
         self._rotation += max(1, selected)
         return allocation
 
-    def update(self, frames, exclusion_masks=None, *, now: float | None = None, mask_provider=None) -> bool:
+    def update(self, frames: Sequence[DepthFrame] | None,
+               exclusion_masks: Mapping[str, np.ndarray] | None = None,
+               *, now: float | None = None,
+               mask_provider: Callable[[tuple[DepthFrame, ...], dict[str, tuple[np.ndarray, np.ndarray]]],
+                                       Mapping[str, np.ndarray]] | None = None) -> bool:
         """Integrate one complete batch; an optional provider supplies its masks.
 
         After frame validation, token consumption and fair ray selection, the
@@ -231,7 +239,7 @@ class RgbdMapper:
             masks = {} if exclusion_masks is None else dict(exclusion_masks)
             if set(masks)-set(ids):
                 return self._failure('Exclusion mask has an unknown camera ID', now)
-            candidates = {}
+            candidates: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
             for key in sorted(ids):
                 frame = frames_by_camera[key]
                 valid_depth = valid_depths[key]
@@ -253,7 +261,8 @@ class RgbdMapper:
                     free_voxels=0, occupied_voxels=0)
             allocation = self._allocate({key: len(value[0]) for key, value in candidates.items()})
             self.diagnostics['allocated_rays'] = sum(allocation.values())
-            selected_rays, pixels = {}, {}
+            selected_rays: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+            pixels: dict[str, tuple[np.ndarray, np.ndarray]] = {}
             for key in sorted(ids):
                 y, x, depth = candidates[key]
                 count = allocation[key]

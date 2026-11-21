@@ -1,4 +1,5 @@
 """One optional, exposure-bound measured-box product in the mapping worker."""
+from collections.abc import Mapping
 from dataclasses import dataclass
 import math
 import time
@@ -17,9 +18,9 @@ class InferredGeometry:
     timestamp: float
     status: str
     reason: str
-    models: tuple[object, ...]
-    source_frames: tuple[object, ...]
-    diagnostics: object
+    models: tuple[Mapping[str, object], ...]
+    source_frames: tuple[Mapping[str, object], ...]
+    diagnostics: Mapping[str, object]
 
     def __post_init__(self) -> None:
         if (type(self.generation) is not int or self.generation < 0
@@ -31,7 +32,7 @@ class InferredGeometry:
             object.__setattr__(self, key, freeze(getattr(self, key)))
 
 
-def validate_geometry(g: dict) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+def validate_geometry(g: Mapping[str, object]) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
     """Validate the dimensions, pose, and yaw of an inferred box."""
     center, dimensions, rotation = (np.asarray(g[k], float) for k in ('center', 'dimensions', 'rotation'))
     yaw = float(g['yaw_rad'])
@@ -86,7 +87,7 @@ def infer(payload, scene, snapshot) -> InferredGeometry:
                             status, reason, tuple(models), frames, diagnostics)
 
 
-def combine(frozen) -> tuple[list[dict], dict, InferredGeometry]:
+def combine(frozen) -> tuple[list[dict[str, object]], dict[str, object], InferredGeometry]:
     """Return numeric camera cuboids; preserve the exact original selected union."""
     product = frozen.view.inferred
     if not isinstance(product, InferredGeometry):

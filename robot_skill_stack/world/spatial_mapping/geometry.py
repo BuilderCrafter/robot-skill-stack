@@ -1,11 +1,12 @@
 """SDK-free conservative GT rasterization; affine primitive math retained unchanged."""
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from types import MappingProxyType
 import numpy as np
 from .occupancy import _readonly
 
 
-def freeze(value):
+def freeze(value: object) -> object:
     """Recursively copy and freeze geometry metadata for safe publication."""
     if isinstance(value, dict):
         return MappingProxyType({key: freeze(item) for key, item in value.items()})
@@ -111,8 +112,10 @@ def _rasterize(spec, lower: np.ndarray, upper: np.ndarray, *, primitive: _Primit
     return np.concatenate(chunks), count
 
 
-def primitive_voxel_indices(spec, kind, world_from_local, *, dimensions=None,
-                            radius=None, height=None, axis='Z', max_candidates=8_000_000):
+def primitive_voxel_indices(spec, kind: str, world_from_local: np.ndarray,
+                            *, dimensions: np.ndarray | Sequence[float] | None = None,
+                            radius: float | None = None, height: float | None = None,
+                            axis: str = 'Z', max_candidates: int = 8_000_000) -> np.ndarray:
     """SDK-free conservative cell-volume rasterization of one affine primitive."""
     primitive = _Primitive(kind, np.asarray(world_from_local, dtype=float), dimensions,
                            radius, height, {'X': 0, 'Y': 1, 'Z': 2}.get(axis, -1))
@@ -142,7 +145,7 @@ class GroundTruthInput:
     """Timestamped scene geometry prepared outside the mapping worker."""
     timestamp: float
     items: tuple[GeometryItem, ...]
-    diagnostics: object
+    diagnostics: Mapping[str, object]
 
     def __post_init__(self) -> None:
         if not np.isfinite(self.timestamp) or self.timestamp < 0:
@@ -152,7 +155,7 @@ class GroundTruthInput:
 
 
 def rasterize_ground_truth(spec, prepared: GroundTruthInput,
-                           max_candidate_voxels: int = 8_000_000) -> tuple[np.ndarray, dict]:
+                           max_candidate_voxels: int = 8_000_000) -> tuple[np.ndarray, dict[str, object]]:
     """Rasterize prepared scene items into occupied voxel indices and statistics."""
     ground_truth_input = prepared
     occupied = np.zeros(spec.shape, dtype=bool)
