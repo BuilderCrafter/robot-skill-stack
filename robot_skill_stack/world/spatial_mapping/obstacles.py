@@ -62,7 +62,7 @@ class ObstaclePacket:
     revision: int
     timestamp: float | None
     extracted_at: float
-    boxes: tuple
+    boxes: tuple[ObstacleBox, ...]
     diagnostics: object
 
     def __post_init__(self):
@@ -70,7 +70,7 @@ class ObstaclePacket:
         object.__setattr__(self, 'diagnostics', MappingProxyType(dict(self.diagnostics)))
 
 
-def _supported(mask):
+def _supported(mask: np.ndarray) -> np.ndarray:
     """Reject components smaller than three in a radius-two Chebyshev graph.
 
     Stride/budget-limited depth hits need not occupy face-adjacent voxels. A
@@ -101,7 +101,7 @@ def _supported(mask):
     return mask & nearby
 
 
-def _cuboids(mask, *, max_runs=100_000):
+def _cuboids(mask: np.ndarray, *, max_runs: int = 100_000) -> tuple[np.ndarray, int]:
     """Run-length Z, then merge identical adjacent runs in Y and slabs in X."""
     padded = np.pad(mask, ((0, 0), (0, 0), (1, 1)))
     edges = np.diff(padded.astype(np.int8), axis=2)
@@ -144,30 +144,33 @@ class ObstacleExtractor:
     meaning. GT replacement leaves this option disabled. Both support paths
     retain original eligible occupied cells and their existing evidence expiry.
     """
-    def __init__(self, settings=None, *, temporal_probabilities=False):
+    def __init__(self, settings: ObstacleExtractionSettings | None = None,
+                 *, temporal_probabilities: bool = False):
         if type(temporal_probabilities) is not bool:
             raise ValueError("Temporal probability support must be a boolean")
         self.settings = settings or ObstacleExtractionSettings()
         self._temporal_probabilities = temporal_probabilities
         self._key, self._packet = None, None
 
-    def extract(self, snapshot, *, now, evidence_ttl):
+    def extract(self, snapshot, *, now: float, evidence_ttl: float) -> ObstaclePacket:
         """Pack eligible occupied voxels into bounded obstacle boxes.
 
         Preserve represented occupied cells without filling free or unknown space.
         """
+        occupancy_snapshot = snapshot
+        obstacle_settings = self.settings
         now, evidence_ttl = float(now), float(evidence_ttl)
         if not math.isfinite(now) or now < 0 or not math.isfinite(evidence_ttl) or evidence_ttl <= 0:
             raise ValueError('Obstacle extraction requires finite time and positive evidence TTL')
-        key = (snapshot.generation, snapshot.revision, snapshot.timestamp, evidence_ttl)
+        key = (occupancy_snapshot.generation, occupancy_snapshot.revision, occupancy_snapshot.timestamp, evidence_ttl)
         if key == self._key and self._packet is not None:
             next_expiry = min((box.expires_at for box in self._packet.boxes), default=math.inf)
             if now < next_expiry:
                 return self._packet
         started = time.perf_counter()
-        observed_at = snapshot.last_observed
-        occupied = ((snapshot.states == OccupancyState.OCCUPIED) & snapshot.observed &
-            ~snapshot.expired & np.isfinite(observed_at) & (observed_at <= now) &
+        observed_at = occupancy_snapshot.last_observed
+        occupied = ((occupancy_snapshot.states == OccupancyState.OCCUPIED) & occupancy_snapshot.observed &
+            ~occupancy_snapshot.expired & np.isfinite(observed_at) & (observed_at <= now) &
             (now-observed_at < evidence_ttl))
         occupied_count = int(np.count_nonzero(occupied))
         supported = _supported(occupied)
@@ -178,7 +181,7 @@ class ObstacleExtractor:
             # positive votes from UNKNOWN exceed p=.95; GT replacement has no
             # such temporal meaning and never enables this path. Geometry is
             # still restricted to original eligible OCCUPIED cells.
-            strong = occupied & ~supported & (snapshot.probabilities >= .95)
+            strong = occupied & ~supported & (occupancy_snapshot.probabilities >= .95)
             strong_sparse_retained = int(np.count_nonzero(strong))
             supported |= strong
         supported_count = int(np.count_nonzero(supported))
@@ -189,29 +192,29 @@ class ObstacleExtractor:
             sizes = bounds[:, [1, 3, 5]]-bounds[:, [0, 2, 4]]
             volumes = np.prod(sizes, axis=1, dtype=np.int64)
             floor = np.zeros(len(bounds), bool)
-            if self.settings.support_plane_z is not None:
-                tops = np.minimum(snapshot.spec.bounds_min[2]+bounds[:, 5]*snapshot.spec.voxel_size,
-                                  snapshot.spec.bounds_max[2])
-                floor = tops <= self.settings.support_plane_z+snapshot.spec.voxel_size+1e-12
+            if obstacle_settings.support_plane_z is not None:
+                tops = np.minimum(occupancy_snapshot.spec.bounds_min[2]+bounds[:, 5]*occupancy_snapshot.spec.voxel_size,
+                                  occupancy_snapshot.spec.bounds_max[2])
+                floor = tops <= obstacle_settings.support_plane_z+occupancy_snapshot.spec.voxel_size+1e-12
                 floor_candidates = int(np.count_nonzero(floor))
                 floor_candidate_voxels = int(volumes[floor].sum())
             # Known support-plane-only boxes follow above-plane hazards when a
             # budget binds. They are retained if slots remain, never erased or
             # enlarged. The support plane is derived from existing scene setup.
             order = np.lexsort((bounds[:, 4], bounds[:, 2], bounds[:, 0], -volumes, floor))
-            order = order[:self.settings.max_obstacles]
+            order = order[:obstacle_settings.max_obstacles]
             bounds, volumes = bounds[order], volumes[order]
             represented_floor = int(volumes[floor[order]].sum())
             selected_floor_boxes = int(np.count_nonzero(floor[order]))
         else:
             volumes = np.empty(0, dtype=np.int64)
         boxes = []
-        lower = np.asarray(snapshot.spec.bounds_min)
-        upper = np.asarray(snapshot.spec.bounds_max)
+        lower = np.asarray(occupancy_snapshot.spec.bounds_min)
+        upper = np.asarray(occupancy_snapshot.spec.bounds_max)
         for cells, volume in zip(bounds, volumes):
             x0, x1, y0, y1, z0, z1 = map(int, cells)
-            minimum = lower+np.array([x0, y0, z0])*snapshot.spec.voxel_size
-            maximum = np.minimum(lower+np.array([x1, y1, z1])*snapshot.spec.voxel_size, upper)
+            minimum = lower+np.array([x0, y0, z0])*occupancy_snapshot.spec.voxel_size
+            maximum = np.minimum(lower+np.array([x1, y1, z1])*occupancy_snapshot.spec.voxel_size, upper)
             oldest = float(np.min(observed_at[x0:x1, y0:y1, z0:z1]))
             boxes.append(ObstacleBox(f'{x0}:{x1}:{y0}:{y1}:{z0}:{z1}',
                 tuple((minimum+maximum)/2), tuple(maximum-minimum), oldest+evidence_ttl, int(volume)))
@@ -224,10 +227,10 @@ class ObstacleExtractor:
             rejected_sparse_voxels=occupied_count-supported_count, candidate_boxes=candidate_count,
             proxy_count=len(boxes), represented_voxels=represented,
             omitted_voxels=supported_count-represented, run_budget_omitted_voxels=dropped_runs,
-            truncated=candidate_count > self.settings.max_obstacles or dropped_runs > 0,
-            max_obstacles=self.settings.max_obstacles, minimum_component_voxels=3,
+            truncated=candidate_count > obstacle_settings.max_obstacles or dropped_runs > 0,
+            max_obstacles=obstacle_settings.max_obstacles, minimum_component_voxels=3,
             support_radius_voxels=2, support_neighborhood='Chebyshev',
-            support_plane_z=self.settings.support_plane_z,
+            support_plane_z=obstacle_settings.support_plane_z,
             floor_candidate_boxes=floor_candidates,
             hazard_candidate_boxes=candidate_count-floor_candidates,
             selected_floor_boxes=selected_floor_boxes,
@@ -235,7 +238,7 @@ class ObstacleExtractor:
             represented_floor_voxels=represented_floor,
             omitted_floor_voxels=floor_candidate_voxels-represented_floor,
             padding_m=0., extract_seconds=time.perf_counter()-started)
-        packet = ObstaclePacket(snapshot.generation, snapshot.revision, snapshot.timestamp,
+        packet = ObstaclePacket(occupancy_snapshot.generation, occupancy_snapshot.revision, occupancy_snapshot.timestamp,
                                 now, tuple(boxes), diagnostics)
         self._key, self._packet = key, packet
         return packet

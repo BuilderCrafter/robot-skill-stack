@@ -17,13 +17,13 @@ class OccupancyState(IntEnum):
     OUT_OF_BOUNDS = 3
 
 
-def _readonly(values):
+def _readonly(values: np.ndarray) -> np.ndarray:
     """Own immutable bytes, so consumers cannot re-enable array writes."""
     array = np.ascontiguousarray(values)
     return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
-def _points(values):
+def _points(values) -> np.ndarray:
     points = np.asarray(values, dtype=float)
     if not points.size:
         if points.shape != (0,) and not (points.ndim == 2 and points.shape[1] == 3):
@@ -39,8 +39,8 @@ def _points(values):
 @dataclass(frozen=True)
 class GridSpec:
     """Define the bounded 3D voxel grid and coordinate conversions."""
-    bounds_min: tuple
-    bounds_max: tuple
+    bounds_min: tuple[float, float, float]
+    bounds_max: tuple[float, float, float]
     voxel_size: float = .01
     max_voxels: int = 2_000_000
 
@@ -87,7 +87,7 @@ class GridSpec:
     def voxel_count(self):
         return math.prod(self.shape)
 
-    def world_to_indices(self, positions):
+    def world_to_indices(self, positions) -> np.ndarray:
         """Map world XYZ positions to voxel indices; use -1 outside the grid."""
         points = _points(positions)
         indices = np.full(points.shape, -1, dtype=np.int64)
@@ -98,7 +98,7 @@ class GridSpec:
                                     np.asarray(self.shape)-1).astype(np.int64)
         return indices
 
-    def validate_indices(self, values):
+    def validate_indices(self, values) -> np.ndarray:
         """Check if indices(readings) have (N, 3) dimensions and if they are integers"""
         raw = np.asarray(values)
         if not raw.size:
@@ -111,7 +111,7 @@ class GridSpec:
             raise ValueError('Voxel indices must be integer XYZ coordinates inside the grid')
         return raw.astype(np.int64)
 
-    def indices_to_centers(self, indices):
+    def indices_to_centers(self, indices) -> np.ndarray:
         """Convert valid voxel indices to their world-space cell centers."""
         indices = self.validate_indices(indices)
         lower = np.asarray(self.bounds_min)+indices*self.voxel_size
@@ -127,7 +127,7 @@ class OccupancyQuery:
     observed: bool
     last_observed: float
     expired: bool
-    index: tuple | None
+    index: tuple[int, int, int] | None
 
 
 @dataclass(frozen=True)
@@ -141,7 +141,9 @@ class OccupancyBatch:
     indices: np.ndarray
 
 
-def _query_many(spec, states, probabilities, observed, last_observed, expired, positions):
+def _query_many(spec: GridSpec, states: np.ndarray, probabilities: np.ndarray,
+                observed: np.ndarray, last_observed: np.ndarray, expired: np.ndarray,
+                positions) -> OccupancyBatch:
     indices = spec.world_to_indices(positions)
     valid = (indices >= 0).all(1)
     count = len(indices)
@@ -154,7 +156,7 @@ def _query_many(spec, states, probabilities, observed, last_observed, expired, p
     return OccupancyBatch(*map(_readonly, result), _readonly(indices))
 
 
-def _single(batch):
+def _single(batch: OccupancyBatch) -> OccupancyQuery:
     if len(batch.states) != 1:
         raise ValueError('query requires one XYZ position')
     valid = batch.states[0] != OccupancyState.OUT_OF_BOUNDS
@@ -197,7 +199,7 @@ class OccupancySnapshot:
     def query(self, position):
         return _single(self.query_many(position))
 
-    def counts(self):
+    def counts(self) -> dict[str, int]:
         values = np.bincount(self.states.ravel(), minlength=4)
         return {state.name.lower(): int(values[state]) for state in OccupancyState}
 
@@ -240,7 +242,7 @@ class OccupancyMap:
     def indices_to_centers(self, indices):
         return self.spec.indices_to_centers(indices)
 
-    def _now(self, now):
+    def _now(self, now: float | None) -> float:
         value = float(self.clock() if now is None else now)
         if not np.isfinite(value) or value < 0:
             raise ValueError('Current monotonic time must be finite and nonnegative')
@@ -259,7 +261,7 @@ class OccupancyMap:
         self.expire(now=now)
         return self._health(now)
 
-    def expire(self, *, now=None):
+    def expire(self, *, now: float | None = None) -> int:
         """Invalidate voxel evidence older than its configured lifetime."""
         now = self._now(now)
         if now == self._last_expiration_time:
@@ -296,7 +298,7 @@ class OccupancyMap:
         self._status, self._reason, self._last_error = 'ok', None, None
         self._last_expiration_time = None
 
-    def _flat_indices(self, indices):
+    def _flat_indices(self, indices: np.ndarray) -> np.ndarray:
         """
         Validate readings indices and flatten them in 1D array representing the index of voxels.
         For a 5 x 5 x 5 voxel grid: [(2, 0, 1), (1, 2, 3)) -> [7, 86]
@@ -304,7 +306,8 @@ class OccupancyMap:
         indices = self.spec.validate_indices(indices)
         return np.unique(np.ravel_multi_index(indices.T, self.spec.shape))
 
-    def integrate(self, free_indices, occupied_indices, *, timestamp, now=None):
+    def integrate(self, free_indices: np.ndarray, occupied_indices: np.ndarray,
+                  *, timestamp: float, now: float | None = None) -> bool:
         """Accumulate fresh ray misses and hits as free and occupied evidence.
 
         An occupied hit takes precedence when a cell receives both votes.
@@ -337,7 +340,8 @@ class OccupancyMap:
         self._accepted(timestamp)
         return True
 
-    def replace(self, occupied_indices, unknown_indices=None, *, timestamp, now=None):
+    def replace(self, occupied_indices: np.ndarray, unknown_indices: np.ndarray | None = None,
+                *, timestamp: float, now: float | None = None) -> bool:
         """Replace grid evidence with a complete ground-truth occupancy update."""
         now = self._now(now)
         occupied = self._flat_indices(occupied_indices)
@@ -357,7 +361,7 @@ class OccupancyMap:
         self._accepted(timestamp)
         return True
 
-    def clear(self):
+    def clear(self) -> None:
         """Reset all voxel evidence and advance the map generation."""
         self._log_odds.fill(0.)
         self._observed.fill(False)
@@ -369,7 +373,8 @@ class OccupancyMap:
         self._status, self._reason, self._last_error = 'waiting', None, None
         self._last_expiration_time = None
 
-    def _classify(self, log_odds, observed, expired):
+    def _classify(self, log_odds: np.ndarray, observed: np.ndarray,
+                  expired: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Convert fresh log-odds evidence to FREE, OCCUPIED, or UNKNOWN."""
         probabilities = 1/(1+np.exp(-log_odds)) # Uses a sigmoid function to transform score to a range of [0, 1]
         states = np.full(log_odds.shape, OccupancyState.UNKNOWN, dtype=np.uint8)
@@ -378,19 +383,19 @@ class OccupancyMap:
         states[usable & (probabilities >= self.p_occupied)] = OccupancyState.OCCUPIED
         return states, probabilities
 
-    def _arrays(self):
+    def _arrays(self) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Collect the current voxel states, probabilities, and observation metadata into a tuple for snapshot."""
         states, probabilities = self._classify(self._log_odds, self._observed, self._expired)
         return states, probabilities, self._observed, self._last_observed, self._expired
 
-    def snapshot(self, *, now=None):
+    def snapshot(self, *, now: float | None = None) -> OccupancySnapshot:
         """Publish a read-only copy of the grid with health and revision details."""
         now = self._now(now)
         self.expire(now=now)
         return OccupancySnapshot(self.spec, *map(_readonly, self._arrays()), self.timestamp,
                                  self.revision, self.generation, self._health(now))
 
-    def query_many(self, positions, *, now=None):
+    def query_many(self, positions, *, now: float | None = None) -> OccupancyBatch:
         """Read states and evidence for selected positions without copying the grid."""
         now = self._now(now)
         self.expire(now=now)
@@ -407,11 +412,12 @@ class OccupancyMap:
         observed[outside], expired[outside], last_observed[outside] = False, False, np.nan
         return OccupancyBatch(*map(_readonly, (states, probabilities, observed, last_observed, expired, indices)))
 
-    def query(self, position, *, now=None):
+    def query(self, position, *, now: float | None = None) -> OccupancyQuery:
         return _single(self.query_many(position, now=now))
 
-    def counts(self, *, now=None):
+    def counts(self, *, now: float | None = None) -> dict[str, int]:
         return self.snapshot(now=now).counts()
 
-    def voxel_centers(self, state=None, *, now=None):
+    def voxel_centers(self, state: OccupancyState | None = None,
+                      *, now: float | None = None) -> np.ndarray:
         return self.snapshot(now=now).voxel_centers(state)

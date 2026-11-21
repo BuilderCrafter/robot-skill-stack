@@ -33,7 +33,7 @@ def _owned(array):
 class MappingInput:
     """Immutable input containing RGB-D frames or prepared ground-truth geometry."""
     generation: int = 0                 # In case of a restart, reject old mapping generation
-    frames: tuple = ()
+    frames: tuple[DepthFrame, ...] = ()
     robot_snapshots: object = None
     exclusion_masks: object = None
     ground_truth: object = None         # Used when we are using Isaac ground truth
@@ -53,7 +53,7 @@ class MappingInput:
                 {key: _owned(mask) for key, mask in self.exclusion_masks.items()}))
 
 
-def _input_timestamp(payload):
+def _input_timestamp(payload: MappingInput) -> float | None:
     if payload.ground_truth is not None:
         return payload.ground_truth.timestamp
     try:
@@ -102,31 +102,32 @@ class MappingProcessor:
                            ObstacleExtractor(self._obstacle_settings,
                                temporal_probabilities=cfg.source == "rgbd"))
 
-    def compute(self, payload):
+    def compute(self, payload: MappingInput) -> MappingCompleted:
         """Update the occupancy grid from camera rays or ground-truth geometry.
 
         Prepare optional obstacle and reconstruction products in the worker.
         """
-        if self.map is None or payload.generation != self.generation or payload.reset:
-            self._reset(payload.generation)
+        mapping_input = payload
+        if self.map is None or mapping_input.generation != self.generation or mapping_input.reset:
+            self._reset(mapping_input.generation)
         started = time.perf_counter()
         if self.settings.source == 'ground_truth':
-            if payload.ground_truth is None:
+            if mapping_input.ground_truth is None:
                 raise ValueError('GT mapping requires prepared geometry')
-            indices, diagnostics = rasterize_ground_truth(self.map.spec, payload.ground_truth,
+            indices, diagnostics = rasterize_ground_truth(self.map.spec, mapping_input.ground_truth,
                                                          self.settings.max_candidate_voxels)
-            accepted = self.map.replace(indices, timestamp=payload.ground_truth.timestamp,
+            accepted = self.map.replace(indices, timestamp=mapping_input.ground_truth.timestamp,
                                         now=self.clock())
         else:
-            if payload.ground_truth is not None:
+            if mapping_input.ground_truth is not None:
                 raise ValueError('RGB-D mapping cannot consume GT geometry')
             provider = None
             if self.settings.automatic_robot_filter:
-                if payload.robot_snapshots is None:
+                if mapping_input.robot_snapshots is None:
                     raise ValueError('Automatic filtering requires exposure-matched robot snapshots')
                 def provider(frames, pixels):
-                    return self.filter.masks(frames, payload.robot_snapshots, pixels_by_camera=pixels)
-            accepted = self.mapper.update(payload.frames, exclusion_masks=payload.exclusion_masks,
+                    return self.filter.masks(frames, mapping_input.robot_snapshots, pixels_by_camera=pixels)
+            accepted = self.mapper.update(mapping_input.frames, exclusion_masks=mapping_input.exclusion_masks,
                                           mask_provider=provider)
             diagnostics = dict(self.mapper.diagnostics)
             if provider is not None:
@@ -135,42 +136,44 @@ class MappingProcessor:
                 # Preserve the original accepted exposure identity alongside
                 # the worker publication. These small calibration records do
                 # not copy image buffers or add another acquisition pipeline.
-                diagnostics.update(source_type='rgbd', accepted_frame_count=len(payload.frames),
+                diagnostics.update(source_type='rgbd', accepted_frame_count=len(mapping_input.frames),
                     source_frames=tuple(dict(camera_id=frame.camera_id, token=tuple(frame.token),
                         acquired_at=frame.acquired_at, depth_shape=tuple(frame.depth.shape),
                         intrinsics=frame.intrinsics, world_from_camera=frame.world_from_camera)
-                        for frame in payload.frames))
-        snapshot = self.map.snapshot(now=self.clock())
+                        for frame in mapping_input.frames))
+        occupancy_snapshot = self.map.snapshot(now=self.clock())
         obstacles = (None if self._extractor is None else self._extractor.extract(
-            snapshot, now=self.clock(), evidence_ttl=self.settings.evidence_ttl))
+            occupancy_snapshot, now=self.clock(), evidence_ttl=self.settings.evidence_ttl))
         if obstacles is not None:
             diagnostics['obstacle_extraction'] = dict(obstacles.diagnostics)
         diagnostics.update(accepted=accepted, compute_seconds=time.perf_counter()-started)
         inferred = None
         if accepted and self._reconstruction_scene is not None:
             from .reconstruction import infer
-            inferred = infer(payload, self._reconstruction_scene, snapshot)
+            inferred = infer(mapping_input, self._reconstruction_scene, occupancy_snapshot)
             diagnostics['reconstruction'] = dict(status=inferred.status, reason=inferred.reason,
                 elapsed_seconds=inferred.diagnostics['elapsed_seconds'])
             diagnostics['mapping_compute_seconds'] = diagnostics['compute_seconds']
             diagnostics['compute_seconds'] = time.perf_counter()-started
-        return MappingCompleted(snapshot, freeze(diagnostics), accepted, payload.generation,
-                                _input_timestamp(payload), obstacles, inferred)
+        return MappingCompleted(occupancy_snapshot, freeze(diagnostics), accepted, mapping_input.generation,
+                                _input_timestamp(mapping_input), obstacles, inferred)
 
 
 @dataclass(frozen=True, init=False, eq=False)
 class MappingReadView:
     """Immutable fixed-time facade over an already immutable worker snapshot."""
-    def __init__(self, snapshot, *, now, evidence_ttl, stale_after, health=None, obstacles=None, inferred=None):
+    def __init__(self, snapshot, *, now: float, evidence_ttl: float,
+                 stale_after: float, health=None, obstacles=None, inferred=None):
         now = float(now)
         if not np.isfinite(now) or now < 0:
             raise ValueError('Read time must be finite and nonnegative')
-        for key, value in dict(_snapshot=snapshot, evaluated_at=now,
-                evidence_ttl=evidence_ttl, stale_after=stale_after, spec=snapshot.spec,
-                timestamp=snapshot.timestamp, revision=snapshot.revision,
-                generation=snapshot.generation, obstacles=obstacles, inferred=inferred).items():
+        occupancy_snapshot = snapshot
+        for key, value in dict(_snapshot=occupancy_snapshot, evaluated_at=now,
+                evidence_ttl=evidence_ttl, stale_after=stale_after, spec=occupancy_snapshot.spec,
+                timestamp=occupancy_snapshot.timestamp, revision=occupancy_snapshot.revision,
+                generation=occupancy_snapshot.generation, obstacles=obstacles, inferred=inferred).items():
             object.__setattr__(self, key, value)
-        values = dict(snapshot.health if health is None else health)
+        values = dict(occupancy_snapshot.health if health is None else health)
         age = None if self.timestamp is None else max(0., now-self.timestamp)
         stale = age is not None and age > stale_after
         status = values.get('status', 'waiting')
@@ -187,7 +190,7 @@ class MappingReadView:
         states[expired], probabilities[expired] = OccupancyState.UNKNOWN, .5
         return states, probabilities, expired
 
-    def query_many(self, positions):
+    def query_many(self, positions) -> OccupancyBatch:
         base = self._snapshot.query_many(positions)
         states, probabilities, expired = self._age(base.states, base.probabilities,
             base.observed, base.last_observed, base.expired)
@@ -249,7 +252,7 @@ class MappingService:
         self._counts = dict(submitted=0, published=0, rejected=0, failures=0, source_failures=0, worker_failures=0, processing_failures=0, resets=0)
         self._completion = {}
 
-    def submit(self, payload):
+    def submit(self, payload: MappingInput) -> bool:
         """Queue mapping work only for the current simulation generation."""
         if self._closed or payload.generation != self.generation:
             self._counts['rejected'] += 1
@@ -258,7 +261,7 @@ class MappingService:
         self._counts['submitted'] += int(accepted)
         return accepted
 
-    def poll(self, now=None):
+    def poll(self, now: float | None = None) -> MappingCompleted | None:
         """Accept a fresh worker result and publish its immutable map products."""
         if self._closed:
             return None
@@ -284,34 +287,34 @@ class MappingService:
                                     status='worker_failure', filter_seconds=None, compute_seconds=None, transport_seconds=None,
                                     publish_age_seconds=None if result.tag[2] is None else max(0., now-result.tag[2]))
             return None
-        completed = result.value
-        if completed.generation != self.generation:
+        mapping_result = result.value
+        if mapping_result.generation != self.generation:
             self._counts['rejected'] += 1
             return None
-        timestamp = completed.snapshot.timestamp
-        age = None if timestamp is None else max(0., now-timestamp)
+        snapshot_timestamp = mapping_result.snapshot.timestamp
+        age = None if snapshot_timestamp is None else max(0., now-snapshot_timestamp)
         limit = self.settings.stale_after
         if self.settings.source == 'rgbd':
             limit = min(limit, self.settings.max_frame_age)
-        fresh = (completed.accepted and timestamp is not None and timestamp <= now+1e-9
-                 and age < limit and completed.snapshot.health['status'] == 'ok')
-        processing_error = not completed.accepted and completed.snapshot.health['status'] == 'error'
+        fresh = (mapping_result.accepted and snapshot_timestamp is not None and snapshot_timestamp <= now+1e-9
+                 and age < limit and mapping_result.snapshot.health['status'] == 'ok')
+        processing_error = not mapping_result.accepted and mapping_result.snapshot.health['status'] == 'error'
         status = ('published' if fresh else 'processing_failure' if processing_error else
-                  'stale_completion' if completed.accepted else completed.snapshot.health['status'])
-        filter_stats = completed.diagnostics.get('robot_filter', {})
-        compute_seconds = completed.diagnostics.get('compute_seconds')
-        self._completion = dict(timing, timestamp=timestamp,
-            input_timestamp=completed.input_timestamp, status=status,
-            publish_age_seconds=(None if completed.input_timestamp is None else
-                                 max(0., now-completed.input_timestamp)),
+                  'stale_completion' if mapping_result.accepted else mapping_result.snapshot.health['status'])
+        filter_stats = mapping_result.diagnostics.get('robot_filter', {})
+        compute_seconds = mapping_result.diagnostics.get('compute_seconds')
+        self._completion = dict(timing, timestamp=snapshot_timestamp,
+            input_timestamp=mapping_result.input_timestamp, status=status,
+            publish_age_seconds=(None if mapping_result.input_timestamp is None else
+                                 max(0., now-mapping_result.input_timestamp)),
             filter_seconds=filter_stats.get('elapsed_seconds'), compute_seconds=compute_seconds,
             transport_seconds=(None if compute_seconds is None else
                                max(0., result.duration-compute_seconds)))
-        self.diagnostics = completed.diagnostics
+        self.diagnostics = mapping_result.diagnostics
         if fresh:
-            self._published = completed.snapshot
-            self._published_obstacles = completed.obstacles
-            self._published_inferred = completed.inferred
+            self._published = mapping_result.snapshot
+            self._published_obstacles = mapping_result.obstacles
+            self._published_inferred = mapping_result.inferred
             self._status, self._reason, self._last_error = 'ok', None, None
             self._counts['published'] += 1
         else:
@@ -319,14 +322,14 @@ class MappingService:
             self._status = 'error' if processing_error else 'no_frame'
             self._reason = status
             if processing_error:
-                self._last_error = (completed.snapshot.health.get('last_error') or
-                                    completed.diagnostics.get('reason') or 'Mapping processing failed')
+                self._last_error = (mapping_result.snapshot.health.get('last_error') or
+                                    mapping_result.diagnostics.get('reason') or 'Mapping processing failed')
                 self._counts['processing_failures'] += 1
                 self._counts['worker_failures'] += 1
                 self._counts['failures'] += 1
-            completed = replace(completed, accepted=False)
-        self.last_result = completed
-        return completed
+            mapping_result = replace(mapping_result, accepted=False)
+        self.last_result = mapping_result
+        return mapping_result
 
     def note_source_failure(self, error):
         """Invalidate pending work after an acquisition or source failure."""
@@ -360,12 +363,12 @@ class MappingService:
         self._status, self._reason, self._last_error = 'waiting', 'reset', None
         self._counts['resets'] += 1
 
-    def snapshot(self, now=None):
+    def snapshot(self, now: float | None = None) -> MappingReadView:
         """Return a fixed-time read view of the latest accepted map publication."""
-        base = self._published if self._published is not None else self._empty
-        if base.generation != self.generation:
-            base = replace(base, generation=self.generation)
-        return MappingReadView(base, now=self.clock() if now is None else now,
+        occupancy_snapshot = self._published if self._published is not None else self._empty
+        if occupancy_snapshot.generation != self.generation:
+            occupancy_snapshot = replace(occupancy_snapshot, generation=self.generation)
+        return MappingReadView(occupancy_snapshot, now=self.clock() if now is None else now,
             evidence_ttl=self.settings.evidence_ttl, stale_after=self.settings.stale_after,
             health=dict(status=self._status, reason=self._reason, last_error=self._last_error),
             obstacles=self._published_obstacles, inferred=self._published_inferred)

@@ -49,7 +49,7 @@ def plain(value):
     return value
 
 
-def digest(path):
+def digest(path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -71,12 +71,12 @@ def robot_envelopes(frames, snapshots):
     return tuple(bounds)
 
 
-def robot_overlap(points, bounds):
+def robot_overlap(points: np.ndarray, bounds) -> np.ndarray:
     return np.logical_or.reduce([((points >= lo) & (points <= hi)).all(1)
                                  for lo, hi in bounds]) if bounds else np.zeros(len(points), bool)
 
 
-def project_clouds(frames, scene):
+def project_clouds(frames, scene) -> np.ndarray:
     """Fuse workspace points from calibrated depth frames for box reconstruction."""
     clouds = [voxelize(crop_workspace(project_depth(f, stride=2,
               bounds=(scene.workspace_min, scene.workspace_max))[0], scene), .002, 12000)
@@ -84,7 +84,7 @@ def project_clouds(frames, scene):
     return voxelize(np.concatenate(clouds), .002, 12000)
 
 
-def hypothesis(points):
+def hypothesis(points: np.ndarray) -> dict | None:
     """Existing yaw search, with Z extrema used ONLY to propose free-box bounds."""
     p = points[np.linspace(0, len(points)-1, min(len(points), FIT_LIMIT), dtype=int)]
     high = float(np.percentile(p[:, 2], 99.8))
@@ -111,7 +111,7 @@ def hypothesis(points):
                 residual_p80_m=residual, top_fill=float(fill), score=score)
 
 
-def face_support(local, size, axis, sign):
+def face_support(local: np.ndarray, size: np.ndarray, axis: int, sign: int) -> dict:
     """Check whether visible points directly support a candidate box face."""
     other = [a for a in range(3) if a != axis]
     selected = ((abs(local[:, axis]-sign*size[axis]/2) <= TOL) &
@@ -208,7 +208,7 @@ def boundary(model, frame, target, carrier, carrier_support):
     return result
 
 
-def free_ray_check(model, frames):
+def free_ray_check(model: dict, frames) -> dict:
     """Fixed small surface grid; check current pixels without integrating rays."""
     size, center, r = model['dimensions'], model['center'], model['rotation']
     samples = []
@@ -246,7 +246,7 @@ def free_ray_check(model, frames):
     return out
 
 
-def qualify(points, frames, envelopes):
+def qualify(points: np.ndarray, frames, envelopes) -> dict:
     """Reject robot-connected or weak box hypotheses and qualify measured bounds."""
     overlap = robot_overlap(points, envelopes)
     result = dict(points=len(points), robot_envelope_points=int(overlap.sum()),
@@ -295,7 +295,7 @@ def qualify(points, frames, envelopes):
     return dict(result, status='qualified', reason='all_six_empirical_model_bounds', geometry=geometry)
 
 
-def reconstruct(frames, scene, snapshots):
+def reconstruct(frames, scene, snapshots) -> tuple[dict, list, list]:
     """Reconstruct qualified box geometry from synchronized frames and robot poses."""
     start = time.perf_counter()
     envelopes = robot_envelopes(frames, snapshots)

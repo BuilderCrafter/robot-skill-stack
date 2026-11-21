@@ -25,7 +25,7 @@ POLICY = dict(
 )
 
 
-def classify(inside, expected, measured):
+def classify(inside: bool, expected: float, measured: float) -> str:
     """Classify a projected sample as supported, free, occluded, or unobserved."""
     if not inside:
         return 'outside_fov'
@@ -40,7 +40,7 @@ def classify(inside, expected, measured):
     return 'supported'
 
 
-def patch_decision(samples):
+def patch_decision(samples: list[dict]) -> dict:
     """Decide whether a face has enough distributed, noncontradictory pixels."""
     supported=[s for s in samples if s['state']=='supported']
     observable=[s for s in samples if s['state'] in ('supported','contradictory_free')]
@@ -58,7 +58,7 @@ def patch_decision(samples):
                               for name in ('supported','contradictory_free',*POLICY['unobserved'])})
 
 
-def face_pixels(model,face,axis,sign,frame):
+def face_pixels(model: dict, face: dict, axis: int, sign: int, frame) -> dict:
     """Project one candidate face into a camera and test its visible samples."""
     r,center,size=(np.asarray(model[k]) for k in ('rotation','center','dimensions'))
     plane=face['direct']['plane_local_m']
@@ -98,7 +98,7 @@ def face_pixels(model,face,axis,sign,frame):
                 reason='observed_spanning_patch' if decision['qualified'] else 'insufficient_or_contradictory_observed_patch')
 
 
-def qualify(reference,frames):
+def qualify(reference: dict, frames) -> dict:
     """Require measured face patches before accepting inferred box geometry."""
     result=dict(status='rejected',reason=None,geometry=None,coverage={},
                 reference_status=reference['status'],reference_score=None,residual_score=None,

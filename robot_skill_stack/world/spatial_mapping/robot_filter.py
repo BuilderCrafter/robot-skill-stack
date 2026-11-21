@@ -7,12 +7,12 @@ import numpy as np
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 
 
-def _readonly(values, dtype=None):
+def _readonly(values: np.ndarray, dtype=None) -> np.ndarray:
     array = np.ascontiguousarray(values, dtype=dtype)
     return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
-def _token(value):
+def _token(value) -> tuple[float, float]:
     try:
         token = tuple(float(item) for item in value)
     except (TypeError, ValueError) as exc:
@@ -28,7 +28,7 @@ class TriangleMesh:
     vertices: np.ndarray    # 3D points of the mesh
     triangles: np.ndarray   # Which 3 points create a triangle
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         vertices, triangles = np.asarray(self.vertices, float), np.asarray(self.triangles)
         if (vertices.ndim != 2 or vertices.shape[1] != 3 or not len(vertices)
                 or not np.isfinite(vertices).all() or triangles.ndim != 2
@@ -82,7 +82,7 @@ class MeshInstance:
     mesh: TriangleMesh
     world_from_local: np.ndarray
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         transform = np.asarray(self.world_from_local, float)
         if (not isinstance(self.mesh, TriangleMesh) or transform.shape != (4, 4)
                 or not np.isfinite(transform).all()
@@ -105,7 +105,7 @@ class RobotSnapshot:
     simulation_time: float
     frame_token: tuple | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         parts = tuple(self.parts)
         if not parts or any(not isinstance(part, MeshInstance) for part in parts):
             raise ValueError('Robot snapshot requires nonempty validated mesh instances')
@@ -118,7 +118,8 @@ class RobotSnapshot:
             object.__setattr__(self, 'frame_token', _token(self.frame_token))
 
 
-def _box_hits(origin, directions, lower, upper, limit):
+def _box_hits(origin: np.ndarray, directions: np.ndarray, lower: np.ndarray,
+              upper: np.ndarray, limit: np.ndarray) -> np.ndarray:
     """Ray/AABB broadphase only; touching a box is never a robot mask."""
     moving = directions != 0
     first, second = np.full(directions.shape, -np.inf), np.full(directions.shape, np.inf)
@@ -129,7 +130,8 @@ def _box_hits(origin, directions, lower, upper, limit):
     return ~parallel_outside & (far >= np.maximum(near, 0.)) & (near <= limit)
 
 
-def _mesh_depth_bvh(mesh, origin, directions, limit):
+def _mesh_depth_bvh(mesh: TriangleMesh, origin: np.ndarray, directions: np.ndarray,
+                    limit: np.ndarray) -> np.ndarray:
     """Nearest positive triangle parameter for each unnormalized local ray."""
     best = np.asarray(limit, float).copy()
     stack = [(0, np.arange(len(directions)))]
@@ -171,7 +173,8 @@ def _mesh_depth_bvh(mesh, origin, directions, limit):
 _MAX_PENDING_NODE_PAIRS = 65_536
 
 
-def _mesh_depth(mesh, origin, directions, limit):
+def _mesh_depth(mesh: TriangleMesh, origin: np.ndarray, directions: np.ndarray,
+                limit: np.ndarray) -> np.ndarray:
     """Exact nearest depth with bounded packets of existing BVH ray/node pairs.
 
     Small NumPy operations at every visited node dominate scalar BVH traversal.
@@ -262,7 +265,8 @@ class RobotSelfFilter:
         self.depth_tolerance, self.pose_tolerance, self.stride = depth_tolerance, pose_tolerance, stride
         self.diagnostics = {'state': 'waiting'}
 
-    def masks(self, frames, snapshots_by_camera, *, pixels_by_camera=None):
+    def masks(self, frames: tuple[DepthFrame, ...], snapshots_by_camera,
+              *, pixels_by_camera=None) -> dict[str, np.ndarray]:
         """Return depth-shaped masks for all stride pixels or an explicit subset.
 
         Explicit pixel selections are complete camera-ID mappings to ``(ys,xs)``
@@ -287,11 +291,11 @@ class RobotSelfFilter:
                 key, token = frame.camera_id, _token(frame.token)
                 DepthFrame(key, frame.token, frame.depth, frame.intrinsics,
                            frame.world_from_camera, frame.acquired_at)
-                snapshot = snapshots[key]
-                if not isinstance(snapshot, RobotSnapshot):
+                robot_snapshot = snapshots[key]
+                if not isinstance(robot_snapshot, RobotSnapshot):
                     raise ValueError(f'Missing validated robot snapshot: {key}')
-                if (abs(snapshot.simulation_time-token[1]) > self.pose_tolerance
-                        or snapshot.frame_token is not None and snapshot.frame_token != token):
+                if (abs(robot_snapshot.simulation_time-token[1]) > self.pose_tolerance
+                        or robot_snapshot.frame_token is not None and robot_snapshot.frame_token != token):
                     raise ValueError(f'Robot pose does not match camera render time/token: {key}')
                 if selections is not None:
                     pair = selections[key]
@@ -310,7 +314,7 @@ class RobotSelfFilter:
             # This is where we are generating the masks
             masks = {}
             for frame in frames:
-                key, snapshot = frame.camera_id, snapshots[frame.camera_id]
+                key, robot_snapshot = frame.camera_id, snapshots[frame.camera_id]
                 mask = np.zeros(frame.depth.shape, bool)
                 if selections is None:
                     y, x = np.indices(frame.depth[::self.stride, ::self.stride].shape)
@@ -325,23 +329,23 @@ class RobotSelfFilter:
                                     (y+.5-k[1, 2])/k[1, 1], np.ones(len(x))]
                 world_rays = camera_rays @ transform[:3, :3].T
                 origin = transform[:3, 3]
-                expected = np.full(len(x), np.inf)
-                for part in snapshot.parts:
+                robot_depth = np.full(len(x), np.inf)
+                for part in robot_snapshot.parts:
                     inverse = part._local_from_world
                     local_origin = origin @ inverse[:3, :3].T+inverse[:3, 3]
                     local_rays = world_rays @ inverse[:3, :3].T
-                    expected = _mesh_depth(part.mesh, local_origin, local_rays, expected)
-                hit = np.isfinite(expected)
-                self_match = hit & (abs(measured-expected) <= self.depth_tolerance)
-                behind = hit & (measured > expected+self.depth_tolerance)
-                foreground = hit & (measured < expected-self.depth_tolerance)
+                    robot_depth = _mesh_depth(part.mesh, local_origin, local_rays, robot_depth)
+                hit = np.isfinite(robot_depth)
+                self_match = hit & (abs(measured-robot_depth) <= self.depth_tolerance)
+                behind = hit & (measured > robot_depth+self.depth_tolerance)
+                foreground = hit & (measured < robot_depth-self.depth_tolerance)
                 mask[y, x] = self_match | behind
                 masks[key] = mask
                 self.diagnostics['cameras'][key] = dict(sampled_pixels=valid.size,
                     valid_pixels=int(valid.sum()), self_match=int(self_match.sum()),
                     behind_withheld=int(behind.sum()), foreground_kept=int(foreground.sum()),
                     no_hit=int((~hit).sum()), masked_pixels=int(mask.sum()),
-                    pose_skew_seconds=abs(snapshot.simulation_time-frame.token[1]))
+                    pose_skew_seconds=abs(robot_snapshot.simulation_time-frame.token[1]))
             self.diagnostics.update(state='ready', elapsed_seconds=time.perf_counter()-started)
             return masks
         except Exception as exc:

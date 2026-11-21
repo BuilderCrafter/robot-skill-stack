@@ -48,13 +48,13 @@ def _fail(code, message, **details):
 class FrozenRgbdBox:
     """Immutable collision proxy for selected occupied map cells."""
     id: str
-    center: tuple
-    dimensions: tuple
+    center: tuple[float, float, float]
+    dimensions: tuple[float, float, float]
     expires_at: float
     voxel_count: int
-    orientation_wxyz: tuple = (1., 0., 0., 0.)
+    orientation_wxyz: tuple[float, float, float, float] = (1., 0., 0., 0.)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         center, dimensions = tuple(map(float, self.center)), tuple(map(float, self.dimensions))
         orientation = tuple(map(float, self.orientation_wxyz))
         expiry = float(self.expires_at)
@@ -77,11 +77,11 @@ class FrozenRgbdWorld:
     timestamp: float
     evaluated_at: float
     spec: GridSpec
-    boxes: tuple
+    boxes: tuple[FrozenRgbdBox, ...]
     metadata: object
     view: MappingReadView = field(repr=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         boxes = tuple(self.boxes)
         if (type(self.generation) is not int or self.generation < 0
                 or type(self.revision) is not int or self.revision < 1
@@ -110,14 +110,15 @@ class FrozenRgbdWorld:
         return self.view.query(position)
 
 
-def _count(diagnostics, key):
+def _count(diagnostics: Mapping, key: str) -> int:
     value = diagnostics.get(key)
     if type(value) is not int or value < 0:
         _fail('invalid_product', 'Prepared obstacle counts are invalid', field=key)
     return value
 
 
-def _boxes(packet, spec, *, now, maximum):
+def _boxes(packet: ObstaclePacket, spec: GridSpec, *, now: float,
+           maximum: int) -> tuple[FrozenRgbdBox, ...]:
     """Check bounded exact grid descriptors without touching the dense grid."""
     if len(packet.boxes) > maximum:
         _fail('budget_mismatch', 'Prepared obstacle product exceeds the selected bound',
@@ -201,7 +202,7 @@ def _camera_metadata(diagnostics, settings, timestamp, now):
     return tuple(ids), tuple(frames)
 
 
-def capture_frozen_rgbd(source, *, max_obstacles=64):
+def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
     """Capture one current accepted RGB-D publication for one static request.
 
     The service's existing clock fixes read time. Any source problem rejects
@@ -214,12 +215,12 @@ def capture_frozen_rgbd(source, *, max_obstacles=64):
     if source is None:
         _fail('unavailable', 'Spatial Mapping service is unavailable')
     try:
-        settings = source.settings
-        if settings.enabled is not True:
+        mapping_config = source.settings
+        if mapping_config.enabled is not True:
             _fail('disabled', 'Spatial Mapping is disabled')
-        if settings.source != 'rgbd':
+        if mapping_config.source != 'rgbd':
             _fail('wrong_source', 'Frozen RGB-D global planning requires the RGB-D mapping source')
-        if settings.automatic_robot_filter is not True:
+        if mapping_config.automatic_robot_filter is not True:
             _fail('filter_required', 'Frozen RGB-D planning requires automatic robot self-filtering')
         generation = source.generation
         if type(generation) is not int or generation < 0:
@@ -227,48 +228,48 @@ def capture_frozen_rgbd(source, *, max_obstacles=64):
         now = float(source.clock())
         if not math.isfinite(now) or now < 0:
             _fail('invalid_clock', 'Mapping capture clock is invalid')
-        view = source.snapshot(now=now)
-        if not isinstance(view, MappingReadView):
+        mapping_view = source.snapshot(now=now)
+        if not isinstance(mapping_view, MappingReadView):
             _fail('invalid_product', 'Expected the existing immutable mapping read view')
-        health, packet = view.health, view.obstacles
-        stamp = view.timestamp
-        if stamp is None:
+        health, obstacle_packet = mapping_view.health, mapping_view.obstacles
+        capture_timestamp = mapping_view.timestamp
+        if capture_timestamp is None:
             _fail('no_publication', 'Spatial Mapping has no accepted publication')
-        stamp = float(stamp)
-        limit = min(float(settings.stale_after), float(settings.max_frame_age))
-        if (not math.isfinite(stamp) or stamp < 0 or stamp > now+1e-9
-                or not math.isfinite(limit) or limit <= 0 or now-stamp >= limit):
+        capture_timestamp = float(capture_timestamp)
+        limit = min(float(mapping_config.stale_after), float(mapping_config.max_frame_age))
+        if (not math.isfinite(capture_timestamp) or capture_timestamp < 0 or capture_timestamp > now+1e-9
+                or not math.isfinite(limit) or limit <= 0 or now-capture_timestamp >= limit):
             _fail('stale', 'RGB-D acquisition is stale, future-dated or invalid',
-                  timestamp=stamp, evaluated_at=now, freshness_limit_seconds=limit)
+                  timestamp=capture_timestamp, evaluated_at=now, freshness_limit_seconds=limit)
         if health.get('status') != 'ok' or health.get('fresh') is not True:
             _fail('unhealthy', 'Spatial Mapping is not currently healthy and fresh',
                   health=dict(health))
-        if (view.generation != generation or source.generation != generation
-                or type(view.revision) is not int or view.revision < 1):
+        if (mapping_view.generation != generation or source.generation != generation
+                or type(mapping_view.revision) is not int or mapping_view.revision < 1):
             _fail('generation_changed', 'Mapping generation changed before snapshot acceptance')
-        if packet is None:
+        if obstacle_packet is None:
             _fail('no_publication', 'Accepted mapping has no prepared obstacle product')
-        if not isinstance(packet, ObstaclePacket):
+        if not isinstance(obstacle_packet, ObstaclePacket):
             _fail('invalid_product', 'Expected the existing immutable worker obstacle product')
-        if (packet.generation != generation or packet.revision != view.revision or packet.timestamp != stamp
-                or view.evaluated_at != now or view.stale_after != settings.stale_after
-                or view.evidence_ttl != settings.evidence_ttl):
+        if (obstacle_packet.generation != generation or obstacle_packet.revision != mapping_view.revision or obstacle_packet.timestamp != capture_timestamp
+                or mapping_view.evaluated_at != now or mapping_view.stale_after != mapping_config.stale_after
+                or mapping_view.evidence_ttl != mapping_config.evidence_ttl):
             _fail('product_mismatch', 'Prepared obstacles and occupancy publication disagree')
-        if view.spec != settings.grid_spec():
+        if mapping_view.spec != mapping_config.grid_spec():
             _fail('product_mismatch', 'Prepared world does not match configured mapping bounds')
-        extracted_at = float(packet.extracted_at)
-        if not math.isfinite(extracted_at) or not stamp <= extracted_at <= now+1e-9:
+        extracted_at = float(obstacle_packet.extracted_at)
+        if not math.isfinite(extracted_at) or not capture_timestamp <= extracted_at <= now+1e-9:
             _fail('product_mismatch', 'Prepared obstacle extraction time is invalid')
         diagnostics = source.diagnostics
         if diagnostics.get('accepted') is not True or diagnostics.get('source_type') != 'rgbd':
             _fail('no_publication', 'Mapping diagnostics do not identify an accepted RGB-D publication')
-        ids, frames = _camera_metadata(diagnostics, settings, stamp, now)
-        extraction = packet.diagnostics
+        ids, frames = _camera_metadata(diagnostics, mapping_config, capture_timestamp, now)
+        extraction = obstacle_packet.diagnostics
         if extraction.get('max_obstacles') != max_obstacles:
             _fail('budget_mismatch', 'Prepared obstacle budget differs from the selected global bound')
         if extraction.get('padding_m') != 0. or extraction.get('temporal_probabilities') is not True:
             _fail('invalid_product', 'Prepared obstacle policy is not the established exact RGB-D policy')
-        boxes = _boxes(packet, view.spec, now=now, maximum=max_obstacles)
+        boxes = _boxes(obstacle_packet, mapping_view.spec, now=now, maximum=max_obstacles)
         occupied, supported, represented, omitted, candidates, proxies = (
             _count(extraction, key) for key in ('occupied_voxels','supported_voxels','represented_voxels',
                 'omitted_voxels','candidate_boxes','proxy_count'))
@@ -278,14 +279,14 @@ def capture_frozen_rgbd(source, *, max_obstacles=64):
         if not boxes:
             _fail('no_usable_evidence', 'RGB-D publication contains no usable selected occupied evidence',
                   extraction=dict(extraction))
-        if source.generation != generation or source.settings is not settings:
+        if source.generation != generation or source.settings is not mapping_config:
             _fail('generation_changed', 'Mapping source changed before frozen-world acceptance')
         metadata = dict(source_type='rgbd', snapshot_policy='frozen_worker_prepared_exact_occupied_cuboids',
-            timestamp=stamp, original_acquisition_timestamp=stamp, evaluated_at=now,
-            generation=generation, revision=view.revision, map_age_seconds=max(0.,now-stamp),
-            freshness_limit_seconds=limit, evidence_ttl_seconds=settings.evidence_ttl,
-            mapping_health=dict(health), bounds_min=view.spec.bounds_min, bounds_max=view.spec.bounds_max,
-            voxel_size=view.spec.voxel_size, dimensions=view.spec.shape,
+            timestamp=capture_timestamp, original_acquisition_timestamp=capture_timestamp, evaluated_at=now,
+            generation=generation, revision=mapping_view.revision, map_age_seconds=max(0.,now-capture_timestamp),
+            freshness_limit_seconds=limit, evidence_ttl_seconds=mapping_config.evidence_ttl,
+            mapping_health=dict(health), bounds_min=mapping_view.spec.bounds_min, bounds_max=mapping_view.spec.bounds_max,
+            voxel_size=mapping_view.spec.voxel_size, dimensions=mapping_view.spec.shape,
             selected_obstacle_count=len(boxes), max_obstacles=max_obstacles,
             occupied_cells_at_extraction=occupied, supported_occupied_cells_at_extraction=supported,
             represented_occupied_cells=represented, omitted_supported_cells_at_extraction=omitted,
@@ -294,7 +295,7 @@ def capture_frozen_rgbd(source, *, max_obstacles=64):
             mapping_diagnostics=diagnostics, robot_filter=dict(diagnostics['robot_filter']),
             uncertainty_policy='UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct',
             no_occupancy_completion=True, padding_m=0.)
-        return FrozenRgbdWorld(generation, view.revision, stamp, now, view.spec, boxes, metadata, view)
+        return FrozenRgbdWorld(generation, mapping_view.revision, capture_timestamp, now, mapping_view.spec, boxes, metadata, mapping_view)
     except FrozenRgbdSourceError:
         raise
     except Exception as error:

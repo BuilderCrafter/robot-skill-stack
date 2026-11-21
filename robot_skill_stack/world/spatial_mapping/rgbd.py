@@ -6,7 +6,8 @@ import numpy as np
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 
 
-def _traverse_rays(origin, endpoints, spec, max_visits):
+def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec,
+                   max_visits: int) -> tuple[np.ndarray, int]:
     """Return flat cells and visit count for bounded batches of finite rays.
 
     Visits include duplicates and occupied endpoint cells. On budget exhaustion
@@ -81,7 +82,7 @@ def _traverse_rays(origin, endpoints, spec, max_visits):
     return output[:used], used
 
 
-def _ray_voxels(origin, endpoint, spec):
+def _ray_voxels(origin: np.ndarray, endpoint: np.ndarray, spec):
     """Yield one finite segment's cells, preserving the scalar helper contract."""
     # For single rays instead of a bundle of rays
     flat, _ = _traverse_rays(origin, np.asarray(endpoint, float).reshape(1, 3),
@@ -98,8 +99,9 @@ class RgbdMapper:
     Automatic robot masking is the caller's responsibility. Measurements past
     ``max_depth`` are ignored, never converted into artificial free-space rays.
     """
-    def __init__(self, occupancy_map, *, stride=8, max_rays=1024, max_voxel_visits=500_000, max_depth=5.,
-                 max_skew=.025, max_frame_age=1., expected_camera_ids=None,
+    def __init__(self, occupancy_map, *, stride: int = 8, max_rays: int = 1024,
+                 max_voxel_visits: int = 500_000, max_depth: float = 5.,
+                 max_skew: float = .025, max_frame_age: float = 1., expected_camera_ids=None,
                  clock=time.monotonic):
         if type(stride) is not int or stride < 1 or type(max_rays) is not int or max_rays < 1:
             raise ValueError('stride and max_rays must be positive integers')
@@ -121,19 +123,19 @@ class RgbdMapper:
         self.clock, self._consumed, self._rotation = clock, {}, 0
         self.diagnostics = {'state': 'waiting'}
 
-    def _failure(self, reason, now):
+    def _failure(self, reason: str, now: float) -> bool:
         """Log failure to diagnostic field and maps diagnostic field"""
         self.diagnostics.update(state='error', reason=reason)
         self.map.note_failure(reason, now=now)
         return False
 
-    def _no_frame(self, reason, now):
+    def _no_frame(self, reason: str, now: float) -> bool:
         """Log 'no_frame' failure to diagnostic field and maps diagnostic field"""
         self.diagnostics.update(state='no_frame', reason=reason)
         self.map.note_no_frame(reason, now=now)
         return False
 
-    def _allocate(self, counts):
+    def _allocate(self, counts: dict[str, int]) -> dict[str, int]:
         """Distribute the available ray budget between cameras."""
         names = sorted(key for key, count in counts.items() if count)
         if names:
@@ -156,7 +158,7 @@ class RgbdMapper:
         self._rotation += max(1, selected)
         return allocation
 
-    def update(self, frames, exclusion_masks=None, *, now=None, mask_provider=None):
+    def update(self, frames, exclusion_masks=None, *, now: float | None = None, mask_provider=None) -> bool:
         """Integrate one complete batch; an optional provider supplies its masks.
 
         After frame validation, token consumption and fair ray selection, the
@@ -217,9 +219,9 @@ class RgbdMapper:
             if (not np.isfinite(acquired).all() or np.any(acquired > now) or
                     np.any(now-acquired >= self.max_frame_age)):
                 return self._failure('Stale, future or invalid acquisition timestamp', now)
-            by_id, valid_depths = {frame.camera_id: frame for frame in frames}, {}
+            frames_by_camera, valid_depths = {frame.camera_id: frame for frame in frames}, {}
             for key in sorted(ids):
-                frame = by_id[key]
+                frame = frames_by_camera[key]
                 # Revalidate mutable calibration arrays before requesting masks.
                 DepthFrame(key, frame.token, frame.depth, frame.intrinsics,
                            frame.world_from_camera, frame.acquired_at)
@@ -231,7 +233,7 @@ class RgbdMapper:
                 return self._failure('Exclusion mask has an unknown camera ID', now)
             candidates = {}
             for key in sorted(ids):
-                frame = by_id[key]
+                frame = frames_by_camera[key]
                 valid_depth = valid_depths[key]
                 mask = masks.get(key)
                 if ((mask is not None and (np.asarray(mask).dtype != np.bool_ or
@@ -268,7 +270,7 @@ class RgbdMapper:
                     return self._failure('Automatic mask camera IDs must match every depth frame', now)
                 for key in sorted(ids):
                     mask = np.asarray(automatic[key])
-                    if mask.dtype != np.bool_ or mask.shape != by_id[key].depth.shape:
+                    if mask.dtype != np.bool_ or mask.shape != frames_by_camera[key].depth.shape:
                         return self._failure(f'Automatic mask must match boolean depth image: {key}', now)
                     y, x, depth = selected_rays[key]
                     keep = ~mask[y, x]
@@ -286,7 +288,7 @@ class RgbdMapper:
                 self.diagnostics['cameras'][key]['retained_rays'] = count
                 if not count:
                     continue
-                frame = by_id[key]
+                frame = frames_by_camera[key]
                 k, transform = frame.intrinsics, frame.world_from_camera
                 rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(count)]
                 endpoints = (rays*depth[:, None]) @ transform[:3, :3].T+transform[:3, 3]

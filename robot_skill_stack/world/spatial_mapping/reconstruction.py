@@ -17,11 +17,11 @@ class InferredGeometry:
     timestamp: float
     status: str
     reason: str
-    models: tuple
-    source_frames: tuple
+    models: tuple[object, ...]
+    source_frames: tuple[object, ...]
     diagnostics: object
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if (type(self.generation) is not int or self.generation < 0
                 or type(self.revision) is not int or self.revision < 1
                 or not math.isfinite(self.timestamp) or self.timestamp < 0
@@ -31,7 +31,7 @@ class InferredGeometry:
             object.__setattr__(self, key, freeze(getattr(self, key)))
 
 
-def validate_geometry(g):
+def validate_geometry(g: dict) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
     """Validate the dimensions, pose, and yaw of an inferred box."""
     center, dimensions, rotation = (np.asarray(g[k], float) for k in ('center', 'dimensions', 'rotation'))
     yaw = float(g['yaw_rad'])
@@ -45,21 +45,22 @@ def validate_geometry(g):
     return center, dimensions, rotation, yaw
 
 
-def infer(payload, scene, snapshot):
+def infer(payload, scene, snapshot) -> InferredGeometry:
     """Never query SDK, semantic identities or fixtures; never mutate occupancy."""
+    mapping_input, occupancy_snapshot = payload, snapshot
     started = time.perf_counter()
     models, diagnostics, status, reason = [], {}, 'error', 'invalid_sensor_input'
     frames = tuple(dict(camera_id=f.camera_id, token=f.token, acquired_at=f.acquired_at,
         depth_shape=f.depth.shape, intrinsics=f.intrinsics, world_from_camera=f.world_from_camera)
-        for f in payload.frames)
+        for f in mapping_input.frames)
     try:
-        if (payload.ground_truth is not None or len(payload.frames) != 2
-                or any(f.depth.shape != (480,640) for f in payload.frames)
-                or any(not np.any(np.isfinite(f.depth)&(f.depth>0)) for f in payload.frames)
-                or payload.robot_snapshots is None):
+        if (mapping_input.ground_truth is not None or len(mapping_input.frames) != 2
+                or any(f.depth.shape != (480,640) for f in mapping_input.frames)
+                or any(not np.any(np.isfinite(f.depth)&(f.depth>0)) for f in mapping_input.frames)
+                or mapping_input.robot_snapshots is None):
             raise ValueError('Reconstruction requires two original calibrated RGB-D frames and robot snapshots')
-        result, _, _ = reference.reconstruct(payload.frames, scene, payload.robot_snapshots)
-        all_models = [dict(component=c['component'], **visibility.qualify(c, payload.frames))
+        result, _, _ = reference.reconstruct(mapping_input.frames, scene, mapping_input.robot_snapshots)
+        all_models = [dict(component=c['component'], **visibility.qualify(c, mapping_input.frames))
                       for c in result['components']]
         diagnostics.update(reconstruction=result, qualifications=all_models)
         status, reason = 'qualified', 'all_eligible_components_qualified'
@@ -81,11 +82,11 @@ def infer(payload, scene, snapshot):
     except Exception as exc:
         status, reason, models = 'error', f'{type(exc).__name__}: {exc}', []
     diagnostics['elapsed_seconds'] = time.perf_counter()-started
-    return InferredGeometry(payload.generation, snapshot.revision, snapshot.timestamp,
+    return InferredGeometry(mapping_input.generation, occupancy_snapshot.revision, occupancy_snapshot.timestamp,
                             status, reason, tuple(models), frames, diagnostics)
 
 
-def combine(frozen):
+def combine(frozen) -> tuple[list[dict], dict, InferredGeometry]:
     """Return numeric camera cuboids; preserve the exact original selected union."""
     product = frozen.view.inferred
     if not isinstance(product, InferredGeometry):

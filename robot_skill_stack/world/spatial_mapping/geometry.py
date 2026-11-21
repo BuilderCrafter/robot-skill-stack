@@ -26,13 +26,13 @@ class _Primitive:
     height: float | None = None
     axis: int = 2
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         object.__setattr__(self, "world_from_local", _readonly(self.world_from_local))
         if self.dimensions is not None:
             object.__setattr__(self, "dimensions", _readonly(self.dimensions))
 
 
-def _primitive_bounds(primitive):
+def _primitive_bounds(primitive: _Primitive) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Compute conservative world bounds and the inverse primitive transform."""
     transform = np.asarray(primitive.world_from_local, dtype=float)
     if (transform.shape != (4, 4) or not np.isfinite(transform).all() or
@@ -62,7 +62,7 @@ def _primitive_bounds(primitive):
     return center-extent, center+extent, inverse
 
 
-def _candidate_bounds(spec, lower, upper):
+def _candidate_bounds(spec, lower: np.ndarray, upper: np.ndarray) -> tuple[np.ndarray | None, np.ndarray | None, int]:
     """Find voxel index limits intersecting the supplied world-space bounds."""
     lower, upper = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
     if (lower.shape != (3,) or upper.shape != (3,) or
@@ -79,7 +79,8 @@ def _candidate_bounds(spec, lower, upper):
     return low, high, count
 
 
-def _rasterize(spec, lower, upper, *, primitive=None, inverse=None, budget=8_000_000):
+def _rasterize(spec, lower: np.ndarray, upper: np.ndarray, *, primitive: _Primitive | None = None,
+               inverse: np.ndarray | None = None, budget: int = 8_000_000) -> tuple[np.ndarray, int]:
     """Select voxels intersecting a primitive or conservative bounding volume."""
     low, high, count = _candidate_bounds(spec, lower, upper)
     if count > budget:
@@ -129,7 +130,7 @@ class GeometryItem:
     primitive: _Primitive | None = None
     inverse: np.ndarray | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         for name in ('lower', 'upper', 'inverse'):
             value = getattr(self, name)
             if value is not None:
@@ -140,22 +141,24 @@ class GeometryItem:
 class GroundTruthInput:
     """Timestamped scene geometry prepared outside the mapping worker."""
     timestamp: float
-    items: tuple
+    items: tuple[GeometryItem, ...]
     diagnostics: object
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if not np.isfinite(self.timestamp) or self.timestamp < 0:
             raise ValueError('GT source timestamp must be finite and nonnegative')
         object.__setattr__(self, 'items', tuple(self.items))
         object.__setattr__(self, 'diagnostics', freeze(dict(self.diagnostics)))
 
 
-def rasterize_ground_truth(spec, prepared, max_candidate_voxels=8_000_000):
+def rasterize_ground_truth(spec, prepared: GroundTruthInput,
+                           max_candidate_voxels: int = 8_000_000) -> tuple[np.ndarray, dict]:
     """Rasterize prepared scene items into occupied voxel indices and statistics."""
+    ground_truth_input = prepared
     occupied = np.zeros(spec.shape, dtype=bool)
-    stats = dict(prepared.diagnostics)
+    stats = dict(ground_truth_input.diagnostics)
     stats['candidate_voxels'] = 0
-    for item in prepared.items:
+    for item in ground_truth_input.items:
         indices, count = _rasterize(spec, item.lower, item.upper,
             primitive=item.primitive, inverse=item.inverse,
             budget=max_candidate_voxels-stats['candidate_voxels'])
