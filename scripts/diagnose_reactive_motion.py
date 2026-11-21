@@ -23,7 +23,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from scripts.diagnose_isaac_runtime import SCENE, PROFILE, EYES, distribution
+from scripts.runtime_diagnostic_support import SCENE, PROFILE, EYES, distribution
 from tests.support.reactive_geometry import (
     CollisionMeshReference,link_group,reduce_clearances,convex_polygon_triangles)
 from robot_skill_stack.world.spatial_mapping.robot_filter import TriangleMesh

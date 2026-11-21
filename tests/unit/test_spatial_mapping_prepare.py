@@ -14,7 +14,7 @@ class RobotPrepareTests(unittest.TestCase):
         with boundaries(scene):
             source=IsaacRobotSelfFilter(scene,scene.root.path,stride=1)
             frames=(frame(),)
-            with patch.object(source._filter,'masks',side_effect=AssertionError('intersection in prepare')):
+            with patch.object(RobotSelfFilter, 'masks', side_effect=AssertionError('intersection in prepare')):
                 prepared=source.prepare(frames)
             with self.assertRaises(TypeError): prepared['extra']=prepared['A']
             self.assertEqual(prepared['A'].frame_token,frames[0].token)
@@ -92,27 +92,23 @@ class RobotPrepareTests(unittest.TestCase):
 
 
 class GroundTruthPrepareTests(unittest.TestCase):
-    def test_prepared_geometry_is_sdk_free_and_matches_synchronous_rasterization(self):
+    def test_prepared_geometry_is_sdk_free_and_matches_worker_rasterization(self):
         from tests.unit.test_spatial_mapping_ground_truth import usd_fixture, Prim, transform
-        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import (
-            prepare_ground_truth, IsaacGroundTruthMapper,
-        )
-        from robot_skill_stack.world.spatial_mapping import GridSpec, OccupancyMap
+        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import prepare_ground_truth
+        from robot_skill_stack.world.spatial_mapping import GridSpec
         from robot_skill_stack.world.spatial_mapping.geometry import rasterize_ground_truth
         prim = Prim('/Box', matrix=transform((.1, .1, .1), yaw=.3))
         stage, modules, _ = usd_fixture([prim])
         spec = GridSpec((0, 0, 0), (.3, .3, .3), .02)
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules', return_value=modules):
             prepared = prepare_ground_truth(stage, timestamp=100.)
-            mapping = OccupancyMap(spec, clock=lambda: 100.)
-            source = IsaacGroundTruthMapper(mapping)
-            self.assertTrue(source.update(stage, timestamp=100., now=100.))
-        prim.matrix[:3, 3] = 9  # Later USD data changes cannot mutate prepared input.
+            expected, _ = rasterize_ground_truth(spec, prepared, 8_000_000)
+        prim.matrix[:3, 3] = 9
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
                    side_effect=AssertionError('worker imported SDK')):
             with ThreadPoolExecutor(max_workers=1) as worker:
-                indices, _ = worker.submit(rasterize_ground_truth, spec, prepared).result(timeout=1.)
-        np.testing.assert_array_equal(indices, np.argwhere(mapping.snapshot().states == 2))
+                indices, _ = worker.submit(rasterize_ground_truth, spec, prepared, 8_000_000).result(timeout=1.)
+        np.testing.assert_array_equal(indices, expected)
         self.assertEqual(prepared.timestamp, 100.)
         with self.assertRaises(ValueError): prepared.items[0].lower.setflags(write=True)
 
@@ -225,30 +221,25 @@ class RobotSourceErrorTests(unittest.TestCase):
 
 
 class GroundTruthDiagnosticsCompatibilityTests(unittest.TestCase):
-    def test_unsupported_geometry_diagnostics_are_json_compatible_without_thawing_input(self):
+    def test_unsupported_geometry_diagnostics_remain_worker_serializable(self):
         import json
         from tests.unit.test_spatial_mapping_ground_truth import usd_fixture, Prim
-        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import IsaacGroundTruthMapper
-        from robot_skill_stack.world.spatial_mapping import GridSpec, OccupancyMap
+        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import prepare_ground_truth
+        from robot_skill_stack.world.spatial_mapping import GridSpec
+        from robot_skill_stack.world.spatial_mapping.geometry import rasterize_ground_truth
         prim = Prim('/Unsupported', kind='mesh', bounds=([.05, .05, .05], [.15, .15, .15]))
         stage, modules, _ = usd_fixture([prim])
-        mapping = OccupancyMap(GridSpec((0, 0, 0), (.3, .3, .3), .1), clock=lambda: 100.)
-        source = IsaacGroundTruthMapper(mapping)
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
                    return_value=modules):
-            prepared = source.prepare(stage, timestamp=100.)
+            prepared = prepare_ground_truth(stage, timestamp=100.)
         with self.assertRaises(TypeError):
             prepared.diagnostics['approximations'][0]['type'] = 'changed'
-        with patch.object(source, 'prepare', return_value=prepared):
-            self.assertTrue(source.update(stage, timestamp=100., now=100.))
-        # Match the unchanged native writers, including nested approximations.
-        decoded = json.loads(json.dumps([dict(diagnostics=source.diagnostics)], allow_nan=False))
-        item = decoded[0]['diagnostics']['approximations'][0]
-        self.assertEqual(item, dict(path='/Unsupported', type='mesh',
-            world_min=[.05, .05, .05], world_max=[.15, .15, .15]))
-        self.assertIsInstance(source.diagnostics['approximations'], list)
-        self.assertIsInstance(source.diagnostics['approximations'][0]['world_min'], list)
-        source.diagnostics['approximations'][0]['type'] = 'ordinary diagnostics copy'
-        source.diagnostics['approximations'][0]['world_min'][0] = 9.
+        spec = GridSpec((0., 0., 0.), (.3, .3, .3), .1)
+        indices, diagnostics = rasterize_ground_truth(spec, prepared, 8_000_000)
+        self.assertGreater(len(indices), 0)
+        decoded = json.loads(json.dumps(dict(diagnostics=diagnostics), allow_nan=False))
+        item = decoded['diagnostics']['approximations'][0]
+        self.assertEqual(item['type'], 'mesh')
+        self.assertEqual(item['path'], '/Unsupported')
         self.assertEqual(prepared.diagnostics['approximations'][0]['type'], 'mesh')
-        self.assertEqual(prepared.diagnostics['approximations'][0]['world_min'][0], .05)
+

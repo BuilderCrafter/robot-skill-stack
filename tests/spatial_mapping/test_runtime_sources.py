@@ -18,7 +18,7 @@ import omni.usd
 from isaacsim.core.utils.stage import open_stage, is_stage_loading
 from pxr import Gf, UsdGeom
 from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
-from scripts.diagnose_isaac_runtime import ROOT, SCENE, PROFILE, EYES, hashes, serial
+from tests.support.spatial_mapping_runtime import ROOT, SCENE, PROFILE, EYES, hashes, serial
 from tests.support.isaac_async import run_kit_coroutine
 from tests.support.multiview_native import set_viewpoint
 

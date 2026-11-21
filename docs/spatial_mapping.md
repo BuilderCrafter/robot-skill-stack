@@ -7,11 +7,12 @@ geometry, existing camera access and explicit construction belong under
 `integrations/isaac/spatial_mapping`. Neither source uses object labels, primitive
 fitting, tracked identities or WorldModel to decide occupancy.
 
-Mapping is opt-in. Since V5, normal runtime construction schedules mapping when
-`[spatial_mapping] enabled = true`; the default remains disabled. The explicit
-standalone API remains available. The earlier sections record its V1–V4 contract
-and validation history; see the V5 section for automatic scheduling and camera
-ownership. No planner, skill or backend consumes the map.
+Mapping is opt-in. The normal Isaac runtime constructs the asynchronous
+`MappingService` when `[spatial_mapping] enabled = true`; the default remains
+disabled. The former synchronous mapping-session factory and camera taps have
+been retired. The V1–V4 sections below describe historical measurements, not
+supported entry points. The V5 section explains current scheduling, ownership
+and the published views used by opt-in motion strategies.
 
 ## Common map contract
 
@@ -102,7 +103,7 @@ described below. With automatic filtering disabled, callers must provide reliabl
 robot masks or robot returns can enter the environmental map. Ground-truth robot
 exclusion does not automatically mask depth images.
 
-## Configuration and explicit use
+## Configuration and runtime use
 
 Add this section to a local complete setup copy; semantic `[world].provider` and
 its workspace remain independent:
@@ -129,49 +130,37 @@ max_candidate_voxels = 8000000     # Ground-truth candidate work across all prim
 automatic_robot_filter = false    # V2, RGB-D only; explicit opt-in.
 robot_depth_tolerance = 0.005     # Meters, optical-depth comparison.
 robot_pose_tolerance = 0.01       # Seconds, pose/render timestamp matching.
-# update_hz = 5.0                  # Optional limit on explicit update calls.
+# update_hz = 2.0                  # Optional runtime mapping cadence (default 2 Hz).
 ```
 
 This example enables RGB-D with explicit camera paths; the default source is
 ground truth and camera paths default to empty. Omitted `enabled` is false.
 The other values shown are defaults. Bounds/voxel budgets are validated
 without allocating a map. RGB-D camera paths identify expected input frames;
-they do not construct cameras. One camera is valid for mapping. Depth sampling
+the runtime borrows matching semantic cameras and creates missing mapping cameras. One camera is valid for mapping. Depth sampling
 and ray/voxel-visit budgets bound work independently of the semantic 2 mm
 point-cloud settings. More cameras/geometry and finer grids cost time/memory;
-equal throughput is not promised. `update_hz` limits caller-driven attempts,
-without scheduling them. GT ignores RGB-D settings; RGB-D ignores GT exclusions.
+equal throughput is not promised. `update_hz` sets the automatic mapping update cadence. GT ignores RGB-D settings; RGB-D ignores GT exclusions.
+
+The supported entry point is the normal Isaac runtime: load a scene with an
+enabled `[spatial_mapping]` section and initialize it through the GUI or
+`build_runtime()`. Its `ObservationRuntime` captures frames or USD geometry,
+submits immutable input to `MappingService`, and publishes worker results.
+The bundle exposes the service for diagnostics and motion strategies:
 
 ```python
-from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.integrations.isaac.spatial_mapping.factory import create_spatial_mapping
-
-config = load_scene_config("outputs/my_setup.toml")
-session = create_spatial_mapping(
-    config.spatial_mapping,
-    robot_prim_path=config.robot.prim_path,  # Required for automatic RGB-D filtering.
-)  # None when disabled.
-if session is not None:
-    try:
-        session.update(frames)     # RGB-D: already-acquired DepthFrames.
-        print(session.map.query((.45, 0., .10)))
-    finally:
-        session.close()
+bundle = await build_runtime(profile_path)
+try:
+    mapping = bundle.spatial_mapping
+    if mapping is not None:
+        print(mapping.health)
+        print(mapping.snapshot().counts())
+finally:
+    bundle.close()
 ```
 
-For ground truth, pass `stage=stage` at construction or use the current Isaac
-stage, then call `session.update()` without frames. This never calls the semantic
-ground-truth provider.
-
-To reuse exact multi-view captures, install `SharedFrames(existing_provider.rig)`
-before the owner acquires a new sample; pass that tap as `frame_source` and call
-mapping `update()` after the owner's observation. The tap stores those same
-DepthFrame objects and timestamps, without capturing again. `own_frame_source=True`
-lets session cleanup restore the owner's capture method; the tap never closes
-the owner's cameras. For an already initialized single V1 camera,
-`CameraSnapshots({camera_path: existing_camera})` borrows its buffers/calibration;
-it initializes no cameras and closes only its reader. Close taps/readers before
-replacing their acquisition owner. Caller-supplied frames need no adapter.
+No separate camera tap, synchronous session factory or explicit update loop is
+required. The normal runtime owns all mapping resources and their cleanup.
 
 ## V1 validation history and limits
 
@@ -180,7 +169,7 @@ replacing their acquisition owner. Caller-supplied frames need no adapter.
   tests.unit.test_spatial_mapping_occupancy \
   tests.unit.test_spatial_mapping_rgbd \
   tests.unit.test_spatial_mapping_ground_truth \
-  tests.unit.test_spatial_mapping_config_factory
+  tests.unit.test_spatial_mapping_config
 ./run_isaac_python.sh scripts/run_all_regressions.py --unit-only \
   --artifacts-dir outputs/spatial-mapping-unit-final
 ./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping \
@@ -221,13 +210,11 @@ The failed scenario was repeated with:
   --artifacts-dir outputs/spatial-mapping-benchmark-retry/artifacts
 ```
 
-The RGB-D test is also the standalone demonstration:
-
-```bash
-./run_isaac_python.sh tests/spatial_mapping/test_rgbd.py \
-  --result outputs/spatial-mapping-demo/result.json \
-  --artifacts-dir outputs/spatial-mapping-demo
-```
+The retired V1 RGB-D demonstration produced the occupancy visualization below.
+Its original results remain historical evidence, but the old synchronous test
+entry point is no longer maintained. The current native entry points are
+`tests/spatial_mapping/test_runtime_integration.py` and
+`tests/spatial_mapping/test_runtime_sources.py`.
 
 It saves calibrated capture diagnostics, representative queries, NPZ state and
 probability grids, and `ground_truth_xy.ppm`/`rgbd_xy.ppm` slices through z=0.025 m
@@ -266,9 +253,9 @@ avoidance or motion planning.
 
 ## V2 automatic robot filtering
 
-Set `automatic_robot_filter = true` for RGB-D mapping and pass
-`robot_prim_path=config.robot.prim_path` to `create_spatial_mapping`. There is no
-automatic-filter fallback to `/Franka`; the configured robot can live elsewhere.
+Set `automatic_robot_filter = true` for RGB-D mapping. The runtime passes
+`config.robot.prim_path` to the Isaac self-filter; there is no fallback to
+`/Franka`, and the configured robot may live elsewhere.
 The default remains off, and GT mapping continues to use its independent
 `excluded_prim_paths`. The two positive finite tolerances above are the only new
 tuning settings. `robot_pose_tolerance` is a time tolerance, not robot inflation.
@@ -295,7 +282,7 @@ expected occluding surface, are withheld. Rays without a robot intersection are
 retained. Automatic exclusions are dropped without backfilling other rays.
 The automatic boolean masks have the full depth-image shape; unqueried pixels
 remain false and are not classified as robot. These are mapping masks rather
-than dense robot segmentation images. Factory construction keeps both strides
+than dense robot segmentation images. Runtime configuration keeps both strides
 equal. Diagnostics distinguish allocated, retained and automatically excluded
 selected rays, so a robot-dominated view cannot silently consume extra work.
 
@@ -332,8 +319,8 @@ stage edits. Callers must close and manually reinitialize the filter after such
 changes, once the model is static again. These edits do not automatically fail
 the next update or refresh the cached model.
 
-Construct the mapping session before acquiring the frames to be mapped so its
-pose history can collect matching samples. Missing or out-of-tolerance pose
+Construct the observation runtime before acquiring mapping frames so the
+robot adapter's pose history can collect matching samples. Missing or out-of-tolerance pose
 history, invalid poses and detected model-construction failures are explicit
 errors, with no unfiltered fallback. This does not imply detection of later
 changes to cached geometry. The
@@ -343,47 +330,21 @@ repairing a failed filter cannot relabel the same buffers as fresh evidence.
 The normal completion-age check includes filter processing time; explicit
 `now=` retains its deterministic offline semantics.
 
-### Explicit use and lifecycle
+### Automatic use and lifecycle
 
-Existing `SharedFrames` and `CameraSnapshots` adapters continue to borrow camera
-resources. Install the mapping session while the simulator is initialized, then
-feed new observations through the existing acquisition owner:
+`create_observation_runtime()` constructs the robot self-filter when RGB-D
+mapping and automatic filtering are enabled. The filter records PhysX poses
+on the Kit owner thread, then `prepare(frames)` supplies immutable, exposure-
+matched snapshots. The worker-owned generic `RobotSelfFilter` performs mesh
+intersection and masking off the Kit thread. The Isaac adapter does not run a
+synchronous mapping session or produce masks itself.
 
-```python
-from robot_skill_stack.integrations.isaac.spatial_mapping import SharedFrames
-
-tap = SharedFrames(existing_provider.rig)
-session = create_spatial_mapping(
-    config.spatial_mapping,
-    stage=stage,
-    frame_source=tap,
-    own_frame_source=True,
-    robot_prim_path=config.robot.prim_path,
-)
-try:
-    # After the owner acquires a fresh batch and matching pose history exists:
-    existing_provider.observe()
-    updated = session.update()  # Automatic masks; no manual robot masks needed.
-    print(updated, session.robot_filter.diagnostics)
-finally:
-    session.close()             # Removes the filter subscription and restores the tap.
-```
-
-This example requires enabled RGB-D mapping with automatic filtering enabled.
-It illustrates explicit calls; bootstrap, semantic perception, the controller,
-skills and planner do not start or consume mapping. Any supported camera count
-uses those same calibrated snapshots. The filter creates no replacement cameras.
-
-Closing a session is idempotent. It attempts source, filter/history and owned
-frame-adapter cleanup even if an earlier close fails, preserving cleanup errors.
-Borrowed cameras, the robot, stage and global physics view remain owned by their
-existing components. Constructor failures clean resources whose ownership was
-acquired; the filter also owns cleanup of its partial initialization.
-
-Enabling filtering does not delete prior unfiltered occupancy. Start a fresh map
-with `session.map.clear()` when comparing modes, or allow existing evidence to
-clear through later valid free rays or its ordinary TTL. The implementation does
-not erase robot-shaped volumes, which could also remove external obstacles.
+Stop/Play invalidates old pose history. Model changes fail explicitly rather
+than silently using outdated geometry; the observation runtime owns the filter,
+its callbacks and its cleanup. Borrowed semantic cameras remain owned by the
+semantic provider; additional mapping cameras belong to the observation runtime.
+Use `bundle.spatial_mapping.reset()` to start fresh occupancy evidence after
+changing an experiment's filtering conditions. Never interpret UNKNOWN as FREE.
 
 ### V2 verification and remaining limits
 
@@ -397,10 +358,9 @@ buffers, processing age and resource ownership:
 ./run_isaac_python.sh -m unittest \
   tests.unit.test_spatial_mapping_robot_filter \
   tests.unit.test_spatial_mapping_robot_adapter \
-  tests.unit.test_spatial_mapping_self_filter_integration
-./run_isaac_python.sh tests/spatial_mapping/test_robot_self_filter.py \
-  --result outputs/spatial-mapping-v2/result.json \
-  --artifacts-dir outputs/spatial-mapping-v2
+  tests.unit.test_spatial_mapping_prepare
+./run_isaac_python.sh scripts/run_all_regressions.py --group spatial_mapping \
+  --artifacts-dir outputs/spatial-mapping-runtime
 ```
 
 The final V2 run on 22 October 2026 passed all 573 offline tests, eight standalone
@@ -573,32 +533,11 @@ includes per-visit set insertion, whereas batched traversal and array dedup have
 separate costs. Expiration nested inside integration is reported as overlapping
 work rather than added twice. No profiling hooks run in normal mapping.
 
-Reproduce the performance comparison on the Isaac workstation, with no other
-CPU-heavy work or simulator running:
-
-```bash
-./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py \
-  --capture-only --baseline-ref d260377 \
-  --artifacts-dir outputs/spatial-mapping-v3-capture \
-  --result outputs/spatial-mapping-v3-capture/result.json
-./run_isaac_python.sh scripts/benchmark_spatial_mapping_performance.py \
-  --replay outputs/spatial-mapping-v3-capture --warmup 2 --repeats 5 \
-  --semantic --profile --memory \
-  --artifacts-dir outputs/spatial-mapping-v3-performance \
-  --result outputs/spatial-mapping-v3-performance/result.json
-./run_isaac_python.sh scripts/check_spatial_mapping_live_freshness.py \
-  --artifacts-dir outputs/spatial-mapping-v3-live-final \
-  --result outputs/spatial-mapping-v3-live-final/result.json
-```
-
-The baseline commit must exist in the local Git history. Capture/replay validates
-input file hashes and records source and script hashes; benchmark PASS requires
-those sources to stay unchanged during execution. Raw captures, profiler files
-and verbose logs stay under ignored `outputs/`. The separate live check uses
-real production clocks and the original acquisition timestamps, with
-`max_frame_age=stale_after=1` for its independent filtered maps. Only its nested
-`live_default_freshness` measurements are timing evidence: the original fixture's
-unfiltered timers include the injected freshness check.
+The original V3 comparison used a synchronous benchmark and live-freshness
+script, now retired alongside the standalone mapping factory. Its captured
+measurement tables and source hashes remain historical research evidence, not
+commands for the current runtime. For current performance checks, use the
+automatic mapping runtime and its native integration scenarios.
 
 ### Controlled mapping results
 
@@ -657,20 +596,20 @@ compares semantic class, persistent ID, geometry, confidence, grasp readiness,
 metadata and original timestamps across schedules and repeats. Timing on these
 full-arm views is distinct from the broader frozen tabletop research protocol.
 
-Existing `SharedFrames` can reuse the same acquired batch without another camera
-read. Sharing the semantic cloud would change mapping evidence: semantic
+The current `SharedFramePool` reuses acquired camera exposures without another camera
+read; the original V3 synchronous benchmark used an earlier frame-tap adapter. Sharing the semantic cloud would change mapping evidence: semantic
 projection uses stride 2, workspace/support cropping and voxel centroids, whereas
 mapping uses the selected stride-8 depth rays and needs their entire free-space
 segments. Calibration arithmetic is small relative to fitting and self-filter
 intersection work. No new shared preprocessing framework is justified here.
 
-Both APIs remain synchronous. Calling a roughly 300 ms native map update inside
+At the V3 checkpoint, both APIs remained synchronous. Calling a roughly 300 ms native map update inside
 a simulation/control stepping loop would delay that loop for its processing
 duration, even though the pose-history callback itself remains small. Combining
 consumers adds their sequential latency and consumes more observation age.
 The replay benchmark does not demonstrate asynchronous execution or controller
-deadlines. Runtime scheduling and planner/controller integration remain future
-work; no worker threads, control callbacks or motion behavior were changed.
+deadlines. At that checkpoint, runtime scheduling and planner/controller integration were
+future work; process-based scheduling was introduced in V5.
 
 The measured semantic-only median/p95/max was 103.0/105.8/109.1 ms. Fitting took
 86.9 ms at the median, compared with projection 4.1 ms, fusion 0.5 ms,
@@ -996,28 +935,13 @@ features, old FREE evidence under occlusion and SDK topology changes remain
 material limitations. No runtime integration or motion planning is implemented;
 `main` remains unchanged.
 
-### Reproduction
+### Historical V4 reproduction
 
-Run native jobs sequentially through the existing workstation wrapper. The
-standard mapping group discovers the new static and temporal scenarios:
-
-```bash
-./run_isaac_python.sh tests/spatial_mapping/test_reliability.py \
-  --result outputs/spatial-mapping-v4-static/result.json \
-  --artifacts-dir outputs/spatial-mapping-v4-static
-./run_isaac_python.sh tests/spatial_mapping/test_temporal_reliability.py \
-  --result outputs/spatial-mapping-v4-temporal/result.json \
-  --artifacts-dir outputs/spatial-mapping-v4-temporal
-```
-
-An identical-input policy comparison requires a complete **pre-fix V3** temporal
-capture, not a newly recorded post-fix capture:
-
-```bash
-./run_isaac_python.sh scripts/evaluate_spatial_mapping_reliability.py \
-  --capture outputs/spatial-mapping-v4-temporal-baseline-v2 \
-  --output outputs/spatial-mapping-v4-policy-comparison.json
-```
+The V4 standalone reliability scenarios and the old saved-evidence comparator
+were retired with the synchronous mapping-session API. Their measurements and
+published artifacts remain documented above. The supported present-day native
+mapping checks are the two `tests/spatial_mapping/test_runtime_*.py` scenarios,
+which exercise automatic bootstrap and worker-based publication.
 
 
 ## V5: automatic runtime scheduling
@@ -1105,9 +1029,7 @@ automatic_robot_filter = true
 The other mapping settings above retain their defaults and meanings. The
 runtime uses 2 Hz when mapping `update_hz` is omitted. RGB-D semantic runtime
 observations use `[world].update_hz`, or 5 Hz when omitted. Lightweight semantic
-ground truth retains the existing updater cadence. Standalone
-`MappingSession.update` still limits explicit attempts without installing a
-scheduler.
+ground truth retains the existing updater cadence.
 
 Mapping and semantic sources remain independent. RGB-D mapping accepts one or
 more configured camera paths, even when semantic observations use ground truth.

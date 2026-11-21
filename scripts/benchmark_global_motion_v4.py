@@ -19,7 +19,7 @@ import traceback
 
 import numpy as np
 
-from scripts.diagnose_isaac_runtime import SCENE, distribution
+from scripts.runtime_diagnostic_support import SCENE, distribution
 from scripts.diagnose_reactive_motion import (
     Box, FIXTURE_ROOT, GOAL, ORIENTATION, START, cooked_reference,
     fixtures as previous_fixtures, serial)

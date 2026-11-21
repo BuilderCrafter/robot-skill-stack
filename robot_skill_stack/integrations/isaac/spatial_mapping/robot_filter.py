@@ -9,7 +9,7 @@ from types import MappingProxyType
 import numpy as np
 
 from robot_skill_stack.world.spatial_mapping.robot_filter import (
-    MeshInstance, RobotSelfFilter, RobotSnapshot, TriangleMesh,
+    MeshInstance, RobotSnapshot, TriangleMesh,
 )
 
 
@@ -139,7 +139,12 @@ class IsaacRobotSelfFilter:
                 any(not part.isidentifier() for part in robot_prim_path[1:].split('/'))):
             raise ValueError('Robot filter requires an explicit absolute robot prim path')
         self.robot_prim_path = robot_prim_path
-        self._filter = RobotSelfFilter(stride=stride, depth_tolerance=depth_tolerance, pose_tolerance=pose_tolerance)
+        if type(stride) is not int or stride < 1:
+            raise ValueError('Robot filter stride must be a positive integer')
+        if any(type(value) not in (int, float) or not np.isfinite(value) or value <= 0
+               for value in (depth_tolerance, pose_tolerance)):
+            raise ValueError('Robot depth/pose tolerances must be finite and positive')
+        self.pose_tolerance = pose_tolerance
         self._history, self._generation, self._capture_error = deque(maxlen=256), 0, None
         self._pose_capture_calls, self._pose_capture_seconds, self._pose_capture_max_seconds = 0, 0., 0.
         self._closed, self._callback_id, self._view, self._manager = False, None, None, None
@@ -384,7 +389,7 @@ class IsaacRobotSelfFilter:
             robot_snapshots, mesh_instances_by_time = {}, {}
             for frame in frames:
                 pose_timestamp, physx_poses = min(self._history, key=lambda item: abs(item[0]-float(frame.token[1])))
-                if abs(pose_timestamp-float(frame.token[1])) > self._filter.pose_tolerance:
+                if abs(pose_timestamp-float(frame.token[1])) > self.pose_tolerance:
                     raise RuntimeError(f'No robot pose at camera render time: {frame.camera_id}, {frame.token[1]}')
                 if pose_timestamp not in mesh_instances_by_time:
                     matrices = _pose_matrices(physx_poses, self._meters_per_unit)
@@ -407,23 +412,6 @@ class IsaacRobotSelfFilter:
                 elapsed_seconds=time.perf_counter()-started)
             raise
 
-
-    def masks(self, frames: Sequence, *,
-              pixels_by_camera: Mapping[str, tuple[np.ndarray, np.ndarray]] | None = None
-              ) -> dict[str, np.ndarray]:
-        """Synchronous compatibility wrapper; runtime workers use prepared poses."""
-        started = time.perf_counter()
-        frames = tuple(frames)
-        snapshots = self.prepare(frames)
-        try:
-            masks = self._filter.masks(frames, snapshots, pixels_by_camera=pixels_by_camera)
-            self.diagnostics = dict(self.diagnostics, **self._filter.diagnostics)
-            self.diagnostics['elapsed_seconds'] = time.perf_counter()-started
-            return masks
-        except Exception as exc:
-            self.diagnostics = dict(self.diagnostics, state='error', reason=str(exc),
-                                    elapsed_seconds=time.perf_counter()-started)
-            raise
 
     def close(self) -> None:
         """Unsubscribe from model/physics notices and discard cached pose history."""

@@ -38,7 +38,7 @@ from `1f53ed8:docs/isaac_runner_startup.md` (see [history](history.md)).
 | `isaac` | Discovery, perception-manipulation, direct motion/cancellation and reactive motion/lifecycle acceptance |
 | `regression` | Benchmark, grasp planning, reactive pick, recovery, multi-object and placement feasibility |
 | `multiview` | Source contract, variable camera counts, recovery, occlusion, observability and grasp readiness |
-| `spatial_mapping` | GT/RGB-D occupancy, robot filtering, reliability, automatic runtime manipulation/lifecycle and independent camera sources |
+| `spatial_mapping` | Automatic GT/RGB-D runtime, shared cameras, ownership, process workers, failure recovery and lifecycle |
 
 Omit group selection to run all checks. Each selected scenario runs once. Failed
 exit codes, missing result JSON or non-PASS native results fail the run; later
@@ -47,26 +47,17 @@ checks still run. Fresh artifact directories prevent stale PASS reuse. With
 exit codes. Without it, native result files are temporary and terminal output
 remains visible. Do not treat an open window or a NumPy line as a test pass.
 
-V5 runtime timing is measured separately in fresh native processes, so offline
-tests and other GPU jobs do not compete with a timed run:
+The older V5 synchronous-versus-worker timing diagnostic has been retired.
+Its historical measurements and [acceptance protocol](assets/spatial_mapping_v5/acceptance_protocol.json)
+remain available for thesis reporting. For current native verification, run the
+automatic mapping integration and source-independence scenarios through the
+`spatial_mapping` regression group. These drive the actual `build_runtime()`
+path, including shared cameras, background mapping, Pick/Place and lifecycle
+recovery. For new performance measurements, use an explicitly designed current
+runtime benchmark rather than the retired synchronous harness.
 
-```bash
-./run_isaac_python.sh scripts/diagnose_isaac_runtime.py \
-  --pipeline runtime --mode combined --objects both --seconds 20 \
-  --result outputs/v5-combined/result.json --artifacts-dir outputs/v5-combined
-```
-
-Repeat with `--mode control`, `semantic` and `mapping`, changing output paths.
-All modes keep the same camera/render/filter resources and use ordinary async
-MoveToPose/Home. The compact [V5 protocol](assets/spatial_mapping_v5/acceptance_protocol.json)
-defines workstation-derived acceptance limits. The historical `--pipeline sync`
-path reconstructs synchronous diagnostic scheduling before any measured update;
-its mapping callback is explicitly synthetic because V4 had no runtime mapping.
-Pick/Place and source/lifecycle tests use actual automatic bootstrap services.
-In that V5 diagnostic, no occupancy information changes a command or trajectory.
-
-[Motion V1](motion_planning.md) uses the same unmodified combined diagnostic
-before and after direct-strategy extraction. Its additional native case selects
+The historical [Motion V1](motion_planning.md) checkpoint compared the combined
+observation workload before and after direct-strategy extraction. Its additional native case selects
 `[motion] strategy = "direct"`, verifies actual Pick/Home/Place with concurrent
 perception/mapping, and checks arm ownership, cancellation and final hold. Run
 the offline suite and all native groups sequentially, retaining separate artifacts:

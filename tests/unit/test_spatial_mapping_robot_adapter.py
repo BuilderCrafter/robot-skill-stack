@@ -8,6 +8,7 @@ import numpy as np
 
 from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter, _triangles
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
 
 ADAPTER = 'robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter'
 
@@ -104,6 +105,13 @@ def frame(stamp=1., depth=1., camera_id='A', number=10):
                       np.array([[100., 0, 1.5], [0, 100., 1.5], [0, 0, 1.]]), np.eye(4), 100.)
 
 
+def masks(source, frames, *, pixels_by_camera=None):
+    """Follow the active split: Isaac prepares poses; generic worker filters rays."""
+    frames = tuple(frames)
+    return RobotSelfFilter(stride=1).masks(frames, source.prepare(frames),
+                                         pixels_by_camera=pixels_by_camera)
+
+
 class IsaacRobotFilterTests(unittest.TestCase):
     def test_visible_geometry_cached_once_configured_path_and_owned_callback(self):
         scene = Scene()
@@ -115,7 +123,7 @@ class IsaacRobotFilterTests(unittest.TestCase):
         with boundaries(scene) as (state, view, manager):
             source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
             mesh = source._parts[0].mesh
-            self.assertTrue(source.masks((frame(),))['A'].all())
+            self.assertTrue(masks(source, (frame(),))['A'].all())
             self.assertIs(source._parts[0].mesh, mesh)
             with self.assertRaises(ValueError):
                 mesh.vertices.setflags(write=True)
@@ -125,7 +133,7 @@ class IsaacRobotFilterTests(unittest.TestCase):
             source.close()
             manager.deregister_callback.assert_called_once_with(42)
             with self.assertRaisesRegex(RuntimeError, 'closed'):
-                source.masks((frame(),))
+                masks(source, (frame(),))
 
     def test_old_frames_use_exposure_history_not_latest_usd_or_physx_pose(self):
         scene = Scene()
@@ -134,9 +142,9 @@ class IsaacRobotFilterTests(unittest.TestCase):
             state.stamp, state.raw[0, 2] = 1.1, 1.2
             state.callback(1/60)
             scene.mesh.world = matrix(8.)  # Stale/current USD cannot replace cached local geometry/history.
-            self.assertTrue(source.masks((frame(1., 1.),))['A'].all())
-            self.assertTrue(source.masks((frame(1.1, 1.2),))['A'].all())
-            self.assertFalse(source.masks((frame(1.1, 1.),))['A'].any())  # Foreground obstacle survives.
+            self.assertTrue(masks(source, (frame(1., 1.),))['A'].all())
+            self.assertTrue(masks(source, (frame(1.1, 1.2),))['A'].all())
+            self.assertFalse(masks(source, (frame(1.1, 1.),))['A'].any())  # Foreground obstacle survives.
             self.assertEqual(source.diagnostics['pose_times'], {'A': 1.1})
             source.close()
 
@@ -145,7 +153,7 @@ class IsaacRobotFilterTests(unittest.TestCase):
         with boundaries(scene):
             source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
             frames = [frame(depth=depth, camera_id=str(i)) for i, depth in enumerate((1., .8, 1.1, 1., .7))]
-            masks = source.masks(tuple(reversed(frames)))
+            masks = masks(source, tuple(reversed(frames)))
             self.assertEqual(set(masks), {'0', '1', '2', '3', '4'})
             for key in ('0', '2', '3'):
                 self.assertTrue(masks[key].all())
@@ -159,11 +167,10 @@ class IsaacRobotFilterTests(unittest.TestCase):
             source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
             selected = {'A': (np.array([1]), np.array([1])),
                         'B': (np.array([], int), np.array([], int))}
-            masks = source.masks((frame(camera_id='A'), frame(camera_id='B')), pixels_by_camera=selected)
+            masks = masks(source, (frame(camera_id='A'), frame(camera_id='B')), pixels_by_camera=selected)
             self.assertEqual(int(masks['A'].sum()), 1)
             self.assertTrue(masks['A'][1, 1])
             self.assertFalse(masks['B'].any())
-            self.assertEqual(source.diagnostics['cameras']['A']['sampled_pixels'], 1)
             source.close()
 
     def test_missing_and_evicted_history_fails_without_newer_pose_fallback(self):
@@ -171,13 +178,13 @@ class IsaacRobotFilterTests(unittest.TestCase):
         with boundaries(scene) as (state, _, _):
             source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
             with self.assertRaisesRegex(RuntimeError, 'No robot pose'):
-                source.masks((frame(.5),))
+                masks(source, (frame(.5),))
             for index in range(300):
                 state.stamp = 1.02+index*.02
                 state.callback(.02)
             self.assertEqual(len(source._history), 256)
             with self.assertRaisesRegex(RuntimeError, 'No robot pose'):
-                source.masks((frame(1.),))
+                masks(source, (frame(1.),))
             source.close()
 
     def test_callback_error_is_deferred_and_fresh_physics_recovers(self):
@@ -187,10 +194,10 @@ class IsaacRobotFilterTests(unittest.TestCase):
             state.error = 'invalid tensor handle'
             state.callback(.02)  # Must not throw into physics/control.
             with self.assertRaisesRegex(RuntimeError, 'capture failed: invalid tensor handle'):
-                source.masks((frame(),))
+                masks(source, (frame(),))
             state.error, state.stamp = None, 1.2
             state.callback(.02)
-            self.assertTrue(source.masks((frame(1.2),))['A'].all())
+            self.assertTrue(masks(source, (frame(1.2),))['A'].all())
             source.close()
 
     def test_pose_capture_timing_counts_success_and_deferred_failure(self):
@@ -205,7 +212,7 @@ class IsaacRobotFilterTests(unittest.TestCase):
                 state.error = 'invalid tensor handle'
                 state.callback(.02)  # Failed capture is measured and still deferred.
             with self.assertRaisesRegex(RuntimeError, 'capture failed: invalid tensor handle'):
-                source.masks((frame(1.1),))
+                masks(source, (frame(1.1),))
             timing = source.diagnostics['pose_capture']
             self.assertEqual(timing['calls'], 2)
             self.assertAlmostEqual(timing['total_seconds'], .010)
@@ -222,8 +229,8 @@ class IsaacRobotFilterTests(unittest.TestCase):
             self.assertEqual(source._generation, 1)
             self.assertEqual(len(source._history), 1)
             with self.assertRaisesRegex(RuntimeError, 'No robot pose'):
-                source.masks((frame(1.),))
-            self.assertTrue(source.masks((frame(.2),))['A'].all())
+                masks(source, (frame(1.),))
+            self.assertTrue(masks(source, (frame(.2),))['A'].all())
             source.close()
 
     def test_static_scale_and_centimeter_stage_units_are_preserved(self):
@@ -236,7 +243,7 @@ class IsaacRobotFilterTests(unittest.TestCase):
         state.raw[0, 2] = 100.
         with boundaries(scene, state, view, manager):
             source = IsaacRobotSelfFilter(scene, scene.root.path, stride=1)
-            self.assertTrue(source.masks((frame(depth=1.1),))['A'].all())
+            self.assertTrue(masks(source, (frame(depth=1.1),))['A'].all())
             np.testing.assert_allclose(source._parts[0].mesh.vertices, scene.mesh.points*.01)
             source.close()
 

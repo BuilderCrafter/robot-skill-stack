@@ -15,8 +15,7 @@ import time
 from collections.abc import Callable, Sequence
 import numpy as np
 from robot_skill_stack.world.spatial_mapping.geometry import (
-    _Primitive, _primitive_bounds, _candidate_bounds, _rasterize,
-    primitive_voxel_indices, GeometryItem, GroundTruthInput, rasterize_ground_truth,
+    _Primitive, _primitive_bounds, GeometryItem, GroundTruthInput,
 )
 
 
@@ -102,61 +101,3 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
                                                'world_min': lower.tolist(), 'world_max': upper.tolist()})
         geometry_items.append(GeometryItem(lower, upper, primitive, inverse))
     return GroundTruthInput(timestamp, tuple(geometry_items), diagnostics)
-
-
-class IsaacGroundTruthMapper:
-    """Isaac USD-to-occupancy adapter for the synchronous mapping session.
-
-    ``prepare`` produces immutable geometry; ``update`` additionally rasterizes
-    it and replaces the SDK-independent occupancy map's evidence.
-    """
-    def __init__(self, occupancy_map, *,
-                 excluded_paths: Sequence[str] = ('/Franka',),
-                 max_candidate_voxels: int = 8_000_000) -> None:
-        if type(max_candidate_voxels) is not int or max_candidate_voxels <= 0:
-            raise ValueError('max_candidate_voxels must be a positive integer')
-        excluded_paths = tuple(excluded_paths)
-        if any(not isinstance(path, str) or not path.startswith('/') or path == '/'
-               for path in excluded_paths):
-            raise ValueError('Excluded geometry paths must be absolute prim paths below the root')
-        self.map = occupancy_map
-        self.excluded_paths = tuple(path.rstrip('/') for path in excluded_paths)
-        self.max_candidate_voxels = max_candidate_voxels
-        self.diagnostics = {}
-        self._closed = False
-
-    def prepare(self, stage=None, *, timestamp: float | None = None) -> GroundTruthInput:
-        """Read the active USD scene into a timestamped geometry packet."""
-        if self._closed:
-            raise RuntimeError('Ground-truth mapper is closed')
-        return prepare_ground_truth(stage, excluded_paths=self.excluded_paths,
-                                    timestamp=timestamp, clock=self.map.clock)
-
-    def update(self, stage=None, *, timestamp: float | None = None,
-               now: float | None = None) -> bool:
-        """Synchronous compatibility path using the same preparation/rasterization."""
-        if self._closed:
-            raise RuntimeError('Ground-truth mapper is closed')
-        started = time.perf_counter()
-        now = self.map.clock() if now is None else now
-        try:
-            ground_truth_input = self.prepare(stage, timestamp=now if timestamp is None else timestamp)
-            occupied_indices, diagnostics = rasterize_ground_truth(
-                self.map.spec, ground_truth_input, self.max_candidate_voxels)
-            # Preserve the synchronous JSON diagnostics contract; prepared worker
-            # metadata remains recursively immutable across the process boundary.
-            diagnostics['approximations'] = [dict(item, world_min=list(item['world_min']),
-                world_max=list(item['world_max'])) for item in diagnostics.get('approximations', ())]
-            accepted = self.map.replace(occupied_indices, timestamp=ground_truth_input.timestamp, now=now)
-            diagnostics.update(published=accepted, update_seconds=time.perf_counter()-started)
-            self.diagnostics = diagnostics
-            return accepted
-        except Exception as exc:
-            self.map.note_failure(str(exc), now=now)
-            self.diagnostics = dict(source='ground_truth', published=False, error=str(exc),
-                                    update_seconds=time.perf_counter()-started)
-            raise
-
-    def close(self) -> None:
-        """Prevent further ground-truth acquisitions from this adapter."""
-        self._closed = True

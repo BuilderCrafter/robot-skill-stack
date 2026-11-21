@@ -1,15 +1,15 @@
 """USD boundary doubles and analytic volume checks; no Kit or pxr imports."""
 from types import SimpleNamespace as NS
-from copy import deepcopy
 import unittest
 from unittest.mock import Mock, patch
 
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import (
-    IsaacGroundTruthMapper, primitive_voxel_indices,
+    prepare_ground_truth,
 )
-from robot_skill_stack.world.spatial_mapping import GridSpec, OccupancyMap, OccupancyState
+from robot_skill_stack.world.spatial_mapping import GridSpec
+from robot_skill_stack.world.spatial_mapping.geometry import primitive_voxel_indices, rasterize_ground_truth
 
 
 def transform(center=(0, 0, 0), scale=(1, 1, 1), yaw=0., pitch=0.):
@@ -136,161 +136,55 @@ class PrimitiveRasterizationTests(unittest.TestCase):
             primitive_voxel_indices(self.spec, 'sphere', np.eye(4), radius=.1, max_candidates=10)
 
 
-class GroundTruthMappingTests(unittest.TestCase):
-    def setUp(self):
-        self.map = OccupancyMap(GridSpec(np.array([-.5]*3), np.array([.5]*3), .025), clock=lambda: 1.)
-
-    def update(self, mapper, prims, timestamp=1.):
+class GroundTruthPreparationTests(unittest.TestCase):
+    def prepare(self, prims, *, excluded_paths=('/Franka',), timestamp=1.):
         stage, modules, marker = usd_fixture(prims)
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
                    return_value=modules):
-            result = mapper.update(stage, timestamp=timestamp, now=timestamp)
+            prepared = prepare_ground_truth(stage, excluded_paths=excluded_paths, timestamp=timestamp)
         stage.Traverse.assert_called_once_with(marker)
-        modules[0].TraverseInstanceProxies.assert_called_once_with(modules[0].PrimAllPrimsPredicate)
-        modules[1].BBoxCache.assert_called_once_with(None, ['default', 'render', 'proxy', 'guide'],
-                                                   useExtentsHint=False, ignoreVisibility=True)
-        return result
+        return prepared
 
-    def state(self, point):
-        return self.map.query(point, now=1.)
+    def test_usd_exclusions_visibility_and_unsupported_geometry(self):
+        prepared = self.prepare([
+            Prim('/Box', matrix=transform((.1, .1, .1))),
+            Prim('/Franka/Visual', matrix=transform((.2, .2, .2))),
+            Prim('/Invisible', invisible=True),
+            Prim('/Guide', purpose='guide'),
+            Prim('/Mesh', kind='mesh', bounds=([0., 0., 0.], [.1, .1, .1])),
+        ])
+        self.assertEqual(prepared.timestamp, 1.)
+        self.assertEqual(len(prepared.items), 3)
+        self.assertEqual(prepared.diagnostics['excluded_prims'], 1)
+        self.assertEqual(prepared.diagnostics['guide_prims'], 1)
+        self.assertEqual(prepared.diagnostics['unsupported_aabb_prims'], 1)
 
-    def test_whole_scene_includes_invisible_geometry_and_collision_guides_excludes_robot_helpers(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        prims = [Prim('/UnclassifiedObstacle', matrix=transform((-.2, 0, .1))),
-                 Prim('/InvisibleCollider', matrix=transform((-.3, -.3, .1)), invisible=True),
-                 Prim('/Franka/Link/Visual', matrix=transform((.3, .3, .1))),
-                 Prim('/FrankaExtra', matrix=transform((.3, -.3, .1))),
-                 Prim('/Guide', matrix=transform((-.3, .3, .1)), purpose='guide'),
-                 Prim('/CollisionGuide', matrix=transform((0, .3, .1)), purpose='guide', collision=True),
-                 Prim('/Inactive', matrix=transform((0, -.3, .1)), active=False),
-                 Prim('/Undefined', defined=False), Prim('/AbstractClass', abstract=True),
-                 Prim('/Camera', kind='camera'), Prim('/Light', kind='light')]
-        self.assertTrue(self.update(mapper, prims))
-        for point in ([-.2, 0, .1], [-.3, -.3, .1], [.3, -.3, .1], [0, .3, .1]):
-            self.assertEqual(self.state(point).state, OccupancyState.OCCUPIED)
-        for point in ([.3, .3, .1], [-.3, .3, .1], [0, -.3, .1], [0, 0, .4]):
-            self.assertEqual(self.state(point).state, OccupancyState.FREE)
-        self.assertEqual(mapper.diagnostics['supported_primitives'], 4)
-        self.assertEqual(mapper.diagnostics['guide_prims'], 1)
-        self.assertEqual(mapper.diagnostics['excluded_prims'], 1)
-
-    def test_supported_usd_attributes_and_row_vector_transforms(self):
-        mapper = IsaacGroundTruthMapper(self.map, excluded_paths=())
-        prims = [Prim('/Instances/ChildCube', matrix=transform((-.2, 0, .1), (1, 2, .5), .6)),
-                 Prim('/Sphere', 'sphere', matrix=transform((.2, 0, .1), (2, 1, .5)), radius=.04),
-                 Prim('/Cylinder', 'cylinder', matrix=transform((0, .25, .1), yaw=.3, pitch=.5),
-                      radius=.025, height=.2, axis='X')]
-        self.update(mapper, prims)
-        for prim in prims:
-            self.assertEqual(self.state(prim.matrix[:3, 3]).state, OccupancyState.OCCUPIED)
-        self.assertEqual(self.state([0, 0, .1]).state, OccupancyState.FREE)
-        self.assertEqual(mapper.diagnostics['supported_primitives'], 3)
-
-    def test_nonmeter_usd_units_match_meter_primitive_and_unsupported_bounds(self):
-        prims = [Prim('/Cube', matrix=transform((-.2, 0, .1), (1, 2, .5), .6)),
-                 Prim('/Sphere', 'sphere', matrix=transform((.2, 0, .1)), radius=.04),
-                 Prim('/Cylinder', 'cylinder', matrix=transform((0, .25, .1)), radius=.03, height=.12),
-                 Prim('/Mesh', 'mesh', bounds=([-.3, -.3, .1], [-.2, -.2, .2]))]
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, prims)
-        expected = self.map.snapshot(now=1.).states
-        centimeter_prims = deepcopy(prims)
-        for prim in centimeter_prims:
-            prim.matrix[:3, 3] *= 100
-            prim.size *= 100
-            prim.radius *= 100
-            prim.height *= 100
-            if prim.bounds is not None:
-                prim.bounds = np.asarray(prim.bounds)*100
-        stage, modules, _ = usd_fixture(centimeter_prims)
-        stage.meters_per_unit = .01
+    def test_prepared_geometry_rasterizes_without_accessing_usd(self):
+        packet = self.prepare([Prim('/Sphere', 'sphere', matrix=transform((.1, .1, .1)),
+                                    radius=.05)])
+        spec = GridSpec((0., 0., 0.), (.3, .3, .3), .02)
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
-                   return_value=modules):
-            self.assertTrue(mapper.update(stage, timestamp=2., now=2.))
-        np.testing.assert_array_equal(expected, self.map.snapshot(now=2.).states)
-        self.assertEqual(mapper.diagnostics['meters_per_unit'], .01)
+                   side_effect=AssertionError('worker accessed USD')):
+            indices, diagnostics = rasterize_ground_truth(spec, packet, 8_000_000)
+        self.assertGreater(len(indices), 0)
+        self.assertEqual(diagnostics['supported_primitives'], 1)
 
-    def test_invalid_stage_units_fail_without_asserting_free(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        for value in (0, -1, np.nan, np.inf):
+    def test_invalid_units_unloaded_payloads_and_composition_fail(self):
+        for units in (0., -1., np.nan, np.inf):
             stage, modules, _ = usd_fixture([])
-            stage.meters_per_unit = value
-            with self.subTest(value=value), patch(
+            stage.meters_per_unit = units
+            with self.subTest(units=units), patch(
                     'robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
                     return_value=modules), self.assertRaisesRegex(ValueError, 'metersPerUnit'):
-                mapper.update(stage, timestamp=1., now=1.)
-            self.assertIsNone(self.map.snapshot(now=1.).timestamp)
-
-    def test_unloaded_payload_fails_but_explicitly_excluded_unloaded_robot_is_allowed(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, [Prim('/Franka/Unloaded', kind='xform', loaded=False), Prim('/Box')])
-        before = self.map.snapshot(now=1.)
-        with self.assertRaisesRegex(RuntimeError, 'Unloaded USD geometry payload: /Environment'):
-            self.update(mapper, [Prim('/Environment', kind='xform', loaded=False)], timestamp=2.)
-        after = self.map.snapshot(now=2.)
-        self.assertEqual(after.timestamp, before.timestamp)
-        np.testing.assert_array_equal(after.states, before.states)
-
-    def test_reported_scene_composition_errors_fail_closed(self):
-        mapper = IsaacGroundTruthMapper(self.map)
+                prepare_ground_truth(stage)
+        self.prepare([Prim('/Franka/Unloaded', loaded=False)])
+        with self.assertRaisesRegex(RuntimeError, 'Unloaded USD geometry payload'):
+            self.prepare([Prim('/Environment', loaded=False)])
         stage, modules, _ = usd_fixture([])
-        stage.GetCompositionErrors.return_value = ['missing referenced geometry']
+        stage.GetCompositionErrors.return_value = ['missing geometry']
         with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
                    return_value=modules), self.assertRaisesRegex(RuntimeError, 'Unresolved USD scene composition'):
-            mapper.update(stage, timestamp=1., now=1.)
-        self.assertIsNone(self.map.snapshot(now=1.).timestamp)
-
-    def test_moving_removing_and_empty_scene_rebuilds_authoritative_free_space(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, [Prim('/Box', matrix=transform((-.2, 0, .1)))])
-        self.assertEqual(self.state([-.2, 0, .1]).state, OccupancyState.OCCUPIED)
-        self.update(mapper, [Prim('/Box', matrix=transform((.2, 0, .1)))], timestamp=2.)
-        self.assertEqual(self.state([-.2, 0, .1]).state, OccupancyState.FREE)
-        self.assertEqual(self.state([.2, 0, .1]).state, OccupancyState.OCCUPIED)
-        self.update(mapper, [], timestamp=3.)
-        self.assertEqual(self.map.snapshot(now=3.).counts()['occupied'], 0)
-        self.assertEqual(self.state([.2, 0, .1]).state, OccupancyState.FREE)
-
-    def test_unsupported_mesh_and_zero_thickness_points_are_explicit_aabb_approximations(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, [Prim('/Mesh', 'mesh', bounds=([.1, .1, .1], [.2, .2, .2])),
-                             Prim('/Points', 'points', bounds=([-.2, -.2, .1], [-.1, -.1, .1]))])
-        self.assertEqual(self.state([.15, .15, .15]).state, OccupancyState.OCCUPIED)
-        self.assertEqual(self.state([-.15, -.15, .1]).state, OccupancyState.OCCUPIED)
-        self.assertEqual(self.state([0, 0, .1]).state, OccupancyState.FREE)
-        self.assertEqual(mapper.diagnostics['unsupported_aabb_prims'], 2)
-        self.assertEqual({a['path'] for a in mapper.diagnostics['approximations']}, {'/Mesh', '/Points'})
-
-    def test_unbounded_or_budget_failure_preserves_last_map_and_reports_unhealthy(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, [Prim('/Box', matrix=transform((-.2, 0, .1)))])
-        before = self.map.snapshot(now=1.)
-        with self.assertRaisesRegex(ValueError, 'finite world bounds'):
-            self.update(mapper, [Prim('/NewBox', matrix=transform((.2, 0, .1))),
-                                 Prim('/Unknown', 'mesh', bounds=([-np.inf]*3, [np.inf]*3))], timestamp=2.)
-        after = self.map.snapshot(now=2.)
-        np.testing.assert_array_equal(before.states, after.states)
-        self.assertEqual((after.timestamp, after.revision), (before.timestamp, before.revision))
-        self.assertEqual(after.health['status'], 'error')
-        self.assertFalse(after.health['fresh'])
-        limited = IsaacGroundTruthMapper(self.map, max_candidate_voxels=500)
-        with self.assertRaisesRegex(RuntimeError, 'budget'):
-            self.update(limited, [Prim(f'/Box{i}') for i in range(3)], timestamp=3.)
-        self.assertFalse(limited.diagnostics['published'])
-        self.assertEqual(self.map.snapshot(now=3.).revision, before.revision)
-
-    def test_repeated_timestamp_and_closed_source_never_publish_new_revision(self):
-        mapper = IsaacGroundTruthMapper(self.map)
-        self.update(mapper, [Prim('/Box')])
-        before = self.map.snapshot(now=1.)
-        self.assertFalse(self.update(mapper, [Prim('/Moved', matrix=transform((.3, 0, 0)))]))
-        after = self.map.snapshot(now=1.)
-        self.assertEqual(after.revision, before.revision)
-        np.testing.assert_array_equal(after.states, before.states)
-        mapper.close()
-        mapper.close()
-        with self.assertRaisesRegex(RuntimeError, 'closed'):
-            mapper.update(NS())
+            prepare_ground_truth(stage)
 
 
 if __name__ == '__main__':
