@@ -15,6 +15,9 @@ def _traverse_rays(origin, endpoints, spec, max_visits):
     allocating a ray-by-grid array. Emission order across rays is immaterial to
     the deduplicated evidence; each ray retains the scalar DDA boundary rules.
     """
+    # Don't even bother with understanding this algo. Its called DDA (Digital Differential Analyzer) and its complicated
+    # Basically it takes the rays, follows which grid the traversed before hitting their endpoint and marked all of them
+    # free and the last one as occupied.
     origin, endpoints = np.asarray(origin, float), np.asarray(endpoints, float)
     if (origin.shape != (3,) or endpoints.ndim != 2 or endpoints.shape[1] != 3 or
             not np.isfinite(origin).all() or not np.isfinite(endpoints).all()):
@@ -80,6 +83,7 @@ def _traverse_rays(origin, endpoints, spec, max_visits):
 
 def _ray_voxels(origin, endpoint, spec):
     """Yield one finite segment's cells, preserving the scalar helper contract."""
+    # For single rays instead of a bundle of rays
     flat, _ = _traverse_rays(origin, np.asarray(endpoint, float).reshape(1, 3),
                              spec, sum(spec.shape)+3)
     for cell in np.column_stack(np.unravel_index(flat, spec.shape)):
@@ -118,17 +122,19 @@ class RgbdMapper:
         self.diagnostics = {'state': 'waiting'}
 
     def _failure(self, reason, now):
+        """Log failure to diagnostic field and maps diagnostic field"""
         self.diagnostics.update(state='error', reason=reason)
         self.map.note_failure(reason, now=now)
         return False
 
     def _no_frame(self, reason, now):
+        """Log 'no_frame' failure to diagnostic field and maps diagnostic field"""
         self.diagnostics.update(state='no_frame', reason=reason)
         self.map.note_no_frame(reason, now=now)
         return False
 
     def _allocate(self, counts):
-        """Equal shares, redistributing spare rays; rotate remainder fairly."""
+        """Distribute the available ray budget between cameras."""
         names = sorted(key for key, count in counts.items() if count)
         if names:
             offset = self._rotation % len(names)

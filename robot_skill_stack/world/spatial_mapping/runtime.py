@@ -32,11 +32,11 @@ def _owned(array):
 @dataclass(frozen=True)
 class MappingInput:
     """Immutable input containing RGB-D frames or prepared ground-truth geometry."""
-    generation: int = 0
+    generation: int = 0                 # In case of a restart, reject old mapping generation
     frames: tuple = ()
     robot_snapshots: object = None
     exclusion_masks: object = None
-    ground_truth: object = None
+    ground_truth: object = None         # Used when we are using Isaac ground truth
     reset: bool = False
 
     def __post_init__(self):

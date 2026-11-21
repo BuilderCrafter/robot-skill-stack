@@ -25,8 +25,8 @@ def _token(value):
 @dataclass(frozen=True, eq=False)
 class TriangleMesh:
     """Owned immutable local geometry and a BVH built once, independent of pose."""
-    vertices: np.ndarray
-    triangles: np.ndarray
+    vertices: np.ndarray    # 3D points of the mesh
+    triangles: np.ndarray   # Which 3 points create a triangle
 
     def __post_init__(self):
         vertices, triangles = np.asarray(self.vertices, float), np.asarray(self.triangles)
@@ -45,6 +45,10 @@ class TriangleMesh:
         nodes, permutation = [], []
 
         def build(indices):
+            """Build the BVH (Bounding Volume Hierarchy)"""
+            # BVH is basically a tree  of bounding boxes in a hierarchy (parents children) for an arbitrary shape.
+            # If the ray misses that we skip the individual triangle check. If we hit a bounding box, we iteratively
+            # check the children until we reach the affected triangle
             node = len(nodes)
             nodes.append(None)
             lower, upper = low[indices].min(0), high[indices].max(0)
@@ -74,6 +78,7 @@ class TriangleMesh:
 @dataclass(frozen=True, eq=False)
 class MeshInstance:
     """A robot part's triangle mesh with its current world transformation."""
+    # Transforms the TriangleMesh into World coordinates
     mesh: TriangleMesh
     world_from_local: np.ndarray
 
@@ -175,6 +180,9 @@ def _mesh_depth(mesh, origin, directions, limit):
     and triangle packets at most1024 pairs. The pending integer frontier has a
     fixed limit; pathological geometry falls back to the original traversal.
     """
+    # One of the more complicated mathematical algorithms inside the code, don't bother.
+    # Basically it calculates where the camera rays hit the robot mesh, it returns a 1D array of where the rays
+    # intersected with the robot
     best = np.asarray(limit, float).copy()
     selected = np.flatnonzero(_box_hits(origin, directions,
         mesh._lower[0], mesh._upper[0], best))
@@ -264,6 +272,7 @@ class RobotSelfFilter:
         """
         started = time.perf_counter()
         self.diagnostics = dict(state='validating', cameras={})
+        # This entire section is just validating inputs
         try:
             frames, snapshots = tuple(frames), dict(snapshots_by_camera)
             ids = tuple(frame.camera_id for frame in frames)
@@ -298,6 +307,7 @@ class RobotSelfFilter:
                     if len(np.unique(y*frame.depth.shape[1]+x)) != len(y):
                         raise ValueError(f'Robot pixel selections must be unique: {key}')
                     selections[key] = (y.copy(), x.copy())
+            # This is where we are generating the masks
             masks = {}
             for frame in frames:
                 key, snapshot = frame.camera_id, snapshots[frame.camera_id]

@@ -99,6 +99,7 @@ class GridSpec:
         return indices
 
     def validate_indices(self, values):
+        """Check if indices(readings) have (N, 3) dimensions and if they are integers"""
         raw = np.asarray(values)
         if not raw.size:
             if raw.shape != (0,) and not (raw.ndim == 2 and raw.shape[1] == 3):
@@ -296,6 +297,10 @@ class OccupancyMap:
         self._last_expiration_time = None
 
     def _flat_indices(self, indices):
+        """
+        Validate readings indices and flatten them in 1D array representing the index of voxels.
+        For a 5 x 5 x 5 voxel grid: [(2, 0, 1), (1, 2, 3)) -> [7, 86]
+        """
         indices = self.spec.validate_indices(indices)
         return np.unique(np.ravel_multi_index(indices.T, self.spec.shape))
 
@@ -305,23 +310,25 @@ class OccupancyMap:
         An occupied hit takes precedence when a cell receives both votes.
         """
         now = self._now(now)
+
         free, occupied = self._flat_indices(free_indices), self._flat_indices(occupied_indices)
         timestamp = self._timestamp(timestamp, now)
         if timestamp is None:
             return False
+        # If no free or occupied readings, return
         if not len(free) and not len(occupied):
             self.note_no_frame('no_evidence', now=now)
             return False
+        # Expire old readings
         self.expire(now=now)
+        # Remove duplicates
         free = np.setdiff1d(free, occupied, assume_unique=True)
+        # Accumulate scores
         for indices, evidence in ((free, self.miss_log_odds), (occupied, self.hit_log_odds)):
             updated = np.clip(self._log_odds.ravel()[indices]+evidence,
                 -self.log_odds_limit, self.log_odds_limit)
+            # If a voxel is both recorded as FREE and OCCUPIED, OCCUPIED wins
             if evidence > 0:
-                # A measured endpoint contradicts a FREE claim. Withhold that
-                # claim as UNKNOWN if the positive vote alone cannot overturn
-                # its accumulated prior; subsequent hits establish occupancy.
-                # Miss hysteresis and unobserved cells retain their history.
                 updated[1/(1+np.exp(-updated)) <= self.p_free] = 0.
             self._log_odds.ravel()[indices] = updated
             self._observed.ravel()[indices] = True
@@ -364,7 +371,7 @@ class OccupancyMap:
 
     def _classify(self, log_odds, observed, expired):
         """Convert fresh log-odds evidence to FREE, OCCUPIED, or UNKNOWN."""
-        probabilities = 1/(1+np.exp(-log_odds))
+        probabilities = 1/(1+np.exp(-log_odds)) # Uses a sigmoid function to transform score to a range of [0, 1]
         states = np.full(log_odds.shape, OccupancyState.UNKNOWN, dtype=np.uint8)
         usable = observed & ~expired
         states[usable & (probabilities <= self.p_free)] = OccupancyState.FREE
@@ -372,6 +379,7 @@ class OccupancyMap:
         return states, probabilities
 
     def _arrays(self):
+        """Collect the current voxel states, probabilities, and observation metadata into a tuple for snapshot."""
         states, probabilities = self._classify(self._log_odds, self._observed, self._expired)
         return states, probabilities, self._observed, self._last_observed, self._expired
 
@@ -387,7 +395,9 @@ class OccupancyMap:
         now = self._now(now)
         self.expire(now=now)
         indices = self.world_to_indices(positions)
+        # Checks if any value is -1 and marks it as False and drops it
         outside = (indices < 0).any(1)
+        # Replaces negative indices with 0
         selected = tuple(np.maximum(indices, 0).T)
         observed = self._observed[selected]
         expired = self._expired[selected]
