@@ -1,5 +1,6 @@
 """Visible USD robot meshes and exposure-matched read-only PhysX pose history."""
 from collections import deque
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 import time
 import threading
@@ -12,27 +13,33 @@ from robot_skill_stack.world.spatial_mapping.robot_filter import (
 )
 
 
-def _usd_modules():
+def _usd_modules() -> tuple[object, object, object]:
+    """Load USD APIs lazily on the Isaac owner thread."""
     from pxr import Usd, UsdGeom, UsdPhysics
     return Usd, UsdGeom, UsdPhysics
 
 
-def _register_model_notice(stage, callback):
+def _register_model_notice(stage, callback: Callable):
+    """Subscribe to authored robot geometry changes on the USD stage."""
     from pxr import Tf, Usd
     return Tf.Notice.Register(Usd.Notice.ObjectsChanged, callback, stage)
 
 
-def _simulation_interfaces():
+def _simulation_interfaces() -> tuple[object, object]:
+    """Load PhysX simulation access only when the filter is constructed."""
     from isaacsim.core.simulation_manager import IsaacEvents, SimulationManager
     return SimulationManager, IsaacEvents
 
 
-def _readonly(values):
+def _readonly(values: np.ndarray | Sequence) -> np.ndarray:
+    """Own an immutable copy of numeric USD or PhysX data."""
     values = np.ascontiguousarray(values, dtype=float)
     return np.frombuffer(values.tobytes(), dtype=values.dtype).reshape(values.shape)
 
 
-def _triangles(vertices, counts, indices, holes):
+def _triangles(vertices: np.ndarray, counts: np.ndarray, indices: np.ndarray,
+               holes: np.ndarray) -> np.ndarray:
+    """Triangulate supported planar convex USD polygons and omit mesh holes."""
     counts, indices, holes = np.asarray(counts), np.asarray(indices), np.asarray(holes)
     if (counts.ndim != 1 or counts.dtype.kind not in 'iu' or np.any(counts < 3)
             or indices.ndim != 1 or indices.dtype.kind not in 'iu'
@@ -67,7 +74,7 @@ def _triangles(vertices, counts, indices, holes):
     return np.asarray(triangles, dtype=np.int64).reshape(-1, 3)
 
 
-def _world_meters(matrix, meters_per_unit):
+def _world_meters(matrix: np.ndarray, meters_per_unit: float) -> np.ndarray:
     """Local vertices are already meters; only the USD translation changes units."""
     matrix = np.asarray(matrix, dtype=float).T.copy()
     if (matrix.shape != (4, 4) or not np.isfinite(matrix).all()
@@ -77,7 +84,7 @@ def _world_meters(matrix, meters_per_unit):
     return matrix
 
 
-def _rigid_part(matrix):
+def _rigid_part(matrix: np.ndarray) -> np.ndarray:
     """Keep rigid placement; retain any static stretch in the mesh-to-body map."""
     left, _, right = np.linalg.svd(matrix[:3, :3])
     rotation = left @ right
@@ -88,7 +95,8 @@ def _rigid_part(matrix):
     return result
 
 
-def _pose_matrices(poses, meters_per_unit):
+def _pose_matrices(poses: np.ndarray, meters_per_unit: float) -> np.ndarray:
+    """Convert XYZ/XYZW PhysX poses into world-space 4×4 matrices in meters."""
     poses = np.asarray(poses, dtype=float)
     if poses.ndim != 2 or poses.shape[1] != 7 or not np.isfinite(poses).all():
         raise ValueError('PhysX robot poses must be finite XYZ/XYZW rows')
@@ -109,6 +117,7 @@ def _pose_matrices(poses, meters_per_unit):
 
 @dataclass(frozen=True)
 class _Part:
+    """Static visible robot mesh and its transform relative to a rigid body."""
     path: str
     rigid_path: str
     mesh: TriangleMesh
@@ -122,7 +131,8 @@ class IsaacRobotSelfFilter:
     scene changes. Missing history fails explicitly, including during startup;
     current USD transforms are never substituted for an older depth exposure.
     """
-    def __init__(self, stage, robot_prim_path, *, stride=8, depth_tolerance=.005, pose_tolerance=.01):
+    def __init__(self, stage, robot_prim_path: str, *, stride: int = 8,
+                 depth_tolerance: float = .005, pose_tolerance: float = .01) -> None:
         self._owner_thread = threading.get_ident()
         initialized_at = time.perf_counter()
         if (not isinstance(robot_prim_path, str) or not robot_prim_path.startswith('/') or
@@ -168,7 +178,8 @@ class IsaacRobotSelfFilter:
             self.close()
             raise
 
-    def _geometry(self, stage):
+    def _geometry(self, stage) -> tuple[_Part, ...]:
+        """Cache supported USD visual meshes and rigid-body-local transforms."""
         Usd, UsdGeom, UsdPhysics = _usd_modules()
         if stage is None:
             raise RuntimeError('No active stage for robot self-filter')
@@ -179,7 +190,7 @@ class IsaacRobotSelfFilter:
         if not np.isfinite(units) or units <= 0:
             raise ValueError('Robot stage metersPerUnit must be finite and positive')
         cache = UsdGeom.XformCache(Usd.TimeCode.Default())
-        parts = []
+        mesh_parts = []
         for prim in Usd.PrimRange(root, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)):
             if not prim.IsActive() or not prim.IsDefined() or prim.IsAbstract():
                 continue
@@ -210,16 +221,16 @@ class IsaacRobotSelfFilter:
                 raise RuntimeError(f'Visible robot mesh has no rigid-body ancestor: {prim.GetPath()}')
             rigid_world = _rigid_part(_world_meters(cache.GetLocalToWorldTransform(ancestor), units))
             mesh_world = _world_meters(cache.GetLocalToWorldTransform(prim), units)
-            parts.append(_Part(str(prim.GetPath()), str(ancestor.GetPath()), TriangleMesh(points, triangles),
+            mesh_parts.append(_Part(str(prim.GetPath()), str(ancestor.GetPath()), TriangleMesh(points, triangles),
                                _readonly(np.linalg.inv(rigid_world) @ mesh_world)))
-        if not parts:
+        if not mesh_parts:
             raise RuntimeError(f'Robot model has no supported visible meshes: {self.robot_prim_path}')
-        return tuple(parts)
+        return tuple(mesh_parts)
 
-    def _model_changed(self, notice, sender):
+    def _model_changed(self, notice, sender) -> None:
         """Invalidate immutable geometry; never rebuild SDK state in a notice."""
         root = self.robot_prim_path
-        def inside(path):
+        def inside(path: str) -> bool:
             return path == root or path.startswith(root+'/')
         changed = list(notice.GetChangedInfoOnlyPaths())
         for path in notice.GetResyncedPaths():
@@ -249,7 +260,7 @@ class IsaacRobotSelfFilter:
                 self._history.clear()
                 return
 
-    def rebind_after_play(self):
+    def rebind_after_play(self) -> bool:
         """Owner-only recovery of exact cached bodies after a known Stop/Play.
 
         Stop requires a fresh manager view; Pause may retain its valid view.
@@ -285,32 +296,34 @@ class IsaacRobotSelfFilter:
                                 history_generation=self._generation, history_count=0)
         return True
 
-    def _record(self):
+    def _record(self) -> None:
+        """Store an immutable PhysX pose sample at the current simulation time."""
         if self._model_error is not None:
             raise RuntimeError(self._model_error)
-        stamp = float(self._manager.get_simulation_time())
-        if not np.isfinite(stamp) or stamp < 0:
+        pose_timestamp = float(self._manager.get_simulation_time())
+        if not np.isfinite(pose_timestamp) or pose_timestamp < 0:
             raise ValueError('Robot pose history requires finite nonnegative simulation time')
-        raw = self._view.get_transforms()
-        if hasattr(raw, 'cpu'):
-            raw = raw.cpu()
-        if hasattr(raw, 'numpy'):
-            raw = raw.numpy()
-        raw = _readonly(raw)
-        if raw.shape != (len(self._body_paths), 7):
+        pose_rows = self._view.get_transforms()
+        if hasattr(pose_rows, 'cpu'):
+            pose_rows = pose_rows.cpu()
+        if hasattr(pose_rows, 'numpy'):
+            pose_rows = pose_rows.numpy()
+        pose_rows = _readonly(pose_rows)
+        if pose_rows.shape != (len(self._body_paths), 7):
             raise ValueError('PhysX robot rigid-body count changed; reinitialize the filter')
-        _pose_matrices(raw, self._meters_per_unit)  # Validate before retaining any history.
-        if abs(float(self._manager.get_simulation_time())-stamp) > 1e-9:
+        _pose_matrices(pose_rows, self._meters_per_unit)  # Validate before retaining any history.
+        if abs(float(self._manager.get_simulation_time())-pose_timestamp) > 1e-9:
             raise RuntimeError('Physics changed during robot pose capture')
-        if self._history and stamp < self._history[-1][0]:
+        if self._history and pose_timestamp < self._history[-1][0]:
             self._history.clear()
             self._generation += 1
-        if self._history and stamp == self._history[-1][0]:
+        if self._history and pose_timestamp == self._history[-1][0]:
             self._history.pop()
-        self._history.append((stamp, raw))
+        self._history.append((pose_timestamp, pose_rows))
         self._capture_error = None
 
-    def _post_step(self, step_dt):
+    def _post_step(self, step_dt: float) -> None:
+        """Capture pose history after physics advances without raising to PhysX."""
         if self._closed:
             return
         started = time.perf_counter()
@@ -325,31 +338,33 @@ class IsaacRobotSelfFilter:
             self._pose_capture_seconds += elapsed
             self._pose_capture_max_seconds = max(self._pose_capture_max_seconds, elapsed)
 
-    def _pose_capture_metrics(self):
+    def _pose_capture_metrics(self) -> dict[str, float | int]:
+        """Summarize timing and invocation count for PhysX pose sampling."""
         return dict(calls=self._pose_capture_calls, total_seconds=self._pose_capture_seconds,
                     mean_seconds=self._pose_capture_seconds/max(self._pose_capture_calls, 1),
                     max_seconds=self._pose_capture_max_seconds)
 
     @property
-    def source_error(self):
+    def source_error(self) -> str | None:
         """Cached source failure for the publication barrier; never query the SDK."""
         if self._closed:
             return 'Robot self-filter is closed'
         return self._model_error or self._capture_error
 
-    def _assert_owner(self):
+    def _assert_owner(self) -> None:
+        """Reject USD/PhysX access outside the SDK owner thread."""
         if threading.get_ident() != self._owner_thread:
             raise RuntimeError('Robot pose preparation requires its SDK owner thread')
 
-    def reset_history(self):
+    def reset_history(self) -> None:
         """Invalidate old exposure poses at Stop/reset without rebuilding SDK views."""
         self._assert_owner()
         self._history.clear()
         self._generation += 1
         self._capture_error = None
 
-    def prepare(self, frames):
-        """Resolve exposure-matched immutable poses; no mesh intersections."""
+    def prepare(self, frames: Sequence) -> Mapping[str, RobotSnapshot]:
+        """Resolve exposure-matched immutable robot poses; no mesh intersections."""
         self._assert_owner()
         started = time.perf_counter()
         frames = tuple(frames)
@@ -366,25 +381,25 @@ class IsaacRobotSelfFilter:
                 self._history.clear()
                 self._generation += 1
                 raise RuntimeError('Robot simulation clock reset; wait for fresh pose history')
-            snapshots, assembled = {}, {}
+            robot_snapshots, mesh_instances_by_time = {}, {}
             for frame in frames:
-                stamp, poses = min(self._history, key=lambda item: abs(item[0]-float(frame.token[1])))
-                if abs(stamp-float(frame.token[1])) > self._filter.pose_tolerance:
+                pose_timestamp, physx_poses = min(self._history, key=lambda item: abs(item[0]-float(frame.token[1])))
+                if abs(pose_timestamp-float(frame.token[1])) > self._filter.pose_tolerance:
                     raise RuntimeError(f'No robot pose at camera render time: {frame.camera_id}, {frame.token[1]}')
-                if stamp not in assembled:
-                    matrices = _pose_matrices(poses, self._meters_per_unit)
-                    assembled[stamp] = tuple(MeshInstance(part.mesh,
+                if pose_timestamp not in mesh_instances_by_time:
+                    matrices = _pose_matrices(physx_poses, self._meters_per_unit)
+                    mesh_instances_by_time[pose_timestamp] = tuple(MeshInstance(part.mesh,
                         matrices[self._body_indices[part.rigid_path]] @ part.local_to_rigid)
                         for part in self._parts)
-                snapshots[frame.camera_id] = RobotSnapshot(assembled[stamp], stamp, frame.token)
+                robot_snapshots[frame.camera_id] = RobotSnapshot(mesh_instances_by_time[pose_timestamp], pose_timestamp, frame.token)
             self.diagnostics = dict(state='prepared', robot_prim_path=self.robot_prim_path,
                 meshes=len(self._parts), triangles=sum(len(part.mesh.triangles) for part in self._parts),
                 history_count=len(self._history), history_generation=self._generation, rebinds=self._rebinds,
                 history_range=[self._history[0][0], self._history[-1][0]],
-                pose_times={key: value.simulation_time for key, value in snapshots.items()},
+                pose_times={key: value.simulation_time for key, value in robot_snapshots.items()},
                 initialization_seconds=self._initialization_seconds, pose_capture=self._pose_capture_metrics(),
                 prepare_seconds=time.perf_counter()-started)
-            return MappingProxyType(snapshots)
+            return MappingProxyType(robot_snapshots)
         except Exception as exc:
             self.diagnostics = dict(state='error', reason=str(exc), robot_prim_path=self.robot_prim_path,
                 history_count=len(self._history), history_generation=self._generation,
@@ -393,7 +408,9 @@ class IsaacRobotSelfFilter:
             raise
 
 
-    def masks(self, frames, *, pixels_by_camera=None):
+    def masks(self, frames: Sequence, *,
+              pixels_by_camera: Mapping[str, tuple[np.ndarray, np.ndarray]] | None = None
+              ) -> dict[str, np.ndarray]:
         """Synchronous compatibility wrapper; runtime workers use prepared poses."""
         started = time.perf_counter()
         frames = tuple(frames)
@@ -408,7 +425,8 @@ class IsaacRobotSelfFilter:
                                     elapsed_seconds=time.perf_counter()-started)
             raise
 
-    def close(self):
+    def close(self) -> None:
+        """Unsubscribe from model/physics notices and discard cached pose history."""
         if not self._closed:
             self._closed = True
             try:

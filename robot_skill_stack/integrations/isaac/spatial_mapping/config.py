@@ -7,10 +7,15 @@ from robot_skill_stack.world.spatial_mapping.occupancy import GridSpec
 
 @dataclass(frozen=True)
 class SpatialMappingConfig:
+    """Validated Isaac configuration for RGB-D or USD ground-truth mapping.
+
+    Bounds and voxel size define the shared occupancy grid; camera and robot
+    filtering parameters apply to the RGB-D source only.
+    """
     enabled: bool = False
     source: str = 'ground_truth'
-    bounds_min: tuple = (.10, -.45, -.05)
-    bounds_max: tuple = (.85, .45, .65)
+    bounds_min: tuple[float, float, float] = (.10, -.45, -.05)
+    bounds_max: tuple[float, float, float] = (.85, .45, .65)
     voxel_size: float = .01
     max_voxels: int = 2_000_000
     camera_prim_paths: tuple[str, ...] = ()
@@ -29,14 +34,15 @@ class SpatialMappingConfig:
     robot_depth_tolerance: float = .005
     robot_pose_tolerance: float = .01
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        """Normalize grid bounds and validate sampling and freshness limits."""
         if type(self.enabled) is not bool or self.source not in ('ground_truth', 'rgbd'):
             raise ValueError('spatial_mapping needs enabled=true/false and source=ground_truth or rgbd')
         if type(self.automatic_robot_filter) is not bool:
             raise ValueError('spatial_mapping automatic_robot_filter must be true/false')
-        spec = self.grid_spec()
-        object.__setattr__(self, 'bounds_min', tuple(spec.bounds_min))
-        object.__setattr__(self, 'bounds_max', tuple(spec.bounds_max))
+        grid_spec = self.grid_spec()
+        object.__setattr__(self, 'bounds_min', tuple(grid_spec.bounds_min))
+        object.__setattr__(self, 'bounds_max', tuple(grid_spec.bounds_max))
         for name in ('stride', 'max_rays', 'max_voxel_visits', 'max_candidate_voxels'):
             value = getattr(self, name)
             if type(value) is not int or value < 1:
@@ -56,5 +62,6 @@ class SpatialMappingConfig:
                 raise ValueError(f'spatial_mapping {name} requires distinct absolute prim paths')
             object.__setattr__(self, name, values)
 
-    def grid_spec(self):
+    def grid_spec(self) -> GridSpec:
+        """Produce the SDK-independent occupancy grid specification."""
         return GridSpec(self.bounds_min, self.bounds_max, self.voxel_size, self.max_voxels)

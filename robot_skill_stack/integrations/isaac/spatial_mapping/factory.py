@@ -1,12 +1,14 @@
 """Explicit mapping construction, with no runtime, planner or camera initialization."""
 import time
+from collections.abc import Callable, Mapping, Sequence
 
 import numpy as np
 
 from robot_skill_stack.world.spatial_mapping.occupancy import OccupancyMap
 
 
-def _close_resources(resources):
+def _close_resources(resources: Sequence[object | None]) -> list[Exception]:
+    """Close distinct owned resources once, collecting rather than hiding errors."""
     errors, closed = [], set()
     for resource in resources:
         if resource is None or id(resource) in closed:
@@ -22,35 +24,48 @@ def _close_resources(resources):
 
 
 class MappingSession:
-    def __init__(self, occupancy_map, source, *, frame_source=None, own_frame_source=False,
-                 update_hz=None, clock=time.monotonic, source_kind='rgbd', stage=None,
-                 robot_filter=None):
+    """Synchronous adapter for RGB-D or ground-truth occupancy updates.
+
+    ``source`` is the selected mapper, not a camera or semantic provider.
+    The existing camera source is borrowed unless ``own_frame_source`` is set.
+    """
+    def __init__(self, occupancy_map: OccupancyMap, source, *, frame_source=None,
+                 own_frame_source: bool = False, update_hz: float | None = None,
+                 clock: Callable[[], float] = time.monotonic, source_kind: str = 'rgbd',
+                 stage=None, robot_filter=None) -> None:
         self.map, self.source, self.frame_source = occupancy_map, source, frame_source
         self.own_frame_source, self.update_hz, self.clock = own_frame_source, update_hz, clock
         self.last_attempt, self.closed = None, False
         self.source_kind, self.stage = source_kind, stage
         self.robot_filter = robot_filter
 
-    def _combined_masks(self, frames, pixels_by_camera, exclusion_masks):
-        shapes = {frame.camera_id: frame.depth.shape for frame in frames}
+    def _combined_masks(self, frames: Sequence,
+                        pixels_by_camera: Mapping[str, tuple[np.ndarray, np.ndarray]],
+                        exclusion_masks: Mapping[str, np.ndarray] | None) -> dict[str, np.ndarray]:
+        """Validate and union explicit exclusions with per-camera robot masks."""
+        frame_shapes = {frame.camera_id: frame.depth.shape for frame in frames}
 
-        def validate(masks, label, *, complete=False):
+        def validate_masks(masks: Mapping[str, np.ndarray], label: str,
+                           *, complete: bool = False) -> dict[str, np.ndarray]:
             if not hasattr(masks, 'items'):
                 raise ValueError(f'{label} must be a camera-to-mask mapping')
             masks = dict(masks)
-            if set(masks)-set(shapes) or (complete and set(masks) != set(shapes)):
+            if set(masks)-set(frame_shapes) or (complete and set(masks) != set(frame_shapes)):
                 raise ValueError(f'{label} camera IDs do not match the depth frames')
             for key, value in masks.items():
-                if np.asarray(value).dtype != np.bool_ or np.shape(value) != shapes[key]:
+                if np.asarray(value).dtype != np.bool_ or np.shape(value) != frame_shapes[key]:
                     raise ValueError(f'{label} must match boolean depth image: {key}')
             return masks
 
-        manual = validate({} if exclusion_masks is None else exclusion_masks, 'Exclusion masks')
-        automatic = validate(self.robot_filter.masks(frames, pixels_by_camera=pixels_by_camera),
+        manual_masks = validate_masks({} if exclusion_masks is None else exclusion_masks, 'Exclusion masks')
+        robot_masks = validate_masks(self.robot_filter.masks(frames, pixels_by_camera=pixels_by_camera),
                              'Automatic robot masks', complete=True)
-        return {key: np.logical_or(automatic[key], manual.get(key, False)) for key in shapes}
+        return {key: np.logical_or(robot_masks[key], manual_masks.get(key, False)) for key in frame_shapes}
 
-    def update(self, frames=None, *, exclusion_masks=None, now=None):
+    def update(self, frames: Sequence | None = None, *,
+               exclusion_masks: Mapping[str, np.ndarray] | None = None,
+               now: float | None = None) -> bool:
+        """Run at most one due update using supplied or borrowed camera evidence."""
         if self.closed:
             raise RuntimeError('Mapping session is closed')
         explicit_now = now is not None
@@ -83,7 +98,8 @@ class MappingSession:
             self.map.note_failure(exc, now=now)
             raise
 
-    def close(self):
+    def close(self) -> None:
+        """Release owned mapper/filter resources without closing borrowed cameras."""
         if not self.closed:
             self.closed = True
             errors = []
@@ -101,8 +117,11 @@ class MappingSession:
                 raise errors[0]
 
 
-def create_spatial_mapping(settings, *, stage=None, frame_source=None, own_frame_source=False,
-                           clock=time.monotonic, robot_prim_path=None, robot_filter=None):
+def create_spatial_mapping(settings, *, stage=None, frame_source=None,
+                           own_frame_source: bool = False,
+                           clock: Callable[[], float] = time.monotonic,
+                           robot_prim_path: str | None = None, robot_filter=None
+                           ) -> MappingSession | None:
     """Disabled returns None. RGB-D borrows snapshots; it never initializes cameras.
 
     Pass an existing rig/tap, or feed update(frames) explicitly. Camera paths are
@@ -113,38 +132,39 @@ def create_spatial_mapping(settings, *, stage=None, frame_source=None, own_frame
     """
     if not settings.enabled:
         return None
-    source, active_filter = None, None
+    mapping_config = settings
+    selected_mapper, robot_self_filter = None, None
     try:
-        filtering = settings.source == 'rgbd' and settings.automatic_robot_filter
+        filtering = mapping_config.source == 'rgbd' and mapping_config.automatic_robot_filter
         if filtering and (not isinstance(robot_prim_path, str) or not robot_prim_path.startswith('/') or
                 any(not part.isidentifier() for part in robot_prim_path[1:].split('/'))):
             raise ValueError('Automatic robot filtering requires the configured absolute robot_prim_path')
-        occupancy_map = OccupancyMap(settings.grid_spec(), clock=clock,
-            stale_after=settings.stale_after, evidence_ttl=settings.evidence_ttl)
-        if settings.source == 'ground_truth':
+        occupancy_map = OccupancyMap(mapping_config.grid_spec(), clock=clock,
+            stale_after=mapping_config.stale_after, evidence_ttl=mapping_config.evidence_ttl)
+        if mapping_config.source == 'ground_truth':
             from .ground_truth import IsaacGroundTruthMapper
-            source = IsaacGroundTruthMapper(occupancy_map, excluded_paths=settings.excluded_prim_paths,
-                                            max_candidate_voxels=settings.max_candidate_voxels)
+            selected_mapper = IsaacGroundTruthMapper(occupancy_map, excluded_paths=mapping_config.excluded_prim_paths,
+                                            max_candidate_voxels=mapping_config.max_candidate_voxels)
         else:
             from robot_skill_stack.world.spatial_mapping.rgbd import RgbdMapper
-            source = RgbdMapper(occupancy_map, stride=settings.stride, max_rays=settings.max_rays,
-                max_voxel_visits=settings.max_voxel_visits,
-                max_depth=settings.max_depth, max_skew=settings.max_skew,
-                max_frame_age=settings.max_frame_age,
-                expected_camera_ids=settings.camera_prim_paths or None, clock=clock)
+            selected_mapper = RgbdMapper(occupancy_map, stride=mapping_config.stride, max_rays=mapping_config.max_rays,
+                max_voxel_visits=mapping_config.max_voxel_visits,
+                max_depth=mapping_config.max_depth, max_skew=mapping_config.max_skew,
+                max_frame_age=mapping_config.max_frame_age,
+                expected_camera_ids=mapping_config.camera_prim_paths or None, clock=clock)
             if filtering:
-                active_filter = robot_filter
-                if active_filter is None:
+                robot_self_filter = robot_filter
+                if robot_self_filter is None:
                     from .robot_filter import IsaacRobotSelfFilter
-                    active_filter = IsaacRobotSelfFilter(stage, robot_prim_path,
-                        stride=settings.stride, depth_tolerance=settings.robot_depth_tolerance,
-                        pose_tolerance=settings.robot_pose_tolerance)
-        session = MappingSession(occupancy_map, source, frame_source=frame_source,
-            own_frame_source=own_frame_source, update_hz=settings.update_hz, clock=clock,
-            source_kind=settings.source, stage=stage, robot_filter=active_filter)
+                    robot_self_filter = IsaacRobotSelfFilter(stage, robot_prim_path,
+                        stride=mapping_config.stride, depth_tolerance=mapping_config.robot_depth_tolerance,
+                        pose_tolerance=mapping_config.robot_pose_tolerance)
+        session = MappingSession(occupancy_map, selected_mapper, frame_source=frame_source,
+            own_frame_source=own_frame_source, update_hz=mapping_config.update_hz, clock=clock,
+            source_kind=mapping_config.source, stage=stage, robot_filter=robot_self_filter)
         return session
     except BaseException as exc:
-        resources = [source, active_filter]
+        resources = [selected_mapper, robot_self_filter]
         if own_frame_source:
             resources.append(frame_source)
         for cleanup in _close_resources(resources):
