@@ -80,6 +80,7 @@ def _supported(mask: np.ndarray) -> np.ndarray:
     without 124 grid shifts or SciPy. Only original occupied cells are retained;
     the support neighborhood never becomes obstacle geometry.
     """
+    # Math heavy, skip. Detects "outlier" occupied voxels and removes them
     count = mask.astype(np.uint8)
     for axis in range(3):
         previous, count = count, count.copy()
@@ -104,6 +105,7 @@ def _supported(mask: np.ndarray) -> np.ndarray:
 
 def _cuboids(mask: np.ndarray, *, max_runs: int = 100_000) -> tuple[np.ndarray, int]:
     """Run-length Z, then merge identical adjacent runs in Y and slabs in X."""
+    # Turns occupied voxels into larger boxes for easier compute
     padded = np.pad(mask, ((0, 0), (0, 0), (1, 1)))
     edges = np.diff(padded.astype(np.int8), axis=2)
     starts, stops = np.argwhere(edges == 1), np.argwhere(edges == -1)
@@ -165,16 +167,19 @@ class ObstacleExtractor:
         if not math.isfinite(now) or now < 0 or not math.isfinite(evidence_ttl) or evidence_ttl <= 0:
             raise ValueError('Obstacle extraction requires finite time and positive evidence TTL')
         key = (occupancy_snapshot.generation, occupancy_snapshot.revision, occupancy_snapshot.timestamp, evidence_ttl)
+        # Check if we can reuse the previous packet
         if key == self._key and self._packet is not None:
             next_expiry = min((box.expires_at for box in self._packet.boxes), default=math.inf)
             if now < next_expiry:
                 return self._packet
         started = time.perf_counter()
+        # Identify occupied voxels
         observed_at = occupancy_snapshot.last_observed
         occupied = ((occupancy_snapshot.states == OccupancyState.OCCUPIED) & occupancy_snapshot.observed &
             ~occupancy_snapshot.expired & np.isfinite(observed_at) & (observed_at <= now) &
             (now-observed_at < evidence_ttl))
         occupied_count = int(np.count_nonzero(occupied))
+        # Remove weak, isolated measurements
         supported = _supported(occupied)
         spatial_supported_count = int(np.count_nonzero(supported))
         strong_sparse_retained = 0
@@ -190,6 +195,7 @@ class ObstacleExtractor:
         bounds, dropped_runs = _cuboids(supported)
         candidate_count = len(bounds)
         floor_candidates = floor_candidate_voxels = represented_floor = selected_floor_boxes = 0
+        # Construct collision boxes
         if len(bounds):
             sizes = bounds[:, [1, 3, 5]]-bounds[:, [0, 2, 4]]
             volumes = np.prod(sizes, axis=1, dtype=np.int64)

@@ -119,7 +119,7 @@ def _count(diagnostics: Mapping, key: str) -> int:
 
 def _boxes(packet: ObstaclePacket, spec: GridSpec, *, now: float,
            maximum: int) -> tuple[FrozenRgbdBox, ...]:
-    """Check bounded exact grid descriptors without touching the dense grid."""
+    """Takes the obstacles and makes sure they are consistent and safe."""
     if len(packet.boxes) > maximum:
         _fail('budget_mismatch', 'Prepared obstacle product exceeds the selected bound',
               selected=len(packet.boxes), maximum=maximum)
@@ -227,12 +227,16 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
         generation = source.generation
         if type(generation) is not int or generation < 0:
             _fail('generation_changed', 'Spatial Mapping generation is invalid')
+
+        # Capture the data
         now = float(source.clock())
         if not math.isfinite(now) or now < 0:
             _fail('invalid_clock', 'Mapping capture clock is invalid')
         mapping_view = source.snapshot(now=now)
         if not isinstance(mapping_view, MappingReadView):
             _fail('invalid_product', 'Expected the existing immutable mapping read view')
+
+        # Retrieve obstacles and validate a loooot of things
         health, obstacle_packet = mapping_view.health, mapping_view.obstacles
         capture_timestamp = mapping_view.timestamp
         if capture_timestamp is None:
@@ -271,6 +275,8 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
             _fail('budget_mismatch', 'Prepared obstacle budget differs from the selected global bound')
         if extraction.get('padding_m') != 0. or extraction.get('temporal_probabilities') is not True:
             _fail('invalid_product', 'Prepared obstacle policy is not the established exact RGB-D policy')
+
+        # Convert the obstacle packet to boxes
         boxes = _boxes(obstacle_packet, mapping_view.spec, now=now, maximum=max_obstacles)
         occupied, supported, represented, omitted, candidates, proxies = (
             _count(extraction, key) for key in ('occupied_voxels','supported_voxels','represented_voxels',

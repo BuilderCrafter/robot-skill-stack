@@ -34,23 +34,33 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
              'excluded_prims': 0, 'guide_prims': 0, 'unsupported_aabb_prims': 0,
              'approximations': [], 'candidate_voxels': 0}
     Usd, UsdGeom, UsdPhysics = _usd_modules()
+
+    # Validate stage
     if stage is None:
         import omni.usd
         stage = omni.usd.get_context().get_stage()
     if stage is None:
         raise RuntimeError('No active USD stage for ground-truth mapping')
+
+    # Check composition errors
     composition_errors = getattr(stage, 'GetCompositionErrors', lambda: ())()
     if composition_errors:
         raise RuntimeError(f'Unresolved USD scene composition: {composition_errors}')
+
+    # Check unit scale
     meters_per_unit = float(UsdGeom.GetStageMetersPerUnit(stage))
     if not np.isfinite(meters_per_unit) or meters_per_unit <= 0:
         raise ValueError('USD metersPerUnit must be finite and positive')
     diagnostics['meters_per_unit'] = meters_per_unit
+
+    # Get objects and transform them into bounding boxes
     time_code = Usd.TimeCode.Default()
     xforms = UsdGeom.XformCache(time_code)
     bbox_cache = UsdGeom.BBoxCache(time_code,
         [UsdGeom.Tokens.default_, UsdGeom.Tokens.render, UsdGeom.Tokens.proxy,
          UsdGeom.Tokens.guide], useExtentsHint=False, ignoreVisibility=True)
+
+    # Validate all objects
     geometry_items = []
     for prim in stage.Traverse(Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)):
         diagnostics['visited_prims'] += 1
@@ -69,7 +79,8 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
         if UsdGeom.Imageable(prim).ComputePurpose() == UsdGeom.Tokens.guide and not collision:
             diagnostics['guide_prims'] += 1
             continue
-        # Gf matrices use row vectors; the math helpers use columns.
+
+        # Get objects geometry
         transform = np.asarray(xforms.GetLocalToWorldTransform(prim), dtype=float).T
         transform = transform.copy()
         transform[:3, :] *= meters_per_unit
@@ -91,6 +102,7 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
             lower, upper, inverse = _primitive_bounds(primitive)
             diagnostics['supported_primitives'] += 1
         else:
+            # If object has unsupported geometry, estimate it with a bounding box
             world_bound = bbox_cache.ComputeWorldBound(prim).ComputeAlignedRange()
             lower = np.asarray(world_bound.GetMin(), dtype=float)*meters_per_unit
             upper = np.asarray(world_bound.GetMax(), dtype=float)*meters_per_unit

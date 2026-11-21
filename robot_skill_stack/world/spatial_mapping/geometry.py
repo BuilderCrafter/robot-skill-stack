@@ -19,7 +19,7 @@ def freeze(value: object) -> object:
 
 @dataclass(frozen=True)
 class _Primitive:
-    """Analytic ground-truth primitive with its world transform and dimensions."""
+    """Analytic ground-truth primitive (Cube, Sphere,...) with its world transform and dimensions."""
     kind: str
     world_from_local: np.ndarray
     dimensions: np.ndarray | None = None
