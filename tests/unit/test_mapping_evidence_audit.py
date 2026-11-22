@@ -30,7 +30,6 @@ class Clock:
 class MappingEvidenceAuditTests(unittest.TestCase):
     def compare(self, expected, actual):
         self.assertEqual(expected.accepted, actual.accepted)
-        self.assertEqual(expected.input_timestamp, actual.input_timestamp)
         self.assertEqual(expected.snapshot.timestamp, actual.snapshot.timestamp)
         self.assertEqual(expected.snapshot.revision, actual.snapshot.revision)
         for name in ('states', 'probabilities', 'observed', 'last_observed', 'expired'):
@@ -81,7 +80,6 @@ class MappingEvidenceAuditTests(unittest.TestCase):
                 np.testing.assert_array_equal(arrays['camera_0_selected_x'], [0, 1, 2])
                 np.testing.assert_array_equal(arrays['camera_0_automatic_mask'], [[False, True, True]])
                 self.assertEqual(len(arrays['integrate_occupied_indices']), 1)
-            self.assertEqual(row['diagnostics']['automatic_masked_selected'], 2)
             self.assertIn('robot_filter', row['timings_seconds'])
             self.assertIn('ray_traversal', row['timings_seconds'])
             self.assertIn('occupancy_integrate', row['timings_seconds'])

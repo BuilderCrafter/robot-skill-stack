@@ -115,13 +115,12 @@ class ProcessWorkerTests(unittest.TestCase):
                      for key in ('A','B'))
         mesh=TriangleMesh(np.array([[0.,0.,.2],[.1,0.,.2],[0.,.1,.2]]),np.array([[0,1,2]]))
         snapshots={key:RobotSnapshot((MeshInstance(mesh,np.eye(4)),),.1,(1.,.1)) for key in ('A','B')}
-        payload=MappingInput(frames=frames,robot_snapshots=snapshots,
-                             exclusion_masks={key:np.zeros((2,2),bool) for key in ('A','B')})
+        payload=MappingInput(frames=frames,robot_snapshots=snapshots)
         # Echo exercises all immutable input/BVH fields without depending on
         # whether this fixture's depth samples intersect its tiny mesh.
         self.worker.submit(payload)
         echoed=self.result().value['payload']
-        for array in (echoed.frames[0].depth,echoed.exclusion_masks['A'],
+        for array in (echoed.frames[0].depth,
                       echoed.robot_snapshots['A'].parts[0].mesh._lower,
                       echoed.robot_snapshots['A'].parts[0].world_from_local):
             with self.assertRaises(ValueError):array.setflags(write=True)
@@ -135,12 +134,11 @@ class ProcessWorkerTests(unittest.TestCase):
         self.assertIsNone(completed.error)
         actual=completed.value
         self.assertTrue(actual.accepted)
-        self.assertEqual(actual.input_timestamp,now)
+        self.assertEqual(actual.snapshot.timestamp,now)
         self.assertGreater(actual.snapshot.counts()['occupied'],0)
         for array in (actual.snapshot.states,actual.snapshot.probabilities,
                       actual.snapshot.observed,actual.snapshot.last_observed,actual.snapshot.expired):
             with self.assertRaises(ValueError):array.setflags(write=True)
-        with self.assertRaises(TypeError):actual.diagnostics['changed']=True
         with self.assertRaises(TypeError):actual.snapshot.health['changed']=True
 
     def test_job_exception_recovers_in_same_child_without_resetting_state(self):

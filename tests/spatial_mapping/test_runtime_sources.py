@@ -128,9 +128,9 @@ async def evaluate(output, rows):
                 checks['overlap_exact_same_frame'] = all(
                     item['same_object'] and item['same_acquired_at'] and item['immutable'] for item in shared)
                 before_semantic = coordinator.diagnostics['semantic']['published']
-                before_failures = service.health['source_failures']
+                before_failures = service.health['failures']
                 with patch.object(cameras[CAMERAS[2]], 'get_depth', side_effect=RuntimeError('native camera C failure')):
-                    await until(lambda: service.health['source_failures'] > before_failures
+                    await until(lambda: service.health['failures'] > before_failures
                         and coordinator.diagnostics['semantic']['published'] > before_semantic+1)
                     row['partial_failure'] = serial(coordinator.diagnostics)
                     checks['camera_c_failure_keeps_semantic_ab_fresh'] = bundle.world_updater.health.status == 'fresh'

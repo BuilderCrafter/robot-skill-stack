@@ -156,7 +156,7 @@ async def evaluate(args, metrics, checks):
 
             with patch.object(pool, 'batch', side_effect=RuntimeError('native injected camera failure')):
                 await until(lambda: bundle.world_updater.last_error is not None
-                    and service.health['last_error'] is not None)
+                    and service.health['status'] == 'error')
                 metrics['camera_failure'] = state(bundle)
                 checks['source_failure_not_fresh'] = not service.health['fresh']
             await fresh(bundle)
@@ -166,9 +166,9 @@ async def evaluate(args, metrics, checks):
             with patch.object(semantic_worker, '_process', side_effect=RuntimeError('native semantic worker failure')), \
                     patch.object(mapping_worker, '_process', side_effect=RuntimeError('native mapping worker failure')):
                 prior = coordinator.diagnostics['semantic']['worker_failures']
-                mapping_prior = service.health['worker_failures']
+                mapping_prior = service.health['failures']
                 await until(lambda: coordinator.diagnostics['semantic']['worker_failures'] > prior
-                    and service.health['worker_failures'] > mapping_prior)
+                    and service.health['failures'] > mapping_prior)
                 metrics['worker_failure'] = state(bundle)
                 checks['worker_failure_observed'] = not service.health['fresh']
             await fresh(bundle)

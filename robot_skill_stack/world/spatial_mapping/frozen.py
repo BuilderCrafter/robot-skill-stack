@@ -73,4 +73,4 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
     if (not packet.boxes or len(packet.boxes) > max_obstacles or
             any(box.expires_at <= now for box in packet.boxes)):
         raise FrozenRgbdSourceError('unusable', 'Selected cuboids are empty, expired or over budget')
-    return FrozenRgbdWorld(view, source.diagnostics['source_frames'])
+    return FrozenRgbdWorld(view, view.source_frames)

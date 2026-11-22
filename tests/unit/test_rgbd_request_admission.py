@@ -1,5 +1,6 @@
 """Ordinary reconstructed requests own bounded readiness, never exposure search."""
 import asyncio
+from dataclasses import replace
 from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import Mock
@@ -39,9 +40,9 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.backend.on_update=self.update
 
     def attach(self,status='qualified'):
-        self.source._published_inferred=InferredGeometry(
+        self.source._published=replace(self.source._published,inferred=InferredGeometry(
             () if status in ('rejected','empty') else (model(center=(0,0,1),dimensions=(.5,.5,.5)),),
-            'unsupported hidden bound' if status=='rejected' else None)
+            'unsupported hidden bound' if status=='rejected' else None))
 
     def publish(self,status='qualified'):
         self.number+=1
@@ -130,16 +131,16 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
             self.fixture.clock[0]+=.1;self.publish()
         self.backend.on_update=error
         await self.failed('planning_source_unavailable')
-        self.assertEqual(self.source.health['source_failures'],1)
+        self.assertEqual(self.source.health['failures'],1)
 
     async def test_worker_error_rejects_wait_without_resetting_service(self):
         def error(backend):
-            self.source._worker.result=WorkResult((self.source.generation,self.source._barrier,100.2),None,
+            self.source._worker.result=WorkResult((self.source.generation,self.source._barrier),None,
                                                  'worker failed',100.,100.,100.1)
             self.source.poll()
         self.backend.on_update=error
         await self.failed('planning_source_unavailable')
-        self.assertEqual(self.source.health['worker_failures'],1)
+        self.assertEqual(self.source.health['failures'],1)
 
     async def test_first_selected_geometry_rejection_is_not_an_exposure_search(self):
         def rejected(backend):self.fixture.clock[0]+=.1;self.publish('rejected')
@@ -192,7 +193,7 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         def late(backend):
             self.fixture.clock[0]+=.1
             if backend.updates==1:
-                self.source._worker.result=WorkResult((self.source.generation,self.source._barrier-1,100.),
+                self.source._worker.result=WorkResult((self.source.generation,self.source._barrier-1),
                                                       None,None,100.,100.,100.1)
                 self.source.poll()
             elif self.strategy._state=='waiting_for_rgbd':self.publish()

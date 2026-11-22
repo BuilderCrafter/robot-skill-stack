@@ -133,8 +133,10 @@ class AuditedMappingProcessor(MappingProcessor):
                 return result
             return invoke
 
-        self._hook(self.mapper, 'update', measured('rgbd_update'))
-        self._hook(self.filter, 'masks', masks)
+        if self.mapper is not None:
+            self._hook(self.mapper, 'update', measured('rgbd_update'))
+        if self.filter is not None:
+            self._hook(self.filter, 'masks', masks)
         self._hook(self.map, 'integrate', integrate)
         self._hook(self.map, 'replace', replace)
         self._hook(self.map, 'snapshot', snapshot)
@@ -172,8 +174,6 @@ class AuditedMappingProcessor(MappingProcessor):
             row['capture_qualification'] = 'Full capture adds worker disk/serialization cost. Do not use this run to claim source latency or control performance.'
         if completed is not None:
             row['accepted'] = completed.accepted
-            row['diagnostics'] = _plain(completed.diagnostics)
-            row['input_timestamp'] = completed.input_timestamp
             packet = completed.obstacles
             if packet is not None:
                 row['packet'] = dict(generation=packet.generation, revision=packet.revision,
@@ -204,7 +204,7 @@ class AuditedMappingProcessor(MappingProcessor):
             frames=[dict(camera_id=frame.camera_id, token=frame.token,
                 acquired_at=frame.acquired_at, shape=frame.depth.shape) for frame in payload.frames],
             clock_reads=[], timings_seconds={}, processing_started_at=self._source_clock())
-        if self.map is not None and not payload.reset and payload.generation == self.generation:
+        if self.map is not None and payload.generation == self.map.generation:
             self._install_hooks()
         original_traversal = rgbd._traverse_rays
         def traverse(*args, **kwargs):
