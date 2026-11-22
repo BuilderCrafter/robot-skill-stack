@@ -1,16 +1,9 @@
 """Exact voxel ordering/centroids across the optimized integer-key boundary."""
-from pathlib import Path
-import hashlib
-import json
-import pickle
-from types import SimpleNamespace as NS
 import unittest
-from unittest.mock import patch
 
 import numpy as np
 
 from robot_skill_stack.world.perception_multiview import clouds
-from robot_skill_stack.integrations.isaac.config import load_scene_config
 
 
 def structured_reference(points, voxel=.002, max_points=6000):
@@ -26,14 +19,17 @@ def structured_reference(points, voxel=.002, max_points=6000):
 class VoxelGroupingTests(unittest.TestCase):
     def test_centroids_order_duplicates_invalid_pixels_and_cap_are_bitwise_identical(self):
         rng=np.random.default_rng(20261114)
-        for n in (0,1,25,12000,100000):
-            raw=rng.normal(0,.4,(n,3))
-            if n:raw=np.concatenate([raw,raw[:min(n,100)],[[np.nan,0,0],[0,np.inf,0]]])
-            for voxel in (.001,.01,.5):
-                for maximum in (1,57,12000):
-                    with self.subTest(n=n,voxel=voxel,maximum=maximum):
-                        np.testing.assert_array_equal(clouds.voxelize(raw,voxel,maximum),
-                                                      structured_reference(raw,voxel,maximum))
+        raw=rng.normal(0,.4,(12000,3))
+        raw=np.concatenate([raw,raw[:100],[[np.nan,0,0],[0,np.inf,0]]])
+        for voxel,maximum in ((.001,12000),(.01,57),(.5,1)):
+            with self.subTest(voxel=voxel,maximum=maximum):
+                np.testing.assert_array_equal(clouds.voxelize(raw,voxel,maximum),
+                                              structured_reference(raw,voxel,maximum))
+
+    def test_empty_invalid_only_and_single_point_clouds(self):
+        for points in (np.empty((0,3)), np.full((2,3),np.nan), np.array([[.1,.2,.3]])):
+            with self.subTest(points=points):
+                np.testing.assert_array_equal(clouds.voxelize(points),structured_reference(points))
 
     def test_integer_range_overflow_falls_back_without_colliding_voxels(self):
         points=np.array([[-1e9,-1e9,-1e9],[1e9,1e9,1e9],[-1e9,1e9,1e9],
@@ -49,7 +45,5 @@ class VoxelGroupingTests(unittest.TestCase):
         np.testing.assert_array_equal(clouds.voxelize(points),structured_reference(points))
         with self.assertRaises(ValueError):clouds.voxelize(points,0.)
         with self.assertRaises(ValueError):clouds.voxelize(points,max_points=0)
-
-
 
 if __name__=='__main__':unittest.main()

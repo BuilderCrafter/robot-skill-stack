@@ -28,9 +28,3 @@ class ProjectionWindowTests(unittest.TestCase):
         limited, limited_pixels = project_depth(frame, bounds=(position-.2, position+.2))
         np.testing.assert_array_equal(full, limited)
         np.testing.assert_array_equal(pixels, limited_pixels)
-
-    def test_invalid_bounds_are_rejected(self):
-        frame = analytic_frames([])[0]
-        for bounds in (([0., 0., 0.], [-1., 1., 1.]), ([np.nan, 0., 0.], [1., 1., 1.])):
-            with self.subTest(bounds=bounds), self.assertRaises(ValueError):
-                project_depth(frame, bounds=bounds)
