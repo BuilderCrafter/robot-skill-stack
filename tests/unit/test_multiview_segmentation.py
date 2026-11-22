@@ -36,8 +36,10 @@ def canonical(groups):
 
 class SegmentationTests(unittest.TestCase):
     @staticmethod
-    def sphere(center):
-        theta, phi = np.meshgrid(np.linspace(0, 2*np.pi, 65, endpoint=False), np.linspace(.12, 2.9, 35))
+    def sphere(center, phi=None):
+        if phi is None:
+            phi = np.linspace(.12, 2.9, 35)
+        theta, phi = np.meshgrid(np.linspace(0, 2*np.pi, 65, endpoint=False), phi)
         directions = np.c_[np.sin(phi.ravel())*np.cos(theta.ravel()),
                            np.sin(phi.ravel())*np.sin(theta.ravel()), np.cos(phi.ravel())]
         points = np.asarray(center)+.025*directions
@@ -66,8 +68,8 @@ class SegmentationTests(unittest.TestCase):
 
     def test_metric_graph_matches_exact_reference_under_density_variation(self):
         rng = np.random.default_rng(81)
-        for count in (25, 90, 150):
-            points = rng.uniform(-.012, .012, (count, 3))
+        sparse = rng.uniform(-.012, .012, (90, 3))
+        for points in (sparse, np.r_[sparse, np.zeros((70, 3))]):
             self.assertEqual(canonical(_metric_components(points, min_points=1)),
                              canonical(reference_groups(points, radius=.004)))
 
@@ -84,6 +86,16 @@ class SegmentationTests(unittest.TestCase):
         self.assertLess(np.linalg.norm(refined[0][1].center-[0., 0., .125]), .001)
         self.assertLess(np.linalg.norm(refined[1][1].center-[.055, 0., .125]), .001)
         self.assertGreater(sum(len(cloud) for cloud, _ in refined)/len(points), .95)
+
+    def test_sparse_spheres_recover_across_unobserved_surface_bands(self):
+        # Each sphere's hemispheres are separated by 4.2 mm of missing samples.
+        phi = np.r_[np.linspace(.12, np.pi/2-.084, 20), np.linspace(np.pi/2+.084, 2.9, 20)]
+        points = np.r_[self.sphere((0., 0., .125), phi), self.sphere((.06, 0., .125), phi)]
+        refined = refine_cluster(points, SurfaceFitter(), support_plane_z=.1)
+        self.assertEqual(len(refined), 2)
+        self.assertTrue(all(fit.geometry.shape.value == 'sphere' for _, fit in refined))
+        np.testing.assert_allclose([fit.center for _, fit in refined],
+                                   [[0., 0., .125], [.06, 0., .125]], atol=.001)
 
     def test_disconnected_sparse_unknown_patches_do_not_invent_objects(self):
         y, z = np.meshgrid(np.linspace(0., .04, 15), np.linspace(.005, .04, 15))

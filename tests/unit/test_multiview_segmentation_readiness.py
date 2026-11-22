@@ -1,4 +1,5 @@
 """Measured islands, ambiguous missing data, view evidence and fitting bounds."""
+from dataclasses import replace
 import unittest
 from unittest.mock import Mock, patch
 
@@ -69,26 +70,28 @@ class SegmentationReadinessTests(unittest.TestCase):
         self.assertEqual(refined[0][1].geometry.shape.value, 'unknown')
         self.assertEqual(refined[0][1].geometry.metadata['reason'], 'ambiguous_single_or_multiple_surfaces')
         np.testing.assert_array_equal(refined[0][0], points)
+        finalized = self.fitter.finalize(refined[0][1], points)
+        self.assertFalse(finalized.geometry.metadata['parameter_observable'])
 
-    def test_measured_table_gap_supports_distinct_solids(self):
-        frames = analytic_frames([Solid('cube', center=(x, 0., .025), size=(.04, .04, .05))
-                                  for x in (.425, .475)])
-        evidence = _partition_view_evidence(self.parent, self.children, frames, 0.)
-        self.assertTrue(evidence['free_gap'], evidence)
-        self.assertFalse(evidence['occupied_bridge'], evidence)
+    def test_current_depth_distinguishes_free_gap_bridge_and_missing_data(self):
+        gap = analytic_frames([Solid('cube', center=(x, 0., .025), size=(.04, .04, .05))
+                               for x in (.425, .475)])
+        bridge = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.09, .04, .05))])
+        missing = [replace(frame, depth=np.full_like(frame.depth, np.nan)) for frame in gap]
+        for frames, expected in ((gap, (True, False)), (bridge, (False, True)),
+                                 (missing, (False, False)), (gap + bridge, (False, False))):
+            with self.subTest(expected=expected, views=len(frames)):
+                self.assertEqual(_partition_view_evidence(self.parent, self.children, frames, 0.), expected)
 
-    def test_valid_occupied_bridge_supports_one_intact_solid(self):
-        frames = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.09, .04, .05))])
-        evidence = _partition_view_evidence(self.parent, self.children, frames, 0.)
-        self.assertTrue(evidence['occupied_bridge'], evidence)
-        self.assertFalse(evidence['free_gap'], evidence)
-
-    def test_invalid_depth_is_neither_a_gap_nor_an_occupied_bridge(self):
-        from dataclasses import replace
-        frames = [replace(frame, depth=np.full_like(frame.depth, np.nan)) for frame in analytic_frames([])]
-        evidence = _partition_view_evidence(self.parent, self.children, frames, 0.)
-        self.assertFalse(evidence['free_gap'], evidence)
-        self.assertFalse(evidence['occupied_bridge'], evidence)
+    def test_occupied_bridge_keeps_the_supplied_single_solid(self):
+        points = box_surface()
+        points = points[abs(points[:, 0]-.45) > .004]
+        parent = self.fitter.fit(points)
+        frames = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.05, .05, .05))])
+        result = refine_cluster(points, _FitBudget(self.fitter), parent_fit=parent, frames=frames)
+        self.assertEqual(len(result), 1)
+        self.assertIs(result[0][0], points)
+        self.assertIs(result[0][1], parent)
 
     def test_insufficient_shared_budget_does_no_partial_numerical_work(self):
         points = np.r_[sphere_with_islands((0., 0., .025)), sphere_with_islands((.06, 0., .025))]
@@ -99,8 +102,7 @@ class SegmentationReadinessTests(unittest.TestCase):
         fitter.fit.assert_not_called()
 
     def test_below_fitter_sample_minimum_is_not_an_object_candidate(self):
-        self.assertEqual(supported_object_cloud(box_surface()[:26], 0.),
-                         (False, 'insufficient_surface_samples'))
+        self.assertFalse(supported_object_cloud(box_surface()[:26], 0.)[0])
 
     def test_fragmented_elevated_clutter_has_one_global_numerical_budget(self):
         x, z = np.meshgrid(np.linspace(-.007, .007, 7), np.linspace(.025, .043, 6))

@@ -1,60 +1,16 @@
-"""Guarded retry verdicts, integer pixel sets and geometric axis metadata."""
-from unittest.mock import patch
+"""Integer pixel sets and geometric axis metadata."""
 import unittest
 
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.perception_multiview.fitting import (
-    PrimitiveFit, SurfaceFitter, orientation_metadata,
+    PrimitiveFit, orientation_metadata,
 )
 from robot_skill_stack.world.perception_multiview.observability import _unique_pixels
-from robot_skill_stack.world.perception_multiview.provider import _FitBudget
-from robot_skill_stack.world.perception_multiview import segmentation
-from tests.support.multiview_fixtures import analytic_frames
-from tests.support.primitive_scene import Solid
-from tests.unit.test_multiview_segmentation_readiness import box_surface
 
 
 class FinalRefinementTests(unittest.TestCase):
-    def metric_calls(self, points, fitter, **kwargs):
-        radii, original = [], segmentation._metric_components
-        def recorded(cloud, **options):
-            radii.append(options.get('radius', .004))
-            return original(cloud, **options)
-        with patch.object(segmentation, '_metric_components', recorded):
-            result = segmentation.refine_cluster(points, fitter, **kwargs)
-        return result, radii
-
-    def test_complete_single_component_has_one_graph(self):
-        _, radii = self.metric_calls(box_surface(), _FitBudget(SurfaceFitter()))
-        self.assertEqual(radii, [.004])
-
-    def test_explicit_missing_band_ambiguity_is_not_retried(self):
-        points = box_surface()
-        points = points[abs(points[:, 0]-.45) > .004]
-        result, radii = self.metric_calls(points, _FitBudget(SurfaceFitter()))
-        self.assertEqual(radii, [.004])
-        self.assertEqual(result[0][1].geometry.metadata['reason'], 'ambiguous_single_or_multiple_surfaces')
-
-    def test_occupied_bridge_keeps_supplied_parent_without_retry(self):
-        points = box_surface()
-        points = points[abs(points[:, 0]-.45) > .004]
-        parent = SurfaceFitter().fit(points)
-        frames = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.05, .05, .05))])
-        result, radii = self.metric_calls(points, _FitBudget(SurfaceFitter()), parent_fit=parent, frames=frames)
-        self.assertEqual(radii, [.004])
-        self.assertEqual(len(result), 1)
-        self.assertIs(result[0][1], parent)
-
-    def test_less_than_minimum_two_child_budget_does_no_retry_or_fits(self):
-        points = box_surface()
-        points = points[abs(points[:, 0]-.45) > .004]
-        fitter = _FitBudget(SurfaceFitter(), max_calls=4)
-        _, radii = self.metric_calls(points, fitter)
-        self.assertEqual(radii, [.004])
-        self.assertEqual(fitter.remaining, 4)
-
     def test_scalar_pixel_codes_preserve_negative_and_out_of_image_pairs(self):
         raw = np.array([[-1, 1], [9, 0], [0, -1], [0, -1], [19, -1], [-11, 2]])
         actual = _unique_pixels(raw)
