@@ -80,46 +80,45 @@ class SegmentationTests(unittest.TestCase):
     def test_nearby_spheres_split_only_with_supported_separate_models(self):
         points = np.r_[self.sphere((0., 0., .125)), self.sphere((.055, 0., .125))]
         self.assertEqual(len(cluster_points(points)), 1)
+        original = points.copy()
         refined = refine_cluster(points, SurfaceFitter(), support_plane_z=.1)
         self.assertEqual(len(refined), 2)
         self.assertTrue(all(fit.geometry.shape.value == 'sphere' for _, fit in refined))
         self.assertLess(np.linalg.norm(refined[0][1].center-[0., 0., .125]), .001)
         self.assertLess(np.linalg.norm(refined[1][1].center-[.055, 0., .125]), .001)
         self.assertGreater(sum(len(cloud) for cloud, _ in refined)/len(points), .95)
+        np.testing.assert_array_equal(points, original)
+        self.assertEqual(canonical([np.concatenate([cloud for cloud, _ in refined])]), canonical([points]))
 
-    def test_sparse_spheres_recover_across_unobserved_surface_bands(self):
+    def test_fragmented_spheres_are_unknown_without_a_recovery_retry(self):
         # Each sphere's hemispheres are separated by 4.2 mm of missing samples.
         phi = np.r_[np.linspace(.12, np.pi/2-.084, 20), np.linspace(np.pi/2+.084, 2.9, 20)]
         points = np.r_[self.sphere((0., 0., .125), phi), self.sphere((.06, 0., .125), phi)]
         refined = refine_cluster(points, SurfaceFitter(), support_plane_z=.1)
-        self.assertEqual(len(refined), 2)
-        self.assertTrue(all(fit.geometry.shape.value == 'sphere' for _, fit in refined))
-        np.testing.assert_allclose([fit.center for _, fit in refined],
-                                   [[0., 0., .125], [.06, 0., .125]], atol=.001)
+        self.assertEqual(len(refined), 1)
+        self.assertIs(refined[0][0], points)
+        self.assertEqual(refined[0][1].geometry.shape.value, 'unknown')
 
     def test_disconnected_sparse_unknown_patches_do_not_invent_objects(self):
         y, z = np.meshgrid(np.linspace(0., .04, 15), np.linspace(.005, .04, 15))
         first = np.c_[np.zeros(y.size), y.ravel(), z.ravel()]
         points = np.r_[first, first+[.006, 0., 0.]]
-        parent_fit = SurfaceFitter().fit(points)
-        refined = refine_cluster(points, SurfaceFitter(), parent_fit=parent_fit)
+        refined = refine_cluster(points, SurfaceFitter())
         self.assertEqual(len(refined), 1)
         self.assertIs(refined[0][0], points)
-        self.assertIs(refined[0][1], parent_fit)
+        self.assertEqual(refined[0][1].geometry.shape.value, 'unknown')
 
-    def test_supported_primitive_can_be_recovered_beside_dense_large_background(self):
+    def test_background_connected_cluster_is_rejected_whole(self):
         x, z = np.meshgrid(np.linspace(-.1, .1, 70), np.linspace(.005, .20, 70))
         background = np.c_[x.ravel(), np.zeros(x.size), z.ravel()]
         sphere = self.sphere((0., -.031, .025))
         points = np.r_[background, sphere]
         self.assertEqual(len(cluster_points(points)), 1)
         refined = refine_cluster(points, SurfaceFitter())
-        self.assertEqual(len(refined), 2)
-        accepted = [(cloud, fit) for cloud, fit in refined if fit is not None]
-        self.assertEqual(len(accepted), 1)
-        self.assertEqual(accepted[0][1].geometry.shape.value, 'sphere')
-        self.assertEqual(sum(supported_object_cloud(cloud, 0.)[1] == 'oversized_or_robot_connected'
-                             for cloud, _ in refined), 1)
+        self.assertEqual(len(refined), 1)
+        self.assertIs(refined[0][0], points)
+        self.assertIsNone(refined[0][1])
+        self.assertFalse(supported_object_cloud(points, 0.)[0])
 
 
 if __name__ == '__main__':

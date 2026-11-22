@@ -60,8 +60,10 @@ def frozen_provider(kind):
     legacy.describe=describe
     with patch.dict(sys.modules,{legacy.__name__:legacy}):
         if kind == 'mv':
-            # Adapt only retired hint metadata; leave the frozen fixture unchanged.
+            # Adapt retired metadata/camera arguments; leave the frozen fixture unchanged.
             source=source.replace(b'track.hint_reason is not None', b'track.matched_by_hint')
+            source=source.replace(b'support_plane_z=self.scene.support_plane_z, frames=frames)',
+                                  b'support_plane_z=self.scene.support_plane_z)')
             source=source.replace(b"'association_hint_reason': track.hint_reason", b"'association_hint_reason': None")
         exec(compile(source,f'{BASELINE}:{path}','exec'),module.__dict__)
     return module.PerceptionStateProvider if kind=='v1' else module.MultiViewProvider

@@ -1,23 +1,15 @@
-"""Measured islands, ambiguous missing data, view evidence and fitting bounds."""
-from dataclasses import replace
+"""Conservative refinement, shared fitting budget and actual camera-to-object flow."""
 import unittest
 from unittest.mock import Mock, patch
 
 import numpy as np
 
-from robot_skill_stack.world.model.primitives import PrimitiveGeometry
-from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit, SurfaceFitter, unknown_fit
+from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
 from robot_skill_stack.world.perception_multiview.provider import _FitBudget
-from robot_skill_stack.world.perception_multiview.segmentation import (
-    _metric_components, _partition_view_evidence, cluster_points, refine_cluster, supported_object_cloud,
-)
+from robot_skill_stack.world.perception_multiview.segmentation import refine_cluster
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
-
-
-def box_fit(center, size):
-    return PrimitiveFit(PrimitiveGeometry('cube', 1., box_size=np.asarray(size), yaw=0.),
-                        np.asarray(center), np.asarray(size))
+from tests.unit import test_multiview_segmentation as fixtures
 
 
 def box_surface():
@@ -34,149 +26,79 @@ def box_surface():
     return np.unique(np.concatenate(points), axis=0)+[.45, 0., .025]
 
 
-def sphere_with_islands(center):
-    def surface(theta, phi):
-        theta, phi = np.meshgrid(theta, phi)
-        return np.asarray(center)+.025*np.c_[np.sin(phi.ravel())*np.cos(theta.ravel()),
-            np.sin(phi.ravel())*np.sin(theta.ravel()), np.cos(phi.ravel())]
-    dense = surface(np.linspace(-1.1, 1.1, 15), np.linspace(.3, 2.8, 18))
-    islands = surface(np.linspace(1.7, 4.5, 12), np.linspace(.3, 2.8, 8))
-    points = np.r_[dense, islands]
-    return points[points[:, 2] > .004]
-
-
 class SegmentationReadinessTests(unittest.TestCase):
     def setUp(self):
         self.fitter = SurfaceFitter()
-        self.parent = box_fit((.45, 0., .025), (.09, .04, .05))
-        self.children = [box_fit((x, 0., .025), (.04, .04, .05)) for x in (.425, .475)]
+        self.spheres = np.r_[fixtures.SegmentationTests.sphere((0., 0., .025)),
+                             fixtures.SegmentationTests.sphere((.055, 0., .025))]
 
-    def test_sparse_current_islands_complete_distinct_sphere_clouds(self):
-        points = np.r_[sphere_with_islands((0., 0., .025)), sphere_with_islands((.06, 0., .025))]
-        seeds = _metric_components(points)
-        self.assertLess(sum(map(len, seeds))/len(points), .85)
-        refined = refine_cluster(points, self.fitter)
-        self.assertEqual(len(refined), 2)
-        self.assertTrue(all(fit.geometry.shape.value == 'sphere' for _, fit in refined))
-        self.assertGreater(sum(len(cloud) for cloud, _ in refined)/len(points), .98)
-        self.assertLess(np.linalg.norm(refined[0][1].center-[0., 0., .025]), .001)
-        self.assertLess(np.linalg.norm(refined[1][1].center-[.06, 0., .025]), .001)
-
-    def test_missing_band_does_not_create_two_known_boxes(self):
+    def test_missing_band_is_unknown_and_not_observable(self):
         points = box_surface()
         points = points[abs(points[:, 0]-.45) > .004]
-        refined = refine_cluster(points, self.fitter)
-        self.assertEqual(len(refined), 1)
-        self.assertEqual(refined[0][1].geometry.shape.value, 'unknown')
-        self.assertEqual(refined[0][1].geometry.metadata['reason'], 'ambiguous_single_or_multiple_surfaces')
-        np.testing.assert_array_equal(refined[0][0], points)
-        finalized = self.fitter.finalize(refined[0][1], points)
-        self.assertFalse(finalized.geometry.metadata['parameter_observable'])
-
-    def test_current_depth_distinguishes_free_gap_bridge_and_missing_data(self):
-        gap = analytic_frames([Solid('cube', center=(x, 0., .025), size=(.04, .04, .05))
-                               for x in (.425, .475)])
-        bridge = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.09, .04, .05))])
-        missing = [replace(frame, depth=np.full_like(frame.depth, np.nan)) for frame in gap]
-        for frames, expected in ((gap, (True, False)), (bridge, (False, True)),
-                                 (missing, (False, False)), (gap + bridge, (False, False))):
-            with self.subTest(expected=expected, views=len(frames)):
-                self.assertEqual(_partition_view_evidence(self.parent, self.children, frames, 0.), expected)
-
-    def test_occupied_bridge_keeps_the_supplied_single_solid(self):
-        points = box_surface()
-        points = points[abs(points[:, 0]-.45) > .004]
-        parent = self.fitter.fit(points)
-        frames = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.05, .05, .05))])
-        result = refine_cluster(points, _FitBudget(self.fitter), parent_fit=parent, frames=frames)
+        result = refine_cluster(points, self.fitter)
         self.assertEqual(len(result), 1)
         self.assertIs(result[0][0], points)
-        self.assertIs(result[0][1], parent)
+        self.assertEqual(result[0][1].geometry.shape.value, 'unknown')
+        finalized = self.fitter.finalize(result[0][1], points)
+        self.assertFalse(finalized.geometry.metadata['parameter_observable'])
 
-    def test_insufficient_shared_budget_does_no_partial_numerical_work(self):
-        points = np.r_[sphere_with_islands((0., 0., .025)), sphere_with_islands((.06, 0., .025))]
-        fitter = Mock(remaining=4)
-        refined = refine_cluster(points, fitter)
-        self.assertEqual(len(refined), 1)
-        self.assertIsNone(refined[0][1])
+    def test_continuous_box_is_not_split(self):
+        points = box_surface()
+        result = refine_cluster(points, self.fitter)
+        self.assertEqual(len(result), 1)
+        self.assertIs(result[0][0], points)
+        fit = result[0][1] or self.fitter.fit(points)
+        self.assertEqual(fit.geometry.shape.value, 'cube')
+
+    def test_insufficient_shared_budget_returns_unknown_without_fitting(self):
+        fitter = Mock(remaining=2)
+        result = refine_cluster(self.spheres, fitter)
+        self.assertEqual(result[0][1].geometry.shape.value, 'unknown')
         fitter.fit.assert_not_called()
 
-    def test_below_fitter_sample_minimum_is_not_an_object_candidate(self):
-        self.assertFalse(supported_object_cloud(box_surface()[:26], 0.)[0])
+    def test_child_and_parent_fits_share_the_budget_and_cached_results(self):
+        budget = _FitBudget(self.fitter, max_calls=3)
+        with patch.object(self.fitter, 'fit', wraps=self.fitter.fit) as fit:
+            result = refine_cluster(self.spheres, budget)
+            self.assertEqual(len(result), 2)
+            self.assertTrue(all(cached.geometry.shape.value == 'sphere' for _, cached in result))
+            self.assertEqual(fit.call_count, 3)
+            self.assertEqual(budget.remaining, 0)
+            refused = refine_cluster(self.spheres, budget)
+            self.assertEqual(refused[0][1].geometry.shape.value, 'unknown')
+            self.assertEqual(fit.call_count, 3)
 
-    def test_fragmented_elevated_clutter_has_one_global_numerical_budget(self):
+    def test_excessive_fragments_are_unknown_without_child_fits(self):
         x, z = np.meshgrid(np.linspace(-.007, .007, 7), np.linspace(.025, .043, 6))
-        points = np.concatenate([np.c_[x.ravel()+.208+.032*parent,
-            np.full(x.size, .007*fragment), z.ravel()] for parent in range(16) for fragment in range(8)])
-        numerical = Mock()
-        numerical.fit.side_effect = lambda cloud, **kwargs: unknown_fit(cloud)
-        bounded = _FitBudget(numerical, max_calls=24)
-        broad = cluster_points(points)
-        self.assertEqual(len(broad), 16)
-        for cloud in broad:
-            partitions = refine_cluster(cloud, bounded)
-            for child, cached in partitions:
-                eligible, reason = supported_object_cloud(child, 0.)
-                if eligible or reason == 'no_observed_support_contact':
-                    fit = cached or bounded.fit(child)
-                    self.assertEqual(fit.geometry.shape.value, 'unknown')
-        self.assertEqual(numerical.fit.call_count, 24)
-        self.assertEqual(bounded.remaining, 0)
-        fresh_cloud = points[:42]+[0., .2, .01]
-        exhausted = bounded.fit(fresh_cloud)
-        self.assertEqual(numerical.fit.call_count, 24)
-        self.assertEqual(exhausted.geometry.shape.value, 'unknown')
-        self.assertEqual(exhausted.geometry.metadata['reason'], 'candidate_budget_exhausted')
-        np.testing.assert_allclose(exhausted.center, (fresh_cloud.min(0)+fresh_cloud.max(0))/2)
-
-    def test_excessive_dense_fragments_skip_all_child_fits(self):
-        x, z = np.meshgrid(np.linspace(-.007, .007, 7), np.linspace(.025, .043, 6))
-        points = np.concatenate([np.c_[x.ravel(), np.full(x.size, .007*index), z.ravel()] for index in range(16)])
+        points = np.concatenate([np.c_[x.ravel(), np.full(x.size, .007*i), z.ravel()] for i in range(16)])
         fitter = Mock(remaining=24)
-        refined = refine_cluster(points, fitter)
-        self.assertEqual(len(refined), 1)
-        self.assertIs(refined[0][0], points)
+        result = refine_cluster(points, fitter)
+        self.assertIs(result[0][0], points)
+        self.assertEqual(result[0][1].geometry.shape.value, 'unknown')
         fitter.fit.assert_not_called()
 
-    def test_fresh_good_evidence_restores_graspability_on_the_same_identity(self):
+    def test_multicamera_provider_detects_supported_scene_shapes(self):
         from robot_skill_stack.integrations.isaac.config import load_scene_config
-        from robot_skill_stack.world.model.updater import WorldModelUpdater
-        from robot_skill_stack.world.model.world_model import WorldModel
         from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
         from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
         from tests.unit.test_multiview_provider import Camera
-        frames = analytic_frames([Solid('sphere')])
-        cameras = [Camera(frame) for frame in frames]
-        with patch('time.monotonic', return_value=100.) as clock:
-            rig = FrameSynchronizer(dict(zip(('A', 'B'), cameras)))
-            provider = MultiViewProvider(rig, load_scene_config('config/scenes/multiview_playground.toml').scene)
-            self.addCleanup(provider.close)
-            good = [False]
-            def finalize(fit, points, **kwargs):
-                fit.geometry.metadata['parameter_observable'] = good[0]
-                return fit
-            provider.processor.fitter.finalize = finalize
-            model = WorldModel()
-            updater = WorldModelUpdater(model, provider)
-            for _ in range(3):
-                clock.return_value += .2
-                for camera in cameras:
-                    camera.number += 1
-                updater.update()
-            self.assertEqual(len(model.objects()), 1)
-            original = model.objects()[0]
-            self.assertEqual(original.class_name, 'sphere')
-            self.assertFalse(original.graspable)
-            previous_time = original.last_seen
-            good[0] = True
-            clock.return_value += .2
-            for camera in cameras:
+        solids = [Solid('cube', center=(.32, -.18, .025), yaw=.37), Solid('sphere'),
+                  Solid('cylinder', center=(.38, .18, .045), radius=.018, length=.09),
+                  Solid('cylinder', center=(.58, -.18, .018), radius=.018, length=.09, axis=(1, 0, 0))]
+        cameras = {str(i): Camera(frame) for i, frame in enumerate(analytic_frames(solids))}
+        scene = load_scene_config('config/scenes/multiview_playground.toml').scene
+        provider = MultiViewProvider(FrameSynchronizer(cameras), scene)
+        self.addCleanup(provider.close)
+        for _ in range(3):
+            for camera in cameras.values():
                 camera.number += 1
-            updater.update()
-            refreshed = model.require(original.object_id)
-            self.assertTrue(refreshed.graspable)
-            self.assertGreater(refreshed.last_seen, previous_time)
-            self.assertEqual(len(model.objects()), 1)
+            batch = provider.observe()
+        self.assertCountEqual([obj.class_name for obj in batch.observations], ['cube', 'sphere', 'cylinder', 'cylinder'])
+        for solid in solids:
+            nearest = min(batch.observations, key=lambda obj: np.linalg.norm(obj.pose.position-solid.center))
+            self.assertEqual(nearest.class_name, solid.shape)
+            self.assertLess(np.linalg.norm(nearest.pose.position-solid.center), .004)
+            self.assertTrue(nearest.metadata['contributing_views'])
 
 
 if __name__ == '__main__':

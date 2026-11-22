@@ -7,9 +7,17 @@ playground remains single-camera geometry V1 by default.
 
 Use `scenes/multiview_perception_final.usda` with
 `config/scenes/multiview_perception_final.toml` for the original two editable
-640×480 cameras. Camera paths, resolution, skew, depth/point budgets and geometric
-uncertainty are validated at initialization. Do not infer that adding views makes
-all hidden geometry observable or all objects graspable.
+640×480 cameras. Camera configuration is checked at initialization; processing
+uses the declared point and fitting budgets. Adding views does not make all
+hidden geometry observable or all objects graspable.
+
+Refinement splits well-covered 4 mm components only when supported primitive fits
+have separate conservative horizontal bounds and no competing single-solid fit.
+Unresolved multi-component explanations remain UNKNOWN; candidates without a
+credible split retain ordinary single-object fitting. Oversized connected
+background is rejected as a whole. Foreground recovery, surface reassignment and
+camera-gap resolution are outside this demo policy. Close rotated boxes or
+cylinders whose world-axis bounds overlap can remain unresolved.
 
 Semantic processing runs in bounded SDK-free workers. The owner retains frame
 identity, association and WorldModel updates. Spatial Mapping can reuse the same

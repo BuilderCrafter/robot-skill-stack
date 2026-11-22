@@ -78,8 +78,7 @@ class MultiViewProcessor:
         for candidate in sorted(cluster_points(fused), key=len, reverse=True)[:16]:
             if len(detections) >= 8:
                 break
-            partitions = refine_cluster(candidate, fit_budget,
-                support_plane_z=self.scene.support_plane_z, frames=frames)
+            partitions = refine_cluster(candidate, fit_budget, support_plane_z=self.scene.support_plane_z)
             for cluster, cached_fit in partitions:
                 if len(detections) >= 8:
                     break
