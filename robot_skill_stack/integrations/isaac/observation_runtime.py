@@ -351,7 +351,6 @@ async def create_observation_runtime(world, config, updater, app):
             if settings.source == 'rgbd' and settings.automatic_robot_filter:
                 from .spatial_mapping.robot_filter import IsaacRobotSelfFilter
                 robot_filter = IsaacRobotSelfFilter(stage, config.robot.prim_path,
-                    stride=settings.stride, depth_tolerance=settings.robot_depth_tolerance,
                     pose_tolerance=settings.robot_pose_tolerance)
         return ObservationRuntime(world, config, updater, pool=pool, owned_cameras=owned,
             robot_filter=robot_filter, spatial_mapping=service, stage=stage,

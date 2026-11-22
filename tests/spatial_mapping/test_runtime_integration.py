@@ -63,14 +63,7 @@ def recovery_diagnostics(bundle):
                    world_simulation_time=float(bundle.world.current_time),
                    pool_status={} if coordinator.pool is None else serial(coordinator.pool.status))
     if robot_filter is not None:
-        history = tuple(robot_filter._history)
-        details['robot_filter'] = dict(diagnostics=serial(robot_filter.diagnostics),
-            history_count=len(history), history_generation=robot_filter._generation,
-            capture_error=robot_filter._capture_error,
-            history_range=[] if not history else [history[0][0], history[-1][0]],
-            callback_id=robot_filter._callback_id,
-            callback_retained=robot_filter._callback_id in robot_filter._manager._callbacks,
-            manager_simulation_time=float(robot_filter._manager.get_simulation_time()))
+        details['robot_filter_error'] = robot_filter.source_error
     return details
 
 
