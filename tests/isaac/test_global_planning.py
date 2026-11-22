@@ -11,9 +11,24 @@ from pathlib import Path
 import pickle
 import time
 import traceback
+import tomllib
 
 import numpy as np
 
+
+
+def profile_text(source,text):
+    """Only the frozen nominal source and independently disabled-mapping GT case."""
+    if source not in ('static','frozen_rgbd'):raise ValueError('Unsupported acceptance source')
+    if source=='frozen_rgbd':return text
+    for old,new in [('provider = "multi_view"','provider = "ground_truth"'),
+        ('global_obstacle_source = "frozen_rgbd"','global_obstacle_source = "static"'),
+        ('global_rgbd_representation = "reconstructed"','global_rgbd_representation = "occupied"'),
+        ('enabled = true','enabled = false')]:
+        if text.count(old)!=1:raise RuntimeError('Frozen profile field changed: '+old)
+        text=text.replace(old,new)
+    if 'ground_truth' in tomllib.loads(text):raise RuntimeError('Unexpected ground-truth fixture section')
+    return text+'\n[ground_truth]\nobjects_root = "/World/ReactiveEvaluation"\n'
 
 
 class Observer:
@@ -41,9 +56,13 @@ class Observer:
                 or any(not set(filters)<=set(group) for group in self.contacts.filter_paths)):
             raise RuntimeError('Physical observation omitted a body, contact sensor or filter')
         self.samples=[];self.actions=[];self.original_apply=self.robot.apply_action
+        self.arm_commands_allowed=False;self.blocked_arm_attempts=0
         def apply(action,*values,**options):
             indices=getattr(action,'joint_indices',None)
             if indices is None or any(int(i)<7 for i in indices):
+                if not self.arm_commands_allowed:
+                    self.blocked_arm_attempts+=1
+                    raise RuntimeError('Acceptance interlock: arm command has no independent permission')
                 self.actions.append(dict(at=time.monotonic(),positions=fixture.serial(getattr(action,'joint_positions',None))))
             return self.original_apply(action,*values,**options)
         self.robot.apply_action=apply
@@ -102,6 +121,7 @@ class VetoPlanner:
                 raise PlanningFailure('acceptance_detour_missing','Nominal obstacle-induced detour was not established')
         if instant!=(self.backend.world.current_time,self.backend.world.current_time_step_index):
             raise PlanningFailure('acceptance_physics_advanced','Physics advanced during independent validation')
+        self.observer.arm_commands_allowed=True
         return plan
 
     def close(self):
@@ -144,14 +164,7 @@ def main():
             UsdPhysics.RigidBodyAPI.Apply(cube.GetPrim()).CreateKinematicEnabledAttr().Set(True)
             PhysxSchema.PhysxRigidBodyAPI.Apply(cube.GetPrim()).CreateDisableGravityAttr().Set(True)
             PhysxSchema.PhysxContactReportAPI.Apply(cube.GetPrim()).CreateThresholdAttr().Set(0.)
-        text=(fixture.ROOT/'tests/fixtures/global_rgbd_partial.toml').read_text()
-        if not rgbd:
-            for old,new in [('provider = "multi_view"','provider = "ground_truth"'),
-                ('global_obstacle_source = "frozen_rgbd"','global_obstacle_source = "static"'),
-                ('global_rgbd_representation = "reconstructed"','global_rgbd_representation = "occupied"'),
-                ('enabled = true','enabled = false')]:
-                if text.count(old)!=1:raise RuntimeError('Frozen profile field changed: '+old)
-                text=text.replace(old,new)
+        text=profile_text(args.source,(fixture.ROOT/'tests/fixtures/global_rgbd_partial.toml').read_text())
         profile=args.artifacts_dir/'runtime_profile.toml';profile.write_text(text)
         try:
             bundle=await build_runtime(profile);backend=bundle.backend;strategy=backend.motion_strategy
@@ -212,10 +225,10 @@ def main():
                         from robot_skill_stack.runtime.process_worker import _TransportPickler
                         stream=io.BytesIO();_TransportPickler(stream,protocol=5).dump(selected)
                         (args.artifacts_dir/'mapping_input.pickle').write_bytes(stream.getvalue())
-                before_rejected=len(observer.actions);service.close()
+                before_rejected=len(observer.actions);observer.arm_commands_allowed=False;service.close()
                 refused=await bundle.runtime.execute_async('move_to_pose',target=Pose(fixture.START,fixture.ORIENTATION),position_tolerance=.025,orientation_tolerance=.10)
                 state['closed_source_result']=refused
-                checks['closed_source_refused_without_fallback']=not refused.ok and len(observer.actions)==before_rejected and str(refused.details.get('failure_code','')).startswith('planning_source_')
+                checks['closed_source_refused_without_fallback']=not refused.ok and len(observer.actions)==before_rejected and observer.blocked_arm_attempts==0 and str(refused.details.get('failure_code','')).startswith('planning_source_')
             steps=sorted({s['step'] for s in observer.samples});checks['complete_sampled_physics_coverage']=bool(steps) and steps==list(range(steps[0],steps[-1]+1))
             state['observed_actions']=len(observer.actions);state['physics_steps']=len(steps)
             (args.artifacts_dir/'motion_trace.json').write_text(json.dumps(fixture.serial(dict(samples=observer.samples,actions=observer.actions)),indent=2)+'\n')
