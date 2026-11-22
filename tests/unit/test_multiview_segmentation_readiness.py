@@ -10,7 +10,7 @@ from robot_skill_stack.world.perception_multiview.provider import _FitTimer
 from robot_skill_stack.world.perception_multiview.segmentation import (
     _metric_components, _partition_view_evidence, cluster_points, refine_cluster, supported_object_cloud,
 )
-from tests.support.multiview_research import analytic_frames
+from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 
 

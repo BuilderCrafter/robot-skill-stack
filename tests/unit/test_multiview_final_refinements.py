@@ -11,7 +11,7 @@ from robot_skill_stack.world.perception_multiview.fitting import (
 from robot_skill_stack.world.perception_multiview.observability import _unique_pixels
 from robot_skill_stack.world.perception_multiview.provider import _FitTimer
 from robot_skill_stack.world.perception_multiview import segmentation
-from tests.support.multiview_research import analytic_frames
+from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 from tests.unit.test_multiview_segmentation_readiness import box_surface
 

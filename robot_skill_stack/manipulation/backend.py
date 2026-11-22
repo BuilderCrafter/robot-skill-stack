@@ -34,6 +34,8 @@ class ManipulationBackend(ABC):
     # Parallel-jaw grasp capabilities consumed by the composition root.
     grasp_min_width: float
     grasp_max_width: float
+    # Some strategies deliberately reject intended-contact tasks until modeled.
+    supports_contact_motion: bool = True
 
     @property
     @abstractmethod

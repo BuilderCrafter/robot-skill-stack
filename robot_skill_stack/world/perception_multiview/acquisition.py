@@ -7,6 +7,7 @@ import numpy as np
 
 @dataclass(frozen=True)
 class DepthFrame:
+    """One camera's depth frame, calibration, render token, and capture time."""
     camera_id: str
     token: tuple[float, float]
     depth: np.ndarray
@@ -30,6 +31,7 @@ class DepthFrame:
 
 
 class FrameSynchronizer:
+    """Read a fresh, synchronized batch from multiple independent cameras."""
     def __init__(self, cameras, *, max_skew=.025):
         if len(cameras) < 2 or len({id(c) for c in cameras.values()}) != len(cameras):
             raise ValueError('At least two independent cameras are required')
@@ -42,6 +44,7 @@ class FrameSynchronizer:
 
     @staticmethod
     def _token(camera):
+        """Read the camera's render number and simulation timestamp."""
         value = camera.get_frame_token()
         if value is None:
             return None
@@ -54,6 +57,7 @@ class FrameSynchronizer:
         return number, stamp
 
     def capture(self):
+        """Validate camera freshness and timing, then copy a complete frame batch."""
         if self._closed:
             raise RuntimeError('Multi-view cameras are closed')
         acquired = time.monotonic()

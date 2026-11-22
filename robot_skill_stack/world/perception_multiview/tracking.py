@@ -6,6 +6,7 @@ import numpy as np
 
 @dataclass
 class Detection:
+    """One fitted object cloud and the cameras that contributed to it."""
     fit: object
     points: np.ndarray
     views: tuple[str, ...]
@@ -13,6 +14,7 @@ class Detection:
 
 @dataclass
 class Track:
+    """Persistent identity and confirmation history for a multi-view detection."""
     object_id: str
     detection: Detection
     last_seen: float
@@ -22,12 +24,17 @@ class Track:
 
 
 class MultiViewTracker:
+    """Match fused detections across frames while preserving object identities.
+
+    Respect active held-object and placement hints during association.
+    """
     def __init__(self, *, confirm_hits=3, max_distance=.12):
         self.confirm_hits, self.max_distance = confirm_hits, max_distance
         self.tracks = {}
         self._next_id = 1
 
     def update(self, detections, timestamp, context=None):
+        """Associate detections with existing tracks and confirm repeated matches."""
         hints = {} if context is None else {h.object_id: h for h in context.association_hints
                                             if h.expires_at > timestamp}
         held = None if context is None else context.held_object_id

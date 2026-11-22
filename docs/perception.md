@@ -137,7 +137,7 @@ python3 scripts/run_all_regressions.py --group isaac --artifacts-dir outputs/reg
 ```
 
 Offline tests cover primitive fits, uncertainty rejection, tracking, lazy geometry,
-frame capture/replay and manipulation logic. The Isaac group retains the original
+and manipulation logic. The Isaac group retains the original
 cube discovery and manipulation acceptance scenarios, including multiple objects,
 gripper verification and same-ID reacquisition after placement. Physical sphere
 and cylinder manipulation still requires the workstation smoke checks.

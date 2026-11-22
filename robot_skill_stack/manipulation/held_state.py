@@ -6,6 +6,10 @@ from robot_skill_stack.world.model.world_model import WorldModel
 
 
 def motion_failure_code(result, fallback):
+    if result.details.get('world_state_unavailable'):
+        return FailureCode.WORLD_STATE_UNAVAILABLE
+    if result.details.get('unsupported_motion'):
+        return FailureCode.MOTION_UNSUPPORTED
     if result.details.get('grasp_failure'):
         return (FailureCode.GRASP_LOST if result.details['grasp_state'] == 'free'
                 else FailureCode.GRASP_UNCERTAIN)

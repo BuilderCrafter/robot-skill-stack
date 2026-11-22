@@ -102,7 +102,9 @@ class BootstrapTests(unittest.TestCase):
             self.assertIs(m.create_robot(world,cfg.robot),robot)
             factory.Franka.assert_called_once_with(prim_path='/Franka',name='franka')
             backend,gripper=m.create_backend(world,robot,cfg.robot)
-            self.assertEqual(e.backend_calls[-1],dict(world=world,robot=robot,
+            options = dict(e.backend_calls[-1])
+            self.assertTrue(callable(options.pop('strategy_factory')))
+            self.assertEqual(options,dict(world=world,robot=robot,
                              position_tolerance=.01,orientation_tolerance=.05,max_motion_steps=1000))
             self.assertEqual((gripper.min_width,gripper.max_width,gripper.aperture),(.005,.075,.08))
             self.assertEqual((gripper.tcp_to_palm,gripper.fingertip_offset,gripper.pad_above_tcp,
@@ -186,7 +188,6 @@ class BootstrapTests(unittest.TestCase):
                 b=await m.build_runtime('rgbd.toml')
             self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
             self.assertFalse(hasattr(b,'objects'))
-            self.assertTrue(callable(b.capture_frame))
             b.close()
         self.run_case(fn)
 
@@ -233,7 +234,7 @@ class BootstrapTests(unittest.TestCase):
 
     def test_ground_truth_populates_and_ticks(self):
         async def fn(m,e):
-            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model); self.assertIsNone(b.capture_frame)
+            b=await m.build_runtime('profile.toml'); self.assertIsNotNone(b.world_model.get('cube')); self.assertIs(b.runtime.world_model,b.world_model)
             count=b.world_updater.update_count; e.world.tick(); self.assertEqual(b.world_updater.update_count,count+1)
             b.close(); self.assertEqual(e.world._physics_functions,{})
         self.run_case(fn)
@@ -319,6 +320,14 @@ class CameraCleanupTests(unittest.TestCase):
     def test_partial_camera_without_reference_and_idempotent_close(self):
         obj=self.adapter(); obj.camera._fabric_time_annotator=None; obj.close(); obj.close()
         obj.camera.destroy.assert_called_once()
+
+    def test_restart_resets_sampling_clock_without_reinitializing_camera(self):
+        obj=self.adapter()
+        obj.reset_clock()
+        obj.camera.post_reset.assert_called_once()
+        obj.camera.initialize.assert_not_called()
+        obj.camera.set_world_pose.assert_not_called()
+        obj.camera.destroy.assert_not_called()
 
     def test_render_product_destroy_attempted_after_detach_failure(self):
         obj=self.adapter(); obj.camera._fabric_time_annotator.detach.side_effect=ValueError('detaching')

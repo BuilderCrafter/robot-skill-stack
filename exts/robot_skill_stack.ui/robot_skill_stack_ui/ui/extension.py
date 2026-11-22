@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import time
 import traceback
-from datetime import datetime
 from pathlib import Path
 import sys
 
@@ -103,7 +102,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy or (self.bundle is not None and self.bundle.runtime.busy),
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
             observations_fresh=self.bundle is not None and self.bundle.world_model.observations_healthy,
-            selected=selected, capture_available=self.bundle is not None and self.bundle.capture_frame is not None)
+            selected=selected)
 
     def _initialize_clicked(self):
         if self.busy or (self.bundle is not None and self.bundle.runtime.busy) or self._pending_clear is not None:
@@ -195,18 +194,6 @@ class RobotSkillStackExtension(omni.ext.IExt):
         carb.log_warn('[robot_skill_stack.ui] manual reset: ' + message)
         self._set_status(message, 'success')
         self._refresh(force=True)
-
-    def _capture_perception_clicked(self):
-        if self.bundle is None or self.bundle.capture_frame is None:
-            self._set_status('This source does not provide frame capture.', 'warning')
-            return
-        try:
-            stamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
-            path = self.bundle.capture_frame(ROOT / 'outputs' / 'perception' / f'capture_{stamp}.npz')
-            self._set_status(f'Saved {path.name} in outputs/perception.', 'success')
-            carb.log_info(f'[robot_skill_stack.ui] perception capture: {path}')
-        except Exception as exc:
-            self._set_status(f'Capture failed: {exc}', 'error')
 
     def _select_object(self, object_id):
         if self.view_model is not None:

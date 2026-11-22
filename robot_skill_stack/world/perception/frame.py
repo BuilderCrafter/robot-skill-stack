@@ -7,6 +7,7 @@ import numpy as np
 
 @dataclass(frozen=True)
 class PerceptionFrame:
+    """One RGB-D frame with camera calibration, world transform, and timestamp."""
     frame_id: int
     rgb: np.ndarray
     depth: np.ndarray

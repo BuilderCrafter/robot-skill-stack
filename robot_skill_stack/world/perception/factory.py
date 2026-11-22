@@ -8,6 +8,7 @@ from robot_skill_stack.world.perception.tracker import ObjectTracker
 
 
 def build_perception_provider(camera, config):
+    """Assemble the single-camera discovery, geometry, and tracking pipeline."""
     localizer = RgbdLocalizer(camera.get_intrinsics())
     scene = config.scene
     discoverer = DepthObjectDiscoverer(

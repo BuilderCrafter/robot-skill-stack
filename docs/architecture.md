@@ -1,102 +1,79 @@
 # Architecture
 
+The production composition is:
+
 ```text
-GUI / Behavior Trees / standalone Kit bridge
-                  ↓
-       await RobotRuntime.execute_async(...)
-                  ↓
-      Home / MoveToPose / Pick / Place
-         ↙                      ↘
-grasp / placement checks    ManipulationBackend → Isaac Franka
-                  ↑
-              WorldModel ← WorldModelUpdater ← ObservationBatch
-                  ↓               ↑                  ↑
-          read-only GUI view   held / hints      RGB-D V1 or ground truth
+GUI / Behavior Trees
+  → RobotRuntime → registered skills → ManipulationBackend → MotionStrategy
+Semantic observations → WorldModelUpdater → WorldModel → skills / GUI
+Independent spatial observations → MappingService → immutable MappingReadView
 ```
 
-## Components and boundaries
+`common`, `runtime`, `world`, `manipulation`, `orchestration` and `presentation`
+remain SDK-free. Isaac adapters assemble the existing contracts in
+`integrations/isaac/bootstrap.py`; the GUI invokes that same asynchronous builder.
+There is no plugin framework or alternate motion executor.
 
-`runtime`, `manipulation`, `world`, `presentation` and `orchestration` are
-simulator-independent. Isaac/Omniverse imports belong under
-`integrations/isaac` and the extension. Skills use the cached WorldModel and
-`ManipulationBackend`; they never query SDK scene objects or a concrete source.
+## Commands and manipulation
 
-`RobotRuntime(registry, world_model)` shares the skills' model. It reserves a
-command before its first await, rejects overlap with `BUSY` and releases
-ownership on result, exception or cancellation. Skill classes declare a simple
-`name` and `execute_async`; the small registry prevents duplicate names.
-There is no metadata interpreter, command queue or worker-thread controller.
+RobotRuntime admits one asynchronous command. Cancellation propagates through
+skills and backend ownership. Direct RMPflow is the default strategy and retains
+Pick, Place, Home, grasp/loss checks, held-state policy, release and recovery.
+Franka-specific joint mapping lives in the Isaac motion adapter; generic route
+validation accepts explicit named joints.
 
-`ManipulationBackend` provides async move/open/close/Home, readiness,
-pose/reachability queries, gripper feedback and grasp-width limits. Commands
-cooperate with Kit; queries do not advance simulation. Carrying commands call
-the passed grasp guard after updates and stop through their existing hold path
-on failure. `HeldState` owns attachment bookkeeping, evidence resolution and
-grip-loss policy; the backend has no WorldModel dependency.
+Static global motion uses `GlobalRrtStrategy` and `LulaGlobalPlanner`, with ordinary
+Lula IK, static-world capture, enhanced/stock model selection, joint/route/spline
+validation, tracking checks, terminal settling and final hold. Planner resources
+close in the existing cleanup path. GT planning does not require Spatial Mapping.
+The optional reactive obstacle strategy and registry are retired. Direct RMPflow
+continues to use its ordinary controller.
 
-`WorldObservationProvider` implements `observe(context) -> ObservationBatch`,
-`forget(id)` and `close()`. A fresh sample, including an empty one, has an
-increasing monotonic timestamp. No new sample has no timestamp; errors raise.
-`WorldModelUpdater` owns sampling rate, health, visibility, expiration and
-coordinated forgetting. Sources own their camera/resources. WorldModel owns
-cached objects, attachment state and placement hints. See [perception](perception.md).
+## Acquisition and workers
 
-## Construction
+`ObservationRuntime` owns Kit-thread camera acquisition and publication. A
+`SharedFramePool` shares original exposures between semantic perception and
+mapping. SDK-free processors run in bounded persistent child interpreters through
+`ProcessWorker`: one running job and one replaceable pending job. Immutable arrays
+and explicit generation/revision barriers prevent mutable aliasing or publication
+of invalidated results. No worker owns SDK handles.
 
-`integrations/isaac/bootstrap.py` loads one [setup TOML](configuration.md), checks
-the robot and selected source's prims, and constructs:
+Semantic association and WorldModel mutation remain on the owner thread. Held
+identity, hints and observation-context revisions invalidate obsolete association
+results. Spatial Mapping publishes separate occupancy; it does not replace the
+semantic WorldModel or automatically make UNKNOWN space FREE.
 
-1. Existing/deferred World and physics context, then robot factory's SDK wrapper.
-2. Reset/play and 30 Kit updates.
-3. Source factory: ground truth, or camera initialization plus 60 Kit updates.
-4. WorldModel/updater and robot factory's backend plus gripper spec.
-5. Existing grasp/placement planners, four skills, registry and runtime.
-6. Initial observation and the existing owned physics callback, then the bundle.
+RGB-D mapping prepares synchronized robot exclusion from actual robot poses and
+cooked geometry. Projection, FREE/OCCUPIED evidence, bounded occupied-cuboid
+extraction and optional measured-box qualification run in the existing mapping
+worker. No standalone synchronous mapping factory or second mapping pipeline is
+used by the GUI/runtime.
 
-`manipulation/factory.py` explicitly selects Franka, the only implemented robot.
-`world/factory.py` explicitly selects RGB-D V1 or ground truth. Unknown selectors
-fail; RGB-D does not require oracle objects or wrappers. Native test oracle
-handles belong to `tests/support/isaac_helpers.py`, not the production bundle.
-There is no plugin registry, setup inheritance or live adapter switching.
+## Frozen RGB-D global source
 
-A new robot implements the backend contract and supplies its gripper spec in
-the factory, with its selector allowed in config. A new source implements the
-observation contract and adds explicit construction/reference validation. Its
-observation logic can remain Isaac-free. Skills, WorldModel and GUI do not need
-robot/source branches. Future ROS or thesis-level planning should use these
-boundaries; neither integration is implemented.
+`frozen_rgbd` requires the enhanced model and enabled RGB-D mapping with automatic
+robot filtering. Reconstructed mode waits cooperatively, within the existing
+five-second admission deadline, for the first new accepted publication. It then
+captures once with the original strict one-second freshness check. It does not
+search for a favorably qualified exposure or retry a rejected source.
 
-## Orchestration and presentation
+The immutable frozen world retains generation, revision, original timestamps,
+calibration, occupied evidence and uncertainty. The occupied representation uses
+selected cell cuboids. Reconstructed mode adds qualified measured boxes and
+subsumes original cuboids only with the existing all-eight-corner proof. Protected
+floor evidence and the 64-camera-proxy limit remain. Known support is restricted
+to the existing explicit Plane allowlist; scene GT obstacles never enter this source.
+Invalid, stale, contradictory or unqualified sources fail explicitly, with no
+GT/direct fallback. See [motion planning](motion_planning.md).
 
-One `SkillNode` submits runtime coroutines; `BTExecutor.run_async` yields between
-ticks. The recovery selector remembers its running branch. Home/retry is allowed
-only for eligible pre-closure Pick failures, never after engagement, grip loss,
-uncertainty, source failure, busy or internal errors. Place failure stops either
-task before final Home. Cancellation/tick exhaustion drains child tasks; this
-is coroutine cleanup, not an emergency stop or automatic physical recovery.
+## Lifecycle
 
-The extension reads `WorldModelViewModel`, backend readiness, runtime busy and
-source health. Refresh is read-only. Confirmed Clear Held calls the runtime's
-software reset, which rejects active commands or changed IDs. Clear Lost uses
-the common updater with held/hint protection. Optional bundle
-`capture_frame(path)` isolates RGB-D diagnostics; GUI cleanup calls bundle
-`close()` instead of managing sources.
+Bootstrap initializes the selected source, backend, workers and shared cameras,
+then registers the completed bundle. Partial startup closes constructed resources.
+Stop/Play invalidates generations and refreshes synchronized robot information;
+late completions cannot revive old data. Shutdown removes subscriptions/callbacks,
+closes mapping/semantic workers and releases motion resources. Reinitialization
+uses distinct owners. GUI controls delegate to these existing lifecycle paths.
 
-## Isaac execution and lifecycle constraints
-
-All commands follow one cooperative async path. Standalone native tests use
-`tests/support/isaac_async.py` to pump `SimulationApp.update()` until a coroutine
-finishes. Live code must not use `asyncio.run()` or add blocking `world.step()`
-loops inside commands. See [validation](validation.md) for launcher invariants.
-
-Deferred World construction avoids draw/button callback reentrancy. Owned
-physics callback scopes preserve registration/removal across Stop/Play; bundle
-close and updater stop own source cleanup. Initialization failure/cancellation
-must close acquired resources, and repeated initialization closes the prior
-bundle. UI window disposal remains deferred. These SDK workarounds are retained,
-covered by doubles and require native revalidation when touched.
-
-The Franka feedback/arm-hold corrections are explained in
-[control diagnostics](control_diagnostic.md). They must not be replaced with raw
-instantaneous velocities merely to shorten the adapter. Home and transport are
-not collision-free guarantees; see [manipulation](manipulation.md).
+Run `scripts/check_architecture.py` and the [retained regressions](validation.md)
+when changing composition, source publication or lifecycle handling.

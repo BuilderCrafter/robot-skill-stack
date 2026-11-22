@@ -10,6 +10,7 @@ from robot_skill_stack.world.perception.frame import PerceptionFrame
 
 @dataclass
 class ObjectCandidate:
+    """A detected pixel component with estimated 3D position, size, and mask."""
     position: np.ndarray
     size: np.ndarray
     mask: np.ndarray
@@ -30,6 +31,10 @@ class ObjectCandidate:
 
 
 class DepthObjectDiscoverer:
+    """Find tabletop object candidates in depth images using workspace filters.
+
+    Group nearby pixels into components only when their 3D points are close.
+    """
     def __init__(
         self,
         localizer,
@@ -66,6 +71,10 @@ class DepthObjectDiscoverer:
 
     @staticmethod
     def _components(mask, world=None, max_distance=None):
+        """Group adjacent mask pixels into connected components.
+
+        Optionally split adjacent pixels whose world points are too far apart.
+        """
         mask = np.asarray(mask, dtype=bool)
         h, w = mask.shape
         visited = np.zeros_like(mask)
@@ -99,11 +108,16 @@ class DepthObjectDiscoverer:
         return components
 
     def is_spawnable(self, size):
+        """Check whether dimensions and aspect ratio meet candidate size limits."""
         size = np.asarray(size, float)
         return bool(np.all(size >= self.spawn_min_extent) and np.all(size <= self.spawn_max_extent)
                     and max(size)/max(min(size), 1e-6) <= self.spawn_compactness_ratio)
 
     def discover(self, frame: PerceptionFrame) -> list[ObjectCandidate]:
+        """Convert depth pixels to world points and find object-sized components.
+
+        Estimate each candidate's position, dimensions, mask, and support evidence.
+        """
         self.diagnostics = []
         depth = frame.depth
         valid = np.isfinite(depth) & (depth > 0)

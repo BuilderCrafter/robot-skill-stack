@@ -6,6 +6,7 @@ import numpy as np
 
 @dataclass
 class ObjectTrack:
+    """An object's latest detection, identity, and confirmation history."""
     object_id: str
     position: np.ndarray
     size: np.ndarray
@@ -43,6 +44,10 @@ class ObjectTracker:
         self._next_id = 1
 
     def update(self, candidates, *, frame_id, timestamp, context=None):
+        """Match spawnable candidates to tracks using distance, size, and hints.
+
+        Confirm repeated matches and mark missed confirmed tracks invisible.
+        """
         candidates = [c for c in candidates if c.spawnable]
         tracks = self.tracks()
         hints = {} if context is None else {

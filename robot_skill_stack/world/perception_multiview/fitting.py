@@ -15,6 +15,7 @@ from robot_skill_stack.world.perception_multiview.clouds import voxelize
 
 @dataclass
 class PrimitiveFit:
+    """A fitted primitive's geometry and estimated 3D center and dimensions."""
     geometry: PrimitiveGeometry
     center: np.ndarray
     size: np.ndarray
@@ -85,6 +86,7 @@ def orientation_metadata(fit, points):
 
 
 def _radial(points):
+    """Robustly fit a circle or sphere center and radius to surface samples."""
     origin = points.mean(0)
     span = float(np.max(np.ptp(points, axis=0)))
     if len(points) < 12 or span < .005:
@@ -105,6 +107,7 @@ def _radial(points):
 
 
 def _hull_area(points):
+    """Calculate the area of the convex hull of 2D points."""
     points = np.unique(points, axis=0)
     if len(points) < 3:
         return 0.
@@ -124,6 +127,7 @@ def _hull_area(points):
 
 
 def _box_distance(points, center, rotation, size):
+    """Measure each point's distance from an oriented box surface."""
     q = abs((points-center) @ rotation)-size/2
     return abs(np.linalg.norm(np.maximum(q, 0), axis=1)+np.minimum(q.max(1), 0))
 
@@ -199,6 +203,10 @@ def _cylinder_observability(points, fit, tolerance):
 
 
 class SurfaceFitter:
+    """Compare primitive surface fits on unorganized 3D object clouds.
+
+    Return UNKNOWN when no shape is sufficiently confident or distinct.
+    """
     def __init__(self, *, tolerance=.0015, threshold=.65, margin=.08, max_points=1200):
         if (not np.isfinite(tolerance) or tolerance <= 0 or not 0 < threshold <= 1 or
                 not 0 <= margin < 1 or max_points < 30):
@@ -207,6 +215,7 @@ class SurfaceFitter:
         self.max_points = max_points
 
     def _candidate(self, shape, center, size, residual, coverage=1., **parameters):
+        """Build a primitive result scored by surface residual and coverage."""
         error = float(np.percentile(residual, 80))
         score = float(np.exp(-.5*(error/self.tolerance)**2)*np.clip(coverage, 0, 1))
         geometry = PrimitiveGeometry(shape, score, metadata={
@@ -215,6 +224,7 @@ class SurfaceFitter:
         return PrimitiveFit(geometry, center, size)
 
     def _sphere(self, p, plane):
+        """Fit a sphere using sampled surface curvature and support-plane checks."""
         fit = _radial(p)
         if fit is None:
             return None
@@ -227,6 +237,7 @@ class SurfaceFitter:
                                abs(np.linalg.norm(p-center, axis=1)-radius), coverage, radius=radius)
 
     def _box(self, p, plane):
+        """Fit an upright box using top-plane and side-wall evidence."""
         high = float(np.percentile(p[:, 2], 99.8))
         upper = p[p[:, 2] > high-.010]
         bins = np.floor(upper[:, 2]/self.tolerance).astype(int)
@@ -257,6 +268,7 @@ class SurfaceFitter:
                                box_size=local_size, yaw=float(yaw))
 
     def _cylinder_axis(self, p, plane, axis):
+        """Fit cylinder dimensions for a proposed axis orientation."""
         axis = np.asarray(axis, float)
         axis /= np.linalg.norm(axis)
         reference = np.eye(3)[np.argmin(abs(axis))]
@@ -401,6 +413,7 @@ class SurfaceFitter:
         return result
 
     def fit(self, points, *, support_plane_z=0.):
+        """Fit candidate primitives and choose the best supported shape."""
         p = voxelize(points, .0015, self.max_points)
         if not np.isfinite(support_plane_z):
             raise ValueError('Support plane must be finite')

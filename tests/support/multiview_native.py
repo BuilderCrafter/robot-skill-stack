@@ -70,7 +70,7 @@ def populate(objects):
 
 
 def research_objects():
-    from tests.support.multiview_research import ResearchObject
+    from tests.support.multiview_fixtures import ResearchObject
     objects = []
     for index, (size, yaw) in enumerate((((.05, .05, .05), 0.), ((.075, .035, .045), .61))):
         objects.append(ResearchObject(f'box_{index}', 'cube', np.array([.45, 0, size[2]/2]), np.array(size), yaw))

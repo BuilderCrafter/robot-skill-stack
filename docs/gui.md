@@ -2,14 +2,13 @@
 
 The Isaac extension reads cached state from `WorldModel` and sends manipulation
 commands through `RobotRuntime`. It checks generic backend readiness, displays
-source health, and offers frame capture when the bundle provides that callback.
-Refresh is read-only; Clear Lost explicitly requests removal through the
+source health. Refresh is read-only; Clear Lost explicitly requests removal through the
 updater. Stale or failed source state
 disables Pick, Place and observation-dependent tasks. Home/Move remain available
 subject to existing readiness and held-state checks. Clear Held remains an
 explicit, confirmed software-only reset through the runtime, rejected while a
 command is active. Clear Lost works with either source and preserves held/hinted
-objects. No controls were added or rearranged.
+objects.
 
 ## Launch
 
@@ -53,13 +52,3 @@ Use a complete setup file to select the source; the
 [configuration guide](configuration.md#required-settings-and-source-selection)
 provides the ground-truth copy command, schema and migration notes. Restart
 Isaac before switching setups; the GUI does not switch an initialized robot.
-
-Capture writes an on-demand RGB-D `.npz` under `outputs/perception/`. To replay
-one without starting Isaac, use the existing wrapper (which uses Isaac's Python
-and repo-local NumPy, but constructs no `SimulationApp`):
-
-```bash
-python3 scripts/replay_perception_capture.py outputs/perception/capture_TIMESTAMP.npz
-```
-
-This is diagnostic replay of one frame, not a separate observation runtime.

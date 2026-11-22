@@ -113,8 +113,6 @@ class ControlPanel:
                                  tooltip='Forget unprotected lost perception objects and their tracker records.')
                     self._action('clear_held', 'Clear Held State', c._clear_held_clicked,
                                  width=150, tooltip='After a dropped grasp: clear software state only. No robot motion.')
-                    self._action('capture', 'Capture', c._capture_perception_clicked, width=76,
-                                 tooltip='Save an RGB-D diagnostic capture in outputs/perception.')
             with ui.ZStack(height=94):
                 ui.Rectangle(name='panel')
                 with padded():
@@ -203,7 +201,7 @@ class ControlPanel:
         self.status_dot.style = {'background_color': tint}
         self.status_time.text = datetime.now().strftime('%H:%M:%S')
 
-    def set_enabled(self, *, initialized, ready, busy, held_id, selected, capture_available, observations_fresh):
+    def set_enabled(self, *, initialized, ready, busy, held_id, selected, observations_fresh):
         idle = not busy and self.dialog is None
         motion = initialized and ready and idle
         values = {'initialize': idle, 'profile': idle and not (initialized and ready),
@@ -212,8 +210,7 @@ class ControlPanel:
                   'task': motion and observations_fresh and not held_id and selected is not None and selected.visible,
                   'recovery': motion and observations_fresh and not held_id and selected is not None,
                   'clear_lost': initialized and idle,
-                  'clear_held': initialized and bool(held_id) and idle,
-                  'capture': initialized and capture_available and not busy}
+                  'clear_held': initialized and bool(held_id) and idle}
         for key, widget in self.buttons.items():
             widget.enabled = bool(values.get(key, idle))
         self.profile.enabled = values['profile']

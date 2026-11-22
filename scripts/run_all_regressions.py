@@ -24,10 +24,13 @@ def cases(group, run_dir, artifacts):
         yield 'unit_discovery', [sys.executable, '-m', 'unittest', 'discover', '-s', 'tests/unit', '-t', '.'], None
         for name in UNIT_SCRIPTS:
             yield name, [sys.executable, '-m', f'tests.unit.{name}'], None
-    for selected, folder in (('isaac', 'isaac'), ('regression', 'regression'), ('multiview', 'multiview')):
+    for selected, folder in (('isaac', 'isaac'), ('regression', 'regression'),
+                             ('multiview', 'multiview'), ('spatial_mapping', 'spatial_mapping')):
         if group not in ('all', selected):
             continue
         for path in sorted((ROOT/'tests'/folder).glob('test_*.py')):
+            if path.name == 'test_global_planning.py':
+                continue
             name = f'{selected}_{path.stem}'
             result = run_dir/f'{name}.json'
             command = ['bash', str(RUNNER), str(path), '--result', str(result)]
@@ -36,10 +39,19 @@ def cases(group, run_dir, artifacts):
             yield name, command, result
 
 
+    if group in ('all','global'):
+        for source in ('static','frozen_rgbd'):
+            name=f'global_{source}'
+            result=run_dir/f'{name}.json'
+            command=['bash',str(RUNNER),str(ROOT/'tests/isaac/test_global_planning.py'),
+                '--source',source,'--result',str(result),'--artifacts-dir',str(run_dir/name)]
+            yield name,command,result
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     selection = parser.add_mutually_exclusive_group()
-    selection.add_argument('--group', choices=('all', 'unit', 'isaac', 'regression', 'multiview'), default='all')
+    selection.add_argument('--group', choices=('all', 'unit', 'isaac', 'regression', 'multiview', 'spatial_mapping', 'global'), default='all')
     selection.add_argument('--unit-only', dest='group', action='store_const', const='unit',
                            help='Run offline tests with this Python; never invoke Isaac')
     parser.add_argument('--artifacts-dir', type=Path, help='Retain logs, result JSON and scenario artifacts in a fresh subdirectory')

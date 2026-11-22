@@ -10,7 +10,7 @@ from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points
-from tests.support.multiview_research import analytic_frames
+from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 
 

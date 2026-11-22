@@ -1,0 +1,153 @@
+"""Motion selection validates before any SDK/controller construction."""
+from dataclasses import FrozenInstanceError, replace
+from pathlib import Path
+import tempfile
+import unittest
+
+from robot_skill_stack.integrations.isaac.config import (
+    MotionConfig, SceneConfig, load_scene_config,
+)
+
+
+ROOT = Path(__file__).resolve().parents[2]
+PROFILE = ROOT/'config/scenes/playground.toml'
+
+
+class MotionConfigTests(unittest.TestCase):
+    def load(self, section):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'scene.toml'
+            path.write_text(PROFILE.read_text()+'\n'+section)
+            return load_scene_config(path)
+
+    def test_missing_motion_section_defaults_to_direct(self):
+        self.assertEqual(self.load('').motion.strategy, 'direct')
+
+    def test_empty_motion_section_defaults_to_direct(self):
+        self.assertEqual(self.load('[motion]\n').motion.strategy, 'direct')
+
+    def test_explicit_direct_is_accepted(self):
+        config = self.load('[motion]\nstrategy = "direct"\n')
+        self.assertEqual(config.motion, MotionConfig())
+        self.assertEqual(config.robot.backend, 'franka')
+        self.assertEqual(config.world.provider, 'perception')
+        self.assertFalse(config.spatial_mapping.enabled)
+
+    def test_every_existing_scene_profile_keeps_implicit_direct(self):
+        profiles = sorted((ROOT/'config/scenes').glob('*.toml'))
+        self.assertTrue(profiles)
+        for path in profiles:
+            with self.subTest(profile=path.name):
+                self.assertEqual(load_scene_config(path).motion.strategy, 'direct')
+
+    def test_hybrid_fails_explicitly_without_fallback(self):
+        with self.assertRaisesRegex(ValueError, r'Unsupported motion strategy.*hybrid.*not implemented'):
+            self.load('[motion]\nstrategy = "hybrid"\n')
+
+    def test_global_is_opt_in_without_spatial_mapping(self):
+        config = self.load('[motion]\nstrategy = "global"\n')
+        self.assertEqual(config.motion.strategy, 'global')
+        self.assertFalse(config.spatial_mapping.enabled)
+        self.assertEqual((config.motion.rrt_seed, config.motion.rrt_max_iterations), (123456, 10000))
+
+    def test_global_seed_and_search_bound_load_explicitly(self):
+        config = self.load('[motion]\nstrategy = "global"\nrrt_seed = 7\nrrt_max_iterations = 2000\n')
+        self.assertEqual((config.motion.rrt_seed, config.motion.rrt_max_iterations), (7, 2000))
+
+    def test_global_collision_model_is_explicit_and_stock_remains_default(self):
+        self.assertEqual(MotionConfig(strategy='global').global_collision_model, 'stock')
+        selected = self.load('[motion]\nstrategy = "global"\nglobal_collision_model = "enhanced"\n')
+        self.assertEqual(selected.motion.global_collision_model, 'enhanced')
+        for value in ('unknown', 'Enhanced', '', None, True, 1):
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'global_collision_model'):
+                MotionConfig(global_collision_model=value)
+
+    def test_global_obstacle_source_defaults_static_and_rejects_implicit_fallbacks(self):
+        self.assertEqual(MotionConfig(strategy='global').global_obstacle_source,'static')
+        for value in ('rgbd','ground_truth','empty','Frozen_rgbd',None,True,1):
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,'global_obstacle_source'):
+                MotionConfig(global_obstacle_source=value)
+
+    def test_frozen_rgbd_global_requires_enabled_rgbd_automatic_filter(self):
+        with self.assertRaisesRegex(ValueError,'enhanced collision model'):
+            MotionConfig(strategy='global',global_obstacle_source='frozen_rgbd')
+        base = self.load('')
+        motion = MotionConfig(strategy='global',global_collision_model='enhanced',global_obstacle_source='frozen_rgbd')
+        with self.assertRaisesRegex(ValueError,'enabled Spatial Mapping'):
+            replace(base,motion=motion)
+        with self.assertRaisesRegex(ValueError,'rgbd mapping source'):
+            replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='ground_truth'))
+        with self.assertRaisesRegex(ValueError,'automatic robot self-filtering'):
+            replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='rgbd',automatic_robot_filter=False))
+        selected=replace(base,motion=motion,spatial_mapping=replace(base.spatial_mapping,enabled=True,source='rgbd',automatic_robot_filter=True))
+        self.assertEqual(selected.motion.max_obstacles,64)
+        self.assertEqual(replace(selected,motion=replace(motion,max_obstacles=128)).motion.max_obstacles,128)
+
+    def test_global_search_settings_reject_invalid_programmatic_values(self):
+        for value in (0, -1, 2**31, True, 1.5, None, '4'):
+            with self.subTest(seed=value), self.assertRaisesRegex(ValueError, 'rrt_seed'):
+                MotionConfig(strategy='global', rrt_seed=value)
+        for value in (0, -1, 50001, True, 1.5, None, '100'):
+            with self.subTest(iterations=value), self.assertRaisesRegex(ValueError, 'rrt_max_iterations'):
+                MotionConfig(strategy='global', rrt_max_iterations=value)
+
+    def test_global_search_settings_boundaries_are_accepted(self):
+        for seed, iterations in ((1, 1), (2**31-1, 50000)):
+            config = MotionConfig(strategy='global', rrt_seed=seed, rrt_max_iterations=iterations)
+            self.assertEqual((config.rrt_seed, config.rrt_max_iterations), (seed, iterations))
+
+    def test_unknown_names_are_distinct_from_unimplemented_strategies(self):
+        for name in ('rrt', 'Direct', '', 'direct '):
+            with self.subTest(strategy=name), self.assertRaisesRegex(
+                    ValueError, 'Unknown motion strategy'):
+                self.load(f'[motion]\nstrategy = "{name}"\n')
+
+    def test_non_string_selector_has_clear_validation_error(self):
+        for value in ('true', '1', '1.5', '[]', '{}'):
+            with self.subTest(value=value), self.assertRaisesRegex(
+                    ValueError, r'motion.strategy must be a string'):
+                self.load(f'[motion]\nstrategy = {value}\n')
+
+    def test_unknown_motion_options_are_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'Invalid scene configuration'):
+            self.load('[motion]\nstrategy = "direct"\nobstacles = true\n')
+
+    def test_programmatic_config_validates_and_cannot_be_mutated(self):
+        config = MotionConfig()
+        with self.assertRaises(FrozenInstanceError):
+            config.strategy = 'global'
+        for value in (None, False, [], {}):
+            with self.subTest(value=value), self.assertRaisesRegex(
+                    ValueError, r'motion.strategy must be a string'):
+                MotionConfig(value)
+        self.assertEqual(replace(config, strategy='global').strategy, 'global')
+
+
+
+
+    def test_existing_positional_scene_config_construction_keeps_default(self):
+        original = self.load('')
+        config = SceneConfig(original.robot, original.world, original.scene,
+            original.perception, original.ground_truth, original.multi_view,
+            original.spatial_mapping)
+        self.assertEqual(config.motion.strategy, 'direct')
+
+
+
+
+class RetiredStrategyTests(unittest.TestCase):
+    def test_reactive_is_rejected_for_loaded_and_programmatic_configuration(self):
+        with self.assertRaisesRegex(ValueError,"Unknown motion strategy.*reactive"):
+            MotionConfig(strategy='reactive')
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'retired.toml'
+            path.write_text(PROFILE.read_text()+'\n[motion]\nstrategy = "reactive"\n')
+            with self.assertRaisesRegex(ValueError,"Unknown motion strategy.*reactive"):
+                load_scene_config(path)
+    def test_proxy_budget_validation_remains_independent(self):
+        for value in (0,129,True,2.5,None):
+            with self.subTest(value=value),self.assertRaisesRegex(ValueError,'max_obstacles'):
+                MotionConfig(max_obstacles=value)
+
+
+if __name__ == '__main__':unittest.main()

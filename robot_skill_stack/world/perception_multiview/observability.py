@@ -23,6 +23,7 @@ _EDGE_POSITIONS = np.linspace(-.4, .4, _EDGE_SAMPLES)
 
 
 def _unique_pixels(raw):
+    """Deduplicate integer image coordinates without allocating a full image mask."""
     low = raw.min(0)
     high = raw.max(0)
     width = int(high[0])-int(low[0])+1
@@ -138,6 +139,7 @@ def _face_plane(local, size, axis, sign):
 
 
 def _unbounded_status(views):
+    """Summarize why camera evidence could not bound a box side."""
     totals = {name: sum(view[name] for view in views) for name in ('occluded', 'missing', 'out_of_frame')}
     if any(totals.values()):
         return max(totals, key=totals.get)

@@ -51,6 +51,8 @@ def load_backend_module():
     module = importlib.util.module_from_spec(spec)
     with patch.dict('sys.modules', modules):
         spec.loader.exec_module(module)
+        from robot_skill_stack.integrations.isaac.manipulation.motion.direct import DirectRmpflowStrategy
+        module.DirectRmpflowStrategy = DirectRmpflowStrategy
     return module
 
 
@@ -173,8 +175,11 @@ class FrankaFrameFeedbackTests(unittest.TestCase):
 
 class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
     def adapter(self, playing=True, reaches=True):
-        cls = load_backend()
+        module = load_backend_module()
+        cls = module.IsaacFrankaBackend
         backend = cls.__new__(cls)  # Supply SDK boundaries without creating a native controller.
+        backend._motion_active = False
+        backend._motion_strategy = module.DirectRmpflowStrategy(backend)
         state = NS(updates=0, position=Pose([0, 0, 0]))
         backend.world = NS(is_playing=lambda: playing, current_time=0.,
                            step=Mock(side_effect=AssertionError('blocking world.step used')))

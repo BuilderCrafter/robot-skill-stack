@@ -254,6 +254,10 @@ class PickSkill(BaseSkill):
         grasp_hint=None,
         lift_height=0.12,
     ):
+        if getattr(self.backend, 'supports_contact_motion', True) is False:
+            return SkillResult(SkillStatus.FAILED,
+                'Selected motion strategy does not support intended-contact Pick.',
+                FailureCode.MOTION_UNSUPPORTED)
         obj, failure = self._start(object_id)
         if failure:
             return failure

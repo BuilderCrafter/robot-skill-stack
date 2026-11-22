@@ -6,6 +6,8 @@ import math
 import tomllib
 import numpy as np
 
+from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
+
 
 @dataclass(frozen=True)
 class RobotConfig:
@@ -99,6 +101,48 @@ class GroundTruthConfig:
 
 
 @dataclass(frozen=True)
+class MotionConfig:
+    strategy: str = 'direct'
+    max_obstacles: int = 64
+    rrt_seed: int = 123456
+    rrt_max_iterations: int = 10000
+    global_collision_model: str = 'stock'
+    global_obstacle_source: str = 'static'
+    global_rgbd_representation: str = 'occupied'
+
+    def __post_init__(self):
+        if not isinstance(self.strategy, str):
+            raise ValueError('motion.strategy must be a string')
+        if self.strategy == 'hybrid':
+            raise ValueError(f'Unsupported motion strategy {self.strategy!r}: '
+                             'not implemented; select \'direct\'')
+        if self.strategy not in ('direct', 'global'):
+            raise ValueError(f'Unknown motion strategy {self.strategy!r}; '
+                             'supported strategies: direct, global')
+        if type(self.max_obstacles) is not int or not 1 <= self.max_obstacles <= 128:
+            raise ValueError('motion.max_obstacles must be an integer between 1 and 128')
+        if type(self.rrt_seed) is not int or not 1 <= self.rrt_seed <= 2**31-1:
+            raise ValueError('motion.rrt_seed must be an integer between 1 and 2147483647')
+        if type(self.rrt_max_iterations) is not int or not 1 <= self.rrt_max_iterations <= 50000:
+            raise ValueError('motion.rrt_max_iterations must be an integer between 1 and 50000')
+        if (not isinstance(self.global_collision_model, str)
+                or self.global_collision_model not in ('stock', 'enhanced')):
+            raise ValueError("motion.global_collision_model must be 'stock' or 'enhanced'")
+        if (not isinstance(self.global_obstacle_source, str)
+                or self.global_obstacle_source not in ('static', 'frozen_rgbd')):
+            raise ValueError("motion.global_obstacle_source must be 'static' or 'frozen_rgbd'")
+        if (self.strategy == 'global' and self.global_obstacle_source == 'frozen_rgbd'
+                and self.global_collision_model != 'enhanced'):
+            raise ValueError('Frozen RGB-D global motion requires the enhanced collision model')
+        if self.global_rgbd_representation not in ('occupied', 'reconstructed'):
+            raise ValueError("motion.global_rgbd_representation must be 'occupied' or 'reconstructed'")
+        if self.global_rgbd_representation == 'reconstructed' and (
+                self.strategy != 'global' or self.global_obstacle_source != 'frozen_rgbd'
+                or self.max_obstacles != 64):
+            raise ValueError('Reconstructed RGB-D requires global frozen_rgbd with the 64-proxy budget')
+
+
+@dataclass(frozen=True)
 class SceneConfig:
     robot: RobotConfig
     world: WorldConfig
@@ -106,12 +150,24 @@ class SceneConfig:
     perception: PerceptionConfig
     ground_truth: GroundTruthConfig
     multi_view: MultiViewConfig = field(default_factory=MultiViewConfig)
+    spatial_mapping: SpatialMappingConfig = field(default_factory=SpatialMappingConfig)
+    motion: MotionConfig = field(default_factory=MotionConfig)
+
+    def __post_init__(self):
+        if self.motion.strategy == 'global' and self.motion.global_obstacle_source == 'frozen_rgbd':
+            if not self.spatial_mapping.enabled:
+                raise ValueError('Frozen RGB-D global motion requires enabled Spatial Mapping')
+            if self.spatial_mapping.source != 'rgbd':
+                raise ValueError('Frozen RGB-D global motion requires the rgbd mapping source')
+            if not self.spatial_mapping.automatic_robot_filter:
+                raise ValueError('Frozen RGB-D global motion requires automatic robot self-filtering')
 
 
 def load_scene_config(path: str | Path) -> SceneConfig:
     with Path(path).open('rb') as stream:
         data = tomllib.load(stream)
-    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth', 'multi_view'}
+    unknown = set(data)-{'robot', 'world', 'scene', 'perception', 'ground_truth',
+                        'multi_view', 'spatial_mapping', 'motion'}
     if unknown:
         raise ValueError(f'Unsupported configuration sections: {sorted(unknown)}')
     try:
@@ -122,6 +178,8 @@ def load_scene_config(path: str | Path) -> SceneConfig:
             SceneGeometry(**data['scene']), PerceptionConfig(**data.get('perception', {})),
             GroundTruthConfig(objects=objects, **ground_truth),
             MultiViewConfig(**data.get('multi_view', {})),
+            SpatialMappingConfig(**data.get('spatial_mapping', {})),
+            MotionConfig(**data.get('motion', {})),
         )
     except (KeyError, TypeError) as exc:
         raise ValueError(f'Invalid scene configuration: {exc}') from exc

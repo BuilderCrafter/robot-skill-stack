@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from collections.abc import Callable
-from functools import partial
 
 import numpy as np
 import omni.kit.app
@@ -23,9 +21,21 @@ from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
 from robot_skill_stack.world.model.updater import WorldModelUpdater
-from robot_skill_stack.world.perception.diagnostics import save_capture
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
+
+
+def _close_components(backend, observation_runtime, updater, world):
+    try:
+        close = getattr(backend, 'close', None)
+        if close is not None:
+            close()
+    finally:
+        try:
+            if observation_runtime is not None:
+                observation_runtime.close()
+        finally:
+            updater.stop(world)
 
 
 @dataclass
@@ -36,7 +46,8 @@ class IsaacRuntimeBundle:
     world_updater: WorldModelUpdater
     runtime: RobotRuntime
     config: SceneConfig
-    capture_frame: Callable[[Path], Path] | None = None
+    spatial_mapping: object | None = None
+    observation_runtime: object | None = None
     _closed: bool = field(default=False, init=False, repr=False)
 
     def close(self):
@@ -44,7 +55,8 @@ class IsaacRuntimeBundle:
             return
         self._closed = True
         try:
-            self.world_updater.stop(self.world)
+            _close_components(self.backend, self.observation_runtime,
+                              self.world_updater, self.world)
         finally:
             if getattr(self.world, '_robot_skill_stack_bundle', None) is self:
                 self.world._robot_skill_stack_bundle = None
@@ -54,7 +66,8 @@ _BUILDING = False
 
 
 def _validate_environment(config: SceneConfig):
-    if config.world.provider in ("perception", "multi_view"):
+    if (config.world.provider in ("perception", "multi_view") or
+            (config.spatial_mapping.enabled and config.spatial_mapping.source == 'rgbd')):
         major = int(np.__version__.split(".", 1)[0])
         if major >= 2:
             raise RuntimeError(
@@ -67,6 +80,10 @@ def _validate_environment(config: SceneConfig):
 def _validate_stage(config: SceneConfig):
     stage = omni.usd.get_context().get_stage()
     paths = [config.robot.prim_path, *required_source_prims(config)]
+    if config.spatial_mapping.enabled and config.spatial_mapping.source == 'rgbd':
+        from robot_skill_stack.integrations.isaac.observation_runtime import mapping_settings
+        paths.extend(mapping_settings(config).camera_prim_paths)
+    paths = list(dict.fromkeys(paths))
 
     missing = [
         path
@@ -125,8 +142,14 @@ async def _build_runtime(
     except BaseException:
         provider.close()
         raise
+    observation_runtime = backend = None
     try:
-        backend, gripper = create_backend(world, robot, config.robot)
+        # Keep the V5 startup/Home reference order. Future strategies resolve the
+        # public mapping service only when needed, after its later construction.
+        mapping_source_provider = ((lambda: None if observation_runtime is None
+            else observation_runtime.spatial_mapping) if config.spatial_mapping.enabled else None)
+        backend, gripper = create_backend(world, robot, config.robot,
+            motion=config.motion, mapping_source_provider=mapping_source_provider)
         planner = SimplePrimitiveGraspPlanner(
             gripper=gripper,
             support_plane_z=config.scene.support_plane_z,
@@ -143,6 +166,9 @@ async def _build_runtime(
         registry.register(PickSkill(backend, model, planner))
         registry.register(PlaceSkill(backend, model, placement_planner))
 
+        from robot_skill_stack.integrations.isaac.observation_runtime import create_observation_runtime
+        observation_runtime = await create_observation_runtime(world, config, updater, app)
+
         bundle = IsaacRuntimeBundle(
             world=world,
             backend=backend,
@@ -150,16 +176,23 @@ async def _build_runtime(
             world_updater=updater,
             runtime=RobotRuntime(registry, model),
             config=config,
-            capture_frame=partial(save_capture, provider) if config.world.provider == "perception" else None,
+            observation_runtime=observation_runtime,
+            spatial_mapping=None if observation_runtime is None else observation_runtime.spatial_mapping,
         )
         # Register only after every construction step succeeds.
-        updater.update()
-        updater.start(PhysicsCallbackScope(world))
+        if observation_runtime is None or observation_runtime._semantic_worker is None:
+            updater.update()
+            updater.start(PhysicsCallbackScope(world))
+        if observation_runtime is not None:
+            observation_runtime.start(app)
         world._robot_skill_stack_bundle = bundle
         print(f'[robot_skill_stack.runtime] ready: objects={len(model.objects())}', flush=True)
         return bundle
-    except BaseException:
-        updater.stop(world)
+    except BaseException as exc:
+        try:
+            _close_components(backend, observation_runtime, updater, world)
+        except Exception as cleanup:
+            exc.add_note(f'Runtime cleanup also failed: {cleanup}')
         raise
 
 

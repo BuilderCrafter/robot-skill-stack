@@ -1,6 +1,7 @@
 """Bounded, deterministic NumPy point-cloud operations in metres."""
 from pathlib import Path
 from itertools import product
+import math
 
 import numpy as np
 
@@ -45,6 +46,7 @@ def project_depth(frame, *, stride=2, pixel_offset=.5, bounds=None):
 
 
 def crop_workspace(points, scene, *, table_clearance=.004):
+    """Keep finite world points inside the workspace and above the support plane."""
     p = np.asarray(points, float).reshape(-1, 3)
     keep = (np.isfinite(p).all(1) & (p >= scene.workspace_min).all(1) &
             (p <= scene.workspace_max).all(1) & (p[:, 2] > scene.support_plane_z+table_clearance))
@@ -52,13 +54,27 @@ def crop_workspace(points, scene, *, table_clearance=.004):
 
 
 def voxelize(points, voxel=.002, max_points=6000):
+    """Merge points within spatial voxels and bound the resulting cloud size."""
     if not np.isfinite(voxel) or voxel <= 0 or max_points < 1:
         raise ValueError('voxel and max_points must be positive')
     points = np.asarray(points, float).reshape(-1, 3)
     points = points[np.isfinite(points).all(1)]
     if not len(points):
         return points
-    keys, inverse = np.unique(np.floor(points/voxel+1e-9).astype(np.int64), axis=0, return_inverse=True)
+    keys = np.floor(points/voxel+1e-9).astype(np.int64)
+    lower, upper = keys.min(0), keys.max(0)
+    widths = tuple(int(hi)-int(lo)+1 for lo, hi in zip(lower, upper))
+    if math.prod(widths) <= np.iinfo(np.int64).max:
+        # Checked mixed-radix keys preserve XYZ lexicographic group order.
+        # Keep accumulation in original point order for identical centroids.
+        codes = keys[:, 0]-lower[0]
+        codes *= widths[1]
+        codes += keys[:, 1]-lower[1]
+        codes *= widths[2]
+        codes += keys[:, 2]-lower[2]
+        _, inverse = np.unique(codes, return_inverse=True)
+    else:
+        _, inverse = np.unique(keys, axis=0, return_inverse=True)
     counts = np.bincount(inverse)
     result = np.column_stack([np.bincount(inverse, weights=points[:, i])/counts for i in range(3)])
     if len(result) > max_points:
@@ -67,6 +83,7 @@ def voxelize(points, voxel=.002, max_points=6000):
 
 
 def fuse_clouds(clouds, *, voxel=.002, max_points=6000):
+    """Balance camera point densities, then merge redundant spatial samples."""
     # First equalize density per camera, then suppress cross-camera duplicates.
     balanced = [voxelize(p, voxel, max_points) for p in clouds]
     return voxelize(np.concatenate(balanced) if balanced else np.empty((0, 3)), voxel, max_points)

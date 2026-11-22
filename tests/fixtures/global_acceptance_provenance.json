@@ -1,0 +1,165 @@
+{
+  "source_commit": "cdd2be9bfa6e95295c83b41d69819579b6dcde94",
+  "definitions": {
+    "serial": {
+      "source": "scripts/diagnose_reactive_motion.py",
+      "original_sha256": "7b5c0849460aa5cd560092e8647b54c4b3e6a749c437ced8fa93da58a505ff7e",
+      "retained_sha256": "7b5c0849460aa5cd560092e8647b54c4b3e6a749c437ced8fa93da58a505ff7e"
+    },
+    "cooked_reference": {
+      "source": "scripts/diagnose_reactive_motion.py",
+      "original_sha256": "df999518ac465c0381a11d4f3097d84bd1b572f5958283eeb49f7dcc132657c1",
+      "retained_sha256": "df999518ac465c0381a11d4f3097d84bd1b572f5958283eeb49f7dcc132657c1"
+    },
+    "_capture_robot_meshes": {
+      "source": "scripts/benchmark_global_motion_v4.py",
+      "original_sha256": "dbdc28ebd310f19c9169521f54e2931469d6f698ed776f65096f0a257a48d77e",
+      "retained_sha256": "6b701feb0854edb394cfb75f25b9093edabe6376926fcafc6eb5354a35be644d"
+    },
+    "prepare_stage": {
+      "source": "scripts/benchmark_global_roundtrip_v4_2.py",
+      "original_sha256": "0036a05d8b50b768adab1c6d11ac6c64e0b556b334adcdb6af70f583d6217b2f",
+      "retained_sha256": "37ee44682d52f98f786d5330a43a4fbb89f812db33fe53b405725bbe85d0a9bb"
+    },
+    "sample_trajectory": {
+      "source": "scripts/global_rgbd_v5_pair.py",
+      "original_sha256": "3656670a5b2325410febb38b01be92aa96db30bd839896e05bbbd7b180640202",
+      "retained_sha256": "3656670a5b2325410febb38b01be92aa96db30bd839896e05bbbd7b180640202"
+    },
+    "bounded_evaluate": {
+      "source": "scripts/global_rgbd_v5_pair.py",
+      "original_sha256": "d230ce6b86166b8b32e9b4c403d58bde32ec77169811a259d916ef3373634f1b",
+      "retained_sha256": "d230ce6b86166b8b32e9b4c403d58bde32ec77169811a259d916ef3373634f1b"
+    },
+    "contact_rows": {
+      "source": "scripts/diagnose_global_stabilization_v4_1.py",
+      "original_sha256": "bd0c44f28dfa2fc7d96817904bfae2ccd00ab1b666ff21c857b01411a7d2eece",
+      "retained_sha256": "bd0c44f28dfa2fc7d96817904bfae2ccd00ab1b666ff21c857b01411a7d2eece"
+    },
+    "physical_fk.py:vector": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "vector",
+      "sha256": "4c57ff8897e2f4cef23eb1def0791bfbbe76add5740e5b1a4d7ce22c8e064fd2"
+    },
+    "physical_fk.py:axis_rotation": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "axis_rotation",
+      "sha256": "da16bc75ce4fbb80982d594cfdb3e494348952e0a3c903d517d60df142ec233f"
+    },
+    "physical_fk.py:Joint": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "Joint",
+      "sha256": "4ecbcc2c11fdc71be548ceecbfba0ed0ef2ff568421c79c04c004ff8545d02a5"
+    },
+    "physical_fk.py:IndependentUrdfFK": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "IndependentUrdfFK",
+      "sha256": "77da43a710e6b071de2788b335858a5f4d27eb57313d6532e08b4488d969e74f"
+    },
+    "physical_fk.py:intersection_ball": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "intersection_ball",
+      "sha256": "a5569797ee5d274b294e307bfde2977d0e2c9192eb8d94f5e2495fd8202dfed3"
+    },
+    "physical_fk.py:candidate_world_poses": {
+      "source": "scripts/audit_rejected_ik_v4_2.py",
+      "name": "candidate_world_poses",
+      "sha256": "2a5248e61755b7cd2df8c2bb2accb74dae32706df48548b1e71fa7a1eb7d0d27"
+    },
+    "physical_fk.py:body_mesh_vertices": {
+      "source": "scripts/audit_global_collision_v4_1.py",
+      "name": "body_mesh_vertices",
+      "sha256": "87110298c60444000107f53129f29ccf501a9f5c0664fa565fbdfb06fd18a852"
+    },
+    "convex_distance.py:_vertices": {
+      "source": "scripts/obstacle_representation_v3_cylinder.py",
+      "name": "_vertices",
+      "sha256": "d14e7aae9b943b79cba2cc3288fce5a7c824319441075fef1cc51870f47533bf"
+    },
+    "convex_distance.py:_closest_simplex": {
+      "source": "scripts/obstacle_representation_v3_cylinder.py",
+      "name": "_closest_simplex",
+      "sha256": "a7a3f7cc0f7e85f9d9883966b29a2014f5668b8f233ab1ad3e33009d36d6d6b0"
+    },
+    "convex_distance.py:convex_distance_details": {
+      "source": "scripts/obstacle_representation_v3_cylinder.py",
+      "name": "convex_distance_details",
+      "sha256": "2ded27d356bcf9d037e336a34ccec1d2bf910c9dfff1446ad4ddb5a95a4483b8"
+    },
+    "global_physical.py:immutable": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "immutable",
+      "sha256": "22b4b5e9905d3000e3ae4c888ee20a02d1cf51e4c28fea79d77de383569114d6"
+    },
+    "global_physical.py:body_name": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "body_name",
+      "sha256": "2a15f12c7188ee1862d823029579ebd373f80462c323b828a49a3c69f29077e9"
+    },
+    "global_physical.py:_points": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "_points",
+      "sha256": "b6036f95d1377598d07d57fcc26d09a7ffdd395c9b4b3231cc90885a593870d5"
+    },
+    "global_physical.py:_transform": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "_transform",
+      "sha256": "2e6c7a5670b80db258c3f113892d619adfcca03ebe14b3a5061fc9b263383bff"
+    },
+    "global_physical.py:CookedRobotPart": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "CookedRobotPart",
+      "sha256": "f45e3559ffeb35e3b7b6c5abede864e55ec53810ea6ad2a571b21e0f4b470028"
+    },
+    "global_physical.py:PhysicalObstacle": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "PhysicalObstacle",
+      "sha256": "212b8198c70c1ec33880d99afe555fc3214ffc3c96ec1db67bb01a20eab3ef31"
+    },
+    "global_physical.py:robot_parts_from_capture": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "robot_parts_from_capture",
+      "sha256": "eac5bfaeddb6bf113e82e16c214921084e5f35ada15f8835d2fefb25bfbfd187"
+    },
+    "global_physical.py:physical_obstacles_from_static": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "physical_obstacles_from_static",
+      "sha256": "15eda57037a3241edb391c95fa000665fc3af4c7a5b489bb029d591059e768ab"
+    },
+    "global_physical.py:densify_joint_route": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "densify_joint_route",
+      "sha256": "2771ad4a70d41914d22f0d955816600cdaf01ef43a4f291a061d466dcdafa91a"
+    },
+    "global_physical.py:_sampled_motion": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "_sampled_motion",
+      "sha256": "766954d8d68920f8ee2c90360bd55a4a7ee4fb627f84a43502b984839fe28ff9"
+    },
+    "global_physical.py:_aabb_bound": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "_aabb_bound",
+      "sha256": "603e7cc9c4c5f855fb39b14978e0a88b72c7a1c534baf3fa4fb81e7a76b583eb"
+    },
+    "global_physical.py:_convex_relation": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "_convex_relation",
+      "sha256": "68421902dbc26a7dc29af2ccf1f4d05d0942d5a80fa30520cee39cc41b0522fb"
+    },
+    "global_physical.py:PhysicalMotionEvaluator": {
+      "source": "scripts/evaluate_global_rgbd_v5.py",
+      "name": "PhysicalMotionEvaluator",
+      "sha256": "9fb48904a1e6c84e69b62358151e9ece6de1946d1bdf9e571f4967e9161f5eb8"
+    },
+    "global_rgbd_partial.toml": {
+      "sha256": "8c29d9a1905d5dcb5bdb63b264a8d3f18a5f67eb831fd07043f75001b7d72ff3",
+      "source": "Previously accepted unchanged nominal partial run profile",
+      "original_source_sha256": "fd81ff00399f70ea340b778b2d68e7d0bca11dcb31388ebecd6be1bd28d73568",
+      "copy_format": "Final blank lines normalized; parsed TOML exactly equals original archived profile"
+    },
+    "global_partial.json": {
+      "sha256": "ab781fd204f94f5bef779d4b6e96254e3689d660deb82506a6eba644fe61e121",
+      "source": "Original partial physical fixture; never an RGB-D input"
+    }
+  }
+}

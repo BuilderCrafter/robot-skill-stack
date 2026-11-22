@@ -44,7 +44,6 @@ def bundle_(provider='perception'):
     world = Mock()
     return SimpleNamespace(world_model=wm, backend=backend, runtime=runtime, world=world,
                            world_updater=updater, close=Mock(side_effect=lambda: updater.stop(world)),
-                           capture_frame=Mock(return_value=ROOT / "outputs/perception/test.npz") if provider == "perception" else None,
                            config=SimpleNamespace(world=SimpleNamespace(provider=provider)))
 
 
@@ -140,7 +139,7 @@ class ControlPanelTests(unittest.TestCase):
         self.assertEqual(headers, {'SCENE / RUNTIME', 'SELECTED OBJECT', 'TARGET XYZ', 'SKILLS',
                                   'TASKS', 'DEBUG / MAINTENANCE', 'STATUS'})
         self.assertEqual(set(self.panel.buttons), {'profile', 'initialize', 'move_to', 'pick', 'place',
-                         'move', 'home', 'task', 'recovery', 'clear_lost', 'clear_held', 'capture'})
+                         'move', 'home', 'task', 'recovery', 'clear_lost', 'clear_held'})
         for widget in self.panel.buttons.values():
             self.assertTrue(callable(widget.clicked_fn))
 
@@ -159,7 +158,7 @@ class ControlPanelTests(unittest.TestCase):
         self.assertFalse(list((EXT / 'icons').glob('*.ttf')))
 
     def test_initial_state_does_not_allow_motion_or_maintenance(self):
-        for key in ('pick', 'place', 'move', 'home', 'clear_held', 'clear_lost', 'capture'):
+        for key in ('pick', 'place', 'move', 'home', 'clear_held', 'clear_lost'):
             self.assertFalse(self.panel.buttons[key].enabled, key)
         self.assertTrue(self.panel.buttons['initialize'].enabled)
         self.assertEqual(self.panel.count.text, '0 objects')
@@ -303,15 +302,6 @@ class ControlPanelTests(unittest.TestCase):
             bundle = self.bind(bundle_(provider))
             self.c._clear_lost_clicked()
             bundle.world_updater.clear_lost.assert_called_once_with()
-
-    def test_capture_control_uses_optional_adapter_callback(self):
-        bundle = self.bind()
-        self.panel.buttons['capture'].click()
-        bundle.capture_frame.assert_called_once()
-        self.assertEqual(bundle.capture_frame.call_args.args[0].suffix, '.npz')
-        self.assertIn('test.npz', self.panel.status.text)
-        self.bind(bundle_('ground_truth'))
-        self.assertFalse(self.panel.buttons['capture'].enabled)
 
     def test_profile_picker_sets_existing_profile(self):
         self.panel.buttons['profile'].click()

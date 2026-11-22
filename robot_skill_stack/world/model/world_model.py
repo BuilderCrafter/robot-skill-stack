@@ -16,13 +16,55 @@ class WorldModel:
     def __init__(self):
         self._objects: dict[str, WorldObject] = {}
         self._association_hints: dict[str, AssociationHint] = {}
-        self.held_object_id: str | None = None
-        self.held_object_offset_in_ee: np.ndarray | None = None
-        self.held_object_uncertain = False
+        self._context_revision = 0
+        self._held_object_id: str | None = None
+        self._held_object_offset_in_ee: np.ndarray | None = None
+        self._held_object_uncertain = False
         self.source_health: ObservationHealth | None = None
+
+    @property
+    def context_revision(self):
+        """Owner-context association/control epoch, including ABA transitions."""
+        return self._context_revision
+
+    @property
+    def held_object_id(self):
+        return self._held_object_id
+
+    @held_object_id.setter
+    def held_object_id(self, value):
+        if value != self._held_object_id:
+            self._held_object_id = value
+            self._context_revision += 1
+
+    @property
+    def held_object_offset_in_ee(self):
+        return self._held_object_offset_in_ee
+
+    @held_object_offset_in_ee.setter
+    def held_object_offset_in_ee(self, value):
+        old = self._held_object_offset_in_ee
+        if (old is None and value is None) or (old is not None and value is not None and
+                                               np.array_equal(old, value)):
+            return
+        self._held_object_offset_in_ee = (None if value is None else
+            np.frombuffer(np.asarray(value, dtype=float).tobytes(), dtype=float))
+        self._context_revision += 1
+
+    @property
+    def held_object_uncertain(self):
+        return self._held_object_uncertain
+
+    @held_object_uncertain.setter
+    def held_object_uncertain(self, value):
+        value = bool(value)
+        if value != self._held_object_uncertain:
+            self._held_object_uncertain = value
+            self._context_revision += 1
 
     def register(self, obj: WorldObject) -> None:
         self._objects[obj.object_id] = obj
+        self._context_revision += 1
 
     def _protected(self, now=None):
         return {self.held_object_id, *(hint.object_id for hint in self.association_hints(now))}
@@ -31,6 +73,7 @@ class WorldModel:
         if object_id in self._protected() or object_id not in self._objects:
             return False
         del self._objects[object_id]
+        self._context_revision += 1
         self.clear_association_hint(object_id)
         return True
 
@@ -93,24 +136,30 @@ class WorldModel:
             reason=reason,
         )
         self._association_hints[object_id] = hint
+        self._context_revision += 1
         return hint
 
     def clear_association_hint(self, object_id: str) -> None:
-        self._association_hints.pop(object_id, None)
+        if self._association_hints.pop(object_id, None) is not None:
+            self._context_revision += 1
 
     def association_hints(self, now=None) -> tuple[AssociationHint, ...]:
         now = time.monotonic() if now is None else float(now)
         return tuple(h for h in self._association_hints.values() if h.expires_at > now)
 
     def expire_hints(self, now):
-        self._association_hints = {
+        active = {
             key: hint for key, hint in self._association_hints.items() if hint.expires_at > now
         }
+        if len(active) != len(self._association_hints):
+            self._association_hints = active
+            self._context_revision += 1
 
     def observation_context(self) -> ObservationContext:
         return ObservationContext(
             held_object_id=self.held_object_id,
             association_hints=self.association_hints(),
+            revision=self.context_revision,
         )
 
     def apply_observations(

@@ -19,6 +19,7 @@ class FailureCode(str, Enum):
 
     UNREACHABLE = "unreachable"
     PATH_BLOCKED = "path_blocked"
+    MOTION_UNSUPPORTED = "motion_unsupported"
 
     NO_VALID_GRASP = "no_valid_grasp"
     GRASP_FAILED = "grasp_failed"

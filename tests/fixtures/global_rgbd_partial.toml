@@ -1,0 +1,45 @@
+# Generated V5 source comparison; authored cameras and defaults remain unchanged.
+# Opt-in cube/sphere demo; open scenes/multiview_perception_final.usda first.
+[robot]
+backend = "franka"
+prim_path = "/Franka"
+
+[world]
+provider = "multi_view"
+update_hz = 5.0
+
+[scene]
+support_plane_z = 0.0
+workspace_min = [-0.3, -0.6, -0.02]
+workspace_max = [1.0, 0.6, 1.12]
+
+[multi_view]
+camera_prim_paths = ["/World/PerceptionCamera", "/World/PerceptionCameraSide"]
+resolution = [640, 480]
+max_skew = 0.025
+voxel_size = 0.002
+stride = 2
+
+[motion]
+strategy = "global"
+global_collision_model = "enhanced"
+global_obstacle_source = "frozen_rgbd"
+max_obstacles = 64
+rrt_seed = 123456
+rrt_max_iterations = 10000
+global_rgbd_representation = "reconstructed"
+
+[spatial_mapping]
+enabled = true
+source = "rgbd"
+bounds_min = [-0.3, -0.6, -0.02]
+bounds_max = [0.85, 0.6, 1.12]
+voxel_size = 0.01
+camera_prim_paths = ["/World/PerceptionCamera", "/World/PerceptionCameraSide"]
+stride = 8
+max_rays = 1024
+automatic_robot_filter = true
+update_hz = 2.0
+max_frame_age = 1.0
+stale_after = 1.0
+evidence_ttl = 5.0
