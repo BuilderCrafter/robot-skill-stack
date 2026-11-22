@@ -155,24 +155,43 @@ def refine_cluster(points: np.ndarray, fitter, *, support_plane_z: float = 0.) -
     """Split only well-covered, supported metric components with distinct models.
 
     No missing samples are reassigned or used to infer FREE space. A competing
-    single-solid explanation, fragmented split or insufficient fit budget is
-    unknown. Without split candidates, ordinary single-object fitting remains.
+    single-solid explanation or insufficient fit budget is unknown. Sparse
+    fragments may retain a well-supported whole sphere. A separate oversized
+    component may be discarded downstream without losing a qualified target.
     """
     supported, reason = supported_object_cloud(points, support_plane_z)
-    if len(points) < 50 or not supported and reason != 'no_observed_support_contact':
+    oversized = reason == 'oversized_or_robot_connected'
+    if len(points) < 50 or not supported and reason != 'no_observed_support_contact' and not oversized:
         return [(points, None)]
     components = _metric_components(points)
     if len(components) <= 1:
         return [(points, None)]
     coverage = sum(map(len, components)) / len(points)
     unresolved = [(points, unknown_fit(points, reason='unresolved_components'))]
-    if not 2 <= len(components) <= 8 or coverage < .90:
+    if not 2 <= len(components) <= 8:
         return unresolved
+    if coverage < .90:
+        # Disconnected visible patches need not be different objects. Keep the
+        # original samples only when one sphere explains their measured surface.
+        if not oversized:
+            parent = fitter.fit(points, support_plane_z=support_plane_z)
+            if parent.geometry.shape.value == 'sphere' and np.percentile(_surface_distance(points, parent), 95) <= .003:
+                return [(points, parent)]
+        return unresolved
+    candidates, background = [], []
+    for cloud in components:
+        if oversized and supported_object_cloud(cloud, support_plane_z)[1] == 'oversized_or_robot_connected':
+            background.append(cloud)
+        else:
+            candidates.append(cloud)
+    if oversized and (not background or not candidates):
+        return unresolved
+    required = len(candidates) + (not background)
     # A direct SurfaceFitter is useful offline; live calls share the provider's cap.
-    if getattr(fitter, 'remaining', len(components) + 1) < len(components) + 1:
+    if getattr(fitter, 'remaining', required) < required:
         return unresolved
     fits = []
-    for cloud in components:
+    for cloud in candidates:
         supported, reason = supported_object_cloud(cloud, support_plane_z)
         if not supported and reason != 'no_observed_support_contact':
             return unresolved
@@ -185,6 +204,9 @@ def refine_cluster(points: np.ndarray, fitter, *, support_plane_z: float = 0.) -
         fits.append(fit)
     if not _distinct_models(fits):
         return unresolved
+    if background:
+        return sorted(list(zip(candidates, fits)) + [(cloud, None) for cloud in background],
+                      key=lambda item: tuple(item[0].mean(0)))
     parent = fitter.fit(points, support_plane_z=support_plane_z)
     if parent.geometry.shape.value != 'unknown' and np.mean(_surface_distance(points, parent) <= .003) >= .95:
         return unresolved

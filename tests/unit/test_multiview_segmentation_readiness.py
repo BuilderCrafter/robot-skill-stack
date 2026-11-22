@@ -100,6 +100,32 @@ class SegmentationReadinessTests(unittest.TestCase):
             self.assertLess(np.linalg.norm(nearest.pose.position-solid.center), .004)
             self.assertTrue(nearest.metadata['contributing_views'])
 
+    def test_rendered_sphere_survives_missing_depth_and_separate_foreground(self):
+        from robot_skill_stack.integrations.isaac.config import load_scene_config
+        from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+        from robot_skill_stack.world.perception_multiview.provider import MultiViewInput, MultiViewProcessor
+        from tests.support.primitive_scene import render
+        scene = load_scene_config('config/scenes/multiview_perception_final.toml').scene
+        cases = [([Solid('sphere')], ((1.05, .55, .90), (.25, -.85, .65)), .2),
+                 ([Solid('sphere'), Solid('cube', center=(.45, .145, .04), size=(.045, .24, .05))],
+                  ((.85, .35, .60), (.2, -.5, .45)), 0.)]
+        for solids, eyes, dropout in cases:
+            with self.subTest(dropout=dropout):
+                frames = []
+                for i, eye in enumerate(eyes):
+                    raw = render(solids, eye=eye, resolution=(640, 480), seed=71+i)
+                    depth, intrinsics = raw.depth.copy(), raw.intrinsics.copy()
+                    depth[np.random.default_rng(720+i).random(depth.shape) < dropout] = np.nan
+                    intrinsics[:2, 2] += .5
+                    frames.append(DepthFrame(str(i), (1, .1), depth, intrinsics, raw.world_from_camera, 1.))
+                result = MultiViewProcessor(scene).compute(MultiViewInput(tuple(frames), 1.))
+                self.assertEqual(len(result.detections), 1)
+                fit = result.detections[0].fit
+                self.assertEqual(fit.geometry.shape.value, 'sphere')
+                self.assertLess(np.linalg.norm(fit.center-[.45, 0., .025]), .001)
+                self.assertAlmostEqual(fit.geometry.radius, .025, delta=.001)
+                self.assertTrue(fit.geometry.metadata['parameter_observable'])
+
 
 if __name__ == '__main__':
     unittest.main()

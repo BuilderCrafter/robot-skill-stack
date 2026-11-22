@@ -108,17 +108,23 @@ class SegmentationTests(unittest.TestCase):
         self.assertIs(refined[0][0], points)
         self.assertEqual(refined[0][1].geometry.shape.value, 'unknown')
 
-    def test_background_connected_cluster_is_rejected_whole(self):
+    def test_background_recovery_requires_separate_metric_components(self):
         x, z = np.meshgrid(np.linspace(-.1, .1, 70), np.linspace(.005, .20, 70))
         background = np.c_[x.ravel(), np.zeros(x.size), z.ravel()]
-        sphere = self.sphere((0., -.031, .025))
-        points = np.r_[background, sphere]
-        self.assertEqual(len(cluster_points(points)), 1)
-        refined = refine_cluster(points, SurfaceFitter())
-        self.assertEqual(len(refined), 1)
-        self.assertIs(refined[0][0], points)
-        self.assertIsNone(refined[0][1])
-        self.assertFalse(supported_object_cloud(points, 0.)[0])
+        for distance, expected in ((.031, 2), (.025, 1)):
+            with self.subTest(distance=distance):
+                points = np.r_[background, self.sphere((0., -distance, .025))]
+                self.assertEqual(len(cluster_points(points)), 1)
+                refined = refine_cluster(points, SurfaceFitter())
+                self.assertEqual(len(refined), expected)
+                if expected == 2:
+                    fits = [fit for _, fit in refined if fit is not None]
+                    self.assertEqual([fit.geometry.shape.value for fit in fits], ['sphere'])
+                    self.assertLess(np.linalg.norm(fits[0].center-[0., -distance, .025]), .001)
+                else:
+                    self.assertIs(refined[0][0], points)
+                    self.assertIsNone(refined[0][1])
+                self.assertFalse(supported_object_cloud(points, 0.)[0])
 
 
 if __name__ == '__main__':

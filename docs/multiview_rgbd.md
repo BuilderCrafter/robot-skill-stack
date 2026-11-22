@@ -14,10 +14,14 @@ hidden geometry observable or all objects graspable.
 Refinement splits well-covered 4 mm components only when supported primitive fits
 have separate conservative horizontal bounds and no competing single-solid fit.
 Unresolved multi-component explanations remain UNKNOWN; candidates without a
-credible split retain ordinary single-object fitting. Oversized connected
-background is rejected as a whole. Foreground recovery, surface reassignment and
+credible split retain ordinary single-object fitting. Sparse components can
+retain a whole-sphere fit when it explains at least 95% of the measured surface
+within 3 mm. A qualified target can be recovered beside a separate oversized
+4 mm component when the retained components cover at least 90% of the input.
+Truly connected oversized geometry is still rejected. Surface reassignment and
 camera-gap resolution are outside this demo policy. Close rotated boxes or
-cylinders whose world-axis bounds overlap can remain unresolved.
+cylinders whose world-axis bounds overlap can remain unresolved. See the
+[segmentation A/B investigation](segmentation-regression.md) for measured limits.
 
 Semantic processing runs in bounded SDK-free workers. The owner retains frame
 identity, association and WorldModel updates. Spatial Mapping can reuse the same
