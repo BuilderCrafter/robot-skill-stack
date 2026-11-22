@@ -1,4 +1,3 @@
-from dataclasses import replace
 import unittest
 from unittest.mock import patch
 
@@ -50,7 +49,7 @@ class ProviderTests(unittest.TestCase):
     def confirm(self, frames=None):
         for _ in range(3):
             self.step(frames)
-        self.assertEqual(len(self.model.objects()), 1, self.provider.diagnostics)
+        self.assertEqual(len(self.model.objects()), 1)
         return self.model.objects()[0].object_id
 
     def test_fusion_produces_one_observation_and_persistent_identity(self):
@@ -68,14 +67,13 @@ class ProviderTests(unittest.TestCase):
         frames = [analytic_frames([])[0], self.frames[1]]
         key = self.confirm(frames)
         self.assertEqual(self.model.require(key).metadata['contributing_views'], ['B'])
-        self.assertEqual(self.model.require(key).metadata['camera_count'], 2)
 
     def test_separated_nearby_objects_and_outlier_suppression(self):
         frames = analytic_frames([Solid('sphere', center=(.45, -.045, .025)),
                                   Solid('sphere', center=(.45, .045, .025))])
         for _ in range(3):
             self.step(frames)
-        self.assertEqual(len(self.model.objects()), 2, self.provider.diagnostics)
+        self.assertEqual(len(self.model.objects()), 2)
         cloud = np.r_[np.random.default_rng(1).normal([.4, 0, .02], .002, (50, 3)), [[.7, .3, .2]]]
         self.assertEqual(len(cluster_points(cloud)), 1)
 
@@ -133,8 +131,6 @@ class ProviderTests(unittest.TestCase):
         key = self.confirm(frames)
         self.assertIsNone(self.model.require(key).class_name)
         self.assertFalse(self.model.require(key).graspable)
-        self.assertTrue(any(r['reason'] == 'no_observed_support_contact'
-                            for r in self.provider.diagnostics['rejected']))
 
     def test_updater_and_provider_own_cleanup_exactly_once(self):
         self.updater.stop()

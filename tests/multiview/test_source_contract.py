@@ -46,8 +46,7 @@ def main(args):
             for _ in range(8):
                 world.step(render=True)
             batch = updater.update()
-            samples.append(dict(health=updater.health.status, observations=len(batch),
-                                diagnostics=source.diagnostics))
+            samples.append(dict(health=updater.health.status, observations=len(batch)))
             (output/'samples.json').write_text(json.dumps(samples, indent=2))
         print('Visible:', [(o.object_id, o.class_name) for o in model.visible_objects()], flush=True)
 
@@ -61,7 +60,7 @@ def main(args):
     try:
         observe(4)
         visible = model.visible_objects()
-        assert len(visible) == 4, ([(o.object_id, o.class_name) for o in visible], source.diagnostics)
+        assert len(visible) == 4, [(o.object_id, o.class_name) for o in visible]
         assignment = {}
         for obj in objects:
             nearest = min(visible, key=lambda o: np.linalg.norm(o.pose.position-obj.center))
@@ -113,7 +112,7 @@ def main(args):
         prim.SetActive(True)
         UsdGeom.Xformable(prim).GetOrderedXformOps()[0].Set(Gf.Vec3d(*target.tolist()))
         observe(2)
-        assert model.require(key).visible, (source.diagnostics, updater.health.error)
+        assert model.require(key).visible, updater.health.error
         assert np.linalg.norm(model.require(key).pose.position-target) < .010
         assert not model.association_hints()
 
@@ -146,8 +145,7 @@ def main(args):
             'persistent_ids': assignment, 'frozen_camera_failed': True,
             'both_frozen_stale': True, 'uncertain_identity_protected': True,
             'placement_hint_reacquired': True, 'partial_initialization_cleanup': True,
-            'reinitializations': 2, 'robot_commands': 0,
-            'timings_ms': [s['diagnostics'].get('total_ms') for s in samples]})
+            'reinitializations': 2, 'robot_commands': 0})
     finally:
         updater.stop()
 

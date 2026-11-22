@@ -42,8 +42,7 @@ class ObservationRuntime:
         self._simulation_time = None
         self._filter_needs_resume = False
         self._semantic_paths = semantic_camera_paths(config)
-        self._multiview = config.world.provider == 'multi_view'
-        self._semantic_skew = config.multi_view.max_skew if self._multiview else .025
+        self._semantic_skew = config.multi_view.max_skew if config.world.provider == 'multi_view' else .025
         self._mapping_settings = mapping_settings(config)
         self._shared_cameras = (self._mapping_settings.source == 'rgbd' and
             bool(set(self._semantic_paths) & set(self._mapping_settings.camera_prim_paths)))
@@ -159,8 +158,6 @@ class ObservationRuntime:
                                      simulation_time=self._simulation_time)
             if frames is None:
                 return
-            if self._multiview:
-                self.updater.provider.rig.status = dict(self.pool.status['semantic'])
             prepared = self.updater.provider.acquire(frames=frames)
             if prepared is not None:
                 revision = self.updater.world_model.observation_context().revision

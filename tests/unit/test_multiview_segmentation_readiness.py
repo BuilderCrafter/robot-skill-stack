@@ -6,7 +6,7 @@ import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit, SurfaceFitter, unknown_fit
-from robot_skill_stack.world.perception_multiview.provider import _FitTimer
+from robot_skill_stack.world.perception_multiview.provider import _FitBudget
 from robot_skill_stack.world.perception_multiview.segmentation import (
     _metric_components, _partition_view_evidence, cluster_points, refine_cluster, supported_object_cloud,
 )
@@ -108,7 +108,7 @@ class SegmentationReadinessTests(unittest.TestCase):
             np.full(x.size, .007*fragment), z.ravel()] for parent in range(16) for fragment in range(8)])
         numerical = Mock()
         numerical.fit.side_effect = lambda cloud, **kwargs: unknown_fit(cloud)
-        bounded = _FitTimer(numerical, max_calls=24)
+        bounded = _FitBudget(numerical, max_calls=24)
         broad = cluster_points(points)
         self.assertEqual(len(broad), 16)
         for cloud in broad:
@@ -153,7 +153,7 @@ class SegmentationReadinessTests(unittest.TestCase):
             def finalize(fit, points, **kwargs):
                 fit.geometry.metadata['parameter_observable'] = good[0]
                 return fit
-            provider.fitter.finalize = finalize
+            provider.processor.fitter.finalize = finalize
             model = WorldModel()
             updater = WorldModelUpdater(model, provider)
             for _ in range(3):

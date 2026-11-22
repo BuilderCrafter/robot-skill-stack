@@ -4,7 +4,7 @@ Planned public seam: provider.acquire(), provider.processor.compute(input),
 provider.associate(result, context), updater.accepts(timestamp, context_revision)
 and updater.publish(batch, context_revision=...). The runtime checks accepts()
 BEFORE association. Computation owns no tracker or simulator handle; tracking,
-diagnostic publication, forgetting and WorldModel mutation remain on the owner.
+forgetting and WorldModel mutation remain on the owner.
 
 These tests deliberately retain the different V1/MV held association policies.
 Frozen V4 provider code provides a numerical oracle for the extraction boundary;
@@ -36,6 +36,7 @@ from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception.factory import build_perception_provider
 from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+from robot_skill_stack.world.perception_multiview.shared_frames import SharedFramePool
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import FrameCamera, Solid, render
 from tests.unit.test_multiview_provider import Camera
@@ -135,6 +136,12 @@ class SemanticProcessingTests(unittest.TestCase):
         for _ in range(4):
             self.now.return_value+=.2;advance_old();advance_new()
             expected=old.observe()
+            if kind == 'mv':
+                # Retired reporting fields are intentionally absent; compare all
+                # geometry, confidence, graspability, IDs and retained metadata.
+                for observation in expected.observations:
+                    for key in ('class_confidence', 'camera_count', 'fused_points'):
+                        observation.metadata.pop(key)
             acquired=new.acquire()
             computed=new.processor.compute(acquired)
             actual=new.associate(computed)
@@ -157,7 +164,7 @@ class SemanticProcessingTests(unittest.TestCase):
                 provider,advance,cameras=self.provider(kind)
                 advance();self.now.return_value+=.2
                 acquired=provider.acquire()
-                diagnostics=deepcopy(provider.diagnostics)
+                diagnostics=deepcopy(provider.diagnostics) if kind == 'v1' else None
                 tracker_calls=[]
                 original=provider.tracker.update
                 def track_on_owner(*args,**kwargs):
@@ -175,7 +182,8 @@ class SemanticProcessingTests(unittest.TestCase):
                         finally:
                             for guard in reversed(forbidden):guard.stop()
                     self.assertFalse(tracker_calls)
-                    self.assertEqual(canonical(provider.diagnostics),canonical(diagnostics))
+                    if kind == 'v1':
+                        self.assertEqual(canonical(provider.diagnostics),canonical(diagnostics))
                     provider.associate(result)
                 self.assertEqual(tracker_calls,[self.owner])
                 self.assertFalse(any(value is provider or value is provider.tracker or
@@ -184,20 +192,35 @@ class SemanticProcessingTests(unittest.TestCase):
     def test_acquisition_copies_writable_buffers_and_reuses_immutable_shared_arrays(self):
         provider,advance,_=self.provider('mv')
         advance();prepared=provider.acquire()
-        shared=prepared.frames
-        for frame in shared:
+        for frame in prepared.frames:
             for array in (frame.depth,frame.intrinsics,frame.world_from_camera,frame.rgb):
                 if array is not None:
                     self.assertFalse(array.flags.writeable)
                     with self.assertRaises(ValueError):array.setflags(write=True)
-        provider._last_prepared_tokens=None
+        pool=SharedFramePool(provider.rig.cameras, clock=lambda: 99.8)
+        self.addCleanup(pool.close)
+        shared=pool.batch('semantic', ('A', 'B'))
         reused=provider.acquire(frames=shared)
+        self.assertEqual(reused.timestamp, 99.8)
         for before,after in zip(shared,reused.frames):
+            self.assertIs(before,after)
             self.assertIs(before.depth,after.depth)
             self.assertIs(before.intrinsics,after.intrinsics)
             self.assertIs(before.world_from_camera,after.world_from_camera)
-        original=provider.rig.cameras['A'].frame.depth
-        self.assertFalse(np.shares_memory(original,shared[0].depth))
+        self.assertIsNone(pool.batch('semantic', ('A', 'B')))
+        for camera, direct, pooled in zip(provider.rig.cameras.values(), prepared.frames, shared):
+            for name in ('depth', 'intrinsics', 'world_from_camera', 'rgb'):
+                original=getattr(camera.frame, name)
+                if original is None:
+                    continue
+                expected=getattr(direct, name).copy()
+                self.assertFalse(np.shares_memory(original, getattr(direct, name)))
+                self.assertFalse(np.shares_memory(original, getattr(pooled, name)))
+                original[:]=0
+                np.testing.assert_array_equal(getattr(direct, name), expected)
+                np.testing.assert_array_equal(getattr(pooled, name), expected)
+                with self.assertRaises(ValueError):
+                    getattr(pooled, name).setflags(write=True)
 
     def test_held_and_hint_aba_transitions_change_context_revision(self):
         model=WorldModel();model.register(WorldObject('a'));model.register(WorldObject('b'))

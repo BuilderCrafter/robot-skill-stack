@@ -9,7 +9,7 @@ from robot_skill_stack.world.perception_multiview.fitting import (
     PrimitiveFit, SurfaceFitter, orientation_metadata,
 )
 from robot_skill_stack.world.perception_multiview.observability import _unique_pixels
-from robot_skill_stack.world.perception_multiview.provider import _FitTimer
+from robot_skill_stack.world.perception_multiview.provider import _FitBudget
 from robot_skill_stack.world.perception_multiview import segmentation
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
@@ -27,13 +27,13 @@ class FinalRefinementTests(unittest.TestCase):
         return result, radii
 
     def test_complete_single_component_has_one_graph(self):
-        _, radii = self.metric_calls(box_surface(), _FitTimer(SurfaceFitter()))
+        _, radii = self.metric_calls(box_surface(), _FitBudget(SurfaceFitter()))
         self.assertEqual(radii, [.004])
 
     def test_explicit_missing_band_ambiguity_is_not_retried(self):
         points = box_surface()
         points = points[abs(points[:, 0]-.45) > .004]
-        result, radii = self.metric_calls(points, _FitTimer(SurfaceFitter()))
+        result, radii = self.metric_calls(points, _FitBudget(SurfaceFitter()))
         self.assertEqual(radii, [.004])
         self.assertEqual(result[0][1].geometry.metadata['reason'], 'ambiguous_single_or_multiple_surfaces')
 
@@ -42,7 +42,7 @@ class FinalRefinementTests(unittest.TestCase):
         points = points[abs(points[:, 0]-.45) > .004]
         parent = SurfaceFitter().fit(points)
         frames = analytic_frames([Solid('cube', center=(.45, 0., .025), size=(.05, .05, .05))])
-        result, radii = self.metric_calls(points, _FitTimer(SurfaceFitter()), parent_fit=parent, frames=frames)
+        result, radii = self.metric_calls(points, _FitBudget(SurfaceFitter()), parent_fit=parent, frames=frames)
         self.assertEqual(radii, [.004])
         self.assertEqual(len(result), 1)
         self.assertIs(result[0][1], parent)
@@ -50,10 +50,10 @@ class FinalRefinementTests(unittest.TestCase):
     def test_less_than_minimum_two_child_budget_does_no_retry_or_fits(self):
         points = box_surface()
         points = points[abs(points[:, 0]-.45) > .004]
-        fitter = _FitTimer(SurfaceFitter(), max_calls=4)
+        fitter = _FitBudget(SurfaceFitter(), max_calls=4)
         _, radii = self.metric_calls(points, fitter)
         self.assertEqual(radii, [.004])
-        self.assertEqual(fitter.calls, 0)
+        self.assertEqual(fitter.remaining, 4)
 
     def test_scalar_pixel_codes_preserve_negative_and_out_of_image_pairs(self):
         raw = np.array([[-1, 1], [9, 0], [0, -1], [0, -1], [19, -1], [-11, 2]])

@@ -108,7 +108,7 @@ class ConfigFactoryTests(unittest.TestCase):
                 with patch.dict(sys.modules, {'robot_skill_stack.integrations.isaac.world.multiview': module}):
                     provider = asyncio.run(factory.create_source(cfg))
                     module.create_cameras.assert_called_once_with(tuple(paths), (320, 240), max_skew=.01)
-                    self.assertEqual((provider.voxel_size, provider.stride), (.003, 3))
+                    self.assertEqual((provider.processor.voxel_size, provider.processor.stride), (.003, 3))
                     provider.close()
                 rig.close.assert_called_once()
 
