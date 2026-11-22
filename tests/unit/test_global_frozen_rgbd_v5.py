@@ -30,9 +30,9 @@ def support(timestamp=10.):
 
 
 def frozen():
-    return NS(timestamp=10., metadata=dict(source_type='rgbd', generation=2, revision=7,
-        age_seconds=.1, policy={'unknown':'preserved'}), boxes=(NS(id='1:2:3:4:5:6',
-        center=(.15,.35,.505), dimensions=(.1,.1,.01), orientation_wxyz=(1.,0.,0.,0.)),))
+    return NS(timestamp=10., generation=2, revision=7, age_seconds=.1,
+        source_frames=({'camera_id':'/A'}, {'camera_id':'/B'}), boxes=(NS(id='1:2:3:4:5:6',
+        center=(.15,.35,.505), dimensions=(.1,.1,.01)),))
 
 
 class NumericSourceTests(unittest.TestCase):
@@ -48,11 +48,9 @@ class NumericSourceTests(unittest.TestCase):
         self.assertEqual(box.source_kind, 'rgbd_occupied_cells')
         self.assertEqual(world.source_metadata['camera_obstacle_count'], 1)
         self.assertEqual(world.source_metadata['known_support_paths'], SUPPORT_PLANE_PATHS)
-        camera.metadata['policy']['unknown'] = 'free'
-        self.assertEqual(world.source_metadata['policy']['unknown'], 'preserved')
         with self.assertRaises(TypeError):world.source_metadata['revision'] = 8
         with self.assertRaises(FrozenInstanceError):world.timestamp = 11.
-        self.assertEqual(world.as_dict()['source_metadata']['policy']['unknown'], 'preserved')
+        self.assertEqual(world.as_dict()['source_metadata']['revision'],camera.revision)
 
     def test_broad_gt_snapshot_cannot_be_substituted_for_known_support(self):
         known = support()

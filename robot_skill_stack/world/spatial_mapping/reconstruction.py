@@ -94,7 +94,7 @@ def combine(frozen) -> tuple[list[dict[str, object]], dict[str, object], Inferre
         raise ValueError('No inferred geometry accompanies this occupancy publication')
     if (product.generation, product.revision, product.timestamp) != (frozen.generation, frozen.revision, frozen.timestamp):
         raise ValueError('Inferred geometry and occupancy identity differ')
-    records = frozen.metadata['source_frames']
+    records = frozen.source_frames
     if len(records) != len(product.source_frames):
         raise ValueError('Inferred source cameras differ')
     for a, b in zip(records, product.source_frames):
@@ -116,7 +116,7 @@ def combine(frozen) -> tuple[list[dict[str, object]], dict[str, object], Inferre
         subsumed[path] = []
     for box in frozen.boxes:
         top = box.center[2]+box.dimensions[2]/2
-        support_z = float(frozen.metadata['extraction']['support_plane_z'])
+        support_z = float(frozen.view.obstacles.diagnostics['support_plane_z'])
         floor = top <= support_z+frozen.spec.voxel_size+1e-12
         if floor:
             floors.append(box.id)
@@ -130,7 +130,7 @@ def combine(frozen) -> tuple[list[dict[str, object]], dict[str, object], Inferre
         if owner is None:
             retained.append(box.id)
             descriptors.append(dict(path='/__rgbd_occupied__/'+box.id, position=box.center,
-                dimensions=box.dimensions, orientation=box.orientation_wxyz, source_kind='rgbd_occupied_cells'))
+                dimensions=box.dimensions, orientation=(1.,0.,0.,0.), source_kind='rgbd_occupied_cells'))
         else:
             subsumed[owner].append(box.id)
     if len(descriptors) > 64:

@@ -81,12 +81,12 @@ def planning_world_from_frozen(frozen, support):
                 for item in support.obstacles)):
         raise StaticWorldError('RGB-D support boundary cannot contain scene obstacle geometry')
     boxes = tuple(StaticObstacle('/__rgbd_occupied__/'+box.id, 'cuboid', box.center,
-        orientation=box.orientation_wxyz, dimensions=box.dimensions, source_kind='rgbd_occupied_cells',
+        orientation=(1.,0.,0.,0.), dimensions=box.dimensions, source_kind='rgbd_occupied_cells',
         approximation='exact_selected_occupied_cells', maximum_surface_error_m=0.) for box in frozen.boxes)
-    metadata = dict(frozen.metadata, known_support_paths=tuple(item.path for item in support.obstacles),
-        known_support_policy='Explicit exact Plane path allowlist; no scene traversal',
-        camera_obstacle_count=len(boxes), known_support_count=len(support.obstacles),
-        active_world_obstacle_refreshes=0)
+    metadata = dict(source_type='rgbd', generation=frozen.generation, revision=frozen.revision,
+        map_age_seconds=frozen.age_seconds, camera_ids=tuple(f['camera_id'] for f in frozen.source_frames),
+        known_support_paths=tuple(item.path for item in support.obstacles),
+        camera_obstacle_count=len(boxes))
     return StaticWorldSnapshot((*support.obstacles, *boxes), frozen.timestamp, support.meters_per_unit,
         support.robot_prim_path, plane_domains=support.plane_domains, source_metadata=metadata)
 

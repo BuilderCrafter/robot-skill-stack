@@ -32,9 +32,10 @@ def fixture(ids=('0:1:0:1:1:2','10:11:0:1:20:21'), models=None):
     for key in ids:
         a,b,c,d,e,f=map(int,key.split(':'))
         boxes.append(NS(id=key,center=(.005*(a+b),.005*(c+d),-.02+.005*(e+f)),
-                        dimensions=(.01,.01,.01),orientation_wxyz=(1.,0.,0.,0.)))
-    frozen=NS(generation=2,revision=3,timestamp=10.,view=NS(inferred=product),boxes=tuple(boxes),
-        spec=NS(voxel_size=.01),metadata={'source_frames':records,'extraction':{'support_plane_z':0.}})
+                        dimensions=(.01,.01,.01)))
+    frozen=NS(generation=2,revision=3,timestamp=10.,
+        view=NS(inferred=product,obstacles=NS(diagnostics={'support_plane_z':0.})),
+        boxes=tuple(boxes),spec=NS(voxel_size=.01),source_frames=records)
     return frozen, product
 
 
@@ -62,11 +63,11 @@ class AssemblyTests(unittest.TestCase):
             frozen,p=fixture();frozen.view.inferred=replace(p,**{field:value})
             with self.assertRaisesRegex(ValueError,'identity'):rec.combine(frozen)
         for key in ('camera_id','token','acquired_at','depth_shape','intrinsics','world_from_camera'):
-            frozen,p=fixture();records=[dict(v) for v in frozen.metadata['source_frames']]
+            frozen,p=fixture();records=[dict(v) for v in frozen.source_frames]
             records[0][key]='wrong' if key=='camera_id' else np.zeros_like(records[0][key])
-            frozen.metadata['source_frames']=records
+            frozen.source_frames=records
             with self.subTest(key=key),self.assertRaisesRegex(ValueError,'exposure'):rec.combine(frozen)
-        frozen,p=fixture();frozen.metadata['source_frames']=()
+        frozen,p=fixture();frozen.source_frames=()
         with self.assertRaisesRegex(ValueError,'cameras'):rec.combine(frozen)
 
     def test_failed_inference_never_removes_evidence_and_empty_keeps_all_cells(self):
