@@ -174,8 +174,7 @@ class MultiViewProvider:
                 confidence=geometry.confidence,
                 source='multi_view_geometry', timestamp=timestamp,
                 metadata={'contributing_views': list(track.detection.views),
-                          'association_hint_match': track.hint_reason is not None,
-                          'association_hint_reason': track.hint_reason}))
+                          'association_hint_match': track.matched_by_hint}))
         return ObservationBatch(observations, timestamp)
 
     def observe(self, context: ObservationContext | None = None) -> ObservationBatch:

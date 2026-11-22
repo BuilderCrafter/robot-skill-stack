@@ -4,11 +4,15 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
+from robot_skill_stack.world.model.context import AssociationHint, ObservationContext
+from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
+from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points
+from robot_skill_stack.world.perception_multiview.tracking import Detection
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 
@@ -94,6 +98,7 @@ class ProviderTests(unittest.TestCase):
         self.assertFalse(self.model.exists(key))
         self.assertNotIn(key, self.provider.tracker.tracks)
         self.assertIsNone(self.provider.get_point_cloud(key))
+        self.assertNotEqual(self.confirm(), key)
 
     def test_held_and_uncertain_ids_survive_missing_observations_and_reacquire_by_hint(self):
         for uncertain in (False, True):
@@ -105,6 +110,10 @@ class ProviderTests(unittest.TestCase):
             self.step(analytic_frames([]))
             self.assertTrue(self.model.exists(key))
             self.assertEqual(self.updater.clear_lost(), ())
+            for _ in range(3):
+                self.step(self.frames)  # Tabletop returns near a held identity stay suppressed.
+            self.assertFalse(self.model.visible_objects())
+            self.assertIsNone(self.provider.get_point_cloud(key))
             target = [.45, .25, .025]
             self.model.expect_object_at(key, target, ttl=10., reason='place')
             self.model.set_held(None)
@@ -112,6 +121,22 @@ class ProviderTests(unittest.TestCase):
             self.assertEqual([o.object_id for o in self.model.objects()], [key])
             self.assertTrue(self.model.require(key).visible)
             self.assertFalse(self.model.association_hints())
+
+    def test_hint_match_wins_over_a_closer_track_without_sharing_the_detection(self):
+        def detection(x):
+            fit = PrimitiveFit(PrimitiveGeometry('sphere', .9, radius=.025),
+                               np.array([x, 0., .025]), np.full(3, .05))
+            return Detection(fit, fit.center[None], ('A', 'B'))
+        detections = [detection(.4), detection(.5)]
+        tracker = self.provider.tracker
+        for timestamp in (1., 2., 3.):
+            tracks = tracker.update(detections, timestamp)
+        first, second = (track.object_id for track in tracks)
+        hint = AssociationHint(second, [.4, 0., .025], .08, expires_at=5., reason='place')
+        matched = tracker.update([detection(.4)], 4., ObservationContext(association_hints=(hint,)))
+        self.assertEqual([track.object_id for track in matched], [second])
+        self.assertTrue(matched[0].matched_by_hint)
+        self.assertFalse(tracker.tracks[first].visible)
 
     def test_pending_confirmation_needs_consecutive_distinct_samples(self):
         self.step()

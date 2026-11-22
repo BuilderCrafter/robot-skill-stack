@@ -59,6 +59,10 @@ def frozen_provider(kind):
     legacy=types.ModuleType('robot_skill_stack.world.perception.diagnostics')
     legacy.describe=describe
     with patch.dict(sys.modules,{legacy.__name__:legacy}):
+        if kind == 'mv':
+            # Adapt only retired hint metadata; leave the frozen fixture unchanged.
+            source=source.replace(b'track.hint_reason is not None', b'track.matched_by_hint')
+            source=source.replace(b"'association_hint_reason': track.hint_reason", b"'association_hint_reason': None")
         exec(compile(source,f'{BASELINE}:{path}','exec'),module.__dict__)
     return module.PerceptionStateProvider if kind=='v1' else module.MultiViewProvider
 
@@ -142,7 +146,7 @@ class SemanticProcessingTests(unittest.TestCase):
                 # Retired reporting fields are intentionally absent; compare all
                 # geometry, confidence, graspability, IDs and retained metadata.
                 for observation in expected.observations:
-                    for key in ('class_confidence', 'camera_count', 'fused_points'):
+                    for key in ('class_confidence', 'camera_count', 'fused_points', 'association_hint_reason'):
                         observation.metadata.pop(key)
             acquired=new.acquire()
             computed=new.processor.compute(acquired)
