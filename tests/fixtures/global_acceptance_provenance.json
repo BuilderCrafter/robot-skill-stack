@@ -34,7 +34,8 @@
     "contact_rows": {
       "source": "scripts/diagnose_global_stabilization_v4_1.py",
       "original_sha256": "bd0c44f28dfa2fc7d96817904bfae2ccd00ab1b666ff21c857b01411a7d2eece",
-      "retained_sha256": "bd0c44f28dfa2fc7d96817904bfae2ccd00ab1b666ff21c857b01411a7d2eece"
+      "retained_sha256": "446b1c4c9a7ddde6dcbd03a16c8cc4ccdb594bd254364b99502d18719084098e",
+      "import_adaptation": "Original fixture.serial resolves to the identical locally extracted serial helper"
     },
     "physical_fk.py:vector": {
       "source": "scripts/audit_rejected_ik_v4_2.py",

@@ -17,6 +17,19 @@ ROOT=Path(__file__).resolve().parents[2]
 
 
 class ReferenceIntegrityTests(unittest.TestCase):
+    def test_extracted_contact_observer_handles_empty_and_physical_contacts(self):
+        from tests.support.global_native import contact_rows
+        view=NS(sensor_paths=['/Franka/panda_hand'],filter_paths=[['/Box']])
+        view.get_contact_data=lambda dt:(np.array([.2]),np.zeros((1,3)),np.array([[0.,0.,1.]]),np.array([-.001]),
+            np.array([[0]]),np.array([[0]]))
+        self.assertEqual(contact_rows(view,1.),([],False))
+        view.get_contact_data=lambda dt:(np.array([.2]),np.zeros((1,3)),np.array([[0.,0.,1.]]),np.array([-.001]),
+            np.array([[1]]),np.array([[0]]))
+        rows,saturated=contact_rows(view,1.)
+        self.assertFalse(saturated);self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]['sensor'],'/Franka/panda_hand')
+        self.assertEqual(rows[0]['obstacle'],'/Box')
+
     def test_both_native_profiles_validate_before_sdk_construction(self):
         from robot_skill_stack.integrations.isaac.config import load_scene_config
         original=(ROOT/'tests/fixtures/global_rgbd_partial.toml').read_text()

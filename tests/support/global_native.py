@@ -211,4 +211,4 @@ def contact_rows(view, units):
             normal_impulses_ns=normal, separations_m=signed,
             points_world_m=np.asarray(points)[first:first+count].copy()*units,
             normals_world=np.asarray(normals)[first:first+count].copy()))
-    return fixture.serial(rows), int(counts.sum()) >= 4096
+    return serial(rows), int(counts.sum()) >= 4096
