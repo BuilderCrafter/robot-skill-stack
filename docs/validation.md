@@ -50,6 +50,8 @@ uses the bounded cases above, not historical experiment matrices.
 Individual headless acceptance commands:
 
 ```bash
+./run_isaac_python.sh tests/multiview/test_final_native.py --headless \
+  --result outputs/NEW-native-final/result.json --artifacts-dir outputs/NEW-native-final
 ./run_isaac_python.sh tests/isaac/test_motion_strategy.py --headless \
   --result outputs/NEW-direct/result.json --artifacts-dir outputs/NEW-direct
 ./run_isaac_python.sh tests/isaac/test_global_planning.py --source static \
@@ -59,6 +61,11 @@ Individual headless acceptance commands:
 ./run_isaac_python.sh tests/spatial_mapping/test_runtime_integration.py --headless --lifecycle-only \
   --result outputs/NEW-lifecycle/result.json --artifacts-dir outputs/NEW-lifecycle
 ```
+
+The final-scene multiview check uses native cameras, the production asynchronous
+runtime, a planner-selected pre-grasp approach and bounded lifecycle controls.
+Read its [measured results](multiview-native-validation.md): geometry and lifecycle
+pass, while stale visibility intervals remain a demo blocker.
 
 Global acceptance copies only frozen fixture data and the necessary independent
 numeric/cooked-geometry reference helpers. It does not import research scripts.
