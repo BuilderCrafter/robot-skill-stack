@@ -9,6 +9,7 @@ import numpy as np
 from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter, _triangles
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
+from tests.unit.test_spatial_mapping_robot_filter import pixels
 
 ADAPTER = 'robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter'
 
@@ -108,8 +109,8 @@ def frame(stamp=1., depth=1., camera_id='A', number=10):
 def prepared_masks(source, frames, *, pixels_by_camera=None):
     """Follow the active split: Isaac prepares poses; generic worker filters rays."""
     frames = tuple(frames)
-    return RobotSelfFilter(stride=1).masks(frames, source.prepare(frames),
-                                         pixels_by_camera=pixels_by_camera)
+    return RobotSelfFilter().masks(frames, source.prepare(frames),
+        pixels_by_camera=pixels(frames) if pixels_by_camera is None else pixels_by_camera)
 
 
 class IsaacRobotFilterTests(unittest.TestCase):

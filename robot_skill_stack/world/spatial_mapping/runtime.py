@@ -68,8 +68,8 @@ class MappingProcessor:
                 max_voxel_visits=cfg.max_voxel_visits, max_depth=cfg.max_depth,
                 max_skew=cfg.max_skew, max_frame_age=cfg.max_frame_age, clock=self.clock)
             if cfg.automatic_robot_filter:
-                self.filter = RobotSelfFilter(stride=cfg.stride,
-                    depth_tolerance=cfg.robot_depth_tolerance, pose_tolerance=cfg.robot_pose_tolerance)
+                self.filter = RobotSelfFilter(depth_tolerance=cfg.robot_depth_tolerance,
+                                              pose_tolerance=cfg.robot_pose_tolerance)
         self._extractor = (None if self._obstacle_settings is None else
                            ObstacleExtractor(self._obstacle_settings, temporal_probabilities=cfg.source == 'rgbd'))
 

@@ -7,6 +7,7 @@ import numpy as np
 from tests.unit.test_spatial_mapping_robot_adapter import Scene,boundaries,frame,ADAPTER
 from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter
 from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
+from tests.unit.test_spatial_mapping_robot_filter import pixels
 
 class RobotPrepareTests(unittest.TestCase):
     def test_preparation_does_not_intersect_and_payload_outlives_adapter(self):
@@ -21,7 +22,8 @@ class RobotPrepareTests(unittest.TestCase):
             source.close()
             with patch(ADAPTER+'._usd_modules',side_effect=AssertionError('worker USD access')):
                 with ThreadPoolExecutor(max_workers=1) as worker:
-                    masks=worker.submit(RobotSelfFilter(stride=1).masks,frames,prepared).result(timeout=1.)
+                    masks=worker.submit(RobotSelfFilter().masks,frames,prepared,
+                        pixels_by_camera=pixels(frames)).result(timeout=1.)
             self.assertTrue(masks['A'].all())
 
     def test_old_frame_preparation_matches_history_and_owns_transforms(self):
@@ -33,8 +35,10 @@ class RobotPrepareTests(unittest.TestCase):
             old=source.prepare((frame(1.,1.),))
             current=source.prepare((frame(1.1,1.2),))
             state.raw[0,2]=4.
-            self.assertTrue(RobotSelfFilter(stride=1).masks((frame(1.,1.),),old)['A'].all())
-            self.assertTrue(RobotSelfFilter(stride=1).masks((frame(1.1,1.2),),current)['A'].all())
+            self.assertTrue(RobotSelfFilter().masks((frame(1.,1.),),old,
+                pixels_by_camera=pixels((frame(1.,1.),)))['A'].all())
+            self.assertTrue(RobotSelfFilter().masks((frame(1.1,1.2),),current,
+                pixels_by_camera=pixels((frame(1.1,1.2),)))['A'].all())
             with self.assertRaises(ValueError): old['A'].parts[0].world_from_local.setflags(write=True)
             self.assertIs(old['A'].parts[0].mesh,current['A'].parts[0].mesh)
             source.close()
