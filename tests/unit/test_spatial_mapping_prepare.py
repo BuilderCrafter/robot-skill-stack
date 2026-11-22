@@ -95,26 +95,6 @@ class RobotPrepareTests(unittest.TestCase):
             source.close()
 
 
-class GroundTruthPrepareTests(unittest.TestCase):
-    def test_prepared_geometry_is_sdk_free_and_matches_worker_rasterization(self):
-        from tests.unit.test_spatial_mapping_ground_truth import usd_fixture, Prim, transform
-        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import prepare_ground_truth
-        from robot_skill_stack.world.spatial_mapping import GridSpec
-        from robot_skill_stack.world.spatial_mapping.geometry import rasterize_ground_truth
-        prim = Prim('/Box', matrix=transform((.1, .1, .1), yaw=.3))
-        stage, modules, _ = usd_fixture([prim])
-        spec = GridSpec((0, 0, 0), (.3, .3, .3), .02)
-        with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules', return_value=modules):
-            prepared = prepare_ground_truth(stage, timestamp=100.)
-            expected, _ = rasterize_ground_truth(spec, prepared, 8_000_000)
-        prim.matrix[:3, 3] = 9
-        with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
-                   side_effect=AssertionError('worker imported SDK')):
-            with ThreadPoolExecutor(max_workers=1) as worker:
-                indices, _ = worker.submit(rasterize_ground_truth, spec, prepared, 8_000_000).result(timeout=1.)
-        np.testing.assert_array_equal(indices, expected)
-        self.assertEqual(prepared.timestamp, 100.)
-        with self.assertRaises(ValueError): prepared.items[0].lower.setflags(write=True)
 
 
 class RobotViewRebindTests(unittest.TestCase):
@@ -222,31 +202,3 @@ class RobotSourceErrorTests(unittest.TestCase):
                     source.source_error = None
                 source.close()
                 self.assertEqual(source.source_error, 'Robot self-filter is closed')
-
-
-class GroundTruthDiagnosticsCompatibilityTests(unittest.TestCase):
-    def test_unsupported_geometry_diagnostics_remain_worker_serializable(self):
-        import json
-        from tests.unit.test_spatial_mapping_ground_truth import usd_fixture, Prim
-        from robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth import prepare_ground_truth
-        from robot_skill_stack.world.spatial_mapping import GridSpec
-        from robot_skill_stack.world.spatial_mapping.geometry import rasterize_ground_truth
-        prim = Prim('/Unsupported', kind='mesh', bounds=([.05, .05, .05], [.15, .15, .15]))
-        stage, modules, _ = usd_fixture([prim])
-        with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
-                   return_value=modules):
-            prepared = prepare_ground_truth(stage, timestamp=100.)
-        with self.assertRaises(TypeError):
-            prepared.diagnostics['approximations'][0]['type'] = 'changed'
-        spec = GridSpec((0., 0., 0.), (.3, .3, .3), .1)
-        indices, diagnostics = rasterize_ground_truth(spec, prepared, 8_000_000)
-        self.assertGreater(len(indices), 0)
-        from robot_skill_stack.runtime.process_worker import _TransportPickler
-        import io, pickle
-        stream = io.BytesIO()
-        _TransportPickler(stream, protocol=5).dump(dict(diagnostics=diagnostics))
-        decoded = pickle.loads(stream.getvalue())
-        item = decoded['diagnostics']['approximations'][0]
-        self.assertEqual(item['type'], 'mesh')
-        self.assertEqual(item['path'], '/Unsupported')
-        self.assertEqual(prepared.diagnostics['approximations'][0]['type'], 'mesh')

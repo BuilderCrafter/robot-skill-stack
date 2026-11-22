@@ -7,7 +7,7 @@ import numpy as np
 from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
 from robot_skill_stack.runtime.worker import WorkResult
 from robot_skill_stack.world.spatial_mapping import GridSpec, OccupancyMap, OccupancyState
-from robot_skill_stack.world.spatial_mapping.geometry import GeometryItem, GroundTruthInput, _Primitive, _primitive_bounds
+from robot_skill_stack.world.spatial_mapping.geometry import GroundTruthInput, _primitive_item
 from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, MappingProcessor, MappingReadView, MappingService
 from tests.unit.test_spatial_mapping_robot_filter import frame, snapshot
 
@@ -21,9 +21,7 @@ def settings(**overrides):
 def gt(stamp=100., center=(.15,.05,.05)):
     matrix = np.eye(4)
     matrix[:3,3] = center
-    primitive = _Primitive('cube',matrix,np.array([.02]*3))
-    lower,upper,inverse = _primitive_bounds(primitive)
-    return GroundTruthInput(stamp,(GeometryItem(lower,upper,primitive,inverse),),{})
+    return GroundTruthInput(stamp,(_primitive_item('cube',matrix,dimensions=np.array([.02]*3)),))
 
 
 class ManualWorker:

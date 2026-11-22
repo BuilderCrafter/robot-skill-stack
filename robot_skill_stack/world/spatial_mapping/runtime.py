@@ -77,8 +77,8 @@ class MappingProcessor:
         if self.map is None or payload.generation != self.map.generation:
             self._reset(payload.generation)
         if self.settings.source == 'ground_truth':
-            indices, _ = rasterize_ground_truth(self.map.spec, payload.ground_truth,
-                                               self.settings.max_candidate_voxels)
+            indices = rasterize_ground_truth(self.map.spec, payload.ground_truth,
+                                             self.settings.max_candidate_voxels)
             accepted = self.map.replace(indices, timestamp=payload.ground_truth.timestamp, now=self.clock())
         else:
             if payload.ground_truth is not None:
