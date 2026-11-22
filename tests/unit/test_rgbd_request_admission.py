@@ -39,11 +39,9 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.backend.on_update=self.update
 
     def attach(self,status='qualified'):
-        view=self.source.snapshot()
-        self.source._published_inferred=InferredGeometry(view.generation,view.revision,view.timestamp,
-            status,'unsupported hidden bound' if status=='rejected' else 'ok',
+        self.source._published_inferred=InferredGeometry(
             () if status in ('rejected','empty') else (model(center=(0,0,1),dimensions=(.5,.5,.5)),),
-            tuple(dict(f) for f in self.source.diagnostics['source_frames']),{})
+            'unsupported hidden bound' if status=='rejected' else None)
 
     def publish(self,status='qualified'):
         self.number+=1
@@ -209,9 +207,10 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         self.backend.on_update=empty
         result=await self.strategy.move_to_pose_async(self.target)
         self.assertTrue(result.ok)
-        audit=result.details['planning_source']['occupied_coverage']
-        self.assertEqual(audit['inference_status'],'empty')
-        self.assertEqual(len(audit['retained_selected_ids']),audit['original_selected'])
+        frozen=self.strategy.last_plan_trace['frozen_rgbd']
+        snapshot=self.strategy.last_plan_trace['snapshot']
+        self.assertEqual([o.path for o in snapshot.obstacles if o.source_kind=='rgbd_occupied_cells'],
+                         ['/__rgbd_occupied__/'+box.id for box in frozen.boxes])
         self.assertEqual(len(self.captures),1)
 
     async def test_fingers_changed_during_admission_reject_before_capture(self):

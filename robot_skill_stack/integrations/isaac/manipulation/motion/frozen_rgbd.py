@@ -116,15 +116,13 @@ def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, sup
         try:
             if max_obstacles != 64:
                 raise ValueError('Reconstructed camera-proxy budget must be 64')
-            descriptors, audit, product = combine(frozen)
+            descriptors = combine(frozen)
             cuboids = tuple(StaticObstacle(v['path'], 'cuboid', v['position'],
                 orientation=v['orientation'], dimensions=v['dimensions'], source_kind=v['source_kind'],
                 approximation='single_convex_yaw_box_empirical_bounds' if v['source_kind']=='rgbd_inferred_box'
                 else 'exact_selected_occupied_cells') for v in descriptors)
             metadata = dict(snapshot.source_metadata, snapshot_policy='frozen_rgbd_reconstructed',
-                camera_obstacle_count=len(cuboids), inference_status=product.status,
-                inferred_geometry=product.models, inference_diagnostics=product.diagnostics,
-                occupied_coverage=audit)
+                camera_obstacle_count=len(cuboids))
             snapshot = replace(snapshot, obstacles=(*support.obstacles, *cuboids), source_metadata=metadata)
         except Exception as error:
             raise PlanningFailure('planning_source_reconstruction',str(error)) from error

@@ -157,10 +157,7 @@ class MappingProcessor:
         inferred = None
         if accepted and self._reconstruction_scene is not None:
             from .reconstruction import infer
-            inferred = infer(mapping_input, self._reconstruction_scene, occupancy_snapshot)
-            diagnostics['reconstruction'] = dict(status=inferred.status, reason=inferred.reason,
-                elapsed_seconds=inferred.diagnostics['elapsed_seconds'])
-            diagnostics['mapping_compute_seconds'] = diagnostics['compute_seconds']
+            inferred = infer(mapping_input, self._reconstruction_scene)
             diagnostics['compute_seconds'] = time.perf_counter()-started
         return MappingCompleted(occupancy_snapshot, freeze(diagnostics), accepted, mapping_input.generation,
                                 _input_timestamp(mapping_input), obstacles, inferred)

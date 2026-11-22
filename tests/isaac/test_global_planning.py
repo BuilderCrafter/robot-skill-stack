@@ -220,10 +220,9 @@ def main():
             if objects:checks['physical_fixtures_unchanged']=np.array_equal(before,np.asarray(view.get_transforms()))
             if rgbd:
                 frozen=strategy.last_plan_trace.get('frozen_rgbd')
-                checks['original_timestamp_and_source_preserved']=bool(frozen and frozen.timestamp==frozen.view.inferred.timestamp)
-                checks['qualified_reconstructed_world']=bool(frozen and frozen.view.inferred.status=='qualified' and len(frozen.view.inferred.models)==2)
-                coverage=result.details.get('planning_source',{}).get('occupied_coverage',{})
-                checks['original_selected_union_and_budget_preserved']=coverage.get('occupied_union_preserved') is True and coverage.get('combined_camera_proxies',65)<=64
+                checks['original_timestamp_and_source_preserved']=bool(frozen and frozen.timestamp==min(f['acquired_at'] for f in frozen.source_frames))
+                checks['qualified_reconstructed_world']=bool(frozen and frozen.view.inferred.reason is None and len(frozen.view.inferred.models)==2)
+                checks['camera_proxy_budget_preserved']=result.details.get('planning_source',{}).get('camera_obstacle_count',65)<=64
                 if frozen:
                     state['inferred']=fixture.serial(frozen.view.inferred)
                     selected=selected_inputs[0] if selected_inputs else None
