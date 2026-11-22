@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 
-from .box_geometry import reference, visibility
+from . import box_geometry
 
 
 @dataclass(frozen=True)
@@ -17,18 +17,7 @@ class InferredGeometry:
 
 def infer(payload, scene) -> InferredGeometry:
     """Qualify measured candidates using the exposure-matched robot observations."""
-    result, _, _ = reference.reconstruct(payload.frames, scene, payload.robot_snapshots)
-    models = []
-    for component in result['components']:
-        if component['reason'] == 'possible_robot_component':
-            if component['robot_envelope_points'] != component['points']:
-                return InferredGeometry(reason='robot_connected_component')
-            continue
-        qualified = visibility.qualify(component, payload.frames)
-        if qualified['status'] != 'qualified':
-            return InferredGeometry(reason=f"component_{component['component']}: {qualified['reason']}")
-        models.append(qualified['geometry'])
-    return InferredGeometry(tuple(models))
+    return InferredGeometry(*box_geometry.reconstruct(payload.frames, scene, payload.robot_snapshots))
 
 
 def combine(frozen) -> list[dict[str, object]]:
@@ -48,7 +37,7 @@ def combine(frozen) -> list[dict[str, object]]:
     floor_top = frozen.view.obstacles.diagnostics['support_plane_z']+frozen.spec.voxel_size+1e-12
     for box in frozen.boxes:
         if box.center[2]+box.dimensions[2]/2 > floor_top:
-            corners = np.asarray(box.center)+reference.CORNERS*np.asarray(box.dimensions)
+            corners = np.asarray(box.center)+box_geometry.CORNERS*np.asarray(box.dimensions)
             if any(np.all(abs((corners-model['center'])@model['rotation'])+1e-12 <= model['dimensions']/2)
                    for model in models):
                 continue

@@ -10,8 +10,6 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.world.perception_multiview import clouds
-from robot_skill_stack.world.spatial_mapping import reconstruction as rec
-from robot_skill_stack.world.spatial_mapping.box_geometry import reference
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 
 
