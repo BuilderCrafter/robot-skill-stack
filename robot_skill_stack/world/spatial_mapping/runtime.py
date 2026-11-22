@@ -66,8 +66,7 @@ class MappingProcessor:
         if cfg.source == 'rgbd':
             self.mapper = RgbdMapper(self.map, stride=cfg.stride, max_rays=cfg.max_rays,
                 max_voxel_visits=cfg.max_voxel_visits, max_depth=cfg.max_depth,
-                max_skew=cfg.max_skew, max_frame_age=cfg.max_frame_age,
-                expected_camera_ids=cfg.camera_prim_paths or None, clock=self.clock)
+                max_skew=cfg.max_skew, max_frame_age=cfg.max_frame_age, clock=self.clock)
             if cfg.automatic_robot_filter:
                 self.filter = RobotSelfFilter(stride=cfg.stride,
                     depth_tolerance=cfg.robot_depth_tolerance, pose_tolerance=cfg.robot_pose_tolerance)

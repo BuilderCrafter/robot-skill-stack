@@ -206,8 +206,8 @@ class RobotSelfFilterTests(unittest.TestCase):
         mapper = RgbdMapper(occupancy, stride=1, clock=lambda: now)
         source = RobotSelfFilter(stride=1)
         current = frame()
-        masks = source.masks((current,), {'A': snapshot()})
-        self.assertFalse(mapper.update((current,), masks))
+        self.assertFalse(mapper.update((current,), mask_provider=lambda frames, pixels:
+            source.masks(frames, {'A': snapshot()}, pixels_by_camera=pixels)))
         for point in ((0., 0., .5), (0., 0., 1.), (0., 0., 1.5)):
             query = occupancy.query(point)
             self.assertEqual(query.state, OccupancyState.UNKNOWN)
@@ -215,8 +215,8 @@ class RobotSelfFilterTests(unittest.TestCase):
         # A real foreground surface is retained as occupancy, while rays still
         # stop before both the robot and the volume behind it.
         current = frame(.8, token=(2, .2))
-        masks = source.masks((current,), {'A': snapshot(token=(2, .2))})
-        self.assertTrue(mapper.update((current,), masks))
+        self.assertTrue(mapper.update((current,), mask_provider=lambda frames, pixels:
+            source.masks(frames, {'A': snapshot(token=(2, .2))}, pixels_by_camera=pixels)))
         self.assertEqual(occupancy.query((0., 0., .8)).state, OccupancyState.OCCUPIED)
         self.assertFalse(occupancy.query((0., 0., 1.5)).observed)
 
