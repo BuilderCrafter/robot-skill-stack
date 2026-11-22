@@ -1,0 +1,6 @@
+{
+  "source_commit": "e8f6d6471196441cf162fc9828fb3ff15a993e99",
+  "source_path": "robot_skill_stack/integrations/isaac/manipulation/franka_backend.py",
+  "sha256": "365a18174a6ba4bd3ad59ebe5750bce4af5eeb7b114bb9781127173bc01baff1",
+  "ast_equivalent_to_original_method": true
+}

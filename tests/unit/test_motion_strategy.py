@@ -3,7 +3,7 @@ import ast
 import asyncio
 from dataclasses import asdict
 from pathlib import Path
-import subprocess
+import hashlib
 from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import Mock
@@ -22,11 +22,10 @@ BACKEND_PATH = 'robot_skill_stack/integrations/isaac/manipulation/franka_backend
 
 def frozen_move():
     """Use the original implementation as an oracle, without importing Isaac."""
-    source = subprocess.check_output(['git', 'show', f'{BASELINE}:{BACKEND_PATH}'], cwd=ROOT)
-    backend = next(node for node in ast.parse(source).body
-                   if isinstance(node, ast.ClassDef) and node.name == 'IsaacFrankaBackend')
-    method = next(node for node in backend.body if isinstance(node, ast.AsyncFunctionDef)
-                  and node.name == 'move_to_pose_async')
+    source = (ROOT/'tests/fixtures/direct_v5_move.py').read_bytes()
+    if hashlib.sha256(source).hexdigest() != '365a18174a6ba4bd3ad59ebe5750bce4af5eeb7b114bb9781127173bc01baff1':
+        raise AssertionError('Frozen direct-motion oracle changed')
+    method = ast.parse(source).body[0]
     namespace = dict(np=np, Pose=Pose, BackendResult=BackendResult, ArticulationAction=NS)
     exec(compile(ast.Module(body=[method], type_ignores=[]), f'{BASELINE}:{BACKEND_PATH}', 'exec'), namespace)
     return namespace['move_to_pose_async']
