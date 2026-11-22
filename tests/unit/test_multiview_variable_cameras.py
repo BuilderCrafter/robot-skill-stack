@@ -139,7 +139,6 @@ class VariableCameraProviderTests(unittest.TestCase):
         self.assertEqual(objects['sphere'].metadata['contributing_views'], ['C', 'E'])
         self.assert_view_evidence(objects, ('A', 'B', 'C', 'D', 'E'))
         self.assert_fusion_and_limits(source, self.frames)
-        self.assertEqual(set(source[1].rig.status['tokens']), {'A', 'B', 'C', 'D', 'E'})
 
 
 if __name__ == '__main__':

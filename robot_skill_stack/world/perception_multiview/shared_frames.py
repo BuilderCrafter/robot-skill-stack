@@ -7,7 +7,7 @@ import time
 
 import numpy as np
 
-from .acquisition import DepthFrame, FrameSynchronizer
+from .acquisition import DepthFrame, _render_token
 
 
 def _owned(values, dtype=None):
@@ -21,7 +21,7 @@ class SharedFramePool:
 
     Admit synchronized batches separately for each consumer and cache copied frames.
     """
-    def __init__(self, cameras, *, token_reader=FrameSynchronizer._token, clock=time.monotonic):
+    def __init__(self, cameras, *, token_reader=lambda camera: camera.get_frame_token(), clock=time.monotonic):
         if not cameras or len({id(camera) for camera in cameras.values()}) != len(cameras):
             raise ValueError('Shared cameras must have distinct identities')
         self.cameras = dict(cameras)
@@ -36,16 +36,7 @@ class SharedFramePool:
         self._acquired_at = None
 
     def _token(self, camera):
-        value = self._token_reader(camera)
-        if value is None:
-            return None
-        try:
-            number, stamp = float(value[0]), float(value[1])
-        except (TypeError, ValueError, IndexError) as exc:
-            raise RuntimeError('Camera requires a render number and simulation timestamp') from exc
-        if not np.isfinite(number) or number <= 0 or not np.isfinite(stamp) or stamp < 0:
-            return None
-        return number, stamp
+        return _render_token(self._token_reader(camera))
 
     def reset(self):
         """Clear cached frames and reject exposures retained across timeline resets."""

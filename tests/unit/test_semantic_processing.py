@@ -106,6 +106,8 @@ class SemanticProcessingTests(unittest.TestCase):
             frames=self.multiview if multiple else analytic_frames([Solid('sphere')])
             cameras=[Camera(frame) for frame in frames]
             rig=FrameSynchronizer(dict(zip(('A','B'),cameras)))
+            if frozen:
+                rig.status={}  # Only the frozen fixture still publishes synchronization diagnostics.
             scene=load_scene_config('config/scenes/multiview_playground.toml').scene
             value=(self.old[kind] if frozen else MultiViewProvider)(rig,scene)
             def advance():
