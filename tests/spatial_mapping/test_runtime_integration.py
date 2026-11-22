@@ -44,8 +44,7 @@ async def elapsed(seconds):
 
 
 def state(bundle):
-    return dict(runtime=serial(bundle.observation_runtime.diagnostics),
-        mapping=serial(bundle.spatial_mapping.health),
+    return dict(mapping=serial(bundle.spatial_mapping.health),
         semantic_status=bundle.world_updater.health.status,
         semantic_timestamp=bundle.world_updater.health.last_frame_at,
         held=bundle.world_model.held_object_id,
@@ -158,16 +157,15 @@ async def evaluate(args, metrics, checks):
             semantic_worker, mapping_worker = coordinator._semantic_worker, service._worker
             with patch.object(semantic_worker, '_process', side_effect=RuntimeError('native semantic worker failure')), \
                     patch.object(mapping_worker, '_process', side_effect=RuntimeError('native mapping worker failure')):
-                prior = coordinator.diagnostics['semantic']['worker_failures']
                 mapping_prior = service.health['failures']
-                await until(lambda: coordinator.diagnostics['semantic']['worker_failures'] > prior
+                await until(lambda: 'native semantic worker failure' in (bundle.world_updater.last_error or '')
                     and service.health['failures'] > mapping_prior)
                 metrics['worker_failure'] = state(bundle)
                 checks['worker_failure_observed'] = not service.health['fresh']
             await fresh(bundle)
             checks['worker_failure_recovered'] = True
 
-            previous_generation = coordinator.diagnostics['generation']
+            previous_generation = service.generation
             await bundle.world.stop_async()
             await elapsed(.1)
             metrics['stopped'] = state(bundle)
@@ -181,7 +179,7 @@ async def evaluate(args, metrics, checks):
                 metrics['stop_play_failure'] = recovery_diagnostics(bundle)
                 raise
             metrics['restarted'] = state(bundle)
-            checks['play_new_generation'] = coordinator.diagnostics['generation'] > previous_generation
+            checks['play_new_generation'] = service.generation > previous_generation
 
             # A deliberately blocked SDK-free computation proves close does not
             # join it or allow its eventual result to publish after shutdown.

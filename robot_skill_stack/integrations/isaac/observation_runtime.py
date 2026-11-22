@@ -1,8 +1,4 @@
-"""Kit-owned acquisition/publication with bounded SDK-free computation.
-
-No geometry processing, worker wait, or dense map read is performed by this
-subscription. Ground-truth semantic providers retain their lightweight updater.
-"""
+"""Kit-owned acquisition and publication through SDK-independent observation workers."""
 from dataclasses import replace
 import threading
 import time
@@ -13,7 +9,7 @@ from robot_skill_stack.runtime.worker import BoundedWorker
 from robot_skill_stack.world.perception_multiview.shared_frames import SharedFramePool
 
 
-def semantic_camera_paths(config):
+def semantic_camera_paths(config) -> tuple[str, ...]:
     if config.world.provider == 'multi_view':
         return tuple(config.multi_view.camera_prim_paths)
     if config.world.provider == 'perception':
@@ -32,73 +28,45 @@ def mapping_settings(config):
 
 
 class ObservationRuntime:
+    """Coordinate camera observations; GT semantics retain their physics updater."""
     def __init__(self, world, config, updater, *, pool=None, owned_cameras=(),
                  robot_filter=None, spatial_mapping=None, stage=None, clock=time.monotonic,
-                 worker_factory=None):
-        self.world, self.config, self.updater = world, config, updater
-        self.provider, self.pool = updater.provider, pool
-        self._owned_cameras, self.robot_filter = tuple(owned_cameras), robot_filter
+                 worker_factory=BoundedWorker):
+        self.world, self.updater = world, updater
+        self.pool, self.robot_filter = pool, robot_filter
         self.spatial_mapping, self.stage, self.clock = spatial_mapping, stage, clock
+        self._owned_cameras = tuple(owned_cameras)
         self._owner = threading.get_ident()
-        self._subscription, self._timeline_subscription = None, None
-        self._closed, self._playing, self._generation = False, bool(world.is_playing()), 0
-        self._semantic_enabled = callable(getattr(self.provider, 'acquire', None))
-        self._mapping_enabled = spatial_mapping is not None
-        self._semantic_worker = ((worker_factory or BoundedWorker)(self.provider.processor.compute,
-            name='semantic-observations') if self._semantic_enabled else None)
-        self._semantic_due = self._mapping_due = 0.
-        self._semantic_period = 1/(config.world.update_hz or 5.)
-        self._mapping_settings = mapping_settings(config)
-        self._mapping_period = 1/(self._mapping_settings.update_hz or 2.)
-        self._semantic = dict(attempts=0, published=0, no_frame=0, rejected=0,
-                              source_failures=0, worker_failures=0, last=None)
-        self._state, self._error = 'running', None
-        self._last_simulation_time = None
+        self._subscription = self._timeline_subscription = None
+        self._closed, self._playing = False, world.is_playing()
         self._simulation_time = None
         self._filter_needs_resume = False
-        self._mapping_invalidation_error = None
+        self._semantic_paths = semantic_camera_paths(config)
+        self._multiview = config.world.provider == 'multi_view'
+        self._semantic_skew = config.multi_view.max_skew if self._multiview else .025
+        self._mapping_settings = mapping_settings(config)
+        self._shared_cameras = (self._mapping_settings.source == 'rgbd' and
+            bool(set(self._semantic_paths) & set(self._mapping_settings.camera_prim_paths)))
+        self._semantic_due = self._mapping_due = 0.
+        self._semantic_period = 1/(config.world.update_hz or 5.)
+        self._mapping_period = 1/(self._mapping_settings.update_hz or 2.)
+        self._semantic_worker = (worker_factory(updater.provider.processor.compute,
+            name='semantic-observations') if self._semantic_paths else None)
 
-    @property
-    def diagnostics(self):
-        semantic = dict(self._semantic)
-        semantic['worker'] = None if self._semantic_worker is None else self._semantic_worker.health
-        return dict(state=self._state, generation=self._generation, error=self._error,
-            semantic=semantic, mapping=None if self.spatial_mapping is None else dict(self.spatial_mapping.health),
-            cameras=None if self.pool is None else dict(acquisitions=self.pool.acquisitions,
-                shared_reads=self.pool.shared_reads, failures=self.pool.failures,
-                consumers=dict(self.pool.status)))
-
-    def _assert_owner(self):
+    def _assert_owner(self) -> None:
         if threading.get_ident() != self._owner:
             raise RuntimeError('Observation runtime must be accessed on its Kit owning thread')
 
-    def set_enabled(self, *, semantic, mapping):
-        """Diagnostic scheduling gate; retains cameras and render products."""
+    def start(self, app) -> None:
         self._assert_owner()
-        if self._semantic_enabled != bool(semantic) and self._semantic_worker is not None:
-            self._semantic_worker.invalidate()
-        if self._mapping_enabled != bool(mapping) and self.spatial_mapping is not None:
-            self.spatial_mapping.reset()
-        self._semantic_enabled = bool(semantic) and self._semantic_worker is not None
-        self._mapping_enabled = bool(mapping) and self.spatial_mapping is not None
-        self._semantic_due = self._mapping_due = 0.
-        self._mapping_invalidation_error = None
-
-    def start(self, app):
-        self._assert_owner()
+        import omni.timeline
         self._subscription = app.get_update_event_stream().create_subscription_to_pop(
             self._on_update, name='robot_skill_stack_observations')
-        # Stop and Play may both occur between two Kit updates. The timeline
-        # barrier catches that case, while update-time polling supports tests
-        # and hosts without a timeline event stream.
-        try:
-            import omni.timeline
-            self._timeline_subscription = omni.timeline.get_timeline_interface().get_timeline_event_stream().create_subscription_to_pop(
-                self._on_timeline, name='robot_skill_stack_observation_lifecycle')
-        except ImportError:
-            pass
+        # Catch Stop and Play even when both occur between Kit updates.
+        self._timeline_subscription = omni.timeline.get_timeline_interface().get_timeline_event_stream().create_subscription_to_pop(
+            self._on_timeline, name='robot_skill_stack_observation_lifecycle')
 
-    def _on_timeline(self, event):
+    def _on_timeline(self, event) -> None:
         if self._closed:
             return
         import omni.timeline
@@ -107,16 +75,14 @@ class ObservationRuntime:
         elif event.type == int(omni.timeline.TimelineEventType.PLAY):
             self._transition(True)
 
-    def _transition(self, playing):
+    def _transition(self, playing: bool) -> None:
         if playing == self._playing:
             return
         self._playing = playing
-        self._generation += 1
-        self._last_simulation_time = None
+        self._simulation_time = None
         self._semantic_due = self._mapping_due = 0.
-        self._mapping_invalidation_error = None
         if self._semantic_worker is not None:
-            self._semantic_worker.invalidate()
+            self._semantic_worker.invalidate()  # The worker owns the timeline epoch.
         if self.spatial_mapping is not None:
             self.spatial_mapping.reset()
         if self.pool is not None:
@@ -128,22 +94,21 @@ class ObservationRuntime:
             self.robot_filter.reset_history()
             self._filter_needs_resume = playing
         self.updater.note_failure('Timeline restarted; waiting for fresh observations' if playing else 'Simulation stopped')
-        self._state = 'running' if playing else 'stopped'
 
-    def _on_update(self, event=None):
+    def _on_update(self, event=None) -> None:
         if self._closed:
             return
         try:
             self.tick()
         except Exception as exc:
-            self._state, self._error = 'source_failure', f'{type(exc).__name__}: {exc}'
             if self._semantic_worker is not None:
                 self._semantic_worker.invalidate()
                 self.updater.note_failure(exc)
             if self.spatial_mapping is not None:
                 self.spatial_mapping.note_source_failure(exc)
 
-    def tick(self):
+    def tick(self) -> None:
+        """Acquire due inputs before polling, so source failures invalidate older work."""
         self._assert_owner()
         if self._closed:
             return
@@ -153,45 +118,34 @@ class ObservationRuntime:
         self._transition(bool(self.world.is_playing()))
         if not self._playing:
             return
-        simulation_time = getattr(self.world, 'current_time', None)
-        self._simulation_time = simulation_time if isinstance(simulation_time, (int, float)) else None
-        if isinstance(simulation_time, (int, float)):
-            if self._last_simulation_time is not None and simulation_time < self._last_simulation_time:
-                self._transition(False)
-                self._transition(True)
-            self._last_simulation_time = simulation_time
+        simulation_time = self.world.current_time
+        if self._simulation_time is not None and simulation_time < self._simulation_time:
+            self._transition(False)
+            self._transition(True)
+        self._simulation_time = simulation_time
         now = self.clock()
         self.updater.cleanup(now)
         # Admission errors below install a barrier BEFORE an older completed
         # success is polled, so it cannot clear the newly reported failure.
         if self.pool is not None:
             self.pool.begin_update()
-        mapping_source_ready = True
-        if self._mapping_enabled and self.robot_filter is not None and not self._filter_needs_resume:
+        mapping_ready = self.spatial_mapping is not None
+        if mapping_ready and self.robot_filter is not None and not self._filter_needs_resume:
             error = self.robot_filter.source_error
             if error is not None:
-                mapping_source_ready = False
-                if error != self._mapping_invalidation_error:
-                    self.spatial_mapping.note_source_failure(error)
-                    self._mapping_invalidation_error = error
-            else:
-                self._mapping_invalidation_error = None
-        semantic_due = self._semantic_enabled and now >= self._semantic_due
+                self.spatial_mapping.note_source_failure(error)
+                mapping_ready = False
+        semantic_due = self._semantic_worker is not None and now >= self._semantic_due
         if semantic_due:
             self._semantic_due = self._deadline(self._semantic_due, now, self._semantic_period)
             self._acquire_semantic()
-        overlap = (self._semantic_enabled and self._mapping_settings.source == 'rgbd' and
-                   bool(set(semantic_camera_paths(self.config)) &
-                        set(self._mapping_settings.camera_prim_paths)))
-        # A due map sharing semantic cameras uses the next semantic acquisition
-        # (at most one semantic period later), so common cameras retain the exact
-        # same buffers/exposure. Independent cameras and rates stay independent.
-        if (self._mapping_enabled and mapping_source_ready and now >= self._mapping_due and
-                (not overlap or semantic_due)):
+        # Shared cameras use the same acquisition on a semantic update.
+        if (mapping_ready and now >= self._mapping_due and
+                (not self._shared_cameras or semantic_due)):
             self._mapping_due = self._deadline(self._mapping_due, now, self._mapping_period)
             self._acquire_mapping()
         self._publish_semantic()
-        if self._mapping_enabled and mapping_source_ready:
+        if mapping_ready:
             self.spatial_mapping.poll(now=self.clock())
 
     @staticmethod
@@ -199,70 +153,42 @@ class ObservationRuntime:
         # No catch-up burst after a long pause, and no accumulated cadence drift.
         return now+period if previous <= 0 or now-previous >= period else previous+period
 
-    def _acquire_semantic(self):
-        self._semantic['attempts'] += 1
+    def _acquire_semantic(self) -> None:
         try:
-            paths = semantic_camera_paths(self.config)
-            skew = self.config.multi_view.max_skew if self.config.world.provider == 'multi_view' else .025
-            frames = self.pool.batch('semantic', paths, max_skew=skew,
+            frames = self.pool.batch('semantic', self._semantic_paths, max_skew=self._semantic_skew,
                                      simulation_time=self._simulation_time)
             if frames is None:
-                self._semantic['no_frame'] += 1
                 return
-            if self.config.world.provider == 'multi_view':
-                self.provider.rig.status = dict(self.pool.status['semantic'])
-            prepared = self.provider.acquire(frames=frames)
-            if prepared is None:
-                self._semantic['no_frame'] += 1
-                return
-            revision = self.updater.world_model.observation_context().revision
-            self._semantic_worker.submit(prepared, tag=(self._generation, revision))
+            if self._multiview:
+                self.updater.provider.rig.status = dict(self.pool.status['semantic'])
+            prepared = self.updater.provider.acquire(frames=frames)
+            if prepared is not None:
+                revision = self.updater.world_model.observation_context().revision
+                self._semantic_worker.submit(prepared, tag=revision)
         except Exception as exc:
-            self._semantic['source_failures'] += 1
             self._semantic_worker.invalidate()
             self.updater.note_failure(exc)
 
-    def _publish_semantic(self):
-        if not self._semantic_enabled:
+    def _publish_semantic(self) -> None:
+        if self._semantic_worker is None:
             return
         completed = self._semantic_worker.poll()
         if completed is None:
             return
         if completed.error is not None:
-            self._semantic['worker_failures'] += 1
             self.updater.note_failure(completed.error)
             return
-        generation, revision = completed.tag
-        result = completed.value
-        compute_seconds = getattr(result, 'processing_ms', None)
-        diagnostics = getattr(result, 'diagnostics', {})
-        if compute_seconds is None and isinstance(diagnostics, dict):
-            compute_seconds = diagnostics.get('processing_ms')
-        compute_seconds = None if compute_seconds is None else compute_seconds/1000
-        last = dict(timestamp=result.timestamp, input_timestamp=result.timestamp,
-            completed_at=completed.completed_at,
-            worker_seconds=completed.duration, queue_seconds=completed.started_at-completed.queued_at,
-            compute_seconds=compute_seconds,
-            transport_seconds=None if compute_seconds is None else max(0., completed.duration-compute_seconds),
-            publish_age_seconds=self.clock()-result.timestamp, status='rejected')
-        self._semantic['last'] = last
-        # No awaits between the context guard, tracker association and publish.
-        if generation != self._generation or not self.updater.accepts(result.timestamp, revision):
-            self._semantic['rejected'] += 1
+        revision, result = completed.tag, completed.value
+        if not self.updater.accepts(result.timestamp, revision):
             return
-        before = self.updater.update_count
+        # Context admission, association and publication stay on the owner, with no awaits.
         try:
-            batch = self.provider.associate(result, context=self.updater.world_model.observation_context())
+            batch = self.updater.provider.associate(result, context=self.updater.world_model.observation_context())
             self.updater.publish(batch, context_revision=revision)
         except Exception as exc:
             self.updater.note_failure(exc)
-            self._semantic['worker_failures'] += 1
-            return
-        if self.updater.update_count > before:
-            self._semantic['published'] += 1
-            last['status'] = 'published'
 
-    def _acquire_mapping(self):
+    def _acquire_mapping(self) -> None:
         from robot_skill_stack.world.spatial_mapping.runtime import MappingInput
         service = self.spatial_mapping
         try:
@@ -287,13 +213,13 @@ class ObservationRuntime:
         except Exception as exc:
             service.note_source_failure(exc)
 
-    def close(self):
+    def close(self) -> None:
         self._assert_owner()
         if self._closed:
             return
-        self._closed, self._state = True, 'closed'
+        self._closed = True
         self._subscription = self._timeline_subscription = None
-        errors = []
+        failure = None
         resources = [self._semantic_worker, self.spatial_mapping, self.robot_filter,
                      self.pool, *reversed(self._owned_cameras)]
         for resource in resources:
@@ -301,16 +227,16 @@ class ObservationRuntime:
                 try:
                     resource.close()
                 except Exception as exc:
-                    errors.append(exc)
-        if errors:
-            raise RuntimeError('Observation cleanup failed: '+ '; '.join(map(str, errors))) from errors[0]
+                    failure = failure or exc
+        if failure is not None:
+            raise failure
 
 
 async def create_observation_runtime(world, config, updater, app):
     """Create missing mapping cameras only; borrow existing semantic sources."""
     settings = mapping_settings(config)
     provider, cameras, owned = updater.provider, {}, []
-    semantic = callable(getattr(provider, 'acquire', None))
+    semantic = bool(semantic_camera_paths(config))
     if not semantic and not settings.enabled:
         return None
     pool = robot_filter = service = None
@@ -337,17 +263,14 @@ async def create_observation_runtime(world, config, updater, app):
         stage = omni.usd.get_context().get_stage()
         if settings.enabled:
             from robot_skill_stack.world.spatial_mapping.runtime import MappingService
-            motion = getattr(config, 'motion', None)
-            if (getattr(motion, 'strategy', 'direct') == 'global'
-                    and getattr(motion, 'global_obstacle_source', 'static') == 'frozen_rgbd'):
+            motion, options = config.motion, {}
+            if motion.strategy == 'global' and motion.global_obstacle_source == 'frozen_rgbd':
                 from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
-                service = MappingService(settings, worker_factory=ProcessWorker,
-                    obstacle_settings=ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,
-                        support_plane_z=config.scene.support_plane_z),
-                    **({'reconstruction_scene':config.scene} if
-                       getattr(motion, 'global_rgbd_representation', 'occupied') == 'reconstructed' else {}))
-            else:
-                service = MappingService(settings, worker_factory=ProcessWorker)
+                options['obstacle_settings'] = ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,
+                    support_plane_z=config.scene.support_plane_z)
+                if motion.global_rgbd_representation == 'reconstructed':
+                    options['reconstruction_scene'] = config.scene
+            service = MappingService(settings, worker_factory=ProcessWorker, **options)
             if settings.source == 'rgbd' and settings.automatic_robot_filter:
                 from .spatial_mapping.robot_filter import IsaacRobotSelfFilter
                 robot_filter = IsaacRobotSelfFilter(stage, config.robot.prim_path,

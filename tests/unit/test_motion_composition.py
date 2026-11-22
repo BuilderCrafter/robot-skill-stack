@@ -56,7 +56,8 @@ class MotionCompositionTests(unittest.TestCase):
                 # observation runtime. Borrow a pre-existing camera pool here.
                 updater=NS(provider=NS(rig=NS(cameras={'/CameraA':object(),'/CameraB':object()}),
                     acquire=lambda:None,processor=NS(compute=lambda payload:None)))
-                config=replace(config,world=replace(config.world,provider='multi_view'))
+                config=replace(config,world=replace(config.world,provider='multi_view'),
+                    multi_view=replace(config.multi_view,camera_prim_paths=('/CameraA','/CameraB')))
                 fake_filter=NS(close=Mock())
                 with patch('robot_skill_stack.world.spatial_mapping.runtime.MappingService',return_value=service) as build, \
                         patch('robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter.IsaacRobotSelfFilter',return_value=fake_filter), \

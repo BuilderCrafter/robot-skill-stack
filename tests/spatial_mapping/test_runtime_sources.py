@@ -127,18 +127,18 @@ async def evaluate(output, rows):
                 await until(lambda: bool(shared))
                 checks['overlap_exact_same_frame'] = all(
                     item['same_object'] and item['same_acquired_at'] and item['immutable'] for item in shared)
-                before_semantic = coordinator.diagnostics['semantic']['published']
+                before_semantic = bundle.world_updater.update_count
                 before_failures = service.health['failures']
                 with patch.object(cameras[CAMERAS[2]], 'get_depth', side_effect=RuntimeError('native camera C failure')):
                     await until(lambda: service.health['failures'] > before_failures
-                        and coordinator.diagnostics['semantic']['published'] > before_semantic+1)
-                    row['partial_failure'] = serial(coordinator.diagnostics)
+                        and bundle.world_updater.update_count > before_semantic+1)
+                    row['partial_failure'] = serial(service.health)
                     checks['camera_c_failure_keeps_semantic_ab_fresh'] = bundle.world_updater.health.status == 'fresh'
                     checks['camera_c_failure_map_not_fresh'] = not service.health['fresh']
                 await until(lambda: service.health['fresh'])
                 checks['camera_c_recovered'] = True
                 row['shared_a_frames'] = shared[:4]
-            row.update(health=serial(coordinator.diagnostics), cameras={key: dict(
+            row.update(health=serial(service.health), cameras={key: dict(
                 object_id=id(camera), render_product=products[index],
                 owned_by_mapping=camera in owned) for index, (key, camera) in enumerate(cameras.items())})
         finally:
