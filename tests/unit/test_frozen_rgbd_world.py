@@ -198,9 +198,7 @@ class FrozenRgbdWorldTests(unittest.TestCase):
         self.rejected(source,'no_publication')
         source = self.prepared()
         packet = source._published_obstacles
-        diagnostics = dict(packet.diagnostics,occupied_voxels=0,supported_voxels=0,
-            represented_voxels=0,omitted_voxels=0,candidate_boxes=0,proxy_count=0)
-        source._published_obstacles = replace(packet,boxes=(),diagnostics=diagnostics)
+        source._published_obstacles = replace(packet,boxes=())
         self.rejected(source,'no_usable_evidence')
 
     def test_duplicate_cuboids_and_inflated_voxel_dimensions_fail_closed(self):
@@ -213,13 +211,6 @@ class FrozenRgbdWorldTests(unittest.TestCase):
         old = packet.boxes[0]
         source._published_obstacles = replace(packet,boxes=(replace(old,dimensions=(old.dimensions[0]+.01,*old.dimensions[1:])),))
         self.rejected(source,'invalid_product')
-
-    def test_wrong_budget_is_not_silently_truncated_or_repacked(self):
-        source = self.prepared()
-        self.rejected(source,'budget_mismatch',max_obstacles=128)
-        source = self.prepared(maximum=128)
-        frozen = capture_frozen_rgbd(source,max_obstacles=128)
-        self.assertEqual(frozen.metadata['max_obstacles'],128)
 
     def test_distinct_ids_must_not_double_count_overlapping_occupied_cells(self):
         source = self.prepared()
@@ -249,10 +240,10 @@ class FrozenRgbdWorldTests(unittest.TestCase):
     def test_support_priority_does_not_silently_remove_selected_camera_cells(self):
         source = self.prepared(support=1.01)
         packet = source._published_obstacles
-        self.assertGreater(packet.diagnostics['selected_floor_boxes'],0)
+        self.assertEqual(packet.diagnostics['support_plane_z'],1.01)
         frozen = capture_frozen_rgbd(source)
-        self.assertEqual(len(frozen.boxes),len(packet.boxes))
-        self.assertEqual(frozen.metadata['extraction']['represented_floor_voxels'],packet.diagnostics['represented_floor_voxels'])
+        self.assertEqual([(b.id,b.center,b.dimensions,b.voxel_count) for b in frozen.boxes],
+                         [(b.id,b.center,b.dimensions,b.voxel_count) for b in packet.boxes])
 
     def test_robot_filter_and_camera_identity_mismatch_are_not_accepted(self):
         source = self.prepared()

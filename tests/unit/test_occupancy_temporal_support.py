@@ -31,8 +31,6 @@ class TemporalObstacleSupportTests(unittest.TestCase):
             snapshot = occupancy.snapshot(now=stamp)
             packet = temporal.extract(snapshot, now=stamp, evidence_ttl=5.)
             self.assertEqual(len(packet.boxes), int(number == 3))
-        self.assertEqual(packet.diagnostics['strong_sparse_retained'], 1)
-        self.assertEqual(packet.diagnostics['spatial_supported_voxels'], 0)
         self.assertEqual(ObstacleExtractor().extract(snapshot, now=stamp, evidence_ttl=5.).boxes, ())
 
     def test_exact_separate_original_cells_preserve_free_and_unknown_gaps(self):

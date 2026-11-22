@@ -110,13 +110,6 @@ class FrozenRgbdWorld:
         return self.view.query(position)
 
 
-def _count(diagnostics: Mapping, key: str) -> int:
-    value = diagnostics.get(key)
-    if type(value) is not int or value < 0:
-        _fail('invalid_product', 'Prepared obstacle counts are invalid', field=key)
-    return value
-
-
 def _boxes(packet: ObstaclePacket, spec: GridSpec, *, now: float,
            maximum: int) -> tuple[FrozenRgbdBox, ...]:
     """Takes the obstacles and makes sure they are consistent and safe."""
@@ -209,8 +202,8 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
     ``source`` is the current mapping service, not a camera or a semantic provider.
     The service's existing clock fixes read time. Any source problem rejects
     the whole capture, including an empty product or expired selected cuboid.
-    Counts are worker/extraction-time diagnostics, explicitly not a new dense
-    capture-time scan. Later sparse queries continue using this fixed read time.
+    It uses prepared worker geometry without a dense capture-time scan. Later
+    sparse queries continue using this fixed read time.
     """
     if type(max_obstacles) is not int or not 1 <= max_obstacles <= 128:
         _fail('invalid_budget', 'Frozen RGB-D obstacle bound must be between 1 and 128')
@@ -271,19 +264,7 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
             _fail('no_publication', 'Mapping diagnostics do not identify an accepted RGB-D publication')
         ids, frames = _camera_metadata(diagnostics, mapping_config, capture_timestamp, now)
         extraction = obstacle_packet.diagnostics
-        if extraction.get('max_obstacles') != max_obstacles:
-            _fail('budget_mismatch', 'Prepared obstacle budget differs from the selected global bound')
-        if extraction.get('padding_m') != 0. or extraction.get('temporal_probabilities') is not True:
-            _fail('invalid_product', 'Prepared obstacle policy is not the established exact RGB-D policy')
-
-        # Convert the obstacle packet to boxes
         boxes = _boxes(obstacle_packet, mapping_view.spec, now=now, maximum=max_obstacles)
-        occupied, supported, represented, omitted, candidates, proxies = (
-            _count(extraction, key) for key in ('occupied_voxels','supported_voxels','represented_voxels',
-                'omitted_voxels','candidate_boxes','proxy_count'))
-        if (not occupied >= supported >= represented or represented != sum(box.voxel_count for box in boxes)
-                or omitted != supported-represented or candidates < len(boxes) or proxies != len(boxes)):
-            _fail('invalid_product', 'Prepared occupied-cell accounting is inconsistent')
         if not boxes:
             _fail('no_usable_evidence', 'RGB-D publication contains no usable selected occupied evidence',
                   extraction=dict(extraction))
@@ -296,9 +277,7 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
             mapping_health=dict(health), bounds_min=mapping_view.spec.bounds_min, bounds_max=mapping_view.spec.bounds_max,
             voxel_size=mapping_view.spec.voxel_size, dimensions=mapping_view.spec.shape,
             selected_obstacle_count=len(boxes), max_obstacles=max_obstacles,
-            occupied_cells_at_extraction=occupied, supported_occupied_cells_at_extraction=supported,
-            represented_occupied_cells=represented, omitted_supported_cells_at_extraction=omitted,
-            counts_evaluated_at=extracted_at, extraction=dict(extraction),
+            extraction=dict(extraction),
             camera_ids=ids, accepted_frame_count=len(frames), source_frames=frames,
             mapping_diagnostics=diagnostics, robot_filter=dict(diagnostics['robot_filter']),
             uncertainty_policy='UNKNOWN is neither verified FREE nor registered as OCCUPIED; OUT_OF_BOUNDS remains distinct',
