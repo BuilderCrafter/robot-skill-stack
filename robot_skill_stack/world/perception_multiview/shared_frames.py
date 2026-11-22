@@ -30,7 +30,6 @@ class SharedFramePool:
         self._blocked_tokens = {}
         self._quarantined_tokens = {}
         self._acquired_at = None
-        self.acquisitions = self.shared_reads = self.failures = 0
         self._closed = False
 
     def begin_update(self):
@@ -116,7 +115,6 @@ class SharedFramePool:
                                          skew_seconds=skew)
             return frames
         except Exception as exc:
-            self.failures += 1
             self.status[consumer] = dict(state='error', reason=str(exc))
             raise
 
@@ -126,7 +124,6 @@ class SharedFramePool:
         if cached is not None and cached[0] == token:
             if cached[2] is not None:
                 raise RuntimeError(cached[2])
-            self.shared_reads += 1
             return cached[1]
         camera = self.cameras[key]
         try:
@@ -139,7 +136,6 @@ class SharedFramePool:
                 _owned(camera.get_world_from_camera_transform(), float),
                 self._acquired_at, None if rgb is None else _owned(rgb))
             self._cache[key] = (token, frame, None)
-            self.acquisitions += 1
             return frame
         except Exception as exc:
             self._cache[key] = (token, None, str(exc))

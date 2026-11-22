@@ -51,7 +51,7 @@ class MappingEvidenceAuditTests(unittest.TestCase):
             self.assertEqual(row['capture_writer'], 'numpy.savez')
             with zipfile.ZipFile(Path(directory)/row['arrays_npz']) as archive:
                 self.assertTrue(all(item.compress_type == zipfile.ZIP_STORED for item in archive.infolist()))
-            self.assertEqual(row['packet']['timestamp'], actual.obstacles.timestamp)
+            self.assertEqual(row['timestamp'], actual.snapshot.timestamp)
             with (Path(directory)/row['input_pickle']).open('rb') as stream:
                 self.assertEqual(pickle.load(stream).ground_truth.timestamp, 100.)
             with np.load(Path(directory)/row['arrays_npz']) as arrays:

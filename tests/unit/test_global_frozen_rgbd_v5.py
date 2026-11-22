@@ -139,11 +139,10 @@ class SourceAdapterTests(unittest.TestCase):
         known_support.assert_not_called()
         from robot_skill_stack.world.spatial_mapping.frozen import FrozenRgbdSourceError
         with patch('robot_skill_stack.world.spatial_mapping.frozen.capture_frozen_rgbd',
-                   side_effect=FrozenRgbdSourceError('stale','Original exposure is stale',{'timestamp':1.})):
+                   side_effect=FrozenRgbdSourceError('stale','Original exposure is stale')):
             with self.assertRaises(PlanningFailure) as caught:
                 capture_frozen_rgbd_world(object(),provider,support_capture=known_support)
         self.assertEqual(caught.exception.code,'planning_source_stale')
-        self.assertEqual(caught.exception.details['timestamp'],1.)
         known_support.assert_not_called()
 
     def test_support_failure_has_its_own_source_diagnostic(self):

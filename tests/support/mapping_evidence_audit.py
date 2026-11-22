@@ -174,16 +174,15 @@ class AuditedMappingProcessor(MappingProcessor):
             row['capture_write_seconds'] = time.perf_counter()-started
             row['capture_qualification'] = 'Full capture adds worker disk/serialization cost. Do not use this run to claim source latency or control performance.'
         if completed is not None:
-            row['accepted'] = completed.accepted
+            row.update(accepted=completed.accepted, timestamp=completed.snapshot.timestamp,
+                       revision=completed.snapshot.revision)
             packet = completed.obstacles
             if packet is not None:
-                row['packet'] = dict(generation=packet.generation, revision=packet.revision,
-                    timestamp=packet.timestamp, extracted_at=packet.extracted_at,
-                    diagnostics=_plain(packet.diagnostics), proxy_count=len(packet.boxes))
+                row['packet'] = dict(support_plane_z=packet.support_plane_z, proxy_count=len(packet.boxes))
                 if self._full_capture():
                     row['packet']['boxes'] = [dict(id=box.id,
                         center=box.center, dimensions=box.dimensions,
-                        expires_at=box.expires_at, voxel_count=box.voxel_count) for box in packet.boxes]
+                        expires_at=box.expires_at) for box in packet.boxes]
         row['metadata_json'] = stem+'.json'
         content = json.dumps(_plain(row), indent=2, allow_nan=False)+'\n'
         (folder/row['metadata_json']).write_text(content)
@@ -196,7 +195,7 @@ class AuditedMappingProcessor(MappingProcessor):
         self._job += 1
         self._arrays = {}
         self._snapshot_for_capture = None
-        self._active_row = dict(schema_version=2, job=self._job, pid=os.getpid(),
+        self._active_row = dict(schema_version=3, job=self._job, pid=os.getpid(),
             generation=payload.generation, source=self.settings.source,
             capture_inputs=self.capture_inputs, capture_selected=self._full_capture(),
             capture_format=self.capture_format,

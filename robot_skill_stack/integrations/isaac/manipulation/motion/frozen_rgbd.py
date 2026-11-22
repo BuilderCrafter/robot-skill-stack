@@ -99,7 +99,7 @@ def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, sup
         source = None if source_provider is None else source_provider()
         frozen = capture_frozen_rgbd(source, max_obstacles=max_obstacles)
     except FrozenRgbdSourceError as error:
-        raise PlanningFailure('planning_source_'+error.code, str(error), dict(error.details)) from error
+        raise PlanningFailure('planning_source_'+error.code, str(error)) from error
     except Exception as error:
         raise PlanningFailure('planning_source_unavailable',
             f'Frozen RGB-D source access failed: {type(error).__name__}: {error}') from error

@@ -41,18 +41,16 @@ class TemporalObstacleSupportTests(unittest.TestCase):
         snapshot = occupancy.snapshot(now=100.5)
         packet = ObstacleExtractor(temporal_probabilities=True).extract(snapshot, now=100.5, evidence_ttl=5.)
         self.assertEqual([box.id for box in packet.boxes], ['1:2:1:2:1:2', '5:6:1:2:1:2'])
-        self.assertEqual(sum(box.voxel_count for box in packet.boxes), 2)
         self.assertEqual(snapshot.states[3, 1, 1], OccupancyState.FREE)
         self.assertEqual(snapshot.states[2, 1, 1], OccupancyState.UNKNOWN)
 
     def test_unknown_and_expired_evidence_cannot_gain_obstacle_geometry(self):
         snapshot = self.reinforce(self.map(), [[1, 1, 1]])
-        unknown = replace(snapshot, _states=np.zeros(snapshot.spec.shape, np.uint8))
+        unknown = replace(snapshot, states=np.zeros(snapshot.spec.shape, np.uint8))
         extractor = ObstacleExtractor(temporal_probabilities=True)
         self.assertEqual(extractor.extract(unknown, now=100.4, evidence_ttl=5.).boxes, ())
         extractor = ObstacleExtractor(temporal_probabilities=True)
         live = extractor.extract(snapshot, now=100.4, evidence_ttl=5.)
-        self.assertEqual(live.timestamp, snapshot.timestamp)
         self.assertAlmostEqual(live.boxes[0].expires_at, 105.3)
         self.assertEqual(extractor.extract(snapshot, now=105.3001, evidence_ttl=5.).boxes, ())
 

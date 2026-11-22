@@ -22,9 +22,6 @@ class MappingObstacleProductTests(unittest.TestCase):
             np.testing.assert_array_equal(getattr(plain.snapshot,field),getattr(completed.snapshot,field))
         view = service.snapshot()
         self.assertIs(view.obstacles,completed.obstacles)
-        self.assertEqual(view.obstacles.timestamp,view.timestamp)
-        self.assertEqual(view.obstacles.generation,view.generation)
-        self.assertEqual(view.obstacles.revision,view.revision)
 
     def test_reset_removes_optional_products_and_keeps_existing_views(self):
         service = MappingService(settings(),worker_factory=ManualWorker,clock=lambda:100.2,
@@ -32,8 +29,9 @@ class MappingObstacleProductTests(unittest.TestCase):
         self.addCleanup(service.close)
         service.submit(MappingInput(ground_truth=gt()))
         service._worker.finish()
-        service.poll()
+        completed = service.poll()
         old = service.snapshot()
         service.reset()
         self.assertIsNone(service.snapshot().obstacles)
-        self.assertEqual(old.obstacles.generation,0)
+        self.assertIsNotNone(old.obstacles)
+        self.assertIs(old.obstacles,completed.obstacles)

@@ -17,8 +17,8 @@ The existing bounded ProcessWorker owns mutable computation. Mapping updates,
 robot exclusion, obstacle extraction and optional reconstruction finish in that
 same worker. Publication is an immutable completion bound to its input generation,
 revision and timestamp. Read-only arrays backed by mutable storage are copied;
-transport never shares mutable parent/child memory. Diagnostics are immutable
-mappings and use the existing transport/publication contracts.
+transport never shares mutable parent/child memory. Camera provenance uses the
+existing transport/publication contracts.
 
 ## Configuration and budgets
 
@@ -57,8 +57,8 @@ mutate the map. Stop/Play, reset, robot-model invalidation and shutdown prevent
 late or wrong-generation results from becoming accepted publications.
 
 When frozen RGB-D global motion is selected, the worker also prepares bounded
-occupied cuboids. Extraction can omit detail when the budget binds; diagnostics
-retain represented/omitted counts. Reconstructed mode qualifies measured static
+occupied cuboids. Extraction can omit detail when the budget binds.
+Reconstructed mode qualifies measured static
 yaw boxes in the same completion and preserves all originally selected cuboids
 through retention or the existing eight-corner containment proof. Floor evidence
 is protected and combined camera geometry must remain within 64 proxies. Known

@@ -37,10 +37,7 @@ class OccupancyObstacleTests(unittest.TestCase):
         box = packet.boxes[0]
         np.testing.assert_allclose(box.center, [.0075, .0125, .0075], atol=1e-14)
         np.testing.assert_allclose(box.dimensions, [.035, .025, .015], atol=1e-14)
-        self.assertEqual(box.voxel_count, 24)
         self.assertEqual(box.expires_at, 105.)
-        self.assertEqual((packet.generation, packet.revision, packet.timestamp),
-                         (source.generation, source.revision, source.timestamp))
         np.testing.assert_array_equal(represented(packet, spec), np.ones(spec.shape, int))
 
     def test_components_keep_holes_and_stride_gaps_but_reject_isolated_noise(self):
@@ -80,20 +77,18 @@ class OccupancyObstacleTests(unittest.TestCase):
         source = snapshot(mask, lower=(0., 0., -.01))
         largest = ObstacleExtractor(ObstacleExtractionSettings(1)).extract(
             source, now=100., evidence_ttl=5.)
-        self.assertEqual(largest.boxes[0].voxel_count, 35)
+        self.assertEqual(largest.boxes[0].id, '1:8:1:6:0:1')
         ranked = ObstacleExtractor(ObstacleExtractionSettings(1, 0.)).extract(
             source, now=100., evidence_ttl=5.)
         self.assertEqual([b.id for b in ranked.boxes], ['9:12:2:3:4:5'])
-        self.assertEqual(ranked.diagnostics['omitted_voxels'], 38)
         expected = np.zeros_like(mask)
         expected[9:12, 2, 4] = True
         np.testing.assert_array_equal(represented(ranked, source.spec), expected)
         complete = ObstacleExtractor(ObstacleExtractionSettings(3, 0.)).extract(
             source, now=100., evidence_ttl=5.)
         np.testing.assert_array_equal(represented(complete, source.spec), mask)
-        self.assertEqual(complete.diagnostics['omitted_voxels'], 0)
 
-    def test_cache_expires_at_oldest_support_and_refreshes_on_map_revision(self):
+    def test_oldest_support_expires_and_new_evidence_restores_geometry(self):
         mapping = OccupancyMap(GridSpec((0., 0., 0.), (.03, .01, .01)))
         cells = [[0, 0, 0], [1, 0, 0], [2, 0, 0]]
         mapping.integrate([], cells, timestamp=100., now=100.)
@@ -101,14 +96,11 @@ class OccupancyObstacleTests(unittest.TestCase):
         source = mapping.snapshot(now=102.)
         extractor = ObstacleExtractor()
         packet = extractor.extract(source, now=102., evidence_ttl=5.)
-        self.assertEqual(packet.timestamp, 102.)
         self.assertEqual(packet.boxes[0].expires_at, 105.)
-        self.assertIs(extractor.extract(source, now=104.9, evidence_ttl=5.), packet)
         self.assertEqual(extractor.extract(source, now=105., evidence_ttl=5.).boxes, ())
         mapping.integrate([], cells, timestamp=105.1, now=105.1)
         renewed = extractor.extract(mapping.snapshot(now=105.1), now=105.1, evidence_ttl=5.)
-        self.assertNotEqual(renewed.revision, packet.revision)
-        self.assertEqual(renewed.boxes[0].voxel_count, 3)
+        np.testing.assert_array_equal(represented(renewed, source.spec), np.ones(source.spec.shape, int))
         self.assertAlmostEqual(renewed.boxes[0].expires_at, 110.1)
 
 

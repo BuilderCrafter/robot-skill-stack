@@ -7,8 +7,8 @@ from .runtime import MappingReadView
 
 class FrozenRgbdSourceError(RuntimeError):
     """Refuse a planning source without substituting another world."""
-    def __init__(self, code: str, message: str, details: Mapping | None = None) -> None:
-        self.code, self.details = code, details or {}
+    def __init__(self, code: str, message: str) -> None:
+        self.code = code
         super().__init__(message)
 
 
@@ -66,10 +66,8 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
         raise FrozenRgbdSourceError('stale', 'Original RGB-D observation is stale or future-dated')
     if not view.health['fresh']:
         raise FrozenRgbdSourceError('unavailable', 'RGB-D mapping is not healthy and fresh')
-    if (view.generation != source.generation or
-            (packet.generation, packet.revision, packet.timestamp) !=
-            (view.generation, view.revision, view.timestamp)):
-        raise FrozenRgbdSourceError('unusable', 'Obstacles and occupancy identify different publications')
+    if view.generation != source.generation:
+        raise FrozenRgbdSourceError('unusable', 'Mapping publication belongs to a different generation')
     if (not packet.boxes or len(packet.boxes) > max_obstacles or
             any(box.expires_at <= now for box in packet.boxes)):
         raise FrozenRgbdSourceError('unusable', 'Selected cuboids are empty, expired or over budget')

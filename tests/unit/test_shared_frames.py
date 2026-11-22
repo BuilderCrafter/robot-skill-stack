@@ -34,7 +34,6 @@ class SharedFramesTests(unittest.TestCase):
         self.assertEqual(mapping[0].acquired_at, 10.)
         self.assertEqual(mapping[1].acquired_at, 11.)
         self.assertEqual(self.cameras['A'].get_depth.call_count, 1)
-        self.assertEqual(self.pool.shared_reads, 1)
         self.cameras['A'].get_depth.return_value[:] = 9
         np.testing.assert_array_equal(mapping[0].depth, 1)
         with self.assertRaises(ValueError):

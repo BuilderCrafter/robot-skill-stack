@@ -1,7 +1,5 @@
 """Pack supported occupied cells into bounded cuboids without filling gaps."""
-from collections.abc import Mapping
 from dataclasses import dataclass
-from types import MappingProxyType
 
 import numpy as np
 
@@ -22,21 +20,13 @@ class ObstacleBox:
     center: tuple[float, float, float]
     dimensions: tuple[float, float, float]
     expires_at: float
-    voxel_count: int
 
 
 @dataclass(frozen=True)
 class ObstaclePacket:
-    """Immutable worker result tied to one occupancy publication."""
-    generation: int
-    revision: int
-    timestamp: float | None
-    extracted_at: float
+    """Selected cuboids; the enclosing map publication carries their identity."""
     boxes: tuple[ObstacleBox, ...]
-    diagnostics: Mapping[str, object]
-
-    def __post_init__(self) -> None:
-        object.__setattr__(self, 'diagnostics', MappingProxyType(dict(self.diagnostics)))
+    support_plane_z: float | None
 
 
 def _supported(mask: np.ndarray) -> np.ndarray:
@@ -106,15 +96,10 @@ class ObstacleExtractor:
                  *, temporal_probabilities: bool = False) -> None:
         self.settings = settings or ObstacleExtractionSettings()
         self._temporal_probabilities = temporal_probabilities
-        self._key, self._packet = None, None
 
     def extract(self, snapshot: OccupancySnapshot, *, now: float,
                 evidence_ttl: float) -> ObstaclePacket:
         """Select supported, unexpired occupancy and rank hazards before floor."""
-        key = (snapshot.generation, snapshot.revision, evidence_ttl)
-        if (key == self._key and self._packet is not None and
-                all(box.expires_at > now for box in self._packet.boxes)):
-            return self._packet
         spec = snapshot.spec
         lower, upper = np.asarray(spec.bounds_min), np.asarray(spec.bounds_max)
         observed_at = snapshot.last_observed
@@ -136,16 +121,11 @@ class ObstacleExtractor:
         selected = np.lexsort((bounds[:, 4], bounds[:, 2], bounds[:, 0], -volumes, floor))[
             :self.settings.max_obstacles]
         boxes = []
-        for cells, volume in zip(bounds[selected], volumes[selected]):
+        for cells in bounds[selected]:
             start, stop = cells[::2], cells[1::2]
             minimum = lower+start*spec.voxel_size
             maximum = np.minimum(lower+stop*spec.voxel_size, upper)
             oldest = float(observed_at[tuple(slice(a, b) for a, b in zip(start, stop))].min())
             boxes.append(ObstacleBox(':'.join(map(str, cells)), tuple((minimum+maximum)/2),
-                tuple(maximum-minimum), oldest+evidence_ttl, int(volume)))
-        diagnostics = dict(support_plane_z=support_z,
-            omitted_voxels=int(supported.sum()-volumes[selected].sum()))
-        packet = ObstaclePacket(snapshot.generation, snapshot.revision, snapshot.timestamp,
-                                now, tuple(boxes), diagnostics)
-        self._key, self._packet = key, packet
-        return packet
+                tuple(maximum-minimum), oldest+evidence_ttl))
+        return ObstaclePacket(tuple(boxes), support_z)

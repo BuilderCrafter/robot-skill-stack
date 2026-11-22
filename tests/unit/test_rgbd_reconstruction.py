@@ -28,7 +28,7 @@ def fixture(models=None, reason=None):
         ('outside',(.5,0.,.2),(.01,.01,.01))))
     return NS(generation=2,revision=3,boxes=boxes,spec=NS(voxel_size=.01),
         view=NS(inferred=rec.InferredGeometry((model(yaw=math.pi/4),) if models is None else models,reason),
-                obstacles=NS(diagnostics={'support_plane_z':0.})))
+                obstacles=NS(support_plane_z=0.)))
 
 
 def observations():

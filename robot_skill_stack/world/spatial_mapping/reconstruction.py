@@ -34,7 +34,7 @@ def combine(frozen) -> list[dict[str, object]]:
         descriptors.append(dict(path=f'/__rgbd_inferred__/{frozen.generation}/{frozen.revision}/{i}',
             position=tuple(model['center']), dimensions=tuple(model['dimensions']),
             orientation=(math.cos(yaw/2),0.,0.,math.sin(yaw/2)), source_kind='rgbd_inferred_box'))
-    floor_top = frozen.view.obstacles.diagnostics['support_plane_z']+frozen.spec.voxel_size+1e-12
+    floor_top = frozen.view.obstacles.support_plane_z+frozen.spec.voxel_size+1e-12
     for box in frozen.boxes:
         if box.center[2]+box.dimensions[2]/2 > floor_top:
             corners = np.asarray(box.center)+box_geometry.CORNERS*np.asarray(box.dimensions)
