@@ -1,118 +1,115 @@
 # Robot Skill Stack — Agent Instructions
 
-## Objective
+## Project identity and priorities
 
-University master's thesis project: modular Franka manipulation, perception and
-motion planning in Isaac Sim. Prioritize a reproducible demonstration and faithful
-functional integration over architectural expansion or speculative optimization.
+Robot Skill Stack is a master's thesis prototype and experimental research
+application. Treat it as a scientific Python project for a controlled university
+demonstration in Isaac Sim. No real-robot deployment is in scope.
 
-Current production includes MoveToPose/Home/Pick/Place, async runtime and BTs,
-single/multi-camera RGB-D perception, semantic WorldModel, occupancy mapping,
-robot self-filtering, bounded observation workers, direct RMPflow, static Lula RRT,
-frozen RGB-D global planning and opt-in measured-box reconstruction.
-The optional reactive obstacle-avoidance strategy is retired. Ordinary direct
-RMPflow, grasp verification and manipulation recovery remain supported.
+Prioritize, in order:
 
-## Environment and portability
+1. Readability and comprehensibility for the thesis author.
+2. Simplicity and minimal code.
+3. Correct implementation of the intended algorithms.
+4. Reproducible experimental results.
+5. Essential testing and failure detection.
+6. Additional robustness only where a concrete need justifies it.
 
-Original demonstration target:
-- Isaac Sim 5.1.0-rc.19, Python 3.11.
-- NumPy 1.26.4 and py_trees 2.6.0 from the existing repo-local `.deps` workflow.
-- Existing `run_isaac_python.sh`, `run_isaac_sim.sh`, USD scenes and full GUI.
+We accept narrower input support, simpler recovery and explicit exceptions in
+unsupported conditions. Do not impose production-grade robustness or generality.
 
-Cloud tests use the already-configured official Isaac Sim 5.1.0 container.
-Never reinstall/reconfigure the SDK or change bundled files for convenience.
-Never add `--no-ros-env`; the original launcher does not support it.
-Use `ISAAC_SIM`/environment paths for cloud differences. Do not change global SSH,
-Docker/network configuration, or introduce mandatory cloud services/dependencies.
-Do not increase CPU/GPU/RAM requirements. Preserve original two 640×480 cameras,
-acquisition rates, 1,024 shared mapping rays and 10 mm nominal voxels.
-Never launch concurrent Isaac instances or run unbounded experiment batches.
+The implemented stack includes MoveToPose/Home/Pick/Place, async runtime and BTs,
+RGB-D perception, occupancy mapping, robot filtering, direct RMPflow and Lula RRT.
+Direct motion is the default; static GT global planning is the primary global
+demo option. Reconstructed RGB-D planning remains experimental and opt-in.
+The optional reactive avoidance strategy is retired.
 
-## Architecture
+## Simplicity and scope
 
-Preserve GUI/BT → RobotRuntime → skills → ManipulationBackend → MotionStrategy.
-Semantic WorldModel, perception and Spatial Mapping remain separate subsystems.
-Keep Isaac imports out of generic common/runtime/world/manipulation/orchestration/
-presentation code. Bootstrap owns SDK resources; workers contain only SDK-free
-computation. Preserve public contracts, async ownership, cancellation, error
-propagation, immutable snapshots and generation/revision barriers.
+Follow [the refactoring guidelines](docs/refactoring-guidelines.md). Each module
+requires a separate user-authorized task. Branch setup and these documents do not
+authorize a module refactor. Finish the authorized module, commit for review and
+stop before starting another.
 
-Global source selection is explicit. Static GT is independently selectable and
-does not require mapping. Frozen RGB-D requires the enhanced collision model,
-enabled RGB-D mapping and automatic robot filtering. `occupied` and `reconstructed`
-remain available; reconstruction runs in the existing mapping worker. Do not add
-a worker, planner, world model or alternate motion executor during routine fixes.
-Do not resurrect the removed synchronous perception capture/mapping paths.
+When simplifying, actually remove code: dead functionality, compatibility layers,
+low-value wrappers, duplicate representations, excess state and obsolete tracing.
+Keep mathematical algorithms visible. Do not relocate complexity or replace each
+deleted helper with a new abstraction. A substantial line-count increase is a
+warning sign; explain a compelling benefit or reconsider the approach.
 
-## Motion and safety
+Question each defensive check. Remove redundant validation, required-interface
+`getattr`/`hasattr` fallbacks, impossible-state guards and elaborate exception
+translation when they serve no intended scenario. Natural exceptions and useful
+tracebacks are acceptable. Do not build recovery machinery for hypothetical cases.
 
-Direct RMPflow is the default and complete manipulation baseline. Static GT global
-RRT is the validated primary-demo option. Reconstructed RGB-D is experimental and
-opt-in; nominal partial detours have executed, but general reliability is unproven.
+Use ordinary parameter/return annotations, existing classes, simple collections
+and practical NumPy types. Some dynamic typing is fine. Avoid collections of
+`TypedDict`s, one-use protocols, complex generics and typing-only abstraction
+layers. Strict Pyright compliance is not a cleanup goal. Optional development
+tooling can be considered in a later task; do not import the unsuccessful
+cleanup's checker configuration, dependencies or typing infrastructure.
 
-Do not:
-- Replace Lula RRT, introduce hybrid planning or silently fall back to GT/direct.
-- Disable collision checks, weaken limits/qualification/freshness, discard selected
-  occupied evidence or interpret UNKNOWN/OUT_OF_BOUNDS as verified FREE.
-- Supply GT obstacle geometry, hidden fixture identities/dimensions or reference
-  joint goals to the selected RGB-D planner.
-- Guess unsupported hidden geometry bounds or search exposures for favorable fits.
-- Drop protected floor evidence, bypass the base guard or raise the 64 camera-proxy
-  limit to admit a rejected reconstructed world.
-- Execute a trajectory independently identified as physically unsafe.
-- Change fixture hashes/expected safety behavior just to make tests pass.
-- Claim continuous swept safety from sampled observations or zero contact reports.
+Remove diagnostics and their tests when they no longer help explain an active
+experiment, failure or result. An old test asserting a field is not a reason to
+retain it. Keep representative mathematical, manipulation/planning, camera/mapping,
+lifecycle and known-regression tests. Test totals are not quality targets.
 
-Preserve six-face qualification, calibrated edge/visibility evidence, robot
-exclusion, FREE contradiction checks and eight-corner subsumption. Retain original
-exposure/calibration provenance and strict <1 s source freshness. Cooperative
-reconstructed-source admission keeps its existing five-second bound and first-new-
-accepted-publication policy; a rejected source is not silently retried.
+## Essential experimental correctness
 
-Keep enhanced Franka geometry/finger contracts, joint/self-collision checks,
-trajectory validation, tracking bounds, terminal settling/hold, solver restoration,
-cancellation and shutdown. Do not change Pick/Place semantics or assume global
-payload carrying/intended-contact motion is supported. Home is not inherently safe.
+Keep protections that prevent a concrete invalid result or unintended motion in
+our supported setup. In particular:
 
-Known RGB-D limitations include conservative floor/base rejection, incomplete
-surface qualification, 65-proxy sparse worlds, limited mapping throughput/narrow
-freshness margins and possible refusal of persistent-session return motion.
+- Use the correct coordinate conventions, units and robot-joint indices.
+- Reject observations from the wrong exposure time or simulation generation;
+  retain the provenance needed to interpret the experiment.
+- Reject clearly invalid or colliding trajectories, and honor cancellation,
+  controller ownership and invalidation before further motion commands.
+- Keep RGB-D planning inputs distinct from GT evaluation. Do not silently swap
+  sources, fabricate FREE evidence, guess unsupported geometry or bypass a real
+  collision/source rejection to obtain a successful run.
 
-## Development workflow
+These principles do not require preserving every existing related check. Evaluate
+checks individually against the intended experiment. Unsupported inputs may fail
+with ordinary exceptions. Report failed experiments honestly; sampled checks and
+zero reported contacts do not establish continuous or real-robot safety.
 
-Before edits, inspect branches/remotes/worktrees, preserve user changes and read
-relevant production code, tests and current documentation. Prefer the smallest
-change needed. Do not refactor unrelated production code during integration.
+Use the existing GUI/BT → RobotRuntime → skills → ManipulationBackend →
+MotionStrategy organization as context. Keep Isaac calls in the integration and
+bootstrap code, with SDK-free numerical worker computation. Simplify interfaces
+with their actual callers; do not add workers, planners or services speculatively.
 
-Run offline regressions first:
+## Supported environment
 
-```sh
-./run_isaac_python.sh scripts/run_all_regressions.py --unit-only
-```
+Support the demonstrated university setup, not arbitrary robots or deployments:
 
-This includes architecture/syntax. Run bounded native cases only as needed, one
-Kit at a time. `--group global` retains GT and nominal reconstructed RGB-D with an
-independent pre-execution physical veto. Direct manipulation and Stop/Play/worker
-shutdown have separate retained scenarios; see `docs/validation.md`.
+- Isaac Sim 5.1.0-rc.19, Python 3.11, NumPy 1.26.4 and py_trees 2.6.0.
+- Existing `.deps` workflow, launch scripts, USD scenes, GUI and workstation use.
+- Existing two 640×480 cameras, acquisition rates, 1,024 shared mapping rays,
+  10 mm nominal voxels and declared experimental resource budgets.
 
-Inspect result JSON, actual commands/displacement, endpoint accuracy, contacts,
-source identity and cleanup. Startup or process exit alone does not prove motion.
-Preserve failures and original inputs; distinguish a safe refusal from successful
-execution and from a new regression. Never retry/tune until a favorable result.
-Validate GUI/bootstrap lifecycle and original workstation portability.
+Do not reinstall or modify the SDK, alter global SSH/Docker/network configuration,
+introduce cloud-specific dependencies or increase hardware requirements. Use
+existing environment paths for cloud differences. Never add the unsupported
+`--no-ros-env` flag. Run at most one Isaac instance, with bounded experiments.
 
-Commit coherent validated changes. Do not reset/clean/force-push/rewrite history,
-merge main or publish without authorization. Preserve development/recovery refs
-and historical artifacts. Explicit session authorization for integration/push
-applies only after the requested validation gates pass.
+## Proportionate validation and Git
 
-## Current references
+Documentation-only work needs review and `git diff --check`, with no runtime tests.
+For code, choose checks by impact: small static/focused checks for naming or typing,
+algorithm tests for local mathematics, focused integration for shared runtime, and
+an appropriate native Isaac regression for actual motion changes. A full suite is
+a deliberate milestone, not a default after every edit. Do not launch broad native
+matrices automatically. Rerun the relevant failed test instead of the whole suite.
+Historical validation documents describe available tools and past results, not
+mandatory gates or test-count requirements for every cleanup.
 
-- `README.md`, `docs/architecture.md`, `docs/configuration.md`.
-- `docs/motion_planning.md`, `docs/spatial_mapping.md`, `docs/validation.md`.
-- `docs/integration-rgbd-global-rrt.md` for this transfer and measured checks.
+Inspect branch ancestry, worktrees and actual callers before edits; preserve user
+changes. Commit small, understandable changes within the authorized scope. Do not
+reset/clean away work, delete branches, rewrite history, merge main or publish
+without authorization. Preserve `feature/rgbd-rrt-autonomous` as the historical
+research archive. Do not copy, cherry-pick or merge anything from
+`refactor/post-integration-cleanup` into this fresh cleanup branch; the user handles
+that old branch separately.
 
-Full historical research, benchmarks and large evidence remain permanently on
-`feature/rgbd-rrt-autonomous`; they are not main/runtime dependencies. Cleanup,
-module consolidation, typing changes and GUI redesign require a separate task.
+Reference `docs/architecture.md`, `docs/configuration.md`, `docs/motion_planning.md`,
+`docs/spatial_mapping.md` and `docs/validation.md` for implementation context.
