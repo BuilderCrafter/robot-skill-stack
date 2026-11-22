@@ -72,6 +72,19 @@ class ReferenceIntegrityTests(unittest.TestCase):
 
 
 class VetoBoundaryTests(unittest.TestCase):
+    def test_source_input_is_pinned_before_native_planning_and_execution(self):
+        planner,primary,backend,helper,evaluator,state=self.make()
+        frozen=object();backend.motion_strategy=NS(last_plan_trace={'frozen_rgbd':frozen})
+        captured=[];planner.source_capture=lambda value:captured.append(value)
+        plan=primary.plan.return_value
+        def checked(*args,**kwargs):
+            self.assertEqual(captured,[frozen])
+            return plan
+        primary.plan.side_effect=checked
+        with patch.multiple(native,fixture=helper,PhysicalMotionEvaluator=evaluator,create=True):
+            planner.plan(object(),np.zeros(7),object())
+        self.assertEqual(captured,[frozen])
+
     def make(self,allowed=True):
         primary=Mock();primary._config={'urdf_path':'physical-reference-only.urdf'}
         primary.plan.return_value=NS(route=np.zeros((2,7)),joint_names=tuple(f'panda_joint{i}' for i in range(1,8)))

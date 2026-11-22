@@ -89,15 +89,18 @@ class Observer:
 
 class VetoPlanner:
     """Test-only planner observer: normal production plan followed by exact veto."""
-    def __init__(self,primary,backend,observer,parts,obstacles,state,require_detour):
+    def __init__(self,primary,backend,observer,parts,obstacles,state,require_detour,source_capture=None):
         self.primary=primary;self.backend=backend;self.observer=observer
         self.parts=parts;self.obstacles=obstacles;self.state=state;self.require_detour=require_detour
+        self.source_capture=source_capture
 
     def __getattr__(self,name):return getattr(self.primary,name)
 
     def plan(self,target,start_q,world,**tolerances):
         from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
         instant=(self.backend.world.current_time,self.backend.world.current_time_step_index)
+        if self.source_capture is not None:
+            self.source_capture(self.backend.motion_strategy.last_plan_trace.get('frozen_rgbd'))
         context=self.observer.context()
         plan=self.primary.plan(target,start_q,world,**tolerances)
         times,q=fixture.sample_trajectory(plan)
@@ -152,7 +155,7 @@ def main():
         from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
         from robot_skill_stack.integrations.isaac.manipulation.motion.direct import DirectRmpflowStrategy
         from robot_skill_stack.integrations.isaac.manipulation.motion.static_world import capture_static_world
-        bundle=observer=None;original_factory=None;original_submit=None;inputs=deque(maxlen=4)
+        bundle=observer=None;original_factory=None;original_submit=None;inputs=deque(maxlen=4);selected_inputs=[]
         rgbd=args.source=='frozen_rgbd'
         objects=json.loads((fixture.ROOT/'tests/fixtures/global_partial.json').read_text()) if rgbd else []
         stage=fixture.prepare_stage(app)
@@ -199,7 +202,11 @@ def main():
             parts=robot_parts_from_capture(meshes);obstacles=physical_obstacles_from_static(physical)
             checks['all_eleven_physical_robot_bodies']=len({p.body for p in parts})==11
             original_factory=strategy._planner_factory
-            strategy._planner_factory=lambda backend,**options:VetoPlanner(original_factory(backend,**options),backend,observer,parts,obstacles,state,rgbd)
+            def pin_source(frozen):
+                if frozen is not None:
+                    selected=next((p for p in inputs if p.generation==frozen.generation and min(f.acquired_at for f in p.frames)==frozen.timestamp),None)
+                    if selected is not None:selected_inputs[:]=[selected]
+            strategy._planner_factory=lambda backend,**options:VetoPlanner(original_factory(backend,**options),backend,observer,parts,obstacles,state,rgbd,pin_source if rgbd else None)
             observer.sample();initial=np.asarray(backend.robot.get_joint_positions()).copy()
             result=await bundle.runtime.execute_async('move_to_pose',target=Pose(fixture.GOAL,fixture.ORIENTATION),position_tolerance=.025,orientation_tolerance=.10)
             state['motion']=result;state['strategy_after_motion']=dict(strategy.diagnostics)
@@ -219,7 +226,7 @@ def main():
                 checks['original_selected_union_and_budget_preserved']=coverage.get('occupied_union_preserved') is True and coverage.get('combined_camera_proxies',65)<=64
                 if frozen:
                     state['inferred']=fixture.serial(frozen.view.inferred)
-                    selected=next((p for p in inputs if p.generation==frozen.generation and min(f.acquired_at for f in p.frames)==frozen.timestamp),None)
+                    selected=selected_inputs[0] if selected_inputs else None
                     checks['original_camera_input_retained']=selected is not None
                     if selected is not None:
                         from robot_skill_stack.runtime.process_worker import _TransportPickler
