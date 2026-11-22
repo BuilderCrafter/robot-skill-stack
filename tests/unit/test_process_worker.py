@@ -14,6 +14,7 @@ from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialM
 from robot_skill_stack.runtime.process_worker import ProcessWorker
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import MeshInstance, RobotSnapshot, TriangleMesh
+from robot_skill_stack.world.spatial_mapping.occupancy import OccupancyState
 from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, MappingProcessor
 
 
@@ -135,11 +136,10 @@ class ProcessWorkerTests(unittest.TestCase):
         actual=completed.value
         self.assertTrue(actual.accepted)
         self.assertEqual(actual.snapshot.timestamp,now)
-        self.assertGreater(actual.snapshot.counts()['occupied'],0)
+        self.assertTrue((actual.snapshot.states==OccupancyState.OCCUPIED).any())
         for array in (actual.snapshot.states,actual.snapshot.probabilities,
                       actual.snapshot.observed,actual.snapshot.last_observed,actual.snapshot.expired):
             with self.assertRaises(ValueError):array.setflags(write=True)
-        with self.assertRaises(TypeError):actual.snapshot.health['changed']=True
 
     def test_job_exception_recovers_in_same_child_without_resetting_state(self):
         self.worker.submit('first');first=self.result()

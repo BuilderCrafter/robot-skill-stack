@@ -94,12 +94,8 @@ class RgbdMapper:
         self.max_depth, self.max_skew, self.max_frame_age = max_depth, max_skew, max_frame_age
         self.clock, self._consumed = clock, {}
 
-    def _failure(self, reason: str, now: float) -> bool:
-        self.map.note_failure(reason, now=now)
-        return False
-
-    def _no_frame(self, reason: str, now: float) -> bool:
-        self.map.note_no_frame(reason, now=now)
+    def _failure(self, reason: str) -> bool:
+        self.map.note_failure(reason)
         return False
 
     def _allocate(self, counts: Sequence[int]) -> list[int]:
@@ -121,23 +117,24 @@ class RgbdMapper:
         """Select pixels, mask robots, traverse rays and integrate one whole batch."""
         supplied_time = now is not None
         now = self.clock() if now is None else now
+        self.map.error = None
         if not frames:
-            return self._no_frame('no_frames', now)
+            return False
         frames = tuple(sorted(frames, key=lambda frame: frame.camera_id))
         tokens = {f.camera_id: f.token for f in frames}
         if tokens == self._consumed:
-            return self._no_frame('repeated_frames', now)
+            return False
         if any(key in self._consumed and any(value <= before for value, before in zip(token, self._consumed[key]))
                for key, token in tokens.items()):
-            return self._failure('frozen_or_regressed_frames', now)
+            return self._failure('frozen_or_regressed_frames')
         # An attempted exposure cannot be repaired and replayed as new input.
         self._consumed = tokens
         if np.ptp([f.token[1] for f in frames]) > self.max_skew:
-            return self._failure('unsynchronized_frames', now)
+            return self._failure('unsynchronized_frames')
         acquired = np.array([f.acquired_at for f in frames])
         if (not np.isfinite(acquired).all() or np.any(acquired > now) or
                 np.any(now-acquired >= self.max_frame_age)):
-            return self._failure('invalid_acquisition_time', now)
+            return self._failure('invalid_acquisition_time')
         pixels = {}
         for frame in frames:
             y, x = np.indices(frame.depth[::self.stride, ::self.stride].shape)
@@ -145,7 +142,7 @@ class RgbdMapper:
             depth = frame.depth[y, x]
             valid = np.isfinite(depth) & (depth > 0)
             if not valid.any():
-                return self._failure('invalid_depth', now)
+                return self._failure('invalid_depth')
             keep = valid & (depth <= self.max_depth)
             pixels[frame.camera_id] = y[keep], x[keep]
         allocation = self._allocate([len(x) for y, x in pixels.values()])
@@ -166,23 +163,23 @@ class RgbdMapper:
             k, transform = frame.intrinsics, frame.world_from_camera
             rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(len(x))]
             endpoints = (rays*frame.depth[y, x, None])@transform[:3, :3].T+transform[:3, 3]
-            hits = self.map.world_to_indices(endpoints)
+            hits = self.map.spec.world_to_indices(endpoints)
             hits = hits[(hits >= 0).all(1)]
             occupied_parts.append(np.unique(np.ravel_multi_index(hits.T, shape)))
             visited, visits = _traverse_rays(transform[:3, 3], endpoints, self.map.spec, remaining)
             remaining -= visits
             if remaining < 0:
-                return self._failure('voxel_budget_exceeded', now)
+                return self._failure('voxel_budget_exceeded')
             free_parts.append(np.unique(visited))
         occupied = np.unique(np.concatenate(occupied_parts)) if occupied_parts else np.empty(0, np.int64)
         free = np.unique(np.concatenate(free_parts)) if free_parts else np.empty(0, np.int64)
         free = np.setdiff1d(free, occupied, assume_unique=True)
         if not len(free) and not len(occupied):
-            return self._no_frame('no_intersecting_evidence', now)
+            return False
         completed = now if supplied_time else self.clock()
         if completed < now:
-            return self._failure('clock_regressed', now)
+            return self._failure('clock_regressed')
         if np.any(completed-acquired >= self.max_frame_age):
-            return self._failure('stale_after_traversal', completed)
+            return self._failure('stale_after_traversal')
         return bool(self.map.integrate(np.column_stack(np.unravel_index(free, shape)),
             np.column_stack(np.unravel_index(occupied, shape)), timestamp=float(acquired.min()), now=completed))

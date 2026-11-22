@@ -95,7 +95,7 @@ class RgbdMappingTests(unittest.TestCase):
             occupancy,mapper = self.make()
             self.assertFalse(mapper.update(frames))
             self.assertIsNone(occupancy.timestamp)
-            self.assertFalse(occupancy.health['fresh'])
+            self.assertIsNotNone(occupancy.error)
 
     def test_visit_limit_counts_both_cameras_and_rejection_is_atomic(self):
         spec = GridSpec((0.,0.,0.),(1.,.1,.1),.1)

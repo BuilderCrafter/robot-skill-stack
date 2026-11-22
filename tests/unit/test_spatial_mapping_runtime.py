@@ -100,7 +100,7 @@ class MappingRuntimeTests(unittest.TestCase):
         self.assertEqual(result.source_frames[0]['token'],payload.frames[0].token)
 
     def test_fixed_time_queries_expire_to_unknown_without_mutating_frozen_evidence(self):
-        occupancy = OccupancyMap(GridSpec((0,0,0),(.3,.1,.1),.1),evidence_ttl=1.,stale_after=1.)
+        occupancy = OccupancyMap(GridSpec((0,0,0),(.3,.1,.1),.1),evidence_ttl=1.)
         occupancy.integrate([[0,0,0]],[[1,0,0]],timestamp=100.,now=100.)
         occupancy.integrate([[0,0,0]],[[1,0,0]],timestamp=100.1,now=100.1)
         occupancy.integrate([],[[1,0,0]],timestamp=100.9,now=100.9)

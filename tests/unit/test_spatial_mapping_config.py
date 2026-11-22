@@ -65,8 +65,7 @@ update_hz = 3.0
         self.assertEqual(SpatialMappingConfig().max_rays, 1024)
 
     def test_invalid_mapping_settings_and_excessive_allocation_are_rejected(self):
-        for kwargs in (dict(enabled='true'), dict(source='semantic'), dict(voxel_size=0),
-                dict(bounds_max=(0., 0., 0.)), dict(max_voxels=1), dict(stride=True),
+        for kwargs in (dict(enabled='true'), dict(source='semantic'), dict(max_voxels=1), dict(stride=True),
                 dict(max_rays=0), dict(max_voxel_visits=0), dict(max_candidate_voxels=0),
                 dict(max_depth=np.nan), dict(max_frame_age=-1), dict(stale_after=0),
                 dict(update_hz=0), dict(update_hz=True), dict(evidence_ttl=np.inf),

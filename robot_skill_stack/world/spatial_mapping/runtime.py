@@ -60,8 +60,7 @@ class MappingProcessor:
     def _reset(self, generation: int) -> None:
         """Initialize only the components used by the configured source."""
         cfg = self.settings
-        self.map = OccupancyMap(cfg.grid_spec(), clock=self.clock,
-            stale_after=cfg.stale_after, evidence_ttl=cfg.evidence_ttl)
+        self.map = OccupancyMap(cfg.grid_spec(), clock=self.clock, evidence_ttl=cfg.evidence_ttl)
         self.map.generation = generation
         if cfg.source == 'rgbd':
             self.mapper = RgbdMapper(self.map, stride=cfg.stride, max_rays=cfg.max_rays,
@@ -133,7 +132,7 @@ class MappingReadView:
         states = np.where(expired, OccupancyState.UNKNOWN, base.states)
         probabilities = np.where(expired, .5, base.probabilities)
         return OccupancyBatch(_readonly(states), _readonly(probabilities), base.observed,
-                              base.last_observed, _readonly(expired), base.indices)
+                              base.last_observed, _readonly(expired))
 
     def query(self, position: np.ndarray | Sequence):
         return _single(self.query_many(position))
@@ -149,7 +148,7 @@ class MappingService:
                                           reconstruction_scene=reconstruction_scene)
         self._worker = worker_factory(self._processor.compute, name='spatial-mapping')
         self._empty = OccupancyMap(settings.grid_spec(), clock=clock,
-            stale_after=settings.stale_after, evidence_ttl=settings.evidence_ttl).snapshot(now=clock())
+            evidence_ttl=settings.evidence_ttl).snapshot(now=clock())
         self._published = None
         self.generation, self._barrier = 0, 0
         self._status, self._reason = 'waiting', None
@@ -172,11 +171,10 @@ class MappingService:
             return None
         result = work.value
         if not result.accepted:
-            health = result.snapshot.health
-            if health['status'] == 'error':
-                self.note_source_failure(health['last_error'])
+            if result.snapshot.error is not None:
+                self.note_source_failure(result.snapshot.error)
             else:
-                self.note_no_frame(health['reason'])
+                self.note_no_frame()
             return result
         now = self.clock() if now is None else now
         limit = self.settings.stale_after

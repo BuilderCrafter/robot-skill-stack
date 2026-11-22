@@ -169,7 +169,8 @@ class AuditedMappingProcessor(MappingProcessor):
                 writer(path, **arrays)
                 row['arrays_npz'] = path.name
                 row['capture_writer'] = 'numpy.savez' if self.capture_format == 'uncompressed' else 'numpy.savez_compressed'
-                row['snapshot'] = _plain(snapshot.metadata)
+                row['grid'] = dict(bounds_min=snapshot.spec.bounds_min, bounds_max=snapshot.spec.bounds_max,
+                                   voxel_size=snapshot.spec.voxel_size)
             row['capture_write_seconds'] = time.perf_counter()-started
             row['capture_qualification'] = 'Full capture adds worker disk/serialization cost. Do not use this run to claim source latency or control performance.'
         if completed is not None:
@@ -195,7 +196,7 @@ class AuditedMappingProcessor(MappingProcessor):
         self._job += 1
         self._arrays = {}
         self._snapshot_for_capture = None
-        self._active_row = dict(schema_version=1, job=self._job, pid=os.getpid(),
+        self._active_row = dict(schema_version=2, job=self._job, pid=os.getpid(),
             generation=payload.generation, source=self.settings.source,
             capture_inputs=self.capture_inputs, capture_selected=self._full_capture(),
             capture_format=self.capture_format,

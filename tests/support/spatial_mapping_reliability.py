@@ -171,7 +171,7 @@ def center_membership(points, shapes):
 
 def conservative_cell_overlap(spec, indices, shapes):
     """Possible overlap, not exact occupied volume or positive collision proof."""
-    indices = spec.validate_indices(indices)
+    indices = np.asarray(indices, np.int64).reshape(-1, 3)
     lower = np.asarray(spec.bounds_min)+indices*spec.voxel_size
     upper = np.minimum(lower+spec.voxel_size, spec.bounds_max)
     centers, half = (lower+upper)/2, (upper-lower)/2
@@ -201,7 +201,7 @@ def conservative_cell_interior(spec, indices, shapes):
     cases are deliberately left outside this conservative interior stratum.
     Actual shortened boundary cells are used. Batches bound temporary arrays.
     """
-    indices, shapes = spec.validate_indices(indices), tuple(shapes)
+    indices, shapes = np.asarray(indices, np.int64).reshape(-1, 3), tuple(shapes)
     inside = np.zeros(len(indices), bool)
     for begin in range(0, len(indices), 8192):
         selected = indices[begin:begin+8192]
@@ -237,7 +237,7 @@ def _rate(count, denominator):
 
 
 def _excluded(spec, indices, excluded_indices):
-    excluded_indices = spec.validate_indices(excluded_indices)
+    excluded_indices = np.asarray(excluded_indices, np.int64).reshape(-1, 3)
     return np.isin(np.ravel_multi_index(indices.T, spec.shape),
                    np.ravel_multi_index(excluded_indices.T, spec.shape))
 
@@ -253,7 +253,7 @@ def score_voxel_centers(snapshot, shapes, indices, *, other_exposures=(), exclud
     """
     shapes = tuple(shapes)
     groups = (shapes,)+tuple(tuple(group) for group in other_exposures)
-    indices = np.unique(snapshot.spec.validate_indices(indices), axis=0)
+    indices = np.unique(np.asarray(indices, np.int64).reshape(-1, 3), axis=0)
     input_voxels = len(indices)
     excluded = _excluded(snapshot.spec, indices, excluded_indices)
     indices = indices[~excluded]
@@ -310,11 +310,12 @@ def score_surface_events(snapshot, points, labels, *, camera_ids=None):
         raise ValueError('Surface labels and camera IDs must match point count')
     valid = np.isfinite(points).all(1)
     query = snapshot.query_many(points[valid])
+    point_indices = snapshot.spec.world_to_indices(points[valid])
     labels, cameras = labels[valid], cameras[valid]
 
     def summarize(selected):
         states = query.states[selected]
-        indices = query.indices[selected]
+        indices = point_indices[selected]
         indices = np.unique(indices[(indices >= 0).all(1)], axis=0)
         unique = snapshot.query_many(snapshot.spec.indices_to_centers(indices))
         count = lambda values: {state.name.lower(): int((values == state).sum()) for state in OccupancyState}
@@ -338,7 +339,8 @@ def score_clear_region(snapshot, points, shapes, *, excluded_indices=()):
     points, shapes = _points(points), tuple(shapes)
     finite = np.isfinite(points).all(1)
     query = snapshot.query_many(points)
-    in_bounds = (query.indices >= 0).all(1)
+    point_indices = snapshot.spec.world_to_indices(points)
+    in_bounds = (point_indices >= 0).all(1)
     inside = np.zeros(len(points), bool)
     inside[finite] = center_membership(points[finite], shapes)
     errors = []
@@ -346,9 +348,9 @@ def score_clear_region(snapshot, points, shapes, *, excluded_indices=()):
     if not finite.all(): errors.append('nonfinite_probe_points')
     if not in_bounds.all(): errors.append('out_of_bounds_probe_points')
     if inside.any(): errors.append('probe_intersects_reference_solid')
-    excluded_points = _excluded(snapshot.spec, query.indices[in_bounds], excluded_indices)
+    excluded_points = _excluded(snapshot.spec, point_indices[in_bounds], excluded_indices)
     if excluded_points.any(): errors.append('probe_in_excluded_reference_region')
-    indices = np.unique(query.indices[in_bounds], axis=0)
+    indices = np.unique(point_indices[in_bounds], axis=0)
     centers = snapshot.spec.indices_to_centers(indices)
     cells = snapshot.query_many(centers)
     overlap = conservative_cell_overlap(snapshot.spec, indices, shapes)

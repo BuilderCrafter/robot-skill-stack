@@ -28,7 +28,7 @@ class _RayScene:
         def masks(frames, pixels):
             return {f.camera_id:np.full(f.depth.shape,occluded and f.camera_id=='A',bool) for f in frames}
         if not self.mapper.update(frames,mask_provider=masks):
-            raise AssertionError(self.map.health)
+            raise AssertionError(self.map.error)
 
     def query(self, position=None):
         return self.map.query(self.near if position is None else position)
@@ -68,7 +68,6 @@ class TemporalReliabilityTests(unittest.TestCase):
         self.assertTrue(expired.observed and expired.expired)
         self.assertEqual(expired.last_observed,before.last_observed)
         self.assertEqual(self.scene.map.timestamp,self.scene.now)
-        self.assertTrue(self.scene.map.health['fresh'])
 
 
 if __name__ == '__main__':
