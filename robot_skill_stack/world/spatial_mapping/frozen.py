@@ -1,7 +1,4 @@
 """Select one prepared RGB-D publication for a fixed-time planning request."""
-from collections.abc import Mapping
-from dataclasses import dataclass
-
 from .runtime import MappingReadView
 
 
@@ -12,45 +9,7 @@ class FrozenRgbdSourceError(RuntimeError):
         super().__init__(message)
 
 
-@dataclass(frozen=True, eq=False)
-class FrozenRgbdWorld:
-    """Retain the immutable worker view and its original camera records."""
-    view: MappingReadView
-    source_frames: tuple[Mapping[str, object], ...]
-
-    @property
-    def generation(self) -> int:
-        return self.view.generation
-
-    @property
-    def revision(self) -> int:
-        return self.view.revision
-
-    @property
-    def timestamp(self) -> float:
-        return self.view.timestamp
-
-    @property
-    def spec(self):
-        return self.view.spec
-
-    @property
-    def boxes(self):
-        return self.view.obstacles.boxes
-
-    @property
-    def age_seconds(self) -> float:
-        return self.view.evaluated_at-self.timestamp
-
-    def query_many(self, positions):
-        """Query occupancy at the selected view's fixed evaluation time."""
-        return self.view.query_many(positions)
-
-    def query(self, position):
-        return self.view.query(position)
-
-
-def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
+def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> MappingReadView:
     """Select fresh worker cuboids without acquisition, scanning or extraction."""
     if source is None:
         raise FrozenRgbdSourceError('unavailable', 'Spatial Mapping is unavailable')
@@ -71,4 +30,4 @@ def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> FrozenRgbdWorld:
     if (not packet.boxes or len(packet.boxes) > max_obstacles or
             any(box.expires_at <= now for box in packet.boxes)):
         raise FrozenRgbdSourceError('unusable', 'Selected cuboids are empty, expired or over budget')
-    return FrozenRgbdWorld(view, view.source_frames)
+    return view

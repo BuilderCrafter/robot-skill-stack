@@ -30,9 +30,9 @@ def support(timestamp=10.):
 
 
 def frozen():
-    return NS(timestamp=10., generation=2, revision=7, age_seconds=.1,
-        source_frames=({'camera_id':'/A'}, {'camera_id':'/B'}), boxes=(NS(id='1:2:3:4:5:6',
-        center=(.15,.35,.505), dimensions=(.1,.1,.01)),))
+    return NS(timestamp=10., generation=2, revision=7, evaluated_at=10.1,
+        source_frames=({'camera_id':'/A'}, {'camera_id':'/B'}), obstacles=NS(boxes=(NS(id='1:2:3:4:5:6',
+        center=(.15,.35,.505), dimensions=(.1,.1,.01)),)))
 
 
 class NumericSourceTests(unittest.TestCase):
@@ -42,8 +42,8 @@ class NumericSourceTests(unittest.TestCase):
         self.assertEqual(world.timestamp, camera.timestamp)
         box = world.obstacles[1]
         self.assertEqual(box.path, '/__rgbd_occupied__/1:2:3:4:5:6')
-        self.assertEqual(box.position, camera.boxes[0].center)
-        self.assertEqual(box.dimensions, camera.boxes[0].dimensions)
+        self.assertEqual(box.position, camera.obstacles.boxes[0].center)
+        self.assertEqual(box.dimensions, camera.obstacles.boxes[0].dimensions)
         self.assertEqual(box.maximum_surface_error_m, 0.)
         self.assertEqual(box.source_kind, 'rgbd_occupied_cells')
         self.assertEqual(world.source_metadata['camera_obstacle_count'], 1)
@@ -67,7 +67,7 @@ class NumericSourceTests(unittest.TestCase):
 
     def test_duplicate_camera_ids_cannot_create_duplicate_numeric_obstacles(self):
         camera = frozen()
-        camera.boxes = camera.boxes*2
+        camera.obstacles.boxes = camera.obstacles.boxes*2
         with self.assertRaisesRegex(StaticWorldError, 'Duplicate'):
             planning_world_from_frozen(camera,support())
 
@@ -107,8 +107,8 @@ class NumericSourceTests(unittest.TestCase):
 
 class SourceAdapterTests(unittest.TestCase):
     def test_actual_worker_publication_is_translated_once_and_retained_after_source_reset(self):
-        from tests.unit.test_frozen_rgbd_world import FrozenRgbdWorldTests
-        fixture = FrozenRgbdWorldTests()
+        from tests.unit.test_frozen_rgbd_world import FrozenRgbdCaptureTests
+        fixture = FrozenRgbdCaptureTests()
         self.addCleanup(fixture.doCleanups)
         source = fixture.prepared()
         provider = Mock(return_value=source)
@@ -119,8 +119,8 @@ class SourceAdapterTests(unittest.TestCase):
         self.assertEqual(world.timestamp,100.1)
         self.assertEqual(world.source_metadata['camera_ids'],('/A','/B'))
         self.assertEqual(world.source_metadata['revision'],camera.revision)
-        self.assertEqual(len(world.obstacles),len(camera.boxes)+1)
-        for actual, box in zip(world.obstacles[1:],camera.boxes):
+        self.assertEqual(len(world.obstacles),len(camera.obstacles.boxes)+1)
+        for actual, box in zip(world.obstacles[1:],camera.obstacles.boxes):
             self.assertEqual(actual.position,box.center)
             self.assertEqual(actual.dimensions,box.dimensions)
         original = world.as_dict()

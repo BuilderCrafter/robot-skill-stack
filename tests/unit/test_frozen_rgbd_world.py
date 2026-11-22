@@ -1,5 +1,6 @@
 """Fresh-source selection, fixed-time queries and retained camera evidence."""
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -12,7 +13,7 @@ from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, Mappin
 from tests.unit.test_spatial_mapping_runtime import ManualWorker, settings
 
 
-class FrozenRgbdWorldTests(unittest.TestCase):
+class FrozenRgbdCaptureTests(unittest.TestCase):
     def service(self, *, maximum=64, ttl=5., support=None, **changes):
         values = dict(enabled=True, source='rgbd', automatic_robot_filter=True, stride=1,
             bounds_min=(-.05,-.05,.8), bounds_max=(.05,.05,1.05), voxel_size=.01,
@@ -51,18 +52,17 @@ class FrozenRgbdWorldTests(unittest.TestCase):
     def test_fresh_publication_reuses_geometry_and_original_camera_records(self):
         source = self.prepared()
         view = source.snapshot()
-        frozen = capture_frozen_rgbd(source)
-        self.assertIs(frozen.boxes, view.obstacles.boxes)
-        self.assertEqual((frozen.generation,frozen.revision,frozen.timestamp),
-                         (view.generation,view.revision,100.1))
-        self.assertEqual(frozen.view.evaluated_at,100.2)
-        self.assertAlmostEqual(frozen.age_seconds,.1)
-        self.assertEqual([f['camera_id'] for f in frozen.source_frames],['/A','/B'])
-        self.assertEqual(frozen.source_frames[0]['token'],(2,.2))
-        self.assertEqual(frozen.source_frames[0]['acquired_at'],100.1)
-        np.testing.assert_array_equal(frozen.source_frames[0]['world_from_camera'],np.eye(4))
+        with patch.object(source, 'snapshot', return_value=view):
+            self.assertIs(capture_frozen_rgbd(source), view)
+        self.assertEqual(view.timestamp,100.1)
+        self.assertEqual(view.evaluated_at,100.2)
+        self.assertAlmostEqual(view.evaluated_at-view.timestamp,.1)
+        self.assertEqual([f['camera_id'] for f in view.source_frames],['/A','/B'])
+        self.assertEqual(view.source_frames[0]['token'],(2,.2))
+        self.assertEqual(view.source_frames[0]['acquired_at'],100.1)
+        np.testing.assert_array_equal(view.source_frames[0]['world_from_camera'],np.eye(4))
         points = [[0.,0.,.9],[0.,0.,1.],[.04,.04,.9],[.5,0.,1.]]
-        np.testing.assert_array_equal(frozen.query_many(points).states,
+        np.testing.assert_array_equal(view.query_many(points).states,
             [OccupancyState.FREE,OccupancyState.OCCUPIED,OccupancyState.UNKNOWN,OccupancyState.OUT_OF_BOUNDS])
 
     def test_missing_stale_and_failed_sources_are_refused(self):
@@ -100,17 +100,17 @@ class FrozenRgbdWorldTests(unittest.TestCase):
 
     def test_later_publication_reset_and_close_do_not_change_the_frozen_world(self):
         source = self.prepared()
-        frozen = capture_frozen_rgbd(source)
-        boxes = frozen.boxes
+        view = capture_frozen_rgbd(source)
+        boxes = view.obstacles.boxes
         self.publish(source,3,100.15,depth=1.01)
         source.reset()
         source.close()
         self.clock[0] = 1000.
-        self.assertIs(frozen.boxes,boxes)
-        self.assertEqual(frozen.timestamp,100.1)
-        self.assertAlmostEqual(frozen.age_seconds,.1)
-        self.assertEqual(frozen.source_frames[0]['token'],(2,.2))
-        self.assertEqual(frozen.query([0.,0.,1.]).state,OccupancyState.OCCUPIED)
+        self.assertIs(view.obstacles.boxes,boxes)
+        self.assertEqual(view.timestamp,100.1)
+        self.assertAlmostEqual(view.evaluated_at-view.timestamp,.1)
+        self.assertEqual(view.source_frames[0]['token'],(2,.2))
+        self.assertEqual(view.query([0.,0.,1.]).state,OccupancyState.OCCUPIED)
 
 
 if __name__ == '__main__':

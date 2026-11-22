@@ -1,6 +1,6 @@
 """One camera-only global world plus explicitly allowlisted known support.
 
-The bounded mapping worker product is copied by the SDK-free source boundary.
+The SDK-free source boundary retains the mapping worker's fixed-time view.
 This adapter translates numeric descriptors into the existing Lula world
 interface. Its only USD geometry read is the named physical support plane;
 it never traverses the scene or imports obstacle/semantic GT geometry.
@@ -68,7 +68,7 @@ def capture_known_support(backend, *, stage=None, timestamp):
         plane_domains=tuple(domains))
 
 
-def planning_world_from_frozen(frozen, support):
+def planning_world_from_frozen(view, support):
     """Translate exact worker boxes; no packing, expansion or cell scanning."""
     from .static_world import StaticObstacle
     paths = {item.path for item in support.obstacles}
@@ -82,12 +82,12 @@ def planning_world_from_frozen(frozen, support):
         raise StaticWorldError('RGB-D support boundary cannot contain scene obstacle geometry')
     boxes = tuple(StaticObstacle('/__rgbd_occupied__/'+box.id, 'cuboid', box.center,
         orientation=(1.,0.,0.,0.), dimensions=box.dimensions, source_kind='rgbd_occupied_cells',
-        approximation='exact_selected_occupied_cells', maximum_surface_error_m=0.) for box in frozen.boxes)
-    metadata = dict(source_type='rgbd', generation=frozen.generation, revision=frozen.revision,
-        map_age_seconds=frozen.age_seconds, camera_ids=tuple(f['camera_id'] for f in frozen.source_frames),
+        approximation='exact_selected_occupied_cells', maximum_surface_error_m=0.) for box in view.obstacles.boxes)
+    metadata = dict(source_type='rgbd', generation=view.generation, revision=view.revision,
+        map_age_seconds=view.evaluated_at-view.timestamp, camera_ids=tuple(f['camera_id'] for f in view.source_frames),
         known_support_paths=tuple(item.path for item in support.obstacles),
         camera_obstacle_count=len(boxes))
-    return StaticWorldSnapshot((*support.obstacles, *boxes), frozen.timestamp, support.meters_per_unit,
+    return StaticWorldSnapshot((*support.obstacles, *boxes), view.timestamp, support.meters_per_unit,
         support.robot_prim_path, plane_domains=support.plane_domains, source_metadata=metadata)
 
 
@@ -97,15 +97,15 @@ def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, sup
     from robot_skill_stack.world.spatial_mapping.frozen import capture_frozen_rgbd, FrozenRgbdSourceError
     try:
         source = None if source_provider is None else source_provider()
-        frozen = capture_frozen_rgbd(source, max_obstacles=max_obstacles)
+        view = capture_frozen_rgbd(source, max_obstacles=max_obstacles)
     except FrozenRgbdSourceError as error:
         raise PlanningFailure('planning_source_'+error.code, str(error)) from error
     except Exception as error:
         raise PlanningFailure('planning_source_unavailable',
             f'Frozen RGB-D source access failed: {type(error).__name__}: {error}') from error
     try:
-        support = support_capture(backend, timestamp=frozen.timestamp)
-        snapshot = planning_world_from_frozen(frozen, support)
+        support = support_capture(backend, timestamp=view.timestamp)
+        snapshot = planning_world_from_frozen(view, support)
     except Exception as error:
         raise PlanningFailure('planning_source_support',
             f'Known static support cannot be captured: {type(error).__name__}: {error}') from error
@@ -116,7 +116,7 @@ def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, sup
         try:
             if max_obstacles != 64:
                 raise ValueError('Reconstructed camera-proxy budget must be 64')
-            descriptors = combine(frozen)
+            descriptors = combine(view)
             cuboids = tuple(StaticObstacle(v['path'], 'cuboid', v['position'],
                 orientation=v['orientation'], dimensions=v['dimensions'], source_kind=v['source_kind'],
                 approximation='single_convex_yaw_box_empirical_bounds' if v['source_kind']=='rgbd_inferred_box'
@@ -128,4 +128,4 @@ def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, sup
             raise PlanningFailure('planning_source_reconstruction',str(error)) from error
     elif representation != 'occupied':
         raise PlanningFailure('planning_source_representation','Unknown RGB-D representation')
-    return snapshot, frozen
+    return snapshot, view

@@ -19,7 +19,7 @@ from tests.unit.test_rgbd_reconstruction import model
 
 class AdmissionTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
-        self.fixture=frozen_tests.FrozenRgbdWorldTests();self.source=self.fixture.prepared(support=0.)
+        self.fixture=frozen_tests.FrozenRgbdCaptureTests();self.source=self.fixture.prepared(support=0.)
         self.addCleanup(self.fixture.doCleanups)
         self.current=self.source;self.number=2;self.attach()
         self.backend=Backend();self.backend.robot.q[[0,8]]=.003
@@ -78,7 +78,7 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         frozen=self.strategy.last_plan_trace['frozen_rgbd']
         self.assertNotEqual(frozen.timestamp,old.timestamp)
         self.assertEqual(old.timestamp,100.1)
-        self.assertLess(frozen.age_seconds,1.)
+        self.assertLess(frozen.evaluated_at-frozen.timestamp,1.)
 
     async def test_no_publication_times_out_without_capture_planner_or_commands(self):
         self.backend.on_update=lambda backend:self.fixture.clock.__setitem__(0,self.fixture.clock[0]+1.)
@@ -211,7 +211,7 @@ class AdmissionTests(unittest.IsolatedAsyncioTestCase):
         frozen=self.strategy.last_plan_trace['frozen_rgbd']
         snapshot=self.strategy.last_plan_trace['snapshot']
         self.assertEqual([o.path for o in snapshot.obstacles if o.source_kind=='rgbd_occupied_cells'],
-                         ['/__rgbd_occupied__/'+box.id for box in frozen.boxes])
+                         ['/__rgbd_occupied__/'+box.id for box in frozen.obstacles.boxes])
         self.assertEqual(len(self.captures),1)
 
     async def test_fingers_changed_during_admission_reject_before_capture(self):

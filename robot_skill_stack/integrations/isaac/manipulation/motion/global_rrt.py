@@ -166,12 +166,12 @@ class GlobalRrtStrategy:
             if provider() is not source:
                 raise PlanningFailure('planning_source_changed', 'RGB-D mapping service changed during admission.')
             provider = lambda: source
-        snapshot, frozen = self._rgbd_world_capture(self._backend, provider,
+        snapshot, view = self._rgbd_world_capture(self._backend, provider,
             max_obstacles=self.max_obstacles,
             **({'representation':'reconstructed'} if self.rgbd_representation == 'reconstructed' else {}))
-        if expected is not None and (frozen.generation, frozen.revision, frozen.timestamp) != expected:
+        if expected is not None and (view.generation, view.revision, view.timestamp) != expected:
             raise PlanningFailure('planning_source_changed', 'RGB-D publication changed after source admission.')
-        self.last_plan_trace['frozen_rgbd'] = frozen
+        self.last_plan_trace['frozen_rgbd'] = view
         self._details['planning_source'] = snapshot.source_metadata
         self._details['planning_source_frozen'] = True
         return snapshot

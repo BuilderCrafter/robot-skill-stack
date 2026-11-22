@@ -26,9 +26,9 @@ def fixture(models=None, reason=None):
         ('inside',(0.,0.,.2),(.01,.01,.01)),
         ('partial',(.04,.04,.2),(.04,.04,.04)),
         ('outside',(.5,0.,.2),(.01,.01,.01))))
-    return NS(generation=2,revision=3,boxes=boxes,spec=NS(voxel_size=.01),
-        view=NS(inferred=rec.InferredGeometry((model(yaw=math.pi/4),) if models is None else models,reason),
-                obstacles=NS(support_plane_z=0.)))
+    return NS(generation=2,revision=3,spec=NS(voxel_size=.01),
+        inferred=rec.InferredGeometry((model(yaw=math.pi/4),) if models is None else models,reason),
+        obstacles=NS(boxes=boxes,support_plane_z=0.))
 
 
 def observations():
@@ -71,25 +71,25 @@ class AssemblyTests(unittest.TestCase):
         self.assertEqual(inferred['source_kind'],'rgbd_inferred_box')
         self.assertEqual([d['path'] for d in descriptors[1:]],
                          ['/__rgbd_occupied__/'+name for name in ('floor','partial','outside')])
-        for descriptor,box in zip(descriptors[1:],(frozen.boxes[i] for i in (0,2,3))):
+        for descriptor,box in zip(descriptors[1:],(frozen.obstacles.boxes[i] for i in (0,2,3))):
             self.assertEqual((descriptor['position'],descriptor['dimensions']),(box.center,box.dimensions))
 
     def test_absent_or_unusable_reconstruction_refuses_but_empty_retains_all_cuboids(self):
         frozen = fixture(reason='unsupported_hidden_bound')
         with self.assertRaisesRegex(ValueError,'unsupported_hidden_bound'):
             rec.combine(frozen)
-        frozen.view.inferred = None
+        frozen.inferred = None
         with self.assertRaisesRegex(ValueError,'No inferred geometry'):
             rec.combine(frozen)
         frozen = fixture(models=())
         self.assertEqual([d['path'] for d in rec.combine(frozen)],
-                         ['/__rgbd_occupied__/'+box.id for box in frozen.boxes])
+                         ['/__rgbd_occupied__/'+box.id for box in frozen.obstacles.boxes])
 
     def test_combined_camera_proxy_budget_is_64(self):
         frozen = fixture()
-        frozen.boxes = tuple(NS(id=str(i),center=(1.+i,0.,.2),dimensions=(.01,.01,.01)) for i in range(63))
+        frozen.obstacles.boxes = tuple(NS(id=str(i),center=(1.+i,0.,.2),dimensions=(.01,.01,.01)) for i in range(63))
         self.assertEqual(len(rec.combine(frozen)),64)
-        frozen.boxes += (NS(id='extra',center=(100.,0.,.2),dimensions=(.01,.01,.01)),)
+        frozen.obstacles.boxes += (NS(id='extra',center=(100.,0.,.2),dimensions=(.01,.01,.01)),)
         with self.assertRaisesRegex(ValueError,'64'):
             rec.combine(frozen)
 
@@ -124,11 +124,11 @@ class NumericalTests(unittest.TestCase):
 
 class PublicationTests(unittest.TestCase):
     def test_mapping_worker_product_reaches_opt_in_adapter_with_original_source_and_support(self):
-        from tests.unit.test_frozen_rgbd_world import FrozenRgbdWorldTests
+        from tests.unit.test_frozen_rgbd_world import FrozenRgbdCaptureTests
         from tests.unit.test_global_frozen_rgbd_v5 import support
         from robot_skill_stack.runtime.process_worker import _TransportPickler
         from robot_skill_stack.integrations.isaac.manipulation.motion.frozen_rgbd import capture_frozen_rgbd_world
-        fixture = FrozenRgbdWorldTests()
+        fixture = FrozenRgbdCaptureTests()
         source = fixture.prepared(support=0.)
         self.addCleanup(fixture.doCleanups)
         source._processor._reconstruction_scene = NS()
@@ -142,8 +142,8 @@ class PublicationTests(unittest.TestCase):
             support_capture=lambda *a,**k:support(),**options)
         occupied,old = capture()
         inferred,new = capture(representation='reconstructed')
-        self.assertIs(new.view.inferred,result.inferred)
-        self.assertIs(old.view._snapshot,new.view._snapshot)
+        self.assertIs(new.inferred,result.inferred)
+        self.assertIs(old._snapshot,new._snapshot)
         self.assertEqual(new.timestamp,100.15)
         self.assertEqual(new.source_frames[0]['token'],(3,3*.1))
         self.assertEqual(inferred.obstacles[0],occupied.obstacles[0])

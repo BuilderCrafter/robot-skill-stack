@@ -53,8 +53,10 @@ because a result is read or serialized.
 
 Use `bundle.spatial_mapping` to access the existing service. `snapshot()` returns
 an immutable `MappingReadView`; occupancy queries and diagnostic reads do not
-mutate the map. Stop/Play, reset, robot-model invalidation and shutdown prevent
-late or wrong-generation results from becoming accepted publications.
+mutate the map. Frozen RGB-D capture retains this view directly, including its
+fixed evaluation time and original camera records. Stop/Play, reset, robot-model
+invalidation and shutdown prevent late or wrong-generation results from becoming
+accepted publications.
 
 When frozen RGB-D global motion is selected, the worker also prepares bounded
 occupied cuboids. Extraction can omit detail when the budget binds.

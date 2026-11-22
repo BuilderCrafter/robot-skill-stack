@@ -221,10 +221,10 @@ def main():
             if rgbd:
                 frozen=strategy.last_plan_trace.get('frozen_rgbd')
                 checks['original_timestamp_and_source_preserved']=bool(frozen and frozen.timestamp==min(f['acquired_at'] for f in frozen.source_frames))
-                checks['qualified_reconstructed_world']=bool(frozen and frozen.view.inferred.reason is None and len(frozen.view.inferred.models)==2)
+                checks['qualified_reconstructed_world']=bool(frozen and frozen.inferred.reason is None and len(frozen.inferred.models)==2)
                 checks['camera_proxy_budget_preserved']=result.details.get('planning_source',{}).get('camera_obstacle_count',65)<=64
                 if frozen:
-                    state['inferred']=fixture.serial(frozen.view.inferred)
+                    state['inferred']=fixture.serial(frozen.inferred)
                     selected=selected_inputs[0] if selected_inputs else None
                     checks['original_camera_input_retained']=selected is not None
                     if selected is not None:
