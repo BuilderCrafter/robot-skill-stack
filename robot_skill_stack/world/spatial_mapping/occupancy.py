@@ -52,6 +52,7 @@ class GridSpec:
         return indices
 
     def indices_to_centers(self, indices: np.ndarray | Sequence) -> np.ndarray:
+        """Return centers of clipped cells, including partial boundary cells."""
         indices = np.asarray(indices, np.int64).reshape(-1, 3)
         lower = np.asarray(self.bounds_min)+indices*self.voxel_size
         upper = np.minimum(lower+self.voxel_size, self.bounds_max)
@@ -149,11 +150,11 @@ class OccupancyMap:
             return False
         log_odds, observed_at = self._log_odds.ravel(), self._last_observed.ravel()
         for indices, evidence in ((free, self.miss_log_odds), (occupied, self.hit_log_odds)):
-            previous = np.where(now-observed_at[indices] >= self.evidence_ttl, 0., log_odds[indices])
-            updated = np.clip(previous+evidence, -self.log_odds_limit, self.log_odds_limit)
+            previous = np.where(now - observed_at[indices] >= self.evidence_ttl, 0., log_odds[indices])
+            updated = np.clip(previous + evidence, -self.log_odds_limit, self.log_odds_limit)
             if evidence > 0:
                 # A real hit must immediately withhold any contradictory FREE claim.
-                updated[1/(1+np.exp(-updated)) <= self.p_free] = 0.
+                updated[1 / (1 + np.exp(-updated)) <= self.p_free] = 0.
             log_odds[indices], observed_at[indices] = updated, timestamp
         self.timestamp = timestamp
         self.revision += 1
@@ -179,8 +180,8 @@ class OccupancyMap:
 
     def _classify(self, log_odds: np.ndarray, observed_at: np.ndarray, now: float) -> tuple:
         observed = np.isfinite(observed_at)
-        expired = observed & (now-observed_at >= self.evidence_ttl)
-        probabilities = np.where(observed & ~expired, 1/(1+np.exp(-log_odds)), .5)
+        expired = observed & (now - observed_at >= self.evidence_ttl)
+        probabilities = np.where(observed & ~expired, 1 / (1 + np.exp(-log_odds)), .5)
         states = np.full(log_odds.shape, OccupancyState.UNKNOWN, dtype=np.uint8)
         states[observed & ~expired & (probabilities <= self.p_free)] = OccupancyState.FREE
         states[observed & ~expired & (probabilities >= self.p_occupied)] = OccupancyState.OCCUPIED

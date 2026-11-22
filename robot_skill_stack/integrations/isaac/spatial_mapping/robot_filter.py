@@ -48,14 +48,14 @@ def _pose_matrices(poses: np.ndarray, meters_per_unit: float) -> np.ndarray:
     """Own world transforms from the configured NumPy PhysX backend's XYZ/XYZW rows."""
     poses = np.asarray(poses, dtype=float)
     quaternions = poses[:, 3:]
-    x, y, z, w = (quaternions/np.linalg.norm(quaternions, axis=1)[:, None]).T
+    x, y, z, w = (quaternions / np.linalg.norm(quaternions, axis=1)[:, None]).T
     result = np.repeat(np.eye(4)[None], len(poses), axis=0)
     result[:, :3, :3] = np.array([
-        [1-2*(y*y+z*z), 2*(x*y-z*w), 2*(x*z+y*w)],
-        [2*(x*y+z*w), 1-2*(x*x+z*z), 2*(y*z-x*w)],
-        [2*(x*z-y*w), 2*(y*z+x*w), 1-2*(x*x+y*y)],
+        [1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+        [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+        [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)],
     ]).transpose(2, 0, 1)
-    result[:, :3, 3] = poses[:, :3]*meters_per_unit
+    result[:, :3, 3] = poses[:, :3] * meters_per_unit
     return result
 
 

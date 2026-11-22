@@ -9,7 +9,9 @@ import numpy as np
 from robot_skill_stack.runtime.worker import BoundedWorker
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
 from .geometry import rasterize_ground_truth
-from .occupancy import OccupancyMap, OccupancySnapshot, OccupancyState, OccupancyBatch, _readonly, _single
+from .occupancy import (
+    OccupancyBatch, OccupancyMap, OccupancyQuery, OccupancySnapshot, OccupancyState, _readonly, _single,
+)
 from .rgbd import RgbdMapper
 from .robot_filter import RobotSelfFilter
 from .obstacles import ObstacleExtractor
@@ -134,7 +136,7 @@ class MappingReadView:
         return OccupancyBatch(_readonly(states), _readonly(probabilities), base.observed,
                               base.last_observed, _readonly(expired))
 
-    def query(self, position: np.ndarray | Sequence):
+    def query(self, position: np.ndarray | Sequence) -> OccupancyQuery:
         return _single(self.query_many(position))
 
 

@@ -12,6 +12,7 @@ import math
 import numpy as np
 
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
+from robot_skill_stack.world.spatial_mapping.runtime import MappingReadView
 from .static_world import StaticWorldSnapshot, StaticWorldError, _usd_modules, obstacle_from_primitive
 
 
@@ -68,7 +69,7 @@ def capture_known_support(backend, *, stage=None, timestamp):
         plane_domains=tuple(domains))
 
 
-def planning_world_from_frozen(view, support):
+def planning_world_from_frozen(view: MappingReadView, support: StaticWorldSnapshot) -> StaticWorldSnapshot:
     """Translate exact worker boxes; no packing, expansion or cell scanning."""
     from .static_world import StaticObstacle
     paths = {item.path for item in support.obstacles}
@@ -92,7 +93,7 @@ def planning_world_from_frozen(view, support):
 
 
 def capture_frozen_rgbd_world(backend, source_provider, *, max_obstacles=64, support_capture=capture_known_support,
-                              representation='occupied'):
+                              representation='occupied') -> tuple[StaticWorldSnapshot, MappingReadView]:
     """Capture once; return frozen numeric world and fixed-time occupancy view."""
     from robot_skill_stack.world.spatial_mapping.frozen import capture_frozen_rgbd, FrozenRgbdSourceError
     try:

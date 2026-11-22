@@ -89,9 +89,9 @@ def _mesh_depth(mesh: TriangleMesh, origin: np.ndarray, directions: np.ndarray,
     best = np.asarray(limit, float).copy()
     selected = np.flatnonzero(_box_hits(origin, directions,
         mesh._lower[0], mesh._upper[0], best))
-    tolerance = 32*np.finfo(float).eps
+    tolerance = 32 * np.finfo(float).eps
     for start in range(0, len(selected), 64):
-        ray_ids = selected[start:start+64]
+        ray_ids = selected[start:start + 64]
         stack = [(np.zeros(len(ray_ids), dtype=np.int64), ray_ids)]
         while stack:
             nodes, ray_ids = stack.pop()
@@ -105,33 +105,35 @@ def _mesh_depth(mesh: TriangleMesh, origin: np.ndarray, directions: np.ndarray,
             if np.any(leaf):
                 ranges = mesh._ranges[nodes[leaf]]
                 # TriangleMesh builds leaves with at most eight triangles.
-                offsets = ranges[:, 0, None]+np.arange(8)[None]
+                offsets = ranges[:, 0, None] + np.arange(8)[None]
                 valid = offsets < ranges[:, 1, None]
                 triangles = mesh._permutation[offsets[valid]]
                 pair_rays = np.broadcast_to(ray_ids[leaf, None], offsets.shape)[valid]
                 for begin in range(0, len(triangles), 1024):
-                    tri, ids = triangles[begin:begin+1024], pair_rays[begin:begin+1024]
-                    rays = directions[ids]
-                    first, edge1, edge2 = mesh._first[tri], mesh._edge1[tri], mesh._edge2[tri]
+                    triangle_ids, ray_indices = triangles[begin:begin + 1024], pair_rays[begin:begin + 1024]
+                    rays = directions[ray_indices]
+                    first, edge1, edge2 = (mesh._first[triangle_ids], mesh._edge1[triangle_ids],
+                                          mesh._edge2[triangle_ids])
                     cross = np.cross(rays, edge2)
+                    # Moller-Trumbore intersection: u and v are triangle barycentrics.
                     determinant = np.einsum('nk,nk->n', cross, edge1)
-                    scale = np.linalg.norm(rays, axis=1)*(
-                        np.linalg.norm(edge1, axis=1)*np.linalg.norm(edge2, axis=1))
-                    usable = abs(determinant) > tolerance*scale
+                    scale = np.linalg.norm(rays, axis=1) * (
+                        np.linalg.norm(edge1, axis=1) * np.linalg.norm(edge2, axis=1))
+                    usable = abs(determinant) > tolerance * scale
                     inverse = np.zeros_like(determinant)
                     np.divide(1., determinant, out=inverse, where=usable)
-                    offset = origin-first
-                    u = np.einsum('nk,nk->n', cross, offset)*inverse
+                    offset = origin - first
+                    u = np.einsum('nk,nk->n', cross, offset) * inverse
                     other = np.cross(offset, edge1)
-                    v = np.einsum('nk,nk->n', rays, other)*inverse
-                    depth = np.einsum('nk,nk->n', edge2, other)*inverse
-                    usable &= (u >= -1e-10) & (v >= -1e-10) & (u+v <= 1+1e-10) & (depth > 0)
-                    np.minimum.at(best, ids, np.where(usable, depth, np.inf))
+                    v = np.einsum('nk,nk->n', rays, other) * inverse
+                    depth = np.einsum('nk,nk->n', edge2, other) * inverse
+                    usable &= (u >= -1e-10) & (v >= -1e-10) & (u + v <= 1 + 1e-10) & (depth > 0)
+                    np.minimum.at(best, ray_indices, np.where(usable, depth, np.inf))
             branch = ~leaf
             if np.any(branch):
                 next_nodes, next_rays = children[branch].ravel(), np.repeat(ray_ids[branch], 2)
                 for begin in range(0, len(next_nodes), 1024):
-                    node_packet, ray_packet = next_nodes[begin:begin+1024], next_rays[begin:begin+1024]
+                    node_packet, ray_packet = next_nodes[begin:begin + 1024], next_rays[begin:begin + 1024]
                     stack.append((node_packet, ray_packet))
     return best
 
@@ -147,7 +149,7 @@ class RobotSelfFilter:
         masks = {}
         for frame in frames:
             robot = snapshots_by_camera[frame.camera_id]
-            if (abs(robot.simulation_time-frame.token[1]) > self.pose_tolerance
+            if (abs(robot.simulation_time - frame.token[1]) > self.pose_tolerance
                     or robot.frame_token is not None and robot.frame_token != frame.token):
                 raise ValueError('Robot pose does not match camera exposure')
             mask = masks[frame.camera_id] = np.zeros(frame.depth.shape, bool)
@@ -155,15 +157,16 @@ class RobotSelfFilter:
             if not len(x):
                 continue
             measured = frame.depth[y, x]
-            k, transform = frame.intrinsics, frame.world_from_camera
-            rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(len(x))]
-            world_rays = rays@transform[:3, :3].T
+            intrinsics, transform = frame.intrinsics, frame.world_from_camera
+            rays = np.c_[(x + .5 - intrinsics[0, 2]) / intrinsics[0, 0],
+                         (y + .5 - intrinsics[1, 2]) / intrinsics[1, 1], np.ones(len(x))]
+            world_rays = rays @ transform[:3, :3].T
             origin = transform[:3, 3]
             robot_depth = np.full(len(x), np.inf)
             for part in robot.parts:
                 inverse = part._local_from_world
-                local_origin = origin@inverse[:3, :3].T+inverse[:3, 3]
-                robot_depth = _mesh_depth(part.mesh, local_origin, world_rays@inverse[:3, :3].T, robot_depth)
+                local_origin = origin @ inverse[:3, :3].T + inverse[:3, 3]
+                robot_depth = _mesh_depth(part.mesh, local_origin, world_rays @ inverse[:3, :3].T, robot_depth)
             mask[y, x] = (np.isfinite(measured) & (measured > 0) & np.isfinite(robot_depth) &
-                          (measured >= robot_depth-self.depth_tolerance))
+                          (measured >= robot_depth - self.depth_tolerance))
         return masks

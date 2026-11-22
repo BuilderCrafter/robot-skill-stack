@@ -59,6 +59,7 @@ def _supported(mask: np.ndarray) -> np.ndarray:
 
 def _cuboids(mask: np.ndarray, *, max_runs: int = 100_000) -> np.ndarray:
     """Merge Z runs into Y slabs, then join identical adjacent slabs along X."""
+    # Each result row holds half-open index bounds (x0, x1, y0, y1, z0, z1).
     padded = np.pad(mask, ((0, 0), (0, 0), (1, 1)))
     edges = np.diff(padded.astype(np.int8), axis=2)
     starts, stops = np.argwhere(edges == 1), np.argwhere(edges == -1)
@@ -66,7 +67,7 @@ def _cuboids(mask: np.ndarray, *, max_runs: int = 100_000) -> np.ndarray:
         return np.empty((0, 6), dtype=np.int64)
     if len(starts) > max_runs:
         # Bound sorting work by retaining the largest exact runs, with lexical ties.
-        lengths = stops[:, 2]-starts[:, 2]
+        lengths = stops[:, 2] - starts[:, 2]
         chosen = np.lexsort((starts[:, 2], starts[:, 1], starts[:, 0], -lengths))[:max_runs]
         starts, stops = starts[chosen], stops[chosen]
     order = np.lexsort((starts[:, 1], stops[:, 2], starts[:, 2], starts[:, 0]))
@@ -74,17 +75,17 @@ def _cuboids(mask: np.ndarray, *, max_runs: int = 100_000) -> np.ndarray:
     same = ((starts[1:, 0] == starts[:-1, 0]) &
             (starts[1:, 2] == starts[:-1, 2]) &
             (stops[1:, 2] == stops[:-1, 2]) &
-            (starts[1:, 1] == starts[:-1, 1]+1))
-    first = np.r_[0, np.flatnonzero(~same)+1]
-    last = np.r_[first[1:]-1, len(starts)-1]
-    boxes = np.column_stack((starts[first, 0], starts[first, 0]+1,
-        starts[first, 1], starts[last, 1]+1, starts[first, 2], stops[first, 2]))
+            (starts[1:, 1] == starts[:-1, 1] + 1))
+    first = np.r_[0, np.flatnonzero(~same) + 1]
+    last = np.r_[first[1:] - 1, len(starts) - 1]
+    boxes = np.column_stack((starts[first, 0], starts[first, 0] + 1,
+        starts[first, 1], starts[last, 1] + 1, starts[first, 2], stops[first, 2]))
     order = np.lexsort((boxes[:, 0], boxes[:, 5], boxes[:, 4], boxes[:, 3], boxes[:, 2]))
     boxes = boxes[order]
     same = (np.all(boxes[1:, 2:] == boxes[:-1, 2:], axis=1) &
             (boxes[1:, 0] == boxes[:-1, 1]))
-    first = np.r_[0, np.flatnonzero(~same)+1]
-    last = np.r_[first[1:]-1, len(boxes)-1]
+    first = np.r_[0, np.flatnonzero(~same) + 1]
+    last = np.r_[first[1:] - 1, len(boxes) - 1]
     result = boxes[first].copy()
     result[:, 1] = boxes[last, 1]
     return result

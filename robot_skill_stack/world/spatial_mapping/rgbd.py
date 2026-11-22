@@ -1,6 +1,6 @@
 """Bounded calibrated depth rays; independent of semantic perception and SDKs."""
-import time
 from collections.abc import Callable, Mapping, Sequence
+import time
 
 import numpy as np
 
@@ -14,6 +14,7 @@ def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec: GridSpec,
 
     Visits include duplicates and occupied endpoint cells. On budget exhaustion
     return exactly ``max_visits+1`` visits; the caller rejects the whole update.
+    Ray parameters run from zero at the camera to one at the measured endpoint.
     Workspace is bounded by 256 rays and the remaining visit budget, rather than
     allocating a ray-by-grid array. Emission order across rays is immaterial to
     the deduplicated evidence; each ray retains the scalar DDA boundary rules.
@@ -21,61 +22,61 @@ def _traverse_rays(origin: np.ndarray, endpoints: np.ndarray, spec: GridSpec,
     # Clip segments to the grid, then advance all tied voxel-boundary crossings.
     origin, endpoints = np.asarray(origin, float), np.asarray(endpoints, float)
     lower, upper, shape = np.asarray(spec.bounds_min), np.asarray(spec.bounds_max), np.asarray(spec.shape)
-    steps = sum(spec.shape)+3
-    capacity = min(max_visits+1, len(endpoints)*steps)
+    steps = sum(spec.shape) + 3
+    capacity = min(max_visits + 1, len(endpoints) * steps)
     output, used = np.empty(capacity, dtype=np.int64), 0
-    tolerance = 32*np.finfo(float).eps
+    tolerance = 32 * np.finfo(float).eps
     for begin in range(0, len(endpoints), 256):
-        direction = endpoints[begin:begin+256]-origin
+        direction = endpoints[begin:begin + 256] - origin
         enter, leave = np.zeros(len(direction)), np.ones(len(direction))
         valid = np.ones(len(direction), bool)
         for axis in range(3):
             moving = direction[:, axis] != 0
             valid &= moving | ((lower[axis] <= origin[axis]) & (origin[axis] < upper[axis]))
             first, second = np.zeros(len(direction)), np.zeros(len(direction))
-            np.divide(lower[axis]-origin[axis], direction[:, axis], out=first, where=moving)
-            np.divide(upper[axis]-origin[axis], direction[:, axis], out=second, where=moving)
+            np.divide(lower[axis] - origin[axis], direction[:, axis], out=first, where=moving)
+            np.divide(upper[axis] - origin[axis], direction[:, axis], out=second, where=moving)
             enter = np.where(moving, np.maximum(enter, np.minimum(first, second)), enter)
             leave = np.where(moving, np.minimum(leave, np.maximum(first, second)), leave)
         valid &= leave > enter
         direction, enter, leave = direction[valid], enter[valid], leave[valid]
         if not len(direction):
             continue
-        start = origin+enter[:, None]*direction
+        start = origin + enter[:, None] * direction
         probe = np.where(direction == 0, start,
                          np.nextafter(start, np.where(direction > 0, np.inf, -np.inf)))
         probe = np.maximum(lower, np.minimum(probe, np.nextafter(upper, lower)))
-        cell = np.floor((probe-lower)/spec.voxel_size).astype(np.int64)
+        cell = np.floor((probe - lower) / spec.voxel_size).astype(np.int64)
         step = np.sign(direction).astype(np.int64)
         crossing, interval = np.full(direction.shape, np.inf), np.full(direction.shape, np.inf)
         moving = direction != 0
-        boundary = lower+(cell+(step > 0))*spec.voxel_size
-        np.divide(boundary-origin, direction, out=crossing, where=moving)
+        boundary = lower + (cell + (step > 0)) * spec.voxel_size
+        np.divide(boundary - origin, direction, out=crossing, where=moving)
         np.divide(spec.voxel_size, abs(direction), out=interval, where=moving)
-        current, active = enter.copy(), np.ones(len(direction), bool)
+        current_t, active = enter.copy(), np.ones(len(direction), bool)
         for _ in range(steps):
             active &= (cell >= 0).all(1) & (cell < shape).all(1)
             ids = np.flatnonzero(active)
             if not len(ids):
                 break
-            following = crossing[ids].min(1)
-            emitted = ids[np.minimum(following, leave[ids]) > current[ids]+tolerance]
+            next_t = crossing[ids].min(1)
+            emitted = ids[np.minimum(next_t, leave[ids]) > current_t[ids] + tolerance]
             if len(emitted):
                 positions = cell[emitted]
-                flat = (positions[:, 0]*shape[1]+positions[:, 1])*shape[2]+positions[:, 2]
-                take = min(len(flat), capacity-used)
-                output[used:used+take] = flat[:take]
+                flat = (positions[:, 0] * shape[1] + positions[:, 1]) * shape[2] + positions[:, 2]
+                take = min(len(flat), capacity - used)
+                output[used:used + take] = flat[:take]
                 used += take
                 if used > max_visits:
                     return output[:used], used
-            done = following >= leave[ids]-tolerance
+            done = next_t >= leave[ids] - tolerance
             active[ids[done]] = False
-            advance, following = ids[~done], following[~done]
-            crossed = crossing[advance] <= following[:, None]+1e-12
-            cell[advance] += crossed*step[advance]
+            advance, next_t = ids[~done], next_t[~done]
+            crossed = crossing[advance] <= next_t[:, None] + 1e-12
+            cell[advance] += crossed * step[advance]
             values = crossing[advance]
             values[crossed] += interval[advance][crossed]
-            crossing[advance], current[advance] = values, following
+            crossing[advance], current_t[advance] = values, next_t
     return output[:used], used
 
 
@@ -133,12 +134,12 @@ class RgbdMapper:
             return self._failure('unsynchronized_frames')
         acquired = np.array([f.acquired_at for f in frames])
         if (not np.isfinite(acquired).all() or np.any(acquired > now) or
-                np.any(now-acquired >= self.max_frame_age)):
+                np.any(now - acquired >= self.max_frame_age)):
             return self._failure('invalid_acquisition_time')
         pixels = {}
         for frame in frames:
             y, x = np.indices(frame.depth[::self.stride, ::self.stride].shape)
-            y, x = y.ravel()*self.stride, x.ravel()*self.stride
+            y, x = y.ravel() * self.stride, x.ravel() * self.stride
             depth = frame.depth[y, x]
             valid = np.isfinite(depth) & (depth > 0)
             if not valid.any():
@@ -148,7 +149,7 @@ class RgbdMapper:
         allocation = self._allocate([len(x) for y, x in pixels.values()])
         for key, count in zip(pixels, allocation):
             y, x = pixels[key]
-            selected = ((np.arange(count)+.5)*len(x)/count).astype(int) if count else np.empty(0, int)
+            selected = ((np.arange(count) + .5) * len(x) / count).astype(int) if count else np.empty(0, int)
             pixels[key] = y[selected], x[selected]
         masks = mask_provider(frames, pixels) if mask_provider is not None and any(allocation) else None
         free_parts, occupied_parts = [], []
@@ -160,9 +161,10 @@ class RgbdMapper:
                 y, x = y[keep], x[keep]
             if not len(x):
                 continue
-            k, transform = frame.intrinsics, frame.world_from_camera
-            rays = np.c_[(x+.5-k[0, 2])/k[0, 0], (y+.5-k[1, 2])/k[1, 1], np.ones(len(x))]
-            endpoints = (rays*frame.depth[y, x, None])@transform[:3, :3].T+transform[:3, 3]
+            intrinsics, transform = frame.intrinsics, frame.world_from_camera
+            rays = np.c_[(x + .5 - intrinsics[0, 2]) / intrinsics[0, 0],
+                         (y + .5 - intrinsics[1, 2]) / intrinsics[1, 1], np.ones(len(x))]
+            endpoints = (rays * frame.depth[y, x, None]) @ transform[:3, :3].T + transform[:3, 3]
             hits = self.map.spec.world_to_indices(endpoints)
             hits = hits[(hits >= 0).all(1)]
             occupied_parts.append(np.unique(np.ravel_multi_index(hits.T, shape)))
@@ -179,7 +181,7 @@ class RgbdMapper:
         completed = now if supplied_time else self.clock()
         if completed < now:
             return self._failure('clock_regressed')
-        if np.any(completed-acquired >= self.max_frame_age):
+        if np.any(completed - acquired >= self.max_frame_age):
             return self._failure('stale_after_traversal')
         return bool(self.map.integrate(np.column_stack(np.unravel_index(free, shape)),
             np.column_stack(np.unravel_index(occupied, shape)), timestamp=float(acquired.min()), now=completed))

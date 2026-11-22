@@ -1,5 +1,5 @@
 """Select one prepared RGB-D publication for a fixed-time planning request."""
-from .runtime import MappingReadView
+from .runtime import MappingReadView, MappingService
 
 
 class FrozenRgbdSourceError(RuntimeError):
@@ -9,7 +9,8 @@ class FrozenRgbdSourceError(RuntimeError):
         super().__init__(message)
 
 
-def capture_frozen_rgbd(source, *, max_obstacles: int = 64) -> MappingReadView:
+def capture_frozen_rgbd(source: MappingService | None, *,
+                        max_obstacles: int = 64) -> MappingReadView:
     """Select fresh worker cuboids without acquisition, scanning or extraction."""
     if source is None:
         raise FrozenRgbdSourceError('unavailable', 'Spatial Mapping is unavailable')
