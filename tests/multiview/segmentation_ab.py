@@ -160,7 +160,7 @@ def objects(model):
                              [2*obj.geometry.radius]*3 if obj.class_name == 'sphere' else obj.size.tolist()),
                  graspable=obj.graspable, confidence=obj.confidence,
                  reason=obj.geometry.metadata.get('reason'),
-                 parameter_reason=obj.geometry.metadata.get('parameter_uncertainty', {}).get('reason'))
+                 parameter_reason=obj.geometry.metadata.get('parameter_reason'))
             for obj in model.visible_objects()]
 
 

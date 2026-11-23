@@ -5,7 +5,7 @@ import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import SceneGeometry
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, fuse_clouds, project_depth
-from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
+from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, _radial
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 
@@ -48,6 +48,24 @@ class OptimizedSurfaceFittingTests(unittest.TestCase):
                 fit = SurfaceFitter().fit(cloud[::2])
                 self.assertEqual(fit.geometry.shape.value, solid.shape, fit.geometry.scores)
                 self.assertLess(abs(fit.geometry.radius-solid.radius), .002)
+
+    def test_partial_curvature_with_sparse_depth_outliers_preserves_radius(self):
+        angle = np.linspace(-np.pi/3, np.pi/3, 64)
+        points = .03*np.c_[np.cos(angle), np.sin(angle)]
+        points += np.random.default_rng(113).normal(0., .0001, points.shape)
+        points[:4, 0] += .003
+        center, radius = _radial(points)
+        self.assertLess(np.linalg.norm(center), .0005)
+        self.assertLess(abs(radius-.03), .0005)
+
+    def test_circular_cap_and_sparse_walls_do_not_become_box(self):
+        angle, radius = np.meshgrid(np.linspace(0, 2*np.pi, 64, endpoint=False), np.linspace(0, .03, 16))
+        cap = np.c_[.45+radius.ravel()*np.cos(angle.ravel()),
+                    radius.ravel()*np.sin(angle.ravel()), np.full(angle.size, .05)]
+        side_angle = np.linspace(0, 2*np.pi, 16, endpoint=False)
+        wall = np.c_[.45+.03*np.cos(side_angle), .03*np.sin(side_angle), np.full(16, .025)]
+        fit = SurfaceFitter().fit(np.r_[cap, wall])
+        self.assertEqual(fit.geometry.shape.value, 'unknown', fit.geometry.scores)
 
     def test_planar_or_insufficient_evidence_remains_unknown(self):
         rng = np.random.default_rng(78)

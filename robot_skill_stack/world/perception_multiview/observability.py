@@ -178,10 +178,7 @@ def assess(fit, points, frames, *, view_clouds=(), support_plane_z=0.):
     c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
     rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
     local = (p-center) @ rotation
-    measured_fit = geometry.metadata.get('surface_fit', {})
-    measured_size = measured_fit.get('box_size', size)
-    measured_center = measured_fit.get('center', center)
-    top_z = float(measured_center[2]+measured_size[2]/2)
+    top_z = geometry.metadata.get('fitted_top_z', float(center[2]+size[2]/2))
     top = p[abs(p[:, 2]-top_z) <= _DEPTH_TOLERANCE]
     top_supported = (len(top) >= 12 and
                      np.all(np.ptp((top-center) @ rotation, axis=0)[:2] >= .25*size[:2]))

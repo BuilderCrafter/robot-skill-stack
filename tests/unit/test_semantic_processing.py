@@ -65,6 +65,9 @@ def frozen_provider(kind):
             source=source.replace(b'support_plane_z=self.scene.support_plane_z, frames=frames)',
                                   b'support_plane_z=self.scene.support_plane_z)')
             source=source.replace(b"'association_hint_reason': track.hint_reason", b"'association_hint_reason': None")
+            source=source.replace(b', orientation_metadata', b'')
+            source=b'\n'.join(line for line in source.split(b'\n')
+                              if b"geometry.metadata['orientation_observability']" not in line)
         exec(compile(source,f'{BASELINE}:{path}','exec'),module.__dict__)
     return module.PerceptionStateProvider if kind=='v1' else module.MultiViewProvider
 
@@ -150,6 +153,8 @@ class SemanticProcessingTests(unittest.TestCase):
                 for observation in expected.observations:
                     for key in ('class_confidence', 'camera_count', 'fused_points', 'association_hint_reason'):
                         observation.metadata.pop(key)
+                    for key in ('surface_parameters_observable', 'measured_box_geometry', 'center', 'size_world'):
+                        observation.geometry.metadata.pop(key, None)
             acquired=new.acquire()
             computed=new.processor.compute(acquired)
             actual=new.associate(computed)

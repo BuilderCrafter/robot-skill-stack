@@ -27,8 +27,8 @@ def _hypothesis(points: np.ndarray) -> dict | None:
     upper = sampled_points[sampled_points[:, 2] > np.percentile(sampled_points[:, 2], 99.8) - .010]
     levels, counts = np.unique(np.floor(upper[:, 2] / TOL).astype(int), return_counts=True)
     top = np.median(upper[np.floor(upper[:, 2] / TOL).astype(int) == levels[np.argmax(counts)], 2])
-    side = sampled_points[sampled_points[:, 2] < top - 3 * TOL]
-    if len(side) < 15 or np.count_nonzero(abs(sampled_points[:, 2] - top) < TOL) < 15:
+    side = sampled_points[:, 2] < top - 3 * TOL
+    if np.count_nonzero(side) < 15 or np.count_nonzero(abs(sampled_points[:, 2] - top) < TOL) < 15:
         return None
     yaw, rotation, _, _ = _box_search(sampled_points, side, np.deg2rad(np.arange(0, 90, 5.)))
     for width, step in ((5., .5), (.5, .05)):

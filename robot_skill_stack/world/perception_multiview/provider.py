@@ -12,7 +12,7 @@ from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame, FrameSynchronizer
 from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import (
-    PrimitiveFit, SurfaceFitter, orientation_metadata, unknown_fit,
+    PrimitiveFit, SurfaceFitter, unknown_fit,
 )
 from robot_skill_stack.world.perception_multiview.observability import assess
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points, refine_cluster, supported_object_cloud
@@ -104,21 +104,15 @@ class MultiViewProcessor:
                 geometry = fit.geometry
                 geometry.metadata['geometric_observability'] = evidence
                 if evidence['applicable']:
-                    geometry.metadata['surface_parameters_observable'] = bool(
-                        geometry.metadata.get('parameter_observable', False))
                     geometry.metadata['parameter_observable'] = bool(
-                        geometry.metadata['surface_parameters_observable'] and evidence['observable'])
+                        geometry.metadata['parameter_observable'] and evidence['observable'])
                     bounds = evidence['conservative_geometry']
                     if bounds is not None:
-                        geometry.metadata['measured_box_geometry'] = dict(center=fit.center.tolist(),
-                            box_size=geometry.box_size.tolist(), size_world=fit.size.tolist())
                         fit.center = np.asarray(bounds['center'], dtype=float)
                         geometry.box_size = np.asarray(bounds['box_size'], dtype=float)
                         c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
                         rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
                         fit.size = abs(rotation) @ geometry.box_size
-                        geometry.metadata.update(center=fit.center.tolist(), size_world=fit.size.tolist())
-                geometry.metadata['orientation_observability'] = orientation_metadata(fit, cluster)
                 views = tuple(frame.camera_id for frame, cloud in zip(frames, view_clouds) if len(cloud) >= 5)
                 detections.append(Detection(fit, cluster, views))
         return MultiViewResult(prepared.timestamp, tuple(detections))

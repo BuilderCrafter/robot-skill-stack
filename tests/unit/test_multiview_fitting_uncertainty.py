@@ -8,13 +8,12 @@ from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit, S
 
 
 class UnknownGeometryFallbackTests(unittest.TestCase):
-    def test_budget_fallback_uses_finite_current_bounds(self):
-        points = np.array([[.4, -.1, .02], [.5, .1, .08], [np.nan, 0., 0.]])
+    def test_budget_fallback_uses_current_bounds(self):
+        points = np.array([[.4, -.1, .02], [.5, .1, .08]])
         fit = unknown_fit(points, reason='candidate_budget_exhausted')
         self.assertEqual(fit.geometry.shape.value, 'unknown')
         self.assertEqual(fit.geometry.confidence, 0.)
         self.assertEqual(fit.geometry.metadata['reason'], 'candidate_budget_exhausted')
-        self.assertEqual(fit.geometry.metadata['fit_points'], 2)
         np.testing.assert_allclose(fit.center, [.45, 0., .05])
         np.testing.assert_allclose(fit.size, [.1, .2, .06])
 
@@ -25,8 +24,6 @@ class UnknownGeometryFallbackTests(unittest.TestCase):
         supported = unknown_fit([[.4, 0., .02], [.5, .1, .08]], support_plane_z=0.)
         self.assertAlmostEqual(supported.center[2], .04)
         self.assertAlmostEqual(supported.size[2], .08)
-        with self.assertRaises(ValueError):
-            unknown_fit([], support_plane_z=np.nan)
 
 
 class ConservativeParameterTests(unittest.TestCase):
@@ -63,14 +60,14 @@ class ConservativeParameterTests(unittest.TestCase):
         self.assertTrue(result.geometry.metadata['parameter_observable'])
         self.assertAlmostEqual(result.geometry.radius, .03, places=12)
         np.testing.assert_allclose(result.center, fit.center, atol=1e-12)
-        self.assertNotIn('parameter_uncertainty', fit.geometry.metadata)
+        self.assertNotIn('parameter_observable', fit.geometry.metadata)
         self.assertEqual(result.geometry.confidence, fit.geometry.confidence)
 
     def test_elevated_sphere_is_not_projected_onto_support(self):
         points, fit = self.sphere(center_z=.05)
         result = SurfaceFitter().finalize(fit, points)
         self.assertFalse(result.geometry.metadata['parameter_observable'])
-        self.assertEqual(result.geometry.metadata['parameter_uncertainty']['reason'], 'unobserved_support_contact')
+        self.assertEqual(result.geometry.metadata['parameter_reason'], 'unobserved_support_contact')
         np.testing.assert_array_equal(result.center, fit.center)
 
     def test_short_upright_arc_stays_known_but_dimension_unobservable(self):
@@ -78,7 +75,7 @@ class ConservativeParameterTests(unittest.TestCase):
         result = SurfaceFitter().finalize(fit, points)
         self.assertEqual(result.geometry.shape.value, 'cylinder')
         self.assertFalse(result.geometry.metadata['parameter_observable'])
-        self.assertEqual(result.geometry.metadata['parameter_uncertainty']['reason'], 'insufficient_curvature_extent')
+        self.assertEqual(result.geometry.metadata['parameter_reason'], 'insufficient_curvature_extent')
 
     def test_full_curvature_and_cap_preserve_supported_cylinder(self):
         points, fit = self.cylinder(np.linspace(0., 2*np.pi, 96, endpoint=False))

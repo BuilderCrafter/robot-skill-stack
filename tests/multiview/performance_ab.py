@@ -113,6 +113,7 @@ def geometry(fit, *, finalized):
     g = fit.geometry
     dimensions = g.box_size if g.shape.value=='cube' else np.full(3,2*g.radius) if g.shape.value=='sphere' else fit.size
     return dict(shape=g.shape.value,center=fit.center.tolist(),dimensions=dimensions.tolist(),
+        yaw=g.yaw,axis=None if g.axis is None else g.axis.tolist(),radius=g.radius,length=g.length,
         confidence=float(g.confidence),graspable=(g.shape.value!='unknown' and bool(g.metadata.get('parameter_observable',False)))
         if finalized else None,reason=g.metadata.get('reason'))
 

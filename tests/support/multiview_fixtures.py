@@ -70,7 +70,7 @@ def metric_row(obj, fit, **extra):
                 estimated_size=fit.size.tolist(), truth_center=obj.center.tolist(),
                 estimated_dimensions=None if predicted is None else predicted.tolist(),
                 estimated_axis=None if geometry.axis is None else geometry.axis.tolist(),
-                estimated_yaw=geometry.yaw, residuals_m=geometry.metadata.get('residuals_m', {}),
+                estimated_yaw=geometry.yaw,
                 truth_dimensions=truth_size.tolist(), **extra)
 
 
