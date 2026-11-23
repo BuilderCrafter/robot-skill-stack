@@ -1,0 +1,33 @@
+{
+  "native_square": {
+    "source": "outputs/multiview-native-20261122/session-2/pregrasp-{0,1}.npz",
+    "source_sha256": [
+      "133d100090d51d0ffcd0ab44c4360329eec297630528a3b6333a5c06e679ec68",
+      "d4748f735259841c554a46569944f7510dc19f2c1297add2ec75ac5459fbca0b"
+    ],
+    "extraction": "Existing project_depth(stride=2), crop_workspace(final config), 2mm per-view/fused voxelize, cluster_points; complete 487-point component selected for the fixture by the Square evaluation center. No oracle surface mask or point alteration; primary replay uses both complete original depth buffers."
+  },
+  "separate_boxes": {
+    "source": "outputs/segmentation-regression-20261122/captures-640/C_rotated.npz",
+    "sha256": "6a1b6d88f8befe9a53654050b4cb6a6733f566fb9e9135f4f925054be9540f69",
+    "provenance": "Analytic negative control, not native: frozen C_rotated from tests/multiview/segmentation_ab.py at 640x480; complete 1011-point coarse component."
+  },
+  "arrays": {
+    "native_square": {
+      "shape": [
+        487,
+        3
+      ],
+      "sha256": "0531858709856e2a9b9845b5defe42461502b8a7d1232801b5c03bee85454e84"
+    },
+    "separate_boxes": {
+      "shape": [
+        1011,
+        3
+      ],
+      "sha256": "922b99d4a6a876ce8179ab31d4e6f496aa9b019b894ba69dc1ba389d3b6c49dd"
+    }
+  },
+  "support_plane_z": 0.0,
+  "source_head": "58859c32cfd788bef55cd61d185ce196f389704d"
+}

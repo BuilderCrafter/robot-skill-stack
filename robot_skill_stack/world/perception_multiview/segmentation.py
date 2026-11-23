@@ -156,8 +156,9 @@ def refine_cluster(points: np.ndarray, fitter, *, support_plane_z: float = 0.) -
 
     No missing samples are reassigned or used to infer FREE space. A competing
     single-solid explanation or insufficient fit budget is unknown. Sparse
-    fragments may retain a well-supported whole sphere. A separate oversized
-    component may be discarded downstream without losing a qualified target.
+    fragments may retain a whole sphere or a supported box with one connected
+    measured footprint. A separate oversized component may be discarded
+    downstream without losing a qualified target.
     """
     supported, reason = supported_object_cloud(points, support_plane_z)
     oversized = reason == 'oversized_or_robot_connected'
@@ -171,12 +172,20 @@ def refine_cluster(points: np.ndarray, fitter, *, support_plane_z: float = 0.) -
     if not 2 <= len(components) <= 8:
         return unresolved
     if coverage < .90:
-        # Disconnected visible patches need not be different objects. Keep the
-        # original samples only when one sphere explains their measured surface.
+        # Vertical sampling gaps need not separate objects. A recovered box must
+        # also have one measured XY footprint, not two disconnected box tops.
         if not oversized:
             parent = fitter.fit(points, support_plane_z=support_plane_z)
-            if parent.geometry.shape.value == 'sphere' and np.percentile(_surface_distance(points, parent), 95) <= .003:
-                return [(points, parent)]
+            shape = parent.geometry.shape.value
+            if shape in ('sphere', 'cube') and np.percentile(_surface_distance(points, parent), 95) <= .003:
+                if shape == 'sphere':
+                    return [(points, parent)]
+                if supported:
+                    footprint = points.copy()
+                    footprint[:, 2] = 0.
+                    projected = _metric_components(footprint, min_points=1)
+                    if max(map(len, projected)) >= .95 * len(points):
+                        return [(points, parent)]
         return unresolved
     candidates, background = [], []
     for cloud in components:

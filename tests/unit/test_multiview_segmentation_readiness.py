@@ -1,5 +1,6 @@
 """Conservative refinement, shared fitting budget and actual camera-to-object flow."""
 import unittest
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import numpy as np
@@ -44,11 +45,41 @@ class SegmentationReadinessTests(unittest.TestCase):
 
     def test_continuous_box_is_not_split(self):
         points = box_surface()
-        result = refine_cluster(points, self.fitter)
+        with patch.object(self.fitter, 'fit', wraps=self.fitter.fit) as fitted:
+            result = refine_cluster(points, self.fitter)
+            fitted.assert_not_called()
         self.assertEqual(len(result), 1)
         self.assertIs(result[0][0], points)
         fit = result[0][1] or self.fitter.fit(points)
         self.assertEqual(fit.geometry.shape.value, 'cube')
+
+    def test_native_fragmented_box_recovers_without_merging_separate_footprints(self):
+        fixture = Path(__file__).resolve().parents[1]/'fixtures/multiview_occluded_box.npz'
+        with np.load(fixture, allow_pickle=False) as data:
+            native, pair = data['native_square'], data['separate_boxes']
+        angle = .37
+        rotation = np.array([[np.cos(angle),-np.sin(angle),0.],
+                             [np.sin(angle),np.cos(angle),0.],[0.,0.,1.]])
+        offset = np.array([.08,.12,.10])
+        cases = [(native, 0., np.array([.36,-.16,.0275])),
+                 (native @ rotation.T+offset, .10, np.array([.36,-.16,.0275]) @ rotation.T+offset),
+                 (pair, 0., None)]
+        for points, plane, expected_center in cases:
+            with self.subTest(recover=expected_center is not None, plane=plane):
+                original = points.copy()
+                budget = _FitBudget(self.fitter, max_calls=1)
+                result = refine_cluster(points, budget, support_plane_z=plane)
+                self.assertEqual(len(result), 1)
+                self.assertIs(result[0][0], points)
+                self.assertEqual(budget.remaining, 0)
+                fit = result[0][1]
+                if expected_center is None:
+                    self.assertEqual(fit.geometry.shape.value, 'unknown')
+                else:
+                    self.assertEqual(fit.geometry.shape.value, 'cube')
+                    self.assertLess(np.linalg.norm(fit.center-expected_center), .002)
+                    self.assertLess(max(abs(fit.geometry.box_size-.055)), .002)
+                np.testing.assert_array_equal(points, original)
 
     def test_insufficient_shared_budget_returns_unknown_without_fitting(self):
         fitter = Mock(remaining=2)
