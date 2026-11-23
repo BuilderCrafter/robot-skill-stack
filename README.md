@@ -27,6 +27,8 @@ Restart Isaac before switching setups. Do not introduce `--no-ros-env`.
 The multi-view demonstration uses `scenes/multiview_perception_final.usda` and
 `config/scenes/multiview_perception_final.toml`, with the original two 640×480
 cameras. See [configuration](docs/configuration.md) for explicit source selection.
+The [multiview guide](docs/multiview_rgbd.md) describes the pipeline and limitations;
+the [demo setup](docs/multiview_perception_final.md) gives the matching scene.
 
 ## Motion options
 
@@ -88,6 +90,8 @@ configuration. Ordinary direct RMPflow and manipulation recovery remain availabl
 - [Architecture](docs/architecture.md), [configuration](docs/configuration.md), [GUI](docs/gui.md).
 - [Manipulation](docs/manipulation.md), [perception](docs/perception.md), [spatial mapping](docs/spatial_mapping.md).
 - [Motion planning](docs/motion_planning.md), [validation](docs/validation.md), [control diagnostics](docs/control_diagnostic.md).
+- Multiview research: [native runtime measurements](docs/multiview-native-validation.md)
+  and [fixed-input geometry/performance experiments](docs/multiview-performance-ab.md).
 
 Home is a captured startup TCP reference, not a certified safe configuration.
 Finger positions do not prove object identity or prevent slipping. Sampled

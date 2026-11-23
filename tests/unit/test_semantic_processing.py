@@ -160,7 +160,7 @@ class SemanticProcessingTests(unittest.TestCase):
                     for key in ('class_confidence', 'camera_count', 'fused_points', 'association_hint_reason'):
                         observation.metadata.pop(key)
                     for key in ('surface_parameters_observable', 'measured_box_geometry', 'center', 'size_world',
-                                'geometric_observability'):
+                                'geometric_observability', 'support_contact_inferred', 'fitted_top_z'):
                         observation.geometry.metadata.pop(key, None)
             acquired=new.acquire()
             computed=new.processor.compute(acquired)

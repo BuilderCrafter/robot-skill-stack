@@ -23,6 +23,22 @@ frozen RGB-D assembly and admission, source timestamps and FREE evidence,
 reconstruction, self-filtering, occupancy/obstacle extraction, process-worker
 immutability/isolation, observation lifecycle and GUI/bootstrap behavior.
 
+For a local multiview qualification change, choose focused checks instead of
+automatically running the full suite:
+
+```bash
+python -m unittest tests.unit.test_multiview_provider \
+  tests.unit.test_multiview_observability tests.unit.test_multiview_segmentation_readiness
+python tests/multiview/occluded_box_replay.py \
+  --data outputs/multiview-performance-ab-20261122/input.json \
+  --result outputs/NEW-replay/world-model.json
+```
+
+The replay requires the original local native captures and manifest. It preserves
+their timestamps and exercises association in a historical clock domain; it does
+not validate live freshness. [Fixed-input experiments](multiview-performance-ab.md)
+describe dataset hashes, analytic negative controls and controlled A/B reproduction.
+
 ## Bounded native checks
 
 Run one Isaac process at a time and use fresh output directories:

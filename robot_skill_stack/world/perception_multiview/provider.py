@@ -98,10 +98,10 @@ class MultiViewProcessor:
                                 abs(bottom - self.scene.support_plane_z) <= .004)
                     if not inferred:
                         continue
-                    fit.geometry.metadata['support_contact_inferred'] = True
                 geometry = fit.geometry
                 if geometry.shape.value == 'cube':
                     bounds = assess(fit, cluster, frames, support_plane_z=self.scene.support_plane_z)
+                    geometry.metadata.pop('fitted_top_z')
                     geometry.metadata['parameter_observable'] = bool(
                         geometry.metadata['parameter_observable'] and bounds is not None)
                     if bounds is not None:

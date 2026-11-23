@@ -3,6 +3,8 @@
 Perception V1 is the default geometry-based world-state source. It discovers
 separated tabletop objects and fits cubes/boxes, spheres, and upright or lying
 cylinders without Isaac semantic labels.
+The optional `multi_view` source shares the observation/manipulation boundary;
+its separate numerical pipeline is described in [multiview RGB-D](multiview_rgbd.md).
 
 ## Runtime architecture
 

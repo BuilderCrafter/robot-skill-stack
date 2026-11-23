@@ -54,6 +54,11 @@ experiment, failure or result. An old test asserting a field is not a reason to
 retain it. Keep representative mathematical, manipulation/planning, camera/mapping,
 lifecycle and known-regression tests. Test totals are not quality targets.
 
+Do not create documentation reports for ordinary refactoring, cleanup, bug fixes
+or test maintenance. Summarize those changes and checks in the final response;
+update existing technical documentation when behavior or usage changes. Preserve
+substantial experimental findings in an existing research document where possible.
+
 ## Essential experimental correctness
 
 Keep protections that prevent a concrete invalid result or unintended motion in

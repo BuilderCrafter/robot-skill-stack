@@ -57,4 +57,4 @@ coroutine; do not weaken production expiry or planner checks to keep it alive.
 Phase 4B subsequently passed operator-reported native/manual validation and was
 merged at `1f53ed8`. Earlier test counts and measurements describe their own
 checkpoints, not validation of the current branch. Current release status is in
-[validation](validation.md#phase-4c-release-readiness).
+[validation](validation.md).

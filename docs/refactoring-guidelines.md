@@ -133,10 +133,23 @@ major engineering project, expand to other modules, invent new requirements or
 preserve every theoretical edge case. For each check, ask whether the supported
 experiment actually needs it; remove it when it does not.
 
-Report what was removed, any supported-behavior changes, the net size change,
-relevant validation and remaining limitations. Keep experimental evidence when
-needed for reproducibility; routine readability work needs a brief report rather
-than new tracing or a large validation project.
+Summarize removals, behavior changes, validation and remaining limitations in the
+final response. Keep experimental evidence needed for reproducibility without
+adding tracing or a large validation project for routine readability work.
+
+## Documentation policy
+
+Do not create a new documentation report for ordinary refactoring, cleanup,
+bug fixes or test maintenance. Summarize changes and test results in the final
+Codex response. Update existing documentation when current behavior, interfaces,
+configuration or usage changes.
+
+Create a dedicated research document only for a substantial new experiment or
+algorithm investigation with results worth preserving. Extend an existing
+research document when the topic is already covered. Focus on methodology,
+measurements, conclusions, limitations and reproduction; omit implementation
+journals, permissions, temporary branches, routine test totals and repetitive
+Git status statements.
 
 Branch setup and guideline revision authorize no production refactor, test deletion,
 Pyright installation or Isaac launch. The user will select the first module in a
