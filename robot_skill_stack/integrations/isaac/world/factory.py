@@ -8,18 +8,13 @@ from robot_skill_stack.world.model.provider import WorldObservationProvider
 
 
 def required_source_prims(config):
+    """List the source prims from a validated scene configuration."""
     if config.world.provider == 'perception':
-        if not config.perception.camera_prim_path:
-            raise ValueError('Perception source requires camera_prim_path')
         return [config.perception.camera_prim_path]
     if config.world.provider == 'ground_truth':
-        if not config.ground_truth.objects_root:
-            raise ValueError('Ground truth source requires objects_root')
         return [config.ground_truth.objects_root,
                 *(obj.prim_path for obj in config.ground_truth.objects.values())]
     if config.world.provider == 'multi_view':
-        if not config.multi_view.camera_prim_paths:
-            raise ValueError('Multi-view requires camera_prim_paths')
         return list(config.multi_view.camera_prim_paths)
     raise ValueError(f'Unsupported observation source: {config.world.provider}')
 
@@ -38,8 +33,11 @@ async def create_source(config) -> WorldObservationProvider:
             for _ in range(60):
                 await app.next_update_async()
             return MultiViewProvider(rig, config.scene, voxel_size=settings.voxel_size, stride=settings.stride)
-        except BaseException:
-            rig.close()
+        except BaseException as exc:
+            try:
+                rig.close()
+            except Exception as cleanup:
+                exc.add_note(f'Camera cleanup also failed: {cleanup}')
             raise
     camera = IsaacRgbdCamera(config.perception.camera_prim_path,
                              resolution=config.perception.resolution)
@@ -49,6 +47,9 @@ async def create_source(config) -> WorldObservationProvider:
         for _ in range(60):
             await app.next_update_async()
         return build_perception_provider(camera, config)
-    except BaseException:
-        camera.close()
+    except BaseException as exc:
+        try:
+            camera.close()
+        except Exception as cleanup:
+            exc.add_note(f'Camera cleanup also failed: {cleanup}')
         raise

@@ -173,6 +173,29 @@ class ConfigFactoryTests(unittest.TestCase):
                         asyncio.run(factory.create_source(cfg))
                 rig.close.assert_called_once()
 
+    def test_startup_failure_survives_cleanup_failure(self):
+        cfg = load_scene_config(PROFILE)
+        for stage, failure in (('warmup', RuntimeError('warmup failed')),
+                               ('warmup', asyncio.CancelledError()),
+                               ('provider', ValueError('provider failed'))):
+            with self.subTest(stage=stage, failure=type(failure).__name__), bootstrap_fixture():
+                factory = sys.modules['robot_skill_stack.integrations.isaac.world.factory']
+                rig = NS(close=Mock(side_effect=RuntimeError('cleanup failed')))
+                module = ModuleType('rig_double')
+                module.create_cameras = Mock(return_value=rig)
+                app = NS(next_update_async=AsyncMock(side_effect=failure if stage == 'warmup' else None))
+                with patch.dict(sys.modules, {'robot_skill_stack.integrations.isaac.world.multiview': module}), \
+                     patch.object(factory.omni.kit.app, 'get_app', return_value=app), \
+                     patch('robot_skill_stack.world.perception_multiview.provider.MultiViewProvider',
+                           side_effect=failure) as constructor:
+                    with self.assertRaises(type(failure)) as raised:
+                        asyncio.run(factory.create_source(cfg))
+                self.assertIs(raised.exception, failure)
+                self.assertEqual(failure.__notes__, ['Camera cleanup also failed: cleanup failed'])
+                self.assertEqual(app.next_update_async.await_count, 1 if stage == 'warmup' else 60)
+                self.assertEqual(constructor.call_count, int(stage == 'provider'))
+                rig.close.assert_called_once()
+
     def test_runtime_package_has_no_v1_sdk_or_oracle_imports(self):
         import ast
         for path in (ROOT/'robot_skill_stack/world/perception_multiview').glob('*.py'):

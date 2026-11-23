@@ -170,9 +170,13 @@ class BootstrapTests(unittest.TestCase):
             camera.initialize.assert_called_once_with(semantic_segmentation=False)
             build.assert_called_once_with(camera,cfg)
             camera.close.assert_not_called()
-            with patch.object(factory,'build_perception_provider',side_effect=ValueError('discovery init')):
-                with self.assertRaisesRegex(ValueError,'discovery init'):
+            failure=ValueError('discovery init')
+            camera.close.side_effect=RuntimeError('cleanup failed')
+            with patch.object(factory,'build_perception_provider',side_effect=failure):
+                with self.assertRaisesRegex(ValueError,'discovery init') as raised:
                     await factory.create_source(cfg)
+            self.assertIs(raised.exception,failure)
+            self.assertEqual(failure.__notes__,['Camera cleanup also failed: cleanup failed'])
             camera.close.assert_called_once()
         self.run_case(fn)
 
@@ -217,17 +221,13 @@ class BootstrapTests(unittest.TestCase):
             self.assertFalse(e.providers)
         self.run_case(fn)
 
-    def test_unknown_source_and_missing_selected_source_reference_fail_clearly(self):
+    def test_unknown_source_fails_before_adapter_construction(self):
         async def fn(m,e):
             cfg=m.load_scene_config('x.toml')
             factory=sys.modules['robot_skill_stack.integrations.isaac.world.factory']
             unknown=replace(cfg,world=replace(cfg.world,provider='unsupported'))
             with self.assertRaisesRegex(ValueError,'Unsupported observation source'):
                 await factory.create_source(unknown)
-            rgbd=replace(cfg,world=replace(cfg.world,provider='perception'),
-                         perception=replace(cfg.perception,camera_prim_path=None))
-            with self.assertRaisesRegex(ValueError,'camera_prim_path'):
-                factory.required_source_prims(rgbd)
             factory.IsaacRgbdCamera.assert_not_called()
             factory.IsaacGroundTruthProvider.assert_not_called()
         self.run_case(fn)
