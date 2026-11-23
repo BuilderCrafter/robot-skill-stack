@@ -99,17 +99,13 @@ class MultiViewProcessor:
                     if not inferred:
                         continue
                     fit.geometry.metadata['support_contact_inferred'] = True
-                evidence = assess(fit, cluster, frames, view_clouds=view_clouds,
-                                  support_plane_z=self.scene.support_plane_z)
                 geometry = fit.geometry
-                geometry.metadata['geometric_observability'] = evidence
-                if evidence['applicable']:
+                if geometry.shape.value == 'cube':
+                    bounds = assess(fit, cluster, frames, support_plane_z=self.scene.support_plane_z)
                     geometry.metadata['parameter_observable'] = bool(
-                        geometry.metadata['parameter_observable'] and evidence['observable'])
-                    bounds = evidence['conservative_geometry']
+                        geometry.metadata['parameter_observable'] and bounds is not None)
                     if bounds is not None:
-                        fit.center = np.asarray(bounds['center'], dtype=float)
-                        geometry.box_size = np.asarray(bounds['box_size'], dtype=float)
+                        fit.center, geometry.box_size = bounds
                         c, s = np.cos(geometry.yaw), np.sin(geometry.yaw)
                         rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
                         fit.size = abs(rotation) @ geometry.box_size

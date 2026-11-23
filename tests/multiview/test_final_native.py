@@ -36,8 +36,7 @@ def snapshot(model):
         rows.append(dict(id=obj.object_id, shape=obj.class_name, center=obj.pose.position.tolist(),
             dimensions=dims.tolist(), confidence=obj.confidence, graspable=obj.graspable,
             views=obj.metadata.get('contributing_views'), last_seen=obj.last_seen,
-            reason=g.metadata.get('reason'), parameter_reason=g.metadata.get('parameter_reason'),
-            observability=g.metadata.get('geometric_observability')))
+            reason=g.metadata.get('reason'), parameter_reason=g.metadata.get('parameter_reason')))
     return rows
 
 

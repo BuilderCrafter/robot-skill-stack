@@ -54,9 +54,9 @@ def run(data):
             assert result.timestamp==prepared.timestamp
             assert sorted(d.fit.geometry.shape.value for d in result.detections)==['cube','cube','sphere','sphere']
             qualified = [dict(shape=d.fit.geometry.shape.value,center=d.fit.center.tolist(),
-                parameter_observable=d.fit.geometry.metadata['parameter_observable'],
-                geometric_observability=d.fit.geometry.metadata['geometric_observability']) for d in result.detections]
-            assert all(row['parameter_observable'] and row['geometric_observability']['observable'] for row in qualified)
+                dimensions=d.fit.size.tolist(),
+                parameter_observable=d.fit.geometry.metadata['parameter_observable']) for d in result.detections]
+            assert all(row['parameter_observable'] for row in qualified)
             # Replay the original clock domain, including actual compute cost.
             with patch('time.monotonic',return_value=prepared.timestamp+duration):
                 assert updater.accepts(result.timestamp, context.revision)

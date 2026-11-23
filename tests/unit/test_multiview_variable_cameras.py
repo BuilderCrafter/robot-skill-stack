@@ -64,6 +64,7 @@ class VariableCameraProviderTests(unittest.TestCase):
         for solid in self.solids:
             obj = objects[solid.shape]
             self.assertTrue(obj.visible)
+            self.assertTrue(obj.graspable)
             self.assertLess(np.linalg.norm(obj.pose.position-solid.center), .003)
             if solid.shape == 'cube':
                 np.testing.assert_allclose(obj.geometry.box_size, solid.size, atol=.003, rtol=0)
@@ -81,14 +82,6 @@ class VariableCameraProviderTests(unittest.TestCase):
         np.testing.assert_allclose(order(actual), order(expected), atol=1e-12, rtol=0)
         self.assertLessEqual(len(actual), 12000)
 
-    def assert_view_evidence(self, objects, names):
-        for obj in objects.values():
-            self.assertTrue(set(obj.metadata['contributing_views']).issubset(names))
-        evidence = objects['cube'].geometry.metadata['geometric_observability']
-        for axis in evidence['axes'][:2]:
-            for side in ('negative', 'positive'):
-                self.assertEqual([view['camera_id'] for view in axis[side]['cameras']], list(names))
-
     def test_three_views_include_third_only_object_and_preserve_ids_when_reordered(self):
         frames = self.frames[:3]
         for frame in frames[:2]:
@@ -101,7 +94,6 @@ class VariableCameraProviderTests(unittest.TestCase):
         self.assert_geometry(objects)
         self.assertEqual(objects['cube'].metadata['contributing_views'], ['A', 'B', 'C'])
         self.assertEqual(objects['sphere'].metadata['contributing_views'], ['C'])
-        self.assert_view_evidence(objects, ('A', 'B', 'C'))
         self.assert_fusion_and_limits(source, frames)
         identities = {shape: obj.object_id for shape, obj in objects.items()}
         rig = source[1].rig
@@ -110,7 +102,6 @@ class VariableCameraProviderTests(unittest.TestCase):
         objects = {obj.class_name: obj for obj in source[2].objects()}
         self.assertEqual({shape: obj.object_id for shape, obj in objects.items()}, identities)
         self.assert_geometry(objects)
-        self.assert_view_evidence(objects, ('C', 'A', 'B'))
         self.assertEqual(objects['sphere'].metadata['contributing_views'], ['C'])
         self.assert_fusion_and_limits(source, frames)
 
@@ -126,6 +117,8 @@ class VariableCameraProviderTests(unittest.TestCase):
         self.assertEqual(before.object_id, after.object_id)
         np.testing.assert_array_equal(before.pose.position, after.pose.position)
         np.testing.assert_array_equal(before.geometry.box_size, after.geometry.box_size)
+        self.assertTrue(before.graspable)
+        self.assertTrue(after.graspable)
         np.testing.assert_array_equal(original[1].get_point_cloud(before.object_id),
                                       extended[1].get_point_cloud(after.object_id))
         self.assertEqual(after.metadata['contributing_views'], ['A', 'B'])
@@ -137,7 +130,6 @@ class VariableCameraProviderTests(unittest.TestCase):
         self.assert_geometry(objects)
         self.assertEqual(objects['cube'].metadata['contributing_views'], ['A', 'B', 'C', 'E'])
         self.assertEqual(objects['sphere'].metadata['contributing_views'], ['C', 'E'])
-        self.assert_view_evidence(objects, ('A', 'B', 'C', 'D', 'E'))
         self.assert_fusion_and_limits(source, self.frames)
 
 

@@ -66,6 +66,12 @@ def frozen_provider(kind):
                                   b'support_plane_z=self.scene.support_plane_z)')
             source=source.replace(b"'association_hint_reason': track.hint_reason", b"'association_hint_reason': None")
             source=source.replace(b', orientation_metadata', b'')
+            source=source.replace(b'assess(fit, cluster, frames, view_clouds=view_clouds,',
+                                  b'assess(fit, cluster, frames,')
+            source=source.replace(b"evidence['applicable']", b"geometry.shape.value == 'cube'")
+            source=source.replace(b"evidence['observable']", b'evidence is not None')
+            source=source.replace(b"bounds = evidence['conservative_geometry']",
+                                  b'bounds = None if evidence is None else dict(center=evidence[0], box_size=evidence[1])')
             source=b'\n'.join(line for line in source.split(b'\n')
                               if b"geometry.metadata['orientation_observability']" not in line)
         exec(compile(source,f'{BASELINE}:{path}','exec'),module.__dict__)
@@ -153,7 +159,8 @@ class SemanticProcessingTests(unittest.TestCase):
                 for observation in expected.observations:
                     for key in ('class_confidence', 'camera_count', 'fused_points', 'association_hint_reason'):
                         observation.metadata.pop(key)
-                    for key in ('surface_parameters_observable', 'measured_box_geometry', 'center', 'size_world'):
+                    for key in ('surface_parameters_observable', 'measured_box_geometry', 'center', 'size_world',
+                                'geometric_observability'):
                         observation.geometry.metadata.pop(key, None)
             acquired=new.acquire()
             computed=new.processor.compute(acquired)
