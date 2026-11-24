@@ -48,8 +48,8 @@ def camera_resources(*, initialize_failure=None, constructor_failure=None, clean
 
 
 class CameraLifecycleTests(unittest.TestCase):
-    def test_three_and_five_resources_initialize_and_close_once_in_reverse_order(self):
-        for count in (3, 5):
+    def test_one_two_three_and_five_resources_initialize_and_close_once_in_reverse_order(self):
+        for count in (1, 2, 3, 5):
             with self.subTest(count=count):
                 adapter, created, attempts, closed, _ = camera_resources()
                 paths = tuple(f'/World/Camera{index+1}' for index in range(count))
@@ -66,21 +66,30 @@ class CameraLifecycleTests(unittest.TestCase):
                 self.assertEqual(closed, list(reversed(paths)))
                 self.assertEqual([camera.closes for camera in created], [1]*count)
 
-    def test_failure_initializing_third_or_fifth_closes_every_constructed_resource(self):
-        for failed_index in (3, 5):
+    def test_failure_initializing_first_third_or_fifth_closes_every_constructed_resource(self):
+        for failed_index in (1, 3, 5):
             with self.subTest(failed_index=failed_index):
                 path = f'/World/Camera{failed_index}'
                 adapter, created, attempts, closed, _ = camera_resources(
                     initialize_failure=path, cleanup_failures=(path, '/World/Camera1'))
-                paths = tuple(f'/World/Camera{index+1}' for index in range(5))
+                count = 1 if failed_index == 1 else 5
+                paths = tuple(f'/World/Camera{index+1}' for index in range(count))
                 with self.assertRaisesRegex(RuntimeError, f'initialize failed: {path}') as caught:
                     adapter.create_cameras(paths)
                 self.assertEqual(attempts, list(paths[:failed_index]))
                 self.assertEqual(closed, list(reversed(paths[:failed_index])))
                 self.assertEqual([camera.closes for camera in created], [1]*failed_index)
                 notes = getattr(caught.exception, '__notes__', [])
-                self.assertEqual(len(notes), 2)
+                self.assertEqual(len(notes), 1 if failed_index == 1 else 2)
                 self.assertTrue(all('cleanup failed' in note for note in notes))
+
+    def test_empty_and_duplicate_paths_fail_before_resource_construction(self):
+        adapter, created, attempts, _, _ = camera_resources()
+        for paths in ((), ('/World/Camera1', '/World/Camera1')):
+            with self.subTest(paths=paths), self.assertRaisesRegex(ValueError, 'at least one distinct'):
+                adapter.create_cameras(paths)
+        self.assertEqual(created, [])
+        self.assertEqual(attempts, [])
 
     def test_missing_third_prim_closes_previous_resources_and_does_not_drop_that_camera(self):
         adapter, created, attempts, closed, _ = camera_resources(constructor_failure='/World/Camera3')

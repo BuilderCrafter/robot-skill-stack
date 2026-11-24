@@ -35,20 +35,22 @@ class ConfigFactoryTests(unittest.TestCase):
         self.assertIsNone(cfg.perception.camera_prim_path)
         self.assertEqual(cfg.ground_truth.objects, {})
 
-    def test_camera_counts_two_three_and_five_preserve_configured_order(self):
-        for count in (2, 3, 5):
+    def test_camera_counts_one_two_three_and_five_preserve_configured_order(self):
+        for count in (1, 2, 3, 5):
             paths = [f'/World/Camera_{i}' for i in range(count)]
             with self.subTest(count=count):
                 self.assertEqual(self.camera_config(paths).multi_view.camera_prim_paths,
                                  tuple(paths))
 
-    def test_selected_multiview_rejects_zero_and_one_camera(self):
-        for paths in ([], ['/World/Camera_A']):
-            with self.subTest(paths=paths), self.assertRaisesRegex(ValueError, 'at least two'):
-                self.camera_config(paths)
+    def test_selected_multiview_rejects_zero_cameras(self):
+        with self.assertRaisesRegex(ValueError, 'at least one'):
+            self.camera_config([])
 
     def test_duplicate_and_invalid_prim_paths_are_rejected(self):
         for paths in (
+            ['relative'], ['/'], ['/World//Camera'], ['/World/Camera/'],
+            ['/World/Camera.focalLength'], ['/World/Camera{view=left}'],
+            ['/World/Bad Camera'], [12],
             ['/World/A', '/World/B', '/World/A'],
             ['/World/A', '/World/B', 'relative'],
             ['/World/A', '/'],
@@ -75,7 +77,7 @@ class ConfigFactoryTests(unittest.TestCase):
     def test_missing_camera_prims_fail_existing_bootstrap_validation_before_construction(self):
         async def run():
             with bootstrap_fixture() as (bootstrap, env):
-                for count in (3, 5):
+                for count in (1, 3, 5):
                     paths = [f'/World/Camera_{i}' for i in range(count)]
                     cfg = self.camera_config(paths)
                     for missing in paths:
@@ -94,7 +96,7 @@ class ConfigFactoryTests(unittest.TestCase):
         asyncio.run(run())
 
     def test_factory_forwards_every_camera_and_processing_setting(self):
-        for count in (2, 3, 5):
+        for count in (1, 2, 3, 5):
             paths = [f'/World/Camera_{i}' for i in range(count)]
             cfg = self.camera_config(paths)
             cfg = replace(cfg, multi_view=replace(cfg.multi_view, resolution=(320, 240),
@@ -105,9 +107,12 @@ class ConfigFactoryTests(unittest.TestCase):
                 rig = NS(close=Mock(), capture=Mock(), status={})
                 module = ModuleType('rig_double')
                 module.create_cameras = Mock(return_value=rig)
-                with patch.dict(sys.modules, {'robot_skill_stack.integrations.isaac.world.multiview': module}):
+                app = NS(next_update_async=AsyncMock())
+                with patch.dict(sys.modules, {'robot_skill_stack.integrations.isaac.world.multiview': module}), \
+                     patch.object(factory.omni.kit.app, 'get_app', return_value=app):
                     provider = asyncio.run(factory.create_source(cfg))
                     module.create_cameras.assert_called_once_with(tuple(paths), (320, 240), max_skew=.01)
+                    self.assertEqual(app.next_update_async.await_count, 60)
                     self.assertEqual((provider.processor.voxel_size, provider.processor.stride), (.003, 3))
                     provider.close()
                 rig.close.assert_called_once()

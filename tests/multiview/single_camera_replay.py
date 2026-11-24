@@ -1,4 +1,4 @@
-"""Experimental native one/two-camera replay; production still requires two cameras.
+"""Experimental native one/two-camera replay of immutable original captures.
 
 Reuses original exposures, numerical profiling and the final-scene evaluator.
 Run after other tests finish; processor timings exclude acquisition/publication.

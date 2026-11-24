@@ -29,8 +29,11 @@ Neither operation fills missing surfaces or creates FREE evidence.
 `DepthFrame` retains camera identity, calibration, render token and original
 monotonic acquisition time. Every configured camera must provide a complete,
 distinct exposure within the synchronization skew; no partial-camera fallback
-is selected. N-camera operation is supported, with bounded fused-cloud/fitting
-budgets rather than a promise of equal throughput as views are added.
+is selected. One or more cameras are supported, with bounded fused-cloud/fitting
+budgets rather than a promise of equal throughput as views are added. A singleton
+is configured with one `camera_prim_paths` entry; the final demonstration keeps
+both cameras. The [single-camera experiment](multiview-single-camera.md) records
+the expected viewpoint limitations, including missing or UNKNOWN objects.
 
 The [observation runtime](architecture.md#acquisition-and-workers) acquires on the
 Isaac owner thread. `SharedFramePool` shares immutable original exposures with

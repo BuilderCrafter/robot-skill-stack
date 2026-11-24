@@ -39,7 +39,7 @@ size = [0.05, 0.05, 0.05]
 | `scene` | Finite support height and increasing three-dimensional world-coordinate workspace bounds, in meters; also used by grasp planning |
 | `perception` | Existing camera prim for RGB-D; optional resolution defaults to `[640, 480]` |
 | `ground_truth` | Existing object-root prim for ground truth; optional named object overrides |
-| `multi_view` | Opt-in experimental source: at least two distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
+| `multi_view` | Opt-in experimental source: one or more distinct absolute `camera_prim_paths`; resolution, frame skew, voxel size and stride are validated |
 | `spatial_mapping` | Optional automatic runtime occupancy service; disabled by default, with its own source, bounds, camera paths and voxel budgets |
 | `motion` | Initialization-time `direct` or `global`; direct is default; global source/model and RGB-D representation are explicit |
 
@@ -117,7 +117,7 @@ camera_prim_paths = [
 ```
 
 Add further cameras in the same way; no Python changes are needed. To remove a
-camera, remove its entry, keeping at least two paths. Save the scene and TOML,
+camera, remove its entry, keeping at least one path. Save the scene and TOML,
 then restart/reinitialize the provider with the changed configuration. Missing prims fail initialization. Every
 configured camera must supply a valid fresh frame within the synchronization
 skew limit; a failed camera is reported without partial-camera fallback. There

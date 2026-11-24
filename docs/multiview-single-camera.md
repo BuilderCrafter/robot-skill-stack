@@ -1,5 +1,9 @@
 # Single-camera multiview feasibility
 
+Current configuration and Isaac construction support one or more cameras. The
+gate descriptions and enablement recommendation below describe the historical
+experiment baseline; its measured viewpoint limitations remain unchanged.
+
 **CONDITIONAL GO:** the existing numerical pipeline and provider work with one
 RGB-D camera. Enabling the configuration requires a small, separate change;
 matching two-camera recognition through occlusion is not established. Production

@@ -157,7 +157,7 @@ def load_scene_config(path: str | Path) -> SceneConfig:
         required.append(config.perception.camera_prim_path)
     elif config.world.provider == 'multi_view':
         if not config.multi_view.camera_prim_paths:
-            raise ValueError('multi_view requires at least two camera prim paths')
+            raise ValueError('multi_view requires at least one camera prim path')
         required.extend(config.multi_view.camera_prim_paths)
     else:
         required += [config.ground_truth.objects_root, *(o.prim_path for o in objects.values())]

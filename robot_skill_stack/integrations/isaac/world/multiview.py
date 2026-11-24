@@ -19,8 +19,8 @@ class IsaacMultiViewCamera(IsaacRgbdCamera):
 
 
 def create_cameras(paths, resolution=(640, 480), *, max_skew=.025):
-    if len(paths) < 2 or len(set(paths)) != len(paths):
-        raise ValueError('Multi-view requires distinct camera paths')
+    if len(paths) < 1 or len(set(paths)) != len(paths):
+        raise ValueError('Multi-view requires at least one distinct camera path')
     cameras = {}
     try:
         for index, path in enumerate(paths):

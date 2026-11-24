@@ -184,6 +184,28 @@ class ObservationRuntimeTests(unittest.TestCase):
         self.assertEqual(service.submit.call_args.args[0].frames[0].token, frames[0].token)
         self.assertEqual(service.submit.call_args.args[0].frames[0].acquired_at, frames[0].acquired_at)
 
+    def test_single_semantic_camera_shares_owned_frames_and_publishes_original_time(self):
+        from tests.unit.test_shared_frames import camera
+        paths = self.config.multi_view.camera_prim_paths[:1]
+        self.config = replace(self.config, multi_view=replace(self.config.multi_view, camera_prim_paths=paths),
+            spatial_mapping=replace(self.config.spatial_mapping, enabled=True, source='rgbd', camera_prim_paths=paths))
+        source = camera()
+        self.pool = self.module.SharedFramePool({paths[0]: source}, clock=lambda: self.now.return_value)
+        service = Mock(generation=0)
+        runtime = self.make_runtime(spatial_mapping=service)
+        runtime.tick()
+        frames = self.provider.acquire.call_args.kwargs['frames']
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(frames[0].camera_id, paths[0])
+        self.assertIs(service.submit.call_args.args[0].frames[0].depth, frames[0].depth)
+        runtime._semantic_worker.finish()
+        self.now.return_value = 100.1
+        runtime.tick()
+        self.assertEqual(self.model.require('cube').last_seen, 100.)
+        self.provider.associate.assert_called_once()
+        service.submit.assert_called_once()
+        source.get_depth.assert_called_once()
+
     def test_robot_source_failure_blocks_mapping_publication_until_recovery(self):
         self.config = replace(self.config, spatial_mapping=replace(self.config.spatial_mapping,
             enabled=True, source='rgbd', camera_prim_paths=self.config.multi_view.camera_prim_paths))

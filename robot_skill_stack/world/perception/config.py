@@ -33,9 +33,8 @@ class MultiViewConfig:
                 raise ValueError(f'{key} must be finite and positive')
         if type(self.stride) is not int or not 1 <= self.stride <= 8:
             raise ValueError('multi_view stride must be an integer between 1 and 8')
-        if self.camera_prim_paths and (len(self.camera_prim_paths) < 2 or
-                any(not isinstance(p, str) or not p.startswith('/') or
-                    any(not part.isidentifier() for part in p[1:].split('/'))
-                    for p in self.camera_prim_paths) or
+        if (any(not isinstance(p, str) or not p.startswith('/') or
+                any(not part.isidentifier() for part in p[1:].split('/'))
+                for p in self.camera_prim_paths) or
                 len(set(self.camera_prim_paths)) != len(self.camera_prim_paths)):
-            raise ValueError('multi_view requires at least two distinct absolute camera prim paths')
+            raise ValueError('multi_view requires distinct absolute camera prim paths')
