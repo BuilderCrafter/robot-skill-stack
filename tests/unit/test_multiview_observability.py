@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry
-from robot_skill_stack.world.perception_multiview.clouds import project_depth, voxelize
+from robot_skill_stack.world.common.point_clouds import project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
 from robot_skill_stack.world.perception_multiview.observability import assess
 from tests.support.multiview_fixtures import analytic_frames

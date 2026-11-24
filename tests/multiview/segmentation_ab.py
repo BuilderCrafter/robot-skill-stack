@@ -21,8 +21,8 @@ import numpy as np
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
+from robot_skill_stack.world.common.camera import DepthFrame
+from robot_skill_stack.world.common.point_clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
 from robot_skill_stack.world.perception_multiview import segmentation
 from tests.support.primitive_scene import Solid, intersect, render

@@ -6,7 +6,7 @@ import time
 import omni.usd
 
 from robot_skill_stack.runtime.worker import BoundedWorker
-from robot_skill_stack.world.perception_multiview.shared_frames import SharedFramePool
+from robot_skill_stack.world.common.shared_frames import SharedFramePool
 
 
 def semantic_camera_paths(config) -> tuple[str, ...]:

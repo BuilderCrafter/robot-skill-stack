@@ -4,8 +4,8 @@ from itertools import product
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, fuse_clouds, project_depth
+from robot_skill_stack.world.common.camera import DepthFrame
+from robot_skill_stack.world.common.point_clouds import crop_workspace, fuse_clouds, project_depth
 from robot_skill_stack.world.perception_multiview.fitting import _box_distance, _box_search
 from robot_skill_stack.world.perception_multiview.observability import (
     _DEPTH_TOLERANCE, _EDGE_POSITIONS, _EDGE_SAMPLES, _PIXEL_NEIGHBORS,

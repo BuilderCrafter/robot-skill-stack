@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.shared_frames import SharedFramePool
+from robot_skill_stack.world.common.shared_frames import SharedFramePool
 
 
 def camera():

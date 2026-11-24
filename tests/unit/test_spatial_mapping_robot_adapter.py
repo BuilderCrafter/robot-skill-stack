@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
 from tests.unit.test_spatial_mapping_robot_filter import pixels
 

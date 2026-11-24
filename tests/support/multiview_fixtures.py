@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth
+from robot_skill_stack.world.common.camera import DepthFrame
+from robot_skill_stack.world.common.point_clouds import crop_workspace, project_depth
 from tests.support.primitive_scene import Solid, render
 
 

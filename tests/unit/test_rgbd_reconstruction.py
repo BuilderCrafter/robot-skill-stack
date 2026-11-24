@@ -11,7 +11,7 @@ import numpy as np
 
 from robot_skill_stack.world.spatial_mapping import reconstruction as rec
 from robot_skill_stack.world.spatial_mapping import box_geometry
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 
 
 def model(center=(0.,0.,.2), dimensions=(.14,.06,.6), yaw=0.):

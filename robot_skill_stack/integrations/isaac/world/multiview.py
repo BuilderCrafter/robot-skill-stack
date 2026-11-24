@@ -1,6 +1,6 @@
 """Resource construction only; geometry and source policy live outside Isaac."""
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
-from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
+from robot_skill_stack.world.common.camera import FrameSynchronizer
 
 
 class IsaacMultiViewCamera(IsaacRgbdCamera):

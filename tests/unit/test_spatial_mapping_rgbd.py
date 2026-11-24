@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.occupancy import GridSpec, OccupancyMap, OccupancyState as State
 from robot_skill_stack.world.spatial_mapping.rgbd import RgbdMapper, _traverse_rays
 

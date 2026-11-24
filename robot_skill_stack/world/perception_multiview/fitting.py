@@ -12,7 +12,7 @@ from copy import deepcopy
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
-from robot_skill_stack.world.perception_multiview.clouds import voxelize
+from robot_skill_stack.world.common.point_clouds import voxelize
 
 
 @dataclass

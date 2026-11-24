@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from .occupancy import _readonly
 
 

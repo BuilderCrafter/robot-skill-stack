@@ -17,7 +17,7 @@ from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 
 
 class ControlledWorker:

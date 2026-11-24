@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.frozen import FrozenRgbdSourceError, capture_frozen_rgbd
 from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
 from robot_skill_stack.world.spatial_mapping.occupancy import OccupancyState

@@ -47,7 +47,7 @@ def hashes():
         'robot_skill_stack/runtime/worker_process.py',
         'robot_skill_stack/world/spatial_mapping/runtime.py',
         'robot_skill_stack/world/spatial_mapping/geometry.py',
-        'robot_skill_stack/world/perception_multiview/shared_frames.py') if (ROOT/path).exists()]
+        'robot_skill_stack/world/common/shared_frames.py') if (ROOT/path).exists()]
     return {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in files}
 

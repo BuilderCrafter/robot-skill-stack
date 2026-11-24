@@ -3,7 +3,7 @@ import unittest
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview import clouds
+from robot_skill_stack.world.common import point_clouds as clouds
 
 
 def structured_reference(points, voxel=.002, max_points=6000):

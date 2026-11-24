@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 
-from .acquisition import DepthFrame
+from .camera import DepthFrame
 
 
 def project_depth(frame: DepthFrame, *, stride: int = 2, pixel_offset: float = .5,

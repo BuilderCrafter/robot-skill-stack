@@ -9,8 +9,8 @@ from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.context import ObservationContext
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame, FrameSynchronizer
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, project_depth, voxelize
+from robot_skill_stack.world.common.camera import DepthFrame, FrameSynchronizer
+from robot_skill_stack.world.common.point_clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.fitting import (
     PrimitiveFit, SurfaceFitter, unknown_fit,
 )

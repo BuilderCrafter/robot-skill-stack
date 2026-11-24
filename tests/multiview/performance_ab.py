@@ -20,7 +20,8 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.world.perception_multiview import acquisition, clouds, fitting, provider, segmentation
+from robot_skill_stack.world.common import camera as acquisition, point_clouds as clouds
+from robot_skill_stack.world.perception_multiview import fitting, provider, segmentation
 
 
 def digest(path):

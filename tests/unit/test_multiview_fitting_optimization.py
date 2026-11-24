@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import SceneGeometry
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, fuse_clouds, project_depth
+from robot_skill_stack.world.common.point_clouds import crop_workspace, fuse_clouds, project_depth
 from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter, _radial
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid

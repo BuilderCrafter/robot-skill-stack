@@ -12,7 +12,7 @@ import numpy as np
 
 from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
 from robot_skill_stack.runtime.process_worker import ProcessWorker
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import MeshInstance, RobotSnapshot, TriangleMesh
 from robot_skill_stack.world.spatial_mapping.occupancy import OccupancyState
 from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, MappingProcessor
@@ -121,6 +121,7 @@ class ProcessWorkerTests(unittest.TestCase):
         # whether this fixture's depth samples intersect its tiny mesh.
         self.worker.submit(payload)
         echoed=self.result().value['payload']
+        self.assertIs(type(echoed.frames[0]),DepthFrame)
         for array in (echoed.frames[0].depth,
                       echoed.robot_snapshots['A'].parts[0].mesh._lower,
                       echoed.robot_snapshots['A'].parts[0].world_from_local):

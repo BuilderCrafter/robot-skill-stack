@@ -4,8 +4,8 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import SceneGeometry
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame, FrameSynchronizer
-from robot_skill_stack.world.perception_multiview.clouds import crop_workspace, fuse_clouds, project_depth, voxelize
+from robot_skill_stack.world.common.camera import DepthFrame, FrameSynchronizer
+from robot_skill_stack.world.common.point_clouds import crop_workspace, fuse_clouds, project_depth, voxelize
 
 
 def camera(number=1, stamp=.1):

@@ -11,6 +11,7 @@ Frozen V4 provider code provides a numerical oracle for the extraction boundary;
 it imports the unchanged geometry algorithms, not benchmark truth at runtime.
 """
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import ExitStack
 from copy import deepcopy
 from dataclasses import fields, is_dataclass
 from enum import Enum
@@ -34,9 +35,9 @@ from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception.factory import build_perception_provider
-from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
+from robot_skill_stack.world.common.camera import FrameSynchronizer
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
-from robot_skill_stack.world.perception_multiview.shared_frames import SharedFramePool
+from robot_skill_stack.world.common.shared_frames import SharedFramePool
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import FrameCamera, Solid, render
 from tests.unit.test_multiview_provider import Camera
@@ -60,6 +61,9 @@ def frozen_provider(kind):
     legacy.describe=describe
     with patch.dict(sys.modules,{legacy.__name__:legacy}):
         if kind == 'mv':
+            # Resolve the historical import without changing its hashed evidence.
+            source=source.replace(b'robot_skill_stack.world.perception_multiview.clouds',
+                                  b'robot_skill_stack.world.common.point_clouds')
             # Adapt retired metadata/camera arguments; leave the frozen fixture unchanged.
             source=source.replace(b'track.hint_reason is not None', b'track.matched_by_hint')
             source=source.replace(b'support_plane_z=self.scene.support_plane_z, frames=frames)',
@@ -241,6 +245,25 @@ class SemanticProcessingTests(unittest.TestCase):
                 np.testing.assert_array_equal(getattr(pooled, name), expected)
                 with self.assertRaises(ValueError):
                     getattr(pooled, name).setflags(write=True)
+
+    def test_v1_shared_acquisition_preserves_owned_buffers_and_original_time(self):
+        provider,_,_=self.provider('v1')
+        pool=SharedFramePool({'A':provider.camera}, clock=lambda:99.8,
+            token_reader=lambda camera:(camera.token,camera.token/10))
+        self.addCleanup(pool.close)
+        shared=pool.batch('semantic', ('A',))
+        with ExitStack() as stack:
+            for name in ('get_depth','get_rgb','get_world_from_camera_transform','get_frame_token'):
+                stack.enter_context(patch.object(provider.camera,name,
+                    side_effect=AssertionError('Shared acquisition must not reread the camera')))
+            prepared=provider.acquire(frames=shared)
+            self.assertIsNone(provider.acquire(frames=shared))
+        self.assertEqual(prepared.timestamp,99.8)
+        for name in ('depth','rgb','world_from_camera'):
+            self.assertIs(getattr(prepared.frame,name),getattr(shared[0],name))
+            with self.assertRaises(ValueError):
+                getattr(prepared.frame,name).setflags(write=True)
+        np.testing.assert_array_equal(prepared.frame.intrinsics,provider.localizer.K)
 
     def test_held_and_hint_aba_transitions_change_context_revision(self):
         model=WorldModel();model.register(WorldObject('a'));model.register(WorldObject('b'))

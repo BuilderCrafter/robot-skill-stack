@@ -7,7 +7,7 @@ import time
 
 import numpy as np
 
-from .acquisition import DepthFrame, _render_token
+from .camera import DepthFrame, _render_token
 
 
 def _owned(values, dtype=None):

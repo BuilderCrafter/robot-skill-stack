@@ -8,7 +8,7 @@ from robot_skill_stack.world.model.context import AssociationHint, ObservationCo
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception_multiview.acquisition import FrameSynchronizer
+from robot_skill_stack.world.common.camera import FrameSynchronizer
 from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
 from robot_skill_stack.world.perception_multiview.segmentation import cluster_points

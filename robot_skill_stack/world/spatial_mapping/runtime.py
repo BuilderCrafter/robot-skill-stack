@@ -7,7 +7,7 @@ from types import MappingProxyType, SimpleNamespace
 import numpy as np
 
 from robot_skill_stack.runtime.worker import BoundedWorker
-from robot_skill_stack.world.perception_multiview.acquisition import DepthFrame
+from robot_skill_stack.world.common.camera import DepthFrame
 from .geometry import rasterize_ground_truth
 from .occupancy import (
     OccupancyBatch, OccupancyMap, OccupancyQuery, OccupancySnapshot, OccupancyState, _readonly, _single,
