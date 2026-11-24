@@ -4,9 +4,10 @@ import unittest
 
 import numpy as np
 
+from robot_skill_stack.world.common.components import cluster_points, radius_components
 from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
 from robot_skill_stack.world.perception_multiview.segmentation import (
-    cluster_points, _metric_components, refine_cluster, supported_object_cloud,
+    refine_cluster, supported_object_cloud,
 )
 
 
@@ -62,20 +63,20 @@ class SegmentationTests(unittest.TestCase):
     def test_metric_graph_uses_distances_inside_same_and_neighbor_cells(self):
         points = np.array([[0., 0., 0.], [.0039, .0039, .0039],
                            [.0041, .0039, .0039], [.011, 0., 0.]])
-        self.assertEqual(canonical(_metric_components(points, min_points=1)),
+        self.assertEqual(canonical(radius_components(points, min_points=1)),
                          canonical(reference_groups(points, radius=.004)))
-        self.assertEqual(sorted(map(len, _metric_components(points, min_points=1))), [1, 1, 2])
+        self.assertEqual(sorted(map(len, radius_components(points, min_points=1))), [1, 1, 2])
 
     def test_metric_graph_matches_exact_reference_under_density_variation(self):
         rng = np.random.default_rng(81)
         sparse = rng.uniform(-.012, .012, (90, 3))
         for points in (sparse, np.r_[sparse, np.zeros((70, 3))]):
-            self.assertEqual(canonical(_metric_components(points, min_points=1)),
+            self.assertEqual(canonical(radius_components(points, min_points=1)),
                              canonical(reference_groups(points, radius=.004)))
 
     def test_metric_graph_bounds_dense_duplicate_cells_without_changing_connectivity(self):
         points = np.r_[np.zeros((70, 3)), np.full((70, 3), .01)]
-        self.assertEqual(sorted(map(len, _metric_components(points))), [70, 70])
+        self.assertEqual(sorted(map(len, radius_components(points))), [70, 70])
 
     def test_nearby_spheres_split_only_with_supported_separate_models(self):
         points = np.r_[self.sphere((0., 0., .125)), self.sphere((.055, 0., .125))]

@@ -64,6 +64,10 @@ def frozen_provider(kind):
             # Resolve the historical import without changing its hashed evidence.
             source=source.replace(b'robot_skill_stack.world.perception_multiview.clouds',
                                   b'robot_skill_stack.world.common.point_clouds')
+            source=source.replace(
+                b'from robot_skill_stack.world.perception_multiview.segmentation import cluster_points,',
+                b'from robot_skill_stack.world.common.components import cluster_points\n'
+                b'from robot_skill_stack.world.perception_multiview.segmentation import')
             # Adapt retired metadata/camera arguments; leave the frozen fixture unchanged.
             source=source.replace(b'track.hint_reason is not None', b'track.matched_by_hint')
             source=source.replace(b'support_plane_z=self.scene.support_plane_z, frames=frames)',

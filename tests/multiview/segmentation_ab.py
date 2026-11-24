@@ -22,6 +22,7 @@ from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.common.camera import DepthFrame
+from robot_skill_stack.world.common import box_fitting, components, depth_edges
 from robot_skill_stack.world.common.point_clouds import crop_workspace, project_depth, voxelize
 from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
 from robot_skill_stack.world.perception_multiview import segmentation
@@ -228,12 +229,12 @@ def evaluate(root, output):
             frames = frames_at(data, 0)
             clouds = [voxelize(crop_workspace(project_depth(f, bounds=(scene.workspace_min, scene.workspace_max))[0], scene), .002, 12000) for f in frames]
             fused = voxelize(np.concatenate(clouds), .002, 12000)
-            clusters = segmentation.cluster_points(fused)
+            clusters = components.cluster_points(fused)
             result['coarse_sizes'] = list(map(len, clusters))
             results.append(result)
             if case['name'] in ('A_final', 'C_rotated', 'D_coarse_connected'):
                 def run_graph(minimum=25):
-                    return [segmentation._metric_components(cloud, min_points=minimum) for cloud in clusters]
+                    return [components.radius_components(cloud, min_points=minimum) for cloud in clusters]
                 exact = run_graph(1)
                 # Content hash ignores union-find root choices, retaining all point assignments.
                 canonical = [sorted(tuple(sorted(map(tuple, group))) for group in groups) for groups in exact]
@@ -248,6 +249,8 @@ def evaluate(root, output):
             provider.close()
     paths = ('segmentation.py', 'provider.py', 'fitting.py', 'observability.py')
     hashes = {name: digest(Path('robot_skill_stack/world/perception_multiview')/name) for name in paths}
+    hashes.update({f'common/{module.__name__.rsplit(".",1)[-1]}.py': digest(module.__file__)
+                   for module in (components, box_fitting, depth_edges)})
     output.write_text(json.dumps(dict(head=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
                                       manifest_sha256=digest(root/'manifest.json'), sources=hashes,
                                       cases=results, graph=graph), indent=2)+'\n')

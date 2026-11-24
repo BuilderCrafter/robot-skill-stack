@@ -12,6 +12,7 @@ from copy import deepcopy
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
+from robot_skill_stack.world.common.box_fitting import box_surface_distance, search_box_yaw
 from robot_skill_stack.world.common.point_clouds import voxelize
 
 
@@ -74,27 +75,6 @@ def _hull_area(points: np.ndarray) -> float:
         return result
     h = np.asarray(boundary(points)[:-1]+boundary(points[::-1])[:-1])
     return float(abs(h[:, 0] @ np.roll(h[:, 1], -1)-h[:, 1] @ np.roll(h[:, 0], -1))/2)
-
-
-def _box_distance(points: np.ndarray, center: np.ndarray, rotation: np.ndarray,
-                  size: np.ndarray) -> np.ndarray:
-    """Measure each point's distance from an oriented box surface."""
-    q = abs((points-center) @ rotation)-size/2
-    return abs(np.linalg.norm(np.maximum(q, 0), axis=1)+np.minimum(q.max(1), 0))
-
-
-def _box_search(points: np.ndarray, side_mask: np.ndarray, angles: np.ndarray) -> tuple:
-    """Transform each yaw once; score side samples within full-cloud bounds."""
-    c, s = np.cos(angles), np.sin(angles)
-    xy = np.stack((points[:, 0, None]*c+points[:, 1, None]*s,
-                   -points[:, 0, None]*s+points[:, 1, None]*c), axis=2)
-    lo, hi = np.percentile(xy, [.1, 99.9], axis=0)
-    local_sides = xy[side_mask]
-    error = np.percentile(np.minimum(abs(local_sides-lo), abs(local_sides-hi)).min(2), 75, axis=0)
-    index = int(np.argmin(error))
-    yaw = float(angles[index])
-    r = np.array([[c[index], -s[index], 0.], [s[index], c[index], 0.], [0., 0., 1.]])
-    return yaw, r, lo[index], hi[index]
 
 
 def _radius_evidence(points: np.ndarray, fit: PrimitiveFit, plane: float) -> np.ndarray | None:
@@ -195,10 +175,10 @@ class SurfaceFitter:
         # Surface distances select yaw, rather than PCA of biased partial faces.
         # Coarse coverage spans the full supported interval. Refinement uses all
         # samples; sparse curved surfaces must still compete against box fits.
-        yaw, r, lo, hi = _box_search(p, sides, np.deg2rad(np.arange(0, 90, 5.)))
+        yaw, r, lo, hi = search_box_yaw(p, sides, np.deg2rad(np.arange(0, 90, 5.)))
         for width, step in ((5., .5), (.5, .05)):
             angles = yaw+np.deg2rad(np.arange(-width, width+step/2, step))
-            yaw, r, lo, hi = _box_search(p, sides, angles)
+            yaw, r, lo, hi = search_box_yaw(p, sides, angles)
         local_size = np.r_[hi-lo, height]
         if min(local_size) < .007 or max(local_size) > .20:
             return None
@@ -207,7 +187,7 @@ class SurfaceFitter:
         fill = _hull_area(top[:, :2])/max(float(np.prod(hi-lo)), 1e-12)
         coverage = np.clip((fill-.78)/.16, 0, 1)
         return self._candidate('cube', center, abs(r) @ local_size,
-                               _box_distance(p, center, r, local_size), coverage,
+                               box_surface_distance(p, center, r, local_size), coverage,
                                box_size=local_size, yaw=float(yaw))
 
     def _cylinder_axis(self, p: np.ndarray, plane: float, axis) -> PrimitiveFit | None:
@@ -294,7 +274,7 @@ class SurfaceFitter:
             local = p @ rotation
             half = g.box_size/2
             old_center = fit.center @ rotation
-            padding = float(np.percentile(_box_distance(p, fit.center, rotation, g.box_size), 95))
+            padding = float(np.percentile(box_surface_distance(p, fit.center, rotation, g.box_size), 95))
             lo = np.minimum(local.min(0), old_center-half)-padding
             hi = np.maximum(local.max(0), old_center+half)+padding
             lo[2] = support_plane_z

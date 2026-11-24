@@ -6,16 +6,16 @@ import numpy as np
 
 from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.common.point_clouds import crop_workspace, fuse_clouds, project_depth
-from robot_skill_stack.world.perception_multiview.fitting import _box_distance, _box_search
-from robot_skill_stack.world.perception_multiview.observability import (
-    _DEPTH_TOLERANCE, _EDGE_POSITIONS, _EDGE_SAMPLES, _PIXEL_NEIGHBORS,
-    _RIBBON_OFFSETS, _unique_pixels,
+from robot_skill_stack.world.common.box_fitting import box_surface_distance, search_box_yaw
+from robot_skill_stack.world.common.depth_edges import (
+    DEPTH_TOLERANCE, EDGE_POSITIONS, EDGE_SAMPLES, PIXEL_NEIGHBORS,
+    RIBBON_OFFSETS, unique_pixels,
 )
-from robot_skill_stack.world.perception_multiview.segmentation import cluster_points
+from robot_skill_stack.world.common.components import cluster_points
 from .robot_filter import RobotSnapshot
 
 TOL = .0015
-DEPTH = _DEPTH_TOLERANCE
+DEPTH = DEPTH_TOLERANCE
 FACE_KEYS = tuple(product(range(3), (-1, 1)))
 CORNERS = np.array(list(product((-1., 1.), repeat=3))) / 2
 PATCH_GRID = np.array(list(product((-.25, 0., .25), repeat=2)))
@@ -30,9 +30,9 @@ def _hypothesis(points: np.ndarray) -> dict | None:
     side = sampled_points[:, 2] < top - 3 * TOL
     if np.count_nonzero(side) < 15 or np.count_nonzero(abs(sampled_points[:, 2] - top) < TOL) < 15:
         return None
-    yaw, rotation, _, _ = _box_search(sampled_points, side, np.deg2rad(np.arange(0, 90, 5.)))
+    yaw, rotation, _, _ = search_box_yaw(sampled_points, side, np.deg2rad(np.arange(0, 90, 5.)))
     for width, step in ((5., .5), (.5, .05)):
-        yaw, rotation, _, _ = _box_search(sampled_points, side,
+        yaw, rotation, _, _ = search_box_yaw(sampled_points, side,
             yaw + np.deg2rad(np.arange(-width, width + step / 2, step)))
     local = points @ rotation
     lo, hi = local.min(0), local.max(0)
@@ -40,7 +40,7 @@ def _hypothesis(points: np.ndarray) -> dict | None:
     if min(size) < .007:
         return None
     center = ((lo + hi) / 2) @ rotation.T
-    residual = np.percentile(_box_distance(sampled_points, center, rotation, size), 80)
+    residual = np.percentile(box_surface_distance(sampled_points, center, rotation, size), 80)
     if np.exp(-.5 * (residual / TOL) ** 2) < .65:
         return None
     return dict(center=center, dimensions=size, yaw_rad=yaw, rotation=rotation)
@@ -71,8 +71,8 @@ def _boundary(model: dict, frame: DepthFrame, target: tuple[int, int],
     origin = (frame.world_from_camera[:3, 3] - center) @ rotation
     if carrier_sign * (origin[b] - plane) <= 0:
         return None
-    edge = np.zeros((_EDGE_SAMPLES, 3))
-    edge[:, a], edge[:, b], edge[:, c] = sign * size[a] / 2, plane, _EDGE_POSITIONS * size[c]
+    edge = np.zeros((EDGE_SAMPLES, 3))
+    edge[:, a], edge[:, b], edge[:, c] = sign * size[a] / 2, plane, EDGE_POSITIONS * size[c]
     camera_points = ((center + edge @ rotation.T - frame.world_from_camera[:3, 3])
                      @ frame.world_from_camera[:3, :3])
     if np.any(camera_points[:, 2] <= 0):
@@ -80,7 +80,7 @@ def _boundary(model: dict, frame: DepthFrame, target: tuple[int, int],
     intrinsics = frame.intrinsics
     projected = (camera_points[:, :2] / camera_points[:, 2, None]
                  * [intrinsics[0, 0], intrinsics[1, 1]] + intrinsics[:2, 2] - .5)
-    pixels = _unique_pixels((np.rint(projected).astype(int)[:, None] + _RIBBON_OFFSETS).reshape(-1, 2))
+    pixels = unique_pixels((np.rint(projected).astype(int)[:, None] + RIBBON_OFFSETS).reshape(-1, 2))
     h, w = frame.depth.shape
     pixels = pixels[((pixels >= 0) & (pixels < [w, h])).all(1)]
     rays = np.c_[(pixels[:, 0] + .5 - intrinsics[0, 2]) / intrinsics[0, 0],
@@ -104,7 +104,7 @@ def _boundary(model: dict, frame: DepthFrame, target: tuple[int, int],
         return None
     ids = pixels[:, 1] * w + pixels[:, 0]
     order = np.argsort(ids)
-    neighbors = pixels[free_ids, None] + _PIXEL_NEIGHBORS
+    neighbors = pixels[free_ids, None] + PIXEL_NEIGHBORS
     neighbor_ids = neighbors[..., 1] * w + neighbors[..., 0]
     positions = np.searchsorted(ids[order], neighbor_ids)
     selected = order[np.minimum(positions, len(order) - 1)]

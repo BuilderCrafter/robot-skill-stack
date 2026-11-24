@@ -29,7 +29,7 @@ class TimedCompute:
         fitter = self.compute.__self__.fitter
         targets = [(provider, name, 'projection_voxel') for name in ('project_depth', 'crop_workspace', 'voxelize')]
         targets += [(provider, 'cluster_points', 'coarse'), (provider, 'refine_cluster', 'refinement'),
-                    (segmentation, '_metric_components', 'metric_graph'),
+                    (segmentation, 'radius_components', 'metric_graph'),
                     (fitter, 'fit', 'fit'), (fitter, 'finalize', 'parameters'), (provider, 'assess', 'observability')]
         started = time.perf_counter()
         with ExitStack() as stack:

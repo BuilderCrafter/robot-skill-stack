@@ -11,24 +11,11 @@ from collections.abc import Sequence
 import numpy as np
 
 from robot_skill_stack.world.common.camera import DepthFrame
+from robot_skill_stack.world.common.depth_edges import (
+    DEPTH_TOLERANCE, EDGE_POSITIONS, EDGE_SAMPLES, PIXEL_NEIGHBORS,
+    RIBBON_OFFSETS, unique_pixels,
+)
 from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
-
-
-_DEPTH_TOLERANCE = .002
-_PIXEL_RADIUS = 3
-_EDGE_SAMPLES = 48
-_RIBBON_OFFSETS = np.array([(x, y) for x in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)
-                                for y in range(-_PIXEL_RADIUS, _PIXEL_RADIUS+1)])
-_PIXEL_NEIGHBORS = np.array([(x, y) for x in (-1, 0, 1) for y in (-1, 0, 1) if x or y])
-_EDGE_POSITIONS = np.linspace(-.4, .4, _EDGE_SAMPLES)
-
-
-def _unique_pixels(raw: np.ndarray) -> np.ndarray:
-    """Deduplicate bounded image-coordinate ribbons in row-major order."""
-    low = raw.min(0)
-    width = int(raw[:, 0].max()-low[0])+1
-    codes = np.unique((raw[:, 1]-low[1])*width+raw[:, 0]-low[0])
-    return np.column_stack((codes % width+low[0], codes // width+low[1]))
 
 
 def _view_boundary(center: np.ndarray, size: np.ndarray, rotation: np.ndarray,
@@ -38,16 +25,16 @@ def _view_boundary(center: np.ndarray, size: np.ndarray, rotation: np.ndarray,
     k, transform, depth = frame.intrinsics, frame.world_from_camera, frame.depth
     height, width = depth.shape
     other = 1-axis
-    local = np.zeros((_EDGE_SAMPLES, 3))
+    local = np.zeros((EDGE_SAMPLES, 3))
     local[:, axis] = sign*size[axis]/2
-    local[:, other] = _EDGE_POSITIONS*size[other]
+    local[:, other] = EDGE_POSITIONS*size[other]
     boundary = center+local @ rotation.T
     boundary[:, 2] = top_z
     camera = (boundary-transform[:3, 3]) @ transform[:3, :3]
     if transform[2, 3] <= top_z or np.any(camera[:, 2] <= 0):
         return None
     projected = camera[:, :2]/camera[:, 2, None]*[k[0, 0], k[1, 1]]+k[:2, 2]-.5
-    pixels = _unique_pixels((np.rint(projected).astype(int)[:, None]+_RIBBON_OFFSETS).reshape(-1, 2))
+    pixels = unique_pixels((np.rint(projected).astype(int)[:, None]+RIBBON_OFFSETS).reshape(-1, 2))
     pixels = pixels[((pixels >= 0) & (pixels < [width, height])).all(1)]
     rays = np.c_[(pixels[:, 0]+.5-k[0, 2])/k[0, 0],
                  (pixels[:, 1]+.5-k[1, 2])/k[1, 1], np.ones(len(pixels))]
@@ -64,9 +51,9 @@ def _view_boundary(center: np.ndarray, size: np.ndarray, rotation: np.ndarray,
         return None
     measured = depth[pixels[:, 1], pixels[:, 0]]
     valid = np.isfinite(measured) & (measured > 0)
-    free = valid & (measured > expected_depth+_DEPTH_TOLERANCE)
+    free = valid & (measured > expected_depth+DEPTH_TOLERANCE)
     # The occupied anchor must be on the top plane and inside the candidate.
-    occupied = (valid & ~free & (measured >= expected_depth-_DEPTH_TOLERANCE) &
+    occupied = (valid & ~free & (measured >= expected_depth-DEPTH_TOLERANCE) &
                 (sign*q[:, axis] <= size[axis]/2+top_spread))
     free_ids = np.flatnonzero(free)
     if not len(free_ids) or not occupied.any():
@@ -74,7 +61,7 @@ def _view_boundary(center: np.ndarray, size: np.ndarray, rotation: np.ndarray,
     # Deduplication and filtering preserve row-major order, so image IDs remain
     # sorted. Search only the eight image neighbors; reject image-border wrap.
     ids = pixels[:, 1]*width+pixels[:, 0]
-    nearby = pixels[free_ids, None]+_PIXEL_NEIGHBORS
+    nearby = pixels[free_ids, None]+PIXEL_NEIGHBORS
     nearby_ids = nearby[..., 1]*width+nearby[..., 0]
     positions = np.searchsorted(ids, nearby_ids)
     selected = np.minimum(positions, len(ids)-1)
@@ -110,7 +97,7 @@ def _face_plane(local: np.ndarray, size: np.ndarray, axis: int,
     design = np.c_[points[:, other], np.ones(len(points))]
     slope, intercept = np.linalg.lstsq(design, sign*points[:, axis], rcond=None)[0]
     spread = float(np.percentile(abs(design @ [slope, intercept]-sign*points[:, axis]), 95))
-    return (float(slope), float(intercept), spread) if spread <= _DEPTH_TOLERANCE else None
+    return (float(slope), float(intercept), spread) if spread <= DEPTH_TOLERANCE else None
 
 
 def assess(fit: PrimitiveFit, points: np.ndarray, frames: Sequence[DepthFrame], *,
@@ -129,7 +116,7 @@ def assess(fit: PrimitiveFit, points: np.ndarray, frames: Sequence[DepthFrame], 
     rotation = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
     local = (points-center) @ rotation
     top_z = geometry.metadata.get('fitted_top_z', float(center[2]+size[2]/2))
-    top_mask = abs(points[:, 2]-top_z) <= _DEPTH_TOLERANCE
+    top_mask = abs(points[:, 2]-top_z) <= DEPTH_TOLERANCE
     top, top_local = points[top_mask], local[top_mask]
     if (len(top) < 12 or np.any(np.ptp(top_local, axis=0)[:2] < .25*size[:2]) or
             points[:, 2].min() > support_plane_z+.014 or

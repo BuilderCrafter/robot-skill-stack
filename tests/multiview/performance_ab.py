@@ -20,6 +20,7 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
+from robot_skill_stack.world.common import box_fitting, components, depth_edges
 from robot_skill_stack.world.common import camera as acquisition, point_clouds as clouds
 from robot_skill_stack.world.perception_multiview import fitting, provider, segmentation
 
@@ -71,13 +72,13 @@ def prepare(captures, output):
     per_view = [clouds.voxelize(clouds.crop_workspace(clouds.project_depth(f, stride=settings.stride,
         bounds=(scene.workspace_min,scene.workspace_max))[0],scene),settings.voxel_size,12000) for f in fs]
     fused = clouds.voxelize(np.concatenate(per_view),settings.voxel_size,12000)
-    components = segmentation.cluster_points(fused)
+    clusters = components.cluster_points(fused)
     cloud_path = output.with_name(output.stem+'-object-clouds.npz')
     assert not cloud_path.exists()
-    np.savez_compressed(cloud_path, **{f'cloud_{i}': cloud for i,cloud in enumerate(components)})
+    np.savez_compressed(cloud_path, **{f'cloud_{i}': cloud for i,cloud in enumerate(clusters)})
     manifest.update(cloud_path=str(cloud_path.resolve()), cloud_sha256=digest(cloud_path),
         clouds={f'cloud_{i}':dict(points=len(c), center=c.mean(0).tolist(),sha256=array_digest(c))
-                for i,c in enumerate(components)},
+                for i,c in enumerate(clusters)},
         config_sha256=digest('config/scenes/multiview_perception_final.toml'),
         settings=dict(stride=settings.stride,voxel_size=settings.voxel_size,max_points=12000,
                       fit_budget=24,workspace_min=scene.workspace_min.tolist(),workspace_max=scene.workspace_max.tolist(),
@@ -136,7 +137,7 @@ def profiled_compute(processor, prepared):
         return call
     targets = [(provider,name,'projection_voxel') for name in ('project_depth','crop_workspace','voxelize')]
     targets += [(provider,'cluster_points','coarse'),(provider,'refine_cluster','refinement'),
-                (segmentation,'_metric_components','metric_graph'),(processor.fitter,'fit','fit'),
+                (segmentation,'radius_components','metric_graph'),(processor.fitter,'fit','fit'),
                 (processor.fitter,'finalize','parameters'),(provider,'assess','observability')]
     with ExitStack() as stack:
         for owner,attribute,name in targets:
@@ -189,7 +190,9 @@ def benchmark(args):
     warmup = [execute()['seconds'] for _ in range(args.warmup)]
     runs = [execute() for _ in range(args.repeats)]
     sources = {name:dict(path=str(Path(module.__file__).resolve()),sha256=digest(module.__file__))
-               for name,module in [('provider',provider),('segmentation',segmentation),('fitting',fitting),('clouds',clouds),('acquisition',acquisition)]}
+               for name,module in [('provider',provider),('segmentation',segmentation),('fitting',fitting),
+                                   ('clouds',clouds),('acquisition',acquisition),('components',components),
+                                   ('box_fitting',box_fitting),('depth_edges',depth_edges)]}
     result = dict(head=head,root=str(root),mode=args.mode,scenario=args.scenario,
         harness_sha256=digest(__file__),input_manifest_sha256=digest(args.data),sources=sources,
         environment_before=before,environment_after=environment(),warmup_seconds=warmup,runs=runs,
