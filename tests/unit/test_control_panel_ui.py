@@ -13,7 +13,6 @@ import numpy as np
 import py_trees
 
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.presentation.world_model import WorldModelViewModel
 from robot_skill_stack.runtime.skill import FailureCode, SkillResult, SkillStatus
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
@@ -82,7 +81,7 @@ class ControlPanelTests(unittest.TestCase):
 
     def bind(self, bundle=None):
         self.c.bundle = bundle or bundle_()
-        self.c.view_model = WorldModelViewModel(self.c.bundle.world_model)
+        self.c.selected_id = None
         self.c._refresh(force=True)
         return self.c.bundle
 
@@ -173,6 +172,54 @@ class ControlPanelTests(unittest.TestCase):
         self.assertIn('0.431', self.panel.ee.text)
         self.assertEqual(self.panel.selected_id, 'object_1')
 
+    def test_objects_are_direct_and_sorted_and_initial_selection_prefers_visible(self):
+        bundle = bundle_()
+        bundle.world_model.require('object_1').visible = False
+        bundle.world_model.register(object_('object_3'))
+        bundle.world_model.register(object_('object_2', visible=False))
+        self.bind(bundle)
+        self.assertEqual(self.panel._ids, ('object_1', 'object_2', 'object_3'))
+        self.assertEqual(self.c.selected_id, 'object_3')
+        cards = [w.name for w in self.ui.find('ZStack') if w.name.startswith('object_card_')]
+        self.assertEqual(cards, [f'object_card_{object_id}' for object_id in self.panel._ids])
+        for obj in self.panel.objects:
+            self.assertIs(obj, bundle.world_model.require(obj.object_id))
+
+    def test_no_visible_objects_selects_first_available_id(self):
+        bundle = bundle_()
+        bundle.world_model.require('object_1').visible = False
+        bundle.world_model.register(object_('object_0', visible=False))
+        self.bind(bundle)
+        self.assertEqual(self.c.selected_id, 'object_0')
+
+    def test_lost_selection_persists_until_removal_without_enabling_pick_or_task(self):
+        bundle = self.bind()
+        obj = object_('object_2')
+        bundle.world_model.register(obj)
+        self.c._select_object(obj.object_id)
+        obj.visible = False
+        self.c._refresh()
+        self.assertIs(self.c._current_object(), obj)
+        self.assertEqual(self.c.selected_id, 'object_2')
+        self.assertEqual(self.panel.selected_id, 'object_2')
+        self.assertFalse(self.panel.buttons['pick'].enabled)
+        self.assertFalse(self.panel.buttons['task'].enabled)
+        self.c._pick_clicked()
+        self.c._run_task(False)
+        bundle.runtime.execute_async.assert_not_called()
+        self.assertFalse(self.c._tasks)
+        bundle.world_model.remove('object_2')
+        self.c._refresh()
+        self.assertEqual(self.c.selected_id, 'object_1')
+        self.assertEqual(self.panel.selected_id, 'object_1')
+        self.assertTrue(self.panel.buttons['pick'].enabled)
+
+    def test_unknown_selection_reports_error_and_keeps_current_id(self):
+        self.bind()
+        self.c._select_object('missing')
+        self.assertEqual(self.c.selected_id, 'object_1')
+        self.assertIn("Unknown object 'missing'", self.panel.status.text)
+
     def test_cards_use_geometry_not_semantic_name(self):
         bundle = self.bind()
         cylinder = object_('object_2', PrimitiveShape.CYLINDER)
@@ -181,15 +228,16 @@ class ControlPanelTests(unittest.TestCase):
         self.c._refresh()
         self.assertTrue(any(str(w.args[0]).endswith('cylinder.png') for w in self.ui.find('Image')))
         self.assertTrue(self.ui.find('Label', text='bottle'))
+        self.assertTrue(self.ui.find('Label', text='axis [0.00 0.00 1.00] r 0.020 L 0.100'))
 
     def test_dropdown_and_card_selection_stay_synchronized(self):
         bundle = self.bind()
         bundle.world_model.register(object_('object_2', PrimitiveShape.SPHERE))
         self.c._refresh()
         self.panel.combo.model.get_item_value_model().set_value(1)
-        self.assertEqual(self.c.view_model.selected_id, 'object_2')
+        self.assertEqual(self.c.selected_id, 'object_2')
         self.ui.find('Button', text='object_1')[0].click()
-        self.assertEqual(self.c.view_model.selected_id, 'object_1')
+        self.assertEqual(self.c.selected_id, 'object_1')
         self.assertEqual(self.panel.combo.model.get_item_value_model().as_int, 0)
 
     def test_geometry_change_refreshes_cards_but_preserves_inputs_and_scroll(self):
@@ -209,6 +257,54 @@ class ControlPanelTests(unittest.TestCase):
         before = (self.panel.object_frame.rebuilds, self.panel.selection_frame.rebuilds)
         self.c._refresh()
         self.assertEqual(before, (self.panel.object_frame.rebuilds, self.panel.selection_frame.rebuilds))
+
+    def test_display_field_edits_rebuild_cards_without_rebuilding_selection(self):
+        obj = self.bind().world_model.require('object_1')
+        changes = (
+            lambda: obj.pose.position.__setitem__(0, .51),
+            lambda: obj.size.__setitem__(1, .08),
+            lambda: setattr(obj, 'class_name', 'box'),
+            lambda: setattr(obj, 'visible', False),
+            lambda: setattr(obj, 'confidence', .8),
+            lambda: setattr(obj, 'source', 'ground_truth'),
+        )
+        for change in changes:
+            before = (self.panel.object_frame.rebuilds, self.panel.selection_frame.rebuilds)
+            change()
+            self.c._refresh()
+            self.assertEqual(self.panel.object_frame.rebuilds, before[0] + 1)
+            self.assertEqual(self.panel.selection_frame.rebuilds, before[1])
+        self.assertTrue(self.ui.find('Label', text='[ 0.510, 0.000, 0.025 ] m'))
+        self.assertTrue(self.ui.find('Label', text='[ 0.050, 0.080, 0.050 ] m'))
+        self.assertTrue(self.ui.find('Label', text='box'))
+        self.panel._show_details(obj)
+        self.assertTrue(self.ui.find('Label', text='Source: ground_truth'))
+        self.assertTrue(self.ui.find('Label', text='Confidence: 0.800'))
+
+    def test_in_place_primitive_edits_refresh_display_with_existing_precision(self):
+        obj = self.bind().world_model.require('object_1')
+        for geometry, expected in (
+            (replace(obj.geometry, yaw=np.deg2rad(30)), 'cube yaw 30.0°'),
+            (PrimitiveGeometry(PrimitiveShape.SPHERE, radius=.025), 'sphere r 0.025'),
+            (PrimitiveGeometry(PrimitiveShape.CYLINDER, axis=[1, 0, 0], radius=.02, length=.1),
+             'axis [1.00 0.00 0.00] r 0.020 L 0.100'),
+        ):
+            with self.subTest(shape=geometry.shape):
+                obj.geometry = geometry
+                before = self.panel.object_frame.rebuilds
+                self.c._refresh()
+                self.assertEqual(self.panel.object_frame.rebuilds, before + 1)
+                self.assertTrue(self.ui.find('Label', text=expected))
+        for field, value, expected in (
+            ('axis', np.array([0, 1, 0]), 'axis [0.00 1.00 0.00] r 0.020 L 0.100'),
+            ('radius', .025, 'axis [0.00 1.00 0.00] r 0.025 L 0.100'),
+            ('length', .12, 'axis [0.00 1.00 0.00] r 0.025 L 0.120'),
+        ):
+            before = self.panel.object_frame.rebuilds
+            setattr(obj.geometry, field, value)
+            self.c._refresh()
+            self.assertEqual(self.panel.object_frame.rebuilds, before + 1)
+            self.assertTrue(self.ui.find('Label', text=expected))
 
     def test_held_and_lost_badges_are_independent(self):
         bundle = self.hold()
@@ -250,6 +346,7 @@ class ControlPanelTests(unittest.TestCase):
         self.assertTrue(self.panel.buttons['pick'].enabled)
         self.assertFalse(self.panel.buttons['place'].enabled)
         self.assertIn('None', self.panel.held.text)
+        self.assertFalse(self.ui.find('Label', text='HELD'))
         self.assertTrue(all(call[0] == 'get_end_effector_pose' for call in bundle.backend.method_calls))
         bundle.runtime.execute.assert_not_called()
         bundle.runtime.execute_async.assert_not_called()
@@ -310,13 +407,20 @@ class ControlPanelTests(unittest.TestCase):
         self.assertIsNone(self.panel.profile_dialog)
         self.assertEqual(self.panel.profile.model.get_value_as_string(), 'config/scenes/playground.toml')
 
-    def test_details_button_opens_actual_row_snapshot(self):
-        self.bind()
-        row = self.panel.rows[0]
-        self.panel._show_details(row)
+    def test_details_button_formats_actual_object_snapshot(self):
+        obj = self.bind().world_model.require('object_1')
+        self.panel._show_details(obj)
         self.assertIsNotNone(self.panel.detail_dialog)
-        self.assertTrue(self.ui.find('Label', text='Object ID: object_1'))
-        self.assertTrue(self.ui.find('Label', text='Source: rgbd_geometry_perception'))
+        for text in ('Object ID: object_1', 'Class: cube', 'Primitive: cube',
+                     'Position: [ 0.450, 0.000, 0.025 ] m', 'Size: [ 0.050, 0.050, 0.050 ] m',
+                     'cube yaw 22.9°', 'Source: rgbd_geometry_perception', 'Confidence: 0.950'):
+            self.assertTrue(self.ui.find('Label', text=text), text)
+        obj.pose = obj.size = obj.geometry = obj.class_name = obj.source = obj.confidence = None
+        self.c._refresh()
+        self.panel._show_details(obj)
+        for text in ('Class: unknown', 'Primitive: unknown', 'Position: [ --, --, -- ] m',
+                     'Size: [ --, --, -- ] m', 'Geometry: unavailable', 'Source: unknown', 'Confidence: unknown'):
+            self.assertTrue(self.ui.find('Label', text=text), text)
 
     def test_bad_target_is_rejected_before_scheduling(self):
         bundle = self.bind()
@@ -355,6 +459,8 @@ class ControlPanelTests(unittest.TestCase):
 
     def test_all_motion_buttons_dispatch_async_with_expected_arguments(self):
         bundle = self.bind()
+        bundle.world_model.register(object_('object_2'))
+        self.c._select_object('object_2')
         async def run():
             for callback in (self.c._pick_clicked, self.c._place_clicked, self.c._move_clicked, self.c._home_clicked):
                 callback()
@@ -362,12 +468,14 @@ class ControlPanelTests(unittest.TestCase):
         asyncio.run(run())
         names = [call.args[0] for call in bundle.runtime.execute_async.await_args_list]
         self.assertEqual(names, ['pick', 'place', 'move_to_pose', 'home'])
-        self.assertEqual(bundle.runtime.execute_async.await_args_list[0].kwargs, {'object_id': 'object_1'})
+        self.assertEqual(bundle.runtime.execute_async.await_args_list[0].kwargs, {'object_id': 'object_2'})
         np.testing.assert_allclose(bundle.runtime.execute_async.await_args_list[1].kwargs['target'].position, [.45,.25,.025])
         bundle.runtime.execute.assert_not_called()
 
     def test_both_behavior_trees_remain_cooperative(self):
         bundle = self.bind()
+        bundle.world_model.register(object_('object_2'))
+        self.c._select_object('object_2')
         async def run():
             for recovery in (False, True):
                 self.c._run_task(recovery)
@@ -376,6 +484,8 @@ class ControlPanelTests(unittest.TestCase):
         asyncio.run(run())
         self.assertEqual([call.args[0] for call in bundle.runtime.execute_async.await_args_list],
                          ['pick', 'place', 'home', 'pick', 'place', 'home'])
+        self.assertEqual([call.kwargs['object_id'] for call in bundle.runtime.execute_async.await_args_list
+                          if call.args[0] == 'pick'], ['object_2', 'object_2'])
         bundle.runtime.execute.assert_not_called()
         bundle.world.step.assert_not_called()
 
@@ -442,7 +552,7 @@ class WorldModelLayoutTests(unittest.TestCase):
         for i in range(2, count + 1):
             bundle.world_model.register(object_(f'object_{i}'))
         self.c.bundle = bundle
-        self.c.view_model = WorldModelViewModel(bundle.world_model)
+        self.c.selected_id = None
         self.c._refresh(force=True)
         return bundle
 
@@ -493,9 +603,14 @@ class WorldModelLayoutTests(unittest.TestCase):
         self.assertEqual(len(self.cards()), 1)
         bundle.world_model.remove('object_1')
         self.c._refresh()
+        self.assertIsNone(self.c.selected_id)
+        self.assertIsNone(self.panel.selected_id)
+        self.assertEqual(self.panel.objects, ())
+        self.assertFalse(self.panel.buttons['pick'].enabled)
         self.assertEqual(frame.height, 94)
         self.ui.draw_cycle()
         self.assertEqual(self.cards(), [])
+        self.assertFalse(self.panel.combo.enabled)
         self.assertEqual(scroll.scroll_y, 0.)
         self.assertIs(self.panel.object_frame, frame)
         self.assertIs(self.panel.object_scroll, scroll)
@@ -533,11 +648,11 @@ class WorldModelLayoutTests(unittest.TestCase):
         self.ui.draw_cycle()
         self.ui.find('Button', text='object_2')[0].click()
         self.ui.draw_cycle()
-        self.assertEqual(self.c.view_model.selected_id, 'object_2')
+        self.assertEqual(self.c.selected_id, 'object_2')
         self.assertEqual(self.panel.combo.model.get_item_value_model().as_int, 1)
         self.panel.combo.model.get_item_value_model().set_value(0)
         self.ui.draw_cycle()
-        self.assertEqual(self.c.view_model.selected_id, 'object_1')
+        self.assertEqual(self.c.selected_id, 'object_1')
         self.assertEqual(len(self.cards()), 2)
 
     def test_held_lost_badges_survive_deferred_build(self):
@@ -613,7 +728,7 @@ class WorldModelLayoutTests(unittest.TestCase):
 
     def test_update_tick_builds_cards_without_interrupting_operation_status(self):
         self.c.bundle = bundle_()
-        self.c.view_model = WorldModelViewModel(self.c.bundle.world_model)
+        self.c.selected_id = None
         self.c.busy = True
         self.c._set_status('Running pick...')
         event = SimpleNamespace(payload={'dt': .25})

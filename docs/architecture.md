@@ -9,7 +9,7 @@ Semantic observations → WorldModelUpdater → WorldModel → skills / GUI
 Independent spatial observations → MappingService → immutable MappingReadView
 ```
 
-`common`, `runtime`, `world`, `manipulation`, `orchestration` and `presentation`
+`common`, `runtime`, `world`, `manipulation` and `orchestration`
 remain SDK-free. Isaac adapters assemble the existing contracts in
 `integrations/isaac/bootstrap.py`; the GUI invokes that same asynchronous builder.
 There is no plugin framework or alternate motion executor.

@@ -7,9 +7,7 @@ import numpy as np
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.presentation.world_model import WorldModelViewModel
 from robot_skill_stack.world.model.entities import WorldObject
-from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.perception import build_perception_provider
@@ -218,23 +216,6 @@ class LifecycleTests(unittest.TestCase):
         self.provider.tracker.update([junk], frame_id=99, timestamp=seen+.2)
         self.assertEqual(track.last_seen, seen)
         self.assertFalse(track.visible)
-
-    def test_geometry_only_changes_refresh_view(self):
-        geometry = PrimitiveGeometry(PrimitiveShape.CUBE, 1., box_size=[.05]*3, yaw=0.)
-        obj = WorldObject('cube', pose=Pose([.45, 0, .025]), size=np.array([.05]*3), geometry=geometry)
-        self.model.register(obj)
-        view = WorldModelViewModel(self.model)
-        before = view.signature()
-        geometry.yaw = np.deg2rad(30)
-        self.assertNotEqual(view.signature(), before)
-        self.assertIn('30.0', view.rows()[0].primitive_detail)
-        obj.geometry = PrimitiveGeometry(PrimitiveShape.CYLINDER, 1., radius=.02, length=.10, axis=[1, 0, 0])
-        before = view.signature()
-        obj.geometry.axis = np.array([0, 1, 0])
-        self.assertNotEqual(view.signature(), before)
-        before = view.signature()
-        obj.geometry.radius = .025
-        self.assertNotEqual(view.signature(), before)
 
     def test_cube_yaw_updates_through_full_pipeline(self):
         for _ in range(3):

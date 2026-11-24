@@ -23,9 +23,9 @@ from robot_skill_stack.integrations.isaac.bootstrap import build_runtime
 from robot_skill_stack.orchestration.behavior_trees.executor import BTExecutor
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place import create_pick_and_place_tree
 from robot_skill_stack.orchestration.behavior_trees.tasks.pick_and_place_recovery import create_pick_and_place_recovery_tree
-from robot_skill_stack.presentation import WorldModelViewModel
+from robot_skill_stack.world.model import WorldObject
 
-from .panel import ControlPanel
+from .panel import ControlPanel, object_signature
 from .window_lifecycle import retire_window
 
 
@@ -34,7 +34,8 @@ class RobotSkillStackExtension(omni.ext.IExt):
     root = ROOT
 
     def on_startup(self, ext_id):
-        self.bundle = self.view_model = None
+        self.bundle = None
+        self.selected_id: str | None = None
         self.busy = self._shutting_down = False
         self._tasks = set()
         self._diagnostic_at = 0.0
@@ -62,7 +63,8 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 pass
         self.panel.destroy()
         retire_window(self.window)
-        self.view_model = self.bundle = self.panel = self.window = None
+        self.selected_id = None
+        self.bundle = self.panel = self.window = None
 
     def _spawn(self, coroutine, label):
         task = asyncio.ensure_future(coroutine)
@@ -97,7 +99,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _update_controls(self):
         if self._shutting_down:
             return
-        selected = self.view_model.selected_object() if self.view_model is not None else None
+        selected = self._current_object()
         self.panel.set_enabled(
             initialized=self.bundle is not None, ready=self._robot_ready(), busy=self.busy or (self.bundle is not None and self.bundle.runtime.busy),
             held_id=None if self.bundle is None else self.bundle.world_model.held_object_id,
@@ -120,7 +122,7 @@ class RobotSkillStackExtension(omni.ext.IExt):
             profile = Path(self.panel.profile.model.get_value_as_string()).expanduser()
             if not profile.is_absolute():
                 profile = ROOT / profile
-            previous, self.bundle, self.view_model = self.bundle, None, None
+            previous, self.bundle, self.selected_id = self.bundle, None, None
             if previous is not None:
                 previous.close()
             self._refresh(force=True)
@@ -130,12 +132,10 @@ class RobotSkillStackExtension(omni.ext.IExt):
                 return
             self.bundle = bundle
             self._active_profile = str(profile.resolve())
-            self.view_model = WorldModelViewModel(self.bundle.world_model)
-            self.view_model.ensure_selection()
             self._object_signature = None
             self._set_status('Runtime ready', 'success')
         except Exception as exc:
-            self.bundle = self.view_model = None
+            self.bundle = self.selected_id = None
             self._set_status(f'Initialization failed: {type(exc).__name__}: {exc}', 'error')
             carb.log_error(f'[robot_skill_stack.ui] initialization: {exc}\n{traceback.format_exc()}')
         finally:
@@ -195,16 +195,30 @@ class RobotSkillStackExtension(omni.ext.IExt):
         self._set_status(message, 'success')
         self._refresh(force=True)
 
-    def _select_object(self, object_id):
-        if self.view_model is not None:
+    def _current_object(self) -> WorldObject | None:
+        """Keep an existing selection; otherwise prefer the first visible ID."""
+        if self.bundle is None:
+            self.selected_id = None
+            return None
+        model = self.bundle.world_model
+        selected = None if self.selected_id is None else model.get(self.selected_id)
+        if selected is None:
+            objects = sorted(model.objects(), key=lambda obj: obj.object_id)
+            selected = next((obj for obj in objects if obj.visible), objects[0] if objects else None)
+            self.selected_id = None if selected is None else selected.object_id
+        return selected
+
+    def _select_object(self, object_id: str):
+        if self.bundle is not None:
             try:
-                self.view_model.select(object_id)
+                self.bundle.world_model.require(object_id)
+                self.selected_id = object_id
                 self._refresh(force=True)
             except Exception as exc:
                 self._set_status(f'Selection failed: {exc}', 'warning')
 
     def _selected_object(self, *, require_visible=False):
-        obj = None if self.view_model is None else self.view_model.selected_object()
+        obj = self._current_object()
         if obj is None:
             self._set_status('No WorldModel object is available. Initialize the runtime first.', 'warning')
         elif require_visible and not obj.visible:
@@ -304,18 +318,20 @@ class RobotSkillStackExtension(omni.ext.IExt):
     def _refresh(self, force=False):
         if self._shutting_down:
             return
-        if self.bundle is None or self.view_model is None:
-            self.panel.update_objects((), None, rebuild=force)
+        self._current_object()
+        model = None if self.bundle is None else self.bundle.world_model
+        objects = () if model is None else tuple(sorted(model.objects(), key=lambda obj: obj.object_id))
+        held_id = None if model is None else model.held_object_id
+        signature = (self.selected_id, held_id, object_signature(objects))
+        self.panel.update_objects(objects, self.selected_id, held_id=held_id,
+                                  rebuild=force or signature != self._object_signature)
+        self._object_signature = signature
+        if self.bundle is None:
             self.panel.runtime_info.text = 'Not initialized'
             self.panel.held.text = 'Held object:   None'
             self.panel.ee.text = 'EE position:   unavailable'
             self._update_controls()
             return
-        self.view_model.ensure_selection()
-        signature = self.view_model.signature()
-        self.panel.update_objects(self.view_model.rows(), self.view_model.selected_id,
-                                  rebuild=force or signature != self._object_signature)
-        self._object_signature = signature
         source_name = self.bundle.config.world.provider.replace('_', ' ').capitalize()
         health = self.bundle.world_model.source_health
         self.panel.runtime_info.text = source_name if health is None else f'{source_name} — {health.status}'

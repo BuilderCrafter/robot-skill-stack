@@ -177,9 +177,10 @@ class DeferredWindowTests(unittest.TestCase):
     def test_initialization_clears_old_bundle_while_waiting(self):
         async def scenario():
             with extension_environment() as (_,c,module):
-                old=bundle_(); c.bundle=old
+                old=bundle_(); c.bundle=old; c._refresh()
                 async def build(path):
-                    self.assertIsNone(c.bundle); self.assertIsNone(c.view_model)
+                    self.assertIsNone(c.bundle); self.assertIsNone(c.selected_id)
+                    self.assertEqual(c.panel.objects, ())
                     await asyncio.sleep(0); return bundle_()
                 with patch.object(module,'build_runtime',side_effect=build):
                     await c._initialize()

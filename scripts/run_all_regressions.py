@@ -14,7 +14,6 @@ RUNNER = ROOT / 'run_isaac_python.sh'
 UNIT_SCRIPTS = (
     'test_async_runtime', 'test_grasp_planning', 'test_perception', 'test_placement',
     'test_primitive_perception', 'test_reactive_pick', 'test_world_model_update_rate',
-    'test_world_model_view',
 )
 
 

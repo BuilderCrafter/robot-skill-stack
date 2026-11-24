@@ -2,12 +2,40 @@ from __future__ import annotations
 
 from datetime import datetime
 from functools import partial
+import math
 
 import omni.ui as ui
+
+from robot_skill_stack.world.model import PrimitiveGeometry, WorldObject
 
 from .window_lifecycle import retire_window
 from .style import AMBER, DIM, GREEN, RED, STYLE
 from .widgets import badge, button, image, padded, section, vector
+
+
+def primitive_detail(geometry: PrimitiveGeometry | None) -> str | None:
+    if geometry is None:
+        return None
+    shape = geometry.shape.value
+    if shape == 'cube' and geometry.yaw is not None:
+        return f'cube yaw {math.degrees(geometry.yaw):.1f}°'
+    if shape == 'sphere' and geometry.radius is not None:
+        return f'sphere r {geometry.radius:.3f}'
+    if shape == 'cylinder' and geometry.axis is not None and geometry.radius is not None and geometry.length is not None:
+        axis = ' '.join(f'{v:.2f}' for v in geometry.axis)
+        return f'axis [{axis}] r {geometry.radius:.3f} L {geometry.length:.3f}'
+    return shape
+
+
+def object_signature(objects: tuple[WorldObject, ...]) -> tuple:
+    """Snapshot display values so in-place model updates invalidate the cards."""
+    def rounded(values):
+        return None if values is None else tuple(round(float(v), 4) for v in values)
+
+    return tuple((obj.object_id, obj.class_name, obj.visible,
+                  rounded(None if obj.pose is None else obj.pose.position), rounded(obj.size),
+                  None if obj.confidence is None else round(obj.confidence, 3),
+                  obj.source, primitive_detail(obj.geometry)) for obj in objects)
 
 
 class ControlPanel:
@@ -18,7 +46,8 @@ class ControlPanel:
     def __init__(self, controller):
         self.c = controller
         self.buttons = {}
-        self.rows, self.selected_id = (), None
+        self.objects: tuple[WorldObject, ...] = ()
+        self.selected_id = self.held_id = None
         self.combo = None
         self.dialog = self.profile_dialog = self.detail_dialog = None
         self._selection_signature = None
@@ -126,7 +155,7 @@ class ControlPanel:
                         self.status_detail = ui.Label('No active operation', name='dim', height=16)
 
     def _build_selection(self):
-        self._ids = tuple(row.object_id for row in self.rows)
+        self._ids = tuple(obj.object_id for obj in self.objects)
         labels = self._ids or ('No objects',)
         index = self._ids.index(self.selected_id) if self.selected_id in self._ids else 0
         self.combo = ui.ComboBox(index, *labels, height=28, enabled=bool(self._ids))
@@ -138,50 +167,53 @@ class ControlPanel:
             self.c._select_object(self._ids[index])
 
     def _cards_height(self):
-        count = len(self.rows)
+        count = len(self.objects)
         return self.EMPTY_HEIGHT if not count else count * self.CARD_HEIGHT + (count - 1) * self.CARD_SPACING
 
     def _build_cards(self):
         with ui.VStack(height=self._cards_height(), spacing=self.CARD_SPACING):
-            if not self.rows:
+            if not self.objects:
                 with padded(18):
                     ui.Label('No objects yet. Initialize the runtime, then let perception observe the workspace.',
                              name='muted', word_wrap=True, height=58)
-            for row in self.rows:
-                self._card(row)
+            for obj in self.objects:
+                self._card(obj)
 
-    def _card(self, row):
-        choose = partial(self.c._select_object, row.object_id)
-        with ui.ZStack(height=self.CARD_HEIGHT, name=f'object_card_{row.object_id}'):
-            ui.Rectangle(name='card', selected=row.object_id == self.selected_id)
+    def _card(self, obj: WorldObject):
+        choose = partial(self.c._select_object, obj.object_id)
+        primitive = None if obj.geometry is None else obj.geometry.shape.value
+        detail = primitive_detail(obj.geometry)
+        with ui.ZStack(height=self.CARD_HEIGHT, name=f'object_card_{obj.object_id}'):
+            ui.Rectangle(name='card', selected=obj.object_id == self.selected_id)
             with padded(10):
                 with ui.HStack(spacing=14):
                     with ui.VStack(width=84):
                         ui.Spacer()
-                        thumb = row.primitive if row.primitive in ('cube', 'sphere', 'cylinder') else 'unknown'
+                        thumb = primitive if primitive in ('cube', 'sphere', 'cylinder') else 'unknown'
                         tile = image(thumb, 84, tooltip='Primitive symbol; not a camera image. Click to select.')
                         tile.set_mouse_released_fn(lambda x, y, b, m: choose() if b == 0 else None)
                         ui.Spacer()
                     with ui.VStack(spacing=4):
                         with ui.HStack(height=25, spacing=8):
-                            button(row.object_id, choose, name='object_name', width=0, height=24)
+                            button(obj.object_id, choose, name='object_name', width=0, height=24)
                             ui.Label('|', name='dim', width=5)
-                            ui.Label(row.class_name or 'unknown', name='muted', width=0)
-                            badge('VISIBLE' if row.visible else 'LOST')
-                            if row.held:
+                            ui.Label(obj.class_name or 'unknown', name='muted', width=0)
+                            badge('VISIBLE' if obj.visible else 'LOST')
+                            if obj.object_id == self.held_id:
                                 badge('HELD')
                             ui.Spacer()
-                            button('', partial(self._show_details, row), icon='dots', name='icon', width=22, height=24)
-                        for title, value in (('Position', row.position), ('Size', row.size)):
+                            button('', partial(self._show_details, obj), icon='dots', name='icon', width=22, height=24)
+                        for title, value in (('Position', None if obj.pose is None else obj.pose.position), ('Size', obj.size)):
                             with ui.HStack(height=18, spacing=8):
                                 ui.Label(title, name='muted', width=60)
                                 ui.Label(vector(value) + (' m' if value is not None else ''), name='detail')
-                        ui.Label(row.primitive_detail or 'No additional geometry', name='detail',
-                                 height=28, word_wrap=True, tooltip=row.primitive_detail or '')
+                        ui.Label(detail or 'No additional geometry', name='detail',
+                                 height=28, word_wrap=True, tooltip=detail or '')
 
-    def update_objects(self, rows, selected_id, *, rebuild=False):
-        self.rows, self.selected_id = rows, selected_id
-        selection = (tuple(row.object_id for row in rows), selected_id)
+    def update_objects(self, objects: tuple[WorldObject, ...], selected_id: str | None,
+                       *, held_id: str | None = None, rebuild=False):
+        self.objects, self.selected_id, self.held_id = objects, selected_id, held_id
+        selection = (tuple(obj.object_id for obj in objects), selected_id)
         if selection != self._selection_signature:
             self._selection_signature = selection
             self.selection_frame.rebuild()
@@ -189,9 +221,9 @@ class ControlPanel:
             # Lazy Frames build only when visible: reserve content height BEFORE rebuilding.
             self.object_frame.height = ui.Pixel(self._cards_height())
             self.object_frame.rebuild()
-            if not rows:
+            if not objects:
                 self.object_scroll.scroll_y = 0.0
-        self.count.text = f'{len(rows)} object' + ('' if len(rows) == 1 else 's')
+        self.count.text = f'{len(objects)} object' + ('' if len(objects) == 1 else 's')
 
     def set_status(self, message, level='info'):
         tint = {'success': GREEN, 'error': RED, 'warning': AMBER, 'idle': DIM}.get(level, DIM)
@@ -257,15 +289,16 @@ class ControlPanel:
             self.profile.model.set_value(value)
         self.hide_dialog('profile_dialog')
 
-    def _show_details(self, row):
+    def _show_details(self, obj: WorldObject):
         self.hide_dialog('detail_dialog')
-        self.detail_dialog = ui.Window(f'Object Details: {row.object_id}', width=510, height=280)
+        self.detail_dialog = ui.Window(f'Object Details: {obj.object_id}', width=510, height=280)
         self.detail_dialog.frame.style = STYLE
-        details = [f'Object ID: {row.object_id}', f'Class: {row.class_name or "unknown"}',
-                   f'Primitive: {row.primitive or "unknown"}', f'Position: {vector(row.position)} m',
-                   f'Size: {vector(row.size)} m', row.primitive_detail or 'Geometry: unavailable',
-                   f'Source: {row.source or "unknown"}',
-                   f'Confidence: {"unknown" if row.confidence is None else f"{row.confidence:.3f}"}',
+        details = [f'Object ID: {obj.object_id}', f'Class: {obj.class_name or "unknown"}',
+                   f'Primitive: {"unknown" if obj.geometry is None else obj.geometry.shape.value}',
+                   f'Position: {vector(None if obj.pose is None else obj.pose.position)} m',
+                   f'Size: {vector(obj.size)} m', primitive_detail(obj.geometry) or 'Geometry: unavailable',
+                   f'Source: {obj.source or "unknown"}',
+                   f'Confidence: {"unknown" if obj.confidence is None else f"{obj.confidence:.3f}"}',
                    'Snapshot at ' + datetime.now().strftime('%H:%M:%S')]
         with self.detail_dialog.frame:
             with padded(14):
