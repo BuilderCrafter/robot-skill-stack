@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
+from robot_skill_stack.world.spatial_mapping import SpatialMappingConfig
 
 
 class SpatialConfigurationTests(unittest.TestCase):
@@ -33,9 +33,11 @@ camera_prim_paths = ["/World/A", "/World/B"]
             return load_scene_config(path)
 
     def test_mapping_defaults_disabled_without_changing_any_semantic_provider(self):
+        self.assertEqual(SpatialMappingConfig.__module__, 'robot_skill_stack.world.spatial_mapping.config')
         for provider in ('perception', 'ground_truth', 'multi_view'):
             with self.subTest(provider=provider):
                 config = self.load(provider)
+                self.assertIs(type(config.spatial_mapping), SpatialMappingConfig)
                 self.assertEqual(config.world.provider, provider)
                 self.assertFalse(config.spatial_mapping.enabled)
 

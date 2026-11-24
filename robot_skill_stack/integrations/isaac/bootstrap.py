@@ -20,8 +20,7 @@ from robot_skill_stack.manipulation.skills.home import HomeSkill
 from robot_skill_stack.manipulation.skills.move_to_pose import MoveToPoseSkill
 from robot_skill_stack.manipulation.skills.pick import PickSkill
 from robot_skill_stack.manipulation.skills.place import PlaceSkill
-from robot_skill_stack.world.model.updater import WorldModelUpdater
-from robot_skill_stack.world.model.world_model import WorldModel
+from robot_skill_stack.world.model import WorldModel, WorldModelUpdater
 from robot_skill_stack.integrations.isaac.runtime_lifecycle import PhysicsCallbackScope, construct_world_deferred
 
 

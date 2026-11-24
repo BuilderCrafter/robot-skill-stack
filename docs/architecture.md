@@ -23,6 +23,14 @@ in the Isaac integration and reuse the canonical perception configuration types.
 Isaac initializes cameras, waits the existing 60 updates, then passes the camera
 or rig to the semantic builder. Ground truth keeps its separate Isaac constructor.
 
+Use `world.spatial_mapping` for `SpatialMappingConfig`, the direct `MappingService`
+constructor, mapping inputs/read views, occupancy queries and obstacle packets.
+Use `world.model` for `WorldModel`, `WorldModelUpdater`, observations, contexts,
+entities and primitive geometry contracts. External composition uses these public
+exports; implementation modules import their dependencies from defining modules.
+`SceneConfig` reuses the canonical mapping configuration. Isaac keeps its existing
+5 Hz semantic default; worker scheduling and publication rules are unchanged.
+
 ## Commands and manipulation
 
 RobotRuntime admits one asynchronous command. Cancellation propagates through

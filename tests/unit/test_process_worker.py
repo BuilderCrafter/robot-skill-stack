@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
+from robot_skill_stack.world.spatial_mapping import SpatialMappingConfig
 from robot_skill_stack.runtime.process_worker import ProcessWorker
 from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import MeshInstance, RobotSnapshot, TriangleMesh

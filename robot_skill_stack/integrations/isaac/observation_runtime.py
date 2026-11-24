@@ -186,7 +186,7 @@ class ObservationRuntime:
             self.updater.note_failure(exc)
 
     def _acquire_mapping(self) -> None:
-        from robot_skill_stack.world.spatial_mapping.runtime import MappingInput
+        from robot_skill_stack.world.spatial_mapping import MappingInput
         service = self.spatial_mapping
         try:
             if self._mapping_settings.source == 'ground_truth':
@@ -259,10 +259,10 @@ async def create_observation_runtime(world, config, updater, app):
             pool = SharedFramePool(cameras, token_reader=IsaacMultiViewCamera.get_frame_token)
         stage = omni.usd.get_context().get_stage()
         if settings.enabled:
-            from robot_skill_stack.world.spatial_mapping.runtime import MappingService
+            from robot_skill_stack.world.spatial_mapping import MappingService
             motion, options = config.motion, {}
             if motion.strategy == 'global' and motion.global_obstacle_source == 'frozen_rgbd':
-                from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
+                from robot_skill_stack.world.spatial_mapping import ObstacleExtractionSettings
                 options['obstacle_settings'] = ObstacleExtractionSettings(max_obstacles=motion.max_obstacles,
                     support_plane_z=config.scene.support_plane_z)
                 if motion.global_rgbd_representation == 'reconstructed':

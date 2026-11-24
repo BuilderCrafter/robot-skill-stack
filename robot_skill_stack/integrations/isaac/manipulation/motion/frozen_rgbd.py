@@ -12,7 +12,7 @@ import math
 import numpy as np
 
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
-from robot_skill_stack.world.spatial_mapping.runtime import MappingReadView
+from robot_skill_stack.world.spatial_mapping import MappingReadView
 from .static_world import StaticWorldSnapshot, StaticWorldError, _usd_modules, obstacle_from_primitive
 
 

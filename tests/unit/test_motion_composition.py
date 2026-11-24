@@ -59,7 +59,7 @@ class MotionCompositionTests(unittest.TestCase):
                 config=replace(config,world=replace(config.world,provider='multi_view'),
                     multi_view=replace(config.multi_view,camera_prim_paths=('/CameraA','/CameraB')))
                 fake_filter=NS(close=Mock())
-                with patch('robot_skill_stack.world.spatial_mapping.runtime.MappingService',return_value=service) as build, \
+                with patch('robot_skill_stack.world.spatial_mapping.MappingService',return_value=service) as build, \
                         patch('robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter.IsaacRobotSelfFilter',return_value=fake_filter), \
                         patch('robot_skill_stack.integrations.isaac.world.multiview.IsaacMultiViewCamera',
                             NS(get_frame_token=lambda camera:None)):
@@ -165,7 +165,7 @@ class MotionCompositionTests(unittest.TestCase):
                     selected = replace(config, spatial_mapping=mapping,
                         motion=MotionConfig(strategy=name, max_obstacles=32))
                     service = NS(close=Mock())
-                    with patch('robot_skill_stack.world.spatial_mapping.runtime.MappingService',
+                    with patch('robot_skill_stack.world.spatial_mapping.MappingService',
                                return_value=service) as build:
                         coordinator = await create_observation_runtime(world, selected, updater, None)
                     options = build.call_args.kwargs

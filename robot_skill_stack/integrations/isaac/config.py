@@ -6,7 +6,7 @@ import math
 import tomllib
 import numpy as np
 
-from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
+from robot_skill_stack.world.spatial_mapping import SpatialMappingConfig
 from robot_skill_stack.world.perception.config import PerceptionConfig, MultiViewConfig
 
 

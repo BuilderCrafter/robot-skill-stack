@@ -1,9 +1,6 @@
 import time
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.world.model.provider import ObservationBatch
-from robot_skill_stack.world.model.observations import ObjectObservation
-from robot_skill_stack.world.model.updater import WorldModelUpdater
-from robot_skill_stack.world.model.world_model import WorldModel
+from robot_skill_stack.world.model import ObservationBatch, ObjectObservation, WorldModel, WorldModelUpdater
 
 
 class CountingProvider:

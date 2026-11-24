@@ -3,8 +3,8 @@ import unittest
 
 import numpy as np
 
-from robot_skill_stack.world.spatial_mapping.obstacles import ObstacleExtractionSettings
-from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, MappingProcessor, MappingService
+from robot_skill_stack.world.spatial_mapping import MappingInput, MappingService, ObstacleExtractionSettings
+from robot_skill_stack.world.spatial_mapping.runtime import MappingProcessor
 from tests.unit.test_spatial_mapping_runtime import ManualWorker, gt, settings
 
 

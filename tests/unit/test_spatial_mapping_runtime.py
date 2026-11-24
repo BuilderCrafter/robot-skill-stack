@@ -4,11 +4,12 @@ import unittest
 
 import numpy as np
 
-from robot_skill_stack.integrations.isaac.spatial_mapping.config import SpatialMappingConfig
 from robot_skill_stack.runtime.worker import WorkResult
-from robot_skill_stack.world.spatial_mapping import GridSpec, OccupancyMap, OccupancyState
+from robot_skill_stack.world.spatial_mapping import (
+    GridSpec, MappingInput, MappingReadView, MappingService, OccupancyMap, OccupancyState, SpatialMappingConfig,
+)
 from robot_skill_stack.world.spatial_mapping.geometry import GroundTruthInput, _primitive_item
-from robot_skill_stack.world.spatial_mapping.runtime import MappingInput, MappingProcessor, MappingReadView, MappingService
+from robot_skill_stack.world.spatial_mapping.runtime import MappingProcessor
 from tests.unit.test_spatial_mapping_robot_filter import frame, snapshot
 
 
