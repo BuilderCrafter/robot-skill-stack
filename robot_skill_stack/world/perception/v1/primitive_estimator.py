@@ -2,7 +2,7 @@ from __future__ import annotations
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
-from robot_skill_stack.world.perception.primitive_fits import (
+from robot_skill_stack.world.perception.v1.primitive_fits import (
     area, box_footprint, circle_boundary, cylinder_residual, hull2d, quality, radial_fit, rectangle,
 )
 

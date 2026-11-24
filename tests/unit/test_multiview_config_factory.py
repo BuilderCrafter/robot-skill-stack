@@ -186,7 +186,7 @@ class ConfigFactoryTests(unittest.TestCase):
                 app = NS(next_update_async=AsyncMock(side_effect=failure if stage == 'warmup' else None))
                 with patch.dict(sys.modules, {'robot_skill_stack.integrations.isaac.world.multiview': module}), \
                      patch.object(factory.omni.kit.app, 'get_app', return_value=app), \
-                     patch('robot_skill_stack.world.perception_multiview.provider.MultiViewProvider',
+                     patch('robot_skill_stack.world.perception.multiview.provider.MultiViewProvider',
                            side_effect=failure) as constructor:
                     with self.assertRaises(type(failure)) as raised:
                         asyncio.run(factory.create_source(cfg))
@@ -198,11 +198,11 @@ class ConfigFactoryTests(unittest.TestCase):
 
     def test_runtime_package_has_no_v1_sdk_or_oracle_imports(self):
         import ast
-        for path in (ROOT/'robot_skill_stack/world/perception_multiview').glob('*.py'):
+        for path in (ROOT/'robot_skill_stack/world/perception/multiview').glob('*.py'):
             for node in ast.walk(ast.parse(path.read_text())):
                 names = ([a.name for a in node.names] if isinstance(node, ast.Import) else
                          [node.module or ''] if isinstance(node, ast.ImportFrom) else [])
-                self.assertFalse(any(n.startswith(('robot_skill_stack.world.perception.',
+                self.assertFalse(any(n.startswith(('robot_skill_stack.world.perception.v1.',
                     'tests', 'isaacsim', 'omni', 'pxr')) for n in names), path)
 
 

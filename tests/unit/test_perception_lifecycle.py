@@ -12,8 +12,8 @@ from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception.factory import build_perception_provider
-from robot_skill_stack.world.perception.discovery import ObjectCandidate
+from robot_skill_stack.world.perception import build_perception_provider
+from robot_skill_stack.world.perception.v1.discovery import ObjectCandidate
 from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
@@ -30,7 +30,7 @@ class LifecycleTests(unittest.TestCase):
         self.camera = FrameCamera(self.sphere)
         cfg = load_scene_config('config/scenes/playground.toml')
         cfg = replace(cfg, world=replace(cfg.world, stale_object_ttl=2.))
-        self.provider = build_perception_provider(self.camera, cfg)
+        self.provider = build_perception_provider('perception', self.camera, scene=cfg.scene)
         self.model = WorldModel()
         self.updater = WorldModelUpdater(self.model, self.provider, update_hz=5, stale_object_ttl=2.)
 

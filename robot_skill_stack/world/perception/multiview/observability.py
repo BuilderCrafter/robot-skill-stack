@@ -15,7 +15,7 @@ from robot_skill_stack.world.common.depth_edges import (
     DEPTH_TOLERANCE, EDGE_POSITIONS, EDGE_SAMPLES, PIXEL_NEIGHBORS,
     RIBBON_OFFSETS, unique_pixels,
 )
-from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
+from robot_skill_stack.world.perception.multiview.fitting import PrimitiveFit
 
 
 def _view_boundary(center: np.ndarray, size: np.ndarray, rotation: np.ndarray,

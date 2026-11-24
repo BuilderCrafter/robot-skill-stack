@@ -5,9 +5,9 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 
-from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
-from robot_skill_stack.world.perception_multiview.provider import _FitBudget
-from robot_skill_stack.world.perception_multiview.segmentation import refine_cluster
+from robot_skill_stack.world.perception.multiview.fitting import SurfaceFitter
+from robot_skill_stack.world.perception.multiview.provider import _FitBudget
+from robot_skill_stack.world.perception.multiview.segmentation import refine_cluster
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 from tests.unit import test_multiview_segmentation as fixtures
@@ -111,7 +111,7 @@ class SegmentationReadinessTests(unittest.TestCase):
     def test_multicamera_provider_detects_supported_scene_shapes(self):
         from robot_skill_stack.integrations.isaac.config import load_scene_config
         from robot_skill_stack.world.common.camera import FrameSynchronizer
-        from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+        from robot_skill_stack.world.perception.multiview.provider import MultiViewProvider
         from tests.unit.test_multiview_provider import Camera
         solids = [Solid('cube', center=(.32, -.18, .025), yaw=.37), Solid('sphere'),
                   Solid('cylinder', center=(.38, .18, .045), radius=.018, length=.09),
@@ -134,7 +134,7 @@ class SegmentationReadinessTests(unittest.TestCase):
     def test_rendered_sphere_survives_missing_depth_and_separate_foreground(self):
         from robot_skill_stack.integrations.isaac.config import load_scene_config
         from robot_skill_stack.world.common.camera import DepthFrame
-        from robot_skill_stack.world.perception_multiview.provider import MultiViewInput, MultiViewProcessor
+        from robot_skill_stack.world.perception.multiview.provider import MultiViewInput, MultiViewProcessor
         from tests.support.primitive_scene import render
         scene = load_scene_config('config/scenes/multiview_perception_final.toml').scene
         cases = [([Solid('sphere')], ((1.05, .55, .90), (.25, -.85, .65)), .2),

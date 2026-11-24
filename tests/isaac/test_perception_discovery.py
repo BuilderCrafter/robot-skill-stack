@@ -21,7 +21,7 @@ from isaacsim.core.utils.stage import is_stage_loading, open_stage
 from pxr import Gf, Usd, UsdGeom
 
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.world.perception import build_perception_provider
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from tests.support.results import save_pgm, save_ppm, write_result
 from tests.support.isaac_helpers import PLAYGROUND_CUBE_PATH
@@ -93,7 +93,7 @@ def main(result_path=None, artifacts_dir=None):
     camera.initialize(semantic_segmentation=False)
     for _ in range(60):
         world.step(render=True)
-    provider = build_perception_provider(camera, config)
+    provider = build_perception_provider('perception', camera, scene=config.scene)
     model = WorldModel()
     updater = WorldModelUpdater(model, provider)
 

@@ -7,8 +7,8 @@ from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.model.context import ObservationContext,AssociationHint
 from robot_skill_stack.world.model.observations import ObjectObservation
-from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
-from robot_skill_stack.world.perception.tracker import ObjectTracker
+from robot_skill_stack.world.perception.v1.primitive_estimator import PrimitiveEstimator
+from robot_skill_stack.world.perception.v1.tracker import ObjectTracker
 from robot_skill_stack.manipulation.grasping import SimplePrimitiveGraspPlanner,ParallelJawGripperSpec,GraspFailureReason
 rng=np.random.default_rng(7)
 def C(p): return SimpleNamespace(position=np.mean(p,0),size=np.ptp(p,0),mask=np.ones((2,2),bool),confidence=1.,spawnable=True,metadata={'points':p})

@@ -15,7 +15,7 @@ import numpy as np
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+from robot_skill_stack.world.perception.multiview.provider import MultiViewProvider
 from tests.multiview.performance_ab import digest, native_frames
 from tests.multiview.test_final_native import score, snapshot
 from tests.support.results import fail_result, write_result

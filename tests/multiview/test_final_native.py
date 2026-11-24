@@ -189,7 +189,7 @@ def run(args, app, metrics):
     scene, config = ROOT/'scenes/multiview_perception_final.usda', ROOT/'config/scenes/multiview_perception_final.toml'
     metrics['source_hashes'] = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
         for p in [scene, config, ROOT/'scenes/multiview_playground.usda', ROOT/'scenes/playground.usd',
-                  ROOT/'robot_skill_stack/world/perception_multiview/segmentation.py']}
+                  ROOT/'robot_skill_stack/world/perception/multiview/segmentation.py']}
     metrics['environment'] = dict(python=platform.python_version(), numpy=np.__version__, numpy_path=np.__file__,
         headless=args.headless, scene=str(scene), config=str(config), sdk=Path('/isaac-sim/VERSION').read_text().strip()
         if Path('/isaac-sim/VERSION').exists() else 'see launcher SDK VERSION')

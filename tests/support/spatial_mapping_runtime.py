@@ -35,7 +35,7 @@ def hashes():
     files += [ROOT/path for path in (
         'robot_skill_stack/integrations/isaac/bootstrap.py',
         'robot_skill_stack/world/model/updater.py',
-        'robot_skill_stack/world/perception_multiview/provider.py',
+        'robot_skill_stack/world/perception/multiview/provider.py',
         'robot_skill_stack/integrations/isaac/manipulation/franka_backend.py',
         'robot_skill_stack/world/spatial_mapping/rgbd.py',
         'robot_skill_stack/world/spatial_mapping/occupancy.py',

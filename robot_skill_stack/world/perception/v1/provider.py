@@ -8,8 +8,8 @@ import numpy as np
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
-from robot_skill_stack.world.perception.frame import PerceptionFrame
-from robot_skill_stack.world.perception.geometry import ObjectGeometryService
+from robot_skill_stack.world.perception.v1.frame import PerceptionFrame
+from robot_skill_stack.world.perception.v1.geometry import ObjectGeometryService
 
 
 def _immutable_array(value):

@@ -8,12 +8,21 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.world.perception import PerceptionConfig, MultiViewConfig, build_perception_provider
 
 PLAYGROUND = Path(__file__).resolve().parents[2]/'config/scenes/playground.toml'
 
 
 class SetupConfigTests(unittest.TestCase):
+    def test_scene_tomls_use_canonical_perception_configuration(self):
+        self.assertEqual(PerceptionConfig.__module__, 'robot_skill_stack.world.perception.config')
+        self.assertEqual(MultiViewConfig.__module__, 'robot_skill_stack.world.perception.config')
+        for path in sorted(PLAYGROUND.parent.glob('*.toml')):
+            with self.subTest(path=path):
+                cfg = load_scene_config(path)
+                self.assertIs(type(cfg.perception), PerceptionConfig)
+                self.assertIs(type(cfg.multi_view), MultiViewConfig)
+
     def load(self, text):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'setup.toml'
@@ -35,7 +44,7 @@ class SetupConfigTests(unittest.TestCase):
 
     def test_effective_v1_parameters_are_preserved(self):
         cfg = load_scene_config(PLAYGROUND)
-        source = build_perception_provider(NS(get_intrinsics=lambda: np.eye(3)), cfg)
+        source = build_perception_provider('perception', NS(get_intrinsics=lambda: np.eye(3)), scene=cfg.scene)
         expected = {'support_plane_z': 0., 'min_object_height': .008, 'max_object_height': .22,
                     'min_component_pixels': 30, 'max_component_pixels': 30000,
                     'candidate_max_extent': .18, 'spawn_min_extent': .02, 'spawn_max_extent': .12,
@@ -68,7 +77,7 @@ class SetupConfigTests(unittest.TestCase):
         text = text.replace('[0.20, -0.40, 0.0]', '[0.20, -0.40, 0.35]')
         text = text.replace('[0.70, 0.40, 0.22]', '[0.70, 0.40, 0.57]')
         cfg = self.load(text)
-        source = build_perception_provider(NS(get_intrinsics=lambda: np.eye(3)), cfg)
+        source = build_perception_provider('perception', NS(get_intrinsics=lambda: np.eye(3)), scene=cfg.scene)
         self.assertEqual(source.discoverer.support_plane_z, .35)
         np.testing.assert_array_equal(source.discoverer.workspace_min, [.2, -.4, .35])
         self.assertEqual(source.discoverer.min_component_pixels, 30)

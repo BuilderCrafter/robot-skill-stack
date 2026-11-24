@@ -34,9 +34,9 @@ from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.world.perception import build_perception_provider
 from robot_skill_stack.world.common.camera import FrameSynchronizer
-from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+from robot_skill_stack.world.perception.multiview.provider import MultiViewProvider
 from robot_skill_stack.world.common.shared_frames import SharedFramePool
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import FrameCamera, Solid, render
@@ -60,6 +60,10 @@ def frozen_provider(kind):
     legacy=types.ModuleType('robot_skill_stack.world.perception.diagnostics')
     legacy.describe=describe
     with patch.dict(sys.modules,{legacy.__name__:legacy}):
+        if kind == 'v1':
+            for name in (b'frame', b'geometry'):
+                source=source.replace(b'robot_skill_stack.world.perception.'+name,
+                                      b'robot_skill_stack.world.perception.v1.'+name)
         if kind == 'mv':
             # Resolve the historical import without changing its hashed evidence.
             source=source.replace(b'robot_skill_stack.world.perception_multiview.clouds',
@@ -82,6 +86,8 @@ def frozen_provider(kind):
                                   b'bounds = None if evidence is None else dict(center=evidence[0], box_size=evidence[1])')
             source=b'\n'.join(line for line in source.split(b'\n')
                               if b"geometry.metadata['orientation_observability']" not in line)
+            source=source.replace(b'robot_skill_stack.world.perception_multiview.',
+                                  b'robot_skill_stack.world.perception.multiview.')
         exec(compile(source,f'{BASELINE}:{path}','exec'),module.__dict__)
     return module.PerceptionStateProvider if kind=='v1' else module.MultiViewProvider
 
@@ -119,7 +125,8 @@ class SemanticProcessingTests(unittest.TestCase):
     def provider(self,kind='v1',*,frozen=False,multiple=False):
         if kind=='v1':
             camera=FrameCamera(self.multiple if multiple else self.sphere)
-            value=build_perception_provider(camera,load_scene_config('config/scenes/playground.toml'))
+            value=build_perception_provider('perception',camera,
+                scene=load_scene_config('config/scenes/playground.toml').scene)
             if frozen:
                 value=self.old[kind](camera,value.localizer,value.discoverer,value.tracker,
                     primitive_estimator=value.primitive_estimator,source=value.source)

@@ -24,8 +24,8 @@ from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.common import box_fitting, components, depth_edges
 from robot_skill_stack.world.common.point_clouds import crop_workspace, project_depth, voxelize
-from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
-from robot_skill_stack.world.perception_multiview import segmentation
+from robot_skill_stack.world.perception.multiview.provider import MultiViewProvider
+from robot_skill_stack.world.perception.multiview import segmentation
 from tests.support.primitive_scene import Solid, intersect, render
 
 
@@ -248,7 +248,7 @@ def evaluate(root, output):
                                   components_sha256=hashlib.sha256(repr(canonical).encode()).hexdigest()))
             provider.close()
     paths = ('segmentation.py', 'provider.py', 'fitting.py', 'observability.py')
-    hashes = {name: digest(Path('robot_skill_stack/world/perception_multiview')/name) for name in paths}
+    hashes = {name: digest(Path('robot_skill_stack/world/perception/multiview')/name) for name in paths}
     hashes.update({f'common/{module.__name__.rsplit(".",1)[-1]}.py': digest(module.__file__)
                    for module in (components, box_fitting, depth_edges)})
     output.write_text(json.dumps(dict(head=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),

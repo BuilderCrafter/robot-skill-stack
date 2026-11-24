@@ -9,10 +9,10 @@ from robot_skill_stack.world.model.primitives import PrimitiveGeometry
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
 from robot_skill_stack.world.common.camera import FrameSynchronizer
-from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit
-from robot_skill_stack.world.perception_multiview.provider import MultiViewProvider
+from robot_skill_stack.world.perception.multiview.fitting import PrimitiveFit
+from robot_skill_stack.world.perception.multiview.provider import MultiViewProvider
 from robot_skill_stack.world.common.components import cluster_points
-from robot_skill_stack.world.perception_multiview.tracking import Detection
+from robot_skill_stack.world.perception.multiview.tracking import Detection
 from tests.support.multiview_fixtures import analytic_frames
 from tests.support.primitive_scene import Solid
 

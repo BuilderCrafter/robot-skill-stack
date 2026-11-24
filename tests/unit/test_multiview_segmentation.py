@@ -5,8 +5,8 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.world.common.components import cluster_points, radius_components
-from robot_skill_stack.world.perception_multiview.fitting import SurfaceFitter
-from robot_skill_stack.world.perception_multiview.segmentation import (
+from robot_skill_stack.world.perception.multiview.fitting import SurfaceFitter
+from robot_skill_stack.world.perception.multiview.segmentation import (
     refine_cluster, supported_object_cloud,
 )
 

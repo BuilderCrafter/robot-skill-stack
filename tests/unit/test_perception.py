@@ -7,11 +7,11 @@ import time
 import numpy as np
 
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer, ObjectCandidate
-from robot_skill_stack.world.perception.frame import PerceptionFrame
-from robot_skill_stack.world.perception.geometry import ObjectGeometryService
-from robot_skill_stack.world.perception.localizer import RgbdLocalizer
-from robot_skill_stack.world.perception.tracker import ObjectTracker
+from robot_skill_stack.world.perception.v1.discovery import DepthObjectDiscoverer, ObjectCandidate
+from robot_skill_stack.world.perception.v1.frame import PerceptionFrame
+from robot_skill_stack.world.perception.v1.geometry import ObjectGeometryService
+from robot_skill_stack.world.perception.v1.localizer import RgbdLocalizer
+from robot_skill_stack.world.perception.v1.tracker import ObjectTracker
 from tests.support.results import fail_result, write_result
 from robot_skill_stack.world.model.context import AssociationHint, ObservationContext
 from robot_skill_stack.world.model.entities import WorldObject

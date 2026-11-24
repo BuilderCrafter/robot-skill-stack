@@ -5,7 +5,7 @@ from typing import Any
 
 import numpy as np
 
-from robot_skill_stack.world.perception.frame import PerceptionFrame
+from robot_skill_stack.world.perception.v1.frame import PerceptionFrame
 
 
 @dataclass

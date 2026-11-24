@@ -1,19 +1,17 @@
-from __future__ import annotations
+"""Construct semantic perception from already initialized camera resources."""
+from robot_skill_stack.world.model.provider import WorldObservationProvider
 
-from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
-from robot_skill_stack.world.perception.localizer import RgbdLocalizer
-from robot_skill_stack.world.perception.provider import PerceptionStateProvider
-from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
-from robot_skill_stack.world.perception.tracker import ObjectTracker
+from .config import MultiViewConfig
 
 
-def build_perception_provider(camera, config):
-    """Assemble the single-camera discovery, geometry, and tracking pipeline."""
-    localizer = RgbdLocalizer(camera.get_intrinsics())
-    scene = config.scene
-    discoverer = DepthObjectDiscoverer(
-        localizer, support_plane_z=scene.support_plane_z,
-        workspace_min=scene.workspace_min, workspace_max=scene.workspace_max,
-    )
-    return PerceptionStateProvider(camera, localizer, discoverer, ObjectTracker(),
-                                   primitive_estimator=PrimitiveEstimator())
+def build_perception_provider(kind: str, source, *, scene,
+                              settings: MultiViewConfig | None = None) -> WorldObservationProvider:
+    """Select an independent V1 or multiview observation pipeline."""
+    if kind == 'perception':
+        from .v1.factory import build_v1_provider
+        return build_v1_provider(source, scene)
+    if kind == 'multi_view':
+        from .multiview.provider import MultiViewProvider
+        settings = MultiViewConfig() if settings is None else settings
+        return MultiViewProvider(source, scene, voxel_size=settings.voxel_size, stride=settings.stride)
+    raise ValueError(f'Unsupported semantic perception pipeline: {kind!r}')

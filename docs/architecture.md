@@ -14,6 +14,15 @@ remain SDK-free. Isaac adapters assemble the existing contracts in
 `integrations/isaac/bootstrap.py`; the GUI invokes that same asynchronous builder.
 There is no plugin framework or alternate motion executor.
 
+`world/perception/` exposes `PerceptionConfig`, `MultiViewConfig` and
+`build_perception_provider(kind, source, *, scene, settings=None)`.
+`world.provider` selects `perception` (V1) or `multi_view`; each algorithm lives
+independently under `perception/v1/` or `perception/multiview/`. Shared camera and
+geometric operations live in `world/common/`. `SceneConfig` and TOML loading stay
+in the Isaac integration and reuse the canonical perception configuration types.
+Isaac initializes cameras, waits the existing 60 updates, then passes the camera
+or rig to the semantic builder. Ground truth keeps its separate Isaac constructor.
+
 ## Commands and manipulation
 
 RobotRuntime admits one asynchronous command. Cancellation propagates through

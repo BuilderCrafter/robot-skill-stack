@@ -10,10 +10,10 @@ from unittest.mock import patch
 import numpy as np
 
 from robot_skill_stack.integrations.isaac.config import load_scene_config
-from robot_skill_stack.world.perception.discovery import DepthObjectDiscoverer
-from robot_skill_stack.world.perception.factory import build_perception_provider
-from robot_skill_stack.world.perception.localizer import RgbdLocalizer
-from robot_skill_stack.world.perception.primitives import PrimitiveEstimator
+from robot_skill_stack.world.perception.v1.discovery import DepthObjectDiscoverer
+from robot_skill_stack.world.perception import build_perception_provider
+from robot_skill_stack.world.perception.v1.localizer import RgbdLocalizer
+from robot_skill_stack.world.perception.v1.primitive_estimator import PrimitiveEstimator
 from tests.support.primitive_scene import FrameCamera, Solid, render
 
 
@@ -28,7 +28,7 @@ def guarded(name, *args, **kwargs):
         raise AssertionError('Unexpected dependency: '+name)
     return original(name, *args, **kwargs)
 builtins.__import__ = guarded
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.world.perception import build_perception_provider
 from robot_skill_stack.integrations.isaac.config import load_scene_config
 load_scene_config('config/scenes/playground.toml')
 """
@@ -126,7 +126,7 @@ load_scene_config('config/scenes/playground.toml')
     def test_depth_provider_works_without_rgb(self):
         camera = FrameCamera(render([Solid('sphere')]))
         camera.get_rgb = lambda: None
-        provider = build_perception_provider(camera, load_scene_config('config/scenes/playground.toml'))
+        provider = build_perception_provider('perception', camera, scene=load_scene_config('config/scenes/playground.toml').scene)
         with patch('time.monotonic', return_value=100.):
             for _ in range(3):
                 camera.token += 1
@@ -137,7 +137,7 @@ load_scene_config('config/scenes/playground.toml')
 
     def test_depth_provider_label_matches_fitted_primitive(self):
         camera = FrameCamera(render([Solid('cylinder', center=(.45, 0, .05), radius=.02)]))
-        provider = build_perception_provider(camera, load_scene_config('config/scenes/playground.toml'))
+        provider = build_perception_provider('perception', camera, scene=load_scene_config('config/scenes/playground.toml').scene)
         with patch('time.monotonic', return_value=100.):
             for _ in range(3):
                 camera.token += 1

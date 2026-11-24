@@ -12,7 +12,7 @@ from robot_skill_stack.integrations.isaac.config import load_scene_config
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.updater import WorldModelUpdater
 from robot_skill_stack.world.model.world_model import WorldModel
-from robot_skill_stack.world.perception.factory import build_perception_provider
+from robot_skill_stack.world.perception import build_perception_provider
 from tests.support.primitive_scene import FrameCamera, Solid, render
 from tests.unit import test_grasp_attachment as attachment_tests
 from tests.unit.test_grasp_clearance import solid
@@ -82,7 +82,7 @@ class ManualHeldResetTests(unittest.IsolatedAsyncioTestCase):
         camera = FrameCamera(frame)
         config = load_scene_config('config/scenes/playground.toml')
         config = replace(config, world=replace(config.world, stale_object_ttl=2.))
-        provider = build_perception_provider(camera, config)
+        provider = build_perception_provider('perception', camera, scene=config.scene)
         model = WorldModel()
         updater = WorldModelUpdater(model, provider, stale_object_ttl=2.)
         for _ in range(3):

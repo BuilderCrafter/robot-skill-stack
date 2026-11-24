@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry
-from robot_skill_stack.world.perception_multiview.fitting import PrimitiveFit, SurfaceFitter, unknown_fit
+from robot_skill_stack.world.perception.multiview.fitting import PrimitiveFit, SurfaceFitter, unknown_fit
 
 
 class UnknownGeometryFallbackTests(unittest.TestCase):

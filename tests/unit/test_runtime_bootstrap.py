@@ -168,7 +168,7 @@ class BootstrapTests(unittest.TestCase):
             camera=factory.IsaacRgbdCamera.return_value
             factory.IsaacRgbdCamera.assert_called_once_with('/World/PerceptionCamera',resolution=(640,480))
             camera.initialize.assert_called_once_with(semantic_segmentation=False)
-            build.assert_called_once_with(camera,cfg)
+            build.assert_called_once_with('perception',camera,scene=cfg.scene)
             camera.close.assert_not_called()
             failure=ValueError('discovery init')
             camera.close.side_effect=RuntimeError('cleanup failed')
@@ -187,12 +187,20 @@ class BootstrapTests(unittest.TestCase):
                         ground_truth=replace(cfg.ground_truth,objects_root=None,objects={}))
             valid={'/Franka','/World/PerceptionCamera'}
             stage=NS(GetPrimAtPath=Mock(side_effect=lambda p:NS(IsValid=lambda:p in valid)))
+            # Keep this prim-selection test separate from coordinator SDK boundaries.
+            coordinator=NS(spatial_mapping=None,_semantic_worker=object(),start=Mock(),close=Mock())
+            create=AsyncMock(return_value=coordinator)
             with patch.object(m,'load_scene_config',return_value=cfg), \
-                 patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)):
+                 patch.object(m.omni.usd,'get_context',return_value=NS(get_stage=lambda:stage)), \
+                 patch('robot_skill_stack.integrations.isaac.observation_runtime.create_observation_runtime',create):
                 b=await m.build_runtime('rgbd.toml')
             self.assertEqual({c.args[0] for c in stage.GetPrimAtPath.call_args_list},valid)
+            create.assert_awaited_once()
+            self.assertIs(create.await_args.args[1],cfg)
+            coordinator.start.assert_called_once()
             self.assertFalse(hasattr(b,'objects'))
             b.close()
+            coordinator.close.assert_called_once()
         self.run_case(fn)
 
     def test_ground_truth_startup_does_not_require_camera_prim(self):

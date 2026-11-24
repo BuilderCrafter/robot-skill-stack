@@ -10,7 +10,7 @@ class TimedCompute:
         self.compute = compute
 
     def __call__(self, prepared):
-        from robot_skill_stack.world.perception_multiview import provider, segmentation
+        from robot_skill_stack.world.perception.multiview import provider, segmentation
         timings, clusters = defaultdict(float), []
 
         def measured(function, name):
