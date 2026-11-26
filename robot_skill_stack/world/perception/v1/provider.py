@@ -5,6 +5,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
@@ -13,14 +14,14 @@ from robot_skill_stack.world.perception.v1.geometry import ObjectGeometryService
 
 
 def _immutable_array(value):
-    """Make an independent, read-only array for safe frame processing."""
+    """Reuse immutable bytes-backed storage or own a frozen copy for processing."""
     array = np.ascontiguousarray(value)
     base = array
     while isinstance(base, np.ndarray) and base.base is not None:
         base = base.base
     if isinstance(base, bytes) and not array.flags.writeable:
         return array
-    return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
+    return readonly_copy(array)
 
 
 def _describe(candidate, geometry):

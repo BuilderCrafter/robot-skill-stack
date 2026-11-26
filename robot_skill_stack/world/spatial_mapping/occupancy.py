@@ -7,18 +7,14 @@ import time
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
+
 
 class OccupancyState(IntEnum):
     UNKNOWN = 0
     FREE = 1
     OCCUPIED = 2
     OUT_OF_BOUNDS = 3
-
-
-def _readonly(values: np.ndarray | Sequence) -> np.ndarray:
-    """Own immutable bytes, so consumers cannot re-enable array writes."""
-    array = np.ascontiguousarray(values)
-    return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
 @dataclass(frozen=True)
@@ -104,7 +100,7 @@ class OccupancySnapshot:
                   (self.states, self.probabilities, self.observed, self.last_observed, self.expired)]
         for array, fill in zip(values, (OccupancyState.OUT_OF_BOUNDS, np.nan, False, np.nan, False)):
             array[outside] = fill
-        return OccupancyBatch(*map(_readonly, values))
+        return OccupancyBatch(*map(readonly_copy, values))
 
     def query(self, position: np.ndarray | Sequence) -> OccupancyQuery:
         return _single(self.query_many(position))
@@ -189,7 +185,7 @@ class OccupancyMap:
 
     def snapshot(self, *, now: float | None = None) -> OccupancySnapshot:
         now = self.clock() if now is None else now
-        return OccupancySnapshot(self.spec, *map(_readonly,
+        return OccupancySnapshot(self.spec, *map(readonly_copy,
             self._classify(self._log_odds, self._last_observed, now)),
             self.timestamp, self.revision, self.generation, self.error)
 
@@ -203,7 +199,7 @@ class OccupancyMap:
         values = self._classify(self._log_odds[selected], self._last_observed[selected], now)
         for array, fill in zip(values, (OccupancyState.OUT_OF_BOUNDS, np.nan, False, np.nan, False)):
             array[outside] = fill
-        return OccupancyBatch(*map(_readonly, values))
+        return OccupancyBatch(*map(readonly_copy, values))
 
     def query(self, position: np.ndarray | Sequence, *, now: float | None = None) -> OccupancyQuery:
         return _single(self.query_many(position, now=now))

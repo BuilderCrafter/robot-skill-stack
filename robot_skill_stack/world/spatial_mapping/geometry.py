@@ -3,7 +3,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .occupancy import GridSpec, _readonly
+from robot_skill_stack.common.arrays import readonly_copy
+from .occupancy import GridSpec
 
 
 @dataclass(frozen=True)
@@ -22,7 +23,7 @@ class GeometryItem:
         for name in ('lower', 'upper', 'inverse', 'dimensions'):
             value = getattr(self, name)
             if value is not None:
-                object.__setattr__(self, name, _readonly(value))
+                object.__setattr__(self, name, readonly_copy(value))
 
 
 def _primitive_item(kind: str, transform: np.ndarray, *, dimensions=None,

@@ -5,6 +5,7 @@ from typing import Iterable
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from robot_skill_stack.world.model.context import AssociationHint, ObservationContext
 from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.observations import ObjectObservation
@@ -48,7 +49,7 @@ class WorldModel:
                                                np.array_equal(old, value)):
             return
         self._held_object_offset_in_ee = (None if value is None else
-            np.frombuffer(np.asarray(value, dtype=float).tobytes(), dtype=float))
+            readonly_copy(value, dtype=float).reshape(-1))
         self._context_revision += 1
 
     @property

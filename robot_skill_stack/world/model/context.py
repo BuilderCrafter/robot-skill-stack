@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
+
 
 @dataclass(frozen=True)
 class AssociationHint:
@@ -25,7 +27,7 @@ class AssociationHint:
             raise ValueError("AssociationHint.max_distance must be > 0")
         # A frozen dataclass alone does not freeze its NumPy buffers. Contexts
         # may cross an execution boundary, so own immutable position bytes.
-        owned = np.frombuffer(np.ascontiguousarray(position).tobytes(), dtype=float)
+        owned = readonly_copy(position)
         object.__setattr__(self, "expected_position", owned)
         object.__setattr__(self, "max_distance", float(self.max_distance))
         object.__setattr__(self, "expires_at", float(self.expires_at))

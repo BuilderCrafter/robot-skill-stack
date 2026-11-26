@@ -16,20 +16,19 @@ import xml.etree.ElementTree as ET
 
 import numpy as np
 
+from robot_skill_stack.common.rotations import quat_matrix
 from robot_skill_stack.manipulation.motion.joint_route import (
     PlanningFailure, check_joint_limits, interpolate_route, route_array,
 )
 from .collision_model import load_enhanced_collision_model, validate_model_selection
 
 
-def quaternion_matrix(quaternion):
+def _validated_quaternion(quaternion):
+    """Keep Lula's stricter minimum-norm admission before shared conversion."""
     q = np.asarray(quaternion, dtype=float)
     if q.shape != (4,) or not np.isfinite(q).all() or np.linalg.norm(q) < 1e-12:
         raise ValueError('A finite nonzero wxyz orientation is required')
-    w, x, y, z = q / np.linalg.norm(q)
-    return np.array([[1-2*(y*y+z*z), 2*(x*y-z*w), 2*(x*z+y*w)],
-                     [2*(x*y+z*w), 1-2*(x*x+z*z), 2*(y*z-x*w)],
-                     [2*(x*z-y*w), 2*(y*z+x*w), 1-2*(x*x+y*y)]])
+    return q
 
 
 def orientation_error(first, second):
@@ -183,7 +182,7 @@ class LulaGlobalPlanner:
                 raise PlanningFailure('unsupported_geometry', 'Unsupported static collision primitive',
                                       {'path': item.path, 'kind': item.kind})
             translation = base_rotation.T @ (np.asarray(item.position)-base_position)
-            rotation = base_rotation.T @ quaternion_matrix(item.orientation)
+            rotation = base_rotation.T @ quat_matrix(_validated_quaternion(item.orientation))
             self._handles.append(world.add_obstacle(obstacle, lula.Pose3(lula.Rotation3(rotation), translation)))
         self._planner._rrt.update_world_view()
         self._inspector = lula.create_robot_world_inspector(
@@ -296,7 +295,8 @@ class LulaGlobalPlanner:
             raise PlanningFailure('joint_mapping_failed', 'IK and RRT joint orders differ')
         position, orientation = self.backend.robot.get_world_pose()
         position, orientation = np.asarray(position, float), np.asarray(orientation, float)
-        base_position, base_rotation = position*float(snapshot.meters_per_unit), quaternion_matrix(orientation)
+        base_position, base_rotation = (position*float(snapshot.meters_per_unit),
+                                        quat_matrix(_validated_quaternion(orientation)))
         self._planner.set_robot_base_pose(position, orientation)
         solver.set_robot_base_pose(position, orientation)
         self._planner.set_max_iterations(self.max_iterations)
@@ -336,7 +336,7 @@ class LulaGlobalPlanner:
         default = np.asarray(self._planner._robot_description.default_c_space_configuration(), float)
         seeds = [start_q, default, np.clip(start_q+np.array([.6, -.3, .4, 0, 0, 0, 0]), lower, upper),
                  np.clip(start_q+np.array([-.6, .3, -.4, 0, 0, 0, 0]), lower, upper)]
-        target_rotation = quaternion_matrix(target.orientation)
+        target_rotation = quat_matrix(_validated_quaternion(target.orientation))
         attempts, solutions = [], []
         self._last_diagnostics.update(ik_attempts=attempts, self_collision_mask='URDF rigid/adjacent links only',
             sdk_configuration_sha256={key: hashlib.sha256(Path(cfg[key]).read_bytes()).hexdigest()

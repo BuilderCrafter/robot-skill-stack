@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from robot_skill_stack.world.common.camera import DepthFrame
-from .occupancy import _readonly
 
 
 @dataclass(frozen=True, eq=False)
@@ -44,7 +44,7 @@ class TriangleMesh:
                 ('_children', np.array([node[2:4] for node in nodes], np.int64)),
                 ('_ranges', np.array([node[4:6] for node in nodes], np.int64)),
                 ('_permutation', np.asarray(permutation, np.int64))):
-            object.__setattr__(self, name, _readonly(value))
+            object.__setattr__(self, name, readonly_copy(value))
 
 
 @dataclass(frozen=True, eq=False)
@@ -54,9 +54,9 @@ class MeshInstance:
     world_from_local: np.ndarray
 
     def __post_init__(self) -> None:
-        transform = _readonly(np.asarray(self.world_from_local, float))
+        transform = readonly_copy(np.asarray(self.world_from_local, float))
         object.__setattr__(self, 'world_from_local', transform)
-        object.__setattr__(self, '_local_from_world', _readonly(np.linalg.inv(transform)))
+        object.__setattr__(self, '_local_from_world', readonly_copy(np.linalg.inv(transform)))
 
 
 @dataclass(frozen=True)

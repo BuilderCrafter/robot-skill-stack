@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.world.model.context import ObservationContext
 from robot_skill_stack.world.model.observations import ObjectObservation
@@ -36,11 +37,6 @@ def _voxel_ids(points: np.ndarray, voxel: float) -> np.ndarray:
     """Encode voxel coordinates for matching cluster points to each camera cloud."""
     keys = np.ascontiguousarray(np.floor(points / voxel + 1e-9), dtype=np.int64)
     return keys.view(np.dtype((np.void, 3 * keys.dtype.itemsize))).ravel()
-
-
-def _immutable_array(array: np.ndarray) -> np.ndarray:
-    """Freeze directly captured arrays in independent worker-owned storage."""
-    return np.frombuffer(array.tobytes(), dtype=array.dtype).reshape(array.shape)
 
 
 @dataclass(frozen=True)
@@ -138,9 +134,9 @@ class MultiViewProvider:
             frames = self.rig.capture()
             if frames is None:
                 return None
-            frames = tuple(DepthFrame(frame.camera_id, frame.token, _immutable_array(frame.depth),
-                _immutable_array(frame.intrinsics), _immutable_array(frame.world_from_camera), frame.acquired_at,
-                None if frame.rgb is None else _immutable_array(frame.rgb)) for frame in frames)
+            frames = tuple(DepthFrame(frame.camera_id, frame.token, readonly_copy(frame.depth),
+                readonly_copy(frame.intrinsics), readonly_copy(frame.world_from_camera), frame.acquired_at,
+                None if frame.rgb is None else readonly_copy(frame.rgb)) for frame in frames)
         return MultiViewInput(tuple(frames), min(frame.acquired_at for frame in frames))
 
     def associate(self, result: MultiViewResult | None,

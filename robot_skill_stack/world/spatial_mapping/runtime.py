@@ -6,11 +6,12 @@ from types import MappingProxyType, SimpleNamespace
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from robot_skill_stack.runtime.worker import BoundedWorker
 from robot_skill_stack.world.common.camera import DepthFrame
 from .geometry import rasterize_ground_truth
 from .occupancy import (
-    OccupancyBatch, OccupancyMap, OccupancyQuery, OccupancySnapshot, OccupancyState, _readonly, _single,
+    OccupancyBatch, OccupancyMap, OccupancyQuery, OccupancySnapshot, OccupancyState, _single,
 )
 from .rgbd import RgbdMapper
 from .robot_filter import RobotSelfFilter
@@ -19,7 +20,7 @@ from .obstacles import ObstacleExtractor
 
 def _owned(array: np.ndarray) -> np.ndarray:
     """Copy writable inputs; reuse read-only buffers supplied by acquisition."""
-    return _readonly(array) if array.flags.writeable else array
+    return readonly_copy(array) if array.flags.writeable else array
 
 
 @dataclass(frozen=True)
@@ -133,8 +134,8 @@ class MappingReadView:
         expired = base.expired | (base.observed & (self.evaluated_at-base.last_observed >= self.evidence_ttl))
         states = np.where(expired, OccupancyState.UNKNOWN, base.states)
         probabilities = np.where(expired, .5, base.probabilities)
-        return OccupancyBatch(_readonly(states), _readonly(probabilities), base.observed,
-                              base.last_observed, _readonly(expired))
+        return OccupancyBatch(readonly_copy(states), readonly_copy(probabilities), base.observed,
+                              base.last_observed, readonly_copy(expired))
 
     def query(self, position: np.ndarray | Sequence) -> OccupancyQuery:
         return _single(self.query_many(position))

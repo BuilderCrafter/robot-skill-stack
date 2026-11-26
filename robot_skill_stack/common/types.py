@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+
 import numpy as np
+from numpy.typing import ArrayLike
 
 
 class GripperState(str, Enum):
@@ -13,11 +15,13 @@ class GripperState(str, Enum):
 
 @dataclass
 class Pose:
+    """Position and optional normalized [w, x, y, z] orientation in a named frame."""
+
     position: np.ndarray
     orientation: np.ndarray | None = None
     frame: str = "world"
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.position = np.asarray(self.position, dtype=float)
         if self.position.shape != (3,):
             raise ValueError("Pose.position must have shape (3,)")
@@ -30,7 +34,8 @@ class Pose:
                 raise ValueError("Pose.orientation cannot be a zero quaternion")
             self.orientation = self.orientation / norm
 
-    def translated(self, delta) -> "Pose":
+    def translated(self, delta: ArrayLike) -> Pose:
+        """Offset the position in its existing frame, preserving orientation."""
         return Pose(
             self.position + np.asarray(delta, dtype=float),
             None if self.orientation is None else self.orientation.copy(),

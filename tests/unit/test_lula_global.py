@@ -9,9 +9,10 @@ from unittest.mock import patch
 
 import numpy as np
 
+from robot_skill_stack.common.rotations import quat_matrix
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.manipulation.motion.lula_global import (
-    LulaGlobalPlanner, adjacent_self_collision_pairs, orientation_error, quaternion_matrix,
+    LulaGlobalPlanner, adjacent_self_collision_pairs, orientation_error,
 )
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
 from robot_skill_stack.integrations.isaac.manipulation.motion.collision_model import load_enhanced_collision_model
@@ -67,7 +68,7 @@ class PlannerFixture:
                 events.append(('ik',frame,p.copy(),orientation.copy(),kwargs));return target_q.copy(),ik_success
             def compute_forward_kinematics(self, frame, q):
                 if frame == 'panda_link0': return np.zeros(3), np.eye(3)
-                return np.array([.3+q[0],0,.4]), np.eye(3) if orientation_ok else quaternion_matrix([0,1,0,0])
+                return np.array([.3+q[0],0,.4]), np.eye(3) if orientation_ok else quat_matrix([0,1,0,0])
 
         class Trajectory:
             start_time,end_time = 0.,2.
@@ -319,8 +320,32 @@ class LulaGlobalTests(unittest.TestCase):
         with self.assertRaises(PlanningFailure):_ = planner.joint_names
 
     def test_geometry_orientation_uses_sign_invariant_quaternions(self):
-        np.testing.assert_allclose(quaternion_matrix([0,0,0,1]),quaternion_matrix([0,0,0,-1]))
-        self.assertAlmostEqual(orientation_error(np.eye(3),quaternion_matrix([0,1,0,0])),np.pi)
+        np.testing.assert_allclose(quat_matrix([0,0,0,1]),quat_matrix([0,0,0,-1]))
+        self.assertAlmostEqual(orientation_error(np.eye(3),quat_matrix([0,1,0,0])),np.pi)
+
+    def test_lula_rejects_subthreshold_orientations_at_each_source(self):
+        for source in ('base', 'obstacle', 'target'):
+            for norm in (0., 1e-13):
+                with self.subTest(source=source, norm=norm):
+                    fixture = self.fixture()
+                    orientation = np.array([norm, 0, 0, 0])
+                    if source == 'base':
+                        fixture.backend.robot.get_world_pose = lambda: (np.zeros(3), orientation)
+                    elif source == 'target':
+                        fixture.target.orientation = orientation
+                    else:
+                        fixture.snapshot.obstacles = (NS(kind='cuboid', path='/box', dimensions=(.1, .2, .3),
+                            position=(1.5, 2.25, .4), orientation=orientation),)
+                    with self.assertRaisesRegex(ValueError, 'finite nonzero wxyz'):
+                        self.plan(fixture)
+                    self.assertFalse(any(row[0] == 'rrt_call' for row in fixture.events))
+
+    def test_lula_accepts_threshold_and_nonunit_base_orientations(self):
+        for norm in (1e-12, 2.5):
+            with self.subTest(norm=norm):
+                fixture = self.fixture()
+                fixture.backend.robot.get_world_pose = lambda: (np.zeros(3), np.array([norm, 0, 0, 0]))
+                self.plan(fixture)
 
 
 if __name__=='__main__':unittest.main()

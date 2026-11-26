@@ -7,13 +7,8 @@ import time
 
 import numpy as np
 
+from robot_skill_stack.common.arrays import readonly_copy
 from .camera import DepthFrame, _render_token
-
-
-def _owned(values, dtype=None):
-    """Copy frame data into independent, read-only array storage."""
-    values = np.ascontiguousarray(values, dtype=dtype)
-    return np.frombuffer(values.tobytes(), dtype=values.dtype).reshape(values.shape)
 
 
 class SharedFramePool:
@@ -122,10 +117,10 @@ class SharedFramePool:
             if depth is None or not np.any(np.isfinite(depth) & (np.asarray(depth) > 0)):
                 raise RuntimeError(f'Missing or invalid depth: {key}')
             rgb = camera.get_rgb()
-            frame = DepthFrame(key, token, _owned(depth, float),
-                _owned(camera.get_intrinsics(), float),
-                _owned(camera.get_world_from_camera_transform(), float),
-                self._acquired_at, None if rgb is None else _owned(rgb))
+            frame = DepthFrame(key, token, readonly_copy(depth, float),
+                readonly_copy(camera.get_intrinsics(), float),
+                readonly_copy(camera.get_world_from_camera_transform(), float),
+                self._acquired_at, None if rgb is None else readonly_copy(rgb))
             self._cache[key] = (token, frame, None)
             return frame
         except Exception as exc:

@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 
-def quat_matrix(quaternion) -> np.ndarray:
+def quat_matrix(quaternion: ArrayLike) -> np.ndarray:
     """Rotation matrix for the stack's scalar-first [w, x, y, z] convention."""
     q = np.asarray(quaternion, dtype=float)
     if q.shape != (4,) or not np.isfinite(q).all() or np.linalg.norm(q) == 0:
