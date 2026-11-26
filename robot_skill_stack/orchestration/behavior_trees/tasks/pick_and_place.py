@@ -1,9 +1,7 @@
 import py_trees
 
 from robot_skill_stack.common.types import Pose
-from robot_skill_stack.orchestration.behavior_trees.nodes.skill_node import (
-    SkillNode,
-)
+from robot_skill_stack.orchestration.behavior_trees.nodes.skill_node import SkillNode
 from robot_skill_stack.runtime.runtime import RobotRuntime
 
 
@@ -11,8 +9,9 @@ def create_pick_and_place_tree(
     runtime: RobotRuntime,
     object_id: str,
     target: Pose,
-    return_home=True,
-):
+    return_home: bool = True,
+) -> py_trees.composites.Sequence:
+    """Pick the persistent object, place stably, then optionally return Home."""
     children = [
         SkillNode(
             f"Pick {object_id}",
@@ -30,9 +29,7 @@ def create_pick_and_place_tree(
         ),
     ]
     if return_home:
-        children.append(
-            SkillNode("Home", runtime, "home")
-        )
+        children.append(SkillNode("Home", runtime, "home"))
     return py_trees.composites.Sequence(
         name="Pick & Place",
         memory=True,
