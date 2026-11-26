@@ -1,34 +1,31 @@
 """The validated direct Cartesian RMPflow loop; SDK resources belong to the backend."""
 from __future__ import annotations
 
-import numpy as np
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
+import numpy as np
 from isaacsim.core.utils.types import ArticulationAction
+
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.manipulation.backend import BackendResult
-from robot_skill_stack.manipulation.motion import MappingSourceProvider
+
+if TYPE_CHECKING:
+    from ..franka_backend import IsaacFrankaBackend
 
 
 class DirectRmpflowStrategy:
-    """Execute on Kit using the backend's existing controller and kinematics.
+    """Execute Cartesian targets on Kit using the backend's controller and IK."""
 
-    The optional provider is reserved for future strategies. Direct motion never
-    queries it and makes no inference from occupancy or mapping availability.
-    """
-    def __init__(self, backend, *, mapping_source_provider: MappingSourceProvider | None = None):
+    def __init__(self, backend: IsaacFrankaBackend) -> None:
         self._backend = backend
-        self._mapping_source_provider = mapping_source_provider
-
-    @property
-    def mapping_source_provider(self) -> MappingSourceProvider | None:
-        return self._mapping_source_provider
 
     async def move_to_pose_async(
         self,
         target: Pose,
-        position_tolerance=None,
-        orientation_tolerance=None,
-        grasp_check=None,
+        position_tolerance: float | None = None,
+        orientation_tolerance: float | None = None,
+        grasp_check: Callable[[], BackendResult | None] | None = None,
     ) -> BackendResult:
         backend = self._backend
         if target.frame != "world":
@@ -36,16 +33,8 @@ class DirectRmpflowStrategy:
         if not backend.check_reachability(target):
             return BackendResult(False, "Target pose has no IK solution.")
 
-        pos_tol = (
-            backend.position_tolerance
-            if position_tolerance is None
-            else position_tolerance
-        )
-        ori_tol = (
-            backend.orientation_tolerance
-            if orientation_tolerance is None
-            else orientation_tolerance
-        )
+        pos_tol = backend.position_tolerance if position_tolerance is None else position_tolerance
+        ori_tol = backend.orientation_tolerance if orientation_tolerance is None else orientation_tolerance
 
         backend._reset_motion_controller()
         last_pos_error = last_ori_error = None

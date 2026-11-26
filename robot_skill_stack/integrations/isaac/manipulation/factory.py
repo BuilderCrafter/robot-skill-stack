@@ -1,14 +1,22 @@
 """Explicit Isaac robot selection; SDK construction order is owned by bootstrap."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from isaacsim.robot.manipulators.examples.franka import Franka
 
-from robot_skill_stack.integrations.isaac.config import MotionConfig
+from robot_skill_stack.integrations.isaac.config import MotionConfig, RobotConfig
 from robot_skill_stack.integrations.isaac.manipulation.franka_backend import IsaacFrankaBackend
 from robot_skill_stack.manipulation.backend import ManipulationBackend
 from robot_skill_stack.manipulation.grasping.types import ParallelJawGripperSpec
-from robot_skill_stack.manipulation.motion import MappingSourceProvider
+from robot_skill_stack.manipulation.motion import MappingSourceProvider, MotionStrategy
+
+if TYPE_CHECKING:
+    from isaacsim.core.api import World
 
 
-def create_robot(world, config):
+def create_robot(world: World, config: RobotConfig) -> Franka:
+    """Reuse the scene's Franka or add it before bootstrap initializes physics."""
     if config.backend != 'franka':
         raise ValueError(f'Unsupported robot backend: {config.backend}')
     robot = world.scene.get_object('franka')
@@ -19,24 +27,26 @@ def create_robot(world, config):
     return robot
 
 
-def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
+def create_backend(world: World, robot: Franka, config: RobotConfig, *, motion: MotionConfig | None = None,
                    mapping_source_provider: MappingSourceProvider | None = None
                    ) -> tuple[ManipulationBackend, ParallelJawGripperSpec]:
+    """Validate strategy settings before SDK construction; resolve global maps later."""
     if config.backend != 'franka':
         raise ValueError(f'Unsupported robot backend: {config.backend}')
-    # Validate before constructing SDK resources, including programmatic callers.
-    selected = MotionConfig(strategy='direct' if motion is None else motion.strategy,
-        max_obstacles=64 if motion is None else getattr(motion, 'max_obstacles', 64),
-        rrt_seed=123456 if motion is None else getattr(motion, 'rrt_seed', 123456),
-        rrt_max_iterations=10000 if motion is None else getattr(motion, 'rrt_max_iterations', 10000),
-        global_collision_model='stock' if motion is None else getattr(motion, 'global_collision_model', 'stock'),
-        global_obstacle_source='static' if motion is None else getattr(motion, 'global_obstacle_source', 'static'),
-        global_rgbd_representation='occupied' if motion is None else getattr(motion, 'global_rgbd_representation', 'occupied'))
+    # Partial programmatic settings use the same defaults and validation as scene files.
+    selected = MotionConfig() if motion is None else MotionConfig(
+        strategy=motion.strategy,
+        max_obstacles=getattr(motion, 'max_obstacles', 64),
+        rrt_seed=getattr(motion, 'rrt_seed', 123456),
+        rrt_max_iterations=getattr(motion, 'rrt_max_iterations', 10000),
+        global_collision_model=getattr(motion, 'global_collision_model', 'stock'),
+        global_obstacle_source=getattr(motion, 'global_obstacle_source', 'static'),
+        global_rgbd_representation=getattr(motion, 'global_rgbd_representation', 'occupied'))
     if (selected.strategy == 'global' and selected.global_obstacle_source == 'frozen_rgbd'
             and not callable(mapping_source_provider)):
         raise ValueError('Frozen RGB-D global motion requires enabled Spatial Mapping access')
 
-    def strategy_factory(backend):
+    def strategy_factory(backend: IsaacFrankaBackend) -> MotionStrategy:
         if selected.strategy == 'global':
             from .motion.global_rrt import GlobalRrtStrategy
             model = ({} if selected.global_collision_model == 'stock' else
@@ -49,8 +59,7 @@ def create_backend(world, robot, config, *, motion: MotionConfig | None = None,
             return GlobalRrtStrategy(backend, seed=selected.rrt_seed,
                 max_iterations=selected.rrt_max_iterations, **model)
         from .motion.direct import DirectRmpflowStrategy
-        return DirectRmpflowStrategy(backend,
-            mapping_source_provider=mapping_source_provider)
+        return DirectRmpflowStrategy(backend)
 
     backend = IsaacFrankaBackend(
         world=world, robot=robot, position_tolerance=.01,

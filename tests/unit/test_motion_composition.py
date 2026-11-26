@@ -14,8 +14,7 @@ DIRECT_MODULE = 'robot_skill_stack.integrations.isaac.manipulation.motion.direct
 
 def direct_double():
     module = ModuleType(DIRECT_MODULE)
-    module.DirectRmpflowStrategy = Mock(side_effect=lambda backend, **kwargs:
-        NS(backend=backend, **kwargs))
+    module.DirectRmpflowStrategy = Mock(side_effect=lambda backend: NS(backend=backend))
     return module
 
 
@@ -86,8 +85,7 @@ class MotionCompositionTests(unittest.TestCase):
                 direct_backend, _ = bootstrap.create_backend('world', 'robot', config.robot,
                     motion=MotionConfig(strategy='direct', global_collision_model='enhanced'))
                 env.backend_calls[-1]['strategy_factory'](direct_backend)
-                direct.DirectRmpflowStrategy.assert_called_once_with(direct_backend,
-                    mapping_source_provider=None)
+                direct.DirectRmpflowStrategy.assert_called_once_with(direct_backend)
 
     def test_global_factory_preserves_seed_and_iteration_bound_without_mapping_access(self):
         with bootstrap_fixture() as (bootstrap, env):
@@ -180,8 +178,7 @@ class MotionCompositionTests(unittest.TestCase):
             config = bootstrap.load_scene_config('profile.toml')
             direct = direct_double()
             owner = object()
-            source = object()
-            resolver = lambda: source
+            resolver = Mock(side_effect=AssertionError('Direct queried mapping'))
             with patch.dict('sys.modules', {DIRECT_MODULE: direct}):
                 for motion in (None, MotionConfig(strategy='direct')):
                     bootstrap.create_backend('world', 'robot', config.robot, motion=motion,
@@ -191,8 +188,9 @@ class MotionCompositionTests(unittest.TestCase):
                     self.assertEqual(options, dict(world='world', robot='robot',
                         position_tolerance=.01, orientation_tolerance=.05, max_motion_steps=1000))
                     self.assertIs(selected.backend, owner)
-                    self.assertIs(selected.mapping_source_provider, resolver)
+                    direct.DirectRmpflowStrategy.assert_called_with(owner)
             self.assertEqual(direct.DirectRmpflowStrategy.call_count, 2)
+            resolver.assert_not_called()
 
     def test_factory_rejects_invalid_programmatic_strategy_before_sdk_construction(self):
         with bootstrap_fixture() as (bootstrap, env):
@@ -206,27 +204,29 @@ class MotionCompositionTests(unittest.TestCase):
         async def run():
             with bootstrap_fixture() as (bootstrap, env):
                 bundle = await bootstrap.build_runtime('profile.toml')
-                direct = direct_double()
-                with patch.dict('sys.modules', {DIRECT_MODULE: direct}):
-                    strategy = env.backend_calls[-1]['strategy_factory'](bundle.backend)
-                self.assertIsNone(strategy.mapping_source_provider)
                 self.assertIsNone(bundle.spatial_mapping)
                 bundle.close()
         asyncio.run(run())
 
-    def test_enabled_mapping_resolves_later_service_without_reordering_startup(self):
+    def test_frozen_global_mapping_resolves_later_service_without_reordering_startup(self):
         async def run():
             with bootstrap_fixture() as (bootstrap, env):
                 config = bootstrap.load_scene_config('profile.toml')
-                config = replace(config, spatial_mapping=replace(config.spatial_mapping,
-                    enabled=True, source='ground_truth'))
+                config = replace(config,
+                    spatial_mapping=replace(config.spatial_mapping, enabled=True, source='rgbd',
+                        automatic_robot_filter=True, camera_prim_paths=('/World/PerceptionCamera',)),
+                    motion=MotionConfig(strategy='global', global_collision_model='enhanced',
+                        global_obstacle_source='frozen_rgbd'))
                 view = object()
                 service = NS(snapshot=Mock(return_value=view),
                     health={'fresh': True, 'timestamp': 12., 'generation': 7})
                 coordinator = NS(spatial_mapping=service, _semantic_worker=None,
                                  start=Mock(), close=Mock())
                 captured = []
-                direct = direct_double()
+                module_name = DIRECT_MODULE.replace('.direct', '.global_rrt')
+                global_motion = ModuleType(module_name)
+                global_motion.GlobalRrtStrategy = Mock(side_effect=lambda backend, **kwargs:
+                    NS(backend=backend, **kwargs))
 
                 async def construct_observations(*args):
                     # Backend/Home reference already exists; mapping is not bound yet.
@@ -236,7 +236,7 @@ class MotionCompositionTests(unittest.TestCase):
                     return coordinator
 
                 with patch.object(bootstrap, 'load_scene_config', return_value=config), \
-                     patch.dict('sys.modules', {DIRECT_MODULE: direct}), \
+                     patch.dict('sys.modules', {module_name: global_motion}), \
                      patch('robot_skill_stack.integrations.isaac.observation_runtime.create_observation_runtime',
                            side_effect=construct_observations):
                     bundle = await bootstrap.build_runtime('profile.toml')

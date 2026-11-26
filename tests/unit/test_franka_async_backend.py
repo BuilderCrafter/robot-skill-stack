@@ -281,6 +281,10 @@ class FrankaCommandTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_gripper_commands_yield_existing_durations_and_keep_verification(self):
         backend, state, _ = self.adapter()
+        self.assertFalse((await backend.close_gripper_async(width=.03)).ok)
+        self.assertIsNone(backend._gripper_command)
+        self.assertEqual(state.updates, 0)
+        backend.robot.gripper.forward.assert_not_called()
         self.assertTrue((await backend.open_gripper_async()).ok)
         self.assertEqual(state.updates, 60)
         self.assertTrue((await backend.close_gripper_async()).ok)

@@ -44,10 +44,6 @@ async def evaluate(args, metrics, checks):
         checks['explicit_direct_selected'] = (bundle.config.motion.strategy == 'direct'
                                                and isinstance(strategy, DirectRmpflowStrategy))
         assert checks['explicit_direct_selected']
-        provider = strategy.mapping_source_provider
-        checks['mapping_provider_resolves_current_service'] = (callable(provider)
-                                                               and provider() is bundle.spatial_mapping)
-        assert checks['mapping_provider_resolves_current_service']
         metrics['motion_strategy']['startup_home'] = fixture.serial(backend.named_poses['home'])
         original_apply = backend.robot.apply_action
         original_move = strategy.move_to_pose_async

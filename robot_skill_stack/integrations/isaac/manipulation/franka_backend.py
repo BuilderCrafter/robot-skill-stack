@@ -1,11 +1,10 @@
+"""Franka controller ownership, measured gripper feedback and async commands."""
 from __future__ import annotations
 
+from collections.abc import Callable
+from typing import TYPE_CHECKING
+
 import numpy as np
-
-from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
-from robot_skill_stack.common.types import Pose, GripperState
-from robot_skill_stack.manipulation.motion import MotionStrategy
-
 from isaacsim.core.utils.numpy.rotations import rot_matrices_to_quats
 from isaacsim.robot_motion.motion_generation import (
     ArticulationKinematicsSolver,
@@ -15,24 +14,33 @@ from isaacsim.robot_motion.motion_generation import (
 )
 from isaacsim.robot_motion.motion_generation.lula.motion_policies import RmpFlow
 
+from robot_skill_stack.common.types import GripperState, Pose
+from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
+from robot_skill_stack.manipulation.motion import MotionStrategy
 from robot_skill_stack.integrations.isaac.manipulation.franka_feedback import FrankaFrameVelocityPolicy
 from robot_skill_stack.integrations.isaac.manipulation.motion.direct import DirectRmpflowStrategy
 
+if TYPE_CHECKING:
+    from isaacsim.core.api import World
+    from isaacsim.robot.manipulators.examples.franka import Franka
+
 
 class IsaacFrankaBackend(ManipulationBackend):
+    """Own the SDK controllers; delegate arm commands to one selected strategy."""
+
     def __init__(
         self,
-        world,
-        robot,
+        world: World,
+        robot: Franka,
         *,
-        end_effector_frame="right_gripper",
-        position_tolerance=0.025,
-        orientation_tolerance=0.10,
-        max_motion_steps=1000,
-        grasp_min_width=0.005,
-        grasp_max_width=0.075,
-        strategy_factory=None,
-    ):
+        end_effector_frame: str = "right_gripper",
+        position_tolerance: float = 0.025,
+        orientation_tolerance: float = 0.10,
+        max_motion_steps: int = 1000,
+        grasp_min_width: float = 0.005,
+        grasp_max_width: float = 0.075,
+        strategy_factory: Callable[[IsaacFrankaBackend], MotionStrategy] | None = None,
+    ) -> None:
         self.world = world
         self.robot = robot
         self.end_effector_frame = end_effector_frame
@@ -41,7 +49,7 @@ class IsaacFrankaBackend(ManipulationBackend):
         self.max_motion_steps = max_motion_steps
         self.grasp_min_width = float(grasp_min_width)
         self.grasp_max_width = float(grasp_max_width)
-        self._gripper_command = None
+        self._gripper_command: str | None = None
         # SDK nominal opening/action targets can exceed the loaded USD travel.
         finger_indices = [robot.get_dof_index(f'panda_finger_joint{i}') for i in (1, 2)]
         properties = robot.dof_properties
@@ -56,10 +64,8 @@ class IsaacFrankaBackend(ManipulationBackend):
         )
         self._reset_motion_controller()
 
-        cfg = interface_config_loader.load_supported_lula_kinematics_solver_config(
-            "Franka"
-        )
-        self.lula_solver = LulaKinematicsSolver(**cfg)
+        kinematics_config = interface_config_loader.load_supported_lula_kinematics_solver_config("Franka")
+        self.lula_solver = LulaKinematicsSolver(**kinematics_config)
         self.kinematics_solver = ArticulationKinematicsSolver(
             robot,
             self.lula_solver,
@@ -90,51 +96,46 @@ class IsaacFrankaBackend(ManipulationBackend):
     def supports_contact_motion(self) -> bool:
         return getattr(self._motion_strategy, 'supports_contact_motion', True)
 
-    def close(self):
+    def close(self) -> None:
         close = getattr(self._motion_strategy, 'close', None)
         if close is not None:
             close()
 
     @property
     def is_ready(self) -> bool:
-        return bool(getattr(self.robot, "handles_initialized", False))
+        return bool(self.robot.handles_initialized)
 
-    def _update_base(self):
-        pos, ori = self.robot.get_world_pose()
-        self.lula_solver.set_robot_base_pose(pos, ori)
+    def _update_base(self) -> None:
+        position, orientation = self.robot.get_world_pose()
+        self.lula_solver.set_robot_base_pose(position, orientation)
 
-    def _reset_motion_controller(self):
+    def _reset_motion_controller(self) -> None:
         self.motion_controller.reset()
         # The SDK example controller also restores base pose after RMPflow reset.
-        pos, ori = self.robot.get_world_pose()
+        position, orientation = self.robot.get_world_pose()
         self.motion_controller.get_motion_policy().set_robot_base_pose(
-            robot_position=pos, robot_orientation=ori,
+            robot_position=position, robot_orientation=orientation,
         )
 
     @staticmethod
-    def _quat_error(q1, q2):
+    def _quat_error(q1: np.ndarray, q2: np.ndarray) -> float:
+        """Shortest orientation angle in radians; quaternion signs are equivalent."""
         q1 = np.asarray(q1) / np.linalg.norm(q1)
         q2 = np.asarray(q2) / np.linalg.norm(q2)
         return float(2 * np.arccos(np.clip(abs(np.dot(q1, q2)), -1, 1)))
 
-    def _gripper_feedback(self):
-        joints = np.asarray(
-            self.robot.gripper.get_joint_positions(),
-            dtype=float,
-        ).reshape(-1)
+    def _measure_gripper(self) -> tuple[np.ndarray, float | None]:
+        """Read finger positions and estimate nonnegative total jaw width."""
+        joints = np.asarray(self.robot.gripper.get_joint_positions(), dtype=float).reshape(-1)
         finite = bool(joints.size >= 2 and np.isfinite(joints).all())
-        width = (
-            float(np.sum(np.clip(joints, 0.0, None)))
-            if finite
-            else None
-        )
+        width = float(np.sum(np.clip(joints, 0.0, None))) if finite else None
         return joints, width
 
     def get_end_effector_pose(self) -> Pose:
         self._update_base()
-        pos, rot = self.kinematics_solver.compute_end_effector_pose()
-        quat = rot_matrices_to_quats(np.asarray(rot, dtype=float))
-        return Pose(np.asarray(pos, dtype=float), np.asarray(quat), "world")
+        position, rotation = self.kinematics_solver.compute_end_effector_pose()
+        orientation = rot_matrices_to_quats(np.asarray(rotation, dtype=float))
+        return Pose(np.asarray(position, dtype=float), np.asarray(orientation), "world")
 
     def check_reachability(self, target: Pose) -> bool:
         self._update_base()
@@ -144,10 +145,10 @@ class IsaacFrankaBackend(ManipulationBackend):
         )
         return bool(success)
 
-
     def gripper_feedback(self) -> GripperFeedback:
+        """Classify measured travel using physical limits and the last command."""
         try:
-            joints, width = self._gripper_feedback()
+            joints, width = self._measure_gripper()
         except Exception as exc:
             return GripperFeedback(GripperState.UNCERTAIN, details={'feedback_error': str(exc)})
         details = {
@@ -162,20 +163,20 @@ class IsaacFrankaBackend(ManipulationBackend):
         lower, opened = self._finger_limits[:, 0], self._finger_limits[:, 1]
         tolerance = self.grasp_min_width / 2
         valid = (joints.shape == (2,) and width is not None and
-                 np.all(joints >= lower-tolerance) and np.all(joints <= opened+tolerance))
+                 np.all(joints >= lower - tolerance) and np.all(joints <= opened + tolerance))
         state = GripperState.UNCERTAIN
         if valid:
             if width < self.grasp_min_width:
                 state = GripperState.FREE
             elif self._gripper_command == 'close' and width <= self.grasp_max_width:
                 state = GripperState.HELD
-            elif np.all(np.abs(joints-opened) <= tolerance):
+            elif np.all(np.abs(joints - opened) <= tolerance):
                 state = GripperState.FREE
         details['grasp_state'] = state.value
         return GripperFeedback(state, width, details)
 
-    async def inspect_gripper_async(self):
-        # Three stable samples, at most 12 intervals (0.2 s at the normal 60 Hz).
+    async def inspect_gripper_async(self) -> GripperFeedback:
+        """Require three stable samples within 12 updates (normally 0.2 s)."""
         previous = None
         previous_time = None
         stable = 0
@@ -184,8 +185,8 @@ class IsaacFrankaBackend(ManipulationBackend):
             now = float(self.world.current_time)
             same = (previous is not None and now > previous_time and feedback.state == previous.state and
                     feedback.width is not None and previous.width is not None and
-                    abs(feedback.width-previous.width) <= .001)
-            stable = stable+1 if same else 1
+                    abs(feedback.width - previous.width) <= .001)
+            stable = stable + 1 if same else 1
             if feedback.state != GripperState.UNCERTAIN and stable >= 3:
                 return feedback
             previous = feedback
@@ -194,16 +195,16 @@ class IsaacFrankaBackend(ManipulationBackend):
                 await self._next_update()
         return GripperFeedback(GripperState.UNCERTAIN, feedback.width, feedback.details)
 
-    async def _next_update(self):
+    async def _next_update(self) -> None:
         import omni.kit.app
         await omni.kit.app.get_app().next_update_async()
 
     async def move_to_pose_async(
         self,
         target: Pose,
-        position_tolerance=None,
-        orientation_tolerance=None,
-        grasp_check=None,
+        position_tolerance: float | None = None,
+        orientation_tolerance: float | None = None,
+        grasp_check: Callable[[], BackendResult | None] | None = None,
     ) -> BackendResult:
         # One arm-command owner on the cooperative Kit loop, including direct
         # backend callers that do not enter RobotRuntime's skill busy guard.
@@ -221,6 +222,7 @@ class IsaacFrankaBackend(ManipulationBackend):
             self._motion_active = False
 
     async def open_gripper_async(self) -> BackendResult:
+        """Apply 60 opening updates, then verify travel from measured fingers."""
         self._gripper_command = 'open'
         action = self.robot.gripper.forward(action="open")
         for _ in range(60):
@@ -236,11 +238,12 @@ class IsaacFrankaBackend(ManipulationBackend):
             details=feedback.details,
         )
 
-    async def close_gripper_async(self, width=None) -> BackendResult:
+    async def close_gripper_async(self, width: float | None = None) -> BackendResult:
+        """Apply 90 closing updates; command completion alone does not prove a grasp."""
         if width is not None:
             return BackendResult(
                 False,
-                "Explicit gripper width is not implemented in V1.",
+                "Explicit gripper width commands are unsupported.",
             )
 
         self._gripper_command = 'close'
@@ -249,7 +252,7 @@ class IsaacFrankaBackend(ManipulationBackend):
             self.robot.apply_action(action)
             await self._next_update()
 
-        joints, measured_width = self._gripper_feedback()
+        joints, measured_width = self._measure_gripper()
         return BackendResult(
             True,
             "Gripper close command completed.",
@@ -259,7 +262,9 @@ class IsaacFrankaBackend(ManipulationBackend):
             },
         )
 
-    async def home_async(self, name="home", *, grasp_check=None) -> BackendResult:
+    async def home_async(self, name: str = "home", *,
+                         grasp_check: Callable[[], BackendResult | None] | None = None) -> BackendResult:
+        """Move to a named TCP pose; Home is the measured startup reference."""
         if name not in self.named_poses:
             return BackendResult(
                 False,

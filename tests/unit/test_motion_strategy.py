@@ -317,20 +317,6 @@ class StrategyDelegationTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(result.timed_out)
         self.assertEqual(result.message, 'normal failure')
 
-    async def test_direct_stores_optional_mapping_provider_without_consulting_it(self):
-        backend, _, target = self.adapter()
-        module = fixtures.load_backend_module()
-        provider = Mock(side_effect=AssertionError('Direct queried occupancy'))
-        for mapping in (None, provider):
-            with self.subTest(mapping=mapping):
-                strategy = module.DirectRmpflowStrategy(backend, mapping_source_provider=mapping)
-                self.assertIs(strategy.mapping_source_provider, mapping)
-                backend._motion_strategy = strategy
-                self.assertTrue((await backend.move_to_pose_async(target)).ok)
-                with self.assertRaises(AttributeError):
-                    strategy.mapping_source_provider = lambda: None
-        provider.assert_not_called()
-
     async def test_selected_strategy_is_readonly(self):
         backend, _, _ = self.adapter()
         self.assertIs(backend.motion_strategy, backend._motion_strategy)
