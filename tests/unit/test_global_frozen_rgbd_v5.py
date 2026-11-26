@@ -21,9 +21,6 @@ from tests.unit.test_global_motion_strategy import Backend, Planner, SolverScope
 from tests.unit.test_global_static_world import Collision, Cube, Mesh, Prim, Rigid
 
 
-MODULE = 'robot_skill_stack.integrations.isaac.manipulation.motion.frozen_rgbd'
-
-
 def support(timestamp=10.):
     obstacle, domain = obstacle_from_primitive(SUPPORT_PLANE_PATHS[0], 'Plane', np.eye(4))
     return StaticWorldSnapshot((obstacle,), timestamp, 1., '/Franka', plane_domains=(domain,))
@@ -50,7 +47,6 @@ class NumericSourceTests(unittest.TestCase):
         self.assertEqual(world.source_metadata['known_support_paths'], SUPPORT_PLANE_PATHS)
         with self.assertRaises(TypeError):world.source_metadata['revision'] = 8
         with self.assertRaises(FrozenInstanceError):world.timestamp = 11.
-        self.assertEqual(world.as_dict()['source_metadata']['revision'],camera.revision)
 
     def test_broad_gt_snapshot_cannot_be_substituted_for_known_support(self):
         known = support()
@@ -83,7 +79,7 @@ class NumericSourceTests(unittest.TestCase):
         geom = NS(GetStageMetersPerUnit=lambda stage:1.,XformCache=lambda stamp:NS(GetLocalToWorldTransform=lambda prim:prim.transform.T))
         physics = NS(CollisionAPI=Collision,RigidBodyAPI=Rigid)
         backend = NS(robot=NS(prim_path='/Franka',get_world_pose=lambda:(np.zeros(3),[1.,0.,0.,0.])))
-        with patch(MODULE+'._usd_modules',return_value=(usd,geom,physics)):
+        with patch.dict('sys.modules', {'pxr': NS(Usd=usd, UsdGeom=geom, UsdPhysics=physics)}):
             captured = capture_known_support(backend,stage=stage,timestamp=10.)
         self.assertEqual(requested,list(SUPPORT_PLANE_PATHS))
         self.assertEqual([x.source_kind for x in captured.obstacles],['Plane'])
@@ -96,13 +92,13 @@ class NumericSourceTests(unittest.TestCase):
         geom = NS(GetStageMetersPerUnit=lambda stage:1.,XformCache=lambda stamp:None)
         physics = NS(CollisionAPI=Collision,RigidBodyAPI=Rigid)
         backend = NS(robot=NS(prim_path='/Franka',get_world_pose=lambda:(np.zeros(3),[1.,0.,0.,0.])))
-        with patch(MODULE+'._usd_modules',return_value=(usd,geom,physics)):
+        with patch.dict('sys.modules', {'pxr': NS(Usd=usd, UsdGeom=geom, UsdPhysics=physics)}):
             with self.assertRaisesRegex(StaticWorldError,'actual Plane'):
                 capture_known_support(backend,stage=stage,timestamp=10.)
 
-    def test_existing_static_serialization_stays_camera_free(self):
+    def test_known_support_has_no_camera_metadata(self):
         world = support()
-        self.assertNotIn('source_metadata',world.as_dict())
+        self.assertIsNone(world.source_metadata)
 
 
 class SourceAdapterTests(unittest.TestCase):
@@ -123,10 +119,13 @@ class SourceAdapterTests(unittest.TestCase):
         for actual, box in zip(world.obstacles[1:],camera.obstacles.boxes):
             self.assertEqual(actual.position,box.center)
             self.assertEqual(actual.dimensions,box.dimensions)
-        original = world.as_dict()
+        original_obstacles = world.obstacles
+        original_metadata = dict(world.source_metadata)
         source.reset()
         source.close()
-        self.assertEqual(world.as_dict(),original)
+        self.assertEqual(world.obstacles, original_obstacles)
+        self.assertEqual(world.source_metadata, original_metadata)
+        self.assertEqual(world.timestamp, 100.1)
         self.assertEqual(camera.timestamp,100.1)
 
     def test_rejected_source_retains_distinct_reason_and_never_reads_known_support(self):

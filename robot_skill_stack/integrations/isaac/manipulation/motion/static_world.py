@@ -7,21 +7,27 @@ geometry fails the complete request instead of disappearing from the world.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass, fields, is_dataclass
+from dataclasses import dataclass
 import math
 import time
 from types import MappingProxyType
+from typing import TYPE_CHECKING
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from robot_skill_stack.common.rotations import quat_matrix
+
+if TYPE_CHECKING:
+    from pxr import Usd
 
 
 class StaticWorldError(ValueError):
     """The physical scene cannot be represented by the static planner."""
 
 
-def _freeze_metadata(value):
+def _freeze_metadata(value: object) -> object:
+    """Detach nested source evidence from mutable publication containers."""
     if isinstance(value, Mapping):
         return MappingProxyType({key: _freeze_metadata(item) for key, item in value.items()})
     if isinstance(value, np.ndarray):
@@ -31,30 +37,15 @@ def _freeze_metadata(value):
     return value
 
 
-def _plain(value):
-    if is_dataclass(value):
-        return {item.name:_plain(getattr(value, item.name)) for item in fields(value)}
-    if isinstance(value, Mapping):
-        return {key:_plain(item) for key, item in value.items()}
-    if isinstance(value, (tuple, list)):
-        return type(value)(_plain(item) for item in value)
-    return value
-
-
-def _usd_modules():
-    from pxr import Usd, UsdGeom, UsdPhysics
-    return Usd, UsdGeom, UsdPhysics
-
-
-def _tuple(value, count, name):
+def _tuple(value: ArrayLike, count: int, name: str) -> tuple[float, ...]:
     array = np.asarray(value, dtype=float)
     if array.shape != (count,) or not np.isfinite(array).all():
         raise StaticWorldError(f'{name} must contain {count} finite numbers')
     return tuple(map(float, array))
 
 
-def _quaternion(rotation):
-    """Scalar-first quaternion from a proper orthonormal matrix."""
+def _quaternion(rotation: np.ndarray) -> tuple[float, float, float, float]:
+    """Return scalar-first WXYZ; flip reflected local X to obtain a proper rotation."""
     r = np.asarray(rotation, dtype=float)
     if np.linalg.det(r) < 0:
         r = r.copy()
@@ -77,7 +68,8 @@ def _quaternion(rotation):
     return tuple(map(float, q if q[0] >= 0 else -q))
 
 
-def _affine(transform):
+def _affine(transform: ArrayLike) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Copy a column-vector affine map; separate orthogonal axes and positive scales."""
     matrix = np.array(transform, dtype=float, copy=True)
     if (matrix.shape != (4, 4) or not np.isfinite(matrix).all() or
             not np.allclose(matrix[3], [0, 0, 0, 1], rtol=0, atol=1e-10)):
@@ -85,44 +77,47 @@ def _affine(transform):
     scales = np.linalg.norm(matrix[:3, :3], axis=0)
     if np.any(scales <= 0):
         raise StaticWorldError('Degenerate physical geometry scale')
-    rotation = matrix[:3, :3]/scales
-    if not np.allclose(rotation.T@rotation, np.eye(3), rtol=0, atol=1e-7):
+    rotation = matrix[:3, :3] / scales
+    if not np.allclose(rotation.T @ rotation, np.eye(3), rtol=0, atol=1e-7):
         raise StaticWorldError('Sheared physical geometry is unsupported')
     return matrix, rotation, scales
 
 
 @dataclass(frozen=True)
 class StaticObstacle:
+    """Owned world-meter primitive with a scalar-first WXYZ orientation."""
+
     path: str
     kind: str
-    position: tuple
-    orientation: tuple = (1., 0., 0., 0.)
-    dimensions: tuple = (0., 0., 0.)
+    position: tuple[float, float, float]
+    orientation: tuple[float, float, float, float] = (1., 0., 0., 0.)
+    dimensions: tuple[float, float, float] = (0., 0., 0.)
     radius: float = 0.
     height: float = 0.
     source_kind: str = ''
     approximation: str = 'exact'
     maximum_surface_error_m: float = 0.
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if not isinstance(self.path, str) or not self.path.startswith('/'):
             raise StaticWorldError('Physical obstacle path must be absolute')
         if self.kind not in ('cuboid', 'sphere', 'capsule'):
             raise StaticWorldError(f'Unsupported numeric obstacle kind: {self.kind}')
         object.__setattr__(self, 'position', _tuple(self.position, 3, 'position'))
         q = np.asarray(_tuple(self.orientation, 4, 'orientation'))
-        if np.linalg.norm(q) <= 0:
+        norm = np.linalg.norm(q)
+        if norm <= 0:
             raise StaticWorldError('Physical obstacle orientation cannot be zero')
-        object.__setattr__(self, 'orientation', tuple(map(float, q/np.linalg.norm(q))))
+        object.__setattr__(self, 'orientation', tuple(map(float, q / norm)))
         object.__setattr__(self, 'dimensions', _tuple(self.dimensions, 3, 'dimensions'))
         if (not math.isfinite(self.radius) or self.radius < 0 or
                 not math.isfinite(self.height) or self.height < 0):
             raise StaticWorldError('Physical primitive radius/height must be finite and nonnegative')
         if self.kind == 'cuboid' and min(self.dimensions) <= 0:
             raise StaticWorldError('Physical cuboid dimensions must be positive')
-        if self.kind in ('sphere', 'capsule') and (not math.isfinite(self.radius) or self.radius <= 0):
+        if self.kind in ('sphere', 'capsule') and self.radius <= 0:
             raise StaticWorldError('Physical sphere/capsule radius must be positive')
-        if self.kind == 'capsule' and (not math.isfinite(self.height) or self.height <= 0):
+        if self.kind == 'capsule' and self.height <= 0:
             raise StaticWorldError('Physical capsule spine height must be positive')
         if not math.isfinite(self.maximum_surface_error_m) or self.maximum_surface_error_m < 0:
             raise StaticWorldError('Approximation error must be finite and nonnegative')
@@ -136,45 +131,46 @@ class PlaneDomain:
     lateral domain or below the represented depth are rejected, not certified.
     """
     path: str
-    position: tuple
-    orientation: tuple
+    position: tuple[float, float, float]
+    orientation: tuple[float, float, float, float]
     half_width_m: float = 25.
     depth_m: float = 50.
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         object.__setattr__(self, 'position', _tuple(self.position, 3, 'plane position'))
         q = np.asarray(_tuple(self.orientation, 4, 'plane orientation'))
-        if np.linalg.norm(q) <= 0:
+        norm = np.linalg.norm(q)
+        if norm <= 0:
             raise StaticWorldError('Plane domain requires a nonzero orientation')
-        object.__setattr__(self, 'orientation', tuple(map(float, q/np.linalg.norm(q))))
+        object.__setattr__(self, 'orientation', tuple(map(float, q / norm)))
         if (not math.isfinite(self.half_width_m) or self.half_width_m <= 0 or
                 not math.isfinite(self.depth_m) or self.depth_m <= 0):
             raise StaticWorldError('Certified plane domain must have positive finite dimensions')
 
-    def assert_contains(self, centers, radii):
+    def assert_contains(self, centers: ArrayLike, radii: ArrayLike) -> None:
         points = np.asarray(centers, dtype=float)
         radius = np.asarray(radii, dtype=float).reshape(-1)
         if (points.ndim != 2 or points.shape[1:] != (3,) or radius.shape != (len(points),)
                 or not np.isfinite(points).all() or not np.isfinite(radius).all() or np.any(radius < 0)):
             raise StaticWorldError('Finite world collision-sphere positions/radii are required')
-        local = (points-np.asarray(self.position))@quat_matrix(self.orientation)
-        if (np.any(np.abs(local[:, :2])+radius[:, None] > self.half_width_m) or
-                np.any(local[:, 2]-radius < -self.depth_m)):
+        local = (points - np.asarray(self.position)) @ quat_matrix(self.orientation)
+        if (np.any(np.abs(local[:, :2]) + radius[:, None] > self.half_width_m) or
+                np.any(local[:, 2] - radius < -self.depth_m)):
             raise StaticWorldError(f'Robot collision model leaves the certified plane domain: {self.path}')
 
 
 @dataclass(frozen=True)
 class StaticWorldSnapshot:
-    obstacles: tuple
+    """Frozen collision geometry and source evidence at the original capture time."""
+
+    obstacles: tuple[StaticObstacle, ...]
     timestamp: float
     meters_per_unit: float
     robot_prim_path: str
-    excluded_colliders: int = 0
-    disabled_colliders: int = 0
-    plane_domains: tuple = ()
-    source_metadata: object = None
+    plane_domains: tuple[PlaneDomain, ...] = ()
+    source_metadata: Mapping[str, object] | None = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         object.__setattr__(self, 'obstacles', tuple(self.obstacles))
         object.__setattr__(self, 'plane_domains', tuple(self.plane_domains))
         object.__setattr__(self, 'source_metadata', _freeze_metadata(self.source_metadata))
@@ -186,19 +182,16 @@ class StaticWorldSnapshot:
         if len({item.path for item in self.obstacles}) != len(self.obstacles):
             raise StaticWorldError('Duplicate static obstacle paths')
 
-    def assert_within_domains(self, world_sphere_centers, sphere_radii):
+    def assert_within_domains(self, world_sphere_centers: ArrayLike, sphere_radii: ArrayLike) -> None:
         for domain in self.plane_domains:
             domain.assert_contains(world_sphere_centers, sphere_radii)
 
-    def as_dict(self):
-        values = _plain(self)
-        if self.source_metadata is None:
-            values.pop('source_metadata')
-        return values
 
-
-def obstacle_from_primitive(path, primitive_type, transform, *, size=None, radius=None,
-                            height=None, axis='Z', plane_center=None):
+def obstacle_from_primitive(
+    path: str, primitive_type: str, transform: ArrayLike, *,
+    size: float | None = None, radius: float | None = None, height: float | None = None,
+    axis: str = 'Z', plane_center: ArrayLike | None = None,
+) -> tuple[StaticObstacle, PlaneDomain | None]:
     """Convert an authored primitive transform already expressed in meters.
 
     Return ``(descriptor, optional_plane_domain)``.  Cube scaling can be
@@ -244,7 +237,7 @@ def obstacle_from_primitive(path, primitive_type, transform, *, size=None, radiu
     raise StaticWorldError(f'Unsupported physical primitive {primitive_type}: {path}')
 
 
-def box_from_convex_hull_points(path, points, transform):
+def box_from_convex_hull_points(path: str, points: ArrayLike, transform: ArrayLike) -> StaticObstacle:
     """Exact box recognition for a convex-hull mesh, never an AABB fallback."""
     vertices = np.asarray(points, dtype=float)
     if vertices.ndim != 2 or vertices.shape[1:] != (3,) or not len(vertices) or not np.isfinite(vertices).all():
@@ -264,14 +257,15 @@ def box_from_convex_hull_points(path, points, transform):
         dimensions=tuple((high-low)*scales), source_kind='Mesh:convexHull_exact_box')
 
 
-def capture_static_world(stage=None, robot_prim_path='/Franka', *, timestamp=None):
+def capture_static_world(stage: Usd.Stage | None = None, robot_prim_path: str = '/Franka', *,
+                         timestamp: float | None = None) -> StaticWorldSnapshot:
     """Read all enabled external colliders once on the USD owner thread.
 
     Dynamic nonkinematic actors are unsupported even when momentarily at rest.
     Kinematic/static actors are frozen under the caller's stationarity contract.
     Visibility/purpose never removes an enabled physical collider.
     """
-    Usd, UsdGeom, UsdPhysics = _usd_modules()
+    from pxr import Usd, UsdGeom, UsdPhysics
     if stage is None:
         import omni.usd
         stage = omni.usd.get_context().get_stage()
@@ -281,21 +275,19 @@ def capture_static_world(stage=None, robot_prim_path='/Franka', *, timestamp=Non
             robot_prim_path == '/'):
         raise StaticWorldError('Robot exclusion must be an absolute subtree below the stage root')
     robot_prim_path = robot_prim_path.rstrip('/')
-    units = float(UsdGeom.GetStageMetersPerUnit(stage))
-    if not math.isfinite(units) or units <= 0:
+    meters_per_unit = float(UsdGeom.GetStageMetersPerUnit(stage))
+    if not math.isfinite(meters_per_unit) or meters_per_unit <= 0:
         raise StaticWorldError('USD metersPerUnit must be finite and positive')
-    cache = UsdGeom.XformCache(Usd.TimeCode.Default())
+    xforms = UsdGeom.XformCache(Usd.TimeCode.Default())
     robot = stage.GetPrimAtPath(robot_prim_path)
     if not robot or not robot.IsValid():
         raise StaticWorldError(f'Robot subtree is missing: {robot_prim_path}')
-    robot_position = np.asarray(cache.GetLocalToWorldTransform(robot), dtype=float).T[:3, 3]*units
+    robot_position = np.asarray(xforms.GetLocalToWorldTransform(robot), dtype=float).T[:3, 3] * meters_per_unit
     obstacles, domains = [], []
-    excluded = disabled = 0
     for prim in stage.Traverse(Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)):
         path = str(prim.GetPath())
         collision = prim.HasAPI(UsdPhysics.CollisionAPI)
-        if path == robot_prim_path or path.startswith(robot_prim_path+'/'):
-            excluded += int(collision)
+        if path == robot_prim_path or path.startswith(robot_prim_path + '/'):
             continue
         if not prim.IsActive() or not prim.IsDefined() or prim.IsAbstract():
             continue
@@ -307,7 +299,6 @@ def capture_static_world(stage=None, robot_prim_path='/Franka', *, timestamp=Non
         if not collision:
             continue
         if UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Get() is False:
-            disabled += 1
             continue
         ancestor = prim
         while ancestor and not ancestor.IsPseudoRoot():
@@ -326,8 +317,9 @@ def capture_static_world(stage=None, robot_prim_path='/Franka', *, timestamp=Non
                     'physics:collisionEnabled', 'physics:approximation') and
                     attribute.ValueMightBeTimeVarying()):
                 raise StaticWorldError(f'Animated external collision geometry is not static: {path}')
-        transform = np.asarray(cache.GetLocalToWorldTransform(prim), dtype=float).T.copy()
-        transform[:3] *= units
+        # USD row vectors become a column-vector affine map, with scale in meters.
+        transform = np.asarray(xforms.GetLocalToWorldTransform(prim), dtype=float).T.copy()
+        transform[:3] *= meters_per_unit
         kind = str(prim.GetTypeName())
         if prim.IsA(UsdGeom.Mesh):
             approximation = UsdPhysics.MeshCollisionAPI(prim).GetApproximationAttr().Get()
@@ -354,5 +346,5 @@ def capture_static_world(stage=None, robot_prim_path='/Franka', *, timestamp=Non
         if domain is not None:
             domains.append(domain)
     return StaticWorldSnapshot(tuple(sorted(obstacles, key=lambda item: item.path)),
-        time.monotonic() if timestamp is None else float(timestamp), units, robot_prim_path,
-        excluded, disabled, tuple(domains))
+        time.monotonic() if timestamp is None else float(timestamp), meters_per_unit, robot_prim_path,
+        plane_domains=tuple(domains))

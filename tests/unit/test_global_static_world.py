@@ -12,9 +12,6 @@ from robot_skill_stack.integrations.isaac.manipulation.motion.static_world impor
 )
 
 
-MODULE = 'robot_skill_stack.integrations.isaac.manipulation.motion.static_world'
-
-
 class PrimitiveTests(unittest.TestCase):
     def test_rotated_scaled_box_retains_pose_dimensions_and_detached_values(self):
         transform = np.array([[0., -3., 0., .4], [2., 0., 0., -.2],
@@ -107,7 +104,6 @@ class PrimitiveTests(unittest.TestCase):
             StaticWorldSnapshot((box, box), 1., 1., '/Robot')
         with self.assertRaises(StaticWorldError):
             world.assert_within_domains([[26, 0, 2]], [.1])
-        self.assertEqual(world.as_dict()['obstacles'][0]['kind'], 'cuboid')
 
 
 class Attr:
@@ -173,15 +169,13 @@ class CollectorTests(unittest.TestCase):
         geom = SimpleNamespace(GetStageMetersPerUnit=lambda unused: units, Cube=Cube, Mesh=Mesh,
             XformCache=lambda unused: SimpleNamespace(GetLocalToWorldTransform=lambda prim: prim.transform.T))
         physics = SimpleNamespace(CollisionAPI=Collision, RigidBodyAPI=Rigid)
-        with patch(MODULE+'._usd_modules', return_value=(usd, geom, physics)):
+        with patch.dict('sys.modules', {'pxr': SimpleNamespace(Usd=usd, UsdGeom=geom, UsdPhysics=physics)}):
             return capture_static_world(stage, timestamp=4.)
 
     def test_enabled_colliders_only_and_exact_robot_subtree_exclusion(self):
         snapshot = self.collect([Prim('/Franka/Link'), Prim('/FrankaExtra/Box'),
             Prim('/Disabled', enabled=False), Prim('/Visual', collision=False)])
         self.assertEqual([item.path for item in snapshot.obstacles], ['/FrankaExtra/Box'])
-        self.assertEqual(snapshot.excluded_colliders, 1)
-        self.assertEqual(snapshot.disabled_colliders, 1)
 
     def test_stage_units_scale_translation_and_dimensions_once(self):
         transform = np.eye(4)
