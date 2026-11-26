@@ -11,11 +11,17 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from typing import TYPE_CHECKING
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 from robot_skill_stack.common.rotations import quat_matrix
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
+
+if TYPE_CHECKING:
+    from isaacsim.robot.manipulators.examples.franka import Franka
+    from .static_world import StaticWorldSnapshot
 
 
 MODEL_DIRECTORY = Path(__file__).resolve().parents[5] / 'config' / 'motion'
@@ -24,13 +30,13 @@ FINGER_NAMES = ('panda_finger_joint1', 'panda_finger_joint2')
 FINGER_FRAMES = ('panda_leftfinger', 'panda_rightfinger')
 
 
-def validate_model_selection(value):
+def validate_model_selection(value: str) -> str:
     if not isinstance(value, str) or value not in ('stock', 'enhanced'):
         raise ValueError("global_collision_model must be 'stock' or 'enhanced'")
     return value
 
 
-def _finite(value, shape, label):
+def _finite(value: ArrayLike, shape: tuple[int, ...], label: str) -> np.ndarray:
     array = np.asarray(value, dtype=float)
     if array.shape != shape or not np.isfinite(array).all():
         raise ValueError(f'{label} must contain finite values with shape {shape}')
@@ -39,18 +45,20 @@ def _finite(value, shape, label):
 
 @dataclass(frozen=True)
 class EnhancedCollisionModel:
+    """Certified artifacts, finger limits and fixed-base geometry, in meters."""
+
     descriptor_path: Path
     descriptor_sha256: str
-    finger_range_m: tuple
-    base_center: tuple
+    finger_range_m: tuple[float, float]
+    base_center: tuple[float, float, float]
     base_radius: float
-    base_corners: tuple
+    base_corners: tuple[tuple[float, float, float], ...]
     urdf_sha256: str
     metadata_sha256: str
     base_link: str = 'panda_link0'
-    certified_self_collision_exclusions: frozenset = frozenset()
+    certified_self_collision_exclusions: frozenset[frozenset[str]] = frozenset()
 
-    def check_gripper(self, robot):
+    def check_gripper(self, robot: Franka) -> dict[str, object]:
         """Read named physical joints, plus native latched targets if exposed.
 
         The installed SingleArticulation getter reads PhysX target buffers
@@ -69,8 +77,7 @@ class EnhancedCollisionModel:
             low, high = self.finger_range_m
             if np.any(measured < low) or np.any(measured > high):
                 raise ValueError('Measured fingers leave the validated collision-model range')
-            details.update(joint_names=list(FINGER_NAMES), measured_positions_m=measured.tolist(),
-                validated_range_m=list(self.finger_range_m), native_position_targets_m=None,
+            details.update(native_position_targets_m=None,
                 target_feedback='unavailable; measured positions checked')
             getter = getattr(robot, 'get_applied_action', None)
             applied = getter() if callable(getter) else None
@@ -85,25 +92,28 @@ class EnhancedCollisionModel:
                             or len(set(action_indices.tolist())) != len(action_indices)):
                         raise ValueError('Ambiguous native target joint indices')
                     _finite(positions, (len(action_indices),), 'Native position targets')
-                    mapping = dict(zip(action_indices.tolist(), positions.tolist()))
-                    if not set(indices) <= set(mapping):
-                        available = {name: mapping[index] for name, index in zip(FINGER_NAMES, indices) if index in mapping}
-                        details['native_partial_position_targets_m'] = available
-                        if any(value < low or value > high for value in available.values()):
+                    targets_by_index = dict(zip(action_indices.tolist(), positions.tolist()))
+                    if not set(indices) <= set(targets_by_index):
+                        partial_targets = {name: targets_by_index[index] for name, index in zip(FINGER_NAMES, indices)
+                                           if index in targets_by_index}
+                        details['native_partial_position_targets_m'] = partial_targets
+                        if any(value < low or value > high for value in partial_targets.values()):
                             raise ValueError('Native finger targets leave the validated collision-model range')
-                        details['target_feedback'] = 'partial action omits fingers; available targets and measured positions checked'
+                        details['target_feedback'] = (
+                            'partial action omits fingers; available targets and measured positions checked')
                         return details
-                    targets = np.array([mapping[index] for index in indices])
+                    targets = np.array([targets_by_index[index] for index in indices])
                 details['native_position_targets_m'] = targets.tolist()
                 if np.any(targets < low) or np.any(targets > high):
                     raise ValueError('Native finger targets leave the validated collision-model range')
-                details.update(native_position_targets_m=targets.tolist(),
-                    target_feedback='SingleArticulation.get_applied_action native PhysX position targets during play')
+                details['target_feedback'] = (
+                    'SingleArticulation.get_applied_action native PhysX position targets during play')
             return details
         except Exception as error:
             raise PlanningFailure('unsupported_gripper_configuration', str(error), details) from error
 
-    def preflight_base(self, snapshot, frame_position_m, frame_rotation):
+    def preflight_base(self, snapshot: StaticWorldSnapshot, frame_position_m: ArrayLike,
+                        frame_rotation: ArrayLike) -> dict[str, object]:
         """Reject possible base collisions before RRT using an enclosing ball.
 
         An enclosing ball can falsely obstruct a finite nearby obstacle. For a
@@ -114,9 +124,9 @@ class EnhancedCollisionModel:
         rotation = _finite(frame_rotation, (3, 3), 'Base-frame rotation')
         if not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-9, rtol=0):
             raise PlanningFailure('collision_model_invalid', 'Base-frame rotation is not orthonormal')
-        center = rotation @ np.asarray(self.base_center) + position
-        corners = np.asarray(self.base_corners) @ rotation.T + position
-        rows = []
+        base_center = rotation @ np.asarray(self.base_center) + position
+        base_corners = np.asarray(self.base_corners) @ rotation.T + position
+        checks = []
         for obstacle in snapshot.obstacles:
             if (obstacle.source_kind == 'Plane'
                     and obstacle.approximation == 'plane_halfspace_clipped_to_certified_domain'):
@@ -125,43 +135,43 @@ class EnhancedCollisionModel:
                     raise PlanningFailure('unsupported_geometry', 'Mounted-base plane has no unique certified domain')
                 domain = matches[0]
                 plane_rotation = quat_matrix(domain.orientation)
-                expected = np.asarray(domain.position)-plane_rotation[:, 2]*domain.depth_m/2
+                slab_center = np.asarray(domain.position) - plane_rotation[:, 2] * domain.depth_m / 2
                 if (obstacle.maximum_surface_error_m != 0.
                         or not np.allclose(quat_matrix(obstacle.orientation), plane_rotation, atol=1e-10, rtol=0)
-                        or not np.allclose(obstacle.position, expected, atol=1e-9, rtol=0)
+                        or not np.allclose(obstacle.position, slab_center, atol=1e-9, rtol=0)
                         or not np.allclose(obstacle.dimensions,
-                            [2*domain.half_width_m, 2*domain.half_width_m, domain.depth_m], atol=1e-9, rtol=0)):
+                            [2 * domain.half_width_m, 2 * domain.half_width_m, domain.depth_m], atol=1e-9, rtol=0)):
                     raise PlanningFailure('unsupported_geometry', 'Mounted-base plane and certified slab disagree')
                 try:
-                    domain.assert_contains(corners, np.zeros(len(corners)))
+                    domain.assert_contains(base_corners, np.zeros(len(base_corners)))
                 except ValueError as error:
                     raise PlanningFailure('unsupported_geometry', str(error)) from error
-                clearance = float(np.min((corners-np.asarray(domain.position)) @ plane_rotation[:, 2]))
+                clearance = float(np.min((base_corners - np.asarray(domain.position)) @ plane_rotation[:, 2]))
                 method = 'cooked-base AABB corners versus certified plane halfspace'
             else:
-                offset = (center-np.asarray(obstacle.position)) @ quat_matrix(obstacle.orientation)
+                offset = (base_center - np.asarray(obstacle.position)) @ quat_matrix(obstacle.orientation)
                 if obstacle.kind == 'cuboid':
-                    distance = np.linalg.norm(np.maximum(np.abs(offset)-np.asarray(obstacle.dimensions)/2, 0.))
+                    distance = np.linalg.norm(np.maximum(np.abs(offset) - np.asarray(obstacle.dimensions) / 2, 0.))
                 elif obstacle.kind == 'sphere':
-                    distance = np.linalg.norm(offset)-obstacle.radius
+                    distance = np.linalg.norm(offset) - obstacle.radius
                 elif obstacle.kind == 'capsule':
-                    nearest = np.array([0., 0., np.clip(offset[2], -obstacle.height/2, obstacle.height/2)])
-                    distance = np.linalg.norm(offset-nearest)-obstacle.radius
+                    nearest = np.array([0., 0., np.clip(offset[2], -obstacle.height / 2, obstacle.height / 2)])
+                    distance = np.linalg.norm(offset - nearest) - obstacle.radius
                 else:
                     raise PlanningFailure('unsupported_geometry', 'Unsupported fixed-base obstacle primitive')
-                clearance = float(distance-self.base_radius)
+                clearance = float(distance - self.base_radius)
                 method = 'cooked-base enclosing sphere versus finite obstacle'
-            rows.append(dict(path=obstacle.path, clearance_lower_bound_m=clearance, method=method))
+            checks.append(dict(path=obstacle.path, clearance_lower_bound_m=clearance, method=method))
             if clearance < 0. or (method.endswith('finite obstacle') and clearance == 0.):
                 raise PlanningFailure('base_geometry_rejected',
                     'Fixed-base enclosure cannot establish clearance from the frozen obstacle',
-                    dict(base_preflight=rows, conservative_rejection=True,
+                    dict(base_preflight=checks, conservative_rejection=True,
                         physical_collision_proven=False))
-        return dict(checks=rows, fixed_base_frame=self.base_link,
+        return dict(checks=checks, fixed_base_frame=self.base_link,
             all_configurations=True, conservative_finite_obstacle_enclosure=True)
 
 
-def load_enhanced_collision_model(directory=None):
+def load_enhanced_collision_model(directory: str | Path | None = None) -> EnhancedCollisionModel:
     """Load immutable project artifacts; no temporary files or SDK resources."""
     folder = MODEL_DIRECTORY if directory is None else Path(directory)
     descriptor = folder / (MODEL_NAME+'.yaml')

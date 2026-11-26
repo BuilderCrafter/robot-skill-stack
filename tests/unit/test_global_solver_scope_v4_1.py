@@ -213,12 +213,12 @@ class SolverScopeTests(unittest.TestCase):
                 lease.close()
             self.assertEqual(Attribute(stage, '/World/Franka').Get(), 128)
             self.assertEqual(stage.set_calls, [255])
-            self.assertFalse(lease.closed or lease.restored)
+            self.assertFalse(lease.closed or lease.diagnostics['original_session_opinion_restored'])
             spec.info['default'] = 255
             lease.close()
         self.assertEqual(Attribute(stage, '/World/Franka').Get(), 64)
         self.assertEqual(stage.set_calls, [255, 64])
-        self.assertTrue(lease.closed and lease.restored)
+        self.assertTrue(lease.closed and lease.diagnostics['original_session_opinion_restored'])
 
     def test_new_count_attribute_foreign_metadata_and_samples_are_preserved_until_released(self):
         for key, value in [('documentation', 'foreign metadata'), ('timeSamples', {0.:128, 1.:255})]:
@@ -233,12 +233,12 @@ class SolverScopeTests(unittest.TestCase):
                         lease.close()
                     self.assertEqual(spec.info, before)
                     self.assertFalse(stage.removed_properties or stage.removed_prims)
-                    self.assertFalse(lease.closed or lease.restored)
+                    self.assertFalse(lease.closed or lease.diagnostics['original_session_opinion_restored'])
                     spec.info.pop(key)
                     lease.close()
                 self.assertEqual(stage.session.prims, {})
                 self.assertEqual(Attribute(stage, '/World/Franka').Get(), 32)
-                self.assertTrue(lease.closed and lease.restored)
+                self.assertTrue(lease.closed and lease.diagnostics['original_session_opinion_restored'])
 
     def test_already_at_requested_accuracy_makes_no_session_edits(self):
         stage = Stage(weaker_count=255)

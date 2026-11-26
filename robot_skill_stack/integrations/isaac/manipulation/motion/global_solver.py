@@ -1,14 +1,21 @@
 """Temporary TGS accuracy for global trajectories; never edit saved assets."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from robot_skill_stack.manipulation.motion.joint_route import PlanningFailure
+
+if TYPE_CHECKING:
+    from pxr import Sdf, Usd
+    from ..franka_backend import IsaacFrankaBackend
 
 
 POSITION_ATTRIBUTE = "physxArticulation:solverPositionIterationCount"
 TGS_POSITION_ITERATIONS = 255
 
 
-def _nondefault_info(spec):
+def _nondefault_info(spec: Sdf.AttributeSpec) -> dict[str, str]:
+    """Snapshot metadata to detect foreign edits before removing a new attribute."""
     return {key: repr(spec.GetInfo(key)) for key in spec.ListInfoKeys() if key != "default"}
 
 
@@ -17,8 +24,9 @@ class PositionIterationLease:
 
     All accesses use the captured stage, including after Stop/reset/rebuild.
     USD-backed counts are requested values, not native island-count readbacks.
+    Close succeeds only after restoration; a failure leaves the lease open for retry.
     """
-    def __init__(self, stage, prim_path, requested):
+    def __init__(self, stage: Usd.Stage, prim_path: str, requested: int) -> None:
         from pxr import Usd
         self.stage, self.session, self.path = stage, stage.GetSessionLayer(), str(prim_path)
         self.closed = False
@@ -27,21 +35,21 @@ class PositionIterationLease:
         self.before = int(self.attribute.Get())
         self.requested = max(self.before, int(requested))
         self.changed = self.before != self.requested
-        self.restored = False
-        self.opinion = self.session.GetAttributeAtPath(self.path+"."+POSITION_ATTRIBUTE)
-        self.had_opinion = self.opinion is not None
-        self.had_default = self.had_opinion and self.opinion.HasInfo("default")
-        self.default = self.opinion.GetInfo("default") if self.had_default else None
+        attribute_path = self.path + "." + POSITION_ATTRIBUTE
+        opinion = self.session.GetAttributeAtPath(attribute_path)
+        self.had_opinion = opinion is not None
+        self.had_default = self.had_opinion and opinion.HasInfo("default")
+        self.default = opinion.GetInfo("default") if self.had_default else None
         parts = self.path.strip("/").split("/")
-        self.owned_ancestors = ["/"+"/".join(parts[:i]) for i in range(len(parts), 0, -1)
-            if self.session.GetPrimAtPath("/"+"/".join(parts[:i])) is None]
+        ancestors = ("/" + "/".join(parts[:i]) for i in range(len(parts), 0, -1))
+        self.owned_ancestors = [path for path in ancestors if self.session.GetPrimAtPath(path) is None]
         if self.changed:
             try:
                 with Usd.EditContext(self.stage, self.session):
                     if not self.attribute.Set(self.requested) or int(self.attribute.Get()) != self.requested:
                         raise RuntimeError("Requested TGS position iteration count was not applied")
                 self._created_info = _nondefault_info(
-                    self.session.GetAttributeAtPath(self.path+"."+POSITION_ATTRIBUTE))
+                    self.session.GetAttributeAtPath(attribute_path))
                 self._activation_completed = True
             except BaseException as error:
                 try:
@@ -51,25 +59,26 @@ class PositionIterationLease:
                 raise
 
     @property
-    def diagnostics(self):
+    def diagnostics(self) -> dict[str, object]:
         return dict(solver_type="TGS", requested_position_iterations_before=self.before,
             requested_position_iterations_during=self.requested, changed=self.changed,
-            original_session_opinion_restored=self.restored,
-            scope="Temporary articulation session opinion; no velocity/gain/limit or saved-file edits",
+            original_session_opinion_restored=self.closed,
             count_provenance="USD requested count; native effective island count is not read here")
 
-    def close(self):
+    def close(self) -> None:
+        """Restore the original default, then remove only unmodified owned specs."""
         if self.closed:
             return
         from pxr import Sdf, Usd
         if self.changed:
-            current = self.session.GetAttributeAtPath(self.path+"."+POSITION_ATTRIBUTE)
+            attribute_path = self.path + "." + POSITION_ATTRIBUTE
+            current = self.session.GetAttributeAtPath(attribute_path)
             present = current is not None and current.HasInfo("default")
-            original = ((current is not None) == self.had_opinion and present == self.had_default
+            already_restored = ((current is not None) == self.had_opinion and present == self.had_default
                 and (not present or current.GetInfo("default") == self.default)
                 and int(self.attribute.Get()) == self.before)
-            if original:
-                self.restored, self.closed = True, True
+            if already_restored:
+                self.closed = True
                 return
             if (self._activation_completed and
                     (not present or current.GetInfo("default") != self.requested)):
@@ -91,24 +100,25 @@ class PositionIterationLease:
                             and not list(spec.properties) and not list(spec.nameChildren)
                             and set(spec.ListInfoKeys()).issubset({"specifier"})):
                         self.stage.RemovePrim(path)
-            opinion = self.session.GetAttributeAtPath(self.path+"."+POSITION_ATTRIBUTE)
+            opinion = self.session.GetAttributeAtPath(attribute_path)
             present = opinion is not None and opinion.HasInfo("default")
             if ((opinion is not None) != self.had_opinion or present != self.had_default
                     or present and opinion.GetInfo("default") != self.default
                     or int(self.attribute.Get()) != self.before):
                 raise RuntimeError("Original solver session opinion was not restored")
-        self.restored, self.closed = True, True
+        self.closed = True
 
 
 class _UnchangedSolver:
-    diagnostics = dict(solver_type="PGS", changed=False,
-        scope="TGS compatibility setting does not apply to PGS")
+    """Leave PGS settings unchanged."""
 
-    def close(self):
+    diagnostics = dict(solver_type="PGS", changed=False)
+
+    def close(self) -> None:
         pass
 
 
-def execution_solver_scope(backend):
+def execution_solver_scope(backend: IsaacFrankaBackend) -> PositionIterationLease | _UnchangedSolver:
     """Acquire only after a validated moving plan, before its first command."""
     try:
         context = backend.world.get_physics_context()
