@@ -38,7 +38,8 @@ class CollisionModelTests(unittest.TestCase):
 
     def test_changed_descriptor_or_unsupported_metadata_fails_closed(self):
         for mutate in ('descriptor', 'range', 'corners', 'urdf', 'self_pair', 'self_range', 'self_projection',
-                'expanded_range', 'fixed', 'padding', 'rules', 'sphere_count'):
+                'expanded_range', 'fixed', 'padding', 'rules', 'sphere_count', 'model',
+                'self_urdf', 'self_nonfinite_projection', 'self_tolerance', 'self_intervals', 'self_count'):
             with self.subTest(mutate=mutate), TemporaryDirectory() as folder:
                 directory = Path(folder)
                 descriptor = directory/(MODEL_NAME+'.yaml')
@@ -54,6 +55,16 @@ class CollisionModelTests(unittest.TestCase):
                     metadata['certified_self_collision_exclusions'][0]['finger_range_m'] = [0., .04]
                 if mutate == 'self_projection':
                     metadata['certified_self_collision_exclusions'][0]['minimum_separating_projection_m'] = -1e-3
+                if mutate == 'self_urdf':
+                    metadata['certified_self_collision_exclusions'][0]['urdf_sha256'] = '0'*64
+                if mutate == 'self_nonfinite_projection':
+                    metadata['certified_self_collision_exclusions'][0]['minimum_separating_projection_m'] = float('inf')
+                if mutate == 'self_tolerance':
+                    metadata['certified_self_collision_exclusions'][0]['numerical_tolerance_m'] = float('nan')
+                if mutate == 'self_intervals':
+                    metadata['finger_hand_y_intervals_m']['panda_leftfinger'] = [1., 0.]
+                if mutate == 'self_count':
+                    metadata['certified_self_collision_exclusions'] *= 2
                 if mutate == 'expanded_range':
                     metadata['finger_range_m'] = [.001, .04]
                     metadata['descriptor_fixed_finger_m'] = .0205
@@ -62,6 +73,7 @@ class CollisionModelTests(unittest.TestCase):
                 if mutate == 'fixed': metadata['descriptor_fixed_finger_m'] = .004
                 if mutate == 'padding': metadata['finger_sweep_padding_m'] = .02
                 if mutate == 'sphere_count': metadata['sphere_count'] = 101
+                if mutate == 'model': metadata['model'] = 'unsupported'
                 if mutate == 'rules':
                     descriptor.write_text(descriptor.read_text().replace('  value: 0.003', '  value: 0.025'))
                     metadata['descriptor_sha256'] = hashlib.sha256(descriptor.read_bytes()).hexdigest()
