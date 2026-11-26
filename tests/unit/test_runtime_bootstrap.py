@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 from types import ModuleType, SimpleNamespace as NS
 import unittest
-from unittest.mock import AsyncMock, Mock, patch
+from unittest.mock import AsyncMock, Mock, call, patch
 
 from robot_skill_stack.common.types import Pose
 from robot_skill_stack.integrations.isaac.config import load_scene_config
@@ -315,9 +315,47 @@ class CameraCleanupTests(unittest.TestCase):
         stub=ModuleType('isaacsim.sensors.camera'); stub.Camera=Mock()
         with patch.dict(sys.modules,{'omni':omni,'omni.usd':omni.usd,'isaacsim.sensors.camera':stub}):
             spec.loader.exec_module(m)
+        self.module = m
         obj=m.IsaacRgbdCamera.__new__(m.IsaacRgbdCamera); obj._closed=False; obj.camera=Mock()
         obj.camera.get_render_product_path.return_value='/Render/camera'
         return obj
+
+    def test_camera_prim_validation_precedes_sdk_construction(self):
+        self.adapter()
+        stage = NS(GetPrimAtPath=Mock())
+        self.module.omni.usd.get_context = lambda: NS(get_stage=lambda: stage)
+        for valid, kind in ((False, 'Camera'), (True, 'Xform')):
+            stage.GetPrimAtPath.return_value = NS(IsValid=lambda: valid, GetTypeName=lambda: kind)
+            with self.subTest(valid=valid, kind=kind), self.assertRaises(ValueError):
+                self.module.IsaacRgbdCamera()
+            self.module.Camera.assert_not_called()
+        stage.GetPrimAtPath.return_value = NS(IsValid=lambda: True, GetTypeName=lambda: 'Camera')
+        self.module.IsaacRgbdCamera()
+        self.module.Camera.assert_called_once_with(
+            prim_path='/World/PerceptionCamera', name='perception_camera', resolution=(640, 480))
+
+    def test_initialization_preserves_annotators_and_optional_semantics(self):
+        for semantic in (False, True):
+            obj = self.adapter()
+            obj.initialize(semantic_segmentation=semantic)
+            expected = [call.initialize(attach_rgb_annotator=False), call.add_rgb_to_frame(),
+                        call.add_distance_to_image_plane_to_frame()]
+            if semantic:
+                expected.append(call.add_semantic_segmentation_to_frame(init_params={'colorize': False}))
+            self.assertEqual(obj.camera.method_calls, expected)
+
+    def test_v1_opaque_tokens_and_multiview_numeric_tokens_remain_distinct(self):
+        from tests.unit.test_multiview_camera_lifecycle import load_adapter
+        obj = self.adapter()
+        multiview = load_adapter(type(obj))
+        reference = {'referenceTimeNumerator': 111, 'referenceTimeDenominator': 30}
+        frame = {'rendering_frame': reference, 'rendering_time': 1.5}
+        obj.camera.get_current_frame.return_value = frame
+        self.assertEqual(obj.get_frame_token(), (str(reference), '1.5'))
+        self.assertEqual(multiview.IsaacMultiViewCamera.get_frame_token(obj), (3.7, 1.5))
+        frame['rendering_time'] = None
+        self.assertEqual(obj.get_frame_token(), (str(reference), 'None'))
+        self.assertIsNone(multiview.IsaacMultiViewCamera.get_frame_token(obj))
 
     def test_detaches_reference_and_events_before_render_product(self):
         obj=self.adapter(); ref=obj.camera._fabric_time_annotator; obj.close()

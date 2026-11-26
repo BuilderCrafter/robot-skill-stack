@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 import time
+from typing import TYPE_CHECKING
 
 import numpy as np
 import omni.usd
@@ -12,9 +13,15 @@ from robot_skill_stack.world.model.observations import ObjectObservation
 from robot_skill_stack.world.model.provider import ObservationBatch
 from robot_skill_stack.world.model.primitives import PrimitiveGeometry, PrimitiveShape
 
+if TYPE_CHECKING:
+    from robot_skill_stack.integrations.isaac.config import ObjectConfig
+    from robot_skill_stack.world.model.context import ObservationContext
+
 
 class IsaacGroundTruthProvider:
-    def __init__(self, objects_root: str, object_configs: dict | None = None):
+    """Publish current active USD children without owning cameras or subscriptions."""
+
+    def __init__(self, objects_root: str, object_configs: dict[str, ObjectConfig] | None = None) -> None:
         self.objects_root = objects_root
         self.object_configs = object_configs or {}
         self.bbox_cache = UsdGeom.BBoxCache(
@@ -23,7 +30,8 @@ class IsaacGroundTruthProvider:
             useExtentsHint=True,
         )
 
-    def _objects(self):
+    def _objects(self) -> list[Usd.Prim]:
+        """Enumerate live children on each sample instead of caching scene identities."""
         stage = omni.usd.get_context().get_stage()
         root = stage.GetPrimAtPath(self.objects_root)
 
@@ -37,79 +45,88 @@ class IsaacGroundTruthProvider:
         ]
 
     @staticmethod
-    def _object_id(prim):
+    def _object_id(prim: Usd.Prim) -> str:
         custom = prim.GetCustomData()
         return str(custom.get("object_id", prim.GetName())).lower()
 
     @staticmethod
-    def _class_name(prim, object_id):
+    def _class_name(prim: Usd.Prim, object_id: str) -> str:
         custom = prim.GetCustomData()
         if "class_name" in custom:
             return str(custom["class_name"])
         return re.sub(r"_\d+$", "", object_id)
 
     @staticmethod
-    def _pose(prim):
-        transform = UsdGeom.Xformable(
-            prim
-        ).ComputeLocalToWorldTransform(Usd.TimeCode.Default())
+    def _pose(prim: Usd.Prim) -> Pose:
+        """Read the USD world transform and preserve scalar-first quaternion ordering."""
+        transform = UsdGeom.Xformable(prim).ComputeLocalToWorldTransform(Usd.TimeCode.Default())
 
-        p = transform.ExtractTranslation()
-        q = transform.ExtractRotationQuat()
-        imag = q.GetImaginary()
+        position = transform.ExtractTranslation()
+        rotation = transform.ExtractRotationQuat()
+        imaginary = rotation.GetImaginary()
 
         return Pose(
-            position=np.array([p[0], p[1], p[2]], dtype=float),
-            orientation=np.array(
-                [q.GetReal(), imag[0], imag[1], imag[2]],
-                dtype=float,
-            ),
+            position=np.array([position[0], position[1], position[2]], dtype=float),
+            orientation=np.array([rotation.GetReal(), imaginary[0], imaginary[1], imaginary[2]], dtype=float),
             frame="world",
         )
 
-    def _size(self, prim, cfg):
+    def _size(self, prim: Usd.Prim, cfg: ObjectConfig | None) -> np.ndarray | None:
+        """Prefer configured size, otherwise use USD's aligned local-bound extents."""
         if cfg is not None and cfg.size is not None:
             return cfg.size.copy()
 
         self.bbox_cache.Clear()
-        bounds = self.bbox_cache.ComputeLocalBound(
-            prim
-        ).ComputeAlignedRange()
+        bounds = self.bbox_cache.ComputeLocalBound(prim).ComputeAlignedRange()
         size = np.asarray(bounds.GetSize(), dtype=float)
 
         return size if np.all(np.isfinite(size)) else None
 
     @staticmethod
-    def _geometry(class_name, pose, size):
-        name=(class_name or "").lower()
-        if size is None: return None
-        if name in ("cube","box"):
-            q=pose.orientation; yaw=np.arctan2(2*(q[0]*q[3]+q[1]*q[2]),1-2*(q[2]**2+q[3]**2)) if q is not None else 0.
-            return PrimitiveGeometry(PrimitiveShape.CUBE,1.,box_size=size,yaw=float(yaw%(np.pi/2)))
-        if name=="sphere": return PrimitiveGeometry(PrimitiveShape.SPHERE,1.,radius=float(np.mean(size)/2))
-        if name=="cylinder":
-            q=pose.orientation
-            if q is None: axis=np.array([0.,0.,1.])
+    def _geometry(class_name: str | None, pose: Pose, size: np.ndarray | None) -> PrimitiveGeometry | None:
+        """Build primitive geometry using world orientation and the existing size convention."""
+        name = (class_name or "").lower()
+        if size is None:
+            return None
+        if name in ("cube", "box"):
+            quaternion = pose.orientation
+            # World-Z yaw for [w, x, y, z], normalized to the existing box symmetry.
+            yaw = (np.arctan2(2*(quaternion[0]*quaternion[3]+quaternion[1]*quaternion[2]),
+                             1-2*(quaternion[2]**2+quaternion[3]**2)) if quaternion is not None else 0.)
+            return PrimitiveGeometry(PrimitiveShape.CUBE, 1., box_size=size, yaw=float(yaw % (np.pi/2)))
+        if name == "sphere":
+            return PrimitiveGeometry(PrimitiveShape.SPHERE, 1., radius=float(np.mean(size)/2))
+        if name == "cylinder":
+            quaternion = pose.orientation
+            if quaternion is None:
+                axis = np.array([0., 0., 1.])
             else:
-                w,x,y,z=q; axis=np.array([2*(x*z+w*y),2*(y*z-w*x),1-2*(x*x+y*y)])
-            axis=axis/max(np.linalg.norm(axis),1e-9); length=float(size[np.argmax(np.abs(axis))]); radius=float(np.median(np.delete(size,np.argmax(np.abs(axis))))/2)
-            return PrimitiveGeometry(PrimitiveShape.CYLINDER,1.,axis=axis,radius=radius,length=length)
-        return PrimitiveGeometry(PrimitiveShape.UNKNOWN,1.)
+                w, x, y, z = quaternion
+                # The transformed local +Z axis is the cylinder axis in world coordinates.
+                axis = np.array([2*(x*z+w*y), 2*(y*z-w*x), 1-2*(x*x+y*y)])
+            axis = axis/max(np.linalg.norm(axis), 1e-9)
+            axial_index = np.argmax(np.abs(axis))
+            length = float(size[axial_index])
+            radius = float(np.median(np.delete(size, axial_index))/2)
+            return PrimitiveGeometry(PrimitiveShape.CYLINDER, 1., axis=axis, radius=radius, length=length)
+        return PrimitiveGeometry(PrimitiveShape.UNKNOWN, 1.)
 
     @staticmethod
-    def _graspable(prim, cfg):
+    def _graspable(prim: Usd.Prim, cfg: ObjectConfig | None) -> bool:
         if cfg is not None:
             return cfg.graspable
         return bool(prim.GetCustomData().get("graspable", True))
 
-    def observe(self, context=None) -> ObservationBatch:
+    def observe(self, context: ObservationContext | None = None) -> ObservationBatch:
         observations = []
 
         for prim in self._objects():
             object_id = self._object_id(prim)
             cfg = self.object_configs.get(object_id)
 
-            class_name=self._class_name(prim, object_id); pose=self._pose(prim); size=self._size(prim, cfg)
+            class_name = self._class_name(prim, object_id)
+            pose = self._pose(prim)
+            size = self._size(prim, cfg)
             observations.append(
                 ObjectObservation(
                     object_id=object_id,
@@ -129,8 +146,8 @@ class IsaacGroundTruthProvider:
 
         return ObservationBatch(observations, time.monotonic())
 
-    def forget(self, object_id):
+    def forget(self, object_id: str) -> None:
         pass  # Ground truth enumerates live scene objects on every sample.
 
-    def close(self):
+    def close(self) -> None:
         pass  # This adapter owns no camera or subscriptions.

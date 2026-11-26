@@ -1,4 +1,8 @@
 """Source-specific construction and prim requirements; no tracking/lifetime policy."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import omni.kit.app
 
 from robot_skill_stack.integrations.isaac.sensors.rgbd_camera import IsaacRgbdCamera
@@ -6,8 +10,11 @@ from robot_skill_stack.integrations.isaac.world.ground_truth_provider import Isa
 from robot_skill_stack.world.perception import build_perception_provider
 from robot_skill_stack.world.model.provider import WorldObservationProvider
 
+if TYPE_CHECKING:
+    from robot_skill_stack.integrations.isaac.config import SceneConfig
 
-def required_source_prims(config):
+
+def required_source_prims(config: SceneConfig) -> list[str]:
     """List the source prims from a validated scene configuration."""
     if config.world.provider == 'perception':
         return [config.perception.camera_prim_path]
@@ -19,7 +26,9 @@ def required_source_prims(config):
     raise ValueError(f'Unsupported observation source: {config.world.provider}')
 
 
-async def create_source(config) -> WorldObservationProvider:
+async def create_source(config: SceneConfig) -> WorldObservationProvider:
+    """Initialize the selected source; transfer camera ownership after warm-up succeeds."""
+    # Validate the selector even when called independently of bootstrap.
     required_source_prims(config)
     if config.world.provider == 'ground_truth':
         return IsaacGroundTruthProvider(config.ground_truth.objects_root, config.ground_truth.objects)
