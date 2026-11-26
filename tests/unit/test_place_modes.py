@@ -108,12 +108,20 @@ class PlaceModeTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(result.details['visible'], visible)
                 self.assertEqual(model.gripper_state, GripperState.FREE)
 
-    async def test_default_and_legacy_default_alias_keep_stable_semantics(self):
-        for kwargs in ({}, {'mode': 'default'}):
-            with self.subTest(kwargs=kwargs):
-                _, _, skill = self.stack(landing=[.1, -.2, .025])
-                result = await skill.execute_async(self.target, **kwargs)
-                self.assertEqual(result.failure_code, FailureCode.PLACE_FAILED)
+    async def test_omitted_mode_keeps_stable_semantics(self):
+        _, _, skill = self.stack(landing=[.1, -.2, .025])
+        result = await skill.execute_async(self.target)
+        self.assertEqual(result.failure_code, FailureCode.PLACE_FAILED)
+        self.assertEqual(result.details['failed_stage'], 'verification')
+
+    async def test_retired_default_alias_is_rejected_before_commands(self):
+        model, backend, skill = self.stack()
+        result = await skill.execute_async(self.target, mode='default')
+        self.assertEqual(result.failure_code, FailureCode.PLACE_FAILED)
+        self.assertEqual(result.message, "Unknown placement mode 'default'.")
+        backend.move_to_pose_async.assert_not_called()
+        backend.open_gripper_async.assert_not_called()
+        self.assertEqual(model.held_object_id, 'object_1')
 
     async def test_failed_preapproach_or_descent_never_releases_in_either_mode(self):
         for mode in ('stable', 'release'):

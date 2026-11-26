@@ -3,21 +3,24 @@ from __future__ import annotations
 import numpy as np
 
 from robot_skill_stack.common.rotations import quat_matrix
-
-from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.common.types import GripperState, Pose
+from robot_skill_stack.manipulation.backend import BackendResult, GripperFeedback, ManipulationBackend
 from robot_skill_stack.manipulation.held_state import HeldState, motion_failure_code
-from robot_skill_stack.common.types import GripperState
 from robot_skill_stack.manipulation.grasping.planner import GraspPlanner
+from robot_skill_stack.manipulation.grasping.types import GraspResult
 from robot_skill_stack.runtime.skill import (
     BaseSkill,
     FailureCode,
     SkillResult,
     SkillStatus,
 )
+from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PickSkill(BaseSkill):
+    """Plan and replan a grasp, then close, lift and verify the attachment."""
+
     name = "pick"
 
     def __init__(
@@ -26,9 +29,9 @@ class PickSkill(BaseSkill):
         world_model: WorldModel,
         grasp_planner: GraspPlanner,
         *,
-        movement_threshold=0.02,
-        max_local_replans=2,
-    ):
+        movement_threshold: float = 0.02,
+        max_local_replans: int = 2,
+    ) -> None:
         self.backend = backend
         self.world_model = world_model
         self.holding = HeldState(backend, world_model)
@@ -37,7 +40,7 @@ class PickSkill(BaseSkill):
         self.max_local_replans = int(max_local_replans)
 
     @staticmethod
-    def _motion_result(result, message):
+    def _motion_result(result: BackendResult, message: str) -> SkillResult | None:
         if result.ok:
             return None
         return SkillResult(
@@ -47,7 +50,7 @@ class PickSkill(BaseSkill):
             result.details,
         )
 
-    async def _motion_async(self, pose, tolerance, message):
+    async def _motion_async(self, pose: Pose, tolerance: float, message: str) -> SkillResult | None:
         return self._motion_result(
             await self.holding.run_motion(
                 self.backend.move_to_pose_async,
@@ -59,19 +62,19 @@ class PickSkill(BaseSkill):
         )
 
     @staticmethod
-    def _movement(obj, planned_position):
+    def _movement(obj: WorldObject, planned_position: np.ndarray) -> float | None:
         if obj.pose is None or not obj.visible:
             return None
         return float(np.linalg.norm(obj.pose.position - planned_position))
 
     def _moved_result(
         self,
-        object_id,
-        planned_position,
-        current_position,
-        displacement,
-        local_replans,
-    ):
+        object_id: str,
+        planned_position: np.ndarray,
+        current_position: np.ndarray,
+        displacement: float,
+        local_replans: int,
+    ) -> SkillResult:
         return SkillResult(
             SkillStatus.FAILED,
             f"'{object_id}' kept moving during pick.",
@@ -86,7 +89,7 @@ class PickSkill(BaseSkill):
             },
         )
 
-    def _start(self, object_id):
+    def _start(self, object_id: str) -> tuple[WorldObject | None, SkillResult | None]:
         if self.world_model.held_object_id is not None:
             return None, SkillResult(
                 SkillStatus.FAILED,
@@ -114,7 +117,10 @@ class PickSkill(BaseSkill):
             )
         return obj, None
 
-    def _plan(self, obj, lift_height, grasp_hint, local_replans):
+    def _plan(
+        self, obj: WorldObject, lift_height: float | None, grasp_hint: str | None, local_replans: int,
+    ) -> tuple[tuple[np.ndarray, GraspResult] | None, SkillResult | None]:
+        """Plan and check endpoints; record the planned offset for later diagnostics."""
         if obj.pose is None:
             return None, SkillResult(
                 SkillStatus.FAILED,
@@ -124,22 +130,14 @@ class PickSkill(BaseSkill):
             )
 
         planned_position = obj.pose.position.copy()
-        result = self.grasp_planner.plan(
-            obj,
-            lift_height=lift_height,
-            grasp_hint=grasp_hint,
-        )
+        result = self.grasp_planner.plan(obj, lift_height=lift_height, grasp_hint=grasp_hint)
         if not result.ok:
             return None, SkillResult(
                 SkillStatus.FAILED,
                 result.message or "No valid grasp.",
                 FailureCode.NO_VALID_GRASP,
                 {
-                    "grasp_failure_reason": (
-                        None
-                        if result.failure_reason is None
-                        else result.failure_reason.value
-                    ),
+                    "grasp_failure_reason": None if result.failure_reason is None else result.failure_reason.value,
                     "grasp_planner_details": result.details,
                     "local_replans": local_replans,
                 },
@@ -168,76 +166,62 @@ class PickSkill(BaseSkill):
         ).tolist()
         return (planned_position, result), None
 
-    def _record_attachment(self, grasp_result, planned_position):
-        actual = self.backend.get_end_effector_pose()
-        orientation = actual.orientation
+    def _record_attachment(self, grasp_result: GraspResult, planned_position: np.ndarray) -> None:
+        """Replace the planned offset with measured TCP evidence immediately before closure."""
+        tcp_pose = self.backend.get_end_effector_pose()
+        orientation = tcp_pose.orientation
         if orientation is None:
             orientation = grasp_result.plan.grasp.orientation
         grasp_result.details["object_offset_in_ee_m"] = (
-            quat_matrix(orientation).T @ (planned_position-actual.position)
+            quat_matrix(orientation).T @ (planned_position-tcp_pose.position)
         ).tolist()
         grasp_result.details["attachment_reference"] = "pre-close measured TCP / planned object center"
 
     def _check_replan(
         self,
-        obj,
-        object_id,
-        planned_position,
-        local_replans,
-    ):
+        obj: WorldObject,
+        object_id: str,
+        planned_position: np.ndarray,
+        local_replans: int,
+    ) -> tuple[bool, int, SkillResult | None]:
+        """Check freshness and measured displacement before descent or closure."""
         if not self.world_model.observations_healthy:
             return False, local_replans, SkillResult(
                 SkillStatus.FAILED, 'Observation source stopped providing fresh state during Pick.',
                 FailureCode.WORLD_STATE_UNAVAILABLE,
             )
         displacement = self._movement(obj, planned_position)
-        if (
-            displacement is None
-            or displacement <= self.movement_threshold
-        ):
+        if displacement is None or displacement <= self.movement_threshold:
             return False, local_replans, None
 
         if local_replans >= self.max_local_replans:
-            return (
-                False,
-                local_replans,
-                self._moved_result(
-                    object_id,
-                    planned_position,
-                    obj.pose.position.copy(),
-                    displacement,
-                    local_replans,
-                ),
-            )
+            return False, local_replans, self._moved_result(
+                object_id, planned_position, obj.pose.position.copy(), displacement, local_replans)
         return True, local_replans + 1, None
 
     def _success(
         self,
-        object_id,
-        obj,
-        initial,
-        local_replans,
-        grasp_details,
-        grasp_at_contact,
-        grasp_after_lift,
-    ):
+        object_id: str,
+        obj: WorldObject,
+        initial_position: np.ndarray,
+        local_replans: int,
+        grasp_details: dict,
+        grasp_at_contact: GripperFeedback,
+        grasp_after_lift: GripperFeedback,
+    ) -> SkillResult:
         visual_lift = None
         final_position = None
         if obj.pose is not None:
             final_position = obj.pose.position.copy()
             if obj.visible:
-                visual_lift = float(final_position[2] - initial[2])
+                visual_lift = float(final_position[2] - initial_position[2])
 
         return SkillResult(
             SkillStatus.SUCCESS,
             f"Picked '{object_id}'.",
             details={
-                "initial_position": initial.tolist(),
-                "final_cached_position": (
-                    None
-                    if final_position is None
-                    else final_position.tolist()
-                ),
+                "initial_position": initial_position.tolist(),
+                "final_cached_position": None if final_position is None else final_position.tolist(),
                 "visual_lift_distance_m": visual_lift,
                 "object_visible_after_lift": obj.visible,
                 "local_replans": local_replans,
@@ -250,11 +234,11 @@ class PickSkill(BaseSkill):
 
     async def execute_async(
         self,
-        object_id,
-        grasp_hint=None,
-        lift_height=0.12,
-    ):
-        if getattr(self.backend, 'supports_contact_motion', True) is False:
+        object_id: str,
+        grasp_hint: str | None = None,
+        lift_height: float | None = 0.12,
+    ) -> SkillResult:
+        if self.backend.supports_contact_motion is False:
             return SkillResult(SkillStatus.FAILED,
                 'Selected motion strategy does not support intended-contact Pick.',
                 FailureCode.MOTION_UNSUPPORTED)
@@ -262,17 +246,12 @@ class PickSkill(BaseSkill):
         if failure:
             return failure
 
-        initial = obj.pose.position.copy()
+        initial_position = obj.pose.position.copy()
         local_replans = 0
         gripper_open = False
 
         while True:
-            planned, failure = self._plan(
-                obj,
-                lift_height,
-                grasp_hint,
-                local_replans,
-            )
+            planned, failure = self._plan(obj, lift_height, grasp_hint, local_replans)
             if failure:
                 return failure
             planned_position, grasp_result = planned
@@ -289,11 +268,7 @@ class PickSkill(BaseSkill):
                     )
                 gripper_open = True
 
-            failure = await self._motion_async(
-                plan.pre_grasp,
-                0.020,
-                "Pre-grasp failed.",
-            )
+            failure = await self._motion_async(plan.pre_grasp, 0.020, "Pre-grasp failed.")
             if failure:
                 failure.details.update(
                     local_replans=local_replans,
@@ -309,11 +284,7 @@ class PickSkill(BaseSkill):
             if replan:
                 continue
 
-            failure = await self._motion_async(
-                plan.grasp,
-                0.010,
-                "Grasp approach failed.",
-            )
+            failure = await self._motion_async(plan.grasp, 0.010, "Grasp approach failed.")
             if failure:
                 failure.details.update(
                     local_replans=local_replans,
@@ -342,11 +313,7 @@ class PickSkill(BaseSkill):
                     {**close.details, "local_replans": local_replans, 'gripper_engaged': True},
                 )
 
-            failure = await self._motion_async(
-                plan.lift,
-                0.020,
-                "Lift failed.",
-            )
+            failure = await self._motion_async(plan.lift, 0.020, "Lift failed.")
             if failure:
                 failure.details.update(
                     local_replans=local_replans,
@@ -373,7 +340,7 @@ class PickSkill(BaseSkill):
             return self._success(
                 object_id,
                 obj,
-                initial,
+                initial_position,
                 local_replans,
                 grasp_result.details,
                 grasp_at_contact,

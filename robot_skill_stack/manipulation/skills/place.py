@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import numpy as np
 
-from robot_skill_stack.common.types import Pose
 from robot_skill_stack.common.rotations import quat_matrix
-from robot_skill_stack.manipulation.backend import ManipulationBackend
+from robot_skill_stack.common.types import Pose
+from robot_skill_stack.manipulation.backend import BackendResult, ManipulationBackend
 from robot_skill_stack.manipulation.held_state import HeldState, motion_failure_code
 from robot_skill_stack.manipulation.placement import (
     PlacementFailureReason,
     PlacementPlanner,
+    PlacementResult,
     SimplePlacementPlanner,
 )
 from robot_skill_stack.runtime.skill import (
@@ -17,10 +18,13 @@ from robot_skill_stack.runtime.skill import (
     SkillResult,
     SkillStatus,
 )
+from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PlaceSkill(BaseSkill):
+    """Place the held object's center, or release it without landing verification."""
+
     name = "place"
 
     def __init__(
@@ -29,18 +33,16 @@ class PlaceSkill(BaseSkill):
         world_model: WorldModel,
         placement_planner: PlacementPlanner | None = None,
         *,
-        approach_height=0.10,
-        retreat_height=0.12,
-        placement_tolerance=0.05,
-        reacquire_radius=0.08,
-        reacquire_ttl=3.0,
-    ):
+        approach_height: float = 0.10,
+        retreat_height: float = 0.12,
+        placement_tolerance: float = 0.05,
+        reacquire_radius: float = 0.08,
+        reacquire_ttl: float = 3.0,
+    ) -> None:
         self.backend = backend
         self.world_model = world_model
         self.holding = HeldState(backend, world_model)
-        self.placement_planner = (
-            placement_planner or SimplePlacementPlanner()
-        )
+        self.placement_planner = placement_planner or SimplePlacementPlanner()
         self.approach_height = approach_height
         self.retreat_height = retreat_height
         self.placement_tolerance = placement_tolerance
@@ -48,7 +50,7 @@ class PlaceSkill(BaseSkill):
         self.reacquire_ttl = reacquire_ttl
 
     @staticmethod
-    def _motion_result(result, message):
+    def _motion_result(result: BackendResult, message: str) -> SkillResult | None:
         if result.ok:
             return None
         return SkillResult(
@@ -58,21 +60,22 @@ class PlaceSkill(BaseSkill):
             result.details,
         )
 
-    def _prepare(self, target, mode):
+    def _prepare(
+        self, target: Pose, mode: str,
+    ) -> tuple[tuple[str, WorldObject, PlacementResult] | None, SkillResult | None]:
+        """Validate attachment/source state and target occupancy before moving."""
         if self.world_model.held_object_uncertain:
-            return None, None, SkillResult(
+            return None, SkillResult(
                 SkillStatus.FAILED, 'Grasp is uncertain; inspect/reset the gripper first.',
                 FailureCode.GRASP_UNCERTAIN,
             )
         if not self.world_model.observations_healthy:
-            return None, None, SkillResult(
+            return None, SkillResult(
                 SkillStatus.FAILED, "Observation source is not fresh; Place was not started.",
                 FailureCode.WORLD_STATE_UNAVAILABLE,
             )
-        if mode == "default":
-            mode = "stable"
         if mode not in ("stable", "release"):
-            return None, None, SkillResult(
+            return None, SkillResult(
                 SkillStatus.FAILED,
                 f"Unknown placement mode '{mode}'.",
                 FailureCode.PLACE_FAILED,
@@ -80,41 +83,34 @@ class PlaceSkill(BaseSkill):
 
         object_id = self.world_model.held_object_id
         if object_id is None:
-            return None, None, SkillResult(
+            return None, SkillResult(
                 SkillStatus.FAILED,
                 "No object is currently held.",
                 FailureCode.NOT_HOLDING_OBJECT,
             )
 
         obj = self.world_model.require(object_id)
-        placement = self.placement_planner.evaluate(
-            obj,
-            target,
-            self.world_model,
-        )
+        placement = self.placement_planner.evaluate(obj, target, self.world_model)
         if not placement.ok:
             code = (
                 FailureCode.TARGET_OCCUPIED
-                if placement.failure_reason
-                == PlacementFailureReason.TARGET_OCCUPIED
+                if placement.failure_reason == PlacementFailureReason.TARGET_OCCUPIED
                 else FailureCode.PLACE_FAILED
             )
-            return None, None, SkillResult(
+            return None, SkillResult(
                 SkillStatus.FAILED,
-                placement.message
-                or "Placement target is not feasible.",
+                placement.message or "Placement target is not feasible.",
                 code,
                 {
-                    "placement_failure_reason": (
-                        placement.failure_reason.value
-                    ),
+                    "placement_failure_reason": placement.failure_reason.value,
                     "placement_planner_details": placement.details,
                 },
             )
 
-        return (object_id, obj, placement, mode), target, None
+        return (object_id, obj, placement), None
 
-    def _poses(self, target):
+    def _poses(self, target: Pose) -> tuple[Pose, Pose, Pose]:
+        """Transform the requested object center into pre-place, release and retreat TCPs."""
         orientation = (
             target.orientation
             if target.orientation is not None
@@ -124,41 +120,35 @@ class PlaceSkill(BaseSkill):
         offset = self.world_model.held_object_offset_in_ee
         if offset is not None:
             position -= quat_matrix(orientation) @ offset
-        release = Pose(
-            position,
-            orientation,
-            target.frame,
-        )
+        release = Pose(position, orientation, target.frame)
         return (
             release.translated([0, 0, self.approach_height]),
             release,
             release.translated([0, 0, self.retreat_height]),
         )
 
-    def _check_reachability(self, poses, placement):
+    def _check_reachability(self, poses: tuple[Pose, Pose, Pose],
+                            placement: PlacementResult) -> SkillResult | None:
         for pose in poses:
             if not self.backend.check_reachability(pose):
                 return SkillResult(
                     SkillStatus.FAILED,
                     "Required placement pose is unreachable.",
                     FailureCode.UNREACHABLE,
-                    {
-                        "placement_planner_details": (
-                            placement.details
-                        )
-                    },
+                    {"placement_planner_details": placement.details},
                 )
         return None
 
     def _finish(
         self,
-        object_id,
-        obj,
-        target,
-        mode,
-        placement,
-        retreat_result,
-    ):
+        object_id: str,
+        obj: WorldObject,
+        target: Pose,
+        mode: str,
+        placement: PlacementResult,
+        retreat_result: BackendResult,
+    ) -> SkillResult:
+        """Keep release, retreat and landing outcomes distinct; retreat failure takes precedence."""
         details = {
             "object_id": object_id,
             "release_confirmed": True,
@@ -202,15 +192,15 @@ class PlaceSkill(BaseSkill):
             return SkillResult(SkillStatus.FAILED, verification_message, FailureCode.PLACE_FAILED, details)
         return SkillResult(SkillStatus.SUCCESS, message, details=details)
 
-    async def execute_async(self, target: Pose, mode="stable"):
-        if getattr(self.backend, 'supports_contact_motion', True) is False:
+    async def execute_async(self, target: Pose, mode: str = "stable") -> SkillResult:
+        if self.backend.supports_contact_motion is False:
             return SkillResult(SkillStatus.FAILED,
                 'Selected motion strategy does not support intended-contact Place.',
                 FailureCode.MOTION_UNSUPPORTED)
-        prepared, target, failure = self._prepare(target, mode)
+        prepared, failure = self._prepare(target, mode)
         if failure:
             return failure
-        object_id, obj, placement, mode = prepared
+        object_id, obj, placement = prepared
 
         poses = self._poses(target)
         failure = self._check_reachability(poses, placement)
@@ -224,14 +214,9 @@ class PlaceSkill(BaseSkill):
             position_tolerance=0.020,
             orientation_tolerance=0.10,
         )
-        failure = self._motion_result(
-            result,
-            "Pre-place motion failed.",
-        )
+        failure = self._motion_result(result, "Pre-place motion failed.")
         if failure:
-            failure.details["placement_planner_details"] = (
-                placement.details
-            )
+            failure.details["placement_planner_details"] = placement.details
             return failure
 
         result = await self.holding.run_motion(
@@ -240,14 +225,9 @@ class PlaceSkill(BaseSkill):
             position_tolerance=0.015,
             orientation_tolerance=0.10,
         )
-        failure = self._motion_result(
-            result,
-            "Release approach failed.",
-        )
+        failure = self._motion_result(result, "Release approach failed.")
         if failure:
-            failure.details["placement_planner_details"] = (
-                placement.details
-            )
+            failure.details["placement_planner_details"] = placement.details
             return failure
 
         self.world_model.expect_object_at(

@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
-from collections.abc import Callable
 
 from robot_skill_stack.common.types import Pose, GripperState
 
 
 @dataclass
 class BackendResult:
+    """Command outcome and evidence; completion alone does not confirm attachment."""
+
     ok: bool
     message: str = ""
     timed_out: bool = False
@@ -18,6 +20,8 @@ class BackendResult:
 
 @dataclass
 class GripperFeedback:
+    """Observed gripper state, optional jaw width in meters and supporting evidence."""
+
     state: GripperState
     width: float | None = None
     details: dict[str, Any] = field(default_factory=dict)
@@ -71,6 +75,7 @@ class ManipulationBackend(ABC):
 
     @abstractmethod
     def get_end_effector_pose(self) -> Pose:
+        """Read the current TCP pose without advancing simulation."""
         ...
 
     @abstractmethod
@@ -78,6 +83,9 @@ class ManipulationBackend(ABC):
         ...
 
     @abstractmethod
-    async def home_async(self, name: str = "home", *, grasp_check=None) -> BackendResult:
+    async def home_async(
+        self, name: str = "home", *,
+        grasp_check: Callable[[], BackendResult | None] | None = None,
+    ) -> BackendResult:
         """Move to an adapter-defined named pose; this is not a safety guarantee."""
         ...

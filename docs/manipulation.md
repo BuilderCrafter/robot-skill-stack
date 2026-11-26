@@ -47,7 +47,7 @@ commands after a failure.
 - `release` intentionally allows a drop from the requested release pose without
   landing position/visibility verification. It still requires reachability,
   occupancy checks, successful approach/opening and successful retreat. There
-  is no GUI drop toggle. The legacy `default` mode alias still means `stable`.
+  is no GUI drop toggle. Only `stable` and `release` are accepted mode names.
 
 After opening/retreat, details distinguish:
 
