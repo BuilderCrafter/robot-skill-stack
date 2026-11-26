@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+
 import numpy as np
 
+from robot_skill_stack.manipulation.grasping.types import GraspPlan, ParallelJawGripperSpec
+from robot_skill_stack.world.model.entities import WorldObject
 from robot_skill_stack.world.model.primitives import PrimitiveShape
+from robot_skill_stack.world.model.world_model import WorldModel
 
 
 @dataclass(frozen=True)
@@ -14,13 +18,14 @@ class GraspSafetyConfig:
     max_object_height: float = 0.20
     approach_clearance: float = 0.020
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         for name, value in vars(self).items():
             if not math.isfinite(value) or value <= 0:
                 raise ValueError(f"{name} must be finite and > 0")
 
 
-def tcp_height(center_z, height, rounded, gripper, safety, support_z, preferred):
+def tcp_height(center_z: float, height: float, rounded: bool, gripper: ParallelJawGripperSpec,
+               safety: GraspSafetyConfig, support_z: float | None, preferred: float) -> tuple[float | None, dict]:
     """Intersect palm/table clearance and usable contact-pad height intervals."""
     bottom, top = center_z-height/2, center_z+height/2
     overlap = safety.min_contact_overlap
@@ -46,7 +51,8 @@ def tcp_height(center_z, height, rounded, gripper, safety, support_z, preferred)
     return z, details
 
 
-def object_aabb(obj):
+def object_aabb(obj: WorldObject) -> tuple[np.ndarray, np.ndarray] | None:
+    """Bound both cached size and primitive geometry; return center and half-extents."""
     if obj.pose is None or not np.isfinite(obj.pose.position).all():
         return None
     sizes = []
@@ -70,7 +76,8 @@ def object_aabb(obj):
     return None if not sizes else (obj.pose.position.copy(), np.max(sizes, axis=0)/2)
 
 
-def _overlap(box, obstacle, margin):
+def _overlap(box: tuple[np.ndarray, np.ndarray, float],
+             obstacle: tuple[np.ndarray, np.ndarray], margin: float) -> bool:
     # Separating-axis test: upright hand OBB against conservative object AABB.
     center, half, yaw = box
     other, other_half = obstacle
@@ -86,10 +93,12 @@ def _overlap(box, obstacle, margin):
     return True
 
 
-def swept_boxes(obj, plan, yaw, width, gripper):
+def swept_boxes(obj: WorldObject, plan: GraspPlan, yaw: float, width: float,
+                gripper: ParallelJawGripperSpec) -> list[tuple[str, tuple[np.ndarray, np.ndarray, float]]]:
+    """Bound palm/finger approach, closure and lift, including the carried object."""
     xy = plan.grasp.position[:2]
     z = plan.grasp.position[2]
-    pre, lift = plan.pre_grasp.position[2], plan.lift.position[2]
+    pre_z, lift_z = plan.pre_grasp.position[2], plan.lift.position[2]
     c, s = np.cos(yaw), np.sin(yaw)
     rotation = np.array([[c, -s], [s, c]])
 
@@ -99,23 +108,26 @@ def swept_boxes(obj, plan, yaw, width, gripper):
 
     g = gripper
     boxes = [("palm", box(g.palm_depth/2, -g.palm_width/2, g.palm_width/2,
-                         z+g.tcp_to_palm, max(pre, lift)+g.tcp_to_palm+g.palm_height))]
+                         z+g.tcp_to_palm, max(pre_z, lift_z)+g.tcp_to_palm+g.palm_height))]
     for sign in (-1, 1):
         y0, y1 = sorted((sign*g.aperture/2, sign*(g.aperture/2+g.finger_thickness)))
         boxes.append(("open_finger_descent", box(g.finger_depth/2, y0, y1,
-                                                z-g.fingertip_offset, pre+g.tcp_to_palm)))
+                                                z-g.fingertip_offset, pre_z+g.tcp_to_palm)))
         y0, y1 = sorted((sign*width/2, sign*(g.aperture/2+g.finger_thickness)))
         boxes.append(("finger_closing_and_lift", box(g.finger_depth/2, y0, y1,
-                                                    z-g.fingertip_offset, lift+g.tcp_to_palm)))
+                                                    z-g.fingertip_offset, lift_z+g.tcp_to_palm)))
     bounds = object_aabb(obj)
     if bounds is not None:
         center, half = bounds
-        delta = max(0, lift-z)
+        delta = max(0, lift_z-z)
         boxes.append(("held_object_lift", (center+[0, 0, delta/2], half+[0, 0, delta/2], 0.)))
     return boxes
 
 
-def check_obstacles(obj, plan, yaw, width, gripper, safety, world_model):
+def check_obstacles(obj: WorldObject, plan: GraspPlan, yaw: float, width: float,
+                    gripper: ParallelJawGripperSpec, safety: GraspSafetyConfig,
+                    world_model: WorldModel | None) -> tuple[str | None, dict]:
+    """Check cached obstacles conservatively; visible unknown bounds block the grasp."""
     if world_model is None:
         return None, {"obstacle_check": "not_configured"}
     boxes = swept_boxes(obj, plan, yaw, width, gripper)

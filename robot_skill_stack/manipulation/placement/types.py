@@ -21,7 +21,7 @@ class PlacementResult:
         return self.failure_reason is None
 
     @classmethod
-    def success(cls, **details):
+    def success(cls, **details) -> PlacementResult:
         return cls(details=details)
 
     @classmethod
@@ -30,7 +30,7 @@ class PlacementResult:
         reason: PlacementFailureReason,
         message: str,
         **details,
-    ):
+    ) -> PlacementResult:
         return cls(
             failure_reason=reason,
             message=message,

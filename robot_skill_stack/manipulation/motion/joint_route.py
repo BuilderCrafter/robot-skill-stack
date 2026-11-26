@@ -1,21 +1,23 @@
 """SDK-independent joint-space routes, validation, and execution checks."""
 from __future__ import annotations
 
+from collections.abc import Iterable
 import math
 
 import numpy as np
+from numpy.typing import ArrayLike
 
 
 class PlanningFailure(RuntimeError):
     """An explicit failure phase; callers must never turn this into direct motion."""
 
-    def __init__(self, code: str, message: str, details: dict | None = None):
+    def __init__(self, code: str, message: str, details: dict | None = None) -> None:
         super().__init__(message)
         self.code = code
         self.details = {} if details is None else dict(details)
 
 
-def map_joints(active_names, articulation_names) -> tuple[int, ...]:
+def map_joints(active_names: Iterable[str], articulation_names: Iterable[str]) -> tuple[int, ...]:
     """Map arbitrary planner joint names to articulation indices in planner order."""
     names, dofs = tuple(active_names), tuple(articulation_names)
     if (not names or len(names) != len(set(names)) or
@@ -27,7 +29,8 @@ def map_joints(active_names, articulation_names) -> tuple[int, ...]:
     return tuple(dofs.index(name) for name in names)
 
 
-def route_array(route, *, expected_dof: int | None = None) -> np.ndarray:
+def route_array(route: ArrayLike, *, expected_dof: int | None = None) -> np.ndarray:
+    """Copy a nonempty finite waypoint matrix, optionally enforcing its joint count."""
     try:
         points = np.asarray(route, dtype=float)
     except (TypeError, ValueError, OverflowError) as exc:
@@ -39,7 +42,9 @@ def route_array(route, *, expected_dof: int | None = None) -> np.ndarray:
     return points.copy()
 
 
-def check_joint_limits(points, lower, upper, *, tolerance=1e-8) -> None:
+def check_joint_limits(points: ArrayLike, lower: ArrayLike, upper: ArrayLike,
+                       *, tolerance: float = 1e-8) -> None:
+    """Check every configuration against per-joint limits with the declared tolerance."""
     values = route_array(points)
     low, high = np.asarray(lower, dtype=float), np.asarray(upper, dtype=float)
     if (low.shape != (values.shape[1],) or high.shape != (values.shape[1],) or
@@ -49,7 +54,8 @@ def check_joint_limits(points, lower, upper, *, tolerance=1e-8) -> None:
         raise PlanningFailure("joint_limit_failure", "A route or trajectory sample exceeds joint limits.")
 
 
-def interpolate_route(route, *, max_joint_step=.01, max_samples=100_000) -> np.ndarray:
+def interpolate_route(route: ArrayLike, *, max_joint_step: float = .01,
+                      max_samples: int = 100_000) -> np.ndarray:
     """Sample every linear segment with bounded L-infinity joint displacement.
 
     This is a discrete resolution, not a continuous swept-volume certificate.

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
 import math
+from typing import Any
 
 from robot_skill_stack.common.types import Pose
 
@@ -43,7 +43,7 @@ class ParallelJawGripperSpec:
     def aperture(self) -> float:
         return self.max_width if self.open_width is None else self.open_width
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         for name in ("max_width", "tcp_to_palm", "fingertip_offset", "pad_above_tcp",
                      "pad_below_tcp", "finger_depth", "finger_thickness", "palm_depth",
                      "palm_width", "palm_height"):
@@ -77,7 +77,7 @@ class GraspResult:
         return self.plan is not None and self.failure_reason is None
 
     @classmethod
-    def success(cls, plan: GraspPlan, **details):
+    def success(cls, plan: GraspPlan, **details) -> GraspResult:
         return cls(plan=plan, details=details)
 
     @classmethod
@@ -86,7 +86,7 @@ class GraspResult:
         reason: GraspFailureReason,
         message: str,
         **details,
-    ):
+    ) -> GraspResult:
         return cls(
             plan=None,
             failure_reason=reason,

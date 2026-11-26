@@ -12,9 +12,9 @@ from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class SimplePlacementPlanner:
-    """Cube-focused AABB target-occupancy check for stable table placement."""
+    """Check target occupancy using cached axis-aligned object extents."""
 
-    def __init__(self, *, clearance=0.005):
+    def __init__(self, *, clearance: float = 0.005) -> None:
         if clearance < 0:
             raise ValueError("clearance must be >= 0")
         self.clearance = float(clearance)
@@ -25,6 +25,7 @@ class SimplePlacementPlanner:
         target: Pose,
         world_model: WorldModel,
     ) -> PlacementResult:
+        """Reject overlap with visible, located and sized objects other than obj."""
         if obj.size is None:
             return PlacementResult.failure(
                 PlacementFailureReason.OBJECT_SIZE_UNKNOWN,

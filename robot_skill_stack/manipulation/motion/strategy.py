@@ -1,8 +1,8 @@
 """Motion execution stays behind the existing manipulation backend API.
 
-Strategies execute a requested goal; they do not change skill contracts. A
-future global planner will produce a joint-space route for a separate executor,
-rather than forcing that route through Cartesian waypoint calls.
+Direct RMPflow executes Cartesian goals. Global RRT plans against a frozen
+world and executes Lula's validated joint-space trajectory. Both keep the
+existing backend and skill contracts; global collision validation is sampled.
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ class MotionStrategy(Protocol):
 
 
 class MappingSource(Protocol):
-    """Read-only access structurally provided by V5's mapping service.
+    """Read-only access structurally provided by the runtime mapping service.
 
     ``snapshot()`` obtains a constant-time view, retaining original source time,
     generation, health and voxel-age semantics. Dense exports are explicit

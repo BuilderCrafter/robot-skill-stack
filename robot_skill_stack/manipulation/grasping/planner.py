@@ -7,6 +7,8 @@ from robot_skill_stack.world.model.entities import WorldObject
 
 
 class GraspPlanner(Protocol):
+    """Interchangeable object-to-grasp planning used by PickSkill."""
+
     def plan(
         self,
         obj: WorldObject,

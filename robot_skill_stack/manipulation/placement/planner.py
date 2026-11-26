@@ -9,6 +9,8 @@ from robot_skill_stack.world.model.world_model import WorldModel
 
 
 class PlacementPlanner(Protocol):
+    """Evaluate a held object's target before PlaceSkill commands any motion."""
+
     def evaluate(
         self,
         obj: WorldObject,
