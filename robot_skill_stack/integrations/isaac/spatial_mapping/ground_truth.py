@@ -8,24 +8,25 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable, Sequence
+from typing import TYPE_CHECKING
+
 import numpy as np
+
 from robot_skill_stack.world.spatial_mapping.geometry import (
-    _primitive_item, GeometryItem, GroundTruthInput,
+    GeometryItem, GroundTruthInput, _primitive_item,
 )
 
-
-def _usd_modules() -> tuple[object, object, object]:
-    """Load USD APIs only when accessing an active Isaac scene."""
-    from pxr import Usd, UsdGeom, UsdPhysics
-    return Usd, UsdGeom, UsdPhysics
+if TYPE_CHECKING:
+    from pxr import Usd
 
 
-def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Franka',),
+def prepare_ground_truth(stage: Usd.Stage | None = None, *,
+                         excluded_paths: Sequence[str] = ('/Franka',),
                          timestamp: float | None = None,
                          clock: Callable[[], float] = time.monotonic) -> GroundTruthInput:
     """Collect immutable USD geometry on the SDK owner thread; never rasterize."""
     timestamp = clock() if timestamp is None else timestamp
-    Usd, UsdGeom, UsdPhysics = _usd_modules()
+    from pxr import Usd, UsdGeom, UsdPhysics
 
     if stage is None:
         import omni.usd
@@ -50,7 +51,7 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
     geometry_items = []
     for prim in stage.Traverse(Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)):
         path = str(prim.GetPath())
-        if any(path == prefix or path.startswith(prefix+'/') for prefix in excluded_paths):
+        if any(path == prefix or path.startswith(prefix + '/') for prefix in excluded_paths):
             continue
         if not prim.IsActive() or not prim.IsDefined() or prim.IsAbstract():
             continue
@@ -58,11 +59,12 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
             raise RuntimeError(f'Unloaded USD geometry payload: {path}')
         if not prim.IsA(UsdGeom.Gprim):
             continue
-        collision = (prim.HasAPI(UsdPhysics.CollisionAPI) and
-                     UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Get())
-        if UsdGeom.Imageable(prim).ComputePurpose() == UsdGeom.Tokens.guide and not collision:
+        collision_enabled = (prim.HasAPI(UsdPhysics.CollisionAPI) and
+                             UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Get())
+        if UsdGeom.Imageable(prim).ComputePurpose() == UsdGeom.Tokens.guide and not collision_enabled:
             continue
 
+        # USD uses row vectors; convert the affine map, including scale, to meters.
         transform = np.asarray(xforms.GetLocalToWorldTransform(prim), dtype=float).T.copy()
         transform[:3, :] *= meters_per_unit
         if prim.IsA(UsdGeom.Cube):
@@ -79,10 +81,10 @@ def prepare_ground_truth(stage=None, *, excluded_paths: Sequence[str] = ('/Frank
                 axis={'X': 0, 'Y': 1, 'Z': 2}[str(cylinder.GetAxisAttr().Get(time_code))])
         else:
             world_bound = bbox_cache.ComputeWorldBound(prim).ComputeAlignedRange()
-            lower = np.asarray(world_bound.GetMin(), dtype=float)*meters_per_unit
-            upper = np.asarray(world_bound.GetMax(), dtype=float)*meters_per_unit
+            lower = np.asarray(world_bound.GetMin(), dtype=float) * meters_per_unit
+            upper = np.asarray(world_bound.GetMax(), dtype=float) * meters_per_unit
             if not np.isfinite([lower, upper]).all() or np.any(lower > upper):
-                raise ValueError('Unsupported geometry needs finite world bounds: '+path)
+                raise ValueError('Unsupported geometry needs finite world bounds: ' + path)
             item = GeometryItem(lower, upper)
         geometry_items.append(item)
     return GroundTruthInput(timestamp, tuple(geometry_items))

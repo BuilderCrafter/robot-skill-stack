@@ -11,8 +11,6 @@ from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
 from tests.unit.test_spatial_mapping_robot_filter import pixels
 
-ADAPTER = 'robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter'
-
 
 def matrix(z=0.):
     result = np.eye(4)
@@ -91,9 +89,15 @@ def boundaries(scene, state=None, view=None, manager=None):
     if state is None:
         state, view, manager = manager_fixture(scene)
     usd, geom, physics, is_a = usd_modules(scene)
-    with patch(ADAPTER+'._register_model_notice', return_value=NS(Revoke=Mock())), \
-         patch(ADAPTER+'._usd_modules', return_value=(usd, geom, physics)), \
-         patch(ADAPTER+'._simulation_interfaces', return_value=(manager, NS(POST_PHYSICS_STEP='post'))), \
+    usd.Notice = NS(ObjectsChanged=object())
+    state.register_notice = Mock(return_value=NS(Revoke=Mock()))
+    modules = {
+        'pxr': NS(Usd=usd, UsdGeom=geom, UsdPhysics=physics,
+                  Tf=NS(Notice=NS(Register=state.register_notice))),
+        'isaacsim.core.simulation_manager': NS(SimulationManager=manager,
+                                              IsaacEvents=NS(POST_PHYSICS_STEP='post')),
+    }
+    with patch.dict('sys.modules', modules), \
          patch.object(Prim, 'IsA', lambda prim, schema: prim.kind == 'mesh' if schema is geom.Mesh else is_a(prim, schema)):
         yield state, view, manager
 
@@ -202,6 +206,14 @@ class IsaacRobotFilterTests(unittest.TestCase):
                 with self.assertRaises((RuntimeError, ValueError)):
                     IsaacRobotSelfFilter(scene, scene.root.path)
                 manager.register_callback.assert_not_called()
+
+    def test_notice_registration_failure_releases_the_owned_physics_callback(self):
+        scene = Scene()
+        with boundaries(scene) as (state, _, manager):
+            state.register_notice.side_effect = RuntimeError('notice registration failed')
+            with self.assertRaisesRegex(RuntimeError, 'notice registration failed'):
+                IsaacRobotSelfFilter(scene, scene.root.path)
+            manager.deregister_callback.assert_called_once_with(42)
 
     def test_model_edits_invalidate_cached_geometry_but_body_motion_is_allowed(self):
         scene = Scene()

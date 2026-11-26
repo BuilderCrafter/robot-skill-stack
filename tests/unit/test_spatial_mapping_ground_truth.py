@@ -72,7 +72,7 @@ def usd_fixture(prims):
               BBoxCache=Mock(return_value=NS(ComputeWorldBound=bound)),
               GetStageMetersPerUnit=lambda stage: stage.meters_per_unit)
     stage = NS(Traverse=Mock(return_value=prims), meters_per_unit=1., GetCompositionErrors=Mock(return_value=[]))
-    return stage, (usd, geom, NS(CollisionAPI=CollisionAPI))
+    return stage, NS(Usd=usd, UsdGeom=geom, UsdPhysics=NS(CollisionAPI=CollisionAPI))
 
 
 
@@ -81,9 +81,9 @@ class GroundTruthGeometryTests(unittest.TestCase):
         self.spec = GridSpec((-.3,-.3,-.3),(.3,.3,.3),.005)
 
     def prepare(self, prims):
-        stage,modules = usd_fixture(prims)
-        with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',return_value=modules):
-            return prepare_ground_truth(stage,timestamp=100.)
+        stage, pxr = usd_fixture(prims)
+        with patch.dict('sys.modules', {'pxr': pxr}):
+            return prepare_ground_truth(stage, timestamp=100.)
 
     def raster(self, prims):
         return rasterize_ground_truth(self.spec,self.prepare(prims))
@@ -133,8 +133,7 @@ class GroundTruthGeometryTests(unittest.TestCase):
             Prim('/Guide',matrix=transform((.25,.25,.05)),purpose='guide')])
         expected = rasterize_ground_truth(self.spec,prepared)
         box.matrix[:3,3] = 9
-        with patch('robot_skill_stack.integrations.isaac.spatial_mapping.ground_truth._usd_modules',
-                   side_effect=AssertionError('worker accessed USD')):
+        with patch.dict('sys.modules', {'pxr': None, 'omni': None, 'isaacsim': None}):
             with ThreadPoolExecutor(max_workers=1) as worker:
                 actual = worker.submit(rasterize_ground_truth,self.spec,prepared).result(timeout=1.)
         np.testing.assert_array_equal(actual,expected)

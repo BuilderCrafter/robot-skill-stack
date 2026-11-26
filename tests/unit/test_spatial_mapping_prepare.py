@@ -4,7 +4,7 @@ from types import SimpleNamespace as NS
 import unittest
 from unittest.mock import Mock, patch
 
-from tests.unit.test_spatial_mapping_robot_adapter import Scene, boundaries, frame, ADAPTER
+from tests.unit.test_spatial_mapping_robot_adapter import Scene, boundaries, frame
 from tests.unit.test_spatial_mapping_robot_filter import pixels
 from robot_skill_stack.integrations.isaac.spatial_mapping.robot_filter import IsaacRobotSelfFilter
 from robot_skill_stack.world.spatial_mapping.robot_filter import RobotSelfFilter
@@ -19,7 +19,8 @@ class RobotPrepareTests(unittest.TestCase):
             with patch.object(RobotSelfFilter, 'masks', side_effect=AssertionError('intersection in prepare')):
                 prepared = source.prepare(frames)
             source.close()
-            with patch(ADAPTER+'._usd_modules', side_effect=AssertionError('worker USD access')):
+            with patch.dict('sys.modules', {'pxr': None, 'omni': None, 'isaacsim': None,
+                                           'isaacsim.core.simulation_manager': None}):
                 with ThreadPoolExecutor(max_workers=1) as worker:
                     masks = worker.submit(RobotSelfFilter().masks, frames, prepared,
                         pixels_by_camera=pixels(frames)).result(timeout=1.)

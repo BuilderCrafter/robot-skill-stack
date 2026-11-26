@@ -1,40 +1,38 @@
 """Cached USD robot meshes and exposure-matched PhysX poses for the mapping worker."""
+from __future__ import annotations
+
 from collections import deque
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 import threading
+from typing import TYPE_CHECKING
 
 import numpy as np
 
+from robot_skill_stack.world.common.camera import DepthFrame
 from robot_skill_stack.world.spatial_mapping.robot_filter import (
     MeshInstance, RobotSnapshot, TriangleMesh,
 )
 
-
-def _usd_modules() -> tuple[object, object, object]:
-    from pxr import Usd, UsdGeom, UsdPhysics
-    return Usd, UsdGeom, UsdPhysics
+if TYPE_CHECKING:
+    from pxr import Gf, Tf, Usd
 
 
-def _register_model_notice(stage, callback):
+def _register_model_notice(stage: Usd.Stage, callback: Callable) -> Tf.Notice.Listener:
+    """Register an owned listener for changes to the cached robot model."""
     from pxr import Tf, Usd
     return Tf.Notice.Register(Usd.Notice.ObjectsChanged, callback, stage)
 
 
-def _simulation_interfaces() -> tuple[object, object]:
-    from isaacsim.core.simulation_manager import IsaacEvents, SimulationManager
-    return SimulationManager, IsaacEvents
-
-
-def _world_meters(matrix, meters_per_unit: float) -> np.ndarray:
-    """Local vertices are already meters; convert the USD translation only."""
+def _world_meters(matrix: Gf.Matrix4d, meters_per_unit: float) -> np.ndarray:
+    """Transpose USD's row-vector matrix; vertices already use meters, translation does not."""
     result = np.asarray(matrix, dtype=float).T.copy()
     result[:3, 3] *= meters_per_unit
     return result
 
 
 def _rigid_part(matrix: np.ndarray) -> np.ndarray:
-    """Leave static stretch in the mesh-to-body map, outside the PhysX pose."""
+    """Extract SVD rotation, leaving static stretch in the mesh-to-body map."""
     left, _, right = np.linalg.svd(matrix[:3, :3])
     rotation = left @ right
     if np.linalg.det(rotation) <= 0:
@@ -45,7 +43,10 @@ def _rigid_part(matrix: np.ndarray) -> np.ndarray:
 
 
 def _pose_matrices(poses: np.ndarray, meters_per_unit: float) -> np.ndarray:
-    """Own world transforms from the configured NumPy PhysX backend's XYZ/XYZW rows."""
+    """Own world transforms from PhysX XYZ positions and XYZW quaternions.
+
+    Positions use stage units; output translations use meters and column vectors.
+    """
     poses = np.asarray(poses, dtype=float)
     quaternions = poses[:, 3:]
     x, y, z, w = (quaternions / np.linalg.norm(quaternions, axis=1)[:, None]).T
@@ -75,33 +76,35 @@ class IsaacRobotSelfFilter:
     fresh poses. SDK access stays on the owner thread; prepared parts own their
     numerical data and can outlive this adapter in the mapping worker.
     """
-    def __init__(self, stage, robot_prim_path: str, *, pose_tolerance: float = .01) -> None:
+    def __init__(self, stage: Usd.Stage, robot_prim_path: str, *, pose_tolerance: float = .01) -> None:
         self._owner_thread = threading.get_ident()
         self.robot_prim_path, self.pose_tolerance = robot_prim_path, pose_tolerance
-        self._history = deque(maxlen=256)
-        self._capture_error = self._model_error = None
+        self._history: deque[tuple[float, np.ndarray]] = deque(maxlen=256)
+        self._capture_error: str | None = None
+        self._model_error: str | None = None
         self._closed = False
         self._callback_id = self._model_notice = None
         try:
             self._parts = self._geometry(stage)
-            self._manager, events = _simulation_interfaces()
+            from isaacsim.core.simulation_manager import IsaacEvents, SimulationManager
+            self._manager = SimulationManager
             self._bind(self._manager.get_physics_sim_view())
             self._record()
             self._callback_id = self._manager.register_callback(
-                self._post_step, events.POST_PHYSICS_STEP, order=100)
+                self._post_step, IsaacEvents.POST_PHYSICS_STEP, order=100)
             self._model_notice = _register_model_notice(stage, self._model_changed)
         except Exception:
             self.close()
             raise
 
-    def _geometry(self, stage) -> tuple[_Part, ...]:
+    def _geometry(self, stage: Usd.Stage) -> tuple[_Part, ...]:
         """Cache static, authored triangle meshes from the visible robot subtree."""
-        Usd, UsdGeom, UsdPhysics = _usd_modules()
+        from pxr import Usd, UsdGeom, UsdPhysics
         root = stage.GetPrimAtPath(self.robot_prim_path)
         if not root or not root.IsLoaded():
             raise RuntimeError(f'Robot prim is unavailable: {self.robot_prim_path}')
-        units = self._meters_per_unit = UsdGeom.GetStageMetersPerUnit(stage)
-        cache = UsdGeom.XformCache(Usd.TimeCode.Default())
+        meters_per_unit = self._meters_per_unit = UsdGeom.GetStageMetersPerUnit(stage)
+        xforms = UsdGeom.XformCache(Usd.TimeCode.Default())
         parts = []
         for prim in Usd.PrimRange(root, Usd.TraverseInstanceProxies(Usd.PrimAllPrimsPredicate)):
             if not prim.IsActive() or not prim.IsDefined() or prim.IsAbstract():
@@ -120,17 +123,18 @@ class IsaacRobotSelfFilter:
             if (mesh.GetSubdivisionSchemeAttr().Get() != 'none' or
                     np.any(np.asarray(mesh.GetFaceVertexCountsAttr().Get()) != 3)):
                 raise ValueError(f'Robot mesh requires authored triangles: {prim.GetPath()}')
-            points = np.asarray(mesh.GetPointsAttr().Get(), float)*units
+            vertices = np.asarray(mesh.GetPointsAttr().Get(), float) * meters_per_unit
             triangles = np.asarray(mesh.GetFaceVertexIndicesAttr().Get()).reshape(-1, 3)
             triangles = np.delete(triangles, np.asarray(mesh.GetHoleIndicesAttr().Get(), int), axis=0)
+
             body = prim
             while body != root and not body.HasAPI(UsdPhysics.RigidBodyAPI):
                 body = body.GetParent()
             if not body.HasAPI(UsdPhysics.RigidBodyAPI):
                 raise RuntimeError(f'Visible robot mesh has no rigid body: {prim.GetPath()}')
-            rigid_world = _rigid_part(_world_meters(cache.GetLocalToWorldTransform(body), units))
-            mesh_world = _world_meters(cache.GetLocalToWorldTransform(prim), units)
-            parts.append(_Part(str(prim.GetPath()), str(body.GetPath()), TriangleMesh(points, triangles),
+            rigid_world = _rigid_part(_world_meters(xforms.GetLocalToWorldTransform(body), meters_per_unit))
+            mesh_world = _world_meters(xforms.GetLocalToWorldTransform(prim), meters_per_unit)
+            parts.append(_Part(str(prim.GetPath()), str(body.GetPath()), TriangleMesh(vertices, triangles),
                                np.linalg.inv(rigid_world) @ mesh_world))
         if not parts:
             raise RuntimeError(f'Robot has no visible meshes: {self.robot_prim_path}')
@@ -146,19 +150,20 @@ class IsaacRobotSelfFilter:
         self._view, self._simulation_view = view, simulation_view
         self._body_indices = {path: i for i, path in enumerate(view.prim_paths)}
 
-    def _model_changed(self, notice, sender) -> None:
+    def _model_changed(self, notice: Usd.Notice.ObjectsChanged, sender: Usd.Stage) -> None:
         """Invalidate cached surfaces, while allowing PhysX to move rigid bodies."""
         root = self.robot_prim_path
         geometry = {'points', 'faceVertexCounts', 'faceVertexIndices', 'holeIndices',
                     'subdivisionScheme', 'visibility', 'purpose'}
         for resync, paths in ((True, notice.GetResyncedPaths()), (False, notice.GetChangedInfoOnlyPaths())):
             for path in paths:
-                prim, _, attribute = str(path).partition('.')
-                if not (prim == root or prim.startswith(root+'/') or root.startswith(prim.rstrip('/')+'/')):
+                prim_path, _, attribute = str(path).partition('.')
+                if not (prim_path == root or prim_path.startswith(root + '/') or
+                        root.startswith(prim_path.rstrip('/') + '/')):
                     continue
                 static_transform = attribute.startswith('xformOp') and any(
-                    prim != part.rigid_path and prim.startswith(part.rigid_path+'/') and
-                    (part.path == prim or part.path.startswith(prim+'/')) for part in self._parts)
+                    prim_path != part.rigid_path and prim_path.startswith(part.rigid_path + '/') and
+                    (part.path == prim_path or part.path.startswith(prim_path + '/')) for part in self._parts)
                 if ((resync and not attribute) or attribute in geometry or static_transform or
                         attribute.startswith('xformOp:scale')):
                     self._model_error = f'Robot model changed; reinitialize self-filter: {path}'
@@ -215,7 +220,7 @@ class IsaacRobotSelfFilter:
         self._history.clear()
         self._capture_error = None
 
-    def prepare(self, frames: Sequence) -> dict[str, RobotSnapshot]:
+    def prepare(self, frames: Sequence[DepthFrame]) -> dict[str, RobotSnapshot]:
         """Prepare numerical mesh instances at each camera's exposure time."""
         self._assert_owner()
         if self.source_error:
@@ -224,10 +229,11 @@ class IsaacRobotSelfFilter:
             self.reset_history()
         if not self._history:
             raise RuntimeError('Robot pose history is empty; wait for fresh physics')
-        snapshots, instances = {}, {}
+        snapshots: dict[str, RobotSnapshot] = {}
+        instances: dict[float, tuple[MeshInstance, ...]] = {}
         for frame in frames:
-            timestamp, matrices = min(self._history, key=lambda item: abs(item[0]-frame.token[1]))
-            if abs(timestamp-frame.token[1]) > self.pose_tolerance:
+            timestamp, matrices = min(self._history, key=lambda item: abs(item[0] - frame.token[1]))
+            if abs(timestamp - frame.token[1]) > self.pose_tolerance:
                 raise RuntimeError(f'No robot pose at camera exposure: {frame.camera_id}, {frame.token[1]}')
             if timestamp not in instances:
                 instances[timestamp] = tuple(MeshInstance(part.mesh,
